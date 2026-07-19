@@ -1,0 +1,314 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\M}{\mathcal M}
+
+\title{An Adaptive Diagonal Criterion for Failure of BCP}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+Several previous packets use the same diagonal escape.  A proposed center is
+nearly normed on a fresh coordinate, block, annulus, or two-sided corner.  One
+then puts a unit vector in that coordinate pointing away from the local image
+of the center, and glues all chosen coordinates into one global unit vector.
+The global vector stays outside every ball \(B(x_i,\|x_i\|)\).
+
+This packet records the exact form of that mechanism.  The primitive ideal
+space cannot see it: a \(\mathrm{II}_1\) factor has one-point primitive ideal
+space, but its diffuse finite projection structure supplies adaptive
+two-sided corners.
+
+\section*{The Abstract Criterion}
+
+For normed spaces \(E_k\), write
+\[
+        \ell_\infty(E_k)=\{(u_k): \sup_k\|u_k\|<\infty\}.
+\]
+
+\begin{definition}
+Let \(X\) be a normed space.  We say that \(X\) has the adaptive exact
+diagonal property if for every sequence \((x_i)_{i\ge1}\subset X\) there are:
+\begin{itemize}
+\item a map \(\pi:\N\to\N\) such that every fiber \(\pi^{-1}(\{i\})\) is
+infinite;
+\item nonzero normed spaces \(E_k\);
+\item contractive linear maps \(R_k:X\to E_k\);
+\item a linear isometry \(\Gamma:\ell_\infty(E_k)\to X\);
+\item a null sequence \(\eta_k\downarrow0\);
+\end{itemize}
+such that
+\[
+        R_k\Gamma((u_j)_{j\ge1})=u_k
+        \quad\text{for every }(u_j)\in\ell_\infty(E_j)
+\]
+and
+\[
+        \|R_k x_{\pi(k)}\|>\|x_{\pi(k)}\|-\eta_k,\qquad k\ge1.
+\]
+\end{definition}
+
+\begin{lemma}[one-coordinate escape]
+\label{lem:one-coordinate}
+Let \(E\ne\{0\}\) be a normed space and let \(y\in E\).  There is
+\(u\in S_E\) such that
+\[
+        \|u-y\|\ge \|y\|.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(y=0\), take any \(u\in S_E\).  If \(y\ne0\), choose
+\(f\in S_{E^*}\) with \(f(y)=\|y\|\).  Choose \(v\in S_E\) with
+\(|f(v)|>0\), and multiply \(v\) by a scalar of modulus one, in the complex
+case, or change its sign, in the real case, so that the resulting
+\(u\in S_E\) satisfies \(\operatorname{Re}f(u)\le0\).  Then
+\[
+        \|u-y\|
+        \ge
+        \operatorname{Re} f(y-u)
+        =
+        \|y\|-\operatorname{Re}f(u)
+        \ge
+        \|y\|.
+\]
+\end{proof}
+
+\begin{theorem}
+\label{thm:abstract-diagonal}
+If a normed space \(X\) has the adaptive exact diagonal property, then \(X\)
+fails BCP.
+\end{theorem}
+
+\begin{proof}
+We use the equivalent form of BCP saying that \(S_X\) is covered by countably
+many open balls \(B(x_i,\|x_i\|)\).
+
+Let \((x_i)\) be an arbitrary countable family in \(X\).  Choose adaptive
+diagonal data for this sequence.  For each \(k\), apply
+Lemma~\ref{lem:one-coordinate} to \(E_k\) and
+\[
+        y_k=R_k x_{\pi(k)}
+\]
+to choose \(u_k\in S_{E_k}\) such that
+\[
+        \|u_k-R_kx_{\pi(k)}\|\ge \|R_kx_{\pi(k)}\|.
+\]
+Put
+\[
+        z=\Gamma((u_k)_{k\ge1}).
+\]
+Since \(\Gamma\) is an isometry and \(\sup_k\|u_k\|=1\), we have \(z\in S_X\).
+
+Fix \(i\).  Along the infinite set \(\{k:\pi(k)=i\}\),
+\[
+        \|z-x_i\|
+        \ge
+        \|R_k(z-x_i)\|
+        =
+        \|u_k-R_kx_i\|
+        \ge
+        \|R_kx_i\|
+        >
+        \|x_i\|-\eta_k .
+\]
+Letting \(k\to\infty\) through that fiber gives
+\[
+        \|z-x_i\|\ge \|x_i\|.
+\]
+Thus \(z\) lies outside every open ball \(B(x_i,\|x_i\|)\).  Since the
+countable family of centers was arbitrary, \(X\) fails BCP.
+\end{proof}
+
+\section*{C*-Algebra Corner Form}
+
+\begin{definition}
+Let \(A\) be a \(C^*\)-algebra.  We say that \(A\) has the adaptive exact
+corner property if for every sequence \((a_i)\subset A\) there are
+\(\pi:\N\to\N\) with infinite fibers, a null sequence \(\eta_k\downarrow0\),
+and pairwise orthogonal projections \(p_k,q_k\in A\) such that:
+\begin{itemize}
+\item each corner \(q_kAp_k\) is nonzero;
+\item there is a linear isometry
+\[
+        \Gamma:\ell_\infty(q_kAp_k)\to A
+\]
+that satisfies
+\[
+        q_k\Gamma((u_j))p_k=u_k;
+\]
+\item the centers are nearly normed on the assigned corners:
+\[
+        \|q_ka_{\pi(k)}p_k\|>\|a_{\pi(k)}\|-\eta_k,\qquad k\ge1.
+\]
+\end{itemize}
+\end{definition}
+
+\begin{corollary}
+\label{cor:cstar-corner}
+Every \(C^*\)-algebra with the adaptive exact corner property fails BCP.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:abstract-diagonal} with
+\[
+        E_k=q_kAp_k,\qquad R_k(a)=q_kap_k,
+\]
+and the gluing map \(\Gamma\) from the definition.
+\end{proof}
+
+\section*{Von Neumann Corner Gluing}
+
+The exact gluing condition is automatic in von Neumann algebras once the
+left and right support projections are orthogonal.
+
+\begin{lemma}
+\label{lem:vn-gluing}
+Let \(\M\) be a von Neumann algebra.  Let \((p_k)\) and \((q_k)\) be pairwise
+orthogonal sequences of projections in \(\M\).  For every bounded sequence
+\[
+        u_k\in q_k\M p_k
+\]
+there is a strong-operator convergent sum
+\[
+        u=\sum_{k=1}^\infty u_k\in\M
+\]
+with
+\[
+        \|u\|=\sup_k\|u_k\|,
+        \qquad
+        q_kup_k=u_k .
+\]
+\end{lemma}
+
+\begin{proof}
+Represent \(\M\) on a Hilbert space \(H\).  For finite \(F\subset\N\),
+\[
+        \left\|\sum_{k\in F}u_k\right\|\le \sup_k\|u_k\|,
+\]
+because the initial projections \(p_k\) and final projections \(q_k\) are
+orthogonal.  More explicitly, for \(\xi\in H\),
+\[
+        \left\|\sum_{k\in F}u_k\xi\right\|^2
+        =
+        \sum_{k\in F}\|u_kp_k\xi\|^2
+        \le
+        \big(\sup_k\|u_k\|\big)^2\sum_{k\in F}\|p_k\xi\|^2
+        \le
+        \big(\sup_k\|u_k\|\big)^2\|\xi\|^2 .
+\]
+The same estimate on tails shows strong convergence of the net of finite
+partial sums, and the adjoint sums converge strongly as well.  Since \(\M\)
+is strongly closed, the limit belongs to \(\M\).  The equality
+\(q_kup_k=u_k\) is immediate from orthogonality, and it gives the reverse
+norm inequality.
+\end{proof}
+
+\begin{corollary}
+\label{cor:vn-corner}
+Let \(\M\) be a von Neumann algebra.  Suppose that for every sequence
+\((x_i)\subset\M\) there are \(\pi:\N\to\N\) with infinite fibers, a null
+sequence \(\eta_k\downarrow0\), and pairwise orthogonal projections
+\((p_k)\), \((q_k)\) in \(\M\) such that \(q_k\M p_k\ne\{0\}\) and
+\[
+        \|q_kx_{\pi(k)}p_k\|>\|x_{\pi(k)}\|-\eta_k .
+\]
+Then \(\M\) fails BCP.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:vn-gluing} verifies the gluing hypothesis in
+Corollary~\ref{cor:cstar-corner}.
+\end{proof}
+
+\section*{Exact and Asymptotic Diagonal Examples}
+
+The atomless von Neumann proof in Huang--Kudaybergenov--Liu constructs exactly
+the projections required in Corollary~\ref{cor:vn-corner}: after passing to a
+\(\sigma\)-finite corner when necessary, their decreasing projection
+construction produces pairwise orthogonal differences \(p_k\) and \(q_k\)
+with
+\[
+        \|q_kx_{\pi(k)}p_k\|
+        >
+        \|x_{\pi(k)}\|-\eta_k .
+\]
+Thus the source theorem that nontrivial atomless von Neumann algebras fail
+BCP is an exact instance of the adaptive corner criterion.
+
+The reduced-product, sigma-unital corona, and Hilbert-module corona packets
+are asymptotic versions of the same idea rather than literal instances of
+Definition 1.  For a reduced product
+\[
+        \ell_\infty(F_n)/c_\cI(F_n),
+\]
+the proof chooses disjoint positive sets and glues one specifically chosen
+escape vector on each set.  However arbitrary quotient classes on those sets
+do not provide a canonical \(\ell_\infty\)-sum retraction back into the global
+quotient: changing representatives on countably many disjoint positive sets
+need not produce a difference in \(c_\cI(F_n)\).  For multiplier coronas the
+same issue appears analytically: compact or ideal terms vanish only along the
+chosen tail blocks.  The natural next strengthening is therefore an
+``approximate adaptive diagonal'' criterion, with exact retractions replaced
+by tail-vanishing errors.
+
+\section*{Verification and Search Bounds}
+
+The run indexes were searched for arXiv:2311.14257 together with BCP,
+diagonal obstruction, orthogonal corners, von Neumann atomless, reduced
+products, Hilbert-module block criterion, and sigma-unital coronas.  Existing
+packets contained concrete diagonal arguments but no abstract Banach-space
+criterion isolating the exact common mechanism.
+
+The proof of Theorem~\ref{thm:abstract-diagonal} is formal.  The von Neumann
+application uses only standard strong-operator summation over orthogonal
+corners.  The source paper is cited only to identify its atomless von Neumann
+argument as an instance of the criterion; this packet is not a new proof of
+the source paper's full von Neumann classification.
+
+\section*{Human Review Focus}
+
+Check whether the adaptive exact diagonal property is stated at the right
+level of generality for future packets.  The immediate proof is short; the
+important review question is how far the exact property can be weakened to
+cover multiplier coronas and Hilbert-module coronas without redoing each
+diagonal argument separately.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\end{thebibliography}
+
+\end{document}

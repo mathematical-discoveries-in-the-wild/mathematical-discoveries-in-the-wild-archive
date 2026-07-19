@@ -1,0 +1,378 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\Lac}{\mathcal{L}ac}
+\newcommand{\Id}{\mathcal I_d}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+
+\title{PLI is necessary below density zero:\\
+a counterexample to the wPLI extension}
+\author{Codex agent lane 16}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and Source Question}
+
+\noindent\textbf{Status:} counterexample likely valid.
+
+Balcerzak--Poplawski--Wachowicz study, for an ideal $\cI$ on $\N$ and a real
+series $\sum_n x_n$, the set
+\[
+ A(\cI,(x_n))
+ =\left\{t\in\{0,1\}^{\N}:\sum_n t(n)x_n
+        \text{ is $\cI$-convergent}\right\},
+\]
+equipped with the fair Bernoulli product measure $\lambda$ \cite{BPW}.  Their
+Question 4.6 asks:
+
+\begin{quote}
+Does the statement of Theorem 4.3 remain true if PLI is replaced by wPLI?
+In particular, does it work for the ideal from Example 3?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is negative even for the intended core assertion of Theorem 4.3,
+namely the existence of a divergent real series with
+$\lambda(A(\cI,(x_n)))=1$.  We prove a converse to the source theorem for all
+ideals contained in the density-zero ideal.
+
+\section*{Definitions}
+
+For a real sequence $(z_n)$ and an ideal $\cI$ on $\N$, write
+$z_n\to_{\cI}z$ when
+\[
+ \{n:|z_n-z|>\varepsilon\}\in\cI
+ \qquad(\varepsilon>0).
+\]
+A series is $\cI$-convergent when its sequence of partial sums is
+$\cI$-convergent.
+
+The asymptotic-density-zero ideal is
+\[
+ \Id=\left\{B\subseteq\N:
+       \lim_{N\to\infty}\frac{|B\cap[1,N]|}{N}=0\right\}.
+\]
+Thus $\Id$-convergence is statistical convergence.
+
+An ideal $\cI$ has the \emph{property of long intervals} (PLI) if some
+$E\in\cI$ contains intervals of every finite length.  It has the weak property
+of long intervals (wPLI) if, for every fixed length $r$, some $E_r\in\cI$
+contains infinitely many pairwise disjoint intervals of length $r$.
+
+The source's ideal $\Lac$ is the smallest ideal containing every range
+\[
+ \{b_j:j\in\N\},\qquad b_1<b_2<\cdots,qquad b_{j+1}-b_j\longrightarrow\infty.
+\]
+Equivalently, its members are subsets of finite unions of such lacunary
+ranges.  The source proves that $\Lac$ is dense, hence wPLI, but is not PLI
+\cite[Remark 4.4(ii) and Example 3]{BPW}.
+
+\section*{Proof Intuition}
+
+The missing obstruction is that measure-one random convergence carries much
+more information than convergence of the original series.  Pairing a selector
+with its complement first shows that the original partial sums are
+$\cI$-convergent.  When $\cI\subseteq\Id$, both the original partial sums and
+almost every Bernoulli partial-sum path are statistically convergent.
+
+Statistical convergence lets us choose deterministic endpoints at which the
+random paths converge in probability.  After subtracting half of the original
+partial sum, the increments become independent symmetric variables
+$\pm x_n/2$.  Levy's maximal inequality says that convergence at the selected
+endpoints controls every partial sum inside the intervening blocks.  A single
+coefficient bounded away from zero would force a fixed-size excursion in its
+block for every outcome.  Hence $x_n\to0$.
+
+Now ordinary divergence becomes incompatible with ideal convergence unless
+the ideal has PLI.  Indeed, a partial sum a fixed distance from the ideal limit
+must, because the terms are small, remain far away for an arbitrarily long
+interval of preceding indices.  One exceptional set in $\cI$ therefore
+contains intervals of all lengths.
+
+\section*{Formal Argument}
+
+\begin{lemma}[Finite Levy maximal inequality]
+\label{lem:levy}
+Let $Y_1,\dots,Y_m$ be independent symmetric real random variables and put
+$S_k=\sum_{i=1}^kY_i$.  Then, for every $a>0$,
+\[
+ \Prob\!\left(\max_{1\leq k\leq m}|S_k|>a\right)
+ \leq 2\Prob(|S_m|>a).
+\]
+\end{lemma}
+
+\begin{proof}
+This is the standard reflection argument.  On the event that $S_k$ first
+exits $[-a,a]$, write the remaining sum as $Z$.  Conditionally on the stopped
+path, $Z$ and $-Z$ have the same law, while the triangle inequality shows
+that at least one of $|S_k+Z|$ and $|S_k-Z|$ is greater than $a$.  Thus the
+conditional probability that the terminal sum has absolute value greater
+than $a$ is at least $1/2$.  Summing over the possible first exit times gives
+the result.
+\end{proof}
+
+\begin{lemma}[Almost-sure statistical convergence forces null coefficients]
+\label{lem:null}
+Let $\cI\subseteq\Id$ and let $(x_n)$ be a real sequence.  If
+\[
+ \lambda(A(\cI,(x_n)))=1,
+\]
+then $x_n\to0$.
+\end{lemma}
+
+\begin{proof}
+Write $s_n=\sum_{i=1}^n x_i$ and
+$T_n(t)=\sum_{i=1}^n t(i)x_i$.  Let $A=A(\cI,(x_n))$ and let
+$\phi(t)=\boldsymbol{1}-t$.  The map $\phi$ preserves $\lambda$, so
+$A\cap\phi(A)$ has measure one and is nonempty.  Choose $t$ in this
+intersection.  Both $\sum_i t(i)x_i$ and $\sum_i(1-t(i))x_i$ are
+$\cI$-convergent.  Adding their partial sums shows that
+\[
+ s_n\longrightarrow_{\cI}s
+\]
+for some $s\in\R$.  Since $\cI\subseteq\Id$, $(s_n)$ converges statistically
+to $s$.
+
+For almost every selector $t$, the sequence $T_n(t)$ is likewise
+statistically convergent; denote its statistical limit by $L(t)$.  The limit
+may be chosen measurable.  For example, statistical convergence of $T_n(t)$
+implies ordinary convergence of the Cesaro means of the bounded sequence
+$\arctan(T_n(t))$ to $\arctan(L(t))$, which gives a measurable formula for
+$L$ on the full-measure convergence set.
+
+Fix $j\geq1$.  Statistical convergence and dominated convergence give
+\[
+ \frac1N\sum_{n=1}^N
+ \lambda\bigl(|T_n-L|>1/j\bigr)\longrightarrow0.
+ \tag{1}
+\]
+Also, the set
+\[
+ G_j=\{n:|s_n-s|\leq1/j\}
+\]
+has asymptotic density one.  Consequently, there are arbitrarily large
+$n\in G_j$ for which
+\[
+ \lambda\bigl(|T_n-L|>1/j\bigr)<1/j;
+\]
+otherwise (1) would have positive lower limit.  Choose such integers
+ $n_1<n_2<\cdots$, and put $n_0=0$.  Then
+\[
+ T_{n_j}\longrightarrow L\quad\text{in probability},
+ \qquad s_{n_j}\longrightarrow s.
+\]
+
+Center the Bernoulli sums:
+\[
+ R_n=T_n-\frac12s_n
+     =\sum_{i=1}^n\left(t(i)-\frac12\right)x_i.
+\]
+The summands are independent and symmetric, taking the values
+$\pm x_i/2$.  We have
+\[
+ R_{n_j}\longrightarrow L-\frac12s
+ \quad\text{in probability}.
+\]
+Thus the block increments
+\[
+ Z_j=R_{n_j}-R_{n_{j-1}}
+\]
+converge to zero in probability.  Applying
+Lemma~\ref{lem:levy} to the $j$th block yields, for every $a>0$,
+\[
+ \Prob\!\left(
+  \max_{n_{j-1}<k\leq n_j}|R_k-R_{n_{j-1}}|>a
+ \right)
+ \leq2\Prob(|Z_j|>a)\longrightarrow0.
+ \tag{2}
+\]
+
+If some $i\in(n_{j-1},n_j]$ satisfied $|x_i|>4a$, then the corresponding
+centered increment would have deterministic magnitude $|x_i|/2>2a$.
+The partial sums immediately before and after that increment cannot both
+have absolute value at most $a$.  Therefore the event on the left of (2)
+would have probability one.  For all sufficiently large $j$ this contradicts
+(2).  Hence
+\[
+ \max_{n_{j-1}<i\leq n_j}|x_i|\leq4a
+\]
+eventually.  Since $a>0$ was arbitrary and the blocks cover a tail of $\N$,
+$x_n\to0$.
+\end{proof}
+
+\begin{lemma}[Divergent ideal convergence with null terms forces PLI]
+\label{lem:pli}
+Suppose the real series $\sum_n x_n$ is $\cI$-convergent but not ordinarily
+convergent, and $x_n\to0$.  Then $\cI$ has PLI.
+\end{lemma}
+
+\begin{proof}
+Let $s_n=\sum_{i=1}^n x_i$ and $s_n\to_{\cI}s$.  Since $(s_n)$ does not
+converge ordinarily to $s$, there are $\delta>0$ and arbitrarily large $n$
+such that $|s_n-s|>\delta$.  Put
+\[
+ E=\{m:|s_m-s|>\delta/2\}\in\cI.
+\]
+Fix a positive integer $r$.  Choose one of the above indices $n$ so large
+that $n\geq r$ and
+\[
+ |x_i|<\frac{\delta}{2r}\qquad(i\geq n-r+1).
+\]
+For $m\in\{n-r+1,\dots,n\}$,
+\[
+ |s_m-s|
+ \geq |s_n-s|-\sum_{i=m+1}^n|x_i|
+ >\delta-\frac{r-1}{2r}\delta>\frac\delta2.
+\]
+Thus $E$ contains an interval of length $r$.  As $r$ was arbitrary, $E$ is a
+PLI witness.
+\end{proof}
+
+\begin{theorem}[PLI necessity below density zero]
+\label{thm:necessity}
+Let $\cI\subseteq\Id$.  If there is a divergent real series $\sum_nx_n$ such
+that
+\[
+ \lambda(A(\cI,(x_n)))=1,
+\]
+then $\cI$ has PLI.
+\end{theorem}
+
+\begin{proof}
+By the complement-selector argument in Lemma~\ref{lem:null}, the original
+series is $\cI$-convergent.  The same lemma gives $x_n\to0$.
+Lemma~\ref{lem:pli} now yields PLI.
+\end{proof}
+
+\begin{corollary}[Classification below density zero]
+\label{cor:classification}
+Let $\cI\subseteq\Id$.  The following are equivalent:
+\begin{enumerate}
+ \item $\cI$ has PLI;
+ \item there is a divergent real series $\sum_nx_n$ for which
+       $\lambda(A(\cI,(x_n)))=1$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:necessity} proves $(2)\Rightarrow(1)$.  The implication
+$(1)\Rightarrow(2)$ is the core conclusion of source Theorem 4.3; its explicit
+block construction uses $2^k$ terms $2^{-k}$ followed by $2^k$ terms
+$-2^{-k}$ inside each PLI interval and applies Chebyshev, Borel--Cantelli, and
+the Cauchy criterion \cite[Theorem 4.3]{BPW}.
+\end{proof}
+
+\section*{The wPLI Counterexample}
+
+\begin{lemma}
+\label{lem:lac-density}
+$\Lac\subseteq\Id$.
+\end{lemma}
+
+\begin{proof}
+Let $B=\{b_1<b_2<\cdots\}$ with $b_{j+1}-b_j\to\infty$.  Given $q\geq1$,
+all sufficiently late gaps in $B$ are at least $q$.  Hence
+\[
+ |B\cap[1,N]|\leq C_q+\frac{N}{q}
+\]
+for a constant $C_q$.  Its upper asymptotic density is at most $1/q$, and
+therefore is zero.  Finite unions of such ranges also have density zero, as
+do their subsets.  These are exactly the members of $\Lac$.
+\end{proof}
+
+\begin{theorem}[Negative answer to Question 4.6]
+\label{thm:counterexample}
+The wPLI hypothesis does not suffice in Theorem 4.3 of the source paper.  More
+precisely, the ideal $\Lac$ from source Example 3 has wPLI, but there is no
+divergent real series $\sum_nx_n$ satisfying
+\[
+ \lambda(A(\Lac,(x_n)))=1.
+\]
+\end{theorem}
+
+\begin{proof}
+The source proves that $\Lac$ is dense and consequently has wPLI, while its
+Example 3 proves that $\Lac$ does not have PLI.  By
+Lemma~\ref{lem:lac-density}, $\Lac\subseteq\Id$.  If the displayed series
+existed, Theorem~\ref{thm:necessity} would force $\Lac$ to have PLI, a
+contradiction.
+\end{proof}
+
+\section*{Printed-Theorem Erratum}
+
+Theorem 4.3 additionally prints the conclusion $x_n\not\to0$.  The displayed
+construction in its proof actually uses coefficients $\pm2^{-k}$ on the
+$k$th active block, so its coefficients tend to zero.  This is not merely a
+missing observation: Lemma~\ref{lem:null} proves that whenever
+$\cI\subseteq\Id$ and $\lambda(A(\cI,(x_n)))=1$, one necessarily has
+$x_n\to0$.  In particular, the extra printed conclusion is impossible for
+$\cI=\Id$, even though $\Id$ has PLI.  The core measure-one construction used
+in Corollary~\ref{cor:classification} is unaffected.
+
+The same mismatch appears in the source's concluding claim that its constructed
+series has $\sum_nx_n^2=\infty$.  In fact the $k$th active block contributes
+\[
+ 2^{k+1}(2^{-k})^2=2^{1-k},
+\]
+so the sum of squares is finite.  These source issues are logically separate
+from Theorem~\ref{thm:counterexample}, which disproves the intended wPLI
+extension itself.
+
+\section*{Verification and Novelty Check}
+
+The proof is non-computational.  Its only probabilistic input,
+Lemma~\ref{lem:levy}, is included with the standard reflection proof.  The
+two deterministic checks are explicit: every $\Lac$ member has density zero,
+and a divergent ideal-convergent null-term series creates arbitrarily long
+intervals in one exceptional set.
+
+The run indexes were searched for arXiv:1803.03699, ideal-convergent
+subseries, PLI, wPLI, the lacunary ideal, and measure-one Bernoulli subseries;
+no duplicate was found.  A bounded web search on July 19, 2026 used the exact
+question, the exact paper title, the DOI, and the phrases ``weak property of
+long intervals'' and ``property of long intervals.''  Semantic Scholar listed
+six citing records.  The accessible citing sources---including
+\emph{Another characterization of meager ideals}, \emph{Convergent subseries
+of divergent series}, and \emph{Ideal boundedness of subseries and
+rearrangements in Banach spaces vs Banach spaces possessing a copy of
+$c_0$}---cite the source only for adjacent category, summable-ideal, or
+boundedness results; none states or proves an answer to Question 4.6.  No
+later answer was found.  This supports, but cannot certify, novelty.
+
+Human-review recommendation: check first the selection of $(n_j)$ in
+Lemma~\ref{lem:null} and the blockwise application of Levy's inequality.
+Those are the only steps where measure and statistical convergence interact.
+
+\begin{thebibliography}{9}
+
+\bibitem{BPW}
+M. Balcerzak, M. Poplawski, and A. Wachowicz,
+\emph{Ideal convergent subseries in Banach spaces},
+Quaestiones Mathematicae 42 (2019), no. 6, 765--779;
+arXiv:1803.03699.\newline
+DOI: \href{https://doi.org/10.2989/16073606.2018.1497724}
+{10.2989/16073606.2018.1497724}.
+
+\end{thebibliography}
+
+\end{document}

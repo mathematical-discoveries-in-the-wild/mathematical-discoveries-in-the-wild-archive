@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\lap}{\mathcal L_p}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+
+\title{A Heavy-Tail Obstruction to Arbitrary Santaló Gradient-Flow Curves}
+\author{Run fa\_banach\_001, lane 19}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Cordero-Erausquin, Fradelizi, and Langharst ask in Section 5.2 of
+arXiv:2409.05541 whether the time-dependent gradient-flow equation
+\[
+  s'(t)=-\frac{p}{2q}\nabla_z Q(t,s(t))
+\]
+has at least one sufficiently smooth solution on $\R_+$ with
+$\lim_{t\to\infty}s(t)=0$. Here $0<p<1$, $q=p/(p-1)<0$, and
+\[
+  Q(t,z)=\log\int_{\R^n}\lap(\tau_z f_t)(x)\dd x .
+\]
+The source passage is shown in Figure~\ref{fig:open}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[height=.76\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\caption{Open question on Santaló gradient-flow curves, source PDF page 33.}
+\label{fig:open}
+\end{figure}
+
+The previous packet
+\[
+\texttt{solutions/partial/2409.05541\_santalo\_gradient\_flow\_regular\_existence/}
+\]
+proves existence for bounded compactly supported nonzero data under the
+Fokker-Planck flow. The point of this note is complementary: the literal
+arbitrary-nonnegative-function formulation is not true without a domain
+hypothesis on the double Laplace transform.
+
+\section*{Idea of the Counterexample}
+
+If $f$ has two-sided polynomial tails, then positive heat or Fokker-Planck
+time smooths $f$ but does not create nonzero exponential moments. Thus
+\[
+  H_t(\xi)=\int_\R f_t(y)^{1/p}\e^{\xi y}\dd y
+\]
+is infinite for every $\xi\ne0$. Since $q<0$, the $p$-Laplace transform
+$H_t^q$ is then zero almost everywhere. The integral defining $Q$ is zero,
+so $Q=\log0=-\infty$ and the proposed vector field is nowhere defined.
+
+\section*{The Counterexample}
+
+\begin{theorem}
+\label{thm:counterexample}
+Fix $0<p<1$ and $q=p/(p-1)$. In dimension one, let
+\[
+  f(x)=\frac{1}{1+x^2}.
+\]
+Let $f_t$ be either the heat evolution $E_tf$ or the Fokker-Planck evolution
+$P_tf$ at any time $t>0$. Then
+\[
+  \int_\R \lap(\tau_z f_t)(\xi)\dd \xi=0
+\]
+for every $z\in\R$. Consequently
+\[
+  Q(t,z)=\log\int_\R \lap(\tau_z f_t)=-\infty
+\]
+for every $t>0$ and $z\in\R$, and the gradient-flow equation
+\[
+  s'(t)=-\frac{p}{2q}\nabla_zQ(t,s(t))
+\]
+has no sufficiently smooth solution in the usual real-valued sense.
+\end{theorem}
+
+\begin{proof}
+First consider the heat flow
+\[
+  E_tf(y)=(2\pi t)^{-1/2}\int_\R \frac{\e^{-(y-u)^2/(2t)}}{1+u^2}\dd u .
+\]
+For every fixed $t>0$ there are constants $a_t,b_t>0$ such that
+\begin{equation}
+\label{eq:poly-comparable}
+  \frac{a_t}{1+y^2}\le E_tf(y)\le \frac{b_t}{1+y^2},
+  \qquad y\in\R .
+\end{equation}
+For the lower bound, when $y$ is large positive integrate over
+$u\in[y,y+1]$, and when $y$ is large negative integrate over
+$u\in[y-1,y]$; the remaining compact set is absorbed into the constant.
+For the upper bound, use
+\[
+  1+y^2\le 2(1+u^2)(1+(y-u)^2)
+\]
+inside the Gaussian convolution.
+
+It follows from \eqref{eq:poly-comparable} that
+\[
+  E_tf(y)^{1/p}\asymp (1+y^2)^{-1/p}.
+\]
+Since $p<1$, the function $(1+y^2)^{-1/p}$ is integrable, but it has no
+nonzero two-sided exponential moment. Therefore
+\[
+  H_t(\xi):=\int_\R E_tf(y)^{1/p}\e^{\xi y}\dd y
+\]
+is finite and positive at $\xi=0$, and is infinite for every $\xi\ne0$.
+Thus, with $q<0$,
+\[
+  \lap(E_tf)(\xi)=H_t(\xi)^q
+\]
+is zero for every $\xi\ne0$. The value at the single point $\xi=0$ is finite,
+but it has no effect on Lebesgue integration. Using the source convention
+\[
+  \lap(\tau_z g)(\xi)=\lap(g)(\xi)\e^{qz\xi},
+\]
+we obtain
+\[
+  \int_\R \lap(\tau_z E_tf)(\xi)\dd\xi
+  =\int_\R \lap(E_tf)(\xi)\e^{qz\xi}\dd\xi=0
+\]
+for every $z\in\R$.
+
+The Fokker-Planck case is the same after the standard heat/Fokker-Planck
+change of variables used in the source paper:
+\[
+  P_tf(y)=\e^{t/2}E_{\e^t-1}f(\e^{t/2}y).
+\]
+The comparability \eqref{eq:poly-comparable} is preserved under this scaling,
+so the same argument gives
+\[
+  \int_\R \lap(\tau_z P_tf)(\xi)\dd\xi=0
+\]
+for every $t>0$ and $z\in\R$.
+
+Hence, for either semigroup, $Q(t,z)=\log0=-\infty$ everywhere. In particular
+$Q$ is not a finite differentiable function and $\nabla_zQ(t,z)$ is not
+defined. No $C^1$ curve can satisfy the displayed gradient-flow ODE in the
+ordinary sense.
+\end{proof}
+
+\section*{Scope}
+
+This is a counterexample only to the literal all-nonnegative-data reading of
+the source question. It does not contradict the regular positive theorem in
+the companion packet. Instead, it shows that some finite-domain or
+Gaussian-tail type hypothesis is necessary before the gradient-flow question is
+well posed.
+
+\section*{Novelty Check}
+
+The source paper itself discusses heavy-tail examples where $\lap(f)$ vanishes
+away from the origin. The extra observation here is that, for polynomial tails,
+this obstruction persists after every positive heat or Fokker-Planck time.
+Cheap run indexes and a bounded web check on July 19, 2026 found no duplicate
+packet or later exact answer to the Section 5.2 gradient-flow domain question.
+
+\section*{References}
+
+\begin{enumerate}
+\item D. Cordero-Erausquin, M. Fradelizi, and D. Langharst,
+\emph{On a Santaló point for Nakamura-Tsuji's Laplace transform inequality},
+arXiv:2409.05541; Forum of Mathematics, Sigma 13 (2025), e125.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,165 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Gr}{\operatorname{Gr}}
+\newcommand{\PF}{\operatorname{PF}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\conv}{\operatorname{conv}}
+
+\title{A Real Parseval Smooth-Connected Subcase of Full-Spark Genericity}
+\author{Run fa\_banach\_001, lane 18}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+This packet records a likely valid partial result for the closing question in Needham--Shonkwiler, \emph{Toric Symplectic Geometry and Full Spark Frames}, arXiv:2110.11295. The result is new work in this run, but it is deliberately scoped: it handles smooth connected real Parseval prescribed-norm frame spaces, not arbitrary real fixed-spectrum spaces and not quaternionic frame spaces.
+
+\section{Source Question}
+
+Needham--Shonkwiler prove that, for complex frames with prescribed column norms \(r\) and prescribed frame spectrum \(\lambda\), full-spark frames have full measure exactly in the strongly admissible case. In Section 5, after the algebraic proof sketch, they write:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus the extracted target is the real/quaternionic analogue of their complex full-spark genericity theorem. The packet below gives a real Parseval subcase.
+
+\section{Definitions}
+
+For \(r=(r_1,\ldots,r_N)\in(0,1)^N\) with \(\sum_i r_i=d\), set
+\[
+ \PF_d^{\R}(r)
+ =
+ \{F=[f_1|\cdots|f_N]\in\R^{d\times N}: FF^T=I_d,\ \|f_i\|^2=r_i\ \text{for all }i\}.
+\]
+This is the real Parseval prescribed-norm subcase of the frame spaces in arXiv:2110.11295, corresponding to frame operator \(I_d\) and spectrum \((1,\ldots,1)\). A frame \(F\) is \emph{full spark} if every \(d\times d\) column minor is nonzero. Equivalently,
+\[
+ \Delta(F):=\prod_{\substack{I\subset\{1,\ldots,N\}\\ |I|=d}}\det(F_I)
+\]
+is nonzero.
+
+\section{Proof Intuition}
+
+The real obstruction is not existence: for any interior Parseval diagonal \(r\), one can start with any full-spark real \(d\)-plane and scale its coordinates by a positive diagonal matrix until the orthogonal projection onto the scaled plane has diagonal \(r\). The log-sum-exp form of the torus moment map sends the positive diagonal orbit of a full-spark plane onto the interior of the hypersimplex.
+
+Once one full-spark point exists, the only remaining issue is whether the determinant product \(\Delta\) could vanish on a whole component of the real frame space. On a connected smooth real-analytic frame space, this cannot happen: a nonzero real-analytic function has a zero set of measure zero. Hence connected smooth real Parseval spaces inherit full-spark density. Mare's real Schur--Horn connectedness theorems provide concrete nonconstant families where the connectedness hypothesis is known.
+
+\section{The Partial Theorem}
+
+\begin{theorem}[smooth connected real Parseval subcase]\label{thm:smooth-connected}
+Let \(2\le d<N\), and let \(r\in(0,1)^N\) satisfy \(\sum_i r_i=d\). Suppose that \(\PF_d^{\R}(r)\) is a connected smooth real-analytic submanifold of \(\R^{dN}\). Then the full-spark locus
+\[
+ \{F\in\PF_d^{\R}(r): \Delta(F)\ne 0\}
+\]
+is nonempty, open, dense, and has full Hausdorff measure in \(\PF_d^{\R}(r)\).
+\end{theorem}
+
+\begin{proof}
+We first show nonemptiness. Choose a full-spark real \(d\)-plane \(L_0\subset \R^N\); for instance, take the row span of a \(d\times N\) Vandermonde matrix with distinct real nodes. Let \(p_I(L_0)\) be its Pluecker coordinates, all nonzero.
+
+For \(u=(u_1,\ldots,u_N)\in\R^N\), let \(D_u=\diag(e^{u_1},\ldots,e^{u_N})\) and \(L_u=L_0D_u\). The diagonal of the orthogonal projection onto \(L_u\) is the Grassmannian moment map
+\[
+ \mu(u)
+ =
+ \frac{\sum_{|I|=d}|p_I(L_0)|^2 e^{2\sum_{i\in I}u_i} e_I}
+      {\sum_{|I|=d}|p_I(L_0)|^2 e^{2\sum_{i\in I}u_i}},
+\]
+where \(e_I=\sum_{i\in I}e_i\). This map is the gradient of
+\[
+ \Phi(u)=\log\!\left(\sum_{|I|=d}|p_I(L_0)|^2 e^{2\langle u,e_I\rangle}\right),
+\]
+up to the harmless factor \(1/2\). Since the support of the exponential sum is the full vertex set of the hypersimplex
+\[
+ \Delta(d,N)=\conv\{e_I: |I|=d\},
+\]
+the gradient map sends \(\R^N/\R(1,\ldots,1)\) onto the relative interior of \(\Delta(d,N)\). Indeed, after restricting to the hyperplane \(\sum_i u_i=0\), \(\Phi\) is strictly convex modulo constants, and as \(u\) diverges in any direction its gradient approaches the exposed face maximizing that direction; hence the image is precisely the interior of the convex hull of the support.
+
+The assumption \(0<r_i<1\) and \(\sum_i r_i=d\) says exactly that \(r\) lies in the relative interior of \(\Delta(d,N)\). Therefore there is \(u\) with \(\mu(u)=r\). Positive diagonal scaling preserves nonvanishing of all Pluecker coordinates, so \(L_u\) is still full spark. Taking any orthonormal row matrix \(F\) spanning \(L_u\), we get \(F^TF=P_{L_u}\), hence \(FF^T=I_d\), \(\|f_i\|^2=(P_{L_u})_{ii}=r_i\), and \(F\) is full spark. Thus \(\Delta\) is not identically zero on \(\PF_d^{\R}(r)\).
+
+The function \(\Delta\) is a polynomial on \(\R^{dN}\), hence its restriction to the assumed connected smooth real-analytic manifold \(\PF_d^{\R}(r)\) is real analytic. Since it is not identically zero, its zero set has empty interior and Hausdorff measure zero in that manifold by the standard zero-set theorem for nontrivial real-analytic functions. The complement is therefore nonempty, open, dense, and full measure.
+\end{proof}
+
+\section{Concrete Nonconstant Families}
+
+The theorem becomes a verified partial answer whenever known results give connectedness and smoothness. Mare studies the Schur--Horn map
+\[
+\Gr_d(\R^N)\to\R^N,\qquad L\mapsto \diag(P_L),
+\]
+and proves connectivity criteria for its real fibers and for the corresponding prescribed-norm real Parseval frame spaces. The standard fixed-operator frame-variety criterion says that \(\PF_d^{\R}(r)\) is smooth whenever no nonempty proper subset \(J\subset\{1,\ldots,N\}\) has \(\sum_{j\in J}r_j\in\{1,\ldots,d-1\}\); such integer subset sums are the trace obstruction forced by an orthodecomposable singularity.
+
+\begin{corollary}[a paired nonconstant family]\label{cor:paired}
+Let \(N=2p\), \(d=2q\), and \(1\le q\) with \(2q<p\). Choose
+\[
+ \frac{q}{2p-2q}<\beta<\frac{q}{p},
+ \qquad
+ \alpha=1-\frac{p-q}{q}\beta,
+\]
+and set
+\[
+ r=(\underbrace{\alpha,\ldots,\alpha}_{q},
+      \underbrace{\beta,\ldots,\beta}_{p-q},
+      \underbrace{\alpha,\ldots,\alpha}_{q},
+      \underbrace{\beta,\ldots,\beta}_{p-q}).
+\]
+If \(\beta\) is chosen outside the finite exceptional set for which a proper subset sum of the entries of \(r\) is an integer, then full-spark frames have full Hausdorff measure in \(\PF_d^{\R}(r)\).
+\end{corollary}
+
+\begin{proof}
+Mare's paired even-\(N\) criterion in Section 4 applies to this vector: the interval for \(\beta\) is exactly the nonconstant interior of the range in which the corresponding real prescribed-norm Parseval frame space is connected. The displayed finite-exception condition gives smoothness by the fixed-operator frame-variety criterion. The entries of \(r\) lie in \((0,1)\) and sum to \(2q=d\). The conclusion follows from Theorem~\ref{thm:smooth-connected}.
+\end{proof}
+
+\section{Verification and Novelty Notes}
+
+The run indexes were searched for arXiv id 2110.11295 and for the phrases ``full spark'', ``real frame spaces'', ``quaternionic frames'', ``Parseval frames'', and ``Schur--Horn''. No existing packet for this paper or this real full-spark-density subcase was found. Nearby durable memory includes a 2108.02275 packet using Caine--Needham--Shonkwiler 2025 for real Parseval connectedness, but that packet concerns connectedness, not full-spark genericity.
+
+External literature checked during this loop included Needham--Shonkwiler 2022, Cahill--Mixon--Strawn 2017, Mare 2024, and Caine--Needham--Shonkwiler 2025. Cahill--Mixon--Strawn already prove generic full spark for real equal-norm tight frames via irreducibility. Mare and Caine--Needham--Shonkwiler provide real Parseval connectedness tools, but neither was found to state the full-spark-density conclusion for nonconstant prescribed norms. The novelty confidence for the abstract criterion is moderate: it is elementary once the smooth connected hypotheses are isolated, so it may be folklore, but it was not found as a recorded answer to the 2110.11295 closing question.
+
+\section{Limitations}
+
+This does not solve the full real analogue of Needham--Shonkwiler Theorem 1.1. It does not treat non-Parseval prescribed spectra, real spaces that are singular or disconnected, or the measure theory of quaternionic frame spaces. The connectedness and smoothness assumptions are genuine: without them, a determinant polynomial could in principle vanish on an entire component or stratum, so the argument would not prove full-measure genericity.
+
+\section{Human Review Recommendation}
+
+Review the log-sum-exp moment-map surjectivity step and the invocation of the real-analytic zero-set theorem. Then check the cited smoothness criterion for the exact normalization \(FF^T=I_d\). If those pass, the packet should be accepted as a partial real Parseval subcase and not as a full solution of the source question.
+
+\begin{thebibliography}{9}
+\bibitem{NS2022}
+T. Needham and C. Shonkwiler,
+\emph{Toric Symplectic Geometry and Full Spark Frames},
+Applied and Computational Harmonic Analysis 58 (2022), 409--445;
+arXiv:2110.11295.
+
+\bibitem{CMS2017}
+J. Cahill, D. G. Mixon, and N. Strawn,
+\emph{Connectivity and irreducibility of algebraic varieties of finite unit norm tight frames},
+SIAM Journal on Applied Algebra and Geometry 1 (2017), 38--72.
+
+\bibitem{Mare2024}
+A.-L. Mare,
+\emph{Connectivity properties of the Schur-Horn map for real Grassmannians},
+Abhandlungen aus dem Mathematischen Seminar der Universitaet Hamburg 94 (2024), 33--55;
+arXiv:2309.11596.
+
+\bibitem{Strawn2010}
+N. Strawn,
+\emph{Finite frame varieties: nonsingular points, tangent spaces, and explicit local parameterizations},
+Journal of Fourier Analysis and Applications 17 (2011), 821--853.
+
+\bibitem{CNS2025}
+A. Caine, T. Needham, and C. Shonkwiler,
+\emph{Optimization and the Topology of Spaces of Parseval Frames},
+arXiv:2505.14860, 2025.
+\end{thebibliography}
+
+\end{document}

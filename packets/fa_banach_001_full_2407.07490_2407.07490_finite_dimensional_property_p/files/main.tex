@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\SX}{S_X}
+\newcommand{\BX}{B_X}
+\newcommand{\Iso}{\mathrm{Iso}(X)}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Lin}{\mathcal{L}(X)}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{Finite-dimensional Banach spaces satisfy Property (P)}
+\author{fa\_banach\_001, lane 19}
+\date{2026-06-19}
+
+\begin{document}
+\maketitle
+
+\section*{Source question and scope}
+
+This packet concerns arXiv:2407.07490, Debmalya Sain, Arpita Mal, Kalidas
+Mandal and Kallol Paul, \emph{On uniform Bishop-Phelps-Bollobas type
+approximations of linear operators and preservation of geometric properties}.
+The source paper works over the real scalar field and asks in Section 3:
+
+\begin{quote}
+Is it true that each finite-dimensional Banach space \(X\) satisfies Property
+\((P)\)? What about the infinite-dimensional case?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below gives a full affirmative answer to the finite-dimensional
+part.  It does not settle the infinite-dimensional part.
+
+\section*{Definitions}
+
+Let \(X\) be a real Banach space.  For \(A\in \Lin\), set
+\[
+  M_A=\{x\in \SX:\norm{Ax}=\norm{A}\}.
+\]
+The space \(X\) has \emph{Property (P)} if there is an \(r_0>0\) such that for
+every norm-one non-isometry \(A\in \Lin\setminus \Iso\), there is
+\(x_A\in \SX\) with
+\[
+  B(x_A,r_0)\cap M_A=\varnothing .
+\]
+Thus a failure of Property (P) in finite dimension is exactly the existence of
+norm-one non-isometries whose norm-attainment sets are arbitrarily dense in
+\(\SX\).
+
+For \(x\ne 0\), write
+\[
+  J(x)=\{f\in S_{X^*}:f(x)=\norm{x}\}.
+\]
+These are the supporting functionals of the norm at \(x\).
+
+\section*{Proof intuition}
+
+Assume Property (P) fails.  Then there are norm-one non-isometries \(A_n\)
+whose norm-attainment sets are \(1/n\)-dense in the unit sphere.  Such
+operators almost preserve the norm of every unit vector, so finite-dimensional
+compactness forces them close to the isometry group.  After conjugating by a
+nearest isometry, we get contractions
+\[
+  B_n=I+t_n C_n,\qquad t_n=\norm{B_n-I}>0,\qquad C_n\to C .
+\]
+
+The core point is first-order but does not require smoothness.  Fix
+\(x\in \SX\).  Contractivity of \(B_n\) implies \(f(Cx)\le 0\) for every
+supporting functional \(f\in J(x)\).  On the other hand, exact norm attainment
+at points \(y_n\to x\) gives supporting functionals converging to some
+\(g\in J(x)\) with \(g(Cx)\ge 0\).  Hence
+\[
+  \max_{f\in J(x)} f(Cx)=0\qquad(x\in \SX).
+\]
+This says that the right derivative of \(t\mapsto\norm{e^{tC}z}\) is zero at
+every time and for every \(z\ne0\).  Therefore \(e^{tC}\) is an isometry for
+all \(t\ge0\).  But then the isometry \(e^{t_nC}\) is closer to \(B_n\) than
+the chosen nearest isometry, a contradiction.
+
+\section*{Two elementary lemmas}
+
+\begin{lemma}[Directional derivative of the norm]
+Let \(X\) be a finite-dimensional real Banach space.  If \(x\ne0\) and
+\(v\in X\), then
+\[
+  \lim_{t\downarrow0}\frac{\norm{x+tv}-\norm{x}}{t}
+  =\max_{f\in J(x)} f(v).
+\]
+\end{lemma}
+
+\begin{proof}
+For every \(f\in J(x)\),
+\[
+  \norm{x+tv}-\norm{x}\ge f(x+tv)-f(x)=t f(v),
+\]
+so the lower limit is at least \(\max_{f\in J(x)}f(v)\).
+
+For the reverse inequality, choose \(f_t\in J(x+tv)\).  Then
+\[
+  \norm{x+tv}-\norm{x}
+  = f_t(x+tv)-\norm{x}
+  \le f_t(x+tv)-f_t(x)
+  = t f_t(v).
+\]
+Along any sequence \(t_k\downarrow0\), compactness of \(S_{X^*}\) gives a
+subsequence \(f_{t_k}\to f\).  Since \(x+t_kv\to x\), the limit satisfies
+\(f\in J(x)\).  Taking upper limits gives the desired inequality.
+\end{proof}
+
+\begin{lemma}[Zero right derivative]
+Let \(h:[0,T]\to\R\) be continuous and suppose the right derivative
+\[
+  h'_+(s)=\lim_{t\downarrow0}\frac{h(s+t)-h(s)}{t}
+\]
+exists and is zero for every \(0\le s<T\).  Then \(h\) is constant.
+\end{lemma}
+
+\begin{proof}
+Fix \(\varepsilon>0\).  For each \(s<T\), the assumption \(h'_+(s)=0\) gives a
+\(\delta_s>0\) such that
+\[
+  |h(s+u)-h(s)|\le \varepsilon u
+\]
+whenever \(0<u<\delta_s\) and \(s+u\le T\).  Let
+\[
+  E=\{r\in[0,T]: |h(t)-h(0)|\le \varepsilon t
+      \text{ for every }0\le t\le r\}.
+\]
+The set \(E\) is nonempty and closed by continuity of \(h\).  If
+\(a=\sup E<T\), then \(a\in E\), and the estimate at \(s=a\) extends the same
+inequality to all \(t\in[a,a+\delta_a)\), contradicting the definition of
+\(a\).  Hence \(T\in E\), so \(|h(T)-h(0)|\le\varepsilon T\).  Since
+\(\varepsilon\) is arbitrary, \(h(T)=h(0)\).  Applying the same argument on
+every subinterval \([a,b]\subset[0,T]\) shows that \(h\) is constant.
+\end{proof}
+
+\section*{Main theorem}
+
+\begin{theorem}
+Every finite-dimensional real Banach space satisfies Property \((P)\).
+\end{theorem}
+
+\begin{proof}
+Let \(X\) be finite-dimensional, and denote by \(G=\Iso\) the group of
+surjective linear isometries of \(X\).  The group \(G\) is compact in \(\Lin\).
+
+Assume, toward a contradiction, that \(X\) fails Property \((P)\).  Then for
+each \(n\) there exists a norm-one non-isometry \(A_n\in \Lin\) such that
+\(M_{A_n}\) is \(1/n\)-dense in \(\SX\).
+
+First, \(\dist(A_n,G)\to0\).  Indeed, for every fixed \(x\in \SX\), choose
+\(y_n\in M_{A_n}\) with \(\norm{x-y_n}\le1/n\).  Since \(\norm{A_n}=1\),
+\[
+  1\ge \norm{A_nx}
+    \ge \norm{A_ny_n}-\norm{A_n}\norm{x-y_n}
+    \ge 1-\frac1n .
+\]
+Thus any operator-norm cluster point \(A\) of the sequence \(A_n\) satisfies
+\(\norm{Ax}=1\) for every \(x\in \SX\).  Hence \(A\) is a surjective linear
+isometry, so \(A\in G\).  This proves \(\dist(A_n,G)\to0\).
+
+For each \(n\), choose \(U_n\in G\) with
+\(\norm{A_n-U_n}=\dist(A_n,G)\), and put
+\[
+  B_n=U_n^{-1}A_n .
+\]
+Then \(B_n\) is still a norm-one non-isometry, \(M_{B_n}=M_{A_n}\), and
+\[
+  \dist(B_n,G)=\norm{B_n-I}.
+\]
+The equality follows because left multiplication by \(U_n^{-1}\) is an
+operator-norm isometry and maps \(G\) onto \(G\).
+
+Set
+\[
+  t_n=\norm{B_n-I}>0,\qquad C_n=\frac{B_n-I}{t_n}.
+\]
+Passing to a subsequence, \(C_n\to C\) in \(\Lin\), with \(\norm{C}=1\).
+
+We claim that for every \(x\in \SX\),
+\[
+  \max_{f\in J(x)} f(Cx)=0. \tag{1}
+\]
+Fix \(x\in\SX\).  Let \(f\in J(x)\).  Since \(\norm{B_n}\le1\),
+\[
+  f(B_nx)\le \norm{B_nx}\le1=f(x).
+\]
+As \(B_nx=x+t_nC_nx\), this gives \(f(C_nx)\le0\).  Letting \(n\to\infty\),
+\[
+  f(Cx)\le0\qquad(f\in J(x)). \tag{2}
+\]
+
+For the opposite inequality, choose \(y_n\in M_{B_n}\) with
+\(\norm{y_n-x}\le1/n\).  Pick \(g_n\in J(B_ny_n)\).  Since
+\(\norm{B_ny_n}=1\),
+\[
+  1=g_n(B_ny_n)=g_n(y_n)+t_n g_n(C_ny_n).
+\]
+Also \(g_n(y_n)\le\norm{y_n}=1\), so \(g_n(C_ny_n)\ge0\).  After passing to a
+subsequence, \(g_n\to g\in S_{X^*}\).  Because \(B_ny_n\to x\) and
+\(g_n(B_ny_n)=1\), we have \(g(x)=1\), hence \(g\in J(x)\).  Taking limits
+gives \(g(Cx)\ge0\).  Together with (2), this proves (1).
+
+Now fix \(z\ne0\) and define
+\[
+  h_z(s)=\norm{e^{sC}z}\qquad(s\ge0).
+\]
+The vector \(e^{sC}z\) is never zero.  By the directional derivative lemma,
+\[
+  (h_z)'_+(s)
+  =\max_{f\in J(e^{sC}z)} f(Ce^{sC}z).
+\]
+Writing \(e^{sC}z=\alpha x\) with \(\alpha>0\) and \(x\in\SX\), the right side
+equals
+\[
+  \alpha\max_{f\in J(x)}f(Cx)=0
+\]
+by (1).  The zero right-derivative lemma therefore gives
+\[
+  \norm{e^{sC}z}=\norm{z}\qquad(z\in X,\ s\ge0).
+\]
+So \(e^{sC}\in G\) for every \(s\ge0\).
+
+Finally, since \(e^{t_nC}\in G\),
+\[
+  t_n=\dist(B_n,G)\le \norm{B_n-e^{t_nC}}.
+\]
+But \(B_n=I+t_nC_n\), \(C_n\to C\), and
+\[
+  e^{t_nC}=I+t_nC+O(t_n^2),
+\]
+so
+\[
+  \norm{B_n-e^{t_nC}}
+  \le t_n\norm{C_n-C}+O(t_n^2)=o(t_n).
+\]
+This contradicts \(t_n>0\).  Therefore \(X\) satisfies Property \((P)\).
+\end{proof}
+
+\section*{Scope and limitations}
+
+This proves the finite-dimensional half of the source question.  The
+infinite-dimensional case remains open here: the proof uses compactness of the
+operator unit ball to obtain \(A_n\to G\), compactness of \(G\) to choose
+nearest isometries, and compactness of \(S_{X^*}\) to pass to limiting
+supporting functionals.
+
+The source paper assumes real scalars throughout.  A complex version should
+follow after passing to the underlying real Banach space and interpreting
+supporting functionals as real supporting functionals, but that is not needed
+for the stated source question and is not claimed here.
+
+\section*{Verification notes}
+
+\begin{itemize}
+\item The source paper already proves the polyhedral case and special
+  \(\ell_p^2\) cases.  This proof handles arbitrary finite-dimensional real
+  norms, including nonsmooth nonpolyhedral norms.
+\item The previous smooth finite-dimensional packet is preserved in the
+  history folder; the present proof removes the smoothness
+  hypothesis by using all supporting functionals.
+\item The only convex-analysis input is the standard formula for the one-sided
+  directional derivative of a finite-dimensional norm.
+\item The nearest-isometry normalization is essential.  It turns the limiting
+  first-order object into an infinitesimal isometry and then contradicts the
+  minimality identity \(\dist(B_n,G)=\norm{B_n-I}\).
+\item Bounded novelty checks were run against the local run indexes for
+  arXiv:2407.07490, Property (P), uniform BPB/Bishop-Phelps-Bollobas keywords,
+  and close phrases.  A web search on 2026-06-19 for exact and near-exact
+  phrases did not reveal a later answer.
+\end{itemize}
+
+\section*{Human review recommendation}
+
+Review as a likely valid full solution to the finite-dimensional part of the
+source question.  The main audit points are the subdifferential claim (1), the
+right-derivative argument for \(e^{sC}\), and the nearest-isometry
+normalization.  These are all local, finite-dimensional steps.
+
+\section*{Reference}
+
+D. Sain, A. Mal, K. Mandal and K. Paul, \emph{On uniform
+Bishop-Phelps-Bollobas type approximations of linear operators and preservation
+of geometric properties}, arXiv:2407.07490.
+
+\end{document}

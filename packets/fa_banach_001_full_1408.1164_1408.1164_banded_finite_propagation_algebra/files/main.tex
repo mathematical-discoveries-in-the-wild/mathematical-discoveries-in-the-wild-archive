@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\N}{\mathbb N}
+
+\title{The Fixed-ONB Banded Operator Algebra}
+\author{FA/Banach run packet for arXiv:1408.1164}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a likely valid full answer to the second open question in
+Remark 1.92 of Jorgensen--Tian~\cite{JT}.  It does not address the first,
+intrinsic-geometric question about which operators admit some banding
+orthonormal basis.
+
+\section*{Source Question}
+
+The source asks, after fixing an orthonormal basis $(e_i)_{i\in\N}$ and
+\[
+  \cD=\operatorname{span}\{e_i:i\in\N\},
+\]
+what the $*$-algebra is of unbounded operators with dense domain $\cD$ whose
+matrices are banded with respect to $(e_i)$.
+
+The question appears in Remark 1.92, PDF pages 73--74.  The source crops are
+included below.
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{figures/open_problem_crop_2.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+Once the orthonormal basis and common core are fixed, there is no hidden
+operator-theoretic obstruction.  A banded matrix has finite propagation along
+the index set.  Finite propagation is preserved by conjugate transpose, and
+propagation constants add under multiplication.  Therefore the maximal
+common-core $*$-algebra is exactly the algebra of all finite-propagation
+matrices on $\cD$; any smaller answer is merely a $*$-subalgebra of it.
+
+\section*{The Result}
+
+Let $\cH$ be a separable Hilbert space with fixed orthonormal basis
+$(e_i)_{i\in\N}$, and set $\cD=\operatorname{span}\{e_i:i\in\N\}$.
+For a linear operator $A:\cD\to\cD$, write
+\[
+  a_{ij}=\langle e_i,Ae_j\rangle .
+\]
+Say that $A$ has bandwidth at most $r$ if $a_{ij}=0$ whenever
+$|i-j|>r$.
+
+\begin{theorem}
+The maximal common-domain $*$-algebra of operators on $\cD$ whose matrices are
+banded with respect to $(e_i)$ is
+\[
+  \cA_{\mathrm{band}}(\cD)
+  =
+  \bigcup_{r\geq 0}
+  \{A:\cD\to\cD:\langle e_i,Ae_j\rangle=0\ \text{whenever } |i-j|>r\}.
+\]
+The involution is the Hilbert-space adjoint restricted to $\cD$, equivalently
+conjugate transpose of the matrix.  Moreover, if $\mathfrak A$ is any
+common-domain $*$-algebra on $\cD$ all of whose elements are banded with
+respect to $(e_i)$, then $\mathfrak A\subseteq \cA_{\mathrm{band}}(\cD)$.
+\end{theorem}
+
+\begin{proof}
+First let $A\in\cA_{\mathrm{band}}(\cD)$ have bandwidth at most $r$.  For
+each basis vector $e_j$, the vector $Ae_j$ is a finite linear combination of
+$e_i$ with $|i-j|\leq r$.  Hence $A$ maps $\cD$ into $\cD$ and is densely
+defined.
+
+For fixed $i$, the functional $x\mapsto \langle e_i,Ax\rangle$ on $\cD$ is
+represented by the finite vector
+\[
+  \sum_{|j-i|\leq r}\overline{a_{ij}}\,e_j .
+\]
+Thus $e_i\in\operatorname{dom}(A^*)$ for every $i$, so
+$\cD\subseteq\operatorname{dom}(A^*)$, and the restricted adjoint
+$A^\dagger:=A^*|_{\cD}$ maps $\cD$ into itself.  Its matrix is
+$a^\dagger_{ij}=\overline{a_{ji}}$, so it also has bandwidth at most $r$.
+
+If $A$ and $B$ have bandwidths at most $r$ and $s$, respectively, then
+$A+B$ has bandwidth at most $\max\{r,s\}$.  For the product, the matrix entry
+of $AB$ is
+\[
+  (AB)_{ij}=\sum_{k\in\N} a_{ik}b_{kj}.
+\]
+The sum is finite, since both matrices are banded.  If $|i-j|>r+s$, then no
+index $k$ can satisfy both $|i-k|\leq r$ and $|k-j|\leq s$, so every summand
+vanishes.  Therefore $AB$ has bandwidth at most $r+s$.  Scalars and the
+identity are immediate, and $\cA_{\mathrm{band}}(\cD)$ is a unital
+common-core $*$-algebra.
+
+Finally, suppose $\mathfrak A$ is any $*$-algebra of operators with common
+domain $\cD$ such that every element is banded with respect to $(e_i)$.  By
+the definition of bandedness, each $A\in\mathfrak A$ has some finite bandwidth,
+and therefore $A\in\cA_{\mathrm{band}}(\cD)$.  Hence
+$\mathfrak A\subseteq\cA_{\mathrm{band}}(\cD)$.  This proves maximality and
+also explains the mild ambiguity in the source wording: without the maximality
+convention, every $*$-subalgebra of $\cA_{\mathrm{band}}(\cD)$ is also an
+answer.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is purely algebraic.  The included script
+\texttt{code/verify\_bandwidth\_arithmetic.py} checks the bandwidth arithmetic
+on finite truncations: adjoints preserve bandwidth and products have bandwidth
+bounded by the sum of bandwidths.  This sanity check is not used as evidence
+for the proof, but it is a useful guard against an indexing mistake.
+
+Local novelty checks were made against the run indexes for arXiv:1408.1164 and
+for phrases including \texttt{banded operator}, \texttt{finite propagation},
+\texttt{finite band}, \texttt{band-dominated}, and \texttt{common domain}.  No
+exact local duplicate was found.  A web search on 2026-07-03 found adjacent
+band-dominated-operator literature, but no exact local packet for this
+fixed-ONB common-core algebra question.  Since the answer is elementary, it
+should be regarded as likely folklore even though it resolves the literal
+question as stated.
+
+\section*{Scope}
+
+This packet answers only Remark 1.92, Question 2, after fixing the ONB and the
+common dense core $\cD$.  It does not give an intrinsic geometric
+characterization of all densely defined operators which admit some banding ONB,
+which is the first source question.
+
+\begin{thebibliography}{9}
+\bibitem{JT}
+Palle Jorgensen and Feng Tian,
+\emph{Noncommutative analysis, Multivariable spectral theory for operators in
+Hilbert space, Probability, and Unitary Representations},
+arXiv:1408.1164.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,328 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\cube}{\{0,1\}^n}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\wh}{\widehat}
+\newcommand{\symdiff}{\mathbin{\triangle}}
+
+\title{A Fourier-Positive Even-Exponent Subcase\\
+of the Reverse Bernstein Problem on the Hypercube}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}\\
+Lane 8 (\texttt{agent\_lane\_08}), model GPT5.6}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate partial result, likely valid.}
+The general scalar reverse Bernstein problem for arbitrary Fourier signs and arbitrary
+$p\in(1,\infty)\setminus\{2\}$ remains open.  This packet proves the sharp estimate
+for every even exponent when all Walsh coefficients can be made nonnegative by a
+translation of the cube.
+}}
+\end{center}
+
+\section{Source and original problem}
+
+The source is P. Ivanisvili, R. Vershynin, and X. Xie,
+\emph{Jackson's inequality on the hypercube}, arXiv:2410.19949v1
+\cite{IVX}.  The problem appears in Section 1.3, page 3 of the arXiv PDF
+(source file \texttt{source.tex}, line 314).  In the source normalization,
+\[
+  \Delta f(x)=\sum_{j=1}^n\bigl(f(x)-f(x^j)\bigr),
+\]
+where $x^j$ is obtained by flipping coordinate $j$.  Thus
+$\Delta W_S=2|S|W_S$ for the Walsh character
+\[
+  W_S(x)=(-1)^{\sum_{j\in S}x_j}.
+\]
+The tail space $L^p_{\ge d}$ consists of the functions whose Walsh coefficients
+vanish on all levels $|S|<d$.
+
+The source states that, for $p\in(1,\infty)$, the reverse Bernstein estimate
+\begin{equation}\label{eq:open}
+  \|f\|_p \leq \frac{C_p}{d}\|\Delta f\|_p,
+  \qquad f\in L^p_{\ge d},
+\end{equation}
+remains a major open problem.  The case $p=2$ is immediate from Parseval, with
+$C_2=1/2$, so the substantive open range is $p\ne2$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Full-width crop of Section 1.3 on page 3 of the source paper.}
+\end{figure}
+
+\section{Definitions and scope of the partial result}
+
+For $y\in\cube$, let $\tau_y f(x)=f(x\oplus y)$, where $\oplus$ denotes
+coordinatewise addition modulo two.  Since
+\[
+  \wh{\tau_y f}(S)=W_S(y)\wh f(S),
+\]
+we make the following definition.
+
+\medskip
+\noindent
+\textbf{Fourier-positive up to translation.}
+A real-valued $f:\cube\to\mathbb R$ has this property if there is a
+$y\in\cube$ such that
+\[
+  W_S(y)\wh f(S)\ge0
+  \qquad\text{for every }S\subseteq[n].
+\]
+Equivalently, one translate of $f$ has nonnegative Walsh coefficients.
+
+This is a genuine sign restriction.  It is preserved by multiplying $f$ by a
+positive scalar and includes single Walsh characters after a translation and
+choice of positive coefficient.  It does not include general tail functions.
+
+\section{Idea of the proof}
+
+For an even exponent $p=2m$, both $\|f\|_p^p$ and the dual pairing
+$\E[f^{p-1}\Delta f]$ can be expanded as sums over $2m$ Walsh frequencies whose
+symmetric difference is empty.  When the Walsh coefficients are nonnegative,
+every summand is nonnegative.  Symmetry among the $2m$ frequencies lets us replace
+the Laplacian weight on the last frequency by the average of all $2m$ weights.
+Every active frequency has size at least $d$, so that average is at least $2d$
+in the source normalization.  Holder's inequality then converts the pairing
+estimate into the desired norm estimate.  A single level-$d$ character shows
+that the constant $2d$ is sharp.
+
+The positivity is precisely what prevents cancellations in the multilinear
+Walsh expansion.  Removing it is the unresolved obstacle; the argument does not
+claim progress for arbitrary Fourier signs.
+
+\section{The partial theorem}
+
+\begin{theorem}[Sharp Fourier-positive even-$p$ reverse Bernstein estimate]
+\label{thm:main}
+Let $n,d,m\in\mathbb N$ with $1\le d\le n$, and put $p=2m$.
+Suppose that $f:\cube\to\mathbb R$ satisfies
+\[
+  \wh f(S)=0\quad\text{when }|S|<d
+\]
+and is Fourier-positive up to translation.  Then
+\begin{equation}\label{eq:main}
+  \|\Delta f\|_{p}\ge 2d\,\|f\|_{p}.
+\end{equation}
+The factor $2d$ is optimal for every even $p$.
+\end{theorem}
+
+\begin{proof}
+Translations commute with $\Delta$ and preserve every $L^p$ norm.  We may
+therefore translate $f$ and assume that
+\[
+  a_S:=\wh f(S)\ge0
+  \qquad\text{for every }S\subseteq[n].
+\]
+The tail hypothesis says that $a_S=0$ whenever $|S|<d$.
+
+Write $p=2m$.  Orthogonality of Walsh characters gives
+\begin{equation}\label{eq:moment}
+  \E f^{2m}
+  =
+  \sum_{S_1\symdiff\cdots\symdiff S_{2m}=\varnothing}
+  \prod_{j=1}^{2m} a_{S_j}.
+\end{equation}
+Indeed, the expectation of $W_{S_1}\cdots W_{S_{2m}}$ is one exactly when
+$S_1\symdiff\cdots\symdiff S_{2m}=\varnothing$, and is zero otherwise.
+
+Since $\Delta W_S=2|S|W_S$, the same expansion yields
+\begin{align}
+  \E\bigl[f^{2m-1}\Delta f\bigr]
+  &=
+  \sum_{S_1\symdiff\cdots\symdiff S_{2m}=\varnothing}
+  2|S_{2m}|\prod_{j=1}^{2m} a_{S_j}. \label{eq:weighted}
+\end{align}
+The indexing condition and the coefficient product are symmetric in
+$S_1,\ldots,S_{2m}$.  Consequently, the value of the sum in
+\eqref{eq:weighted} is unchanged if $|S_{2m}|$ is replaced by $|S_r|$ for
+any $r$, and hence
+\begin{align}
+  \E\bigl[f^{2m-1}\Delta f\bigr]
+  &=\frac{1}{2m}
+  \sum_{S_1\symdiff\cdots\symdiff S_{2m}=\varnothing}
+  2\Bigl(\sum_{j=1}^{2m}|S_j|\Bigr)
+  \prod_{j=1}^{2m}a_{S_j}. \label{eq:symmetrized}
+\end{align}
+Every product in \eqref{eq:symmetrized} is nonnegative.  If it is nonzero,
+then $a_{S_j}>0$ for every $j$, so the tail hypothesis gives $|S_j|\ge d$
+for every $j$.  Therefore
+\[
+  \frac{2}{2m}\sum_{j=1}^{2m}|S_j|\ge 2d
+\]
+term by term.  Comparing \eqref{eq:symmetrized} with \eqref{eq:moment},
+we obtain
+\begin{equation}\label{eq:pairing}
+  \E\bigl[f^{p-1}\Delta f\bigr]
+  \ge 2d\,\E f^p
+  =2d\,\|f\|_p^p,
+\end{equation}
+where the last equality uses that $p$ is even.
+
+Holder's inequality and \eqref{eq:pairing} now imply
+\[
+  2d\,\|f\|_p^p
+  \le \E\bigl[f^{p-1}\Delta f\bigr]
+  \le \|f^{p-1}\|_{p/(p-1)}\|\Delta f\|_p
+  =\|f\|_p^{p-1}\|\Delta f\|_p.
+\]
+If $f\ne0$, division by $\|f\|_p^{p-1}$ proves \eqref{eq:main}; the zero
+case is trivial.
+
+Finally, take $f=W_S$ with $|S|=d$.  Then $|f|=1$ and
+$\Delta f=2d f$, so equality holds in \eqref{eq:main}.  This proves
+sharpness.
+\end{proof}
+
+\begin{remark}[Alternative Laplacian normalization]
+Some cited papers use $L=\Delta/2$, so that $LW_S=|S|W_S$.  In that
+normalization Theorem \ref{thm:main} reads $\|Lf\|_p\ge d\|f\|_p$.
+\end{remark}
+
+\section{Adversarial verification}
+
+\subsection*{Step check}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.52\textwidth}@{}}
+\toprule
+Step & Verdict & Check \\
+\midrule
+Translation reduction & Valid & $\tau_y$ is a cube automorphism, commutes with $\Delta$, preserves the uniform measure, and changes coefficient signs by $W_S(y)$. \\
+Walsh moment expansion & Valid & The product of characters is the character indexed by the symmetric difference; its mean is zero unless that index is empty. \\
+Termwise positivity & Valid & This is exactly where nonnegative translated Fourier coefficients are used.  Zero coefficients cause no difficulty. \\
+Symmetrization of weights & Valid & The constraint and coefficient product are invariant under all permutations of the $2m$ frequency indices. \\
+Tail lower bound & Valid & A nonzero product forces all $2m$ participating coefficients to be nonzero, hence all frequency sizes are at least $d$. \\
+Holder and sharpness & Valid & The dual exponent is $p/(p-1)$, and a single level-$d$ character gives equality. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Finite checks}
+
+The reusable script
+\texttt{code/verify\_fourier\_positive\_even\_p.py} generated independent
+exponential nonnegative coefficients for every $2\le n\le6$, every
+$1\le d\le n$, and $p\in\{4,6,8\}$.  Ten trials per parameter triple gave
+600 checks and no violation.  The smallest reported slack in
+$\|\Delta f\|_p/\|f\|_p-2d$ was $-1.78\times10^{-15}$, numerical roundoff at
+the equality case $d=n$.  The command was
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_fourier_positive_even_p.py --max-n 6 --trials 10
+\end{verbatim}
+These checks are not used in the proof.
+
+The separate script \texttt{code/finite\_tail\_inverse\_probe.py} performs a
+nonconvex numerical search without the sign restriction.  For $n\le6$ and
+$d$ near $n/2$, probes at $p=1.5$ and $p=4$ kept
+$d\|\Delta^{-1}\|$ near $0.51$--$0.55$, compared with the exact Hilbert value
+$1/2$.  This found no small counterexample to the full conjecture, but it
+cannot certify an operator norm or prove the conjecture.
+
+\subsection*{Verifier verdict}
+
+\textbf{Likely valid partial result.}  The proof is finite, algebraic, and has
+no external mathematical dependency beyond elementary Walsh orthogonality and
+Holder's inequality.  Human review should focus on the permutation averaging
+in \eqref{eq:symmetrized} and the factor two coming from the source paper's
+definition of $\Delta$.
+
+\section{Failed full-solution routes and remaining obstruction}
+
+Three broader routes were tested before isolating Theorem \ref{thm:main}.
+\begin{enumerate}[leftmargin=*,itemsep=0.4em]
+  \item Integrating the best known pure-$L^p$ heat-smoothing estimate gives only
+  a power $d^{-\alpha_p}$ with $\alpha_p<1$ for $p\ne2$, not $d^{-1}$.
+  \item The nonlinear $L^p$ Poincare pairing controls mean-zero functions but
+  does not see the tail depth $d$; inserting it loses the required factor.
+  \item A tensor-product construction does not immediately yield a
+  counterexample because the tilted mean of the block logarithmic Laplacian is
+  positive.  Making that mean small is essentially another form of the open
+  inequality.
+\end{enumerate}
+
+For arbitrary Fourier signs, the sums in \eqref{eq:moment} and
+\eqref{eq:weighted} contain cancellations.  The weighted sum need not dominate
+the unweighted moment term by term.  No argument in this packet controls those
+cancellations, and no claim is made for non-even $p$.
+
+\section{Novelty and literature-status check}
+
+The bounded check was performed on 19 July 2026 after the direct proof attempt.
+It covered the run's four lightweight indexes, the 35,297-paper local
+source-probed corpus, exact-phrase searches for ``reverse Bernstein'' and
+``tail space'', searches for the heat-smoothing conjecture, and searches for
+the combinations ``nonnegative Fourier coefficients'', ``Fourier-positive'',
+``Hamming cube'', and ``Laplacian''.  The close papers found were:
+\begin{itemize}[leftmargin=*]
+  \item Eskenazis--Ivanisvili \cite{EI}, which proves sublinear-exponent bounds
+  in general and a sharp-order result for narrow spectra;
+  \item later work on complex hypercontractivity and the heat-smoothing
+  exponent, including arXiv:1907.11359;
+  \item Domelevo et al. \cite{DDF}, which proves linear heat decay with mixed
+  $L^2$ and neighboring-$L^p$ norms, not the pure estimate \eqref{eq:open}.
+\end{itemize}
+No exact match for Theorem \ref{thm:main} was found.  This bounded search does
+not establish novelty, so novelty confidence is \emph{moderate}.  The theorem
+should be treated as a candidate new partial result until a specialist checks
+the Fourier-analytic literature.
+
+\section{Limitations and human-review recommendation}
+
+Theorem \ref{thm:main} settles an infinite, sharp subcase of the scalar
+question, but it does not settle the general problem.  Its two restrictions
+are substantial:
+\begin{itemize}[leftmargin=*]
+  \item $p$ must be an even positive integer;
+  \item after a cube translation, all Walsh coefficients must be nonnegative.
+\end{itemize}
+The recommended human action is to verify the four-line multilinear expansion
+and then assess whether the positivity mechanism is known under a different
+name (for example, positive-definite functions on the Boolean group).  A
+secondary research direction is to replace coefficientwise positivity by a
+weaker $2m$-fold signed-energy condition that still makes
+\eqref{eq:symmetrized} coercive.
+
+\enlargethispage{4\baselineskip}
+\small
+\begin{thebibliography}{9}
+
+\bibitem{IVX}
+P. Ivanisvili, R. Vershynin, and X. Xie,
+\emph{Jackson's inequality on the hypercube},
+arXiv:2410.19949v1, 2024.
+
+\bibitem{EI}
+A. Eskenazis and P. Ivanisvili,
+\emph{Polynomial inequalities on the Hamming cube},
+Probability Theory and Related Fields 178 (2020), 235--287;
+arXiv:1902.02406.
+
+\bibitem{DDF}
+K. Domelevo, P. Durcik, V. Fragkiadaki, O. Klein,
+D. Oliveira e Silva, L. Slavikova, and B. Wrobel,
+\emph{Dimension-free estimates for low degree functions on the Hamming cube},
+Studia Mathematica 280 (2025), no. 2, 161--176;
+arXiv:2401.07699.
+
+\end{thebibliography}
+
+\end{document}

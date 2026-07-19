@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\cspan}{\overline{\operatorname{span}}}
+\newcommand{\ellone}{\ell^{1}}
+\newcommand{\ellinf}{\ell^{\infty}}
+
+\title{An Unbounded Diagonal Semigroup on the Bourgain--Delbaen Space\\
+and the Dual of Its Sun Dual}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Candidate full solution,
+likely valid, subject to expert review.  The construction has an unbounded
+generator and therefore meets the strongest natural interpretation of
+``non-trivial'' in the source question.}}
+\end{center}
+
+\section*{Source and Extracted Question}
+
+The source is Philip Preussler and Felix L. Schwenninger,
+\emph{Implications of structured continuous maximal regularity},
+arXiv:2605.12121v1 \cite{preussler-schwenninger}.  In Remark 4.15(2), page 24,
+the authors consider the classical Bourgain--Delbaen space \(Y\), which
+satisfies
+\[
+  Y\not\supset c_0,
+  \qquad Y'\simeq \ellone,
+  \qquad Y''\simeq \ellinf\supset c_0,
+\]
+and ask whether there exists a non-trivial \(C_0\)-semigroup on \(Y\) such
+that
+\[
+  (Y^\odot)'\supset c_0.
+\]
+Here \(Y^\odot\) is the sun dual associated with the semigroup.  The source
+immediately discusses the possibility that \(Y\) has the Lotz property, i.e.
+that every \(C_0\)-semigroup on \(Y\) has bounded generator.  Thus the strongest
+and mathematically substantive reading of ``non-trivial'' is ``having
+unbounded generator.''  The construction below has that property.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+Let \(X\) be a Banach space and \(T=(T(t))_{t\geq0}\) a \(C_0\)-semigroup on
+\(X\).  Its \emph{sun dual} is
+\[
+ X^\odot
+ =\left\{x'\in X':\lim_{t\downarrow0}\|T(t)'x'-x'\|=0\right\}.
+\]
+It is a norm-closed \(T(t)'\)-invariant subspace of \(X'\).
+
+If \((x_n)\) is a Schauder basis, write \(x_n'\) for its biorthogonal
+functionals and
+\[
+ P_Nx=\sum_{n=1}^N x_n'(x)x_n,
+ \qquad K=\sup_N\|P_N\|<\infty.
+\]
+
+\section*{Proof Intuition}
+
+There are two independent mechanisms.  First, any Schauder basis supports a
+bounded diagonal heat-type semigroup: multiply its \(n\)-th basis vector by
+\(e^{-nt}\).  Monotonicity of these scalars lets Abel summation control the
+operator norm even when the basis is conditional.  The eigenvalues \(-n\)
+force the generator to be unbounded.
+
+Second, every coordinate functional is an eigenvector of the adjoint
+semigroup and hence belongs to the sun dual.  Thus the sun dual is an
+infinite-dimensional subspace of \(Y'\simeq\ellone\).  A gliding-hump
+argument shows that every such subspace contains a complemented copy of
+\(\ellone\).  Dualizing that complemented summand puts a complemented copy of
+\(\ellinf\), and therefore \(c_0\), inside \((Y^\odot)'\).
+
+The proof never requires the Bourgain--Delbaen basis to be unconditional or
+shrinking.
+
+\section*{A Complemented \(\ellone\) Lemma}
+
+We include the classical structural fact needed in the proof so that the only
+external dependency is the identification of the Bourgain--Delbaen space.
+
+\begin{lemma}[Complemented \(\ellone\)-saturation]
+\label{lem:l1}
+Every infinite-dimensional closed subspace \(E\) of \(\ellone\) contains a
+closed subspace \(W\simeq\ellone\) that is complemented in \(E\).  In fact,
+\(W\) may be chosen complemented in the ambient \(\ellone\).
+\end{lemma}
+
+\begin{proof}
+Let \(R_N:\ellone\to\ellone\) be truncation to the first \(N\) coordinates.
+Choose positive numbers \((\varepsilon_k)\) with
+\(\delta:=2\sum_k\varepsilon_k<1\).  Inductively choose integers
+\(0=N_0<N_1<N_2<\cdots\) and unit vectors \(z_k\in E\) such that
+\[
+ R_{N_{k-1}}z_k=0,
+ \qquad
+ \|(\Id-R_{N_k})z_k\|_1<\varepsilon_k.
+\]
+This is possible because \(R_{N_{k-1}}|_E\) has finite rank, so its kernel in
+\(E\) is infinite-dimensional, and every vector of \(\ellone\) has small
+tails.
+
+Put
+\[
+ u_k=(R_{N_k}-R_{N_{k-1}})z_k,
+ \qquad v_k=\frac{u_k}{\|u_k\|_1}.
+\]
+The vectors \(v_k\) have pairwise disjoint supports and norm one, and
+\[
+ \|z_k-v_k\|_1
+ \leq \|z_k-u_k\|_1+|1-\|u_k\|_1|
+ <2\varepsilon_k.
+\]
+Define \(U:\ellone\to\ellone\) by
+\(U(a)=\sum_k a_kv_k\).  Disjointness gives \(\|U(a)\|_1=\|a\|_1\).
+For every \(k\), choose a norm-one functional \(\phi_k\) supported on the
+support of \(v_k\) and satisfying \(\phi_k(v_k)=1\).  Then
+\[
+ P x=\sum_k\phi_k(x)v_k
+\]
+defines a contractive projection of \(\ellone\) onto
+\(V:=U(\ellone)\).
+
+Define \(S:\ellone\to\ellone\) by \(S(a)=\sum_k a_kz_k\).  The preceding
+estimate gives
+\[
+ \|S-U\|\leq\sum_k\|z_k-v_k\|_1<\delta<1.
+\]
+Consequently \(S\) is an isomorphic embedding.  Moreover
+\[
+ B:=U^{-1}PS:\ellone\to\ellone
+\]
+satisfies \(\|B-\Id\|<1\), and hence is invertible.  The operator
+\[
+ Q:=SB^{-1}U^{-1}P:\ellone\longrightarrow S(\ellone)
+\]
+is bounded and satisfies \(Q(Sa)=Sa\) for every \(a\in\ellone\).  It is
+therefore a projection onto
+\(W:=S(\ellone)=\cspan\{z_k:k\in\N\}\).  Since every \(z_k\) lies in \(E\),
+we have \(W\subset E\); restricting \(Q\) to \(E\) proves complementability in
+\(E\) as well.
+\end{proof}
+
+\section*{The General Diagonal-Semigroup Theorem}
+
+\begin{theorem}
+\label{thm:general}
+Let \(X\) be an infinite-dimensional Banach space with a Schauder basis and
+suppose \(X'\simeq\ellone\).  Then \(X\) admits a \(C_0\)-semigroup \(T\) with
+unbounded generator such that
+\[
+  (X^\odot)'\text{ contains a complemented copy of }\ellinf.
+\]
+In particular, \((X^\odot)'\) contains \(c_0\).
+\end{theorem}
+
+\begin{proof}
+Let \((x_n)\) be a Schauder basis, with biorthogonal functionals
+\((x_n')\) and basis projections \(P_N\).  For \(t\geq0\), define on basis
+vectors
+\[
+  T(t)x_n=e^{-nt}x_n.
+\]
+For \(t>0\), Abel summation gives the operator-norm convergent formula
+\[
+  T(t)=\sum_{n=1}^{\infty}
+       \bigl(e^{-nt}-e^{-(n+1)t}\bigr)P_n.
+\]
+Indeed, the \(N\)-th finite Abel sum has the additional remainder
+\(e^{-Nt}P_N\), whose norm tends to zero.  Since all displayed coefficients
+are nonnegative,
+\[
+ \|T(t)\|
+ \leq K\sum_{n=1}^{\infty}
+          \bigl(e^{-nt}-e^{-(n+1)t}\bigr)
+ =Ke^{-t}.
+\]
+Set \(T(0)=\Id\).  The semigroup law holds on every \(x_n\), hence on the
+dense finite-support span and then on all of \(X\).  On that finite-support
+span, \(T(t)x\to x\) as \(t\downarrow0\).  The uniform bound
+\(\sup_{0<t\leq1}\|T(t)\|\leq K\), followed by approximation with \(P_Nx\),
+proves strong continuity at zero.  Thus \(T\) is a \(C_0\)-semigroup.
+
+Let \(A\) be its generator.  For every \(n\),
+\[
+ \lim_{t\downarrow0}\frac{T(t)x_n-x_n}{t}=-n x_n,
+\]
+so \(x_n\in D(A)\) and \(Ax_n=-n x_n\).  Hence \(A\) is unbounded.
+
+For each coordinate functional,
+\[
+ T(t)'x_n'=e^{-nt}x_n',
+\]
+and therefore \(x_n'\in X^\odot\).  Since the \(x_n'\) are linearly
+independent, \(X^\odot\) is infinite-dimensional.  It is a closed subspace of
+\(X'\simeq\ellone\), so Lemma~\ref{lem:l1} supplies a complemented subspace
+\(W\subset X^\odot\) with \(W\simeq\ellone\).  Write
+\(X^\odot=W\oplus Z\).  Dualizing the direct sum yields
+\[
+ (X^\odot)'\simeq W'\oplus Z',
+ \qquad W'\simeq\ellinf.
+\]
+Thus \((X^\odot)'\) contains a complemented copy of \(\ellinf\), which in
+turn contains its canonical copy of \(c_0\).
+\end{proof}
+
+\section*{Application to the Bourgain--Delbaen Question}
+
+Tarbard's detailed exposition of the original Bourgain--Delbaen construction
+shows that its biorthogonal vectors form a normalized Schauder basis
+\cite[Chapter 2, especially the discussion following Proposition 2.4.3]
+{tarbard}.  The same source records that every original Bourgain--Delbaen
+space in the class \(\mathcal Y\), including the space denoted \(Y\) in the
+question, has dual isomorphic to \(\ellone\)
+\cite[Corollary 2.5.7]{tarbard}.
+
+\begin{corollary}
+The Bourgain--Delbaen space \(Y\) in Remark 4.15(2) of
+arXiv:2605.12121 admits a \(C_0\)-semigroup with unbounded generator for which
+\[
+  (Y^\odot)'\supset \ellinf\supset c_0,
+\]
+where the copy of \(\ellinf\) is complemented.  Hence the question in that
+remark has an affirmative answer.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:general} to the normalized Bourgain--Delbaen basis.
+Explicitly, if that basis is \((y_n)\), use
+\[
+  T(t)y_n=e^{-nt}y_n.
+\]
+\end{proof}
+
+\section*{Verification Notes}
+
+\begin{enumerate}
+\item \textbf{Conditionality causes no problem.}  The multiplier bound uses
+only \(K=\sup_N\|P_N\|<\infty\) and the positive variation of
+\((e^{-nt})_n\).  No unconditionality hypothesis is present.
+\item \textbf{Shrinking is not used.}  The proof needs only the individual
+coordinate functionals \(x_n'\) in the sun dual, not that they span all of
+\(X'\).
+\item \textbf{The generator is genuinely unbounded.}  The eigenvalue equation
+\(Ax_n=-nx_n\) rules out a bounded generator directly.
+\item \textbf{Isomorphic, not isometric, duality is enough.}  An isomorphism
+\(X'\to\ellone\) sends \(X^\odot\) to an infinite-dimensional closed subspace;
+complementability and the isomorphism type of the extracted \(\ellone\) copy
+pull back.
+\item \textbf{The conclusion is stronger than requested.}  The dual of the
+sun dual contains complemented \(\ellinf\), rather than merely a copy of
+\(c_0\).
+\end{enumerate}
+
+\section*{Novelty Search and Limitations}
+
+On July 19, 2026, the lightweight indexes for run
+\texttt{fa\_banach\_001} were searched for arXiv:2605.12121, its title,
+maximal-regularity terms, input-to-state-stability terms, and the combinations
+``Bourgain--Delbaen'', ``sun dual'', and ``Lotz property''.  No matching prior
+solution or attempt was present.  Bounded web/arXiv searches used the exact
+source title and combinations of ``Bourgain--Delbaen space'',
+``\(C_0\)-semigroup'', ``sun dual'', ``unbounded generator'', and ``Lotz
+property''.  They found the source and background construction papers but no
+later explicit answer.  The arXiv record was still version 1, submitted May
+12, 2026.
+
+This search is not a global novelty certificate, and indexing can lag.  The
+main review risk is bibliographic: an older general observation about diagonal
+semigroups on \(\ellone\)-preduals may imply the same result without having
+been phrased as an answer to this recent question.  The mathematical proof
+above is independent of that novelty issue.
+
+The result answers the Bourgain--Delbaen residual question only.  It does not
+settle the separate general equivalence problem for
+\(L^\infty\)-ISS and \(L^\infty\)-iISS in Remark 4.7 of the source.
+
+\section*{Human-Review Recommendation}
+
+The candidate should be sent to a Banach-space or operator-semigroup expert.
+The most useful checks are: (i) matching the source's \(Y\) with Tarbard's
+class \(\mathcal Y\); (ii) the gliding-hump projection in
+Lemma~\ref{lem:l1}; and (iii) confirmation that ``non-trivial'' is intended in
+the unbounded-generator sense suggested by the Lotz-property discussion.
+
+\begin{thebibliography}{9}
+
+\bibitem{preussler-schwenninger}
+P.~Preussler and F.~L.~Schwenninger,
+\emph{Implications of structured continuous maximal regularity},
+arXiv:2605.12121v1, 2026.
+
+\bibitem{tarbard}
+M.~Tarbard,
+\emph{Operators on Banach Spaces of Bourgain--Delbaen Type},
+arXiv:1309.7469, 2013.
+
+\bibitem{bourgain-delbaen}
+J.~Bourgain and F.~Delbaen,
+\emph{A class of special \(\mathcal L_\infty\) spaces},
+Acta Math. 145 (1980), 155--176.
+
+\end{thebibliography}
+
+\end{document}

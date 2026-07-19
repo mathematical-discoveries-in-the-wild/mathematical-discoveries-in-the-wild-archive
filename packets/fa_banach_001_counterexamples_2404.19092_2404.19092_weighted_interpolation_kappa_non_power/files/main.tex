@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\elltwo}{\ell_2}
+\newcommand{\Mn}{M_n}
+\newcommand{\Mm}{M_m}
+\newcommand{\cb}{\mathrm{cb}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\RC}[1]{(R,C)_{#1}}
+
+\title{A Weighted-Intersection Counterexample for the Kappa Power Question}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_18}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target Question}
+
+The source paper is Braga and Chavez-Dominguez, \emph{On the small scale nonlinear theory of operator spaces}, arXiv:2404.19092 \cite{BCD2404}. In Remark 4.7, after computing \(\kappa_n(X)\) for several homogeneous Hilbertian operator spaces, the authors ask:
+\begin{quote}
+Is \(\kappa_n(X)\) always equivalent to a power of \(n\)? That is, does there exist a constant \(c(X)\) such that \(\kappa_n(X)\simeq n^{c(X)}\)?
+\end{quote}
+
+The answer is negative.
+
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The examples in the source paper give exact powers
+\[
+\kappa_n(\RC{\theta})=n^{\theta/2}.
+\]
+The class of homogeneous Hilbertian operator spaces is stable under a simple diagonal weighted intersection. If several homogeneous Hilbertian structures on the same Hilbert space are placed in an \(\ell_\infty\)-sum through the diagonal map
+\[
+x\mapsto (\lambda_i x)_i,
+\]
+with \(\sup_i\lambda_i=1\), the scalar norm remains Hilbertian and homogeneity follows coordinatewise. For the special column matrix defining \(\kappa_n\), the new norm is the supremum of the weighted old \(\kappa_n\)'s.
+
+Choosing weights \(2^{-k}\) and powers \(n^{(1-1/k)/2}\) produces the envelope
+\[
+\max\left\{1,\sup_{k\ge 2}2^{-k}n^{(1-1/k)/2}\right\}.
+\]
+Optimizing \(2^{-k}n^{-1/(2k)}\) gives a loss of order \(\exp(-O(\sqrt{\log n}))\) below \(\sqrt n\). Thus the sequence has logarithmic exponent tending to \(1/2\), but it is not equivalent to \(\sqrt n\). It therefore cannot be equivalent to any power.
+
+\section*{Definitions}
+
+Let \(H=\elltwo\). We use \(R\) and \(C\) for the row and column operator space structures on \(H\). For \(\theta\in[0,1]\), \(\RC{\theta}\) denotes the complex interpolation operator space between \(R\) and \(C\), over the same underlying Hilbert space \(H\). The source paper proves
+\[
+\kappa_n(\RC{\theta})=n^{\theta/2}
+\quad\text{for all }n\in\N.
+\]
+
+\section*{A Weighted Diagonal Intersection Lemma}
+
+\begin{lemma}
+Let \((E_i)_{i\in I}\) be homogeneous Hilbertian operator space structures on the same Hilbert space \(H\), and let \(0<\lambda_i\le 1\) with \(\sup_i\lambda_i=1\). Define matrix norms on \(H\) by
+\[
+\|[x_{pq}]\|_{\Mm(X)}
+=\sup_{i\in I}\lambda_i\|[x_{pq}]\|_{\Mm(E_i)}.
+\]
+Then \(X\) is a homogeneous Hilbertian operator space. Moreover, for every \(n\),
+\[
+\kappa_n(X)=\sup_{i\in I}\lambda_i\kappa_n(E_i).
+\]
+\end{lemma}
+
+\begin{proof}
+The norms are realized by the diagonal embedding
+\[
+J:H\longrightarrow \bigoplus_{i\in I}^{\ell_\infty} E_i,\qquad
+Jx=(\lambda_i x)_{i\in I}.
+\]
+Thus Ruan's axioms are inherited from the \(\ell_\infty\)-sum. At matrix level one,
+\[
+\|x\|_X=\sup_i\lambda_i\|x\|_H=\|x\|_H,
+\]
+so \(X\) is Hilbertian as a Banach space.
+
+If \(T:H\to H\) is bounded and \(m\in\N\), homogeneity of each \(E_i\) gives
+\[
+\|T_m([x_{pq}])\|_{\Mm(X)}
+=\sup_i\lambda_i\|T_m([x_{pq}])\|_{\Mm(E_i)}
+\le \|T\|\sup_i\lambda_i\|[x_{pq}]\|_{\Mm(E_i)}
+=\|T\|\|[x_{pq}]\|_{\Mm(X)}.
+\]
+Hence \(\|T\|_{\cb:X\to X}\le \|T\|\), while the reverse inequality is automatic from level one. So \(X\) is homogeneous.
+
+Finally, if \(e_1,\ldots,e_n\) is orthonormal in \(H\) and \(b\in\Mn(X)\) is the column matrix with entries \(b_{j1}=e_j\), then
+\[
+\|b\|_{\Mn(X)}
+=\sup_i\lambda_i\|b\|_{\Mn(E_i)}
+=\sup_i\lambda_i\kappa_n(E_i).
+\]
+This is exactly \(\kappa_n(X)\).
+\end{proof}
+
+\section*{Counterexample}
+
+\begin{theorem}
+There exists an infinite-dimensional homogeneous Hilbertian operator space \(X\) such that \(\kappa_n(X)\) is not equivalent to \(n^c\) for any constant \(c\).
+\end{theorem}
+
+\begin{proof}
+Let \(E_0=R\) with \(\lambda_0=1\). For each \(k\ge 2\), let
+\[
+E_k=\RC{1-1/k},
+\qquad
+\lambda_k=2^{-k}.
+\]
+Apply the lemma to obtain a homogeneous Hilbertian operator space \(X\) on \(H=\elltwo\). Since \(\kappa_n(R)=1\) and, by Corollary 4.3 of \cite{BCD2404},
+\[
+\kappa_n(E_k)=n^{(1-1/k)/2},
+\]
+we have
+\[
+\kappa_n(X)=A_n
+:=\max\left\{1,\sup_{k\ge 2}2^{-k}n^{(1-1/k)/2}\right\}.
+\]
+
+We now show that \((A_n)\) is not equivalent to any power. Put \(a=\log 2\) and \(L=\log n\). For \(k\ge2\),
+\[
+2^{-k}n^{(1-1/k)/2}
+=\sqrt n\,\exp\left(-ak-\frac{L}{2k}\right).
+\]
+By the arithmetic-geometric mean inequality,
+\[
+ak+\frac{L}{2k}\ge \sqrt{2aL}.
+\]
+Therefore
+\[
+\frac{A_n}{\sqrt n}
+\le \max\left\{n^{-1/2},\exp(-\sqrt{2a\log n})\right\}\longrightarrow 0.
+\]
+So \(A_n\) is not equivalent to \(n^{1/2}\).
+
+Conversely, for large \(n\), choose
+\[
+k_n=\left\lfloor\sqrt{\frac{\log n}{2\log 2}}\right\rfloor\ge 2.
+\]
+Then \(k_n\) is within a constant factor of \(\sqrt{\log n}\), so there is a universal constant \(C>0\) such that
+\[
+ak_n+\frac{\log n}{2k_n}\le C\sqrt{\log n}.
+\]
+Thus
+\[
+A_n\ge \sqrt n\,\exp(-C\sqrt{\log n}).
+\]
+It follows that, for every \(c<1/2\),
+\[
+\frac{A_n}{n^c}\ge
+n^{1/2-c}\exp(-C\sqrt{\log n})\longrightarrow\infty.
+\]
+Since always \(1\le A_n\le\sqrt n\), equivalence to \(n^c\) would force \(0\le c\le 1/2\). The preceding two estimates exclude \(c=1/2\) and all \(c<1/2\). Hence no such \(c\) exists.
+\end{proof}
+
+\section*{Verification Notes}
+
+The only structural input is that the diagonal weighted intersection is a concrete operator subspace of an \(\ell_\infty\)-sum. Thus the operator-space axioms are not being postulated; they are inherited from a concrete construction. The homogeneity check is coordinatewise and uses exactly the source paper's definition.
+
+The growth estimate is analytic. The helper script \texttt{code/growth\_verifier.py} computes the logarithmic finite maximum at representative values of \(L=\log n\), reporting \(\log(A_n/\sqrt n)\) and \(\log(A_n/n^c)\) for sample \(c<1/2\). It is not used as proof.
+
+\section*{Novelty Check}
+
+The local registry, solution, attempt, and proof-gap indexes had no prior entry for arXiv:2404.19092. A bounded web search on 2026-07-03 for exact and close phrases, including ``kappa\_n(X) homogeneous Hilbertian operator space'', ``kappa\_n(X) equivalent to a power'', and ``kappa\_n(X) kappa\_n(X*) sqrt(n)'', found the source paper and general background, but no later answer to Remark 4.7.
+
+\section*{Limitations}
+
+This packet answers only the second question in Remark 4.7. It does not settle the first question, namely whether \(\kappa_n(X)\kappa_n(X^*)=\sqrt n\) always holds.
+
+\begin{thebibliography}{9}
+\bibitem{BCD2404}
+Bruno M. Braga and Javier A. Chavez-Dominguez,
+\emph{On the small scale nonlinear theory of operator spaces},
+arXiv:2404.19092, 2024.
+\end{thebibliography}
+
+\end{document}

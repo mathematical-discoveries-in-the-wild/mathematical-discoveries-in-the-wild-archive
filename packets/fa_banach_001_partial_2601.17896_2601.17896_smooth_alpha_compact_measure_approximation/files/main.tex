@@ -1,0 +1,346 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\capc}{\operatorname{cap}_2}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\dv}{\,d v_g}
+
+\title{Smooth Spectral Approximation of Compact Trace Measures\\
+for Uniformly Elliptic Energy Densities}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_14}}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Candidate partial result, likely valid. This packet answers the smooth-measure
+approximation question in Vinokurov's Remark~1.3 when the energy density is
+continuous and uniformly positive. It does not answer the rough or degenerate
+weighted case.
+
+\section*{Source Question}
+
+Vinokurov asks in Remark~1.3 of arXiv:2601.17896v3, PDF page~4, whether the
+eigenvalues of an arbitrary measure inducing a compact map
+\(H^1(M,\alpha)\to L^2(M,\mu)\) can be approximated, or at least bounded from
+above, using smooth measures~\cite{Vinokurov}. The source passage is shown
+below.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The packet proves convergence, not merely an upper bound, under the additional
+hypothesis that \(\alpha\) is continuous and bounded away from zero.
+
+\section*{Definitions}
+
+Let \((M,g)\) be a closed connected Riemannian manifold of dimension
+\(m\geq2\). For a positive density \(\alpha\) and a finite positive Radon
+measure \(\mu\), write
+\[
+ a_\alpha(u,v)=\int_M \alpha\langle du,dv\rangle_g\dv,
+ \qquad
+ b_\mu(u,v)=\int_M \widetilde u\,\widetilde v\,d\mu,
+\]
+where tildes denote quasi-continuous representatives. The variational
+eigenvalues are
+\[
+ \lambda_k(\alpha,\mu)
+ =\inf_{\substack{F\subset C^\infty(M)\\ \dim F=k+1}}
+   \sup_{0\ne u\in F}
+   \frac{a_\alpha(u,u)}{b_\mu(u,u)},
+\]
+with the usual restriction that \(F\) remain \((k+1)\)-dimensional in
+\(L^2(\mu)\).
+
+For a Borel set \(E\subset M\), let \(\capc(E)\) be its Sobolev
+\(2\)-capacity, and define the local capacitary modulus
+\[
+ \omega_\sigma(r)=
+ \sup\left\{\frac{\sigma(E)}{\capc(E)}:
+       E\subset M,\ \diam(E)\leq r,\ \capc(E)>0\right\}.
+\]
+Maz'ya's compactness criterion states that the trace
+\(H^1(M)\to L^2(M,\sigma)\) is compact if and only if
+\(\omega_\sigma(r)\to0\) as \(r\downarrow0\); see
+\cite[Section~11.9.1]{Mazya} and the manifold formulation recalled in
+\cite[Section~2.2]{GKL}.
+
+\section*{Proof Intuition}
+
+Weak-star smoothing alone has the wrong one-sided min--max behavior. The key
+is to smooth \(\mu\) without losing the quantitative local property that makes
+its Sobolev trace compact. We localize \(\mu\), average each piece under small
+diffeomorphisms, and use the quasi-invariance of capacity to keep one uniform
+vanishing modulus for all smoothed measures. That modulus turns weak
+convergence in \(H^1\) into strong convergence in the moving spaces
+\(L^2(\mu_n)\). Weak-star convergence then upgrades to operator-norm
+convergence of the quadratic mass forms. Uniform approximation of \(\alpha\)
+and compact self-adjoint perturbation theory finish the eigenvalue argument.
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let \((M,g)\) be closed and connected, let \(\alpha\in C(M)\) satisfy
+\(0<c\leq\alpha\leq C<\infty\), and let \(\mu\ne0\) be a finite positive
+Radon measure such that
+\[
+ H^1(M,\alpha)\longrightarrow L^2(M,\mu)
+\]
+is compact. Then there are \(\alpha_n,\rho_n\in C^\infty(M)\), with
+\(\alpha_n>0\), \(\rho_n>0\), such that, putting
+\(\mu_n=\rho_n v_g\),
+\begin{align*}
+ &\alpha_n\longrightarrow\alpha \quad\hbox{uniformly},\\
+ &\mu_n\stackrel{*}{\rightharpoonup}\mu,
+ \qquad \mu_n(M)=\mu(M),\\
+ &\sup_{\|u\|_{H^1}\leq1}
+   \left|b_{\mu_n}(u,u)-b_\mu(u,u)\right|\longrightarrow0.
+\end{align*}
+Consequently, for every fixed finite variational eigenvalue,
+\[
+ \lambda_k(\alpha_n,\mu_n)\longrightarrow\lambda_k(\alpha,\mu).
+\]
+The corresponding normalized eigenvalues converge as well.
+\end{theorem}
+
+\section*{Proof}
+
+Uniform ellipticity makes \(H^1(M,\alpha)\) and the ordinary \(H^1(M)\)
+the same Hilbert space with equivalent norms. Hence the assumed trace is
+compact exactly when the ordinary Sobolev trace is compact. Maz'ya's criterion
+therefore gives
+\begin{equation}\label{eq:vanish}
+ \omega_\mu(r)\longrightarrow0.
+\end{equation}
+
+\subsection*{Step 1: smooth while preserving the capacitary modulus}
+
+Choose a finite smooth partition of unity \(\sum_i\psi_i=1\). On a
+neighborhood of \(\operatorname{supp}\psi_i\), choose compactly supported
+smooth vector fields \(X_{i,1},\ldots,X_{i,m}\) forming a local frame. For
+small \(z\in\mathbb R^m\), let \(\Phi_{i,z}\) be the composition of the
+time-\(z_j\) flows of these vector fields. The maps \(\Phi_{i,z}\) are global
+diffeomorphisms, converge to the identity with \(z\), and have uniformly
+bounded bi-Lipschitz constants for small \(z\).
+
+Let \(\eta_t\) be a nonnegative smooth approximate identity supported in a
+small ball in \(\mathbb R^m\), and set
+\begin{equation}\label{eq:smoothing}
+ \nu_t=\sum_i\int_{\mathbb R^m}
+       (\Phi_{i,z})_*(\psi_i\mu)\,\eta_t(z)\,dz.
+\end{equation}
+Because \(z\mapsto\Phi_{i,z}(x)\) is a local submersion on the support of
+\(\psi_i\), each averaged measure in \eqref{eq:smoothing} has a smooth
+density. Thus \(\nu_t\) has a nonnegative smooth density,
+\(\nu_t(M)=\mu(M)\), and \(\nu_t\stackrel{*}{\rightharpoonup}\mu\).
+
+Sobolev capacity is quasi-invariant under a uniformly bi-Lipschitz family of
+diffeomorphisms. Thus there are constants \(A,B\), independent of small
+\(t,z\), such that for every set \(E\) of sufficiently small diameter,
+\begin{align*}
+ (\psi_i\mu)(\Phi_{i,z}^{-1}E)
+ &\leq \mu(\Phi_{i,z}^{-1}E)\\
+ &\leq \omega_\mu(A\diam E)\,
+        \capc(\Phi_{i,z}^{-1}E)\\
+ &\leq B\,\omega_\mu(A\diam E)\,\capc(E).
+\end{align*}
+After summing and averaging,
+\begin{equation}\label{eq:uniformmodulus}
+ \omega_{\nu_t}(r)\leq B'\omega_\mu(Ar).
+\end{equation}
+To make the density strictly positive while preserving mass, replace
+\(\nu_t\) by
+\[
+ \widehat\nu_t=(1-\varepsilon_t)\nu_t
+   +\varepsilon_t\frac{\mu(M)}{v_g(M)}v_g,
+ \qquad \varepsilon_t\downarrow0.
+\]
+The volume measure has a vanishing capacitary modulus, so
+\eqref{eq:uniformmodulus} and \eqref{eq:vanish} remain uniform for
+\(\widehat\nu_t\). Choose \(t_n\downarrow0\) and put
+\(\mu_n=\widehat\nu_{t_n}\).
+
+\subsection*{Step 2: uniform modulus gives collective compactness}
+
+We record the quantitative consequence needed below. Suppose positive measures
+\(\sigma_n\) have uniformly bounded masses and
+\begin{equation}\label{eq:familymodulus}
+ \Omega(r):=\sup_n\omega_{\sigma_n}(r)\longrightarrow0.
+\end{equation}
+If \(u_n\rightharpoonup0\) in \(H^1(M)\), then
+\begin{equation}\label{eq:collective}
+ \int_M u_n^2\,d\sigma_n\longrightarrow0.
+\end{equation}
+
+Indeed, cover \(M\) by finitely many balls \(B_j\) of radius \(r\), with the
+doubled balls having bounded overlap. For every Borel set \(E\),
+\[
+ (\sigma_n|_{B_j})(E)
+ =\sigma_n(E\cap B_j)
+ \leq \Omega(2r)\capc(E\cap B_j)
+ \leq \Omega(2r)\capc(E).
+\]
+The capacitary trace inequality therefore gives a trace norm of order
+\(\Omega(2r)^{1/2}\) for \(\sigma_n|_{B_j}\). Apply it to a cutoff times
+\(u_n-(u_n)_{2B_j}\), and then use the Poincare inequality, to obtain
+\[
+ \int_{B_j}|u_n-(u_n)_{2B_j}|^2\,d\sigma_n
+ \leq C\Omega(2r)\int_{2B_j}|du_n|^2\dv.
+\]
+For fixed \(r\), weak convergence implies
+\((u_n)_{2B_j}\to0\) for every one of the finitely many balls. Summing yields
+\[
+ \limsup_n\int_Mu_n^2\,d\sigma_n
+ \leq C\Omega(2r)\sup_n\|u_n\|_{H^1}^2.
+\]
+Letting \(r\downarrow0\) proves \eqref{eq:collective}. The same localization
+argument, without assuming weak convergence, also gives a uniform bound for
+the trace norms \(H^1(M)\to L^2(M,\sigma_n)\).
+
+By \eqref{eq:uniformmodulus}, this lemma applies to the constructed
+\(\mu_n\).
+
+\subsection*{Step 3: convergence in Sobolev form norm}
+
+First, for every fixed \(u\in H^1(M)\),
+\begin{equation}\label{eq:fixed}
+ b_{\mu_n}(u,u)\longrightarrow b_\mu(u,u).
+\end{equation}
+For smooth \(u\), this is weak-star convergence. For general \(u\), approximate
+it in \(H^1\) by smooth functions and use the uniform trace bounds for
+\(\mu_n\), together with the bounded trace for \(\mu\).
+
+Suppose the asserted form-norm convergence were false. After passing to a
+subsequence, there would be \(u_n\) in the \(H^1\) unit ball and a fixed
+\(\delta>0\) such that
+\[
+ |b_{\mu_n}(u_n,u_n)-b_\mu(u_n,u_n)|\geq\delta.
+\]
+Take a further subsequence with \(u_n\rightharpoonup u\) in \(H^1\), and set
+\(v_n=u_n-u\). Compactness of the limiting trace gives
+\(b_\mu(v_n,v_n)\to0\); collective compactness gives
+\(b_{\mu_n}(v_n,v_n)\to0\). The mixed terms tend to zero by
+Cauchy--Schwarz, while \eqref{eq:fixed} handles the fixed vector \(u\). This
+contradicts the choice of \(u_n\), and proves
+\begin{equation}\label{eq:formnorm}
+ \|b_{\mu_n}-b_\mu\|_{\mathcal B(H^1\times H^1)}\longrightarrow0.
+\end{equation}
+
+\subsection*{Step 4: pass to eigenvalues}
+
+Choose positive \(\alpha_n\in C^\infty(M)\) with
+\(\alpha_n\to\alpha\) uniformly. Then
+\[
+ \|a_{\alpha_n}-a_\alpha\|_{\mathcal B(H^1\times H^1)}
+ \leq \|\alpha_n-\alpha\|_\infty\longrightarrow0.
+\]
+The form
+\(h=a_\alpha+b_\mu\) is an equivalent Hilbert norm on \(H^1(M)\): this is
+the standard Poincare inequality with the nonzero continuous functional
+\(u\mapsto\int_Mu\,d\mu\). Put
+\(h_n=a_{\alpha_n}+b_{\mu_n}\). Relative to \(h\), let \(G_n\) and \(D_n\)
+represent \(h_n\) and \(b_{\mu_n}\), respectively. Equations
+\eqref{eq:formnorm} and the uniform convergence of \(\alpha_n\) give
+\[
+ G_n\longrightarrow I,
+ \qquad D_n\longrightarrow D
+ \quad\hbox{in operator norm},
+\]
+where \(D\) represents \(b_\mu\). Hence the compact positive self-adjoint
+operators
+\[
+ S_n=G_n^{-1/2}D_nG_n^{-1/2}
+\]
+converge in norm to \(D\). Their ordered eigenvalues therefore converge. If
+\(\theta_{k,n}>0\) is an eigenvalue of \(S_n\), the generalized eigenvalue
+relation is
+\[
+ b_{\mu_n}(u,v)=\theta_{k,n}h_n(u,v),
+ \qquad
+ \lambda_k(\alpha_n,\mu_n)=\theta_{k,n}^{-1}-1.
+\]
+The same identity holds at the limit, so every fixed finite variational
+eigenvalue converges. Since the masses are equal and the relevant norms of
+\(\alpha_n\) converge, normalized eigenvalues converge as well. This proves
+Theorem~\ref{thm:main}. \qed
+
+\section*{Verification Notes}
+
+The separate file \texttt{verification.md} records the adversarial check. The
+main points are:
+\begin{enumerate}[leftmargin=*]
+\item ordinary weak-star smoothing alone is insufficient, and the proof does
+not use it as though it implied spectral convergence;
+\item the uniform capacity estimate follows before any spectral argument and
+is stable under adding a vanishing positive volume component;
+\item collective compactness is proved for moving measures, which is the step
+needed to upgrade fixed-vector convergence to operator-norm convergence;
+\item the generalized eigenproblem is conjugated to self-adjoint compact
+operators on one fixed Hilbert space before perturbation theory is invoked.
+\end{enumerate}
+
+\section*{Limitations and Novelty Check}
+
+The source question allows rough or degenerate \(\alpha\). The present proof
+uses uniform ellipticity twice: to invoke the ordinary Sobolev capacity
+criterion and to approximate the energy form in operator norm. For a rough
+weight, local diffeomorphisms need not preserve weighted capacity; for a
+degenerate weight, even the underlying Sobolev space can change under
+smoothing. Those cases remain open.
+
+Before promotion, the run's four lightweight indexes were searched for the
+arXiv id and the exact spectral-approximation terms. A bounded web search used
+the exact question phrase, the source title/id, and combinations of compact
+Sobolev trace, capacity, mollification, smooth densities, and eigenvalue
+convergence. It found the source paper and known continuity results, but no
+later explicit answer or this exact approximation theorem. The main known
+continuity reference, Girouard--Karpukhin--Lagace, proves convergence under
+Sobolev-dual convergence and supplies the admissible-measure framework; it
+does not state the arbitrary compact-trace smoothing conclusion recorded
+here~\cite{GKL}.
+
+\section*{Human Review Recommendation}
+
+Review as a substantial partial result. The highest-value checks are the
+smooth localized-flow construction, the uniform capacity comparison in
+\eqref{eq:uniformmodulus}, and the localized proof of collective compactness.
+Do not promote the packet to a full answer without an argument for rough or
+degenerate \(\alpha\).
+
+\begin{thebibliography}{9}
+
+\bibitem{Vinokurov}
+D. Vinokurov,
+\emph{Eigenvalue optimization in higher dimensions and \(p\)-harmonic maps},
+arXiv:2601.17896v3 (2026).
+
+\bibitem{GKL}
+A. Girouard, M. Karpukhin, and J. Lagace,
+\emph{Continuity of eigenvalues and shape optimisation for Laplace and
+Steklov problems},
+Geom. Funct. Anal. \textbf{31} (2021), 513--561;
+arXiv:2004.10784.
+
+\bibitem{Mazya}
+V. G. Maz'ya,
+\emph{Sobolev Spaces with Applications to Elliptic Partial Differential
+Equations},
+Grundlehren der mathematischen Wissenschaften 342, augmented edition,
+Springer, 2011.
+
+\end{thebibliography}
+
+\end{document}

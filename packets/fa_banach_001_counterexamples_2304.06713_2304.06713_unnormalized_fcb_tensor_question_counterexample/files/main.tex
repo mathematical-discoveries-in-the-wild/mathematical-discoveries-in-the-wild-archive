@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\BB}{\mathscr{BB}}
+\newcommand{\MaxInf}{\operatorname{MaxInf}}
+\newcommand{\Inf}{\operatorname{Inf}}
+\newcommand{\Var}{\operatorname{Var}}
+
+\title{A Constant-Shift Counterexample to the Unnormalised FCB Tensor-Network Question}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_15}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target Question}
+
+The source paper is Francisco Escudero Gutierrez,
+\emph{Influences of Fourier Completely Bounded Polynomials and Classical
+Simulation of Quantum Algorithms}, arXiv:2304.06713 \cite{EG2304}.
+
+The paper introduces Fourier completely bounded norms for Boolean-cube
+polynomials and proposes a weaker variant of the Aaronson--Ambainis influence
+conjecture.  At the end of the paper, Question 4.5 asks:
+\begin{quote}
+Given a polynomial \(p\) of degree at most \(d\), is there
+\((u,v,A)\in\BB^d\) such that
+\[
+\langle u,A(i_1)\cdots A(i_d)v\rangle
+=\frac{\widehat p(S_{\mathbf i})}{\operatorname{poly}(d,\MaxInf[p])}
+\]
+for any \(\mathbf i\in[n+1]^d\)?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The obstruction is the constant Fourier coefficient.  The maximum influence
+does not see constants: adding \(M\) to a polynomial leaves every influence
+unchanged, but changes \(\widehat p(\emptyset)\) by \(M\).  On the other hand,
+every degree-\(d\) correlation produced by unit vectors and contractions has
+absolute value at most \(1\).  Therefore no denominator depending only on
+\(d\) and \(\MaxInf[p]\) can represent all unnormalised polynomials.
+
+This is a narrow reading of the printed auxiliary question.  The normalized
+conjecture earlier in the source, where \(\|p\|_{\mathrm{fcb},d}\le 1\), is not
+affected by this counterexample.
+
+\section*{Definitions}
+
+For a Boolean-cube polynomial
+\[
+p(x)=\sum_{S\subset[n]}\widehat p(S)\prod_{i\in S}x(i),
+\]
+the influence of coordinate \(j\) is
+\[
+\Inf_j[p]=\sum_{S\ni j}\widehat p(S)^2,
+\qquad
+\MaxInf[p]=\max_j \Inf_j[p].
+\]
+For \(\mathbf i=(i_1,\ldots,i_d)\in[n+1]^d\), the set \(S_{\mathbf i}\subset[n]\)
+contains the indices in \([n]\) that occur an odd number of times in
+\(\mathbf i\); the extra coordinate \(n+1\) is ignored.
+
+The source's Boolean-behavior tuples consist of unit vectors \(u,v\) and
+contractions \(A(k)\) such that the scalar
+\(\langle u,A(i_1)\cdots A(i_d)v\rangle\) depends only on
+\(S_{\mathbf i}\).  The only property used below is the immediate bound
+\[
+\left|\langle u,A(i_1)\cdots A(i_d)v\rangle\right|\le 1.
+\]
+
+\begin{lemma}
+Let \(u,v\) be unit vectors and \(A(1),\ldots,A(n+1)\) contractions on a real
+Hilbert space.  Then, for every \(\mathbf i\in[n+1]^d\),
+\[
+\left|\langle u,A(i_1)\cdots A(i_d)v\rangle\right|\le 1.
+\]
+\end{lemma}
+
+\begin{proof}
+The product \(A(i_1)\cdots A(i_d)\) is a contraction.  Hence
+\[
+|\langle u,A(i_1)\cdots A(i_d)v\rangle|
+\le \|u\|\,\|A(i_1)\cdots A(i_d)v\|
+\le 1.
+\]
+\end{proof}
+
+\section*{Counterexample}
+
+\begin{theorem}
+Under the usual reading that the displayed
+\(\operatorname{poly}(d,\MaxInf[p])\) is a fixed finite nonzero denominator
+depending only on \(d\) and \(\MaxInf[p]\), Question 4.5 is false without a
+normalization hypothesis on \(p\).
+\end{theorem}
+
+\begin{proof}
+Fix \(d\ge 1\) and \(n\ge 1\).  Let \(D(d,t)\) denote any proposed finite
+nonzero denominator depending only on \(d\) and \(t=\MaxInf[p]\).  Choose
+\(\varepsilon>0\) such that \(D(d,\varepsilon^2)\) is finite and nonzero, and
+then choose
+\[
+M>|D(d,\varepsilon^2)|.
+\]
+Consider the degree-one polynomial
+\[
+p(x)=M+\varepsilon x(1),\qquad x\in\{-1,1\}^n.
+\]
+Its only nonzero Fourier coefficients are
+\[
+\widehat p(\emptyset)=M,\qquad \widehat p(\{1\})=\varepsilon,
+\]
+and therefore
+\[
+\MaxInf[p]=\Inf_1[p]=\varepsilon^2.
+\]
+
+Choose any \(\mathbf i\in[n+1]^d\) with \(S_{\mathbf i}=\emptyset\), for
+instance \(\mathbf i=(n+1,\ldots,n+1)\).  If the conclusion of Question 4.5
+held with denominator \(D(d,\MaxInf[p])\), then some Boolean-behavior tuple
+\((u,v,A)\) would satisfy
+\[
+\langle u,A(i_1)\cdots A(i_d)v\rangle
+=\frac{\widehat p(\emptyset)}{D(d,\varepsilon^2)}
+=\frac{M}{D(d,\varepsilon^2)}.
+\]
+The right-hand side has absolute value greater than \(1\), while the lemma
+shows that every such correlation has absolute value at most \(1\).  This is a
+contradiction.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses no computational input.  It only uses the contraction bound
+implicit in the definition of \(\BB^d\) and the elementary fact that influences
+ignore the constant Fourier coefficient.
+
+The counterexample is stable under replacing the constant polynomial by a
+nonconstant linear polynomial \(M+\varepsilon x(1)\); hence it is not merely a
+division-by-zero issue at \(\MaxInf[p]=0\).
+
+\section*{Novelty Check}
+
+The cheap local indexes were searched for arXiv:2304.06713, the paper title,
+``Fourier completely bounded'', ``MaxInf'', and close operator-space keywords.
+No exact prior packet was found.  A bounded web search on 2026-07-03 for
+``Fourier completely bounded Question 4.5'', ``Influences of Fourier Completely
+Bounded Polynomials Question 4.5'', and close variants found the source arXiv
+record but no later discussion of this normalization issue.
+
+\section*{Limitations and Human-Review Recommendation}
+
+This packet answers only the literal unnormalised wording of Question 4.5.  It
+does not refute Conjecture 1.5 in the source, the Aaronson--Ambainis conjecture,
+or any version of Question 4.5 that assumes \(\|p\|_{\mathrm{fcb},d}\le1\) or
+allows the denominator to depend on \(|\widehat p(\emptyset)|\).
+
+Human review should check whether the intended convention around
+\(\operatorname{poly}(d,\MaxInf[p])\) silently included such a normalization.
+If so, this packet should be classified as a correction to the printed
+auxiliary formulation rather than as progress on the intended normalized
+problem.
+
+\begin{thebibliography}{9}
+\bibitem{EG2304}
+Francisco Escudero Gutierrez,
+\emph{Influences of Fourier Completely Bounded Polynomials and Classical
+Simulation of Quantum Algorithms},
+arXiv:2304.06713, 2023.
+\end{thebibliography}
+
+\end{document}

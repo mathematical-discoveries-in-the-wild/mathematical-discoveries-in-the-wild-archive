@@ -1,0 +1,636 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.25em,topsep=0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\onto}{\twoheadrightarrow}
+\newcommand{\isom}{\simeq}
+\newcommand{\wstar}{w^*}
+\newcommand{\SpUK}{\operatorname{Sp}(\cU^{-1}\circ\cK)}
+
+\title{\textbf{The Rosenthal--Odell Quotient Problem}\\
+\large Audit of a Partial Proof, Literature Status, and Sharpened Reductions}
+\author{}
+\date{22 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Gasparis records two closely related questions: whether every quotient of an
+$\ell_1$-predual is $c_0$-saturated, and, in Odell's special case, whether every
+quotient of $C(K)$ is $c_0$-saturated when $K$ is countable compact.  The phrase
+``$\ell_1$-predual'' has two conventions in the literature.  Under the strict
+convention, meaning that the dual is \emph{isometric} to $\ell_1$, I found no
+published resolution through 22 June 2026.  Under the broader convention,
+meaning only that the dual is \emph{isomorphic} to $\ell_1$, Argyros--Motakis
+provide a counterexample.
+
+The supplied complemented-subspace theorem is correct.  It is, however,
+subsumed by a stronger 2017 theorem of Galego--Gonz\'alez--Pello: every quotient
+$X$ of a real strict $\ell_1$-predual satisfies
+\[
+   \cU(X,Z)=\cK(X,Z) \qquad\text{for every Banach space } Z,
+\]
+where $\cU$ and $\cK$ denote the unconditionally converging and compact
+operators.  This yields several additional consequences: every
+infinite-dimensional quotient of $X$ contains a complemented copy of $c_0$;
+$X$ has no infinite-dimensional reflexive quotient; and $X$ is
+superprojective.  The remaining saturation problem is reduced exactly to the
+opposite projection property:
+\[
+  X \text{ is } c_0\text{-saturated}
+  \quad\Longleftrightarrow\quad
+  X \text{ is subprojective}.
+\]
+The report also proves an iterative $c_0$-splitting reduction, an extension
+obstruction based on the Josefson--Nissenzweig theorem, and a general
+$(WU)$-trichotomy.  These sharply constrain a possible counterexample but do
+not close the strict problem.
+\end{abstract}
+
+\section{The question and the convention issue}
+
+A Banach space is $c_0$-saturated if every closed infinite-dimensional
+subspace contains an isomorphic copy of $c_0$.  Gasparis asks whether every
+quotient of an $\ell_1$-predual is $c_0$-saturated and attributes to Odell the
+special case of quotients of $C(K)$ for countable compact metric $K$
+\cite[p.~492]{Gasparis2009}.  The same problem appears in Alspach's work,
+Rosenthal's survey, and Argyros--Kanellopoulos
+\cite{Alspach1993,Rosenthal2003,ArgyrosKanellopoulos2005}.
+
+The word ``predual'' is not used uniformly:
+
+\begin{definition}
+A \emph{strict $\ell_1$-predual} is a Banach space $E$ such that $E^*$ is
+isometric to $\ell_1$ (or to $\ell_1(\Gamma)$ in the nonseparable notation).
+A \emph{broad, or isomorphic, $\ell_1$-predual} is a Banach space $E$ such that
+$E^*$ is merely isomorphic to $\ell_1$.
+\end{definition}
+
+The strict interpretation is the one relevant to the source problem.  One
+clear indication is the standard assertion used there that $\ell_1$-preduals
+are $c_0$-saturated, which is an isometric $L_1$-predual phenomenon.  Alspach
+also explicitly adopts the isometric convention in his paper on quotients of
+ordinal $C$-spaces \cite{Alspach1993}.  By contrast, Argyros--Motakis explicitly
+define an $\ell_1$-predual to mean a space whose dual is only isomorphic to
+$\ell_1$ \cite[p.~36]{ArgyrosMotakis2016}.
+
+Throughout the strict part of this report, scalars are real.  This is the
+setting in which the Johnson--Zippin property-$(V)$ theorem is invoked in the
+supplied proof and in the cited quantitative formulation
+\cite[Theorem~4.2]{Krulisova2015}.
+
+\section{Audit of the supplied partial proof}
+
+The supplied theorem is the following.
+
+\begin{theorem}[Supplied partial result]\label{thm:supplied}
+Let $E$ be a real Banach space such that $E^*$ is isometric to $\ell_1$, and
+let $X$ be a quotient of $E$.  Every complemented infinite-dimensional
+subspace of $X$ contains an isomorphic copy of $c_0$.
+
+Consequently, the same conclusion holds when $X$ is a quotient of $C(K)$ and
+$K$ is countable compact metric.
+\end{theorem}
+
+\subsection*{Verdict}
+The proof is correct.  Its logical chain is:
+\begin{enumerate}
+\item strict real $\ell_1$-preduals have Pe\l czy\'nski's property $(V)$;
+\item property $(V)$ passes to quotients;
+\item an operator is unconditionally converging exactly when it fixes no copy
+      of $c_0$;
+\item a projection onto a $c_0$-free range is therefore weakly compact;
+\item the identity on that range is weakly compact, so the range is reflexive;
+\item the dual of the range embeds into $E^*=\ell_1$, hence has the Schur
+      property; a reflexive Schur space is finite-dimensional.
+\end{enumerate}
+
+There is one bibliographic correction: the relevant result in
+Kruli\v{s}ov\'a's paper is Theorem~4.2, not Theorem~4.5
+\cite[Theorem~4.2]{Krulisova2015}.  There is also a shorter final step, given
+in \cref{cor:complemented}: the projection is not only weakly compact but
+compact.
+
+For completeness, the quotient inheritance used in the proof is sound.  If
+$Q:E\onto X$ and $T:X\to Z$ is unconditionally converging, then $TQ$ is
+unconditionally converging.  If $TQ$ is weakly compact, the open mapping
+theorem gives a constant $C$ with $B_X\subset Q(CB_E)$, and hence
+$T(B_X)\subset TQ(CB_E)$ is relatively weakly compact.
+
+\section{The stronger known operator theorem}
+
+The main improvement comes from combining property $(V)$ with the Schur
+property of the dual.  Galego--Gonz\'alez--Pello package this as the class
+$\SpUK$ and prove both that strict $\ell_1$-preduals belong to it and that the
+class is stable under quotients \cite[Corollary~3.5 and
+Proposition~3.6]{GalegoGonzalezPello2017}.
+
+\begin{theorem}[Compactness of unconditionally converging operators]
+\label{thm:UK}
+Let $E$ be a real Banach space with $E^*$ isometric to $\ell_1$, and let
+$Q:E\onto X$.  Then, for every Banach space $Z$,
+\[
+   \cU(X,Z)=\cK(X,Z).
+\]
+Equivalently, every noncompact operator $T:X\to Z$ fixes an isomorphic copy of
+$c_0$.
+\end{theorem}
+
+\begin{proof}
+The quotient $X$ has property $(V)$.  Moreover, $Q^*:X^*\to E^*$ is an
+isomorphic embedding, so $X^*$ is a subspace of a Schur space and therefore
+has the Schur property.
+
+Let $T:X\to Z$ be unconditionally converging.  Property $(V)$ makes $T$
+weakly compact.  By Gantmacher's theorem, $T^*:Z^*\to X^*$ is weakly
+compact.  Relatively weakly compact subsets of a Schur space are relatively
+norm compact, so $T^*$ is compact.  Schauder's theorem then implies that $T$
+is compact.  The reverse inclusion $\cK(X,Z)\subset\cU(X,Z)$ is standard.
+\end{proof}
+
+This direct proof also explains why the word \emph{isometric} matters: the
+Schur property survives in a subspace of $\ell_1$, but property $(V)$ can fail
+for a broad $\ell_1$-predual.  Galego--Gonz\'alez--Pello explicitly note that
+``dual isometric'' cannot be replaced by ``dual isomorphic'' in their
+corollary \cite[Corollary~3.5]{GalegoGonzalezPello2017}.
+
+\begin{corollary}[Complemented subspaces]\label{cor:complemented}
+Under the hypotheses of \cref{thm:UK}, every complemented
+infinite-dimensional subspace of $X$ contains $c_0$.  In fact, if $P:X\to X$
+is a projection whose range contains no $c_0$, then $P$ has finite rank.
+\end{corollary}
+
+\begin{proof}
+If $P(X)$ contains no $c_0$, then $P$ fixes no copy of $c_0$, so $P$ is
+unconditionally converging.  By \cref{thm:UK}, $P$ is compact.  Since $P$ is
+the identity on $P(X)$, the unit ball of $P(X)$ is norm compact, and $P(X)$
+is finite-dimensional.
+\end{proof}
+
+Thus the supplied argument is not merely right; its conclusion is a special
+case of a stronger operator ideal statement already in the literature.
+
+\begin{corollary}[Infinite-dimensional quotients]\label{cor:quotients}
+Let $R:X\onto W$ be a quotient map with $W$ infinite-dimensional.  Then
+$R$ fixes a copy $A\isom c_0$.  The copy $R(A)\isom c_0$ is complemented in
+$W$, and $A$ may be chosen complemented in $X$.  Consequently, $X$ has no
+infinite-dimensional reflexive quotient.
+\end{corollary}
+
+\begin{proof}
+A compact surjection has finite-dimensional range, so $R$ is noncompact.
+By \cref{thm:UK}, $R$ is not unconditionally converging and therefore fixes
+a copy $A\isom c_0$.  The spaces $E$, $X$, and $W$ are separable because
+$E^*$ is separable.  Sobczyk's theorem complements $R(A)$ in $W$.  If
+$P:W\to R(A)$ is a projection and $S:R(A)\to A$ is the inverse of $R|_A$,
+then $SPR:X\to A$ is a projection onto $A$.
+
+If $W$ were infinite-dimensional reflexive, it could not contain $c_0$,
+contradicting the first part.
+\end{proof}
+
+\begin{corollary}[Superprojectivity]\label{cor:super}
+Every quotient $X$ of a strict real $\ell_1$-predual is superprojective.
+\end{corollary}
+
+\begin{proof}
+This is Corollary~3.4 together with Corollary~3.5 and Proposition~3.6 of
+\cite{GalegoGonzalezPello2017}.  It also follows directly from
+\cref{cor:quotients}: for an infinite-codimensional subspace $M\subset X$,
+the quotient map $X\to X/M$ fixes a copy of $c_0$ whose image is complemented
+in the separable quotient.  Pulling back a complementary summand gives an
+infinite-codimensional complemented subspace of $X$ containing $M$.
+\end{proof}
+
+\section{An exact reduction: saturation versus subprojectivity}
+
+Recall that $X$ is \emph{subprojective} if every infinite-dimensional
+subspace of $X$ contains an infinite-dimensional subspace complemented in
+$X$.
+
+\begin{theorem}[Exact reduction]\label{thm:equiv}
+Let $X$ be a quotient of a real strict $\ell_1$-predual.  Then
+\[
+   X \text{ is }c_0\text{-saturated}
+   \quad\Longleftrightarrow\quad
+   X \text{ is subprojective}.
+\]
+The same equivalence holds for every quotient of $C(K)$ with $K$ countable
+compact metric.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $X$ is $c_0$-saturated.  If $Y\subset X$ is
+infinite-dimensional, choose $C\subset Y$ with $C\isom c_0$.  Since $X$ is
+separable, Sobczyk's theorem makes $C$ complemented in $X$.  Thus $X$ is
+subprojective.  This implication is also a special case of a theorem of
+D\'iaz--Fern\'andez, as recorded in
+\cite[Proposition~2.7]{GalegoGonzalezPello2017}.
+
+Conversely, suppose $X$ is subprojective and let $Y\subset X$ be
+infinite-dimensional.  There is an infinite-dimensional $Z\subset Y$
+complemented in $X$.  By \cref{cor:complemented}, $Z$, and hence $Y$,
+contains $c_0$.
+\end{proof}
+
+Accordingly, the strict Rosenthal--Odell problem can be restated as follows.
+
+\begin{quote}
+\textbf{Equivalent strict problem.} Is every quotient of a strict
+$\ell_1$-predual subprojective?  In particular, is every quotient of
+$C(K)$ subprojective when $K$ is countable compact?
+\end{quote}
+
+This reformulation is useful because the \emph{known} direction is the dual
+one: such quotients are superprojective by \cref{cor:super}.  The 2025 work of
+Gonz\'alez--Pello emphasizes that subprojectivity passes to subspaces,
+superprojectivity passes to quotients, and neither property is a general
+three-space property \cite{GonzalezPello2025}.  Thus the missing implication
+is not a formal permanence fact.
+
+\section{Literature search: what is solved and what remains}
+
+\subsection{The strict/isometric version}
+
+I found no published proof or counterexample for the strict version through
+22 June 2026.  The following checkpoints support that assessment.
+
+\begin{itemize}
+\item Alspach wrote in 1992 that it was unknown whether quotients of
+      $C(\alpha)$ must be $c_0$-saturated \cite{Alspach1993}.
+\item Odell proved that quotients of Schreier's space are $c_0$-saturated,
+      and listed the higher Schreier and countable-$C(K)$ questions as open
+      \cite{Odell1992}.
+\item Rosenthal's 2003 survey states that the countable-$C(K)$ quotient
+      problem is unknown and notes that even the possible appearance of
+      $\ell_2$ inside a quotient of $C(\omega^\omega)$ was unknown
+      \cite{Rosenthal2003}.
+\item Argyros--Kanellopoulos again call the problem well known and open
+      \cite[Remark~4]{ArgyrosKanellopoulos2005}.
+\item Gasparis repeats the question in the source paper
+      \cite[p.~492]{Gasparis2009}.
+\item A 2020 MathOverflow formulation by Argyros still describes it as a
+      well-known problem \cite{MathOverflow2020}.
+\item The 2017 operator theorem gives the strong conclusions in
+      \cref{thm:UK,cor:super}, but it proves superprojectivity rather than the
+      subprojectivity required by \cref{thm:equiv}.
+\item The 2025 three-space paper develops new criteria for subprojectivity
+      and superprojectivity but does not provide the missing quotient
+      permanence \cite{GonzalezPello2025}.
+\end{itemize}
+
+This is a report of the search, not a claim that no inaccessible manuscript
+exists.  The precise conclusion is that no published resolution was located
+in the supplied papers, arXiv searches, journal searches, bibliographic
+forward searches, or the recent subprojectivity literature.
+
+\subsection{The broad/isomorphic version has a counterexample}
+
+Under the convention $E^*\isom\ell_1$, the answer is negative.
+Argyros--Motakis construct a hereditarily indecomposable
+$\mathcal L_\infty$-space $\mathfrak X_{\mathrm{nr}}$ containing no $c_0$, no
+$\ell_1$, and no reflexive subspace \cite{ArgyrosMotakis2016}.  Their
+Theorem~8.3 yields infinite-dimensional spaces
+\[
+    X_1\onto X_2\onto X_3
+\]
+where all three are broad $\ell_1$-preduals with the scalar-plus-compact
+property, $X_1$ and $X_3$ are reflexively saturated, and the middle space is
+the no-reflexive-subspace construction.  The preceding discussion identifies
+$X_2$ with $\mathfrak X_{\mathrm{nr}}$ (or the corresponding version), and
+Corollary~3.12 proves that it contains no $c_0$.
+
+Hence $X_1\onto X_2$ is a quotient of a broad $\ell_1$-predual that is not
+$c_0$-saturated.  This fully settles the broad reading, but not the source
+question.  Indeed, it cannot be converted naively into a strict example: if
+$X_1$ were a quotient of a strict $\ell_1$-predual, then the quotient map onto
+the $c_0$-free infinite-dimensional space $X_2$ would be unconditionally
+converging and therefore compact by \cref{thm:UK}, an impossibility.
+
+\section{Further structural reductions}
+
+The remainder records additional deductions that were not present in the
+supplied packet.  They do not solve the problem, but they describe the shape
+of any strict counterexample.
+
+\subsection{A residual $c_0$-splitting lemma}
+
+\begin{lemma}[Transverse $c_0$ splitting]\label{lem:transverse}
+Let $X$ be a quotient of a real strict $\ell_1$-predual, let
+$Y\subset X$ contain no copy of $c_0$, and let $q:X\to X/Y$ be the quotient
+map.  If $A\subset X$ is isomorphic to $c_0$, then:
+\begin{enumerate}
+\item $q|_A$ is not compact;
+\item there is a further $B\subset A$, $B\isom c_0$, such that $q|_B$ is an
+      isomorphism;
+\item $q(B)$ is complemented in $X/Y$, and $B$ is complemented in $X$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Choose an isomorphism $U:c_0\to A$ and put $a_n=Ue_n$.  If $q|_A$ were
+compact, then $\|q(a_n)\|\to0$, because $(a_n)$ is weakly null.  Passing to a
+subsequence, choose $y_n\in Y$ so that
+$\sum_n\|a_n-y_n\|$ is small enough for the principle of small perturbations.
+Then $(y_n)$ is equivalent to a subsequence of the $c_0$ basis, contradicting
+the assumption on $Y$.  This proves (1).
+
+Since $A\isom c_0$, every unconditionally converging operator from $A$ is
+compact (apply \cref{thm:UK} to $c_0$, or use property $(V)$ and
+$c_0^*=\ell_1$).  Thus the noncompact operator $q|_A$ is not unconditionally
+converging and fixes a copy $B\isom c_0$, proving (2).
+
+The quotient $X/Y$ is separable, so Sobczyk's theorem complements $q(B)$.
+If $P:X/Y\to q(B)$ is a projection and $S=(q|_B)^{-1}$, then $SPq$ is a
+projection from $X$ onto $B$.
+\end{proof}
+
+\begin{corollary}[Iterated peeling]\label{cor:peeling}
+If a strict counterexample contains an infinite-dimensional $c_0$-free
+subspace $Y\subset X$, then for every $n$ there are complemented copies
+$B_1,\ldots,B_n\isom c_0$ and a complemented subspace $X_n\subset X$ such
+that
+\[
+    X = B_1\oplus\cdots\oplus B_n\oplus X_n,
+    \qquad Y\subset X_n,
+\]
+and $X_n$ is again a quotient of a strict $\ell_1$-predual.  Moreover,
+$X_n/Y$ remains infinite-dimensional.
+\end{corollary}
+
+\begin{proof}
+The identity on the infinite-dimensional $X$ is noncompact, so
+\cref{thm:UK} gives a copy of $c_0$ in $X$.  Apply
+\cref{lem:transverse}.  The resulting projection onto $B_1$ has a kernel
+$X_1$ containing $Y$, and $X_1$ is a quotient of $X$ via the complementary
+projection; hence it remains in the class of \cref{thm:UK}.  If $X_1/Y$ were
+finite-dimensional, then $Y$ would be complemented in $X_1$, contradicting
+\cref{cor:complemented}.  Iterate.
+\end{proof}
+
+This produces arbitrarily long $c_0$ decompositions transverse to a bad
+subspace.  It does not by itself produce a $c_0$ sequence in $Y$, because the
+norms of the successive projections need not be uniformly controlled.  That
+loss of quantitative control is a concrete obstruction to turning the
+peeling argument into a proof.
+
+\subsection{A nonextendability phenomenon}
+
+\begin{proposition}[Unconditionally converging extensions must fail]
+\label{prop:extension}
+Let $Y\subset X$ be infinite-dimensional and $c_0$-free, where $X$ is as in
+\cref{thm:UK}.  There exists a bounded, noncompact, unconditionally
+converging operator $T:Y\to c_0$.  Every bounded extension
+$\widetilde T:X\to c_0$ of $T$ fixes a copy of $c_0$; in particular, no such
+extension is unconditionally converging.
+\end{proposition}
+
+\begin{proof}
+By the Josefson--Nissenzweig theorem, choose a normalized weak-star null
+sequence $(y_n^*)\subset Y^*$.  Define
+\[
+       T(y)=(y_n^*(y))_{n=1}^\infty\in c_0.
+\]
+Then $T$ is bounded.  It is not compact: $T^*e_n^*=y_n^*$ has norm one,
+whereas compactness would force this weak-star null sequence to have a
+norm-null subsequence.  Since $Y$ contains no $c_0$, every operator defined
+on $Y$ is unconditionally converging.
+
+The separability of $X$ and Sobczyk's extension theorem provide a bounded
+extension $\widetilde T:X\to c_0$.  If $\widetilde T$ were unconditionally
+converging, \cref{thm:UK} would make it compact, and then its restriction
+$T$ would be compact, a contradiction.  Hence every extension fixes $c_0$.
+\end{proof}
+
+This proposition isolates the hereditary gap.  On the whole space,
+unconditionally converging means compact; on a hypothetical $c_0$-free
+subspace, there are automatically noncompact unconditionally converging
+operators.  Every extension is forced to acquire a $c_0$ copy outside the
+subspace.
+
+\subsection{The $(WU)$ trichotomy}
+
+Odell calls a Banach space $X$ a $(WU)$ space if every normalized weakly null
+sequence in $X$ has an unconditional subsequence.  Every quotient of a space
+with a shrinking unconditional finite-dimensional decomposition has $(WU)$
+\cite[Theorem~A]{Odell1992}.
+
+\begin{theorem}[General $(WU)$ trichotomy]\label{thm:WU}
+Let $X$ have property $(WU)$.  Every infinite-dimensional subspace
+$Y\subset X$ contains a copy of $\ell_1$, a copy of $c_0$, or an
+infinite-dimensional reflexive subspace.
+\end{theorem}
+
+\begin{proof}
+Assume that $Y$ contains neither $\ell_1$ nor $c_0$.  If $Y$ is reflexive,
+we are done.  Otherwise, by Eberlein--\v{S}mulian choose a bounded sequence
+with no weakly convergent subsequence.  Rosenthal's $\ell_1$ theorem gives a
+weakly Cauchy subsequence $(y_n)$, which is not weakly convergent and hence
+not norm Cauchy.  Select
+$n_1<m_1<n_2<m_2<\cdots$ and $\delta>0$ with
+$\|y_{m_j}-y_{n_j}\|\ge\delta$, and set
+\[
+   z_j=\frac{y_{m_j}-y_{n_j}}{\|y_{m_j}-y_{n_j}\|}.
+\]
+Then $(z_j)$ is normalized and weakly null.  Property $(WU)$ gives an
+unconditional basic subsequence.  Its closed span contains neither $\ell_1$
+nor $c_0$.  By James's criteria, the unconditional basis is both shrinking
+and boundedly complete, so its span is reflexive
+\cite{James1950,Rosenthal1974}.
+\end{proof}
+
+\begin{corollary}\label{cor:WU}
+If $X$ has $(WU)$ and contains no $\ell_1$, then
+\[
+ X \text{ is }c_0\text{-saturated}
+ \quad\Longleftrightarrow\quad
+ X \text{ contains no infinite-dimensional reflexive subspace}.
+\]
+In particular, this applies to quotients of spaces with shrinking
+unconditional FDDs.
+\end{corollary}
+
+For a quotient $X$ of countable $C(K)$, every subspace $Y\subset X$ has
+separable dual: $X^*$ embeds into $C(K)^*=\ell_1(K)$ and the restriction
+map $X^*\onto Y^*$ is onto.  Hence no such $Y$ contains $\ell_1$.  For the
+first hard level $C(\omega^\omega)$, Odell also records Schlumprecht's
+observation that a normalized weakly null sequence with an $\ell_1$
+spreading model generates a subspace containing $c_0$
+\cite[Section~3]{Odell1992}.  Therefore a $c_0$-free, no-reflexive-subspace
+counterexample at that level would have to fail $(WU)$ through a
+Maurey--Rosenthal type sequence, while simultaneously avoiding every
+$\ell_1$ spreading model.
+
+\section{Why the natural closing arguments fail}
+
+The preceding results leave several tempting but invalid shortcuts.
+
+\begin{enumerate}
+\item \textbf{The Schur property does not pass to the dual of a subspace.}
+      Although $X^*\subset\ell_1$ is Schur, for $Y\subset X$ the space
+      $Y^*$ is a quotient of $X^*$, and quotients of $\ell_1$ can be
+      arbitrary separable Banach spaces.  Thus $Y^*$ may be reflexive or
+      James-like.
+
+\item \textbf{Superprojectivity points in the wrong direction.}
+      It controls infinite-codimensional superspaces and quotients.  The
+      desired conclusion is subprojectivity, which controls subspaces.
+      Neither is a formal consequence of the other.
+
+\item \textbf{Cantor--Bendixson induction has a nonclosed-range gap.}
+      For countable $K$, the natural kernel
+      $C_0(K\setminus K')\isom c_0$ suggests transfinite induction.  But the
+      image of this kernel under an arbitrary quotient map need not be
+      closed.  The closure of a nonclosed operator range from $c_0$ can hide
+      a $c_0$-free separable space, so the exact sequence alone does not
+      preserve saturation.
+
+\item \textbf{The broad counterexample cannot simply be renormed.}
+      The strict hypothesis supplies property $(V)$ and hence
+      $\cU=\cK$ after passing to quotients.  The Argyros--Motakis quotient
+      onto a $c_0$-free space violates exactly this operator conclusion.
+
+\item \textbf{Iterated splitting lacks uniform constants.}
+      \Cref{cor:peeling} gives arbitrarily many complemented $c_0$ pieces
+      away from a bad $Y$, but the projection norms and isomorphism constants
+      may diverge.  Without uniform control, no bounded $c_0$-sum projection
+      or basis decomposition follows.
+\end{enumerate}
+
+These are not merely technical annoyances: they identify the point at which
+each natural proof strategy requires genuinely new information.
+
+\section{Final status}
+
+\begin{enumerate}
+\item The supplied complemented-subspace result is correct.  Its only needed
+      repair is the citation to Kruli\v{s}ov\'a's Theorem~4.2.
+\item A stronger known theorem gives $\cU(X,Z)=\cK(X,Z)$ for every quotient
+      $X$ of a strict real $\ell_1$-predual and every $Z$.
+\item Under the broad convention $X^*\isom\ell_1$, the literature contains a
+      full counterexample, via Argyros--Motakis.
+\item Under the strict convention intended by the source, and in particular
+      for quotients of countable $C(K)$, no full proof or counterexample was
+      located through 22 June 2026.
+\item The strict problem is exactly the subprojectivity of these quotients.
+      Any counterexample must support the transverse splitting and extension
+      phenomena proved above, while avoiding the standard $(WU)$ and
+      spreading-model routes to $c_0$.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{Alspach1993}
+D. E. Alspach,
+\emph{A $\ell_1$-predual which is not isometric to a quotient of
+$C(\alpha)$},
+Banach Spaces (M\'erida, 1992), Contemp. Math. \textbf{144},
+American Mathematical Society, 1993, 9--14.
+
+\bibitem{ArgyrosKanellopoulos2005}
+S. A. Argyros and V. Kanellopoulos,
+\emph{Determining $c_0$ in $C(K)$ spaces},
+Fund. Math. \textbf{187} (2005), 61--93.
+
+\bibitem{ArgyrosMotakis2016}
+S. A. Argyros and P. Motakis,
+\emph{The scalar-plus-compact property in spaces without reflexive
+subspaces},
+arXiv:1608.01962, 2016.
+
+\bibitem{Diestel1984}
+J. Diestel,
+\emph{Sequences and Series in Banach Spaces},
+Graduate Texts in Mathematics 92, Springer, 1984.
+
+\bibitem{GalegoGonzalezPello2017}
+E. M. Galego, M. Gonz\'alez, and J. Pello,
+\emph{On subprojectivity and superprojectivity of Banach spaces},
+Results Math. \textbf{71} (2017), 1191--1205.
+
+\bibitem{Gasparis2009}
+I. Gasparis,
+\emph{New examples of $c_0$-saturated Banach spaces},
+Math. Ann. \textbf{344} (2009), 491--500.
+
+\bibitem{GonzalezPello2025}
+M. Gonz\'alez and J. Pello,
+\emph{On the three-space property for subprojective and superprojective
+Banach spaces},
+Mediterr. J. Math. \textbf{22} (2025), article 54.
+
+\bibitem{James1950}
+R. C. James,
+\emph{Bases and reflexivity of Banach spaces},
+Ann. of Math. (2) \textbf{52} (1950), 518--527.
+
+\bibitem{Krulisova2015}
+H. Kruli\v{s}ov\'a,
+\emph{Quantification of Pe\l czy\'nski's property $(V)$},
+arXiv:1509.06610, 2015.
+
+\bibitem{MathOverflow2020}
+S. A. Argyros,
+\emph{Quotients of subspaces of $C(\alpha)$},
+MathOverflow question 360068, 11 May 2020,
+\url{https://mathoverflow.net/questions/360068/quotients-of-subspaces-of-c-alpha}.
+
+\bibitem{Odell1992}
+E. Odell,
+\emph{On quotients of Banach spaces having shrinking unconditional bases},
+Illinois J. Math. \textbf{36} (1992), 681--695.
+
+\bibitem{Pelczynski1962}
+A. Pe\l czy\'nski,
+\emph{Banach spaces in which every weakly unconditionally converging
+operator is weakly compact},
+Bull. Acad. Polon. Sci. S\'er. Sci. Math. Astronom. Phys. \textbf{10}
+(1962), 641--648.
+
+\bibitem{Rosenthal1974}
+H. P. Rosenthal,
+\emph{A characterization of Banach spaces containing $\ell_1$},
+Proc. Natl. Acad. Sci. USA \textbf{71} (1974), 2411--2413.
+
+\bibitem{Rosenthal2003}
+H. P. Rosenthal,
+\emph{The Banach spaces $C(K)$},
+in Handbook of the Geometry of Banach Spaces, Vol. 2,
+North-Holland, 2003, 1547--1602.
+
+\bibitem{Sobczyk1941}
+A. Sobczyk,
+\emph{Projection of the space $(m)$ on its subspace $(c_0)$},
+Bull. Amer. Math. Soc. \textbf{47} (1941), 938--947.
+
+\end{thebibliography}
+
+\end{document}

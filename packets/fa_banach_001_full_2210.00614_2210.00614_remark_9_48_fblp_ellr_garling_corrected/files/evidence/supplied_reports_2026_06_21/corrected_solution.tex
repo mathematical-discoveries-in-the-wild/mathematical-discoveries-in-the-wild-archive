@@ -1,0 +1,363 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\FBL}{\mathrm{FBL}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\asympC}[1]{\mathrel{\underset{#1}{\asymp}}}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\supp}{supp}
+
+\title{The Moduli of the Canonical Basis in
+\texorpdfstring{$\FBL^{(p)}[\ell_r]$}{FBL(p)[ell-r]}:\\
+Verification and a Complete Answer to Remark 9.48}
+\author{Research verification note}
+\date{June 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The automatic-solver packet makes a correct reduction to an absolutely
+$p$-summing norm, but then substitutes the wrong parameter into Garling's
+diagonal theorem.  For $2<r,p<\infty$, the correct exponent is independent
+of $p$: if
+\[
+  \frac1t=\frac1r+\frac12,
+\]
+then the sequence $(\abs{\delta_{e_k}})$ in $\FBL^{(p)}[\ell_r]$ is
+equivalent to the unit vector basis of $\ell_t$.  This follows directly
+from Garling's Theorem 9(v).  A second proof is included: its lower estimate
+uses all Rademacher sign vectors and Khintchine's inequality, while its
+upper estimate follows from the already known $p=2$ case.  We also record
+the resulting classification for every finite free-convexity parameter.
+\end{abstract}
+
+\section{Verdict on the proposed result}
+
+Let $(e_k)$ be the canonical basis of $\ell_r$, and write
+\[
+  u_k=\abs{\delta_{e_k}}\in \FBL^{(p)}[\ell_r].
+\]
+The packet claims, for $2<r,p<\infty$, that $(u_k)$ is equivalent to the
+basis of $\ell_s$ with
+\[
+  \frac1s=\frac1r+\frac1p.
+\]
+This is false.  The reduction in the packet to a diagonal $p$-summing norm
+is correct; the subsequent reading of Garling's theorem is not.
+
+\begin{theorem}[Correct answer]
+\label{thm:main}
+Let $2<r,p<\infty$, and let
+\[
+  \frac1t=\frac1r+\frac12.
+\]
+There are constants $c_{r,p},C_{r,p}>0$ such that every finitely supported
+scalar sequence $(a_k)$ satisfies
+\[
+ c_{r,p}\Bigl(\sum_k \abs{a_k}^{t}\Bigr)^{1/t}
+ \le
+ \norm{\sum_k a_k u_k}_{\FBL^{(p)}[\ell_r]}
+ \le
+ C_{r,p}\Bigl(\sum_k \abs{a_k}^{t}\Bigr)^{1/t}.
+\]
+Consequently, the closed linear span of $(u_k)$ is isomorphic to $\ell_t$.
+The exponent does not depend on the finite parameter $p$.
+\end{theorem}
+
+A quick way to see that the packet's exponent cannot be right is to take
+$a_1=\cdots=a_n=1$.  Theorem~\ref{thm:main} gives
+\[
+ \norm{\sum_{k=1}^n u_k}_{\FBL^{(p)}[\ell_r]}
+ \asympC{r,p} n^{1/r+1/2},
+\]
+whereas the proposed result predicts growth $n^{1/r+1/p}$.  Since $p>2$,
+the ratio of these two quantities grows like $n^{1/2-1/p}$.
+
+\section{The norm reduction is correct}
+
+Let $r'$ be conjugate to $r$.  For a finitely supported nonnegative
+sequence $a=(a_1,\ldots,a_n)$, define
+\[
+ D_a:\ell_{r'}\longrightarrow \ell_1^n,
+ \qquad
+ D_a(b)= (a_1b_1,\ldots,a_nb_n).
+\]
+
+\begin{lemma}[Exact diagonal reduction]
+\label{lem:reduction}
+For $1\le p<\infty$ and $a_k\ge0$,
+\[
+ \norm{\sum_{k=1}^n a_k u_k}_{\FBL^{(p)}[\ell_r]}
+ =\pi_p(D_a:\ell_{r'}\to\ell_1^n),
+\]
+where $\pi_p$ denotes the absolutely $p$-summing norm.
+\end{lemma}
+
+\begin{proof}
+For $b=(b_k)\in\ell_{r'}$,
+\[
+ \left(\sum_{k=1}^n a_k u_k\right)(b)
+ =\sum_{k=1}^n a_k\abs{b_k}
+ =\norm{D_ab}_{\ell_1^n}.
+\]
+Therefore the functional representation of the free $p$-convex lattice
+gives
+\begin{align*}
+ \norm{\sum_{k=1}^n a_k u_k}_{\FBL^{(p)}[\ell_r]}
+ =\sup\Biggl\{&
+   \Bigl(\sum_{i=1}^m \norm{D_ab^{(i)}}_1^p\Bigr)^{1/p}:\\
+ &\sup_{x\in B_{\ell_r}}
+   \Bigl(\sum_{i=1}^m \abs{\langle b^{(i)},x\rangle}^p\Bigr)^{1/p}
+   \le1\Biggr\}.
+\end{align*}
+Because $(\ell_{r'})^*=\ell_r$, this is exactly the definition of
+$\pi_p(D_a)$.  Replacing the domain by $\ell_{r'}^n$ does not change the
+norm, by composing with the canonical coordinate projection and inclusion.
+\end{proof}
+
+Thus the central question is precisely the following operator-ideal
+problem:
+\[
+  \pi_p\bigl(D_a:\ell_{r'}\to\ell_1\bigr)
+  \quad\text{as a function of }a.
+\]
+
+\section{The answer is already contained in Garling's theorem}
+
+Garling uses three different parameters: the domain is $\ell_{P'}$, the
+range is $\ell_Q$, and the summing order is a third parameter, say $\sigma$.
+For $Q<2<P$, he writes
+\[
+ \frac1{\phi(P,Q)}=\frac1P+\frac1Q-\frac12.
+\]
+His Theorem 9(v) states that, whenever
+\[
+ 1\le Q\le2<P\le\infty,
+\]
+the diagonal map
+\[
+ d_a:\ell_{P'}\longrightarrow\ell_Q
+\]
+is $\sigma$-summing, for any finite summing order $\sigma$, if and only if
+$a\in\ell_{\phi(P,Q)}$.
+
+Apply this with
+\[
+  P=r,\qquad Q=1,\qquad \sigma=p.
+\]
+Then
+\[
+ \frac1{\phi(r,1)}
+ =\frac1r+1-\frac12
+ =\frac1r+\frac12,
+\]
+so $\phi(r,1)=t$ from Theorem~\ref{thm:main}.  In particular,
+\[
+ D_a\in\Pi_p(\ell_{r'},\ell_1)
+ \quad\Longleftrightarrow\quad
+ a\in\ell_t.
+\]
+
+Garling's printed statement is a membership characterization.  The uniform
+norm equivalence
+\[
+ \pi_p(D_a)\asympC{r,p}\norm{a}_{\ell_t}
+ \label{eq:garlingnorm}
+ \tag{3.1}
+\]
+follows by the closed graph theorem.  Indeed, the diagonal operators form a
+closed subspace of the Banach operator ideal $\Pi_p(\ell_{r'},\ell_1)$,
+because $\norm{T}\le\pi_p(T)$.  Hence
+\[
+ X_{r,p}=\{a:D_a\in\Pi_p(\ell_{r'},\ell_1)\},
+ \qquad \norm{a}_{X_{r,p}}=\pi_p(D_a),
+\]
+is a Banach sequence space.  Garling identifies it algebraically with
+$\ell_t$, and coordinatewise convergence shows that the identity map has a
+closed graph in both directions.  Formula \eqref{eq:garlingnorm} follows.
+Combining it with Lemma~\ref{lem:reduction} proves the theorem for
+nonnegative coefficients.
+
+Finally, the canonical basis of $\ell_r$ is $1$-suppression unconditional.
+Proposition 5.3 of the source paper implies that $(u_k)$ is
+$1$-suppression unconditional, hence $2$-unconditional, in every
+$\FBL^{(p)}[\ell_r]$.  Thus
+\[
+ \frac12\norm{\sum_k \abs{a_k}u_k}
+ \le \norm{\sum_k a_ku_k}
+ \le 2\norm{\sum_k \abs{a_k}u_k},
+\]
+and Theorem~\ref{thm:main} follows for arbitrary scalars.
+
+\section{A direct verification in the open range}
+
+Because the source paper warns that Garling's Theorem 9 contains some
+typographical errors, it is useful to verify the relevant conclusion without
+relying on the detailed case list.  This also pinpoints why the exponent is
+$1/r+1/2$.
+
+Let
+\[
+ \frac1v=\frac12-\frac1r.
+\]
+Then $v=2r/(r-2)$ and $v'=t$.
+
+\begin{proposition}
+\label{prop:direct}
+Let $2<r<\infty$, $2\le p<\infty$, and let $a=(a_k)_{k=1}^n$ be
+nonnegative.  If $B_p$ is an upper Khintchine constant, then
+\[
+ B_p^{-1}\norm{a}_{\ell_t}
+ \le \pi_p(D_a)
+ \le C_r\norm{a}_{\ell_t},
+\]
+where $C_r$ is a constant from the already known $p=2$ case.
+\end{proposition}
+
+\begin{proof}
+For the upper estimate, the inclusion theorem for absolutely summing
+operators gives $\pi_p(T)\le\pi_2(T)$ when $p\ge2$.  The known $p=2$
+case of Remark 9.48, together with Lemma~\ref{lem:reduction}, gives
+\[
+ \pi_2(D_a)\le C_r\norm{a}_{\ell_t}.
+\]
+
+For the lower estimate, fix a nonnegative sequence $c=(c_k)_{k=1}^n$.
+For every sign vector $\eps=(\eps_1,\ldots,\eps_n)\in\{-1,1\}^n$, put
+\[
+ x_{\eps}=(\eps_kc_k)_{k=1}^n\in\ell_{r'}^n.
+\]
+The numerator in the definition of $\pi_p(D_a)$ is
+\[
+ \left(\sum_{\eps}\norm{D_ax_{\eps}}_1^p\right)^{1/p}
+ =2^{n/p}\sum_{k=1}^n a_kc_k.
+\]
+The weak $p$-norm of the family $(x_{\eps})$ is bounded, by
+Khintchine's inequality, as follows:
+\begin{align*}
+ \sup_{y\in B_{\ell_r^n}}
+ \left(\sum_{\eps}
+   \abs{\sum_{k=1}^n \eps_kc_ky_k}^{p}\right)^{1/p}
+ &\le 2^{n/p}B_p
+ \sup_{y\in B_{\ell_r^n}}
+ \left(\sum_{k=1}^n c_k^2\abs{y_k}^2\right)^{1/2}\\
+ &=2^{n/p}B_p\norm{c}_{\ell_v}.
+\end{align*}
+The last equality is the norm formula for the multiplication operator
+$\ell_r^n\to\ell_2^n$ with multiplier $c$.  Consequently,
+\[
+ \pi_p(D_a)
+ \ge \frac{\sum_k a_kc_k}{B_p\norm{c}_{\ell_v}}.
+\]
+Taking the supremum over $c\ge0$ and using $(\ell_v)^*=\ell_{v'}$
+gives
+\[
+ \pi_p(D_a)\ge B_p^{-1}\norm{a}_{\ell_{v'}}
+ =B_p^{-1}\norm{a}_{\ell_t}.
+\]
+\end{proof}
+
+This proof shows directly that increasing the free-convexity parameter past
+$2$ does not change the exponent.  The upper estimate comes from the
+monotonicity $\pi_p\le\pi_2$, while the Rademacher test forces the same
+$\ell_t$ lower estimate for every finite $p$.
+
+\section{Complete classification for the canonical sequence spaces}
+
+The result above combines with the known cases in the source paper to give
+a compact classification.
+
+\begin{corollary}
+\label{cor:classification}
+For $1\le r\le\infty$, set $E_r=\ell_r$ when $r<\infty$ and
+$E_\infty=c_0$.  Let $(e_k)$ be the canonical basis of $E_r$.  For every
+$1\le p<\infty$, the sequence $(\abs{\delta_{e_k}})$ in
+$\FBL^{(p)}[E_r]$ is equivalent to the unit vector basis of $\ell_{\tau}$,
+where
+\[
+ \frac1\tau=\min\left\{1,\frac1r+\frac12\right\},
+ \qquad \frac1\infty:=0.
+\]
+Thus the answer is independent of every finite $p$.
+
+For $p=\infty$, by contrast, $(\abs{\delta_{e_k}})$ is equivalent to the
+original canonical basis of $E_r$.
+\end{corollary}
+
+\begin{proof}
+For $1\le r\le2$ and finite $p$, the moduli are equivalent to the
+$\ell_1$ basis by Proposition 5.14 and Example 5.15 of the source paper.
+For $2<r<\infty$, Theorem~\ref{thm:main} applies; for $r=\infty$, the
+$c_0$ case is Proposition 5.10 there.  The $p=\infty$ assertion follows
+from Proposition 6.4 of the source paper, since the canonical bases are
+unconditional.
+\end{proof}
+
+\section{Precisely what went wrong in the packet}
+
+\begin{enumerate}[leftmargin=2em]
+\item The reduction to $\pi_p(D_a:\ell_{r'}\to\ell_1)$ is correct.
+\item In Garling's notation, the letter controlling the domain
+      $\ell_{P'}$ is $P$, while the summing order is a separate variable.
+      One must substitute $P=r$, $Q=1$, and summing order $p$.  The packet
+      instead inserted the summing order into the exponent
+      $\phi(P,Q)$.
+\item The unconditionality citation should be Proposition 5.3, not
+      Proposition 5.2.
+\item The heuristic $p\to\infty$ is misleading.  For every fixed finite
+      $p$ the exponent is $1/r+1/2$, whereas at $p=\infty$ the sequence is
+      equivalent to the $\ell_r$ basis.  The equivalence constants are not
+      uniform as $p\to\infty$, and the order of the limits in $p$ and in
+      the support size matters.
+\end{enumerate}
+
+\section{Literature conclusion}
+
+No later paper explicitly advertised as an answer to Remark 9.48 was found
+in the searches carried out for this note.  Nevertheless, the full answer
+is already latent in the classical literature: Lemma~\ref{lem:reduction}
+turns the free-lattice question into exactly case (v) of Garling's 1974
+diagonal theorem.  Accordingly, the corrected identification should not be
+presented as a new operator-ideal result.
+
+\begin{thebibliography}{9}
+
+\bibitem{Garling1974}
+D. J. H. Garling,
+\emph{Diagonal mappings between sequence spaces},
+Studia Math. \textbf{51} (1974), 129--138.
+\url{https://eudml.org/doc/217909}
+
+\bibitem{OikhbergEtAl}
+T. Oikhberg, M. A. Taylor, P. Tradacete, and V. G. Troitsky,
+\emph{Free Banach lattices},
+J. Eur. Math. Soc. \textbf{28} (2026), no.~10, 4387--4514.
+\url{https://doi.org/10.4171/JEMS/1552}
+
+\bibitem{AvilesTradaceteVillanueva}
+A. Avil\'es, P. Tradacete, and I. Villanueva,
+\emph{The free Banach lattices generated by $\ell_p$ and $c_0$},
+Rev. Mat. Iberoam. \textbf{35} (2019), 1887--1902.
+\url{https://doi.org/10.4171/RMI/1097}
+
+\end{thebibliography}
+
+\end{document}

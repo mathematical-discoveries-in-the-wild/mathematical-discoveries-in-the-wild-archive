@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Partial Theorem}
+\newtheorem*{lemma}{Lemma}
+
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Partial Result: Finite Cotype is Necessary for Nonlinear Expander Families}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Manor Mendel and Assaf Naor,
+\emph{Towards a calculus for non-linear spectral gaps}, arXiv:0910.2041
+\cite{MN2009}. On PDF page 20, the authors ask for geometric conditions on
+metric spaces that admit expander families with respect to those spaces. For
+normed spaces they write that it is tempting to conjecture that having such an
+expander is equivalent to having finite cotype. In the parsed source this is
+\texttt{data/parsed/arxiv\_sources/0910.2041/zigzag-arxiv-v1.tex},
+lines 1238--1247.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+For a finite connected graph \(G=(V,E)\) and a metric space \((Y,d_Y)\), say
+that \(G\) has nonlinear Poincare constant at most \(\Gamma\) with respect to
+\((Y,d_Y^2)\) if every map \(f:V\to Y\) satisfies
+\[
+\frac{1}{|V|^2}\sum_{u,v\in V} d_Y(f(u),f(v))^2
+\le
+\frac{\Gamma}{|E|}\sum_{\{u,v\}\in E}d_Y(f(u),f(v))^2.
+\]
+A graph family is an expander family with respect to \(Y\) in this sense if
+the degrees are uniformly bounded, \(|V|\to\infty\), and the constants
+\(\Gamma\) are uniformly bounded.
+
+We use the Maurey--Pisier finite-representability theorem in the following
+standard form: a Banach space \(X\) has no finite cotype if and only if, for
+every \(n\) and every \(\eta>0\), \(\ell_\infty^n\) embeds linearly into \(X\)
+with distortion at most \(1+\eta\).
+
+\section*{Idea of the Proof}
+
+The obstruction is already visible for \(X=\ell_\infty\), as the source notes.
+The Maurey--Pisier theorem says that a Banach space with no finite cotype
+contains finite-dimensional copies of \(\ell_\infty^n\) at all scales. Every
+\(n\)-vertex graph embeds isometrically into \(\ell_\infty^n\) by distance
+coordinates. On a bounded-degree graph most vertex pairs are separated by
+order \(\log n\), while edges remain length one. The Poincare constant must
+therefore grow at least quadratically in \(\log n\), contradicting uniform
+boundedness.
+
+\section*{The Necessary Direction}
+
+\begin{theorem}
+Let \(X\) be a Banach space. Suppose there are finite connected graphs
+\(G_k=(V_k,E_k)\) with uniformly bounded degrees, \(|V_k|\to\infty\), and
+\[
+\sup_k \gamma(G_k,\|\cdot\|_X^2)<\infty
+\]
+in the nonlinear Poincare sense above. Then \(X\) has finite cotype.
+\end{theorem}
+
+\begin{proof}
+We prove the contrapositive. Assume that \(X\) has no finite cotype. Fix
+\(\eta\in(0,1)\). By Maurey--Pisier, for every \(n\) there is a linear map
+\(T_n:\ell_\infty^n\to X\) such that
+\[
+\|z\|_\infty\le \|T_n z\|_X\le (1+\eta)\|z\|_\infty
+\qquad (z\in\ell_\infty^n).
+\]
+
+Let \(G=(V,E)\) be a connected graph on \(n\) vertices with maximum degree at
+most \(D\). Define the distance-coordinate embedding
+\[
+\Phi:V\to \ell_\infty^V,\qquad
+\Phi(v)=(d_G(v,w))_{w\in V}.
+\]
+For \(u,v\in V\), the triangle inequality gives
+\(\|\Phi(u)-\Phi(v)\|_\infty\le d_G(u,v)\), while taking \(w=u\) gives the
+reverse inequality. Thus \(\Phi\) is an isometric embedding of the graph
+metric into \(\ell_\infty^V\). Put \(f=T_n\Phi:V\to X\). Then
+\[
+d_G(u,v)\le \|f(u)-f(v)\|_X\le (1+\eta)d_G(u,v)
+\]
+for all \(u,v\in V\). In particular, every edge has \(X\)-length at most
+\(1+\eta\).
+
+We also need the elementary bounded-degree distance estimate. There is a
+constant \(c_D>0\), depending only on \(D\), such that for every sufficiently
+large connected \(n\)-vertex graph of maximum degree at most \(D\),
+\[
+\frac{1}{n^2}\sum_{u,v\in V}d_G(u,v)^2\ge c_D(\log n)^2.
+\]
+Indeed, a ball of radius \(r\) in a graph of maximum degree \(D\) has at most
+\(C_D(D-1)^r\) vertices when \(D\ge 3\), and at most \(2r+1\) vertices when
+\(D\le 2\). Taking \(r\) to be a sufficiently small constant multiple of
+\(\log n\), at least half of the vertices are outside \(B(u,r)\) for every
+center \(u\), for all large \(n\).
+
+Therefore the Poincare constant of \(G\) with respect to \(X\) satisfies
+\[
+\gamma(G,\|\cdot\|_X^2)
+\ge
+\frac{\frac1{n^2}\sum_{u,v}\|f(u)-f(v)\|_X^2}
+{\frac1{|E|}\sum_{\{u,v\}\in E}\|f(u)-f(v)\|_X^2}
+\ge
+\frac{c_D(\log n)^2}{(1+\eta)^2}.
+\]
+This lower bound tends to infinity with \(n\). Hence no bounded-degree graph
+family with \(|V_k|\to\infty\) can have uniformly bounded nonlinear Poincare
+constants with respect to \(X\). This proves the contrapositive.
+\end{proof}
+
+\section*{Scope and Limitations}
+
+The theorem proves the necessary direction of the source's finite-cotype
+equivalence: existence of a normed-space expander family forces finite cotype.
+It does not prove the converse, namely that every Banach space of finite cotype
+admits such an expander family.
+
+\section*{Novelty and Search Bounds}
+
+The run indexes were searched for arXiv:0910.2041, nonlinear spectral gaps,
+finite cotype, \(\ell_\infty\), Maurey--Pisier, and expanders with respect to
+Banach spaces. No prior packet for this source question or this necessary
+direction was found. The argument is a short standard consequence of
+Maurey--Pisier and the distance embedding into \(\ell_\infty^n\), so human
+review should treat it as a clarification of a natural half of the conjecture,
+not as a solution of the full equivalence.
+
+\section*{Human Review Recommendation}
+
+Check the normalization of the nonlinear Poincare constant against the source's
+notation. The proof is invariant under the usual equivalent normalizations, but
+the packet states the edge-average form used in the source introduction.
+
+\begin{thebibliography}{9}
+\bibitem{MN2009}
+M. Mendel and A. Naor,
+\emph{Towards a calculus for non-linear spectral gaps}, arXiv:0910.2041, 2009.
+
+\bibitem{MP1976}
+B. Maurey and G. Pisier,
+\emph{Series de variables aleatoires vectorielles independantes et proprietes
+geometriques des espaces de Banach}, Studia Math. 58 (1976), 45--90.
+\end{thebibliography}
+
+\end{document}

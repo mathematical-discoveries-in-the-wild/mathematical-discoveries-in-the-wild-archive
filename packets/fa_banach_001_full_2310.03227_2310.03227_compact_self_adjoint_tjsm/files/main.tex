@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{Tracial Joint Spectral Measures for Compact Self-Adjoint Operators}
+\author{FA/Banach automatic math run}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target}
+
+The source is Otte Heinavaara, \emph{Tracial joint spectral measures},
+arXiv:2310.03227.  For Hermitian matrices $A,B$, the source constructs a
+positive measure $\mu_{A,B}$ on $\R^2$ satisfying
+\begin{equation}\label{eq:source}
+  \tr H(f)(xA+yB)=\int_{\R^2} f(ax+by)\,d\mu_{A,B}(a,b),
+\end{equation}
+where
+\[
+  H(f)(s)=\int_0^1 \frac{1-t}{t} f(ts)\,dt .
+\]
+The same paper notes that $\mu_{A,B}$ is necessarily unique away from the
+origin.  Section 1.8 lists as future work the ``existence and uniqueness of
+the measures $\mu_{A,B}$ for compact self-adjoint operators $A$ and $B$.''
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea Of The Proof}
+
+Compress $A$ and $B$ to increasing finite-dimensional subspaces.  The source
+gives a positive tracial joint spectral measure for each compression.  Although
+these measures need not have a uniformly bounded total mass near the origin,
+compactness gives exactly the bound that is needed on every annulus away from
+the origin: if a compact set $K\subset\R^2\setminus\{0\}$ is covered by
+finitely many strips where $|xa+yb|$ is bounded below, then the source identity
+bounds $\mu_n(K)$ by finitely many traces of functions of compact operators
+that vanish near zero.  Those traces are uniformly bounded because only
+finitely many eigenvalues of a compact operator can stay above a fixed
+threshold.  Vague compactness therefore gives a Radon limit on the punctured
+plane.  The trace identity passes to the limit by norm convergence of
+compressions and finite-rank spectral stability.  Finally, the projection
+identities determine the measure: ridge functions $f(xa+yb)$ with
+$f\in C_c(\R\setminus\{0\})$ linearly approximate every compactly supported
+continuous function on the punctured plane.
+
+\begin{theorem}[Compact self-adjoint tracial joint spectral measures]\label{thm:main}
+Let $A$ and $B$ be compact self-adjoint operators on a separable Hilbert space.
+Then there exists a unique positive Radon measure
+\[
+  \mu_{A,B}\quad\hbox{on}\quad \R^2\setminus\{0\}
+\]
+with support contained in
+\[
+  \{(a,b)\in\R^2: |a|+|b|\le \|A\|+\|B\|\}
+\]
+such that for every $x,y\in\R$ and every $f\in C_c(\R\setminus\{0\})$,
+\begin{equation}\label{eq:compact-identity}
+  \tr H(f)(xA+yB)
+  =\int_{\R^2\setminus\{0\}} f(ax+by)\,d\mu_{A,B}(a,b),
+\end{equation}
+where
+\[
+  H(f)(s)=\int_0^1 \frac{1-t}{t}f(ts)\,dt.
+\]
+The same identity holds for bounded Borel $f$ with compact support contained
+in $\R\setminus\{0\}$.
+\end{theorem}
+
+\begin{lemma}[Trace continuity away from zero]\label{lem:trace-continuity}
+Let $T_n,T$ be compact self-adjoint operators with $T_n\to T$ in operator
+norm.  If $h:\R\to\C$ is continuous on a neighborhood of
+$[-M,M]$, where $M>\sup_n\|T_n\|+\|T\|$, and $h$ vanishes on a neighborhood of
+$0$, then $h(T_n)$ and $h(T)$ are finite-rank for all large $n$ and
+\[
+  \tr h(T_n)\to \tr h(T).
+\]
+\end{lemma}
+
+\begin{proof}
+Choose $\eta>0$ such that $h=0$ on $[-\eta,\eta]$.  Since $T$ is compact, the
+spectral subspace of $T$ for $\R\setminus(-\eta/2,\eta/2)$ has finite
+dimension, say $N$.  For all large $n$, norm spectral stability or the
+min-max principle gives
+\[
+  \rank 1_{\R\setminus(-\eta,\eta)}(T_n)\le N.
+\]
+The continuous functional calculus gives $\|h(T_n)-h(T)\|\to0$.  The
+difference has rank at most $2N$, hence
+\[
+  |\tr h(T_n)-\tr h(T)|
+  \le 2N\|h(T_n)-h(T)\|\to0 .
+\]
+\end{proof}
+
+\begin{lemma}[Ridge uniqueness on the punctured plane]\label{lem:ridge}
+Let $\mu$ and $\nu$ be positive Radon measures on $\R^2\setminus\{0\}$ with
+support contained in a common bounded set.  Suppose that for every
+$u=(x,y)\in\R^2$ and every $f\in C_c(\R\setminus\{0\})$,
+\[
+  \int f(u\cdot z)\,d\mu(z)=\int f(u\cdot z)\,d\nu(z).
+\]
+Then $\mu=\nu$.
+\end{lemma}
+
+\begin{proof}
+It suffices to show that the linear span of the ridge functions
+$z\mapsto f(u\cdot z)$, with $f\in C_c(\R\setminus\{0\})$, is dense on every
+closed ball in the class of continuous functions that vanish in a neighborhood
+of the origin.
+
+Let $\varphi\in C_c(\R^2\setminus\{0\})$, and extend it continuously to the
+origin by setting $\varphi(0)=0$.  Fix a ball $\{|z|\le R\}$ containing the
+common supports of the measures.  Since $\varphi$ vanishes on a neighborhood
+of $0$, for any $m\ge1$ the function
+\[
+  \psi(z)=
+  \begin{cases}
+    \varphi(z)/|z|^{2m},&z\ne0,\\
+    0,&z=0,
+  \end{cases}
+\]
+is continuous on this ball.  By Weierstrass, choose a polynomial $Q$ such that
+$P(z)=|z|^{2m}Q(z)$ approximates $\varphi$ uniformly on the whole ball.  The
+polynomial $P$ has no homogeneous terms of degree $0$.  Each homogeneous
+polynomial of positive degree is a finite linear combination of powers
+$(u\cdot z)^d$, because symmetric tensors are spanned by pure powers.  Thus
+$P$ is a finite sum of such ridge polynomials, all of positive degree.
+
+For each term $(u\cdot z)^d$, replace $t^d$ on the bounded interval
+$[-\|u\|R,\|u\|R]$ by a function $f_{u,d}\in C_c(\R\setminus\{0\})$ that agrees
+with $t^d$ except possibly for $|t|<\tau$, and is zero near $0$.  Taking
+$\tau$ small makes the replacement uniformly small on the whole ball because
+$d\ge1$.  The resulting finite sum of allowed ridge functions approximates
+$\varphi$ uniformly on the common bounded support and also vanishes near the
+origin.  Equality of integrals for ridge functions therefore implies equality
+of integrals for $\varphi$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $P_n$ be an increasing sequence of finite-rank orthogonal projections that
+converges strongly to the identity.  Since $A$ and $B$ are compact,
+\[
+  A_n=P_nAP_n\to A,\qquad B_n=P_nBP_n\to B
+\]
+in operator norm.  Let $\mu_n=\mu_{A_n,B_n}$ be the finite-dimensional measure
+from the source, viewed as a measure on $\R^2\setminus\{0\}$.
+
+We first prove uniform local boundedness.  Let
+$K\subset\R^2\setminus\{0\}$ be compact.  There are finitely many
+directions $u_\ell=(x_\ell,y_\ell)$ and a number $\eta>0$ such that every
+$z\in K$ satisfies $|u_\ell\cdot z|\ge 2\eta$ for at least one $\ell$.  Choose
+$f_\ell\in C_c(\R\setminus\{0\})$, $0\le f_\ell\le1$, such that
+$f_\ell(t)=1$ on the possible values of $u_\ell\cdot z$ with
+$z\in K$ and $|u_\ell\cdot z|\ge2\eta$.  The source identity gives
+\[
+  \mu_n(K)
+  \le \sum_\ell \int f_\ell(u_\ell\cdot z)\,d\mu_n(z)
+  =\sum_\ell \tr H(f_\ell)(x_\ell A_n+y_\ell B_n).
+\]
+For each $\ell$, the operators $x_\ell A_n+y_\ell B_n$ converge in norm to
+the compact operator $x_\ell A+y_\ell B$, and $H(f_\ell)$ is continuous and
+vanishes near $0$.  Lemma~\ref{lem:trace-continuity} gives a uniform bound on
+these traces.  Hence $\sup_n\mu_n(K)<\infty$.
+
+By the usual diagonal compactness argument for Radon measures on the
+locally compact second countable space $\R^2\setminus\{0\}$, a subsequence of
+$(\mu_n)$ converges vaguely to a positive Radon measure $\mu$.  The finite
+dimensional support bound in the source gives
+\[
+  \supp\mu\subseteq \{(a,b): |a|+|b|\le \|A\|+\|B\|\}.
+\]
+
+Fix $x,y\in\R$ and $f\in C_c(\R\setminus\{0\})$.  If $(x,y)\ne(0,0)$, then
+$z\mapsto f(xa+yb)$ has compact support in $\R^2\setminus\{0\}$ after
+intersecting with the above bounded support.  Vague convergence and the
+finite-dimensional identity yield
+\[
+  \int f(xa+yb)\,d\mu
+  =\lim_{n\to\infty}\int f(xa+yb)\,d\mu_n
+  =\lim_{n\to\infty}\tr H(f)(xA_n+yB_n).
+\]
+The last limit equals $\tr H(f)(xA+yB)$ by Lemma~\ref{lem:trace-continuity},
+because $H(f)$ vanishes near $0$.  The case $(x,y)=(0,0)$ is immediate.
+Thus $\mu$ satisfies \eqref{eq:compact-identity}.
+
+If $\nu$ is another positive Radon measure satisfying the same identity, then
+the source support argument applies verbatim: testing with non-negative
+functions supported outside $[-M,M]$ shows that
+$\nu$ is supported in $|a|+|b|\le \|A\|+\|B\|$.  The identity gives equality
+of all ridge integrals for $\mu$ and $\nu$, so Lemma~\ref{lem:ridge} gives
+$\mu=\nu$.  Consequently the vague limit is independent of the chosen
+subsequence and of the approximating projections.
+
+Finally, bounded Borel tests supported away from $0$ follow from the continuous
+case by the monotone class theorem, applied to the finite projection measures
+and to the finite spectral measures of $xA+yB$ on the part of the spectrum
+where $H(f)$ can be nonzero.
+\end{proof}
+
+\begin{corollary}[Schatten moment identity]\label{cor:schatten}
+Let $A$ and $B$ be compact self-adjoint operators and let
+$p>0$.  If $xA+yB\in S_p$, then
+\[
+  \tr |xA+yB|^p
+  =p(p+1)\int_{\R^2\setminus\{0\}} |ax+by|^p\,d\mu_{A,B}(a,b).
+\]
+In particular this holds for all $x,y$ whenever $A,B\in S_p$.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:main} to the increasing cutoffs
+$f_m(t)=|t|^p\chi_m(t)$, where $\chi_m$ is supported away from zero and
+$\chi_m(t)\uparrow1$ for $t\ne0$.  Since
+$H(|\cdot|^p)(s)=|s|^p/(p(p+1))$, monotone convergence on both the spectral
+side and the measure side gives the identity.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is analytic rather than computational.  The script
+\texttt{code/verify\_diagonal\_non\_hs.py} checks a commuting diagonal compact
+model with eigenvalues comparable to $j^{-1/2}$, hence not Hilbert-Schmidt.  It
+prints finite annular masses for the explicit segment-measure formula while
+the partial second moments grow, illustrating why the full compact theorem
+must be formulated on the punctured plane with local annular finiteness.
+
+\section*{Novelty Check And Limitations}
+
+Cheap run indexes were searched for arXiv:2310.03227, tracial joint spectral
+measure keywords, compact self-adjoint operators, and $\mu_{A,B}$.  A bounded
+web search was also run for ``Properties of Tracial Joint Spectral Measures,''
+``Tracial joint spectral measures compact self-adjoint,'' and close variants.
+No available later answer was found; the source bibliography lists the
+follow-up as in preparation.
+
+The result proves uniqueness on $\R^2\setminus\{0\}$, matching the source's
+finite-dimensional uniqueness-away-from-zero convention.  It does not assign
+canonical mass at the origin, where the finite-dimensional construction is
+already not determined by the identities.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{HeinavaaraTJSM}
+O. Heinavaara, \emph{Tracial joint spectral measures}, arXiv:2310.03227,
+2023.
+\end{thebibliography}
+
+\end{document}

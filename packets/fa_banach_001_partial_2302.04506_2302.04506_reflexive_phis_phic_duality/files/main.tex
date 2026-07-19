@@ -1,0 +1,637 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{nosep}
+\allowdisplaybreaks
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\SSing}{\mathcal{SS}}
+\newcommand{\SCos}{\mathcal{SC}}
+\newcommand{\Iness}{\mathcal{In}}
+\newcommand{\PhiS}{\Phi\mathcal S}
+\newcommand{\PhiC}{\Phi\mathcal C}
+\newcommand{\PhiP}{\Phi_+}
+\newcommand{\PhiM}{\Phi_-}
+\newcommand{\PPhiP}{P\Phi_+}
+\newcommand{\PPhiM}{P\Phi_-}
+\newcommand{\ran}{\mathop{\rm ran}}
+\newcommand{\kerop}{\mathop{\rm ker}}
+\newcommand{\quot}{\mathbin{/}}
+\newcommand{\F}{\mathbb F}
+
+\definecolor{newblue}{RGB}{25,70,125}
+\newcommand{\newresult}{\textcolor{newblue}{\textsc{New reduction}}}
+
+\title{\(\Phi\)-Singular and \(\Phi\)-Cosingular Operators:\\
+Verification, Literature Status, and New Reductions}
+\author{Run \texttt{fa\_banach\_001}: upgraded solution packet}
+\date{Supplied report dated 22 June 2026; packet upgraded 23 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The four main arguments in the supplied packet are mathematically sound: reflexive
+adjoint duality becomes an equivalence; one-sided square embeddings/quotients identify
+\(\PhiS\) and \(\PhiC\) with the corresponding perturbation classes; subprojective and
+superprojective operators cannot be strict witnesses; and the stated extension/lifting
+obstructions are valid.  Two editorial corrections are needed: the supporting paper's
+relevant result is Corollary~2.3, not Corollary~2.4, and the corollary comparing strictness
+under adjoints must retain its stated extra hypothesis because strict singularity and strict
+cosingularity are not mutually dual in full generality.
+
+A literature search through 22 June 2026 found no proof or counterexample settling
+\(\SSing=\PhiS\) or \(\SCos=\PhiC\), and no later resolution of the associated subspace
+questions.  The report records several further rigorous reductions.  Globally, the
+operator-ideal question is exactly equivalent to the equality question.  One half of each
+same-component multiplication problem is automatic, and linearity would imply the other
+half.  Any known perturbation-class witness outside \(\PhiS\) must have an offending
+upper semi-Fredholm column with uncomplemented range; dually, an offending lower
+semi-Fredholm row must have uncomplemented kernel.  Finally, a new quotient-algebra
+criterion is proved: a Banach space with
+\(\Lop(X)/\SSing(X)\cong\F[\varepsilon]/(\varepsilon^n)\), \(n\ge2\), would immediately
+produce a strict operator in \(\PhiS(X)\setminus\SSing(X)\), with a dual statement for
+\(\PhiC\).  No construction realizing this last quotient by strictly singular (or strictly
+cosingular) operators was found.  Thus the global problem remains open, but the remaining
+bottleneck is made substantially more concrete.
+\end{abstract}
+
+\section*{Packet status}
+
+This is a stronger likely-valid partial-result packet for arXiv:2302.04506,
+Gonz\'alez--Salas-Brown, \emph{Two classes of operators related to the perturbation
+classes problem}.  It upgrades the earlier partial packet by preserving the four verified
+structural reductions and adding the operator-ideal equivalence, multiplication reduction,
+uncomplemented semi-Fredholm localization, and quotient-algebra strictness criterion
+from the supplied report.  It still does not prove or disprove the global equalities
+\(\SSing=\PhiS\) and \(\SCos=\PhiC\).
+
+\section{The problem and notation}
+
+Let \(X,Y\) be Banach spaces.  For \(S,K\in\Lop(X,Y)\), put
+\[
+ (S,K)x=(Sx,Kx)\colon X\longrightarrow Y\oplus Y,
+ \qquad
+ [S,K](x_1,x_2)=Sx_1+Kx_2\colon X\oplus X\longrightarrow Y.
+\]
+An operator is upper semi-Fredholm, written \(T\in\PhiP\), when it has closed range and
+finite-dimensional kernel; it is lower semi-Fredholm, written \(T\in\PhiM\), when its
+range is closed and finite-codimensional.  Whenever the relevant semi-Fredholm component
+is nonempty, define
+\begin{align*}
+ K\in\PhiS(X,Y)
+ &\iff (S,K)\in\PhiP\Longrightarrow S\in\PhiP
+       \quad(S\in\Lop(X,Y)),\\
+ K\in\PhiC(X,Y)
+ &\iff [S,K]\in\PhiM\Longrightarrow S\in\PhiM
+       \quad(S\in\Lop(X,Y)).
+\end{align*}
+Aiena--Gonz\'alez--Mart\'inez-Abej\'on identified these with Friedman's conditions
+\((C)\) and \((D)\), respectively, and proved
+\[
+ \SSing(X,Y)\subseteq\PhiS(X,Y)\subseteq\PPhiP(X,Y),
+ \qquad
+ \SCos(X,Y)\subseteq\PhiC(X,Y)\subseteq\PPhiM(X,Y).
+\]
+Gonz\'alez--Salas-Brown asked whether the first inclusions can be strict, whether the
+intermediate classes are linear subspaces or operator ideals, and whether they satisfy the
+same-component multiplication rules enjoyed by the perturbation classes
+\cite{Aiena2012,GSB2023}.
+
+\paragraph{Source evidence from the original paper.}
+The following crops are kept from the original source PDF in this packet.  They show the
+open \(\PhiS\) questions, the corresponding \(\PhiC\) questions, and the source duality
+proposition used in the reflexive-duality reduction.
+
+\clearpage
+\begin{center}
+\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+
+\clearpage
+\begin{center}
+\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{figures/phic_open_problem_crop.png}
+\end{center}
+
+\clearpage
+\begin{center}
+\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{figures/source_duality_proposition_crop.png}
+\end{center}
+\clearpage
+
+\paragraph{Literature status.}
+The 2012 paper explicitly left open whether conditions \((C)\) and \((D)\) characterize
+strictly singular and strictly cosingular operators.  The 2023 paper restated the problems
+for \(\PhiS\) and \(\PhiC\).  Searches by the exact terminology, by the older condition
+\((C)/(D)\) terminology, through citation trails, and through later work of the authors
+found no subsequent full proof or counterexample up to 22 June 2026.  Accordingly, this
+report does not claim to settle the global equality.
+
+\section{Audit of the supplied packet}
+
+This section states the four principal assertions in a corrected form and gives enough of
+each proof to make the verification independent.
+
+\subsection{Reflexive adjoint duality}
+
+\begin{proposition}[verified]
+Let \(X,Y\) be reflexive.  Whenever the displayed components are defined, for every
+\(K\in\Lop(X,Y)\),
+\[
+ K\in\PhiC(X,Y)\iff K^*\in\PhiS(Y^*,X^*),
+ \qquad
+ K\in\PhiS(X,Y)\iff K^*\in\PhiC(Y^*,X^*).
+\]
+\end{proposition}
+
+\begin{proof}
+Gonz\'alez--Salas-Brown proved the implications from the adjoint class to the original
+class.  For the converse, take, for example, \(K\in\PhiC(X,Y)\), and suppose
+\((A,K^*)\in\PhiP(Y^*,X^*\oplus X^*)\).  Reflexivity implies that every
+\(A\colon Y^*\to X^*\) has a preadjoint: under the canonical identifications there is
+\(S\colon X\to Y\) with \(A=S^*\).  Since
+\([S,K]^*=(S^*,K^*)\), semi-Fredholm duality gives \([S,K]\in\PhiM\).  Hence
+\(S\in\PhiM\), so \(A=S^*\in\PhiP\).  Thus \(K^*\in\PhiS\).  The other converse uses
+\((S,K)^*=[S^*,K^*]\) in exactly the same way.
+\end{proof}
+
+\begin{remark}
+The associated statement about strictness under adjoints must be qualified.  In general
+\(T^*\in\SSing\Rightarrow T\in\SCos\) and
+\(T^*\in\SCos\Rightarrow T\in\SSing\), but the converses fail on arbitrary Banach
+spaces.  Therefore the packet is correct only with its final qualification that the usual
+strictly singular/strictly cosingular adjoint duality must hold in the spaces at hand.
+\end{remark}
+
+\subsection{One-sided square hypotheses}
+
+\begin{proposition}[verified]
+Assume the relevant components are nonempty.
+\begin{enumerate}[label=\rm(\roman*)]
+\item If \(Y\oplus Y\) is isomorphic to a closed subspace of \(Y\), then
+\(\PhiS(X,Y)=\PPhiP(X,Y)\).
+\item If \(X\oplus X\) is isomorphic to a quotient of \(X\), then
+\(\PhiC(X,Y)=\PPhiM(X,Y)\).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For (i), let \(U\colon Y\oplus Y\to Y\) be an into isomorphism and write
+\(U(y_1,y_2)=Vy_1+Wy_2\).  If \(K\in\PPhiP(X,Y)\) and \((S,K)\in\PhiP\), then
+\(VS+WK=U(S,K)\in\PhiP\).  Proposition~2.2 of \cite{GSB2023} gives
+\(WK\in\PPhiP\), so perturbing by \(-WK\) yields \(VS\in\PhiP\).  Since \(V\) is an
+into isomorphism, this is equivalent to \(S\in\PhiP\).
+
+For (ii), let \(Q\colon X\to X\oplus X\) be onto and write
+\(Qx=(U_1x,U_2x)\).  Then \(U_1\) is onto.  If \(K\in\PPhiM\) and
+\([S,K]\in\PhiM\), then
+\([S,K]Q=SU_1+KU_2\in\PhiM\).  Subtracting \(KU_2\in\PPhiM\) gives
+\(SU_1\in\PhiM\).  Since \(U_1\) is onto, \(SU_1\) and \(S\) have exactly the same
+range, proving \(S\in\PhiM\).
+\end{proof}
+
+This is a genuine, though modest, sharpening of the isolated square-isomorphism
+hypotheses in \cite{GSB2023}: an embedding is enough on the \(\PhiS\) side and a quotient
+is enough on the \(\PhiC\) side.
+
+\subsection{Subprojective and superprojective barriers}
+
+Recall that \(K\colon X\to Y\) is subprojective if every infinite-dimensional subspace on
+which \(K\) is an isomorphism contains a further infinite-dimensional \(N\) for which
+\(K(N)\) is complemented in \(Y\).  It is superprojective if every infinite-codimensional
+\(M\subset Y\) for which \(Q_MK\) is onto is contained in an infinite-codimensional
+\(N\) for which \(K^{-1}(N)\) is complemented in \(X\) \cite{GP2024}.
+
+\begin{proposition}[verified]
+\begin{enumerate}[label=\rm(\roman*)]
+\item If \(\PhiP(X,Y)\ne\varnothing\) and \(K\) is subprojective, then
+\[
+ K\in\PPhiP(X,Y)\iff K\in\PhiS(X,Y)\iff K\in\SSing(X,Y).
+\]
+\item If \(\PhiM(X,Y)\ne\varnothing\) and \(K\) is superprojective, then
+\[
+ K\in\PPhiM(X,Y)\iff K\in\PhiC(X,Y)\iff K\in\SCos(X,Y).
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Only the outer implication in each line is new.  Suppose that a subprojective
+\(K\in\PPhiP\) is not strictly singular.  On some infinite-dimensional \(N\subset X\),
+\(K|_N\) is an isomorphism and \(K(N)\) is complemented.  If \(P\colon Y\to K(N)\)
+is a projection, \(R=(K|_N)^{-1}\), and \(A\in\PhiP(X,Y)\), set
+\(L=ARP\in\Lop(Y)\).  Then \((A-LK)|_N=0\), so \(A-LK\notin\PhiP\).  But
+\(LK\in\PPhiP\), contradicting perturbation stability.
+
+Dually, if a superprojective \(K\in\PPhiM\) is not strictly cosingular, choose
+infinite-codimensional \(N\subset Y\) so that \(Q_NK\) is onto and
+\(E=K^{-1}(N)\) is complemented.  The quotient \(Q_NK\) then has a bounded right
+inverse \(R\).  Given \(B\in\PhiM(X,Y)\), put \(T=RQ_NB\).  The range of
+\(B-KT\) is contained in \(N\), so \(B-KT\notin\PhiM\), again contradicting
+\(KT\in\PPhiM\).
+\end{proof}
+
+\begin{remark}[citation correction]
+The packet cites Corollary~2.4 of \cite{GP2024} for the statement that every map into a
+subprojective space is a subprojective operator, and every map out of a superprojective
+space is a superprojective operator.  The correct citation is Corollary~2.3.
+\end{remark}
+
+Combining the proposition with the source paper gives a symmetric useful consequence:
+if either \(X\) or \(Y\) is subprojective, then
+\(\SSing(X,Y)=\PhiS(X,Y)\); if either \(X\) or \(Y\) is superprojective, then
+\(\SCos(X,Y)=\PhiC(X,Y)\), whenever the corresponding component is defined.
+
+\subsection{Extension and lifting obstructions}
+
+\begin{proposition}[verified]
+Assume \(\PhiP(X,Y)\ne\varnothing\).
+If \(K\in\PPhiP(X,Y)\) is an isomorphism on an infinite-dimensional closed
+\(M\subset X\), then for every \(A\in\PhiP(X,Y)\) the map
+\[
+ A|_M(K|_M)^{-1}\colon K(M)\longrightarrow Y
+\]
+has no bounded extension to all of \(Y\).  Consequently, if every bounded map from a
+closed subspace of \(Y\) into \(Y\) extends to an operator on \(Y\), then
+\[
+ \SSing(X,Y)=\PhiS(X,Y)=\PPhiP(X,Y).
+\]
+
+Dually, assume \(\PhiM(X,Y)\ne\varnothing\).  If \(K\in\PPhiM(X,Y)\) and
+\(Q_MK\colon X\to Y/M\) is onto for an infinite-codimensional \(M\subset Y\), then
+for every \(B\in\PhiM(X,Y)\), the map \(Q_MB\) does not lift through \(Q_MK\).
+Thus, if \(X\) has the stated lifting property for arbitrary quotient maps, then
+\[
+ \SCos(X,Y)=\PhiC(X,Y)=\PPhiM(X,Y).
+\]
+\end{proposition}
+
+\begin{proof}
+If the first transfer map extended to \(L\in\Lop(Y)\), then \(A-LK\) would vanish on
+\(M\), while perturbation stability would put \(A-LK\) in \(\PhiP\), a contradiction.
+For the dual statement, a lift \(T\) satisfying \(Q_MKT=Q_MB\) would force
+\(\ran(B-KT)\subset M\), while perturbation stability would put \(B-KT\) in
+\(\PhiM\).  The two equality conclusions follow from the standard inclusion chains.
+\end{proof}
+
+The proof is correct as written.  The extension property is very strong, so it is best
+stated self-containedly rather than tied to literature on smooth nonlinear extensions.
+
+\section{The operator-ideal question is exactly the equality question}
+
+The following observation is already implicit in the 2012 maximality theorem, but it
+sharply organizes one of the source paper's questions.
+
+\begin{theorem}[maximality reduction]\label{thm:ideal}
+Under the natural convention that the classes are considered on all components where the
+semi-Fredholm class is nonempty:
+\begin{enumerate}[label=\rm(\roman*)]
+\item \(\PhiS\) is an operator ideal if and only if \(\PhiS=\SSing\) componentwise.
+\item \(\PhiC\) is an operator ideal if and only if \(\PhiC=\SCos\) componentwise.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Aiena--Gonz\'alez--Mart\'inez-Abej\'on proved that \(\SSing\) is the largest operator
+ideal whose defined components are contained in \(\PPhiP\), and that \(\SCos\) is the
+largest operator ideal whose defined components are contained in \(\PPhiM\)
+\cite[Propositions~3.5 and 3.8]{Aiena2012}.  If \(\PhiS\) were an operator ideal, the
+inclusion \(\PhiS\subseteq\PPhiP\) would therefore imply
+\(\PhiS\subseteq\SSing\), while the reverse inclusion is always true.  The converse is
+immediate because \(\SSing\) is an operator ideal.  The \(\PhiC\) proof is identical.
+\end{proof}
+
+Thus a positive answer to the global operator-ideal question would itself settle the
+strictness problem positively; conversely, any strict witness automatically proves that the
+corresponding class is not an operator ideal.
+
+\section{Linearity would force the full same-component multiplication rule}
+
+The source asks whether Proposition~2.2 for perturbation classes remains valid for
+\(\PhiS\) and \(\PhiC\).  Half of each assertion does not require any extra assumption.
+
+\begin{proposition}[\newresult: unconditional half of multiplication]\label{prop:mult}
+Let the indicated components be defined.
+\begin{enumerate}[label=\rm(\roman*)]
+\item If \(K\in\PhiS(X,Y)\) and \(L\in\Lop(Y)\), then \(LK\in\PhiS(X,Y)\).
+If \(U\in\Lop(X)\) is an automorphism, then \(KU\in\PhiS(X,Y)\).
+\item If \(K\in\PhiC(X,Y)\) and \(T\in\Lop(X)\), then \(KT\in\PhiC(X,Y)\).
+If \(V\in\Lop(Y)\) is an automorphism, then \(VK\in\PhiC(X,Y)\).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Suppose \((S,LK)\in\PhiP\).  With
+\(D(y_1,y_2)=(y_1,Ly_2)\), we have \(D(S,K)=(S,LK)\).  Whenever \(DT\) is upper
+semi-Fredholm, \(T\) is upper semi-Fredholm: on a finite-codimensional subspace where
+\(DT\) is bounded below, \(T\) is bounded below as well.  Hence \((S,K)\in\PhiP\), and
+\(S\in\PhiP\).  This proves \(LK\in\PhiS\).  If \((S,KU)\in\PhiP\), precomposition
+by \(U^{-1}\) gives \((SU^{-1},K)\in\PhiP\), so \(SU^{-1}\), and hence \(S\), is
+upper semi-Fredholm.
+
+Now suppose \([S,KT]\in\PhiM\).  Its range
+\(\ran S+\ran(KT)\) is a closed finite-codimensional subspace contained in
+\(\ran S+\ran K\).  Any linear subspace containing a closed finite-codimensional
+subspace is itself closed and finite-codimensional.  Thus \([S,K]\in\PhiM\), and
+\(S\in\PhiM\).  This proves \(KT\in\PhiC\).  The automorphism assertion follows by
+postcomposing \([S,VK]\) with \(V^{-1}\).
+\end{proof}
+
+\begin{corollary}[\newresult]\label{cor:linear-mult}
+If \(\PhiS(X,Y)\) is a linear subspace, then it satisfies both same-component
+multiplication rules
+\[
+ LK,\ KT\in\PhiS(X,Y)
+ \quad(L\in\Lop(Y),\ T\in\Lop(X)).
+\]
+If \(\PhiC(X,Y)\) is a linear subspace, it satisfies the analogous two rules.
+\end{corollary}
+
+\begin{proof}
+Every element \(T\) of a unital Banach algebra is a sum of two invertibles: choose
+\(\lambda>\|T\|\) and write
+\(T=(T+\lambda I)+(-\lambda I)\).  Apply the automorphism parts of
+Proposition~\ref{prop:mult} and then linearity.  The multiplication on the other side is
+already unconditional.
+\end{proof}
+
+Consequently, on a fixed component the unresolved multiplication question is no harder
+than the unresolved linearity question.
+
+\section{Where a known counterexample must hide: uncomplemented geometry}
+
+Both perturbation classes are contained in the inessential operators
+\(\Iness\) \cite{Aiena2012}.  This gives a useful obstruction not visible in the bare
+definition.
+
+\begin{proposition}[\newresult: complemented regularizer obstruction]\label{prop:comp}
+\begin{enumerate}[label=\rm(\roman*)]
+\item Let \(K\in\PPhiP(X,Y)\).  If \((S,K)\in\PhiP(X,Y\oplus Y)\) and
+\(\ran(S,K)\) is complemented in \(Y\oplus Y\), then \(S\in\PhiP(X,Y)\).
+\item Let \(K\in\PPhiM(X,Y)\).  If \([S,K]\in\PhiM(X\oplus X,Y)\) and
+\(\kerop[S,K]\) is complemented in \(X\oplus X\), then \(S\in\PhiM(X,Y)\).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For (i), complemented range and finite-dimensional kernel give a left regularizer
+\(R\colon Y\oplus Y\to X\) with
+\(R(S,K)=I_X-P\), where \(P\) has finite rank.  Write \(R=(A,B)\).  Then
+\[
+ AS=I_X-(BK+P).
+\]
+Because \(K\) is inessential and \(\Iness\) is an operator ideal,
+\(BK+P\in\Iness(X)\), so \(AS\) is Fredholm.  If a composition \(AS\) is upper
+semi-Fredholm, then \(S\) is upper semi-Fredholm.
+
+For (ii), complemented kernel and finite-codimensional range give a right regularizer
+\(R\colon Y\to X\oplus X\) with \([S,K]R=I_Y-Q\), \(Q\) finite rank.  Write
+\(Ry=(Ay,By)\).  Then
+\[
+ SA=I_Y-(KB+Q),
+\]
+which is Fredholm.  Hence \(\ran(S)\), containing the finite-codimensional closed range
+of \(SA\), is itself closed and finite-codimensional.
+\end{proof}
+
+\begin{corollary}[localization of all known failures]
+If \(K\in\PPhiP(X,Y)\setminus\PhiS(X,Y)\), every witnessing
+\(S\notin\PhiP\) with \((S,K)\in\PhiP\) has uncomplemented column range.  Dually, if
+\(K\in\PPhiM(X,Y)\setminus\PhiC(X,Y)\), every witnessing lower semi-Fredholm row has
+uncomplemented kernel.
+\end{corollary}
+
+This explains why the established counterexamples to
+\(\SSing=\PPhiP\) and \(\SCos=\PPhiM\) do not automatically answer the present
+question: their failure is concentrated in precisely the uncomplemented part of
+semi-Fredholm geometry.
+
+\section{A concrete route to a strict counterexample}
+
+The next criterion is algebraic and appears to be new.  It does not by itself construct the
+required Banach space, but it converts the open problem into a specific realization
+problem for an operator quotient algebra.
+
+\begin{theorem}[\newresult: local principal quotient criterion]\label{thm:local}
+Let \(X\) be infinite-dimensional and let
+\(\pi\colon\Lop(X)\to\mathcal A:=\Lop(X)/\SSing(X)\) be the quotient map.  Suppose
+\(K\in\Lop(X)\) satisfies
+\begin{enumerate}[label=\rm(\alph*)]
+\item \(K\notin\PhiP(X)\);
+\item every \(a\in\mathcal A\) is either invertible or belongs to the principal left ideal
+\(\mathcal A\pi(K)\).
+\end{enumerate}
+Then \(K\in\PhiS(X)\).  If \(\pi(K)\ne0\), this is a strict witness
+\(K\in\PhiS(X)\setminus\SSing(X)\).
+
+Dually, let \(\rho\colon\Lop(X)\to\mathcal B:=\Lop(X)/\SCos(X)\).  If
+\(K\notin\PhiM(X)\) and every element of \(\mathcal B\) is either invertible or lies in
+the principal right ideal \(\rho(K)\mathcal B\), then
+\(K\in\PhiC(X)\), strictly so when \(\rho(K)\ne0\).
+\end{theorem}
+
+\begin{proof}
+Suppose \((S,K)\in\PhiP(X,X\oplus X)\).  If \(\pi(S)\) is invertible, then \(S\) is
+Fredholm: invertibility modulo \(\SSing\subset\Iness\) is equivalent to Fredholmness.
+Otherwise \(\pi(S)=b\pi(K)\) for some \(b\in\mathcal A\).  Choose
+\(B\in\Lop(X)\) representing \(b\).  Then \(S-BK\in\SSing(X)\).  Therefore
+\((BK,K)\) is an upper semi-Fredholm operator, because it is a strictly singular
+perturbation of \((S,K)\).  But
+\[
+ (BK,K)=J_BK,\qquad J_Bx=(Bx,x),
+\]
+and \(J_B\colon X\to X\oplus X\) is an into isomorphism.  Hence \(J_BK\in\PhiP\)
+if and only if \(K\in\PhiP\), contradicting (a).  Thus only the first case is possible,
+so \(S\in\PhiP\) and \(K\in\PhiS\).
+
+For the dual statement, if \([S,K]\in\PhiM\) and \(\rho(S)\) is not invertible, write
+\(S-KB\in\SCos\).  Lower semi-Fredholm stability under strictly cosingular
+perturbations gives \([KB,K]\in\PhiM\).  Since
+\[
+ [KB,K]=K[B,I]
+\]
+and \([B,I]\colon X\oplus X\to X\) is onto, \([KB,K]\) and \(K\) have the same
+range.  This contradicts \(K\notin\PhiM\).  Hence \(\rho(S)\) is invertible and \(S\)
+is Fredholm.
+\end{proof}
+
+\begin{corollary}[dual-number realization target]\label{cor:dualnumbers}
+Let \(n\ge2\).
+\begin{enumerate}[label=\rm(\roman*)]
+\item If there is a unital algebra isomorphism
+\[
+ \Lop(X)/\SSing(X)\cong \F[\varepsilon]/(\varepsilon^n),
+\]
+then \(\PhiS(X)\ne\SSing(X)\).
+\item If there is a unital algebra isomorphism
+\[
+ \Lop(X)/\SCos(X)\cong \F[\varepsilon]/(\varepsilon^n),
+\]
+then \(\PhiC(X)\ne\SCos(X)\).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Choose \(K\) representing \(\varepsilon\).  Every nonunit in the truncated polynomial
+algebra is divisible by \(\varepsilon\), and \(K^n\) is strictly singular.  If \(K\) were
+upper semi-Fredholm, then every power \(K^m\) would be upper semi-Fredholm; but a
+strictly singular operator on an infinite-dimensional space cannot be upper semi-Fredholm.
+Thus Theorem~\ref{thm:local} applies.  The lower semi-Fredholm/strictly cosingular
+argument is dual.
+\end{proof}
+
+The criterion is stronger than merely asking for a nilpotent element modulo
+\(\SSing\).  The known triangular example from \cite[Example~2.3]{Aiena2012} already
+has a square-zero, non-strictly-singular operator
+\(K(m,z)=(0,Jm)\), but it is not \(\Phi\)-singular: the operator
+\(S(m,z)=(0,z)\) has infinite-dimensional kernel while \((S,K)\) is bounded below.  In
+algebraic terms, the quotient contains additional nonunits not lying in the principal ideal
+generated by \(\pi(K)\).  This is exactly what condition (b) in
+Theorem~\ref{thm:local} rules out.
+
+\section{Candidate constructions checked}
+
+The realization target in Corollary~\ref{cor:dualnumbers} was compared with the main
+``few operators'' constructions.
+
+\begin{enumerate}[leftmargin=2em]
+\item On a complex hereditarily indecomposable space, every operator is a scalar plus a
+strictly singular operator; hence \(\Lop(X)/\SSing(X)\cong\mathbb C\), with no nonzero
+radical element \cite{Ferenczi1997}.  Such spaces therefore cannot realize the target.
+
+\item Tarbard's spaces have a truncated-polynomial-looking \emph{Calkin} algebra: every
+operator is a polynomial in a nilpotent operator modulo the compact operators.  However,
+the distinguished nilpotent operator is itself strictly singular \cite{Tarbard2012}.  Passing
+from compact to strictly singular operators collapses the radical and does not yield
+Corollary~\ref{cor:dualnumbers}.
+
+\item The Gowers--Maurey shift construction produces, modulo strictly singular operators,
+a Wiener-type algebra generated by shifts \cite{GM1997}.  This algebra is semisimple and
+far from local; noninvertibility is controlled by zeros of the symbol and cannot be captured
+by one fixed principal radical generator.
+
+\item The recent reflexive quotient algebra of Pelczar-Barwacz is generated by an infinite
+family of projections with pointwise multiplication \cite{PB2024}.  Its many idempotents
+again make it nonlocal.
+
+\item Finite direct sums or nested families of incomparable/HI spaces naturally produce
+diagonal or triangular quotient algebras.  They supply nilpotents, but also nontrivial
+idempotents and the same geometric escape used in the known
+\(\PPhiP\setminus\PhiS\) example.
+\end{enumerate}
+
+No published construction located in the search realizes a nontrivial local principal
+algebra as \(\Lop(X)/\SSing(X)\) or \(\Lop(X)/\SCos(X)\).  This is now a sharply stated
+construction problem whose solution would settle the original strictness question
+negatively.
+
+\section{Conclusions}
+
+The supplied partial result survives detailed checking.  Its four main theorems are valid,
+with one citation correction and one necessary qualification in the adjoint corollary.  No
+full answer was found in the literature through 22 June 2026.
+
+The additional deductions establish the following.
+\begin{enumerate}[leftmargin=2em]
+\item The global operator-ideal question is equivalent, not merely related, to the equality
+question \(\PhiS=\SSing\) (and dually \(\PhiC=\SCos\)).
+\item On each component, linearity would automatically imply the entire same-component
+multiplication stability; half of that stability holds without linearity.
+\item A failure of \(\PhiS\) inside \(\PPhiP\) can occur only through an upper
+semi-Fredholm column with uncomplemented range; the dual failure requires an
+uncomplemented kernel.
+\item A local principal quotient algebra, in particular a truncated dual-number algebra
+modulo strictly singular operators, would give an explicit strict counterexample.
+\end{enumerate}
+
+The fourth point is the most concrete forward route uncovered here.  The unresolved step
+is no longer an operator calculation: it is the construction (or impossibility proof) of a
+Banach space with the required quotient algebra.  The new propositions in Sections 4--6
+have not been peer reviewed and should be checked independently before citation.
+
+\begin{thebibliography}{99}
+
+\bibitem{Aiena2012}
+P. Aiena, M. Gonz\'alez and A. Mart\'inez-Abej\'on,
+\emph{Characterizations of strictly singular and strictly cosingular operators by
+perturbation classes}, Glasgow Math. J. \textbf{54} (2012), 87--96.
+
+\bibitem{Friedman2002}
+T. L. Friedman,
+\emph{Relating strictly singular operators to the condition \(X<Y\bmod(S,T)\) and
+resulting perturbations}, Analysis (Munich) \textbf{22} (2002), 347--354.
+
+\bibitem{Ferenczi1997}
+V. Ferenczi,
+\emph{Operators on subspaces of hereditarily indecomposable Banach spaces},
+Bull. London Math. Soc. \textbf{29} (1997), 338--344.
+
+\bibitem{Gonzalez2003}
+M. Gonz\'alez,
+\emph{The perturbation classes problem in Fredholm theory},
+J. Funct. Anal. \textbf{200} (2003), 65--70.
+
+\bibitem{GP2024}
+M. Gonz\'alez and J. Pello,
+\emph{On the three-space property for subprojective and superprojective Banach spaces},
+arXiv:2412.10263 (2024).
+
+\bibitem{GPSB2020}
+M. Gonz\'alez, J. Pello and M. Salas-Brown,
+\emph{The perturbation classes problem for subprojective and superprojective Banach
+spaces}, J. Math. Anal. Appl. \textbf{489} (2020), 124191.
+
+\bibitem{GSB2023}
+M. Gonz\'alez and M. Salas-Brown,
+\emph{Two classes of operators related to the perturbation classes problem},
+Adv. Oper. Theory \textbf{8} (2023), Paper No.~41.
+
+\bibitem{GM1997}
+W. T. Gowers and B. Maurey,
+\emph{Banach spaces with small spaces of operators},
+Math. Ann. \textbf{307} (1997), 543--568.
+
+\bibitem{GMT2012}
+J. Gim\'enez, M. Gonz\'alez and A. Mart\'inez-Abej\'on,
+\emph{Perturbation of semi-Fredholm operators on products of Banach spaces},
+J. Operator Theory \textbf{68} (2012), 501--514.
+
+\bibitem{PB2024}
+A. Pelczar-Barwacz,
+\emph{A Banach space with an infinite dimensional reflexive quotient algebra
+\(\Lop(X)/\SSing(X)\)}, arXiv:2211.10170v4 (2024).
+
+\bibitem{Tarbard2012}
+M. Tarbard,
+\emph{Hereditarily indecomposable, separable \(\mathcal L_\infty\) Banach spaces with
+\(\ell_1\) dual having few but not very few operators},
+J. London Math. Soc. \textbf{85} (2012), 737--764.
+
+\bibitem{Weis1981}
+L. Weis,
+\emph{Perturbation classes of semi-Fredholm operators},
+Math. Z. \textbf{178} (1981), 429--442.
+
+\end{thebibliography}
+
+\end{document}

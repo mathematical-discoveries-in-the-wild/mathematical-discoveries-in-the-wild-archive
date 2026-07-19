@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\C}{\mathbb C}
+
+\title{Product Quotient \(C^*\)-Algebras Fail the Ball-Covering Property}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when its pure state space, i.e.
+\(K\), has a countable \(\pi\)-basis, the authors ask for a noncommutative
+version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+Let \((E_n)\) be a sequence of nonzero normed spaces.  Write
+\[
+        \ell_\infty(E_n)=\{x=(x_n):\sup_n\|x_n\|<\infty\}
+\]
+and
+\[
+        c_0(E_n)=\{x=(x_n):\|x_n\|\to0\}.
+\]
+For \(x\in\ell_\infty(E_n)\), denote its quotient class by \([x]\).  The
+quotient norm is
+\[
+        \|[x]\|=\limsup_{n\to\infty}\|x_n\|.
+\]
+
+\begin{theorem}
+\label{thm:banach-product}
+For every sequence \((E_n)\) of nonzero normed spaces,
+\[
+        \ell_\infty(E_n)/c_0(E_n)
+\]
+fails BCP.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:cstar-product}
+Let \((A_n)\) be a sequence of nonzero \(C^*\)-algebras.  Then the
+\(C^*\)-algebra
+\[
+        \prod_{n=1}^\infty A_n\Big/\bigoplus_{n=1}^\infty A_n
+\]
+fails BCP.  In particular, for every nonzero \(C^*\)-algebra \(A\), the
+sequence-algebra quotient \(\ell_\infty(A)/c_0(A)\) fails BCP.
+\end{corollary}
+
+\begin{corollary}[quotient instability]
+\label{cor:quotient-instability}
+BCP and UBCP are not preserved by \(C^*\)-quotients.  More precisely, if
+\(A\) is any nonzero separable \(C^*\)-algebra, then \(\ell_\infty(A)\) has
+UBCP, but its quotient \(\ell_\infty(A)/c_0(A)\) fails BCP.
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+This is the diagonal escape proof for \(\ell_\infty/c_0\), but with arbitrary
+nonzero fibers.  Given countably many proposed centers in the quotient, choose
+for each center infinitely many coordinates where it nearly attains its
+quotient norm.  On the selected coordinates, choose a unit vector in the fiber
+that is far enough from the corresponding center coordinate.  The resulting
+bounded sequence has quotient norm one, while every proposed center sees
+infinitely many coordinates on which the distance is at least its own norm.
+
+\section*{Proof}
+
+We use the standard equivalent form of BCP: a normed space \(Y\) has BCP iff
+there are countably many centers \(y_k\in Y\) such that
+\[
+        S_Y\subseteq \bigcup_{k=1}^\infty B(y_k,\|y_k\|).
+\]
+
+\begin{lemma}[one-coordinate escape]
+\label{lem:one-coordinate}
+Let \(E\ne\{0\}\) be a normed space and let \(y\in E\).  For every
+\(\varepsilon>0\), there is \(u\in S_E\) such that
+\[
+        \|u-y\|\ge \|y\|+1-\varepsilon.
+\]
+In particular \(\|u-y\|\ge \|y\|\) for a suitable choice of \(u\).
+\end{lemma}
+
+\begin{proof}
+If \(y=0\), take any \(u\in S_E\).  If \(y\ne0\), choose \(f\in S_{E^*}\) with
+\(f(y)=\|y\|\).  Since \(\|f\|=1\), after changing phase if necessary one can
+pick \(u\in S_E\) with \(\operatorname{Re} f(u)<-1+\varepsilon\).
+Then
+\[
+        \|u-y\|\ge \operatorname{Re} f(y-u)>\|y\|+1-\varepsilon.
+\]
+Taking, say, \(\varepsilon=1/2\) gives the final assertion.
+\end{proof}
+
+\begin{lemma}
+\label{lem:repeat-map}
+There is a map \(\pi:\mathbb N\to\mathbb N\) such that for every \(i\) and
+every \(N\), some \(k\ge N\) satisfies \(\pi(k)=i\).
+\end{lemma}
+
+\begin{proof}
+List \(\mathbb N\times\mathbb N\) as a sequence \((i_k,j_k)\), and put
+\(\pi(k)=i_k\), arranging the list so each first coordinate occurs infinitely
+often.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:banach-product}]
+Let \(\xi_i=[a^i]\), \(i\ge1\), be any countable family in
+\(\ell_\infty(E_n)/c_0(E_n)\), with representatives
+\[
+        a^i=(a^i_n)_{n\ge1}.
+\]
+We construct \(b=(b_n)\in\ell_\infty(E_n)\) such that \(\|[b]\|=1\) and
+\[
+        \|[b]-\xi_i\|\ge \|\xi_i\|,\qquad i\ge1.
+\]
+
+For each \(i\), choose an increasing sequence \((n_{i,r})_{r\ge1}\) such that
+\[
+        \|a^i_{n_{i,r}}\|\longrightarrow \|\xi_i\|.
+\]
+Let \(\pi\) be as in Lemma~\ref{lem:repeat-map}.  We recursively choose a
+strictly increasing sequence of coordinates \(m_k\).  Having chosen
+\(m_{k-1}\), choose \(m_k=n_{\pi(k),r}\) for some large \(r\) so that
+\[
+        m_k>m_{k-1}
+        \quad\text{and}\quad
+        \|a^{\pi(k)}_{m_k}\|>\|\xi_{\pi(k)}\|-1/k
+\]
+whenever \(\|\xi_{\pi(k)}\|>0\).  If \(\|\xi_{\pi(k)}\|=0\), only require
+\(m_k>m_{k-1}\).  In all cases \(m_k\) is chosen from the fixed subsequence
+\((n_{\pi(k),r})_r\).
+
+At coordinate \(m_k\), apply Lemma~\ref{lem:one-coordinate} in the nonzero
+space \(E_{m_k}\) to choose \(b_{m_k}\in S_{E_{m_k}}\) such that
+\[
+        \|b_{m_k}-a^{\pi(k)}_{m_k}\|\ge \|a^{\pi(k)}_{m_k}\|.
+\]
+For all other coordinates, set \(b_n=0\).  Then \(\|b\|_{\ell_\infty}=1\), and
+because the selected coordinates are infinite, \(\|[b]\|=1\).
+
+Fix \(i\).  Since \(\pi(k)=i\) for infinitely many \(k\), along that infinite
+subsequence the selected coordinates \(m_k\) are drawn from \((n_{i,r})_r\)
+with \(r\to\infty\), and hence
+\[
+        \|a^i_{m_k}\|\longrightarrow \|\xi_i\|.
+\]
+Together with
+\[
+        \|b_{m_k}-a^i_{m_k}\|\ge \|a^i_{m_k}\|
+\]
+this gives
+\[
+        \|[b]-\xi_i\|
+        =
+        \limsup_n\|b_n-a^i_n\|
+        \ge \|\xi_i\|.
+\]
+Thus \([b]\in S_{\ell_\infty(E_n)/c_0(E_n)}\) is in none of the open balls
+\(B(\xi_i,\|\xi_i\|)\).  Since the countable family \((\xi_i)\) was arbitrary,
+the quotient fails BCP.
+\end{proof}
+
+Corollary~\ref{cor:cstar-product} follows by taking \(E_n=A_n\) with its \(C^*\)-norm.  The
+quotient \(\prod A_n/\bigoplus A_n\) is exactly
+\(\ell_\infty(A_n)/c_0(A_n)\) as a Banach space.
+
+\begin{proof}[Proof of Corollary~\ref{cor:quotient-instability}]
+It remains only to prove that \(\ell_\infty(A)\) has UBCP when \(A\) is
+separable and nonzero.  Choose a countable dense set \(D\subseteq S_A\).  For
+each \(n\in\mathbb N\) and \(d\in D\), define \(c^{n,d}\in \ell_\infty(A)\) by
+\[
+        c^{n,d}_j=
+        \begin{cases}
+        4d,& j=n,\\
+        0,& j\ne n.
+        \end{cases}
+\]
+Then \(\|c^{n,d}\|=4\), so every ball \(B(c^{n,d},7/2)\) avoids the origin.
+Let \(x=(x_j)\in S_{\ell_\infty(A)}\).  Pick \(n\) with
+\(\|x_n\|>3/4\), put \(\alpha=\|x_n\|\), and set \(u=x_n/\alpha\).  Choose
+\(d\in D\) with \(\|d-u\|<1/64\).  At the \(n\)-th coordinate,
+\[
+        \|x_n-4d\|
+        \le 4-\alpha+4\|u-d\|
+        < 4-\frac34+\frac1{16}
+        < \frac72.
+\]
+At all other coordinates, \(\|x_j-c^{n,d}_j\|=\|x_j\|\le1<7/2\).  Hence
+\(\|x-c^{n,d}\|<7/2\), and the countable family of equal-radius balls
+\(B(c^{n,d},7/2)\) covers \(S_{\ell_\infty(A)}\).  Thus \(\ell_\infty(A)\)
+has UBCP, while Corollary~\ref{cor:cstar-product} says
+\(\ell_\infty(A)/c_0(A)\) fails BCP.
+\end{proof}
+
+\section*{Scope and Relation to the C*-Algebra Question}
+
+This gives a broad negative family for the source question.  It does not
+characterize arbitrary \(C^*\)-algebras, but it shows that sequence-algebra
+coronas are robustly outside BCP.  In particular, even when the fibers are
+separable or finite dimensional, the product quotient has too much tail room
+for any countable ball cover to capture its unit sphere.  The quotient
+instability corollary is also a warning: a C*-algebraic characterization of
+BCP cannot be based on quotient-stable invariants alone.
+
+\section*{Novelty and Search Bounds}
+
+The run indexes were searched for arXiv:2311.14257, product quotients,
+\(\ell_\infty/c_0\), Calkin/corona algebras, and BCP.  Web and local source
+checks found the classical scalar obstruction and the later Calkin-algebra
+paper \cite{BLS}, but no exact product-of-arbitrary-fibers statement in the
+run memory.  The theorem is a direct generalization of the scalar
+\(\ell_\infty/c_0\) diagonal construction.
+
+\section*{Human Review Focus}
+
+The proof is elementary.  Review the one-coordinate escape lemma and the
+diagonal construction of the coordinates \(m_k\), especially the fact that
+each center \(i\) is attacked along infinitely many coordinates where its
+representative nearly realizes the quotient norm.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{BLS}
+Qiyao Bao, Rui Liu, and Jie Shen,
+\emph{The ball-covering property of non-commutative spaces of operators on
+Banach spaces},
+arXiv:2412.07137, 2024.
+
+\end{thebibliography}
+
+\end{document}

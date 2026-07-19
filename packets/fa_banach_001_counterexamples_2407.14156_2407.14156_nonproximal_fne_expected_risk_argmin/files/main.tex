@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\prox}{\operatorname{prox}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\E}{\mathbb{E}}
+
+\title{A Non-Proximal Firmly Nonexpansive Expected-Risk Minimizer}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_04}}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample, likely valid, to the universal
+form of a future-work question in Bredies--Chirinos-Rodriguez--Naldi
+\cite{BCN}.  It does not contradict their numerical experiments.  It shows that
+extra statistical or structural assumptions are needed if one wants a theorem
+forcing learned firmly nonexpansive maps to be proximity operators.
+
+\section*{Source Question}
+
+The source paper studies the expected-risk problem
+\[
+        N^* \in \argmin_{N\in\mathcal N}
+        F(N), \qquad
+        F(N)=\int_{\mathcal X\times \mathcal X}
+             \|N(\bar x)-\bar y\|^2\,d\mu(\bar x,\bar y),
+\]
+where $\mathcal N$ is the class of nonexpansive maps.  The corresponding firmly
+nonexpansive learned operator is obtained by the change of variables
+$T=(\Id+N)/2$.
+
+Near the end of the ``Third experiment: proximity operators'' discussion, the
+authors ask whether learned firmly nonexpansive operators preferentially
+converge to proximity operators, or, more strongly, whether proximity operators
+are the only objects in the argmin of this expected-risk problem for ``real''
+data distributions $\mu$.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The obstruction is rotational.  A proximity operator of a convex function is a
+conservative gradient field, hence its circulation around every closed curve is
+zero.  But the average of the identity with a quarter-turn rotation is still
+firmly nonexpansive while retaining nonzero circulation.  If the data are
+generated exactly from that map and the input distribution has full support,
+zero expected risk forces every minimizer to agree with the rotational map
+everywhere.  Thus the unique learned firmly nonexpansive operator is not
+proximal.
+
+\section*{Counterexample}
+
+Let
+\[
+        R=\begin{pmatrix}0&-1\\ 1&0\end{pmatrix},
+        \qquad
+        T=\frac{\Id+R}{2}.
+\]
+Let $X$ be a standard Gaussian random vector in $\R^2$ and set $Z=T X$.
+Equivalently, in the paper's nonexpansive formulation, set
+\[
+        N=2T-\Id=R,\qquad Y=NX=RX.
+\]
+Let $\mu'$ be the law of $(X,Z)$ and let $\mu$ be the law of $(X,Y)$.
+Both distributions have finite second moments and therefore satisfy the source
+paper's expected-risk integrability hypothesis.
+
+\begin{theorem}
+For the direct firmly nonexpansive risk
+\[
+        F'(S)=\E\|S(X)-Z\|^2,
+        \qquad S \text{ firmly nonexpansive},
+\]
+the unique minimizer is $S=T$.  The minimizer $T$ is not a proximity operator of
+any proper lower semicontinuous convex function on $\R^2$.
+\end{theorem}
+
+\begin{proof}
+First, $T$ is firmly nonexpansive.  For every $h\in\R^2$,
+\[
+        \|Th\|^2
+        =\frac14\|h+Rh\|^2
+        =\frac12\|h\|^2
+        =\langle Th,h\rangle,
+\]
+because $R$ is orthogonal and skew-symmetric.  This is exactly the linear
+firm-nonexpansiveness condition
+$\|Th\|^2\leq \langle Th,h\rangle$.
+
+Since $Z=TX$, this $T$ has risk $F'(T)=0$, so the minimum risk is $0$.  If $S$
+is another firmly nonexpansive minimizer, then
+$\E\|S(X)-TX\|^2=0$, hence $S(X)=TX$ almost surely.  Firmly nonexpansive maps
+are continuous.  The standard Gaussian has positive mass on every nonempty open
+ball in $\R^2$.  Therefore, if $Sx\neq Tx$ at any point $x$, continuity would
+give a nonempty open ball on which $S$ and $T$ differ, contradicting almost-sure
+equality.  Hence $S=T$ on all of $\R^2$.
+
+It remains to show that $T$ is not proximal.  A proximity operator of a proper
+lower semicontinuous convex function is the gradient of a convex $C^1$ potential
+\cite{BCN,BC}; in particular, its circulation around every closed $C^1$ curve is
+zero.  On the unit circle $\gamma(t)=(\cos t,\sin t)$, $0\leq t\leq 2\pi$, we
+have $\gamma'(t)=R\gamma(t)$ and
+\[
+        \int_\gamma T(x)\cdot dx
+        =
+        \int_0^{2\pi}
+        \left\langle \frac{\gamma(t)+R\gamma(t)}2,
+        R\gamma(t)\right\rangle\,dt
+        =
+        \int_0^{2\pi}\frac12\,dt
+        =\pi.
+\]
+The circulation is nonzero, so $T$ is not conservative and hence cannot be a
+proximity operator.
+\end{proof}
+
+\begin{corollary}
+In the paper's nonexpansive formulation (CP), the distribution $\mu=\mathcal
+L(X,RX)$ has the unique minimizer $N=R$.  The associated learned firmly
+nonexpansive operator $(\Id+N)/2$ is non-proximal.
+\end{corollary}
+
+\begin{proof}
+The rotation $R$ is nonexpansive and has zero risk for (CP).  The same
+full-support argument used above shows that any nonexpansive zero-risk minimizer
+must agree with $R$ everywhere.  The associated firmly nonexpansive map is
+$(\Id+R)/2=T$, which is non-proximal by the theorem.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is analytic.  The included script
+\texttt{code/verify\_linear\_counterexample.py} checks:
+\begin{itemize}
+    \item the matrix inequality $T^*T\leq (T+T^*)/2$;
+    \item $\|2T-\Id\|=1$, so the corresponding (CP) variable is nonexpansive;
+    \item the unit-circle circulation is numerically $\pi$.
+\end{itemize}
+
+Command used:
+\[
+\texttt{conda run --no-capture-output -n sandbox python code/verify\_linear\_counterexample.py}.
+\]
+
+\section*{Novelty Check and Limitations}
+
+Local indexes searched: \texttt{registry\_index.tsv}, \texttt{solutions/index.tsv},
+\texttt{attempts/index.tsv}, and \texttt{proof\_gaps/index.tsv}, using
+\texttt{2407.14156}, \texttt{Learning Firmly}, \texttt{proximal argmin},
+\texttt{nonproximal}, and close firmly-nonexpansive/proximity phrases.  No
+duplicate packet or attempt was found.
+
+External web search on 2026-07-19 for the exact phrase ``are proximity
+operators the only objects in the argmin'', together with close variants
+involving ``Learning Firmly Nonexpansive Operators'', ``firmly nonexpansive'',
+``proximity operators'', and ``expected risk'', found the source paper and
+general plug-and-play/proximity-operator references, but no exact answer to this
+future-work question.
+
+The result refutes only the universal form of the question.  It does not rule
+out the softer ``preferential convergence'' possibility, nor positive theorems
+for natural-image distributions, separable gradient data, symmetry assumptions,
+or additional constraints that enforce conservativity/cyclic monotonicity.
+
+\section*{Human Review Recommendation}
+
+Reviewers should check that the source question is interpreted as a universal
+mathematical claim under the expected-risk framework, and that the distinction
+between the source paper's nonexpansive variable $N$ and the associated firmly
+nonexpansive variable $T=(\Id+N)/2$ is acceptable.  The proof itself reduces to
+standard two-dimensional Hilbert-space calculations.
+
+\begin{thebibliography}{9}
+
+\bibitem{BCN}
+K. Bredies, J. Chirinos-Rodriguez, and E. Naldi,
+\emph{Learning Firmly Nonexpansive Operators},
+arXiv:2407.14156v3, 2025.
+
+\bibitem{BC}
+H. H. Bauschke and P. L. Combettes,
+\emph{Convex Analysis and Monotone Operator Theory in Hilbert Spaces},
+2nd ed., Springer, 2017.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ellinf}{\ell_\infty}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\elltwo}{\ell_2}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{A Counterexample to the High-Dimensional Slow-Epsilon Orthogonality Hope}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is B. Burshteyn and A. Volberg,
+\emph{Orthogonality in normed spaces}, arXiv:2107.02491.  The paper defines
+$X_1$ to be $\eps$-almost orthogonal to $X_2$ when every unit vector
+in $X_1$ has distance at least $1-\eps$ to $X_2$.
+
+At the end of Section 7, after constructing examples with no exactly
+orthogonal high-dimensional subspace, the authors ask whether one might still
+always find high-dimensional subspaces which are nearly orthogonal with a
+sequence of errors tending to zero:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_question_crop.png}
+\end{center}
+
+The wording in that bookkeeping paragraph suppresses the dimension of $K_m$.
+Read literally without a dimension condition, the question is trivial in the
+positive direction: by the paper's Theorem 5.1, a one-dimensional exactly
+orthogonal subspace always exists whenever $\dim E<\dim F$.  The surrounding
+discussion, however, is about high-dimensional subspaces, especially the case
+$\dim K_m=\dim F_m-\dim E_m=m$.  This packet answers that natural
+high-dimensional version negatively.
+
+\section*{Definitions}
+
+For subspaces $E\subset F$ of a normed space and a nonzero subspace
+$K\subset F$, set
+\[
+  \alpha(K,E;F)=\inf\{\dist_F(k,E): k\in K,\ \|k\|_F=1\}.
+\]
+Thus $K$ is $\eps$-almost orthogonal to $E$ exactly when
+$\alpha(K,E;F)\ge 1-\eps$.
+
+We write $d(Y,Z)$ for Banach-Mazur distance between finite-dimensional normed
+spaces of the same dimension.
+
+\section*{Proof Intuition}
+
+There are two competing facts.  First, a quotient map detects orthogonality:
+if $q:F\to F/E$ and $\dist(k,E)\ge \alpha\|k\|$ on $K$, then $q|_K$ embeds
+$K$ into the quotient with distortion at most $1/\alpha$.
+
+Second, choose the quotient $F_m/E_m$ to be uniformly Hilbertian while keeping
+$F_m$ equal to $\ell_\infty^{O(m)}$.  Then a very orthogonal
+high-dimensional $K$ would make a high-dimensional subspace of
+$\ell_\infty^{O(m)}$ uniformly Hilbertian.
+
+That is impossible.  If an $r$-dimensional subspace of $\ell_\infty^N$ were
+$D$-Euclidean, the $N$ coordinate functionals would cover the Euclidean sphere
+by $N$ pairs of caps of angular size about $1/D$.  Spherical cap estimates
+force $N\ge \exp(c r/D^2)$, or $D\ge c\sqrt{r/\log N}$.
+
+\begin{lemma}[Euclidean subspaces of $\ell_\infty^N$ are logarithmically small]
+\label{lem:linfty}
+There is a universal constant $c>0$ such that, for every
+$r$-dimensional subspace $K\subset \ell_\infty^N$,
+\[
+  d(K,\ell_2^r)\ge c\sqrt{\frac{r}{\log(2N)}}.
+\]
+\end{lemma}
+
+\begin{proof}
+The assertion is trivial after decreasing $c$ when the right hand side is
+less than $1$, so suppose $K$ is $D$-isomorphic to $\ell_2^r$ with $D\ge 1$.
+After rescaling the Euclidean norm $|\cdot|$ on $K$, we may assume
+\[
+  \|x\|_\infty \le |x| \le D\|x\|_\infty\qquad (x\in K).
+\]
+Let $f_1,\dots,f_N$ be the coordinate functionals restricted to $K$.  The
+first inequality gives $\|f_i\|_{(K,|\cdot|)^*}\le 1$.  Hence
+$f_i(x)=\langle x,a_i\rangle$ for some $a_i$ in the Euclidean unit ball.
+The second inequality implies that for every $x$ on the Euclidean unit sphere
+$S^{r-1}$,
+\[
+  \max_{1\le i\le N} |\langle x,a_i\rangle|
+  =\|x\|_\infty \ge \frac{1}{D}.
+\]
+Thus $S^{r-1}$ is covered by the $N$ sets
+\[
+  \{x\in S^{r-1}: |\langle x,a_i\rangle|\ge 1/D\}.
+\]
+For each nonzero $a_i$, normalizing $a_i$ only enlarges this set.  The
+standard spherical cap estimate gives, for a universal $c_0>0$,
+\[
+  \sigma\{x\in S^{r-1}: |\langle x,u\rangle|\ge 1/D\}
+  \le 2\exp(-c_0 r/D^2)
+\]
+for every unit vector $u$.  Therefore
+$1\le 2N\exp(-c_0 r/D^2)$, whence
+$D\ge c\sqrt{r/\log(2N)}$ after changing constants.
+\end{proof}
+
+\begin{theorem}
+\label{thm:main}
+There are universal constants $A,C<\infty$, a Banach space $X$, and
+finite-dimensional subspaces $E_m\subset F_m\subset X$ such that
+\[
+  \dim(F_m/E_m)=m
+\]
+and every $r$-dimensional subspace $K\subset F_m$ satisfies
+\[
+  \alpha(K,E_m;X)\le C\sqrt{\frac{\log(Am)}{r}}.
+\]
+In particular, for $r=m$,
+\[
+  \sup_{\dim K=m}\alpha(K,E_m;X)
+  \le C\sqrt{\frac{\log(Am)}{m}}\longrightarrow 0.
+\]
+Consequently there is no sequence $\eps_m\to 0$ for which these pairs admit
+$m$-dimensional subspaces $K_m\subset F_m$ that are $1-\eps_m$ orthogonal to
+$E_m$.
+\end{theorem}
+
+\begin{proof}
+We use Kashin's theorem in the following standard form: there are universal
+constants $A$ and $C_K$ such that for every $m$ there is an integer
+$N_m\le Am$ and an $m$-dimensional subspace
+$G_m\subset \ell_1^{N_m}$ with
+\[
+  d(G_m,\ell_2^m)\le C_K.
+\]
+
+Let $F_m=\ell_\infty^{N_m}$ and define
+\[
+  E_m=G_m^\perp
+  =\{x\in \ell_\infty^{N_m}: g(x)=0\text{ for all }g\in G_m\},
+\]
+where $\ell_1^{N_m}$ is identified with $(\ell_\infty^{N_m})^*$ in the usual
+coordinate duality.  The quotient $Q_m=F_m/E_m$ is isometric to $G_m^*$.
+Since $G_m$ is $C_K$-Hilbertian, so is $G_m^*$; hence
+\[
+  d(Q_m,\ell_2^m)\le C_K.
+\]
+Embed the spaces $F_m$ as disjoint coordinate blocks in
+$X=(\oplus_{m=1}^\infty F_m)_\infty$.  For vectors in a single block,
+distances to $E_m$ computed in $X$ and in $F_m$ agree.
+
+Fix an $r$-dimensional subspace $K\subset F_m$ and put
+$\alpha=\alpha(K,E_m;F_m)$.  If $\alpha=0$, there is nothing to prove.
+Assume $\alpha>0$, and let $q_m:F_m\to Q_m$ be the quotient map.  For
+$k\in K$,
+\[
+  \alpha\|k\|_{F_m}\le \|q_m k\|_{Q_m}\le \|k\|_{F_m}.
+\]
+Thus $q_m|_K$ is an isomorphism from $K$ onto the $r$-dimensional subspace
+$q_mK\subset Q_m$ with distortion at most $1/\alpha$.  Since every subspace
+of the $C_K$-Hilbertian space $Q_m$ is again $C_K$-Hilbertian,
+\[
+  d(K,\ell_2^r)\le \frac{C_K}{\alpha}.
+\]
+On the other hand, $K\subset F_m=\ell_\infty^{N_m}$, so Lemma
+\ref{lem:linfty} gives
+\[
+  d(K,\ell_2^r)\ge c\sqrt{\frac{r}{\log(2N_m)}}.
+\]
+Combining these inequalities and using $N_m\le Am$ yields
+\[
+  \alpha\le \frac{C_K}{c}\sqrt{\frac{\log(2Am)}{r}},
+\]
+which is the desired estimate after absorbing constants.
+
+Taking $r=m$ makes the right hand side tend to zero.  If
+$\eps_m\to 0$, then $1-\eps_m\to 1$, so for all sufficiently large $m$ no
+$m$-dimensional $K_m\subset F_m$ can satisfy
+$\alpha(K_m,E_m;X)\ge 1-\eps_m$.
+\end{proof}
+
+\section*{Verification and Scope}
+
+The proof is analytic and uses no computation.  The nontrivial external input
+is Kashin's theorem that $\ell_1^{O(m)}$ contains $m$-dimensional subspaces
+uniformly isomorphic to Hilbert space.  The obstruction for subspaces of
+$\ell_\infty^N$ is proved above from a spherical-cap estimate.
+
+The result is stronger than just a negative answer for
+$\dim K_m=m$: it rules out any $r_m$-dimensional nearly orthogonal subspaces
+with $r_m/\log m\to\infty$.  It does not contradict the one-dimensional
+Krein-Krasnoselski-Milman/Borsuk-Ulam theorem used in the source paper.
+
+\section*{Novelty Check}
+
+The local run indexes were searched for arXiv:2107.02491, the title
+\emph{Orthogonality in normed spaces}, and phrases including
+\texttt{slowly going to zero}, \texttt{K\_m}, \texttt{Birkhoff-James}, and
+\texttt{finitely strictly singular lambda-adjusted}.  No existing packet for
+this source question was found; only unrelated Birkhoff-James packets and
+targets appeared.
+
+Web searches for exact phrases such as
+\texttt{"2107.02491" "slowly going to zero"},
+\texttt{"Orthogonality in normed spaces" "K\_m"}, and
+\texttt{"finitely strictly singular" "lambda-adjusted" "dim M\_n"}
+found the source paper and related orthogonality papers, but no explicit later
+solution of the Section 7 high-dimensional slow-epsilon question.  The proof
+should be reviewed for novelty against the local theory of Banach spaces:
+the ingredients are classical, but the assembly appears to directly answer
+the source's high-dimensional question.
+
+\begin{thebibliography}{9}
+
+\bibitem{BV}
+B. Burshteyn and A. Volberg,
+\emph{Orthogonality in normed spaces},
+arXiv:2107.02491, 2021.
+
+\bibitem{Kashin}
+B. S. Kashin,
+\emph{Diameters of some finite-dimensional sets and classes of smooth
+functions},
+Izv. Akad. Nauk SSSR Ser. Mat. 41 (1977), 334--351.
+
+\bibitem{FLM}
+T. Figiel, J. Lindenstrauss and V. D. Milman,
+\emph{The dimension of almost spherical sections of convex bodies},
+Acta Math. 139 (1977), 53--94.
+
+\end{thebibliography}
+
+\end{document}

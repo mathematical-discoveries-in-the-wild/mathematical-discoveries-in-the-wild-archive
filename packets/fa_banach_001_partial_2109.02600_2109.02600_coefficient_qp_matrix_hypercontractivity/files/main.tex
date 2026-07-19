@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Sp}{S_p^m}
+
+\title{A Coefficient-Space Extension of Matrix Hypercontractivity}
+\author{Run fa\_banach\_001, lane 19}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Arunachalam and Doriguello ask in Future work item 4 of
+arXiv:2109.02600 whether one can prove a general $(q,p)$-hypercontractive
+statement for matrices, first over $\{0,1\}^n$ and then over $\Z_r^n$.
+The relevant source passage is reproduced in Figure~\ref{fig:open}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Future work item 4 in arXiv:2109.02600, PDF page 9.}
+\label{fig:open}
+\end{figure}
+
+This packet proves a partial answer for the Fourier-coefficient formulation
+suggested by their Result 1 / Theorem 3.3. It does not settle the broader
+physical-space formulation
+\[
+  \|T_\rho f\|_{L_q(S_q)} \leq \|f\|_{L_p(S_p)}.
+\]
+
+\section*{Notation}
+
+Let $G=\Z_r^n$ with normalized counting measure and dual characters
+$\chi_S(x)=\omega_r^{S\cdot x}$, where $\omega_r=e^{2\pi i/r}$. For
+$f:G\to \C^{m\times m}$ set
+\[
+  \widehat f(S)=\E_{x\in G} f(x)\overline{\chi_S(x)}.
+\]
+For $1\leq p<\infty$ write
+\[
+  \|f\|_{L_p(S_p)}
+  =\left(\E_{x\in G}\|f(x)\|_p^p\right)^{1/p},
+  \qquad
+  \|a\|_{\ell_q(S_p)}
+  =\left(\sum_S \|a(S)\|_p^q\right)^{1/q}.
+\]
+The usual modifications are made for $q=\infty$. Here $\|\cdot\|_p$ denotes
+the unnormalized Schatten $p$-norm.
+
+For $1\leq p\leq 2$ define
+\[
+  \beta_r(p)^2
+  =
+  \frac{(p-1)\bigl(1-(p-1)^{r-1}\bigr)}{(r-1)(2-p)},
+\]
+with the continuous value $\beta_r(2)=1$. This is the noise constant in
+Theorem 3.3 of arXiv:2109.02600.
+
+\section*{Proof Intuition}
+
+The source theorem is already the endpoint $q=2$ for the coefficient transform
+$f\mapsto \{\rho^{|S|}\widehat f(S)\}_S$. A second endpoint is free:
+Schatten-valued Hausdorff--Young sends $L_p(S_p)$ into
+$\ell_{p'}(S_p)$ without any noise loss. Interpolating the numerical sequence
+of coefficient norms between these two endpoints gives every
+$2\leq q\leq p'$, and $\ell_q\leq \ell_{p'}$ gives the remaining
+$q\geq p'$ range. Finally, scalar degree-one character sums show that no
+dimension-free coefficient inequality can hold for $q<2$.
+
+\section*{Theorem}
+
+\begin{theorem}[Coefficient $(q,p)$ matrix hypercontractivity]
+\label{thm:main}
+Let $r\geq 2$, $n,m\geq 1$, $1\leq p\leq 2$, and $2\leq q\leq\infty$.
+Let $p'=p/(p-1)$, with $p'=\infty$ when $p=1$.
+
+If $2\leq q<p'$, define $a=a(p,q)$ by
+\[
+  \frac1q=\frac a2+\frac{1-a}{p'}.
+\]
+Then, for every $f:\Z_r^n\to \C^{m\times m}$ and every
+$0\leq \rho\leq \beta_r(p)^a$,
+\[
+  \left(\sum_{S\in \Z_r^n}\rho^{q|S|}\|\widehat f(S)\|_p^q\right)^{1/q}
+  \leq
+  \left(\E_{x\in \Z_r^n}\|f(x)\|_p^p\right)^{1/p},
+\]
+with the evident supremum norm interpretation when $q=\infty$.
+
+If $q\geq p'$, including the endpoint $q=p'$, the same estimate holds for
+every $0\leq \rho\leq 1$.
+For $p=1$ this means that the finite-$q$ conclusion has only the trivial
+$\rho=0$ endpoint, while the $q=\infty$ endpoint has $\rho\leq 1$.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+  A=\|f\|_{L_p(S_p)}, \qquad b_S=\|\widehat f(S)\|_p.
+\]
+The source theorem gives the coefficient endpoint
+\[
+  \left(\sum_S \beta_r(p)^{2|S|} b_S^2\right)^{1/2}\leq A.
+  \tag{1}
+\]
+
+We also need the Schatten-valued Hausdorff--Young endpoint
+\[
+  \left(\sum_S b_S^{p'}\right)^{1/p'}\leq A,
+  \tag{2}
+\]
+with the usual supremum interpretation for $p=1$. For completeness we recall
+the short proof. The Fourier transform is contractive from
+$L_1(S_1)$ to $\ell_\infty(S_1)$ by the triangle inequality. It is an isometry
+from $L_2(S_2)$ to $\ell_2(S_2)$ by entrywise Parseval for the Hilbert--Schmidt
+norm. Finite-dimensional complex interpolation of Schatten classes and
+sequence spaces gives (2) for every $1\leq p\leq 2$.
+
+Assume first that $2\leq q<p'$ and choose $a\in(0,1]$ as in the statement.
+If $\rho\leq \beta_r(p)^a$, then
+\[
+\begin{aligned}
+  \sum_S \rho^{q|S|}b_S^q
+  &\leq
+  \sum_S \beta_r(p)^{aq|S|} b_S^q  \\
+  &=
+  \sum_S \bigl(\beta_r(p)^{|S|}b_S\bigr)^{aq}
+          b_S^{(1-a)q}.
+\end{aligned}
+\]
+Since $aq/2+(1-a)q/p'=1$, Holder's inequality and (1)--(2) imply
+\[
+  \sum_S \rho^{q|S|}b_S^q
+  \leq
+  \left(\sum_S \beta_r(p)^{2|S|}b_S^2\right)^{aq/2}
+  \left(\sum_S b_S^{p'}\right)^{(1-a)q/p'}
+  \leq A^q.
+\]
+Taking $q$th roots proves the first range.
+
+If $q\geq p'$, then $0\leq\rho\leq 1$ and monotonicity of sequence norms give
+\[
+  \|\{\rho^{|S|}\widehat f(S)\}\|_{\ell_q(S_p)}
+  \leq
+  \|\{\widehat f(S)\}\|_{\ell_q(S_p)}
+  \leq
+  \|\{\widehat f(S)\}\|_{\ell_{p'}(S_p)}
+  \leq A,
+\]
+again using (2). This proves the theorem.
+\end{proof}
+
+\section*{A Necessary Range Obstruction}
+
+\begin{proposition}
+\label{prop:obstruction}
+Fix $1\leq p\leq 2$ and $1\leq q<2$. There is no $\rho>0$ and no constant
+$C<\infty$, independent of $n$, such that the coefficient estimate
+\[
+  \left(\sum_S \rho^{q|S|}|\widehat f(S)|^q\right)^{1/q}
+  \leq C\left(\E_x |f(x)|^p\right)^{1/p}
+\]
+holds for all scalar functions on $\Z_2^n$.
+\end{proposition}
+
+\begin{proof}
+Let $f_n(x)=\sum_{j=1}^n (-1)^{x_j}$ on $\Z_2^n$. Its only nonzero Fourier
+coefficients are the $n$ degree-one coefficients, each equal to $1$. Therefore
+the left side is $\rho n^{1/q}$. Since $p\leq 2$ and the measure is normalized,
+\[
+  \left(\E |f_n|^p\right)^{1/p}
+  \leq
+  \left(\E |f_n|^2\right)^{1/2}
+  =
+  \sqrt n.
+\]
+The claimed inequality would force
+$\rho n^{1/q}\leq C\sqrt n$ for every $n$, impossible because
+$1/q>1/2$.
+\end{proof}
+
+\section*{Scope and Verification Notes}
+
+Theorem~\ref{thm:main} gives a dimension-free general $(q,p)$ theorem for the
+Fourier-coefficient version of matrix hypercontractivity, and
+Proposition~\ref{prop:obstruction} shows that the qualitative range
+$q\geq2$ is best possible for that formulation.
+
+This remains a partial answer to the source future-work question, because the
+source question is informal and may also intend a physical-space
+$L_p(S_p)\to L_q(S_q)$ estimate for the noise operator. No such estimate is
+proved here, and no optimality of the noise constants in
+Theorem~\ref{thm:main} is claimed.
+
+The duplicate/literature check searched the run indexes for arXiv:2109.02600,
+the title, matrix hypercontractivity, generalized $(q,p)$ hypercontractivity,
+Schatten, and $\Z_r$, and also searched the web for exact combinations of
+``matrix-valued hypercontractivity'', ``q,p'', ``Schatten'', and ``Z\_r''.
+No existing run packet or exact later answer to this coefficient formulation
+was found.
+
+\section*{References}
+
+\begin{enumerate}
+\item S. Arunachalam and J. F. Doriguello,
+\emph{Matrix hypercontractivity, streaming algorithms and LDCs: the large
+alphabet case}, arXiv:2109.02600; ACM Transactions on Computation Theory
+16(4), Article 21, 2024.
+\end{enumerate}
+
+\end{document}

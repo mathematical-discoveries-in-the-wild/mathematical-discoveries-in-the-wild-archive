@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\Ee}{\mathbb{E}}
+
+\title{A weak-$L^4$ endpoint obstruction for empirical covariance}
+\author{Candidate counterexample packet for arXiv:1509.02322}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid.  The result gives a complete negative
+answer to the natural square-root endpoint formulation under the source's
+weak marginal-tail hypothesis.  It does not rule out a logarithmically
+weakened endpoint estimate or address a uniform finite-fourth-moment theorem.}}
+\end{center}
+
+\section{Source question and precise scope}
+
+Guedon, Litvak, Pajor, and Tomczak-Jaegermann study the empirical covariance
+fluctuation
+\[
+ S=\sup_{a\in S^{n-1}}
+ \left|\frac1N\sum_{i=1}^N
+ \bigl(\langle X_i,a\rangle^2-\Ee\langle X_i,a\rangle^2\bigr)\right|
+\]
+under the marginal condition
+\[
+ \mathbf H(\phi):\qquad
+ \Pp\{ |\langle X_i,a\rangle|\ge t\}\le \tau/\phi(t)
+ \quad(a\in S^{n-1},\ t>0).
+\]
+The source explicitly says that the $p=4$ endpoint is unknown (page 6) and
+asks whether its $4<p\le8$ remainder can be improved to exponent $1/2$
+(page 20) \cite{GLPT}.  The two source passages are reproduced below.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/p4_endpoint_crop.png}
+\caption{Source page 6: the endpoint sentence.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/sqrt_rate_question_crop.png}
+\caption{Source page 20: the square-root-rate question and Theorem 4.5 bound.}
+\end{figure}
+
+The precise statement tested here is the natural endpoint extrapolation
+\begin{equation}\label{eq:endpoint}
+ S\le C\left(\frac1N\max_{i\le N}|X_i|^2+\sqrt{\frac nN}\right)
+\end{equation}
+with a universal constant and probability tending to one, assuming
+$\mathbf H(t^4)$ with a fixed tail parameter.  We disprove
+\eqref{eq:endpoint} already for centered isotropic scalar variables.
+
+\section{Proof intuition}
+
+At the weak-$L^4$ endpoint, the square $X^2$ is only weak-$L^2$.
+A Pareto tail of exponent two has a logarithmically divergent second moment.
+Truncate it at $\sqrt N$: this makes every sample satisfy the maximum-column
+correction in \eqref{eq:endpoint}, but retains variance of order $\log N$.
+The empirical second moment consequently fluctuates on the larger scale
+$\sqrt{\log N/N}$.  A fourth-moment computation and Paley--Zygmund make this
+mechanism quantitative with constant probability.
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+For every integer $N$ with $\log N\ge6$, there is a centered isotropic real
+random variable $X=X^{(N)}$ such that
+\[
+ \Pp\{|X|\ge t\}\le t^{-4}\qquad(t>0).
+\]
+For independent copies $X_1,\dots,X_N$,
+\[
+ \Pp\left\{
+ \left|\frac1N\sum_{i=1}^N(X_i^2-1)\right|
+ \ge \frac14\sqrt{\frac{\log N}{N}}
+ \right\}\ge\frac1{76},
+\]
+whereas, deterministically,
+\[
+ \frac1N\max_{i\le N}X_i^2\le N^{-1/2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Put $L=\sqrt N$.  Let $Z$ be the nonnegative random variable with survival
+function
+\[
+ \Pp\{Z\ge u\}=\begin{cases}
+ 1,&0\le u\le1,\\
+ u^{-2},&1<u\le L,\\
+ 0,&u>L.
+ \end{cases}
+\]
+Thus $Z$ has density $2u^{-3}$ on $[1,L)$ and an atom of mass $L^{-2}$
+at $L$.  Write $\mu=\Ee Z$, let $\varepsilon$ be an independent Rademacher
+sign, and set
+\[
+ X=\varepsilon\sqrt{Z/\mu}.
+\]
+Symmetry gives $\Ee X=0$, while $\Ee X^2=1$.  If $\mu t^2\le1$, then
+$t<1$ and $\Pp\{|X|\ge t\}\le1\le t^{-4}$.  If
+$1<\mu t^2\le L$, then
+\[
+ \Pp\{|X|\ge t\}=(\mu t^2)^{-2}\le t^{-4},
+\]
+and if $\mu t^2>L$ the probability is zero.  Hence $X$ satisfies
+$\mathbf H(t^4)$ with parameter one.
+
+Tail integration yields
+\[
+ \mu=2-L^{-1},\qquad
+ \Ee Z^2=1+2\log L=1+\log N,
+ \qquad \Ee Z^4=2N-1.
+\]
+Let $W=Z-\mu$ and $\sigma^2=\Ee W^2$.  Since $\mu\le2$,
+\[
+ \sigma^2=1+\log N-\mu^2\ge\log N-3
+ \ge\frac12\log N.
+\]
+In particular $\sigma^4\ge9$.  Also,
+\[
+ \Ee W^4\le8(\Ee Z^4+\mu^4)
+ \le16N+120\le136N.
+\]
+
+For independent copies $W_1,\dots,W_N$ and $R=\sum_iW_i$, independence and
+centering give
+\[
+ \Ee R^2=N\sigma^2,
+ \qquad
+ \Ee R^4=N\Ee W^4+3N(N-1)\sigma^4
+ \le19(\Ee R^2)^2.
+\]
+Indeed, the first term is at most $136N^2<16N^2\sigma^4$, and the second
+is at most $3N^2\sigma^4$.  Paley--Zygmund applied to $R^2$ at level
+$1/2$ therefore gives \cite{PZ}
+\[
+ \Pp\left\{|R|\ge\sqrt{N\sigma^2/2}\right\}
+ \ge\frac{(1-1/2)^2(\Ee R^2)^2}{\Ee R^4}
+ \ge\frac1{76}.
+\]
+On this event, using $\mu\le2$,
+\[
+ \left|\frac1N\sum_{i=1}^N(X_i^2-1)\right|
+ =\frac{|R|}{\mu N}
+ \ge\frac14\sqrt{\frac{\log N}{N}}.
+\]
+Finally $Z\le L$ and $\mu\ge1$, so
+$N^{-1}\max_iX_i^2\le L/N=N^{-1/2}$ deterministically.
+\end{proof}
+
+\begin{corollary}\label{cor:noC}
+There is no universal constant $C$ for which \eqref{eq:endpoint} holds under
+$\mathbf H(t^4)$ with success probability tending to one.  Even the
+corresponding expectation bound fails by a factor of order $\sqrt{\log N}$.
+\end{corollary}
+
+\begin{proof}
+For $n=1$, the proposed right side is at most $2C/\sqrt N$.  If
+$\log N>64C^2$, Theorem~\ref{thm:main} violates it with probability at least
+$1/76$.  The same event also gives
+\[
+ \Ee\left|\frac1N\sum_{i=1}^N(X_i^2-1)\right|
+ \ge\frac1{304}\sqrt{\frac{\log N}{N}}.
+\]
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The example is full-strength with respect to dimension, centering, isotropy,
+and tail parameter.  Its law depends on $N$, which is legitimate against a
+universal nonasymptotic estimate; within each row the variables are identically
+distributed and independent.
+
+The result does \emph{not} refute a slower endpoint rate or the stronger
+problem with a uniformly bounded fourth moment.  In fact, the example has
+$\Ee X^4\asymp\log N$, exactly exposing the distinction between weak $L^4$
+and strong $L^4$.
+
+A bounded search covered the run indexes and exact combinations of
+``weak $L^4$'', ``sample covariance'', ``$p=4$'', and square-root/logarithmic
+rates.  Tikhomirov proves a quantitative Bai--Yin theorem for finite
+$p>4$ moments \cite{Tikhomirov}.  Abdalla and Zhivotovskiy prove a
+dimension-free finite-$p>4$ version and still record a finite-$p=4$ variant as
+open \cite{AZ}.  No source stating the present weak-tail endpoint
+counterexample was found.  This is a bounded search, not an exhaustive
+novelty guarantee.
+
+\paragraph{Human-review recommendation.}
+The algebraic and probabilistic verification is short.  Review should focus on
+the scope match: this packet completely disproves the square-root endpoint
+formulation, but deliberately does not label every possible interpretation of
+the source's broader $p=4$ sentence as solved.
+
+\begin{thebibliography}{9}
+
+\bibitem{GLPT}
+O.~Guedon, A.~E.~Litvak, A.~Pajor, and N.~Tomczak-Jaegermann,
+\emph{On the interval of fluctuation of the singular values of random
+matrices}, arXiv:1509.02322 (2015).
+
+\bibitem{PZ}
+R.~E.~A.~C.~Paley and A.~Zygmund,
+\emph{A note on analytic functions in the unit circle},
+Proceedings of the Cambridge Philosophical Society 28 (1932), 266--272.
+
+\bibitem{Tikhomirov}
+K.~Tikhomirov,
+\emph{Sample covariance matrices of heavy-tailed distributions},
+arXiv:1606.03557 (2016).
+
+\bibitem{AZ}
+P.~Abdalla and N.~Zhivotovskiy,
+\emph{Covariance estimation: optimal dimension-free guarantees for
+adversarial corruption and heavy tails}, arXiv:2205.08494 (2023 revision).
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,304 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\otmin}{\otimes_{\min}}
+\newcommand{\Prim}{\operatorname{Prim}}
+
+\title{Uncountable Tensor Products and Countable Capture}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+\begin{theorem}
+\label{thm:tensor-capture}
+Let \((A_\gamma)_{\gamma\in\Gamma}\) be a family of unital \(C^*\)-algebras.
+Assume that uncountably many \(A_\gamma\)'s are nontrivial.  Let
+\[
+        A=\bigotimes_{\gamma\in\Gamma}^{\min} A_\gamma
+\]
+be the unital minimal infinite tensor product with respect to the unit
+embeddings.  Then \(A\) has the countable-capture property.  In particular,
+\(A\) fails BCP.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:uhf}
+For every uncountable set \(\Gamma\), the unital \(C^*\)-algebra
+\[
+        \bigotimes_{\gamma\in\Gamma}^{\min} M_2
+\]
+has countable capture and fails BCP.  This algebra is simple, so its primitive
+ideal space is a point and has a countable \(\pi\)-base.
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+Every element of a unital infinite tensor product has countable support: it is
+a norm limit of finite-support tensors, so the union of the approximating
+finite supports is countable.  Thus a countable family of proposed centres
+lives inside a countable subproduct.
+
+Choose an unused nontrivial factor \(A_\gamma\).  Inside it choose a
+self-adjoint contraction \(v\) whose spectrum contains both \(-1\) and \(1\).
+Then there are states \(\rho_+\) and \(\rho_-\) with
+\[
+        \rho_+(v)=1,\qquad \rho_-(v)=-1.
+\]
+For a centre \(b\) in the old subproduct and any scalar \(\lambda\), the
+slice maps \(\operatorname{id}\otimes\rho_\pm\) give
+\[
+        \|b-\lambda(1\otimes v)\|
+        \ge
+        \max\{\|b-\lambda 1\|,\|b+\lambda 1\|\}
+        \ge
+        \|b\|.
+\]
+The last inequality is just the triangle inequality applied to
+\((b-\lambda1)+(b+\lambda1)=2b\).  Therefore
+\[
+        \dist(b,\C(1\otimes v))=\|b\|
+\]
+for every centre \(b\), which is exactly the quotient-line characterization
+of countable capture from the previous packet.
+
+\section*{Preliminaries}
+
+We use the countable-capture characterization proved in the packet
+\[
+\texttt{2311.14257\_countable\_capture\_characterization}.
+\]
+For a nonzero normed space \(X\), countable capture is equivalent to the
+following condition: for every countable \(C\subset X\), there exists
+\(u\in S_X\) such that
+\[
+        \dist(c,\C u)=\|c\|
+        \qquad(c\in C).
+\]
+
+\begin{lemma}[countable support]
+\label{lem:support}
+Let
+\[
+        A=\bigotimes_{\gamma\in\Gamma}^{\min} A_\gamma
+\]
+be a unital infinite tensor product.  For every \(a\in A\), there is a
+countable subset \(\Lambda\subseteq\Gamma\) such that
+\[
+        a\in A_\Lambda
+        :=
+        \bigotimes_{\gamma\in\Lambda}^{\min} A_\gamma
+\]
+under the canonical unit embedding \(A_\Lambda\hookrightarrow A\).
+Consequently every countable subset of \(A\) is contained in \(A_\Lambda\)
+for some countable \(\Lambda\subseteq\Gamma\).
+\end{lemma}
+
+\begin{proof}
+The infinite tensor product is the norm closure of the algebraic union of the
+finite subproducts \(A_F\), \(F\subseteq\Gamma\) finite.  Given \(a\in A\),
+choose finite-support tensors \(a_n\) with \(a_n\to a\).  Let
+\[
+        \Lambda=\bigcup_{n=1}^\infty \operatorname{supp}(a_n).
+\]
+Then \(\Lambda\) is countable, every \(a_n\) belongs to \(A_\Lambda\), and
+\(A_\Lambda\) is closed in \(A\).  Hence \(a\in A_\Lambda\).  Applying this
+to countably many elements and taking the union of the resulting countable
+sets gives the final assertion.
+\end{proof}
+
+\begin{lemma}[two-state element in a nontrivial unital algebra]
+\label{lem:two-state}
+Let \(B\) be a nontrivial unital \(C^*\)-algebra.  Then there is a
+self-adjoint element \(v\in B\) with \(\|v\|=1\), and states
+\(\rho_+,\rho_-\) on \(B\), such that
+\[
+        \rho_+(v)=1,\qquad \rho_-(v)=-1.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose a self-adjoint non-scalar element \(h\in B\).  Its spectrum contains
+at least two points.  Let
+\[
+        m=\min\sigma(h),\qquad M=\max\sigma(h),
+\]
+so \(m<M\), and define
+\[
+        v=\frac{2h-(M+m)1}{M-m}.
+\]
+Then \(v=v^*\), \(\|v\|=1\), and \(-1,1\in\sigma(v)\).  The evaluation
+characters at \(-1\) and \(1\) on \(C^*(v)\cong C(\sigma(v))\) are states;
+extend them to states \(\rho_-\) and \(\rho_+\) on \(B\).
+\end{proof}
+
+\begin{lemma}[fresh tensor factor distance]
+\label{lem:distance}
+Let \(B\) and \(D\) be unital \(C^*\)-algebras, let \(v\in D\) and states
+\(\rho_\pm\) satisfy Lemma~\ref{lem:two-state}.  For every \(b\in B\) and
+every \(\lambda\in\C\),
+\[
+        \|b\otimes 1-\lambda(1\otimes v)\|_{B\otmin D}
+        \ge
+        \|b\|.
+\]
+Consequently, for \(u=1\otimes v\),
+\[
+        \dist(b\otimes1,\C u)=\|b\|.
+\]
+\end{lemma}
+
+\begin{proof}
+The slice maps \(\operatorname{id}_B\otimes\rho_\pm\) are contractive.  Hence
+\[
+\begin{aligned}
+        \|b\otimes 1-\lambda(1\otimes v)\|
+        &\ge
+        \max\{\|b-\lambda\rho_+(v)1\|,
+              \|b-\lambda\rho_-(v)1\|\}\\
+        &=
+        \max\{\|b-\lambda1\|,\|b+\lambda1\|\}.
+\end{aligned}
+\]
+By the triangle inequality,
+\[
+        2\|b\|
+        =
+        \|(b-\lambda1)+(b+\lambda1)\|
+        \le
+        \|b-\lambda1\|+\|b+\lambda1\|
+        \le
+        2\max\{\|b-\lambda1\|,\|b+\lambda1\|\}.
+\]
+Thus the displayed norm is at least \(\|b\|\) for every \(\lambda\).  Taking
+the infimum over \(\lambda\) gives
+\[
+        \dist(b\otimes1,\C u)\ge \|b\|.
+\]
+The reverse inequality follows by taking \(\lambda=0\), and \(\|u\|=1\).
+\end{proof}
+
+\section*{Proof of the Main Theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:tensor-capture}]
+Let \(C\subset A\) be countable.  By Lemma~\ref{lem:support}, there is a
+countable \(\Lambda\subseteq\Gamma\) such that
+\[
+        C\subseteq A_\Lambda.
+\]
+Since uncountably many factors are nontrivial, choose
+\(\gamma_0\in\Gamma\setminus\Lambda\) with \(A_{\gamma_0}\) nontrivial.
+Apply Lemma~\ref{lem:two-state} in \(A_{\gamma_0}\), obtaining
+\(v\in A_{\gamma_0}\) and states \(\rho_\pm\) with \(\rho_\pm(v)=\pm1\).
+
+Let \(u\in A\) be the tensor which is \(v\) in the coordinate \(\gamma_0\)
+and the unit in every other coordinate.  Then \(\|u\|=1\).  For each
+\(c\in C\), view \(c\) as an element of
+\[
+        A_\Lambda\otmin A_{\gamma_0}
+\]
+with trivial \(\gamma_0\)-coordinate.  Lemma~\ref{lem:distance} gives
+\[
+        \dist(c,\C u)=\|c\|.
+\]
+The countable-capture characterization now implies that \(A\) has countable
+capture.  The previous countable-capture obstruction packet then implies
+that \(A\) fails BCP.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:uhf}]
+Apply Theorem~\ref{thm:tensor-capture} to \(A_\gamma=M_2\).  The resulting
+algebra is the uncountable CAR/UHF tensor product.  It is the direct limit of
+the finite matrix algebras \(\bigotimes_{\gamma\in F}M_2\), over finite
+\(F\subseteq\Gamma\), with unital full connecting maps; hence it is simple.
+Therefore its primitive ideal space is a single point, which has a countable
+\(\pi\)-base.
+\end{proof}
+
+\section*{Scope and Remaining Wall}
+
+This theorem supplies a new internal-size obstruction in the countable
+primitive-\(\pi\)-base region.  It is independent of primitive topology:
+the uncountable \(M_2\)-tensor product is simple, yet fails BCP by countable
+capture.
+
+The result does not classify all simple nonseparable \(C^*\)-algebras.  It
+applies when the algebra has a literal uncountable tensor-coordinate
+structure, or when a future argument can reduce a countable centre family to
+a separable subalgebra with a fresh two-state unit available in a commuting
+or tensor-independent direction.
+
+\section*{Novelty and Search Bounds}
+
+The local run indexes were searched for tensor products, infinite tensor
+products, UHF algebras, countable support, and arXiv:2311.14257.  Web searches
+on June 17, 2026 for BCP with infinite tensor products, UHF algebras, and
+uncountable tensor products found no exact statement of this theorem.  The
+argument is an agent-produced application of the countable-capture
+characterization.
+
+\section*{Human Review Focus}
+
+Reviewers should check:
+\begin{enumerate}
+    \item the countable-support lemma for unital infinite tensor products;
+    \item the construction of \(v\) and the two endpoint states in a
+          nontrivial unital \(C^*\)-algebra;
+    \item the slice-map distance inequality;
+    \item the simplicity assertion in the \(M_2\)-tensor corollary.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{Murphy}
+Gerard J. Murphy,
+\emph{C*-Algebras and Operator Theory},
+Academic Press, 1990.
+
+\bibitem{lane19capture}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{When the Countable-Capture BCP Obstruction Exists},
+solution packet
+\texttt{2311.14257\_countable\_capture\_characterization}, 2026.
+
+\bibitem{lane19obstruction}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{A Countable-Capture Obstruction for the Ball-Covering Property},
+solution packet
+\texttt{2311.14257\_countable\_capture\_bcp\_obstruction}, 2026.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,157 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\Lp}{L_p(0,1)}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\spancl}{\overline{\operatorname{span}}}
+
+\title{A Counterexample to Question 4 on Dispersed Subspaces of \(L_p\)}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_08}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate counterexample, likely valid, to Question 4 of Gonzalez--Martinez-Abejon--Martinon \cite{GMM2020}. The question asks whether, for \(2<p<\infty\), every dispersed subspace \(M\) of \(L_p(0,1)\) satisfies
+\[
+  \beta(Q_M)=1,
+\]
+where \(Q_M:L_p(0,1)\to L_p(0,1)/M\) is the quotient map and
+\[
+  \beta(T)=\inf\left\{\liminf_{n\to\infty}\|T x_n\|:\ (x_n)\subset S_E
+  \text{ is disjoint}\right\}.
+\]
+
+\section*{Source Question}
+
+The source paper proves the equality for \(1<p<2\), observes that the analogous statement fails for \(p=2\), and then asks the following.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Transcription of the relevant question from PDF page 9:
+
+\begin{quote}
+Question 4. Let \(M\) be a dispersed subspace of \(L_p\) \((2<p<\infty)\).
+Is \(\beta(Q_M)=1\)?
+\end{quote}
+
+\section*{Proof Intuition}
+
+The \(p<2\) proof in the source uses equi-integrability of the unit ball of a strongly embedded subspace. For \(p>2\), one can hide a fixed part of every disjoint spike inside a Hilbertian subspace without making that subspace contain an almost-disjoint sequence. The trick is to attach each spike to a small Rademacher component living on a separate region. The Rademacher part forces the closed span to be isomorphic to \(\ell_2\), hence dispersed in \(L_p\) by the source paper's characterization, while the spike part keeps each normalized disjoint indicator at distance at most a prescribed number \(<1\) from the subspace.
+
+\begin{theorem}
+Let \(2<p<\infty\) and let \(0<\eta<1\). There is a dispersed closed subspace \(M\) of \(L_p(0,1)\) such that
+\[
+  \beta(Q_M)\leq \eta.
+\]
+In particular, Question 4 of \cite{GMM2020} has a negative answer for every \(2<p<\infty\).
+\end{theorem}
+
+\begin{proof}
+Split \((0,1)\) into two measurable pieces \(A\) and \(B\) of positive measure. Choose pairwise disjoint measurable sets \(A_n\subset A\) with \(\mu(A_n)>0\), and put
+\[
+  f_n=\mu(A_n)^{-1/p}\mathbf 1_{A_n}.
+\]
+Then \((f_n)\) is a normalized disjoint sequence in \(L_p(0,1)\).
+
+Let \((r_n)\) be the usual Rademacher functions on \(B\), normalized with respect to the probability measure on \(B\), and set \(u_n=\mu(B)^{-1/p}r_n\mathbf 1_B\). Thus \(\|u_n\|_p=1\), and by the Khintchine inequality there are constants \(0<c_p\leq C_p<\infty\) such that for every finitely supported scalar sequence \((\alpha_n)\),
+\[
+  c_p\left(\sum |\alpha_n|^2\right)^{1/2}
+  \leq \left\|\sum \alpha_n u_n\right\|_p
+  \leq C_p\left(\sum |\alpha_n|^2\right)^{1/2}.
+\]
+
+Choose numbers \(a,b>0\) with \(b/a\leq \eta\), and define
+\[
+  g_n=a f_n+b u_n,\qquad M=\spancl\{g_n:n\in\mathbb N\}.
+\]
+For every finitely supported \((\alpha_n)\), the supports of the spike part and the Rademacher part are disjoint, while the \(f_n\)'s are mutually disjoint. Hence
+\[
+  \left\|\sum \alpha_n g_n\right\|_p^p
+  =a^p\sum |\alpha_n|^p
+   +b^p\left\|\sum \alpha_n u_n\right\|_p^p.
+\]
+Since \(p>2\), \(\|(\alpha_n)\|_{\ell_p}\leq \|(\alpha_n)\|_{\ell_2}\). The preceding identity and Khintchine's inequality give
+\[
+  b c_p\|(\alpha_n)\|_{\ell_2}
+  \leq \left\|\sum \alpha_n g_n\right\|_p
+  \leq (a^p+b^p C_p^p)^{1/p}\|(\alpha_n)\|_{\ell_2}.
+\]
+Thus \((g_n)\) is equivalent to the unit vector basis of \(\ell_2\), and \(M\) is isomorphic to \(\ell_2\).
+
+By Proposition 3.4 of \cite{GMM2020}, for \(p>2\) every closed infinite-dimensional subspace of \(L_p\) is strongly embedded if and only if it is isomorphic to \(\ell_2\). By Proposition 3.5 of the same paper, strongly embedded subspaces of \(L_p\) are exactly the dispersed subspaces. Therefore \(M\) is dispersed.
+
+It remains to estimate \(\beta(Q_M)\). For each \(n\),
+\[
+  a^{-1}g_n=f_n+\frac{b}{a}u_n\in M.
+\]
+Consequently
+\[
+  \dist(f_n,M)\leq \left\|f_n-a^{-1}g_n\right\|_p
+  =\frac{b}{a}\|u_n\|_p
+  =\frac{b}{a}
+  \leq \eta.
+\]
+Since \((f_n)\) is a normalized disjoint sequence,
+\[
+  \beta(Q_M)
+  \leq \liminf_{n\to\infty}\|Q_M f_n\|
+  = \liminf_{n\to\infty}\dist(f_n,M)
+  \leq \eta.
+\]
+Taking any \(\eta<1\) gives a dispersed \(M\) with \(\beta(Q_M)<1\), contradicting the proposed equality.
+\end{proof}
+
+\section*{Verification Notes}
+
+No numerical computation is used. The proof is purely analytic. The only external inputs are the Khintchine inequality and the source paper's Propositions 3.4 and 3.5, which identify \(\ell_2\)-isomorphic subspaces of \(L_p\), \(p>2\), as strongly embedded and identify strongly embedded subspaces with dispersed subspaces.
+
+The construction gives the stronger quantitative statement \(\inf\{\beta(Q_M): M\subset L_p \text{ dispersed}\}=0\) in the sense that for every \(\eta>0\) the packet constructs \(M\) with \(\beta(Q_M)\leq\eta\). This does not contradict the source paper's Theorem 3.14, which implies \(\beta(Q_M)>0\) for each fixed dispersed \(M\subset L_p\).
+
+\section*{Novelty Check}
+
+The cheap run indexes were searched for the arXiv id and the phrases
+\[
+  \texttt{disjointly non-singular},\qquad \texttt{DNS},\qquad
+  \texttt{beta(Q\_M)}.
+\]
+The only adjacent run hit before this packet was an older serious attempt on the related LSS/DSS problem for arXiv:1410.4752.
+
+Local source search for \(\beta(Q_M)\) found the source paper's positive \(p<2\) statement and Question 4, plus arXiv:2108.01052 citing only the positive \(p<2\) case. Later DNS papers arXiv:2101.06566 and arXiv:2302.04514 were inspected for the DNS/uniform-DNS and dispersed-subspace questions; they provide order-continuous positive results and later directions, but this bounded check did not find a \(p>2\) quotient counterexample.
+
+Web searches for exact phrases around ``Disjointly non-singular operators'', ``beta(Q\_M)'', and ``strongly embedded'' surfaced arXiv:2101.06566 and arXiv:2302.04514 as the relevant later DNS papers, with no explicit answer to Question 4 found in the search snippets. Novelty confidence is therefore bounded-search only, not a literature-complete guarantee.
+
+\section*{Human Review Recommendation}
+
+Recommended for expert review as a likely valid counterexample. The reviewer should check especially the use of the source paper's characterization of strongly embedded subspaces for \(p>2\), and the quotient-distance estimate \(\dist(f_n,M)\leq b/a\).
+
+\begin{thebibliography}{9}
+
+\bibitem{GMM2020}
+M. Gonzalez, A. Martinez-Abejon, and A. Martinon,
+\emph{Disjointly non-singular operators on Banach lattices},
+arXiv:2012.10683, 2020.
+
+\bibitem{Bilokopytov2021}
+E. Bilokopytov,
+\emph{Disjointly non-singular operators on order continuous Banach lattices complement the unbounded norm topology},
+arXiv:2101.06566, 2021.
+
+\bibitem{GM2023}
+M. Gonzalez and A. Martinon,
+\emph{Disjointly non-singular operators: Extensions and local variations},
+arXiv:2302.04514, 2023.
+
+\end{thebibliography}
+
+\end{document}

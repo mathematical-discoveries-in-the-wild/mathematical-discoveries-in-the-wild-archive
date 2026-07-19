@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ess}{\mathrm{ess}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A Fixed-Section Counterexample for the Infinite-Dimensional QR Algorithm}
+\author{Agent lane 5, run \texttt{fa\_banach\_001}}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is M. J. Colbrook and A. C. Hansen,
+\emph{On the infinite-dimensional QR algorithm}, arXiv:2011.08172
+\cite{colbrook_hansen_iqr}.  In the concluding remarks, the authors write that
+their examples lead them to conjecture that, for normal operators, the IQR
+algorithm recovers the extreme parts of the essential spectrum when the set of
+extremal points of the essential spectrum has size one.  In the source TeX this
+is at lines 2167--2171; in the locally compiled source PDF it is on page 42.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The counterexample below addresses the natural fixed-finite-section reading of
+that sentence: after choosing a sufficiently large finite \(m\), the limit
+\(n\to\infty\) of the spectra of
+\[
+  P_m Q_n^* T Q_n\vert_{P_m\Hh}
+\]
+should recover the unique extremal point of the essential spectrum.  The example
+shows that no finite \(m\), however large, can do this in general.
+
+\section*{Proof Intuition}
+
+The IQR iterates do not create spectral support in the first \(m\) columns.  The
+source paper records the identity
+\[
+  \spn\{Q_n e_j:1\leq j\leq m\}
+  =
+  \spn\{T^n e_j:1\leq j\leq m\}.
+\]
+If the first \(m\) basis vectors sit inside a finite reducing subspace \(F\) of
+\(T\), then the IQR \(m\)-section is only a compression of \(T\) to a subspace
+of \(F\).  Thus it can never see spectral points that occur only as an
+asymptotic tail of later reducing blocks.  Taking non-diagonal \(2\times2\)
+blocks whose eigenvalues increase to \(1\) gives \(\sigma_{\ess}(T)=\{1\}\), but
+each fixed finite leading section remains separated from \(1\).
+
+\section*{Counterexample}
+
+\begin{theorem}
+There exists an invertible normal operator \(T\in\mathcal B(\ell^2(\N))\) such
+that:
+\begin{enumerate}
+\item \(T\) is self-adjoint, positive, and non-diagonal in the canonical basis;
+\item \(\sigma_{\ess}(T)=\{1\}\), so the essential spectrum has exactly one
+point of maximal modulus;
+\item \(T\) has no eigenvalue of modulus greater than \(r_{\ess}(T)=1\);
+\item for every \(m\in\N\) there is a number \(\varepsilon_m>0\) such that, for
+every IQR \(Q\)-sequence \((Q_n)\) of \(T\) and every \(n\in\N\),
+\[
+  \dist\!\left(1,\sigma(P_mQ_n^*TQ_n\vert_{P_m\ell^2})\right)
+  \geq \varepsilon_m.
+\]
+\end{enumerate}
+Consequently the unique extremal point \(1\in\sigma_{\ess}(T)\) is not recovered
+by the fixed-\(m\), \(n\to\infty\) IQR sections for any sufficiently large finite
+\(m\).
+\end{theorem}
+
+\begin{proof}
+For \(k\geq1\), set
+\[
+  a_k=1-\frac1{2k},\qquad b_k=1-\frac1{2k+1}.
+\]
+Then
+\[
+  0<a_1<b_1<a_2<b_2<\cdots<1,\qquad a_k,b_k\to1.
+\]
+Let
+\[
+  U=\frac1{\sqrt2}
+  \begin{pmatrix}
+  1&1\\
+  1&-1
+  \end{pmatrix}
+\]
+and define
+\[
+  B_k=U^*\diag(a_k,b_k)U
+  =
+  \begin{pmatrix}
+  (a_k+b_k)/2&(a_k-b_k)/2\\
+  (a_k-b_k)/2&(a_k+b_k)/2
+  \end{pmatrix}.
+\]
+Each \(B_k\) is a non-diagonal real symmetric positive matrix with eigenvalues
+\(a_k\) and \(b_k\).  With respect to the canonical decomposition
+\[
+  \ell^2(\N)=\bigoplus_{k=1}^{\infty}
+  \spn\{e_{2k-1},e_{2k}\},
+\]
+define
+\[
+  T=\bigoplus_{k=1}^{\infty} B_k.
+\]
+Then \(T\) is bounded, self-adjoint, positive, and invertible, since
+\(\inf_k a_k=a_1=1/2\).  It is not diagonal in the canonical basis because
+\((a_k-b_k)/2\neq0\) for every \(k\).
+
+Moreover,
+\[
+  T-I=\bigoplus_{k=1}^{\infty}(B_k-I_2)
+\]
+is compact, because \(\|B_k-I_2\|=1-a_k\to0\).  In the Calkin algebra, the image
+of \(T\) is therefore the image of \(I\), and hence
+\[
+  \sigma_{\ess}(T)=\{1\}.
+\]
+The point \(1\) is the unique point of the essential spectrum and the unique
+point of maximal modulus in it.  The eigenvalues of \(T\) are exactly the
+numbers \(a_k,b_k\), all of which are strictly smaller than \(1\).  Thus there
+are no eigenvalues with modulus greater than \(r_{\ess}(T)=1\).
+
+Fix \(m\in\N\) and let \(K=\lceil m/2\rceil\).  Put
+\[
+  F_K=\bigoplus_{k=1}^{K}\spn\{e_{2k-1},e_{2k}\}.
+\]
+This is a finite-dimensional reducing subspace for \(T\), and
+\(\spn\{e_1,\ldots,e_m\}\subset F_K\).  Therefore
+\[
+  T^n\spn\{e_1,\ldots,e_m\}\subset F_K
+  \qquad(n\geq0).
+\]
+For the IQR \(Q\)-sequence, the source paper's identity
+\[
+  \spn\{Q_n e_j:1\leq j\leq m\}
+  =
+  \spn\{T^n e_j:1\leq j\leq m\}
+\]
+follows from \(T^n=Q_nR_n\) and the fact that \(R_n\) is upper triangular with
+non-zero diagonal.  Hence
+\[
+  V_{m,n}:=\spn\{Q_ne_1,\ldots,Q_ne_m\}\subset F_K
+  \qquad(n\geq0).
+\]
+
+The matrix \(P_mQ_n^*TQ_n\vert_{P_m\ell^2}\) is the matrix of the compression of
+the self-adjoint operator \(T\) to the \(m\)-dimensional subspace \(V_{m,n}\),
+written in the orthonormal basis \(Q_ne_1,\ldots,Q_ne_m\).  Since
+\(V_{m,n}\subset F_K\), the min-max principle gives
+\[
+  \sigma(P_mQ_n^*TQ_n\vert_{P_m\ell^2})
+  \subset [a_1,b_K].
+\]
+Consequently
+\[
+  \dist\!\left(1,\sigma(P_mQ_n^*TQ_n\vert_{P_m\ell^2})\right)
+  \geq 1-b_K
+  = \frac1{2K+1}
+  >0
+\]
+for every \(n\).  Taking \(\varepsilon_m=1/(2\lceil m/2\rceil+1)\) proves the
+claim.
+\end{proof}
+
+\section*{Interpretive Scope}
+
+This packet does not rule out weaker double-limit statements in which \(m\) is
+allowed to tend to infinity after, before, or together with \(n\).  Indeed, in
+the example above, \(b_{\lceil m/2\rceil}\to1\) as \(m\to\infty\).  What fails is
+the fixed finite-section conclusion suggested by the source phrase
+``in the limit \(n\to\infty\) for large enough \(m\)'': no finite \(m\) has
+\(n\)-iterates whose \(m\)-section can reach the unique essential extremal point.
+
+\section*{Verification Notes}
+
+The proof is analytic and uses no numerical hypothesis.  The accompanying
+script \path{code/verify_block_counterexample.py} checks finite block
+eigenvalues, the non-diagonal form of the blocks, and the predicted positive gaps
+\[
+  1-b_{\lceil m/2\rceil}.
+\]
+It is only a sanity check; the proof above is independent of floating-point
+computation.
+
+\section*{Novelty Check}
+
+Before promotion, the run indexes were searched for arXiv:2011.08172,
+\emph{On the infinite-dimensional QR algorithm}, IQR, QR algorithm, QR
+iteration, and Hessenberg; no duplicate solution packet or attempt for this
+paper was found.  A bounded web search on 2026-07-19 for exact title/id phrases
+and the phrases ``IQR algorithm'', ``normal operators'', ``essential spectrum'',
+and ``extremal points'' found the source paper but no later answer or
+counterexample to this exact conjectural fixed-section statement.  The novelty
+confidence is therefore moderate: the construction is elementary, but no
+pre-existing answer was found in the checked sources.
+
+\section*{References}
+
+\begin{thebibliography}{1}
+
+\bibitem{colbrook_hansen_iqr}
+M. J. Colbrook and A. C. Hansen,
+\emph{On the infinite-dimensional QR algorithm},
+Numerische Mathematik 143 (2019), 17--83; arXiv:2011.08172.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{corollary*}{Corollary}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\cyc}[1]{\#(#1)}
+\newcommand{\dist}{d}
+
+\begin{document}
+\begin{center}
+{\Large Partial Result Packet}\\[0.2em]
+{\large A two-cycle obstruction to bounded geodesic repair}\\[0.3em]
+\textbf{Status:} partial result, likely valid
+\end{center}
+
+\section*{Source problem and scope}
+
+The source is C\'ecilia Lancien,
+\emph{High dimension and symmetries in quantum information theory},
+arXiv:1607.06843. A local copy is \texttt{source\_paper.pdf}.
+For permutations on \(p\) points, write
+\[
+ \dist(\sigma,\tau)=p-\cyc{\sigma^{-1}\tau}
+\]
+for the transposition Cayley distance. The source asks whether excess
+\(2\delta\) over a geodesic can be repaired within distance \(O(\delta)\),
+with polynomially bounded fibres.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The displayed question is for one canonical full cycle \(\gamma\). The
+preceding paragraph says that the case truly needed in the application is
+\(\gamma_f\), the product of canonical cycles on the level sets of \(f\).
+This packet disproves that multi-cycle extension with two level sets.  A
+sibling counterexample packet produced later in the run settles the printed
+single-full-cycle question negatively.
+
+\clearpage
+\section*{Proof intuition}
+
+Take two cyclic blocks \(A\) and \(B\). Let \(\gamma_f\) rotate each block,
+while \(\alpha\) pairs points across the blocks in reverse cyclic order.
+Both \(\alpha\) and \(\alpha^{-1}\gamma_f\) are perfect matchings, so the
+defect is one. However, every permutation on a shortest path from \(\id\)
+to \(\gamma_f\) preserves both blocks, while \(\alpha\) swaps them. The
+quotient must alternate between the blocks, giving linear distance.
+
+\section*{Interval lemma}
+
+\begin{lemma*}
+If \(\dist(\id,\pi)+\dist(\pi,\gamma)=\dist(\id,\gamma)\), then every cycle
+of \(\pi\) is contained in a cycle of \(\gamma\).
+\end{lemma*}
+\begin{proof}
+Concatenate shortest paths from \(\id\) to \(\pi\) and from \(\pi\) to
+\(\gamma\). The equality makes this a shortest path. At every step from the
+identity, the transposition must increase length by one, hence merge two
+cycles. A split would decrease length. Thus cycle partitions only become
+coarser, proving the claim.
+\end{proof}
+
+\section*{Main result}
+
+\begin{theorem*}
+For every \(n\geq2\), there are \(\gamma,\alpha\in S_{2n}\) such that
+\(\gamma\) is a product of two \(n\)-cycles,
+\[
+ \dist(\id,\alpha)+\dist(\alpha,\gamma)
+ =\dist(\id,\gamma)+2,
+\]
+and
+\[
+ \dist\bigl(\alpha,[\id,\gamma]\bigr)=n.
+\]
+\end{theorem*}
+
+\begin{proof}
+Use subscripts in \(\mathbb Z/n\mathbb Z\). On
+\[
+ A=\{a_i:i\in\mathbb Z/n\mathbb Z\},\qquad
+ B=\{b_i:i\in\mathbb Z/n\mathbb Z\},
+\]
+define
+\[
+ \gamma=(a_0\ a_1\ \cdots\ a_{n-1})
+        (b_0\ b_1\ \cdots\ b_{n-1}),\qquad
+ \alpha=\prod_i(a_i\ b_{-i}).
+\]
+The permutation \(\alpha\) is a fixed-point-free involution, so
+\(\cyc{\alpha}=n\). Moreover
+\[
+ \alpha\gamma(a_i)=b_{-i-1},\qquad
+ \alpha\gamma(b_j)=a_{-j-1}.
+\]
+Hence \(\alpha^{-1}\gamma=\alpha\gamma\) is another fixed-point-free
+involution and \(\cyc{\alpha^{-1}\gamma}=n\). Therefore
+\[
+ \dist(\id,\alpha)=n,\qquad
+ \dist(\alpha,\gamma)=n,\qquad
+ \dist(\id,\gamma)=2n-2,
+\]
+which proves the excess-two identity.
+
+If \(\pi\in[\id,\gamma]\), the interval lemma says that \(\pi\) preserves
+\(A\) and \(B\). Since \(\alpha^{-1}=\alpha\) swaps them,
+\(\alpha^{-1}\pi\) also swaps them. Every cycle of this quotient alternates
+between \(A\) and \(B\), so it has at most \(n\) cycles. Consequently
+\[
+ \dist(\alpha,\pi)=2n-\cyc{\alpha^{-1}\pi}\geq n.
+\]
+Equality holds at \(\pi=\id\), proving the claimed exact distance.
+\end{proof}
+
+\begin{corollary*}
+No universal \(\theta<\infty\) gives a repair bound
+\(\dist(\alpha,\alpha')\leq2\theta\delta\) for every product
+\(\gamma_f\) of canonical cycles.
+\end{corollary*}
+\begin{proof}
+The source's multi-cycle defect equation is
+\[
+ \cyc{\gamma^{-1}\alpha}+\cyc{\alpha}
+ =p+\cyc{\gamma}-2\delta.
+\]
+Here the left side is \(2n\), while \(p=2n\) and \(\cyc{\gamma}=2\), so
+\(\delta=1\). The required distance is nevertheless at least \(n\), which is
+unbounded. The additional fibre condition therefore cannot rescue the claim.
+\end{proof}
+
+\section*{Verification, limitations, and novelty}
+
+The proof is uniform and computationally independent. The script
+\texttt{code/verify\_obstruction.py} exhaustively enumerates \(S_{2n}\) for
+\(2\leq n\leq4\), selects the interval by its distance equality, and returns:
+\begin{verbatim}
+n=2: interval_size=4, excess=2, min_distance=2
+n=3: interval_size=25, excess=2, min_distance=3
+n=4: interval_size=196, excess=2, min_distance=4
+\end{verbatim}
+
+The result in this packet is partial because its block obstruction uses two
+cycles.  Subsequent work in the same run found a different defect-one family
+for a single full cycle whose distance from the geodesic interval is
+unbounded; see the sibling full-cycle counterexample packet in this run.
+Thus the exact printed question is now also answered negatively.
+
+A bounded search of the run indexes and arXiv for the source identifier,
+permutation genus, absolute order, geodesic-interval distance, and two-cycle
+products found related work on noncrossing and plane permutations, but no
+occurrence of this explicit defect-one obstruction. Standard genus-slicing
+operations may move the face cycle and do not supply the fixed-face statement.
+
+\textbf{Human review focus.} Check the source convention
+\(\cyc{\gamma_f^{-1}\alpha}+\cyc{\alpha}
+=p+\cyc{\gamma_f}-2\delta\) and the interval lemma. These two points make
+the scope and the defect computation transparent.
+
+\section*{References}
+\begin{itemize}
+\item C. Lancien,\\
+\emph{High dimension and symmetries in quantum information theory},
+arXiv:1607.06843, Section 9.16.3.
+\item R. X. F. Chen and C. M. Reidys, \emph{Plane permutations and
+applications to a result of Zagier--Stanley and distances of permutations},
+arXiv:1502.07674.
+\item R. Cori and G. Hetyei, \emph{Counting genus one partitions and
+permutations}, arXiv:1306.4628.
+\item A. Hock, \emph{Genus permutations and genus partitions},
+arXiv:2306.16237.
+\end{itemize}
+\end{document}

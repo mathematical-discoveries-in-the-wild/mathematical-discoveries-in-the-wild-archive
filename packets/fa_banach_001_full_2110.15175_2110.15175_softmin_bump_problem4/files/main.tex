@@ -1,0 +1,319 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\dist}{dist}
+
+\title{An explicit affirmative solution to Problem 4 of\\
+\texttt{arXiv:2110.15175}}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{2026-07-19}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\begin{abstract}
+Problem 4 of Prykarpatskyy--Pukach--Vovk--Gregus asks whether certain
+finite-dimensional bump functions on $\ell_\infty^n$ can have enough height
+that $(1+\varepsilon_n)^n\to\infty$, under the simultaneous constraints
+$\omega(f;t)\le t$ and $\omega_2(f;t)\le t^2$.  We give an explicit
+construction.  In fact, for every $n\ge 2$ there is an admissible $f_n$ with
+\[
+        \|f_n\|_\infty
+        \ge \frac{1}{8(6+8\log n)}.
+\]
+Consequently $(1+\varepsilon_n)^n\to\infty$.
+\end{abstract}
+
+\section{Source problem}
+
+The source is Y. A. Prykarpatskyy, P. Ya. Pukach, M. I. Vovk, and M. Gregus,
+\emph{Some remarks on smooth mappings of Hilbert and Banach spaces and their
+local convexity property}, arXiv:2110.15175v2, also published in
+\emph{Axioms} 13(4), 227 (2024) \cite{PPVG}.  The relevant problem appears on
+page 11 of the arXiv/PDF version as Problem 4; in the TeX source it is labelled
+\texttt{prob2}.
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Transcribed, the problem defines $F_n$ to be the set of functions
+$f_n:\ell_\infty(n)\to[0,1]$, where
+$\ell_\infty(n)=(\mathbb R^n,\|\cdot\|_\infty)$, such that
+\[
+ f_n^{-1}(0,1]\subset(-1,1)^n,\qquad
+ \omega(f;t)\le t,\qquad
+ \omega_2(f;t)\le t^2
+ \quad(t\ge 0).
+\]
+With
+\[
+        \varepsilon_n=\sup\{\|f_n\|_\infty:f_n\in F_n\},
+\]
+the question is whether
+\[
+        \lim_{n\to\infty}(1+\varepsilon_n)^n=\infty.
+\]
+
+Here $\omega=\omega_1$ is the ordinary modulus of continuity and
+$\omega_2$ is the second-difference modulus recalled in the source:
+\[
+\omega_2(f;t)=\sup_{\|h\|_\infty\le t}
+      |f(x+h)-2f(x)+f(x-h)|.
+\]
+The domain here is all of $\mathbb R^n$, so no segment restriction is needed.
+
+\section{Proof intuition}
+
+The obstruction is the flat faces of the cube for $\ell_\infty^n$: a bump has
+to vanish before it reaches any coordinate wall, while the first and second
+finite differences are measured in the sup norm.  A product bump loses height
+exponentially in $n$.  Instead we use a soft minimum of the coordinate wall
+distances $1-x_i^2$.  The logarithmic loss in the soft minimum is only
+$(\log n)/\beta$.  Taking $\beta=2\log n$ leaves height $1/2$ at the origin,
+while the Hessian cost is only $O(\log n)$.  After scaling by that Hessian
+constant we retain height comparable to $1/\log n$, enough for
+$(1+\varepsilon_n)^n$ to diverge.
+
+\section{Construction and estimates}
+
+For $n=1$ set $f_1=0$.  Fix $n\ge 2$ and put
+\[
+        \beta=2\log n.
+\]
+For $x=(x_1,\ldots,x_n)\in\mathbb R^n$ define
+\[
+        s_i(x)=1-x_i^2,\qquad
+        M(x)=-\frac{1}{\beta}\log\sum_{i=1}^n e^{-\beta s_i(x)}
+        =-\frac{1}{\beta}\log\sum_{i=1}^n e^{\beta(x_i^2-1)}.
+\]
+Let
+\[
+        \psi(u)=\frac{1}{2}(u_+)^2,\qquad
+        G(x)=\psi(M(x)),\qquad
+        f_n(x)=\frac{G(x)}{6+4\beta}.
+\]
+
+\begin{lemma}[support and height]
+The function $f_n$ maps $\mathbb R^n$ into $[0,1]$, satisfies
+$f_n^{-1}(0,1]\subset(-1,1)^n$, and
+\[
+        \|f_n\|_\infty\ge \frac{1}{8(6+4\beta)}
+        =\frac{1}{8(6+8\log n)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Since the sum in the definition of $M$ dominates each one of its terms,
+\[
+        M(x)\le s_i(x)\qquad(1\le i\le n).
+\]
+Thus $M(x)>0$ implies $s_i(x)>0$ for every $i$, i.e. $|x_i|<1$ for every $i$.
+This proves the support condition for $G$ and hence for $f_n$.
+
+Also, $s_i(x)\le 1$ for all $i$, so
+\[
+        \sum_{i=1}^n e^{-\beta s_i(x)}\ge n e^{-\beta}.
+\]
+Therefore
+\[
+        M(x)\le 1-\frac{\log n}{\beta}=\frac{1}{2}.
+\]
+Hence $0\le G\le \frac12(1/2)^2=1/8$, and $0\le f_n\le1$ is immediate.  At
+$x=0$ one has
+\[
+        M(0)=-\frac{1}{\beta}\log(ne^{-\beta})
+        =1-\frac{\log n}{\beta}=\frac{1}{2},
+\]
+so $G(0)=1/8$ and the displayed lower bound follows.
+\end{proof}
+
+\begin{lemma}[differential bounds]
+For every $x,h\in\mathbb R^n$,
+\[
+        |DG(x)h|\le \|h\|_\infty
+\]
+where $G$ is differentiable.  Moreover, for every line
+$u(t)=G(x+th)$ the derivative $u'$ is absolutely continuous and
+\[
+        |u''(t)|\le (6+4\beta)\|h\|_\infty^2
+\]
+for almost every $t\in\mathbb R$.
+\end{lemma}
+
+\begin{proof}
+Set
+\[
+        p_i(x)=\frac{e^{-\beta s_i(x)}}
+        {\sum_{j=1}^n e^{-\beta s_j(x)}}.
+\]
+These are nonnegative weights with $\sum_i p_i=1$.  The first derivative of
+the log-sum-exp soft minimum is
+\[
+        DM(x)h=\sum_{i=1}^n p_i(x)Ds_i(x)h
+              =-2\sum_{i=1}^n p_i(x)x_i h_i.
+\]
+At points where $M(x)>0$, the preceding support argument gives $|x_i|<1$ for
+all $i$, and hence
+\[
+        |DM(x)h|\le 2\|h\|_\infty.
+\]
+At points where $M(x)\le0$, $\psi'(M(x))=0$.  Since
+$0\le M_+(x)\le 1/2$, the chain rule gives
+\[
+        |DG(x)h|=|\psi'(M(x))DM(x)h|
+        \le \frac{1}{2}\cdot 2\|h\|_\infty
+        =\|h\|_\infty .
+\]
+
+For the second estimate, first compute the second directional derivative of
+$M$.  With $a_i=Ds_i(x)h=-2x_i h_i$ and
+$D^2s_i(x)[h,h]=-2h_i^2$, the standard log-sum-exp formula gives
+\[
+D^2M(x)[h,h]
+ =\sum_i p_iD^2s_i(x)[h,h]
+ -\beta\left(\sum_i p_i a_i^2-\left(\sum_i p_i a_i\right)^2\right).
+\]
+At points with $M(x)>0$,
+\[
+        \left|\sum_i p_iD^2s_i(x)[h,h]\right|
+        \le 2\|h\|_\infty^2,
+\]
+and, since $|a_i|\le2\|h\|_\infty$,
+\[
+        0\le
+        \sum_i p_i a_i^2-\left(\sum_i p_i a_i\right)^2
+        \le 4\|h\|_\infty^2.
+\]
+Therefore
+\[
+        |D^2M(x)[h,h]|
+        \le (2+4\beta)\|h\|_\infty^2
+        \qquad(M(x)>0).
+\]
+
+The function $\psi(u)=\frac12(u_+)^2$ is $C^1$ and has Lipschitz derivative;
+its second derivative exists a.e. and satisfies $0\le\psi''\le1$.  Along any
+line $x+th$, the composition $u(t)=G(x+th)=\psi(M(x+th))$ is $C^{1,1}$, hence
+$u'$ is absolutely continuous, and for a.e. $t$ with $M(x+th)>0$,
+\[
+\begin{aligned}
+ |u''(t)|
+ &\le |DM(x+th)h|^2
+      + M(x+th)|D^2M(x+th)[h,h]|        \\
+ &\le 4\|h\|_\infty^2
+      + \frac{1}{2}(2+4\beta)\|h\|_\infty^2 \\
+ &\le (6+4\beta)\|h\|_\infty^2.
+\end{aligned}
+\]
+Where $M(x+th)<0$, $u$ is locally zero, and the same bound is trivial.  The
+a.e. estimate also holds across the zero set because $\psi'$ is continuous and
+Lipschitz, so there is no jump contribution in $u'$.
+\end{proof}
+
+\begin{theorem}
+Problem 4 has an affirmative answer.  More quantitatively,
+\[
+        \varepsilon_n\ge \frac{1}{8(6+8\log n)}
+        \qquad(n\ge2),
+\]
+and hence
+\[
+        \lim_{n\to\infty}(1+\varepsilon_n)^n=\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+The support and range conditions were proved above.  It remains to check the
+two moduli.  If $x,y\in\mathbb R^n$, apply the first derivative bound to the
+segment $x+t(y-x)$:
+\[
+        |G(y)-G(x)|\le \|y-x\|_\infty.
+\]
+Since $0<(6+4\beta)^{-1}\le1$, the same estimate holds for $f_n$.  Thus
+$\omega(f_n;t)\le t$ for all $t\ge0$.
+
+For the second modulus, fix $x,h\in\mathbb R^n$ and put
+$u(t)=G(x+th)$.  The one-dimensional identity
+\[
+        u(1)-2u(0)+u(-1)
+        =\int_{-1}^{1}(1-|t|)u''(t)\,dt
+\]
+holds for functions with absolutely continuous derivative.  Therefore
+\[
+        |G(x+h)-2G(x)+G(x-h)|
+        \le (6+4\beta)\|h\|_\infty^2.
+\]
+After multiplying by $(6+4\beta)^{-1}$, we get
+\[
+        |f_n(x+h)-2f_n(x)+f_n(x-h)|
+        \le \|h\|_\infty^2.
+\]
+Taking the supremum over $\|h\|_\infty\le t$ gives
+$\omega_2(f_n;t)\le t^2$ for all $t\ge0$.  Hence $f_n\in F_n$, and the height
+bound from the first lemma gives the displayed estimate for $\varepsilon_n$.
+
+Finally,
+\[
+        \log(1+\varepsilon_n)^n
+        =n\log(1+\varepsilon_n)
+        \ge
+        n\log\left(1+\frac{1}{8(6+8\log n)}\right)
+        \longrightarrow\infty,
+\]
+because the last expression grows on the order of $n/\log n$.  This proves the
+claim.
+\end{proof}
+
+\section{Verification notes}
+
+The proof is analytic and does not rely on computation.  The included verifier
+script in \texttt{code/} performs deterministic random sampling
+for $n=2,3,5,10,25$ to check three elementary failure modes: positivity outside
+the open cube, violation of the Lipschitz scaling in sampled pairs, and
+violation of the second-difference scaling in sampled triples.  Its sampled
+ratios stay below the theoretical bound and it reports no support violations.
+
+\section{Novelty and literature check}
+
+Bounded searches were performed on 2026-07-19 before promotion.  The local run
+indexes were searched for \texttt{2110.15175}, the exact title, local convexity
+phrases, and the displayed $\varepsilon_n$ problem.  Web searches used the
+exact arXiv id, exact title, DOI \texttt{10.3390/axioms13040227},
+\texttt{Problem 4}, \texttt{omega\_2(f;t)}, \texttt{l\_infty(n)}, and the
+limit expression $(1+\varepsilon_n)^n$.  The hits identified the arXiv record,
+the published Axioms/MDPI article, and mirrors or citation pages.  No separate
+paper or theorem claiming an answer to Problem 4, or a lower bound of the form
+$\varepsilon_n\gtrsim1/\log n$, was found in this bounded search.  This is not
+a proof of novelty, but no duplicate answer was detected.
+
+\section{Human-review recommendation}
+
+The main point for review is the $C^{1,1}$ line-restriction argument for
+$\psi(u)=\frac12(u_+)^2$.  Once that standard a.e. second derivative estimate
+is accepted, the construction gives the required admissible functions and the
+divergence follows immediately.  The result also triggers the source paper's
+stated implication that an affirmative answer to Problem 4 gives a negative
+answer to its Problem 3, subject to the source paper's argument for that
+implication.
+
+\begin{thebibliography}{9}
+
+\bibitem{PPVG}
+Y. A. Prykarpatskyy, P. Ya. Pukach, M. I. Vovk, and M. Gregus,
+\emph{Some remarks on smooth mappings of Hilbert and Banach spaces and their
+local convexity property}, arXiv:2110.15175v2; Axioms \textbf{13}(4), 227
+(2024), doi:10.3390/axioms13040227.
+
+\end{thebibliography}
+
+\end{document}

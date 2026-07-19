@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Isom}{\operatorname{Isom}}
+\newcommand{\Sym}{\operatorname{Sym}}
+
+\title{A Threshold-Family Subcase of the Isometry Group Problem}
+\author{run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_02}}
+\date{2026-06-14}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a candidate partial result for the final questions in Brech--Ferenczi--Tcaciuc,
+\emph{Isometries of combinatorial Banach spaces}, arXiv:1907.06815 \cite{BFT}.
+It does not solve the general classification problem.  It gives a complete
+classification for a natural class of regular families defined by a
+nondecreasing threshold function.
+
+\section*{Source Question}
+
+In Section 5 of \cite{BFT}, after proving that isometries of combinatorial
+spaces are signed permutations, the authors ask:
+
+\begin{quote}
+Given a regular family $\F$, what are the permutations of the basis which
+induce an isometry of $X_\F$?
+
+For which combinatorial spaces can we explicitly describe the group of its
+isometries?
+\end{quote}
+
+The source crop below is from page 11 of the arXiv PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+For the threshold families below, each integer $n$ carries a purely
+combinatorial label: the largest cardinality of a member of the family that
+contains $n$.  Monotonicity of the threshold function makes this largest
+cardinality exactly $g(n)$.  Therefore any permutation preserving the family
+must preserve every level set of $g$.  Conversely, if a permutation preserves
+the levels of $g$, then moving a finite set can only move its minimum to a
+point with threshold at least as large as the old one, so membership in the
+family is preserved.
+
+\section*{The Partial Result}
+
+Let $g:\N\to\N$ be nondecreasing with $g(n)\geq 1$ for all $n$.  Define
+\[
+  \F_g=\{\varnothing\}\cup
+  \{F\in[\N]^{<\omega}: F\neq\varnothing \text{ and } |F|\leq g(\min F)\}.
+\]
+Let
+\[
+  L_m=\{n\in\N: g(n)=m\}.
+\]
+Empty level sets are ignored in products below.  Let $\T_\K$ denote the
+scalar sign group: $\{-1,1\}$ over the reals and the unit circle over the
+complex numbers.
+
+\begin{theorem}
+\label{thm:threshold}
+The family $\F_g$ is regular.  A permutation $\pi$ of $\N$ induces an isometry
+of $X_{\F_g}$, equivalently of $X_{\F_g}^*$, if and only if
+\[
+  g(\pi(n))=g(n)\quad\text{for every }n\in\N.
+\]
+Consequently every surjective linear isometry of $X_{\F_g}$ or of
+$X_{\F_g}^*$ is a signed permutation preserving the level sets $L_m$, and
+\[
+  \Isom(X_{\F_g})\cong \T_\K^{\N}\rtimes \prod_{m\geq 1}\Sym(L_m),
+\]
+with the same permutation part for $\Isom(X_{\F_g}^*)$.
+\end{theorem}
+
+\begin{proof}
+First $\F_g$ is hereditary: if $E\subseteq F\in\F_g$ and $E\neq\varnothing$,
+then $|E|\leq |F|\leq g(\min F)$, while $\min E\geq \min F$ and $g$ is
+nondecreasing, so $|E|\leq g(\min E)$.  The spreading property is similar:
+if $F=\{n_1<\cdots<n_k\}\in\F_g$ and $m_i\geq n_i$ with
+$m_1<\cdots<m_k$, then $k=|F|\leq g(n_1)\leq g(m_1)$.
+The family contains all singletons because $g\geq 1$.
+
+To prove compactness, view $\F_g$ as a subset of $2^\N$.  Suppose
+$F_j\in\F_g$ converges pointwise to $A\subseteq\N$.  If $A$ were infinite and
+$a=\min A$, then for all large $j$ the set $F_j$ would contain $a$ and the
+first $g(a)+1$ elements of $A$, and would contain no integer below $a$.
+Hence $\min F_j=a$ and $|F_j|\geq g(a)+1$, contradicting
+$F_j\in\F_g$.  Thus $A$ is finite.  If $A$ is nonempty and $a=\min A$, then
+for all large $j$, all points of $A$ belong to $F_j$ and no point below $a$
+belongs to $F_j$; consequently $\min F_j=a$ and
+$|A|\leq |F_j|\leq g(a)$.  Hence $A\in\F_g$.  Therefore $\F_g$ is compact.
+
+Now define the family-invariant number
+\[
+  h_{\F_g}(n)=\sup\{|F|:F\in\F_g,\ n\in F\}.
+\]
+Because $g$ is nondecreasing, any $F\in\F_g$ containing $n$ satisfies
+\[
+  |F|\leq g(\min F)\leq g(n).
+\]
+On the other hand, the set $\{n,n+1,\ldots,n+g(n)-1\}$ belongs to $\F_g$ and
+contains $n$, so $h_{\F_g}(n)=g(n)$.
+
+Let $\pi$ be a permutation of $\N$ with
+$\pi(\F_g)=\F_g$.  Then cardinalities of family members containing a point
+are preserved, so
+\[
+  g(\pi(n))=h_{\F_g}(\pi(n))=h_{\F_g}(n)=g(n).
+\]
+Thus every family automorphism preserves the level sets of $g$.
+
+Conversely, suppose $g(\pi(n))=g(n)$ for all $n$.  Take a nonempty
+$F\in\F_g$ and let $r=\min F$.  Let $s\in F$ be such that
+$\pi(s)=\min \pi(F)$.  Since $s\geq r$ and $g$ is nondecreasing,
+\[
+  g(\min\pi(F))=g(\pi(s))=g(s)\geq g(r)\geq |F|=|\pi(F)|.
+\]
+Thus $\pi(F)\in\F_g$.  Applying the same argument to $\pi^{-1}$ gives
+$\pi(\F_g)=\F_g$.
+
+Brech--Ferenczi--Tcaciuc prove that for regular families, all isometries of
+combinatorial spaces and their duals are signed permutations, and that a
+permutation induces an isometry exactly when it sends the family to itself
+\cite[Theorem 10 and the following corollary]{BFT}.  Combining that theorem
+with the preceding family-automorphism classification gives the asserted
+description of $\Isom(X_{\F_g})$ and $\Isom(X_{\F_g}^*)$.
+\end{proof}
+
+\section*{Relation to the Source Example}
+
+The final example of \cite{BFT} treats the case where the threshold value is
+constant on consecutive intervals and increases by one from one interval to
+the next.  The theorem above allows arbitrary nondecreasing threshold
+functions: jumps may skip values, plateaus may be finite or infinite, and the
+constant case recovers the full symmetric permutation group.
+
+\section*{Limitations and Novelty Check}
+
+This is a partial result only.  It does not classify the isometry groups of
+all combinatorial spaces, nor does it address regular families whose
+membership is not determined by the pair $(|F|,\min F)$.
+
+Local duplicate checks searched the run indexes for arXiv:1907.06815,
+combinatorial Banach spaces, isometry groups, permutations, and threshold
+families.  The source paper itself was searched for threshold-family and
+level-set language.  No existing run packet or attempt was found for this
+subcase.  No external literature search was used, so novelty confidence is
+local rather than global.
+
+\section*{Verification Notes}
+
+No computational step is used.  The proof reduces the isometry classification
+to the source theorem of \cite{BFT} and proves the remaining family
+automorphism statement directly.  The two proof points most worth checking are
+the compactness argument for $\F_g$ and the converse direction showing that a
+$g$-level-preserving permutation sends every $F\in\F_g$ back into $\F_g$.
+
+\begin{thebibliography}{9}
+\bibitem{BFT}
+C. Brech, V. Ferenczi, and A. Tcaciuc,
+\emph{Isometries of combinatorial Banach spaces},
+arXiv:1907.06815.
+\end{thebibliography}
+
+\end{document}

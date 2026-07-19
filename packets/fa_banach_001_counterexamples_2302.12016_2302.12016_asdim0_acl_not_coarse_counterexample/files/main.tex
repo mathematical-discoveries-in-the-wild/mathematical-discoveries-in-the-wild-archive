@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb N}
+
+\title{An Asymptotic-Dimension-Zero Counterexample for Asymptotic Coarse Lipschitz Equivalence}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_13}}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source is Bruno M. Braga and Gilles Lancien,
+\emph{Asymptotic coarse Lipschitz equivalence}, arXiv:2302.12016.  The paper introduces
+asymptotic coarse Lipschitz equivalence: metric spaces \(X\) and \(Y\) are asymptotically
+coarse Lipschitz equivalent if there are coarse Lipschitz maps \(f:X\to Y\) and \(g:Y\to X\)
+such that \(g f\) and \(f g\) are asymptotically close to the corresponding identity maps.
+
+After constructing examples separating asymptotic coarse Lipschitz equivalence from coarse
+equivalence in positive asymptotic dimension, the paper asks:
+
+\begin{quote}
+\textbf{Problem 2.15.} Let \(X\) and \(Y\) be asymptotically coarse Lipschitz equivalent
+metric spaces with asymptotic dimension zero. Does it follow that \(X\) and \(Y\) are coarse
+(Lipschitz) equivalent?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/problem_2_15_crop.png}
+\end{center}
+
+\section*{Answer}
+
+The answer is negative as stated.  We construct two metric spaces \(X\) and \(Y\) with
+asymptotic dimension zero which are asymptotically coarse Lipschitz equivalent but are not
+even coarsely equivalent.
+
+\section*{Definitions Used}
+
+For maps \(u,v:Z\to W\), write \(u\sim_\infty v\) if, for some equivalently every base point
+\(z_0\in Z\),
+\[
+\lim_{z\to\infty}\frac{d_W(u(z),v(z))}{d_Z(z,z_0)}=0.
+\]
+A map \(h:Z\to W\) is coarse Lipschitz if its modulus of continuity is bounded above by an
+affine function.  A pair of coarse Lipschitz maps \(f:X\to Y\), \(g:Y\to X\) witnesses
+asymptotic coarse Lipschitz equivalence if \(g f\sim_\infty \mathrm{Id}_X\) and
+\(f g\sim_\infty \mathrm{Id}_Y\).
+
+We use the standard characterization of asymptotic dimension zero: a metric space has
+asymptotic dimension zero if, for every \(r>0\), the \(r\)-chain components have uniformly
+bounded diameter.  In the proof below this condition is verified directly.
+
+\section*{Proof Intuition}
+
+Start with a very sparse countable metric space \(X=\{x_n\}\), where different points are
+separated by distances on the order of \(2^n+2^m\).  Build \(Y\) by replacing \(x_n\) with an
+uncountable discrete fiber of diameter \(n\).  The fiber diameter \(n\) is negligible compared
+with the distance \(2^n\) from the base point, so collapsing each fiber gives an asymptotic
+coarse Lipschitz inverse.  But a genuine coarse equivalence would have to coarsely cover each
+far fiber within one fixed radius.  For a fiber whose internal distance is larger than that
+radius, every small ball is a singleton, so a countable space cannot coarsely cover an
+uncountable fiber.
+
+\section*{The Counterexample}
+
+\begin{theorem}
+There exist metric spaces \(X\) and \(Y\) such that
+\[
+\operatorname{asdim} X=\operatorname{asdim} Y=0,
+\]
+\(X\) and \(Y\) are asymptotically coarse Lipschitz equivalent, but \(X\) and \(Y\) are not
+coarsely equivalent.  In particular, they are not coarse Lipschitz equivalent.
+\end{theorem}
+
+\begin{proof}
+Let \(A\) be an uncountable set and fix \(a_0\in A\).  Let
+\[
+X=\{x_n:n\in\N\}
+\]
+with metric
+\[
+d_X(x_n,x_m)=
+\begin{cases}
+0,& n=m,\\
+2^n+2^m,& n\ne m.
+\end{cases}
+\]
+Let
+\[
+Y=\N\times A
+\]
+with metric
+\[
+d_Y((n,a),(m,b))=
+\begin{cases}
+0,& (n,a)=(m,b),\\
+n,& n=m\text{ and }a\ne b,\\
+2^n+2^m,& n\ne m.
+\end{cases}
+\]
+The triangle inequality is immediate: cross-fiber distances are star distances
+\(2^n+2^m\), while an internal fiber distance \(n\) is at most \(2^n+2^n\), so passing through
+another fiber cannot shorten it.
+
+We first check asymptotic dimension zero.  Fix \(r>0\), and choose \(N\) so large that
+\[
+N>r\qquad\text{and}\qquad 2^N>r.
+\]
+In \(X\), all points \(x_n\) with \(n\geq N\) are isolated in the \(r\)-chain relation, while
+the remaining points form only finitely many \(r\)-components, all with bounded diameter.
+Thus \(X\) has asymptotic dimension zero.
+
+The same argument applies to \(Y\).  If \(n\geq N\), then distinct points in the fiber
+\(\{n\}\times A\) are at distance \(n>r\), and points in different sufficiently large fibers
+are also more than \(r\) apart.  All possible nontrivial \(r\)-components lie over the finite
+set \(\{1,\ldots,N-1\}\), hence have diameter bounded by a finite constant depending only on
+\(r\).  Therefore \(Y\) has asymptotic dimension zero.
+
+Define
+\[
+f:X\to Y,\qquad f(x_n)=(n,a_0),
+\]
+and
+\[
+g:Y\to X,\qquad g(n,a)=x_n.
+\]
+The map \(f\) is an isometric embedding, and \(g\) is \(1\)-Lipschitz: distances between
+different fibers are preserved, while distances inside a fiber are collapsed to zero.  Hence
+both maps are coarse Lipschitz.  Moreover,
+\[
+g f=\mathrm{Id}_X.
+\]
+For \(y=(n,a)\in Y\),
+\[
+d_Y(f g(y),y)=d_Y((n,a_0),(n,a))\leq n.
+\]
+Taking \(y_0=(1,a_0)\), we have \(d_Y((n,a),y_0)=2^n+2\) whenever \(n\ne 1\).  Thus
+\[
+\frac{d_Y(f g(n,a),(n,a))}{d_Y((n,a),y_0)}
+\leq \frac{n}{2^n+2}\longrightarrow 0
+\]
+as \(y\to\infty\).  Hence \(f g\sim_\infty \mathrm{Id}_Y\), and \(f,g\) witness an
+asymptotic coarse Lipschitz equivalence between \(X\) and \(Y\).
+
+It remains to prove that \(X\) and \(Y\) are not coarsely equivalent.  Suppose, toward a
+contradiction, that there are coarse maps \(F:X\to Y\) and \(G:Y\to X\) such that
+\[
+F G\sim \mathrm{Id}_Y.
+\]
+Then there is \(C<\infty\) such that
+\[
+d_Y(FG(y),y)\leq C\qquad(y\in Y).
+\]
+Choose \(n>C\).  For every \(a\in A\), the closed \(C\)-ball around \((n,a)\) is the singleton
+\(\{(n,a)\}\): any other point in the same fiber is at distance \(n>C\), and every point in a
+different fiber is even farther away.  Therefore
+\[
+F G(n,a)=(n,a)\qquad(a\in A).
+\]
+This implies that the image \(F(X)\) contains the whole fiber \(\{n\}\times A\).  But \(X\)
+is countable, so \(F(X)\) is countable, whereas \(\{n\}\times A\) is uncountable.  This is
+impossible.  Hence no coarse equivalence exists.
+\end{proof}
+
+\section*{Novelty and Duplicate Checks}
+
+Before promotion, I searched the cheap run indexes for arXiv \texttt{2302.12016}, the title
+\texttt{Asymptotic coarse Lipschitz equivalence}, and core phrases including
+\texttt{asymptotic coarse Lipschitz}, \texttt{asymptotic dimension zero},
+\texttt{coarse Lipschitz equivalent}, and \texttt{Problem 2.15}.  No existing packet or
+attempt answered this problem.
+
+I also ran bounded web searches for exact and near-exact phrases including
+\begin{itemize}
+\item \texttt{"Asymptotic coarse Lipschitz equivalence" "Problem 2.15"},
+\item \texttt{"asymptotic coarse Lipschitz equivalent" "asymptotic dimension zero"},
+\item \texttt{"asymptotically coarse Lipschitz equivalent" "coarse Lipschitz equivalent"}.
+\end{itemize}
+No later answer surfaced in this search; the only direct hit was the source paper itself.
+
+\section*{Scope and Limitations}
+
+The counterexample answers Problem 2.15 as written for arbitrary metric spaces.  It is
+nonseparable and uses uncountable fibers.  It does not settle strengthened variants in which
+the metric spaces are required to be countable, separable, uniformly locally finite, of
+bounded geometry, or otherwise cardinal-controlled.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{BL}
+B. M. Braga and G. Lancien,
+\emph{Asymptotic coarse Lipschitz equivalence},
+arXiv:2302.12016, 2023.
+
+\end{thebibliography}
+
+\section*{Human Review Recommendation}
+
+Review should focus on whether the source problem intended hidden separability or bounded
+geometry assumptions.  Without such additional hypotheses, the construction gives a direct
+negative answer: the asymptotic error is sublinear along each uncountable fiber, while coarse
+equivalence would force a countable image to cover an uncountable far fiber at bounded scale.
+
+\end{document}

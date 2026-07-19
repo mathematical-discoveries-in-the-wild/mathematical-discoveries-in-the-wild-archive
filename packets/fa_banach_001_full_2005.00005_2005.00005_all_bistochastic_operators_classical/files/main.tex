@@ -1,0 +1,424 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\DeclareMathOperator{\id}{id}
+\newcommand{\BH}{\mathcal B(\mathcal H)}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\title{Bistochastic quantum random variables over \(\mu I_{\mathcal H}\) are classical}
+\author{Candidate full solution for arXiv:2005.00005}
+\date{2026-06-21}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate full solution, likely valid, to the
+``no example'' question raised by Plosker and Ramsey in \cite{PR} for
+\(\nu=\mu I_{\HH}\).  The result covers the finite-dimensional and separable
+Hilbert-space setting of the source paper.  It does not address arbitrary
+positive operator-valued measures \(\nu\).
+
+\section*{Source question}
+
+The source paper is Sarah Plosker and Christopher Ramsey, ``Bistochastic
+operators and quantum random variables'', arXiv:2005.00005 \cite{PR}.  In
+Section 5, after Definition 5.1 and Theorem 5.5, the authors show that every
+classical bistochastic operator on \(L^1(X,\mu)\) extends entrywise to a
+bistochastic operator on \(L^1_{\HH}(X,\mu I_{\HH})\).  Immediately afterwards
+they write:
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In source-line form, the key sentence is line 1088 of the parsed source:
+\[
+\text{``We have no example of a bistochastic operator on }
+L^1_{\HH}(X,\mu I_{\HH})\text{ that does not arise in this way.''}
+\]
+
+\section*{Definitions}
+
+Let \((X,\Sigma,\mu)\) be a finite measure space and let \(\HH\) be finite
+dimensional or separable.  Put \(\nu=\mu I_{\HH}\).  Plosker--Ramsey's
+integral is entrywise in this case \cite[Section 2]{PR}: if
+\(f:X\to\BH\) is a \(\nu\)-integrable quantum random variable, then
+\[
+        \int_X f\,d\nu = \int_X f\,d\mu
+\]
+in the weak operator sense, equivalently against all normal states.  They define
+\(L^1_{\HH}(X,\nu)\) as the quotient of the span of positive integrable quantum
+random variables by the zero seminorm, with
+\[
+\|f\|_1=\inf\left\{
+\left\|\int_X \sum_{k=1}^4 f_k\,d\nu\right\|:
+f=f_1-f_2+i(f_3-f_4),\ f_k\geq0\right\}.
+\]
+
+A linear operator \(B\) on \(L^1_{\HH}(X,\nu)\) is \emph{bistochastic} if
+\[
+ B\geq0,\qquad
+ \int_X Bf\,d\mu=\int_X f\,d\mu\quad(f\in L^1_{\HH}(X,\nu)),
+ \qquad
+ B I_{\HH}= I_{\HH}.
+\]
+The source paper proves that a classical bistochastic operator \(S\) on
+\(L^1(X,\mu)\) gives such a \(B\) by acting entrywise:
+\[
+       B(fA)=S(f)A,\qquad f\in L^1(X,\mu),\ A\in \BH.
+\]
+
+\section*{Proof intuition}
+
+The first observation is that every rectangular test of an arbitrary
+bistochastic \(B\) is trapped in an extremely rigid order interval.  For
+measurable \(E,F\), define
+\[
+        \Theta_{F,E}(A)=\int_F B(\chi_E A)\,d\mu,\qquad A\in\BH .
+\]
+This map is positive, and because \(B\) preserves the full integral,
+\[
+        0\leq \Theta_{F,E}\leq \mu(E)\id_{\BH}.
+\]
+The positive maps in this interval are only scalar multiples of the identity
+map.  In finite dimensions this follows from matrix units.  In infinite
+dimensions one first handles rank-one projections and then uses domination of
+vector states by pure vector states to get all of \(B(\HH)\).
+
+Thus \(B\) is scalar on every rectangle \(\chi_E A\), and these scalars are
+exactly the transition measures of a classical bistochastic operator \(S\).
+The remaining difficulty is the real infinite-dimensional one: bounded/simple
+operator-valued functions are not norm dense in \(L^1_{\HH}(X,\mu I_{\HH})\).
+The proof avoids density.  For each \(F\), the map
+\[
+        T_F(f)=\int_F Bf\,d\mu
+\]
+is positive and dominated by \(f\mapsto\int_X f\,d\mu\).  If \(P\) is a
+rank-one projection and \(Q=I-P\), then for \(f\geq0\)
+\[
+ \pm(PfQ+QfP)\leq \varepsilon PfP+\varepsilon^{-1}QfQ .
+\]
+Taking the vector state supported on \(P\), domination kills the \(QfQ\) term
+and \(\varepsilon\to0\) kills the off-diagonal term.  Therefore \(T_F(f)\), in
+that vector state, only sees the scalar function \(\ip{f(\cdot)\xi}{\xi}\).
+Since scalar tensors are already known to be governed by \(S\), all vector
+states, hence all matrix coefficients, are governed by \(S\).  This forces
+\(B\) to be exactly the entrywise classical extension.
+
+\begin{lemma}[Order interval of the identity on \(B(\HH)\)]\label{lem:order}
+Let \(\HH\) be finite dimensional or separable, and let
+\(\Phi:\BH\to\BH\) be a positive linear map.  If \(c\,\id-\Phi\) is positive
+for some \(c\geq0\), then \(\Phi=\lambda\,\id\) for some
+\(0\leq\lambda\leq c\).
+\end{lemma}
+
+\begin{proof}
+The case \(c=0\) is immediate, so scale to \(c=1\).  If \(P\) is a rank-one
+projection, then
+\[
+        0\leq \Phi(P)\leq P,
+\]
+hence \(\Phi(P)=\lambda_P P\) for some \(\lambda_P\in[0,1]\).
+
+Let \(M\subseteq\HH\) be a two-dimensional subspace with orthonormal basis
+\(e_1,e_2\), and let \(E_{ij}\) denote the corresponding matrix units,
+viewed as operators on \(\HH\).  Applying the preceding paragraph to the
+rank-one projections onto \(\mathbb C(e_1\pm e_2)\) gives
+\[
+ \Phi(E_{11}+E_{22}\pm E_{12}\pm E_{21})
+ =\alpha_\pm(E_{11}+E_{22}\pm E_{12}\pm E_{21})
+\]
+after multiplying by the harmless common factor \(2\).  Adding the plus and
+minus equations and comparing with
+\(\Phi(E_{11})+\Phi(E_{22})=\lambda_{E_{11}}E_{11}+\lambda_{E_{22}}E_{22}\)
+gives \(\alpha_+=\alpha_-\) and
+\(\lambda_{E_{11}}=\lambda_{E_{22}}\).  The same argument with
+\(e_1\pm i e_2\) also gives the corresponding identities for the skew
+matrix-unit combination.  Consequently \(\Phi\) is a scalar multiple of the
+identity on every \(2\times2\) corner.
+
+It follows that all rank-one projections have one common scalar, say
+\(\lambda\): any two rank-one projections lie in a common subspace of
+dimension at most two.  Now fix a unit vector \(\xi\), let \(P_\xi\) be the
+projection onto \(\mathbb C\xi\), and define the positive functional
+\[
+        \varphi_\xi(A)=\ip{\Phi(A)\xi}{\xi}.
+\]
+Since \(0\leq\Phi\leq\id\), one has
+\(0\leq\varphi_\xi\leq \omega_\xi\), where
+\(\omega_\xi(A)=\ip{A\xi}{\xi}\).  A positive functional dominated by the
+vector state \(\omega_\xi\) is a scalar multiple of \(\omega_\xi\): indeed,
+if \(P=P_\xi\), then \(\varphi_\xi(I-P)=0\), and the Cauchy--Schwarz
+inequality for positive functionals gives
+\(\varphi_\xi((I-P)A)=\varphi_\xi(A(I-P))=0\); hence
+\[
+        \varphi_\xi(A)=\varphi_\xi(PAP)=\varphi_\xi(P)\omega_\xi(A).
+\]
+But \(\varphi_\xi(P)=\ip{\Phi(P)\xi}{\xi}=\lambda\).  Thus
+\[
+        \ip{\Phi(A)\xi}{\xi}=\lambda\ip{A\xi}{\xi}
+\]
+for every \(A\in\BH\) and every unit vector \(\xi\).  Polarization gives
+\(\Phi(A)=\lambda A\) for all \(A\).
+\end{proof}
+
+\begin{lemma}[Rectangular scalarization]\label{lem:rectangles}
+Let \(B\) be a bistochastic operator on \(L^1_{\HH}(X,\mu I_{\HH})\).  For
+each \(F\in\Sigma\) there is a function \(h_F\in L^\infty(X,\mu)\) with
+\(0\leq h_F\leq1\) such that
+\[
+        \int_F B(gA)\,d\mu=\left(\int_X h_F g\,d\mu\right)A
+        \tag{1}\label{eq:TFscalar}
+\]
+for every \(g\in L^1(X,\mu)\) and every \(A\in\BH\).
+\end{lemma}
+
+\begin{proof}
+For \(E,F\in\Sigma\), set
+\[
+        \Theta_{F,E}(A)=\int_F B(\chi_E A)\,d\mu,\qquad A\in\BH .
+\]
+If \(A\geq0\), then \(\chi_EA\geq0\), so \(\Theta_{F,E}(A)\geq0\).  Moreover,
+\[
+        \Theta_{X,E}(A)
+        =\int_X B(\chi_EA)\,d\mu
+        =\int_X \chi_EA\,d\mu
+        =\mu(E)A,
+\]
+and
+\[
+        \mu(E)A-\Theta_{F,E}(A)=\Theta_{X\setminus F,E}(A)\geq0
+        \qquad(A\geq0).
+\]
+By Lemma~\ref{lem:order}, \(\Theta_{F,E}=a(E,F)\id_{\BH}\) for a scalar
+\(a(E,F)\in[0,\mu(E)]\).
+
+Fix \(F\).  The set function \(E\mapsto a(E,F)\) is a finite positive measure:
+countable additivity follows by applying the normal vector state
+\(\omega_\xi\) to
+\(\int_F B(\chi_E I_{\HH})\,d\mu=a(E,F)I_{\HH}\).  Also
+\(a(E,F)\leq\mu(E)\), so \(a(\cdot,F)\ll\mu\) and its Radon--Nikodym density
+\[
+        h_F=\frac{d\,a(\cdot,F)}{d\mu}
+\]
+satisfies \(0\leq h_F\leq1\).  Therefore \eqref{eq:TFscalar} holds first for
+indicator functions \(g=\chi_E\), hence by linearity for scalar simple
+functions \(g\).
+
+Finally let \(g\in L^1(X,\mu)\).  Choose scalar simple \(g_n\to g\) in
+\(L^1\).  Plosker--Ramsey prove that multiplication by a fixed
+\(A\in\BH\) sends \(L^1_{\HH}(X,\mu I_{\HH})\) boundedly to itself
+\cite[Proposition 4.3]{PR}; hence \(g_nA\to gA\) in \(L^1_{\HH}\).  The map
+\[
+        T_F(u)=\int_F Bu\,d\mu
+\]
+is bounded, for instance with \(\|T_Fu\|\leq2\|u\|_1\): for \(u\geq0\) this follows from
+\(0\leq T_Fu\leq\int_Xu\,d\mu\), and the general case follows by taking the
+infimum over positive four-term decompositions in the definition of
+\(\|\cdot\|_1\).  Passing to the limit gives \eqref{eq:TFscalar}.
+\end{proof}
+
+\begin{lemma}[Dominated localization]\label{lem:localization}
+With \(B,T_F\), and \(h_F\) as in Lemma~\ref{lem:rectangles}, one has
+\[
+        \int_F Bf\,d\mu=\int_X h_F f\,d\mu
+        \tag{2}\label{eq:localization}
+\]
+for every \(f\in L^1_{\HH}(X,\mu I_{\HH})\).
+\end{lemma}
+
+\begin{proof}
+It is enough by linearity to prove the claim for \(f\geq0\).  Fix such an
+\(f\), a unit vector \(\xi\in\HH\), and let \(P\) be the rank-one projection
+onto \(\mathbb C\xi\), \(Q=I-P\).  Write
+\[
+        a(x)=\ip{f(x)\xi}{\xi}.
+\]
+The constant-operator multiplier result \cite[Proposition 4.3]{PR} ensures
+that \(PfP\), \(QfQ\), and \(PfQ+QfP\) all belong to \(L^1_{\HH}\).
+Then \(PfP=aP\), and Lemma~\ref{lem:rectangles} gives
+\[
+        \ip{T_F(PfP)\xi}{\xi}
+        = \ip{T_F(aP)\xi}{\xi}
+        = \int_X h_F a\,d\mu.
+        \tag{3}\label{eq:pfp}
+\]
+
+Since \(QfQ\geq0\), positivity and integral domination give
+\[
+        0\leq T_F(QfQ)\leq \int_X QfQ\,d\mu.
+\]
+Taking the vector state at \(\xi\) yields
+\[
+        0\leq \ip{T_F(QfQ)\xi}{\xi}
+        \leq \int_X \ip{Qf(x)Q\xi}{\xi}\,d\mu=0.
+        \tag{4}\label{eq:qfqzero}
+\]
+
+For every \(\varepsilon>0\), the pointwise block-operator inequalities
+\[
+        \pm(PfQ+QfP)\leq \varepsilon PfP+\varepsilon^{-1}QfQ
+        \tag{5}\label{eq:blockineq}
+\]
+follow from positivity of
+\[
+        (\sqrt{\varepsilon}P\pm \varepsilon^{-1/2}Q)
+        f
+        (\sqrt{\varepsilon}P\pm \varepsilon^{-1/2}Q).
+\]
+Applying the positive map \(T_F\), taking the vector state at \(\xi\), and
+using \eqref{eq:qfqzero}, we get
+\[
+ \left|\ip{T_F(PfQ+QfP)\xi}{\xi}\right|
+ \leq
+ \varepsilon\,\ip{T_F(PfP)\xi}{\xi}.
+\]
+Letting \(\varepsilon\downarrow0\) gives
+\[
+        \ip{T_F(PfQ+QfP)\xi}{\xi}=0.
+        \tag{6}\label{eq:offdiagzero}
+\]
+
+Combining \eqref{eq:pfp}, \eqref{eq:qfqzero}, and
+\eqref{eq:offdiagzero}, we obtain
+\[
+        \ip{T_F(f)\xi}{\xi}
+        =
+        \int_X h_F\ip{f(x)\xi}{\xi}\,d\mu
+        =
+        \ip{\left(\int_X h_F f\,d\mu\right)\xi}{\xi}.
+\]
+Here \(h_Ff\in L^1_{\HH}\) because scalar \(L^\infty\)-multipliers are bounded
+on \(L^1_{\HH}\) in the case \(\nu=\mu I_{\HH}\) \cite[Lemma 4.1]{PR}.  Since
+the displayed equality holds for every unit vector \(\xi\), the two positive
+operators in \eqref{eq:localization} have the same quadratic forms.  Hence
+\eqref{eq:localization} holds for positive \(f\), and therefore for all
+\(f\) by decomposing into four positive parts.
+\end{proof}
+
+\begin{theorem}\label{thm:full}
+Let \((X,\Sigma,\mu)\) be a finite measure space and let \(\HH\) be finite
+dimensional or separable.  If \(B\) is a bistochastic operator on
+\(L^1_{\HH}(X,\mu I_{\HH})\) in the sense of \cite{PR}, then there is a unique
+classical bistochastic operator \(S\) on \(L^1(X,\mu)\) such that
+\[
+        B(fA)=S(f)A
+        \qquad
+        (f\in L^1(X,\mu),\ A\in\BH).
+        \tag{7}\label{eq:tensor}
+\]
+Equivalently, for every \(F\in L^1_{\HH}(X,\mu I_{\HH})\), \(B(F)\) is obtained
+by applying \(S\) to all scalar matrix coefficients of \(F\).  Consequently,
+every bistochastic operator on \(L^1_{\HH}(X,\mu I_{\HH})\) is one of the
+entrywise classical extensions constructed in \cite[Theorem 5.5]{PR}.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:rectangles}, \(B\) maps scalar simple tensors \(gI_{\HH}\)
+to scalar-valued functions times \(I_{\HH}\).  The scalar subspace
+\(L^1(X,\mu)I_{\HH}\) is norm closed in \(L^1_{\HH}(X,\mu I_{\HH})\)
+\cite[Section 5, before Theorem 5.5]{PR}; since \(B\) is \(L^1\)-contractive
+\cite[Proposition 5.4]{PR}, it follows that for every \(g\in L^1(X,\mu)\)
+there is a unique scalar \(Sg\in L^1(X,\mu)\) such that
+\[
+        B(gI_{\HH})=(Sg)I_{\HH}.
+\]
+This defines a positive linear operator \(S:L^1(X,\mu)\to L^1(X,\mu)\).  Since
+\(BI_{\HH}=I_{\HH}\), \(S1=1\).  Since \(B\) preserves integrals,
+\[
+        \int_X Sg\,d\mu=\int_X g\,d\mu\qquad(g\in L^1(X,\mu)).
+\]
+Thus \(S\) is a classical bistochastic operator.
+
+For this \(S\), Lemma~\ref{lem:rectangles} says that
+\[
+        \int_F Sg\,d\mu=\int_X h_Fg\,d\mu
+        \qquad(F\in\Sigma,\ g\in L^1(X,\mu)).
+        \tag{8}\label{eq:adjoint}
+\]
+Indeed, apply \eqref{eq:TFscalar} with \(A=I_{\HH}\) and compare with
+\(\int_F B(gI_{\HH})\,d\mu\).
+
+Now let \(f\in L^1_{\HH}(X,\mu I_{\HH})\).  Lemma~\ref{lem:localization} and
+\eqref{eq:adjoint} give, for every \(F\in\Sigma\) and every
+\(\xi,\eta\in\HH\),
+\[
+\begin{aligned}
+ \ip{\left(\int_F Bf\,d\mu\right)\xi}{\eta}
+ &= \int_X h_F(x)\ip{f(x)\xi}{\eta}\,d\mu(x) \\
+ &= \int_F S\big(\ip{f(\cdot)\xi}{\eta}\big)\,d\mu .
+\end{aligned}
+        \tag{9}\label{eq:coefficients}
+\]
+The scalar coefficient \(\ip{f(\cdot)\xi}{\eta}\) is in \(L^1(X,\mu)\) by
+Plosker--Ramsey's state-topology estimate \cite[Lemma 3.3]{PR} and
+polarization.
+
+Let \(C\) denote the entrywise extension of \(S\) constructed in
+\cite[Theorem 5.5]{PR}.  Equation \eqref{eq:coefficients} says that every
+scalar matrix coefficient of \(\int_F Bf\,d\mu\) equals the corresponding
+coefficient of \(\int_F Cf\,d\mu\).  Hence
+\[
+        \int_F Bf\,d\mu=\int_F Cf\,d\mu\qquad(F\in\Sigma).
+\]
+Taking scalar coefficients over a countable dense subset of the separable
+Hilbert space and using equality of scalar integrals over all \(F\), we get
+\(Bf=Cf\) almost everywhere, hence as elements of \(L^1_{\HH}(X,\mu I_{\HH})\).
+This proves that \(B\) is the entrywise extension of \(S\).
+
+In particular, for scalar \(f\in L^1(X,\mu)\) and \(A\in\BH\), this gives
+\eqref{eq:tensor}.  Uniqueness of \(S\) is immediate from
+\(B(fI_{\HH})=(Sf)I_{\HH}\).
+\end{proof}
+
+\section*{Verification and novelty check}
+
+No computational verification is required.  The proof reduces the problem to
+three checkable ingredients: the order interval
+\([0,c\id]\) in positive maps on \(B(\HH)\), the rectangular scalarization
+argument, and the dominated-localization lemma that bypasses the failure of
+\(L^\infty_{\HH}\)-norm-density in infinite dimension.
+
+Local run indexes were searched for arXiv id \(2005.00005\), the title
+keywords, ``bistochastic'', ``quantum random variables'', ``Plosker'',
+``Ramsey'', and the exact source phrase ``We have no example of a bistochastic
+operator''.  The only duplicate was the earlier finite-dimensional partial
+packet, now kept in this packet's history folder.
+
+A bounded web search on 2026-06-21 for the exact source sentence and close
+phrases around \(L^1_{\HH}(X,\mu I_{\HH})\), ``bistochastic operators'', and
+``quantum random variables'' found the source arXiv record \cite{PR} and no
+later paper explicitly answering the question.
+
+Human review should focus on Lemma~\ref{lem:localization}, especially the use
+of the block inequalities \eqref{eq:blockineq}, and on the final passage from
+all matrix-coefficient integrals to equality in \(L^1_{\HH}\).
+
+\section*{Limitations}
+
+The theorem resolves the source-paper question for the classical POVM
+\(\nu=\mu I_{\HH}\), which is exactly the setting of the ``no example''
+sentence.  It does not classify bistochastic operators for arbitrary POVMs
+\(\nu\), and it does not address majorization questions beyond this
+classification.
+
+\begin{thebibliography}{9}
+\bibitem{PR}
+S. Plosker and C. Ramsey,
+\emph{Bistochastic operators and quantum random variables},
+arXiv:2005.00005, 2020.
+\end{thebibliography}
+
+\end{document}

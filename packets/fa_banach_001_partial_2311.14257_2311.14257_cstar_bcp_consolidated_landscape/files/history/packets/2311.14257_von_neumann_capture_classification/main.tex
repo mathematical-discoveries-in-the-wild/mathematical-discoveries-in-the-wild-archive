@@ -1,0 +1,367 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Prim}{\operatorname{Prim}}
+
+\title{Countable Capture for Von Neumann Algebras}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  It proves that a von Neumann algebra
+has BCP, equivalently UBCP, if and only if it is atomic and can be represented
+on a separable Hilbert space.  The same paper asks for a broader
+noncommutative \(C^*\)-algebra version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+\begin{theorem}
+\label{thm:main}
+For a von Neumann algebra \(M\), the following are equivalent:
+\begin{enumerate}
+    \item \(M\) has the countable-capture property;
+    \item \(M\) fails BCP;
+    \item \(M\) is not atomic and separably represented.
+\end{enumerate}
+\end{theorem}
+
+Here countable capture is understood in the Banach-space sense: for every
+countable \(C\subset M\), there is \(u\in S_M\) such that
+\[
+        \dist(c,\C u)=\|c\|
+        \qquad(c\in C).
+\]
+This is equivalent to the contraction formulation in the packet
+\[
+\texttt{2311.14257\_countable\_capture\_characterization}.
+\]
+
+\section*{Idea of the Proof}
+
+Countable capture always implies failure of BCP.  The source paper gives the
+von Neumann BCP classification, so it remains to prove that every von Neumann
+algebra outside the atomic separably represented class has countable capture.
+
+There are two mechanisms.  In the atomless part, the source singular-state
+lemma gives, for each centre \(x_n\), a singular state \(\varphi_n\) with
+\[
+        \varphi_n(x_n^*x_n)=\|x_n\|^2.
+\]
+A standard projection characterization of singular functionals lets us find
+one nonzero projection \(p\) with \(\varphi_n(p)=0\) for all \(n\).  Then the
+functionals
+\[
+        y\mapsto \frac{\varphi_n(x_n^*y)}{\|x_n\|}
+\]
+norm \(x_n\) and all vanish at \(p\), giving capture by the common-kernel
+form of the characterization.
+
+In the atomic nonseparable case, either there are uncountably many atomic
+summands, which gives primitive-topological capture, or there is a summand
+\(B(H)\) with \(H\) nonseparable.  A countable family of operators on \(H\)
+has a separable reducing subspace that norms all of them; a projection
+orthogonal to that subspace gives the common capture direction.
+
+\section*{Singular States and Common Kernels}
+
+We use the following standard characterization of singular positive
+functionals on von Neumann algebras.
+
+\begin{lemma}[common projection for countably many singular states]
+\label{lem:singular-common}
+Let \(N\) be a nonzero von Neumann algebra and let
+\((\varphi_n)\) be countably many singular states on \(N\).  Then there is a
+nonzero projection \(p\in N\) such that
+\[
+        \varphi_n(p)=0\qquad(n\ge1).
+\]
+\end{lemma}
+
+\begin{proof}
+Fix a normal state \(\psi\) on \(N\).  A singular positive functional
+\(\varphi\) admits an increasing net of projections \(e_i\uparrow 1\) with
+\(\varphi(e_i)=0\).  Hence, by normality of \(\psi\), for every
+\(\varepsilon>0\) there is a projection \(e\) such that
+\[
+        \varphi(e)=0,\qquad \psi(1-e)<\varepsilon.
+\]
+Apply this to \(\varphi_n\) with \(\varepsilon_n=2^{-n-2}\), obtaining
+projections \(e_n\) with \(\varphi_n(e_n)=0\) and
+\(\psi(1-e_n)<2^{-n-2}\).  Put
+\[
+        p=\bigwedge_{n=1}^\infty e_n.
+\]
+Then
+\[
+        \psi(1-p)
+        =
+        \psi\Big(\bigvee_n(1-e_n)\Big)
+        \le
+        \sum_n\psi(1-e_n)
+        <
+        \frac12.
+\]
+Thus \(p\ne0\).  Since \(p\le e_n\), we have
+\(\varphi_n(p)\le\varphi_n(e_n)=0\) for all \(n\).
+\end{proof}
+
+\begin{lemma}[atomless summands have capture]
+\label{lem:atomless}
+Let \(N\) be an atomless von Neumann algebra.  Then \(N\) has countable
+capture.
+\end{lemma}
+
+\begin{proof}
+Let \(C=\{x_1,x_2,\ldots\}\subset N\) be countable.  Discard the zero
+elements.  By the singular-state norming lemma from the source paper, for
+each \(x_n\ne0\) there is a singular state \(\varphi_n\) on \(N\) such that
+\[
+        \varphi_n(x_n^*x_n)=\|x_n\|^2.
+\]
+By Lemma~\ref{lem:singular-common}, choose a nonzero projection \(p\in N\)
+with \(\varphi_n(p)=0\) for every \(n\).  Replacing \(p\) by its support
+projection if necessary is unnecessary; already \(\|p\|=1\).
+
+For each \(n\), define
+\[
+        f_n(y)=\frac{\varphi_n(x_n^*y)}{\|x_n\|},
+        \qquad y\in N.
+\]
+By Cauchy--Schwarz for the positive functional \(\varphi_n\),
+\[
+        |f_n(y)|
+        \le
+        \frac{\varphi_n(x_n^*x_n)^{1/2}\varphi_n(y^*y)^{1/2}}{\|x_n\|}
+        \le
+        \|y\|.
+\]
+Moreover
+\[
+        f_n(x_n)=\|x_n\|,
+\]
+so \(f_n\) is a norming functional for \(x_n\).  Finally,
+\[
+        |f_n(p)|^2
+        =
+        \frac{|\varphi_n(x_n^*p)|^2}{\|x_n\|^2}
+        \le
+        \frac{\varphi_n(x_n^*x_n)\varphi_n(p)}{\|x_n\|^2}
+        =
+        0.
+\]
+Thus all \(f_n\)'s vanish at the same nonzero vector \(p\).  The common-kernel
+form of countable capture applies.
+\end{proof}
+
+\section*{Atomic Nonseparable Cases}
+
+\begin{lemma}
+\label{lem:nonsep-bh}
+If \(H\) is a nonseparable Hilbert space, then \(B(H)\) has countable
+capture.
+\end{lemma}
+
+\begin{proof}
+Let \(C=\{T_1,T_2,\ldots\}\subset B(H)\) be countable.  Choose a separable
+closed subspace \(L\subset H\) which reduces every \(T_n\) and satisfies
+\[
+        \|T_n|_L\|=\|T_n\|\qquad(n\ge1).
+\]
+This is obtained by starting with countably many almost norming vectors for
+the \(T_n\)'s and closing under all \(T_n\) and \(T_n^*\).  Since \(H\) is
+nonseparable, \(L^\perp\ne0\).  Let \(p\) be a nonzero projection with
+range contained in \(L^\perp\).
+
+For every scalar \(\lambda\),
+\[
+        (T_n-\lambda p)|_L=T_n|_L.
+\]
+Hence
+\[
+        \|T_n-\lambda p\|
+        \ge
+        \|T_n|_L\|
+        =
+        \|T_n\|.
+\]
+Taking the infimum over \(\lambda\) gives
+\[
+        \dist(T_n,\C p)=\|T_n\|,
+\]
+so \(B(H)\) has countable capture.
+\end{proof}
+
+\begin{lemma}
+\label{lem:atomic}
+Let \(M\) be an atomic von Neumann algebra which is not separably represented.
+Then \(M\) has countable capture.
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+        M\cong \prod_{i\in I} B(H_i)
+\]
+as an atomic von Neumann algebra.
+
+If \(I\) is uncountable, then the coordinate ideals give an uncountable family
+of pairwise orthogonal nonzero closed two-sided ideals.  Hence \(\Prim(M)\)
+has no countable \(\pi\)-base, and the primitive-space countable-capture
+theorem from the packet
+\[
+\texttt{2311.14257\_countable\_capture\_characterization}
+\]
+implies countable capture.
+
+If \(I\) is countable, nonseparable representability means that at least one
+summand \(B(H_{i_0})\) has \(H_{i_0}\) nonseparable.  Let
+\[
+        C=\{x_1,x_2,\ldots\}\subset M
+\]
+be countable, and write \(x_n=(x_{n,i})_{i\in I}\).  Apply
+Lemma~\ref{lem:nonsep-bh} in \(B(H_{i_0})\) to the countable family
+\((x_{n,i_0})\), obtaining a projection \(p\in B(H_{i_0})\) such that
+\[
+        \dist(x_{n,i_0},\C p)=\|x_{n,i_0}\|
+        \qquad(n\ge1).
+\]
+Let \(u\in M\) be \(p\) in the \(i_0\)-coordinate and \(0\) elsewhere.  Then
+\(\|u\|=1\).  For every scalar \(\lambda\),
+\[
+        \|x_n-\lambda u\|
+        =
+        \max\Big\{
+            \sup_{i\ne i_0}\|x_{n,i}\|,
+            \|x_{n,i_0}-\lambda p\|
+        \Big\}
+        \ge
+        \max\Big\{
+            \sup_{i\ne i_0}\|x_{n,i}\|,
+            \|x_{n,i_0}\|
+        \Big\}
+        =
+        \|x_n\|.
+\]
+Therefore \(\dist(x_n,\C u)=\|x_n\|\) for all \(n\), giving countable
+capture.
+\end{proof}
+
+\section*{Proof of the Classification}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+If \(M\) has countable capture, then \(M\) fails BCP by the general
+countable-capture obstruction packet.
+
+The source paper proves that a von Neumann algebra has BCP if and only if it
+is atomic and separably represented.  Thus BCP failure is equivalent to being
+outside that class.
+
+It remains to show that every von Neumann algebra outside that class has
+countable capture.  Let \(z\) be the central projection supporting the
+atomless part of \(M\).  If \(z\ne0\), then \(zM\) has countable capture by
+Lemma~\ref{lem:atomless}.  Given a countable \(C\subset M\), apply that
+lemma to \(zC\) and obtain \(u\in zM\) with \(\|u\|=1\) and
+\[
+        \dist(zc,\C u)=\|zc\|\qquad(c\in C).
+\]
+Since \(u\) is zero on \((1-z)M\), for every scalar \(\lambda\),
+\[
+        \|c-\lambda u\|
+        =
+        \max\{\|(1-z)c\|,\ \|zc-\lambda u\|\}
+        \ge
+        \max\{\|(1-z)c\|,\ \|zc\|\}
+        =
+        \|c\|.
+\]
+Hence \(M\) has countable capture.
+
+If \(z=0\), then \(M\) is atomic.  Since \(M\) is outside the atomic
+separably represented class, it is atomic but not separably represented.
+Lemma~\ref{lem:atomic} gives countable capture.
+\end{proof}
+
+\section*{Scope and Use for the C*-Problem}
+
+This gives a complete countable-capture classification for von Neumann
+algebras:
+\[
+        \text{BCP failure}
+        \quad\Longleftrightarrow\quad
+        \text{countable capture}.
+\]
+It supports the broader program of finding whether C*-algebraic BCP failure
+is always witnessed by countable capture, while also showing the different
+mechanisms needed: primitive topology, nonseparable atomic Hilbert summands,
+and singular-state capture in atomless summands.
+
+\section*{Novelty and Search Bounds}
+
+The source paper already proves the von Neumann BCP/UBCP classification and
+the singular-state norming lemma for atomless von Neumann algebras.  The local
+indexes were searched for countable capture, von Neumann algebras, singular
+states, atomless, atomic, and separably represented.  Web searches on June 17,
+2026 for BCP and von Neumann classification found the source paper but no
+separate countable-capture reformulation.
+
+\section*{Human Review Focus}
+
+Reviewers should check:
+\begin{enumerate}
+    \item Lemma~\ref{lem:singular-common}, especially the standard singular
+          functional projection characterization;
+    \item the use of the source singular-state norming lemma in
+          Lemma~\ref{lem:atomless};
+    \item the atomic nonseparable decomposition in Lemma~\ref{lem:atomic};
+    \item the final central-summand maximum-norm argument.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{TakesakiI}
+Masamichi Takesaki,
+\emph{Theory of Operator Algebras I},
+Springer, 1979.
+
+\bibitem{lane19capture}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{When the Countable-Capture BCP Obstruction Exists},
+solution packet
+\texttt{2311.14257\_countable\_capture\_characterization}, 2026.
+
+\bibitem{lane19primitive}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{A Primitive-Ideal Pi-Base Obstruction for \(C^*\)-Algebras with BCP},
+solution packet
+\texttt{2311.14257\_primitive\_pi\_base\_obstruction}, 2026.
+
+\end{thebibliography}
+
+\end{document}

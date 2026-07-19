@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{runs/fa_banach_001/solutions/counterexamples/0408004_dual_ddd_sbd_counterexample/}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\SBD}{\mathsf{SBD}}
+\newcommand{\DDD}{\mathsf{DDD}}
+\newcommand{\spn}{\operatorname{span}}
+
+\title{A Counterexample for the Dual DDD Question}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{June 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample to Question 3.3 of Bellenot's
+\emph{Skipped Blocking and other Decompositions in Banach spaces}
+\cite{Bellenot}.  The current verdict is: likely valid, pending human review.
+
+\section*{Source Question}
+
+The source paper defines skipped blocking decompositions (\(\SBD\)) and dual
+decomposition data (\(\DDD\)).  Question 3.3 appears on page 5 of the locally
+rendered source PDF:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question asks whether, if \((X_n)\) is an \(\SBD\), the dual \(\DDD\)
+\((X_n^*)\) is already an \(\SBD\).
+
+\section*{Definitions Used}
+
+For a sequence \((E_n)\) of finite-dimensional subspaces, write
+\[
+E[a,b]=[E_n]_{n=a}^b.
+\]
+The relevant \(\SBD\) test is the uniform boundedness of the skipped
+projections
+\[
+R_{m,k}: E[1,m-1]\oplus E[k+1,\infty)\longrightarrow E[1,m-1],
+\qquad m\le k.
+\]
+In Hilbert-space examples below, if the two summands in the domain are
+orthogonal then \(\|R_{m,k}\|=1\).
+
+For a \(\DDD\) \((X_n)\) in a Banach space \(X\), Bellenot defines
+\[
+X_n^*=[X_j]_{j\ne n}^{\perp}\subset X^*.
+\]
+In a Hilbert space we identify \(X^*\) with \(X\).
+
+\section*{Proof Intuition}
+
+The source already shows that a general \(\DDD\) can have a dual \(\DDD\)
+which is not an \(\SBD\), but in that example the original sequence is not an
+\(\SBD\).  The construction here inserts a very small middle perturbation into
+orthogonal three-dimensional Hilbert blocks.  In the original space, every
+skipped cut sees only orthogonal before and after pieces, so the \(\SBD\)
+constant is \(1\).  Biorthogonality reverses the small middle perturbation:
+two dual lines become almost parallel after the middle dual line is skipped.
+The corresponding skipped projection constants therefore tend to infinity.
+
+\begin{theorem}
+There is a skipped blocking decomposition \((X_n)\) of a separable Hilbert
+space such that the dual \(\DDD\) \((X_n^*)\) is not an \(\SBD\).
+\end{theorem}
+
+\begin{proof}
+Let \((\varepsilon_r)\) be a positive sequence with
+\(\varepsilon_r\downarrow0\), for instance \(\varepsilon_r=2^{-r}\).
+Let
+\[
+H=\biggl(\bigoplus_{r=1}^{\infty} H_r\biggr)_2,
+\qquad H_r=\R^3,
+\]
+and let \(e_{r,1},e_{r,2},e_{r,3}\) be the standard orthonormal basis of
+\(H_r\).  Define one-dimensional subspaces in the order
+\[
+X_{3r-2}=[e_{r,1}],\qquad
+X_{3r-1}=[e_{r,1}+\varepsilon_r e_{r,2}+e_{r,3}],\qquad
+X_{3r}=[e_{r,3}].
+\]
+Within each \(H_r\), the three displayed vectors are linearly independent;
+across different \(r\)'s the blocks are orthogonal.  Hence \((X_n)\) is total
+and minimal, so it is a \(\DDD\) for \(H\).
+
+We now check that \((X_n)\) is an \(\SBD\).  Fix a skipped interval
+\([m,k]\).  The space \(X[1,m-1]\) and the tail \(X[k+1,\infty)\) are
+orthogonal.  Indeed, different \(H_r\)'s are orthogonal.  Inside a single
+three-dimensional block, the only way for both a before-piece and an after-piece
+to remain after deleting a consecutive skipped interval is to delete the middle
+line \(X_{3r-1}\), leaving \(X_{3r-2}=[e_{r,1}]\) before and
+\(X_{3r}=[e_{r,3}]\) after; these two lines are orthogonal.  Thus every skipped
+projection \(R_{m,k}\) is an orthogonal projection, and
+\[
+\sup_{m\le k}\|R_{m,k}\|=1.
+\]
+Therefore \((X_n)\) is an \(\SBD\).
+
+It remains to compute the dual \(\DDD\).  In the Hilbert identification
+\(H^*=H\), the annihilator lines in block \(r\) are
+\[
+Y_{3r-2}=X_{3r-2}^*=[u_r],
+\quad u_r=e_{r,1}-\varepsilon_r^{-1}e_{r,2},
+\]
+\[
+Y_{3r-1}=X_{3r-1}^*=[e_{r,2}],
+\]
+and
+\[
+Y_{3r}=X_{3r}^*=[z_r],
+\quad z_r=e_{r,3}-\varepsilon_r^{-1}e_{r,2}.
+\]
+For example, \(u_r\) annihilates \(X_{3r-1}\) and \(X_{3r}\) but not
+\(X_{3r-2}\), and similarly for the other two lines.  These dual lines span
+each \(H_r\), so their closed span is again \(H\).
+
+Now consider in the dual \(\DDD\) the skipped interval consisting only of the
+middle line \(Y_{3r-1}\).  The associated skipped projection maps
+\[
+Y[1,3r-2]\oplus Y[3r,\infty)\longrightarrow Y[1,3r-2].
+\]
+Restricted to the two-dimensional subspace \([u_r]\oplus[z_r]\), it sends
+\(u_r-z_r\) to \(u_r\).  Hence its norm is at least
+\[
+\frac{\|u_r\|}{\|u_r-z_r\|}
+=
+\frac{\sqrt{1+\varepsilon_r^{-2}}}{\sqrt{2}}.
+\]
+This lower bound tends to infinity as \(r\to\infty\).  Therefore the skipped
+projection constants of the dual \(\DDD\) are unbounded, so \((X_n^*)\) is not
+an \(\SBD\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The script \texttt{code/check\_three\_block\_constants.py} checks the local
+three-dimensional constants for \(\varepsilon=2^{-k}\), \(1\le k\le8\).  It
+confirms that the primal middle-skip projection has norm \(1\), while the dual
+middle-skip projection grows like \(1/\varepsilon\).  The command used was:
+\[
+\texttt{conda run --no-capture-output -n sandbox python code/check\_three\_block\_constants.py}.
+\]
+This numerical check is not used as proof; it is only a guard against mistakes
+in the finite-dimensional linear algebra.
+
+\section*{Novelty and Literature Check}
+
+The cheap run indexes were searched for \texttt{0408004}, \texttt{skipped
+blocking}, \texttt{SBD}, \texttt{dual DDD}, and \texttt{predecomposition
+space}; no exact prior packet was found.  Web searches on June 19, 2026 used
+the exact phrases \texttt{"If (X\_n) is a SBD" "dual DDD"},
+\texttt{"Skipped Blocking" "dual DDD" "SBD"}, and
+\texttt{"predecomposition space" "SBD"}.  They found the source paper and
+unrelated later uses of skipped blocking, but no later answer to Question 3.3.
+
+The source's Example 3.4 is not a counterexample to Question 3.3, because there
+the original sequence is only a \(\DDD\), not an \(\SBD\).  The present
+construction keeps the original sequence an \(\SBD\) with constant \(1\).
+
+\section*{Human Review Recommendation}
+
+Review should focus on three points: the global claim that all primal skipped
+before/after pieces are orthogonal; the identification of the three dual
+annihilator lines in each Hilbert block; and the lower bound for the dual
+middle-skip projection constants.
+
+\begin{thebibliography}{9}
+\bibitem{Bellenot}
+S. F. Bellenot,
+\emph{Skipped Blocking and other Decompositions in Banach spaces},
+arXiv:math/0408004, 2004.
+\end{thebibliography}
+
+\end{document}

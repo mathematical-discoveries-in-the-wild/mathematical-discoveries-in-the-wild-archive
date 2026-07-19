@@ -1,0 +1,374 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Lq}{L^q(S)}
+
+\title{A \(q>2\) Deterministic-Dominator Square-Function Subcase}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a narrow \(q>2\) partial result for Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of
+vector-valued martingales} \cite{Yaroslavtsev2019}.  The preceding packet
+\[
+\texttt{1907.11588\_Lq\_p1\_endpoint\_qle2\_square\_function}
+\]
+proves the \(L^q(S)\), \(p=1\) endpoint for \(1<q\le2\).  The full endpoint
+for \(q>2\) remains open here, but the square-function bottleneck is proved
+when the dominating square magnitudes are deterministic.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source states
+that the general local-martingale case is open and reduces the missing issue
+to an independent-increment comparison.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The continuation states the aggregate-domination formulation and notes that
+even the symmetric case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{Main Square-Function Subcase}
+
+Let \(q>2\) and put \(r=q/2>1\).  The endpoint square-function comparison can
+be written at the positive \(L^r(S)\)-level: for \(X_i\in L^q(S)\), set
+\(V_i=|X_i|^2\in L^r(S)_+\).  The desired quantity is
+\[
+  \E\norm{\sum_i V_i}_{L^r(S)}^{1/2}
+  =
+  \E\left\|
+      \left(\sum_i |X_i|^2\right)^{1/2}
+    \right\|_{L^q(S)}.
+\]
+
+\begin{theorem}[Deterministic square magnitudes]
+\label{thm:det}
+Let \(q>2\), \(r=q/2\), and let \(v_1,\ldots,v_m\in L^r(S)_+\) be
+deterministic.  Let \(V_1,\ldots,V_n\) be independent \(L^r(S)_+\)-valued
+random variables.  Suppose that their aggregate occurrence measure is
+dominated by the deterministic square-magnitude measure:
+\[
+  \sum_{i=1}^n \Pp(V_i\in A)
+  \le
+  \sum_{j=1}^m \mathbf 1_A(v_j),
+  \qquad A\in \cB(L^r(S)),\ 0\notin A.
+\]
+Then
+\[
+  \E\norm{\sum_{i=1}^n V_i}_{L^r(S)}^{1/2}
+  \le
+  C_q
+  \norm{\sum_{j=1}^m v_j}_{L^r(S)}^{1/2}.
+\]
+\end{theorem}
+
+Equivalently, if \(u_j\in L^q(S)\) are deterministic and the aggregate laws
+of \(|X_i|^2\) are dominated by the atoms \(|u_j|^2\), then
+\[
+  \E\left\|
+      \left(\sum_i |X_i|^2\right)^{1/2}
+    \right\|_{L^q(S)}
+  \le C_q
+  \left\|
+      \left(\sum_j |u_j|^2\right)^{1/2}
+    \right\|_{L^q(S)}.
+\]
+
+\section*{Idea of the Proof}
+
+The \(1<q\le2\) packet used a positive multivariate Laplace representation.
+That representation fails for \(q>2\).  In the deterministic-dominator
+subcase one can instead square first and use scalar Rosenthal pointwise in
+the spatial variable.
+
+The scalar inequality controls
+\[
+  \E\left(\sum_i Z_i\right)^r
+\]
+by the sum of a mean term and an \(r\)-moment term.  Deterministic aggregate
+domination controls both terms pointwise:
+\[
+  \sum_i \E V_i \le \sum_j v_j,
+  \qquad
+  \sum_i \E V_i^r \le \sum_j v_j^r\le\left(\sum_j v_j\right)^r.
+\]
+This is exactly the extra structure missing for a general random dominating
+family.
+
+\section*{Proof}
+
+\begin{lemma}[Scalar positive Rosenthal]
+\label{lem:scalar}
+For every \(r>1\) there is a constant \(C_r\) such that for all finite
+independent nonnegative scalar random variables \(Z_1,\ldots,Z_n\),
+\[
+  \E\left(\sum_i Z_i\right)^r
+  \le
+  C_r\left[
+      \left(\sum_i \E Z_i\right)^r
+      +
+      \sum_i \E Z_i^r
+    \right].
+\]
+\end{lemma}
+
+\begin{proof}
+For \(1<r\le2\), this is the von Bahr--Esseen inequality applied to
+\(Z_i-\E Z_i\), followed by the triangle inequality in \(L^r\).  For \(r>2\),
+the usual scalar Rosenthal inequality gives
+\[
+  \E\left|\sum_i(Z_i-\E Z_i)\right|^r
+  \le
+  C_r\left[
+    \left(\sum_i\E Z_i^2\right)^{r/2}
+    +
+    \sum_i\E Z_i^r
+  \right].
+\]
+Let \(A=\sum_i\E Z_i\) and \(B=\sum_i\E Z_i^r\).  Interpolation and Holder's
+inequality give
+\[
+  \sum_i\E Z_i^2
+  \le
+  A^{(r-2)/(r-1)}B^{1/(r-1)}.
+\]
+Hence
+\[
+  \left(\sum_i\E Z_i^2\right)^{r/2}\le A^r+B
+\]
+by Young's inequality.  Combining this with
+\(\|\sum_iZ_i\|_{L^r}\le A+\|\sum_i(Z_i-\E Z_i)\|_{L^r}\) proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:det}]
+Let
+\[
+  A=\sum_{j=1}^m v_j\in L^r(S)_+.
+\]
+The aggregate domination hypothesis implies the following two lattice
+inequalities:
+\[
+  \sum_i \E V_i \le A
+  \quad\text{in }L^r(S),
+  \qquad
+  \sum_i \E V_i^r \le \sum_j v_j^r
+  \quad\text{in }L^1(S).
+\]
+Indeed, both follow by testing against nonnegative simple functions and using
+the aggregate domination for the Borel maps
+\[
+  V\mapsto \int_S h\,V\,d\sigma,
+  \qquad
+  V\mapsto \int_S h\,V^r\,d\sigma
+\]
+with \(h\ge0\).
+
+For almost every \(s\in S\), apply Lemma \ref{lem:scalar} to the independent
+nonnegative scalar variables \(V_i(s)\).  Then
+\[
+  \E\left(\sum_i V_i(s)\right)^r
+  \le
+  C_r\left[
+      \left(\sum_i \E V_i(s)\right)^r
+      +
+      \sum_i \E V_i(s)^r
+    \right].
+\]
+Integrating over \(S\) gives
+\[
+\begin{aligned}
+  \E\norm{\sum_i V_i}_{L^r}^r
+  &\le
+  C_r\left[
+      \int_S\left(\sum_i \E V_i\right)^r\,d\sigma
+      +
+      \int_S \sum_i \E V_i^r\,d\sigma
+    \right]  \\
+  &\le
+  C_r\left[
+      \int_S A^r\,d\sigma
+      +
+      \int_S \sum_j v_j^r\,d\sigma
+    \right]
+  \le
+  2C_r\norm{A}_{L^r}^r,
+\end{aligned}
+\]
+because \(\sum_j v_j^r\le(\sum_j v_j)^r=A^r\).
+
+Finally, by Jensen's inequality for the concave map \(t\mapsto t^{1/(2r)}\),
+\[
+  \E\norm{\sum_i V_i}_{L^r}^{1/2}
+  =
+  \E\left(\norm{\sum_i V_i}_{L^r}^{r}\right)^{1/(2r)}
+  \le
+  \left(\E\norm{\sum_i V_i}_{L^r}^{r}\right)^{1/(2r)}
+  \le
+  (2C_r)^{1/(2r)}\norm{A}_{L^r}^{1/2}.
+\]
+This is the asserted estimate.
+\end{proof}
+
+\section*{Discrete Martingale Corollary}
+
+\begin{proposition}[Random signs with deterministic magnitudes]
+\label{prop:signs}
+Let \(q>2\).  Let \(u_1,\ldots,u_m\in L^q(S)\) be deterministic and let
+\(\eta_j=\varepsilon_j u_j\), where \((\varepsilon_j)\) are independent
+Rademacher signs.  Let \((\xi_i)\) be independent mean-zero \(L^q(S)\)-valued
+random variables.  Assume that the aggregate square-magnitude laws satisfy
+\[
+  \sum_i \Pp(|\xi_i|^2\in A)
+  \le
+  \sum_j \mathbf 1_A(|u_j|^2),
+  \qquad A\in\cB(L^{q/2}(S)),\ 0\notin A.
+\]
+Then
+\[
+   \E\max_{1\le k\le n}
+      \left\|\sum_{i=1}^k \xi_i\right\|_{L^q(S)}
+   \le
+   C_q
+   \E\max_{1\le k\le m}
+      \left\|\sum_{j=1}^k \eta_j\right\|_{L^q(S)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Theorem \ref{thm:det} gives
+\[
+  \E\left\|\left(\sum_i|\xi_i|^2\right)^{1/2}\right\|_{L^q}
+  \le
+  C_q
+  \left\|\left(\sum_j|u_j|^2\right)^{1/2}\right\|_{L^q}.
+\]
+The right-hand side is, deterministically,
+\[
+  \E\left\|\left(\sum_j|\eta_j|^2\right)^{1/2}\right\|_{L^q}.
+\]
+Yaroslavtsev's Banach-function-space BDG theorem
+\cite[Theorem 4.32 and Proposition 4.33]{Yaroslavtsev2018} compares the
+\(L^1\) maximal norm of each martingale difference sequence with its lattice
+square function.  Applying it to \((\xi_i)\) and \((\eta_j)\) proves the
+claim.
+\end{proof}
+
+\section*{What This Does Not Yet Prove}
+
+The full \(q>2\) endpoint would require the same square-function comparison
+when the dominating family has random square magnitudes \(W_j=|Y_j|^2\).  The
+argument above gives, for a dominated family \(V_i\),
+\[
+  \E\norm{\sum_i V_i}_{L^r}^{1/2}
+  \le
+  C_r
+  \left[
+      \int_S
+      \left(\sum_j \E W_j\right)^r\,d\sigma
+      +
+      \int_S\sum_j \E W_j^r\,d\sigma
+  \right]^{1/(2r)}.
+\]
+For deterministic \(W_j=v_j\), this is controlled by
+\(\norm{\sum_j v_j}_{L^r}^{1/2}\).  For random \(W_j\), however, the target is
+\[
+  \E\norm{\sum_j W_j}_{L^r}^{1/2},
+\]
+and rare large jumps show that this small moment need not control the
+displayed \(r\)-moment Rosenthal functional.  Thus this packet isolates a
+specific anti-concentration or de-Poissonization step as the remaining
+obstruction for this route.
+
+\section*{Stress Tests and Failed Tickets}
+
+During this push I also tested finite-dimensional regrouping patterns in
+\(\ell_q^d\), including the \(c_0\)-style occupancy construction with fixed
+finite \(q\).  The simple occupancy ratios stayed bounded, as expected:
+for deterministic disjoint atoms, multinomial counts have uniformly bounded
+\(r\)-moments for each fixed \(r=q/2\).  Random sparse/correlated atom searches
+for \(r=1.5\) and \(r=2\) found only ratios around \(1.06\) and \(1.13\), not
+dimension growth.  These computations are not proof, but they support the
+view that the \(q>2\) obstruction is an anti-concentration proof issue rather
+than the elementary \(c_0\) occupancy obstruction.
+
+Two proof tickets remain plausible:
+\begin{enumerate}
+\item a positive-vector de-Poissonization theorem comparing
+      \(\E\norm{\sum_i V_i}_{r}^{1/2}\) with the compound-Poisson model
+      determined only by the aggregate measure;
+\item a lower bound showing that every independent dominating family controls
+      the correct truncated Rosenthal functional, not the too-large
+      \(r\)-moment functional displayed above.
+\end{enumerate}
+
+\section*{Novelty Notes and Human Review}
+
+The run indexes contain the \(1<p\) \(L^q\) packet, the \(1<q\le2\) endpoint
+packet, Hilbert packets, the \(c_0\) counterexample, and the conditional
+endpoint reduction.  No packet in the run records this deterministic
+dominating-magnitude \(q>2\) subcase.
+
+Human review should first check the lattice consequences of aggregate
+domination:
+\[
+  \sum_i \E V_i\le\sum_jv_j,\qquad
+  \sum_i \E V_i^r\le\sum_jv_j^r.
+\]
+After that, the rest is the scalar Rosenthal inequality and Jensen's
+inequality.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev.
+\newblock Local characteristics and tangency of vector-valued martingales.
+\newblock arXiv:1907.11588, 2019.
+
+\bibitem{Yaroslavtsev2018}
+I. S. Yaroslavtsev.
+\newblock Burkholder--Davis--Gundy inequalities in UMD Banach spaces.
+\newblock arXiv:1807.05573, 2018.
+
+\bibitem{DirksenYaroslavtsev2017}
+S. Dirksen and I. S. Yaroslavtsev.
+\newblock \(L^q\)-valued Burkholder--Rosenthal inequalities.
+\newblock arXiv:1707.00109, 2017.
+
+\bibitem{Rosenthal1970}
+H. P. Rosenthal.
+\newblock On the subspaces of \(L_p\), \(p>2\), spanned by sequences of
+  independent random variables.
+\newblock Israel Journal of Mathematics 8 (1970), 273--303.
+
+\bibitem{MontgomerySmithPruss}
+S. J. Montgomery-Smith and A. R. Pruss.
+\newblock A comparison inequality for sums of independent random variables.
+\newblock arXiv:math/9811124, 1998.
+
+\end{thebibliography}
+
+\end{document}

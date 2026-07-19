@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Baire}{\mathcal B_1}
+\newcommand{\clp}{\operatorname{cls}_p}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\spancl}{\overline{\operatorname{span}}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\weakstar}{w^*}
+
+\title{Corrected Audit Packet for Strongly Rosenthal Compacta}
+\author{Run \texttt{fa\_banach\_001}: corrected partial}
+\date{June 18, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This packet replaces the previous separable-case packet.  That proof is not
+valid.  There are two independent failures: pointwise-convergent Baire-one
+sequences may still be equivalent to the \(\ell_1\) unit-vector basis in the
+supremum norm, and the proposed Banach-space quotient does not collapse the
+fibers of the admissible cover.  The valid replacement is a topological
+embedding of the target compactum into a dual space \(E^*\), where
+\[
+  E=\spancl^{\norm{\cdot}}\{\alpha(e(x)):x\in X\}\subset V^* .
+\]
+This is useful structure, but it is not enough to prove admissibility because
+it does not identify \(E\) as the dual of a separable Rosenthal Banach space.
+The original separable strongly-Rosenthal-versus-admissible problem therefore
+remains open in this packet.
+\end{abstract}
+
+\section{Source question and corrected status}
+
+The source is Glasner--Megrelishvili, \emph{Representations of dynamical
+systems on Banach spaces not containing \(\ell_1\)}, arXiv:0803.2320
+\cite{GM0803}.  It defines strongly Rosenthal compacta and admissible compacta
+and asks whether the two classes coincide.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent\textbf{Corrected run status.}  The previous active packet claimed to
+prove that every separable strongly Rosenthal compactum is admissible.  That
+claim should not be used.  The present packet records why the proof fails and
+keeps the strongest valid replacement obtained from the audit.
+
+\medskip
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{
+\textbf{Outcome.}  Corrected partial only.  No proof, counterexample, or
+published resolution of the original question is recorded here.  The active
+mathematical content is the embedding theorem of Section~\ref{sec:replacement}
+and the two failure mechanisms in Sections~\ref{sec:l1failure} and
+\ref{sec:quotientfailure}.}}
+\end{center}
+
+\section{Definitions and source tools}
+
+Let \(X\) be compact metrizable.  A bounded family \(F\subset C(X)\) is called
+Rosenthal when its pointwise closure satisfies
+\[
+   \clp(F)\subset \Baire(X).
+\]
+Equivalently, by the Rosenthal--Talagrand criterion used in the source, no
+sequence in \(F\) is equivalent to the unit-vector basis of \(\ell_1\).
+
+A compactum \(K\) is strongly Rosenthal if it embeds into \(\Baire(X)\) for
+some compact metrizable \(X\).  It is admissible if it embeds into
+\(\clp(F)\) for a bounded Rosenthal family \(F\subset C(X)\) on a compact
+metrizable space.
+
+The previous packet used two source results.
+
+\begin{itemize}[leftmargin=2em]
+\item Theorem 6.3 of \cite{GM0803}: for a Rosenthal family
+      \(F\subset C(Y)\), the compactum \(L=\clp(F)\) admits a representation
+      in \(V^{**}\) for a separable Rosenthal Banach space \(V\), with
+      evaluation functionals \(\alpha(y)\in V^*\).
+\item Theorem 6.16 of \cite{GM0803}: admissibility can be characterized via
+      weak-star compact subsets of second duals of separable Rosenthal spaces.
+\end{itemize}
+
+\section{First failure: pointwise convergence does not prevent \(\ell_1\)}
+\label{sec:l1failure}
+
+The previous proof assumed that a pointwise-convergent sequence in
+\(\Baire(X)\) cannot be equivalent, in the supremum norm, to the unit-vector
+basis of \(\ell_1\).  This is false.
+
+\begin{proposition}[A compact metrizable counterexample]
+\label{prop:l1pointwise}
+There is a compact metrizable space \(X\) and a pointwise-null sequence
+\((f_n)\subset\Baire(X)\) such that \((f_n)\) is isometric to the unit-vector
+basis of \(\ell_1\) in the supremum norm.
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+  X=\{\infty\}\cup\bigcup_{m=1}^\infty \{m\}\times\{-1,1\}^m
+\]
+be the one-point compactification of the countable discrete union of the
+finite sign cubes.  This is compact metrizable.  Define
+\[
+  f_n(\infty)=0,\qquad
+  f_n(m,\sigma)=
+  \begin{cases}
+  \sigma_n,& n\le m,\\
+  0,& n>m .
+  \end{cases}
+\]
+For each fixed point of \(X\), \(f_n\) is eventually zero, hence \(f_n\to0\)
+pointwise.  Since \(X\) is countable compact metrizable, every real-valued
+function on \(X\) is Baire-one; indeed every inverse image of an open interval
+is countable and therefore \(F_\sigma\).
+
+For scalars \(a_1,\ldots,a_N\), choose \(m=N\) and
+\(\sigma_n=\operatorname{sgn}(a_n)\).  Then
+\[
+ \left|\sum_{n=1}^N a_n f_n(m,\sigma)\right|
+ =\sum_{n=1}^N |a_n|.
+\]
+The reverse inequality is the triangle inequality.  Thus
+\[
+  \left\|\sum_{n=1}^N a_n f_n\right\|_\infty
+  =\sum_{n=1}^N |a_n|.
+\]
+\end{proof}
+
+\begin{corollary}
+The graph-coordinate construction in the previous packet need not produce a
+Rosenthal family.  Pointwise compactness of the target family in
+\(\Baire(X)\) is not enough to rule out \(\ell_1\)-sequences in the
+corresponding supremum-norm coordinate family.
+\end{corollary}
+
+\section{Second failure: the quotient does not collapse fibers}
+\label{sec:quotientfailure}
+
+The previous packet then attempted to repair the admissible cover by quotienting
+the representing Banach space.  In the notation of Theorem 6.3, let
+\[
+  \nu_0:L\to V^{**},\qquad \alpha:Y\to V^*
+\]
+be the representation, and let \(e:X\to Y\) denote the graph embedding.  The
+old proof set
+\[
+  N=\bigcap_{x\in X}\ker \alpha(e(x))\subset V
+\]
+and claimed that the quotient map \(q:V\to V/N\) makes
+\(q^{**}\nu_0(h)\) depend only on the fiber of the restriction map
+\(\pi:L\to K\).
+
+There are two problems.
+
+\begin{enumerate}[leftmargin=2em]
+\item In the actual construction behind Theorem 6.3, the vectors represented
+      by the graph coordinates generate the relevant predual space.  For the
+      graph set, the above \(N\) is therefore typically just \(\{0\}\).  Then
+      the quotient does not collapse any fibers.
+\item The annihilator step uses the wrong closure.  If
+      \(A=\{\alpha(e(x)):x\in X\}\subset V^*\), then
+      \[
+        \left(\bigcap_{\phi\in A}\ker\phi\right)^\perp
+        =\overline{\operatorname{span}}^{\,\weakstar} A
+      \]
+      in \(V^*\), by the bipolar theorem for the dual pair \((V,V^*)\).
+      But an element of \(V^{**}\) is norm-continuous on \(V^*\), not
+      generally weak-star continuous.  Therefore vanishing on \(A\) gives
+      vanishing on the norm-closed span of \(A\), not on its weak-star closed
+      span.
+\end{enumerate}
+
+Thus the quotient proof cannot prove that \(K\) is weak-star compact in the
+second dual of a separable Rosenthal quotient.
+
+\section{The valid replacement}
+\label{sec:replacement}
+
+The norm-closure issue points to a genuine theorem.  It gives a topological
+embedding into a dual Banach space, but not the second-dual representation
+needed for admissibility.
+
+\begin{theorem}[Norm-closed evaluation-span embedding]
+\label{thm:embedding}
+Let \(L\) be an admissible cover of a compactum \(K\), with continuous
+surjection \(\pi:L\to K\), arising from a graph restriction construction.
+Assume \(L\) is represented as in Theorem 6.3 of \cite{GM0803} by
+\[
+   \nu_0:L\to V^{**},\qquad \alpha:Y\to V^*,
+\]
+where \(V\) is separable Rosenthal and
+\[
+   h(y)=\langle \nu_0(h),\alpha(y)\rangle
+   \qquad(h\in L,\ y\in Y).
+\]
+Put
+\[
+   E=\spancl^{\norm{\cdot}}\{\alpha(e(x)):x\in X\}\subset V^* .
+\]
+Then the formula
+\[
+   \sigma(\pi(h))=\nu_0(h)|_E
+\]
+defines a topological embedding
+\[
+   \sigma:K\hookrightarrow E^*
+\]
+when \(E^*\) carries its weak-star topology from the predual \(E\).
+\end{theorem}
+
+\begin{proof}
+If \(\pi(h_1)=\pi(h_2)\), then
+\[
+ h_1(e(x))=h_2(e(x))\qquad(x\in X).
+\]
+Equivalently,
+\[
+ \langle \nu_0(h_1)-\nu_0(h_2),\alpha(e(x))\rangle=0
+ \qquad(x\in X).
+\]
+Since \(\nu_0(h_1)-\nu_0(h_2)\in V^{**}\) is norm-continuous on \(V^*\), it
+vanishes on the norm-closed linear span \(E\).  Hence
+\(\nu_0(h_1)|_E=\nu_0(h_2)|_E\), so \(\sigma\) is well-defined.
+
+Conversely, if the restrictions to \(E\) agree, then they agree on every
+\(\alpha(e(x))\).  Therefore \(h_1(e(x))=h_2(e(x))\) for all \(x\), which is
+precisely \(\pi(h_1)=\pi(h_2)\) in the graph-restriction quotient.  Thus
+\(\sigma\) is injective.
+
+Continuity follows because, for each \(u\in E\), the function
+\[
+  h\mapsto \langle \nu_0(h),u\rangle
+\]
+is continuous on \(L\) after first checking it on the generating
+\(\alpha(e(x))\)'s and then passing to the norm closure uniformly on bounded
+sets.  Therefore the factor map \(K\to E^*\) is weak-star continuous.  A
+continuous injection from compact \(K\) into the Hausdorff space \(E^*\) is a
+homeomorphism onto its image.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:embedding} is the strongest valid replacement found in this
+audit.  It does not prove admissibility because it gives \(K\subset E^*\), not
+\(K\subset W^{**}\) for a separable Rosenthal Banach space \(W\).  To apply
+Theorem 6.16 of the source, one would need to identify \(E\) with \(W^*\), or
+otherwise represent \(E^*\) as such a second dual in a way compatible with the
+embedding.  No such identification follows from the construction.
+\end{remark}
+
+\section{Literature and remaining problem}
+
+The audit supplied for this correction reports no published resolution of the
+underlying open statement.  It also reports that later work continued to treat
+the separable strongly Rosenthal case as unresolved: a later
+Glasner--Megrelishvili survey still describes the separable strongly Rosenthal
+case as unknown, Marciszewski--Pol formulate an equivalent envelope problem
+and solve only the Aleksandrov--Urysohn special case, and specialist material
+from 2021 continues to distinguish the relevant classes.
+
+\begin{problem}
+Does every separable strongly Rosenthal compactum admit an admissible
+representation?
+\end{problem}
+
+\begin{problem}
+Can the space \(E=\spancl^{\norm{\cdot}}\{\alpha(e(x)):x\in X\}\subset V^*\)
+from Theorem~\ref{thm:embedding} be represented, under natural hypotheses, as
+the dual of a separable Rosenthal Banach space?
+\end{problem}
+
+\begin{problem}
+Can one build a strongly Rosenthal compactum for which the embedding of
+Theorem~\ref{thm:embedding} cannot be lifted to a second-dual representation
+over any separable Rosenthal space?
+\end{problem}
+
+\section{What this packet supersedes}
+
+This packet supersedes the previous active packet in this folder.  The old
+packet is preserved under
+\[
+ \texttt{history/invalid\_previous\_packet\_2026\_06\_18/}
+\]
+only as provenance.  Its claimed theorem that every separable strongly
+Rosenthal compactum is admissible should not be cited as a result of this run.
+
+\section{Human review checklist}
+
+\begin{enumerate}[leftmargin=2em]
+\item Check Proposition~\ref{prop:l1pointwise}: the compact space is metrizable,
+      the functions are Baire-one, and the \(\ell_1\) estimate is exact.
+\item Check that the old graph-coordinate argument really needs a
+      no-\(\ell_1\) conclusion in supremum norm and therefore fails.
+\item Check the annihilator closure distinction:
+      weak-star closure is supplied by the bipolar theorem, while the fiber
+      argument requires norm closure because elements of \(V^{**}\) are
+      norm-continuous on \(V^*\).
+\item Check that Theorem~\ref{thm:embedding} is well-defined and is a genuine
+      topological embedding into \(E^*\).
+\item Check that this embedding is insufficient for admissibility without an
+      additional theorem identifying \(E\) as a Rosenthal dual predual.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{GM0803}
+E. Glasner and M. Megrelishvili,
+\newblock Representations of dynamical systems on Banach spaces not containing
+\(\ell_1\),
+\newblock arXiv:0803.2320.
+
+\bibitem{Rosenthal}
+H. P. Rosenthal,
+\newblock A characterization of Banach spaces containing \(\ell_1\),
+\newblock \emph{Proc. Nat. Acad. Sci. USA} \textbf{71} (1974), 2411--2413.
+
+\end{thebibliography}
+
+\end{document}

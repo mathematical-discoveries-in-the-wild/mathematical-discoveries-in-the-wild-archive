@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Hcal}{\mathcal H}
+\newcommand{\Ss}{\mathsf S}
+\newcommand{\E}{\mathsf E}
+\newcommand{\one}{\mathbf 1}
+\DeclareMathOperator{\spanop}{span}
+
+\title{Odd Discrete Tori in Trigonometric Chaos}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_04}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a likely valid full answer to the extracted signal in
+Remark 2.4 of Cano-Marmol, Conde-Alonso, and Parcet
+\cite{CCP2022}: an explicit orthonormal basis for the cocycle Hilbert
+space of the odd cyclic product $\Z_{2m+1}^n$, and the resulting
+balanced Fourier-truncation inequality.  The result is a completion of a
+source-paper computation left to the interested reader, not a claim that a
+separate major conjecture is resolved.
+
+\section*{Source Signal}
+
+The source paper proves the even-cardinal discrete-torus case in Section 2.2
+and then records the following odd-cardinal variant in Remark 2.4 on page 16.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In words, the authors note that for $\Z_{2m+1}^n$ the word length
+\[
+  \psi(g)=\sum_{j=1}^n |g_j|,\qquad |a|=\min\{a,2m+1-a\},
+\]
+is conditionally negative, that the associated cocycle Hilbert space has
+dimension $2mn$, and that Theorems A and B apply; what is left open in the
+remark is an explicit orthonormal basis.
+
+\section*{Proof Intuition}
+
+For the even cycle, the source basis is made of oriented edges, but opposite
+edges cancel in pairs.  In an odd cycle there is no antipodal pairing, so the
+edge basis is no longer orthogonal in the same elementary way.  The clean
+replacement is to diagonalize the cycle distance by the nonzero Fourier modes
+of $\Z_{2m+1}$.  The negative Fourier coefficients of the distance give the
+normalizing constants.  Taking real and imaginary parts produces $2m$ real
+orthonormal vectors for each coordinate.  These coordinate Fourier planes are
+rotated by the cocycle action, so they give the same admissible coordinate
+splitting used by the source paper.  The coordinate support derivative
+$\partial_j\lambda(g)=\one_{\{g_j\ne0\}}\lambda(g)$ then absorbs every
+cocycle derivative in the $j$th coordinate, which is exactly the distinguished
+derivative hypothesis of Theorem B in \cite{CCP2022}.
+
+\section*{Theorem}
+
+Let $N=2m+1$ and write elements of $\Z_N$ as $0,1,\ldots,N-1$, with arithmetic
+modulo $N$.  Put
+\[
+  |a|=\min\{a,N-a\},\qquad
+  \psi(g)=\sum_{j=1}^n |g_j|,\qquad g\in \Z_N^n.
+\]
+Let $\Hcal_\psi$ be the real cocycle Hilbert space obtained from the Gromov
+form
+\[
+  \langle \delta_g,\delta_h\rangle_\psi
+  =\frac{1}{2}\bigl(\psi(g)+\psi(h)-\psi(g-h)\bigr).
+\]
+For $1\le r\le m$ set $\theta_r=2\pi r/N$ and
+\[
+  q_r
+  =-\sum_{a=0}^{N-1}|a|\cos(\theta_r a)
+  =\frac{1-(-1)^r\cos(\pi r/N)}{2\sin^2(\pi r/N)}  >0 .
+\]
+For $1\le j\le n$, define
+\[
+  c_{j,r}=-\frac{2}{\sqrt{Nq_r}}\sum_{a=0}^{N-1}
+       \cos(\theta_r a)\,\delta_{ae_j},
+  \qquad
+  s_{j,r}= \frac{2}{\sqrt{Nq_r}}\sum_{a=0}^{N-1}
+       \sin(\theta_r a)\,\delta_{ae_j}.
+\]
+Then
+\[
+  \bigl\{c_{j,r},s_{j,r}: 1\le j\le n,\ 1\le r\le m\bigr\}
+\]
+is an orthonormal basis of $\Hcal_\psi$.
+
+Moreover, if $\Hcal_{\psi,j}=\spanop\{c_{j,r},s_{j,r}:1\le r\le m\}$, then
+$\Hcal_\psi=\bigoplus_{j=1}^n\Hcal_{\psi,j}$ is invariant under the cocycle
+action.  The conditional expectations over the coordinate subgroups
+$\Z_N^\Ss$ form an admissible family of Fourier truncations.  If
+\[
+  \partial_j\lambda(g)=\one_{\{g_j\ne0\}}\lambda(g),
+\]
+then $\{\partial_j\}_{j=1}^n$ is a distinguished family of derivatives.  Hence,
+for every $p\ge2$, every $1\le k\le n$, and every mean-zero
+$f:\Z_N^n\to\C$,
+\[
+ \frac{1}{\binom{n}{k}}\sum_{\substack{\Ss\subseteq[n]\\|\Ss|=k}}
+ \left\|\sum_{g\in\Z_N^\Ss}\widehat f(g)
+       \exp\left(\frac{2\pi i}{N}\langle\cdot,g\rangle\right)\right\|_p^p
+ \lesssim_p
+ \frac{k}{n}\sum_{j=1}^n \|\partial_j f\|_p^p
+ +\left(\frac{k}{n}\right)^{p/2}\|f\|_p^p .
+\]
+
+\section*{Proof}
+
+We first record the zero-sum form of the Gromov inner product.  If
+$x=\sum_g a_g\delta_g$ and $y=\sum_h b_h\delta_h$ satisfy
+$\sum_g a_g=\sum_h b_h=0$, then
+\begin{equation}\label{eq:zero-sum}
+  \langle x,y\rangle_\psi
+  =-\frac{1}{2}\sum_{g,h}a_gb_h\,\psi(g-h).
+\end{equation}
+Indeed, the two terms containing $\psi(g)$ and $\psi(h)$ vanish after summing
+against the zero total coefficients.
+
+Let $\kappa(a)=|a|$ on $\Z_N$.  For $1\le r\le m$ its nonzero Fourier
+coefficient is
+\begin{equation}\label{eq:q-fourier}
+  \widehat\kappa(r)=\sum_{a=0}^{N-1}\kappa(a)e^{-i\theta_r a}
+  =2\sum_{a=1}^m a\cos(\theta_r a)=-q_r .
+\end{equation}
+The displayed closed form for $q_r$ follows from
+\[
+  \sum_{a=1}^m az^a=\frac{z\bigl(1-(m+1)z^m+mz^{m+1}\bigr)}{(1-z)^2},
+  \qquad z^N=1,\ z\ne1,
+\]
+because $z^m+z^{m+1}=2(-1)^r\cos(\pi r/N)$ and
+$z/(1-z)^2=-1/(4\sin^2(\pi r/N))$.
+
+Now fix one coordinate $j$.  The real functions
+$a\mapsto \cos(\theta_r a)$ and $a\mapsto\sin(\theta_r a)$, $1\le r\le m$,
+are the real nonzero Fourier modes of $\Z_N$.  By \eqref{eq:zero-sum} and
+\eqref{eq:q-fourier},
+\[
+ \left\|\sum_a \cos(\theta_r a)\delta_{ae_j}\right\|_{\Hcal_\psi}^2
+ =
+ \left\|\sum_a \sin(\theta_r a)\delta_{ae_j}\right\|_{\Hcal_\psi}^2
+ =\frac{Nq_r}{4},
+\]
+and different real modes are orthogonal.  If $j\ne j'$, the coordinate
+supports are also orthogonal: by additivity of $\psi$, every mixed inner
+product is a sum of terms containing either the total coefficient of the
+$j$-mode or the total coefficient of the $j'$-mode, both of which are zero.
+The displayed normalization therefore gives an orthonormal family of
+$2mn$ vectors.  Since the source remark identifies
+$\dim\Hcal_\psi=2mn$, the family is an orthonormal basis.
+
+The useful coefficient formulas are, for $t=g_j\in\{0,\ldots,N-1\}$,
+\begin{equation}\label{eq:coefficients}
+  \langle \delta_g,c_{j,r}\rangle_\psi
+  =\sqrt{\frac{q_r}{N}}\bigl(1-\cos(\theta_r t)\bigr),\qquad
+  \langle \delta_g,s_{j,r}\rangle_\psi
+  =\sqrt{\frac{q_r}{N}}\sin(\theta_r t).
+\end{equation}
+For instance, if $C_r(a)=\cos(\theta_r a)$, then
+\[
+  \left\langle \delta_g,\sum_a C_r(a)\delta_{ae_j}\right\rangle_\psi
+  =\frac{1}{2}\left(\widehat\kappa(r)-\widehat\kappa(r)\cos(\theta_r t)\right)
+  =-\frac{q_r}{2}\bigl(1-\cos(\theta_r t)\bigr),
+\]
+and the sign in the definition of $c_{j,r}$ gives the first formula.  The sine
+formula is the same convolution calculation.
+
+The formulas \eqref{eq:coefficients} show in particular that every derivative
+in the $j$th coordinate vanishes on Fourier coefficients with $g_j=0$.
+Consequently
+\[
+  \partial_{c_{j,r}}\circ\partial_j=\partial_{c_{j,r}},
+  \qquad
+  \partial_{s_{j,r}}\circ\partial_j=\partial_{s_{j,r}},
+\]
+where $\partial_u\lambda(g)=2\pi i\langle\delta_g,u\rangle_\psi\lambda(g)$.
+Thus the coordinate support derivatives form a distinguished family once the
+coordinate splitting is known to be invariant.
+
+It remains only to note that invariance.  For a zero-sum vector
+$x=\sum_a x_a\delta_{ae_j}$, the source cocycle action gives
+$\alpha_g x=\sum_a x_a\delta_{g+ae_j}$ in the quotient.  This is translation
+by $g_j$ on the $j$th cyclic coordinate.  Hence
+\[
+  \alpha_g c_{j,r}
+  =\cos(\theta_r g_j)c_{j,r}-\sin(\theta_r g_j)s_{j,r},
+  \qquad
+  \alpha_g s_{j,r}
+  =\sin(\theta_r g_j)c_{j,r}+\cos(\theta_r g_j)s_{j,r}.
+\]
+So each $\Hcal_{\psi,j}$ is $\alpha$-invariant, and the coordinate subgroup
+conditional expectations over $\Z_N^\Ss$ are admissible exactly as in the even
+case treated in the source paper.
+
+Applying Theorem B of \cite{CCP2022} gives the stated inequality, up to the
+extra adjoint derivative terms present in the general theorem.  Since the
+group is abelian and the multiplier $\one_{\{g_j\ne0\}}$ is symmetric under
+$g\mapsto -g$, we have $\|\partial_j(f^*)\|_p=\|\partial_j f\|_p$; these terms
+are absorbed into the implicit constant depending only on $p$.
+
+\section*{Verification Notes}
+
+The script \texttt{code/verify\_odd\_cycle\_onb.py} checks the finite Gram
+matrix and coefficient identities for $N=3,5,7,9,11$ and $n=1,2,3$ using the
+Gromov form directly.  It is only a numerical sanity check; the proof above is
+symbolic.
+
+Cheap-index search found no prior packet for arXiv:2209.05986.  A web search
+for the exact odd-cardinal/orthonormal-basis phrases found the source preprint
+and its 2024 journal publication, but no separate explicit odd-cycle basis
+answer.  The related arXiv:2209.05991 Part II problem has a prior no-promotion
+attempt in this run and is mathematically separate.
+
+\section*{Limitations and Human Review Recommendation}
+
+This packet should be reviewed as a compact completion of Remark 2.4, not as a
+solution to a broad open conjecture.  The main review points are the sign and
+normalization in \eqref{eq:q-fourier} and \eqref{eq:coefficients}, and the
+use of Theorem B after verifying the distinguished derivative condition.
+
+\begin{thebibliography}{9}
+\bibitem{CCP2022}
+Antonio Ismael Cano-Marmol, Jose M. Conde-Alonso, and Javier Parcet.
+\newblock Trigonometric chaos and {$X_p$} inequalities I -- Balanced Fourier
+truncations over discrete groups.
+\newblock arXiv:2209.05986, 2022. Published in Analysis \& PDE 17(7),
+2561--2584, 2024.
+\end{thebibliography}
+
+\end{document}

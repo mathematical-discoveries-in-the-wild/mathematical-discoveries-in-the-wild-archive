@@ -1,0 +1,554 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ph}{\varphi}
+\newcommand{\Ball}{B}
+\newcommand{\wstar}{w^*}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\supp}{supp}
+
+\title{A Converse Estimate for the Schlumprecht-Space Szlenk Radius}
+\author{Automated Math Discovery Smoke Test}
+\date{June 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Problem}
+
+This packet concerns Proposition 6 and the open problem immediately following
+it in:
+
+\begin{quote}
+Tomasz Kochanek and Marek Miarka,
+\emph{When is the Szlenk derivation of a dual unit ball another ball?},
+arXiv:2409.05516 \cite{KM}.
+\end{quote}
+
+The source location is page 9 of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Let $\mathcal S$ be Schlumprecht's space \cite{S}.  Its norm is given
+implicitly by
+\[
+ \|x\|_{\mathcal S}
+ =
+ \max\left\{\|x\|_\infty,\,
+ \sup_{E_1<\cdots<E_n}
+ \frac1{\ph(n)}\sum_{i=1}^n\|E_i x\|_{\mathcal S}\right\},
+ \qquad
+ \ph(n)=\log_2(n+1).
+\]
+The case $n=1$ is redundant, since $\ph(1)=1$, so we shall use only
+$n\ge 2$ in recursive estimates.
+
+Kochanek and Miarka proved
+\begin{equation}
+ r_{\mathcal S^*}(\eps)
+ \le
+ \inf_{n\in\N}
+ \frac{\ph(n+1)-\eps/2}{\ph(n)},
+ \qquad 0<\eps<2,
+ \label{eq:source-upper}
+\end{equation}
+and asked whether the converse inequality also holds.
+
+\section*{Proof Intuition}
+
+The missing direction is a far-coordinate perturbation argument.  If a vector
+$x\in\mathcal S$ has norm below the candidate radius, then one wants to add
+and subtract a sufficiently far basis vector $\alpha e_N$ while staying in the
+unit ball.  The two perturbed vectors converge weakly back to $x$ and remain
+separated by $2\alpha$, which places $x$ in the Szlenk derivation.
+
+The only delicate point is that the scalar majorant must be local: when a
+restriction $F$ is estimated recursively, the sub-restrictions have to be
+controlled relative to the majorant of $F$ itself.  The needed bound has the
+form
+\[
+ \sum_i \rho(E_i)\le \ph(k)\rho(F).
+\]
+The key observation in this revision is that the needed strengthened scalar
+estimate follows from a simple product inequality for the logarithmic
+increments of $\ph$.
+
+\section{A Logarithmic Product Lemma}
+
+Put
+\[
+ B_i=\ph(i+1),\qquad
+ \Delta_i=\ph(i+1)-\ph(i)
+ \qquad (i\ge 1).
+\]
+
+\begin{lemma}[monotonicity]\label{lem:monotone}
+The function
+\[
+ h(u)=\frac{u\log u}{u-1}\qquad (u>1)
+\]
+is increasing.
+\end{lemma}
+
+\begin{proof}
+Differentiation gives
+\[
+ h'(u)=\frac{u-1-\log u}{(u-1)^2}\ge 0,
+\]
+because $\log u\le u-1$.
+\end{proof}
+
+\begin{lemma}[product lemma]\label{lem:product}
+For all $i,j\ge 1$, if $\ell=(i+1)(j+1)-1$, then
+\[
+ B_\ell\le B_iB_j,
+ \qquad
+ \Delta_\ell\le \Delta_i\Delta_j.
+\]
+\end{lemma}
+
+\begin{proof}
+It is enough to prove, for $p,q\ge 1$,
+\begin{align}
+ \log_2(pq+1)&\le \log_2(p+1)\log_2(q+1), \label{eq:prod-B}\\
+ \log_2\left(1+\frac1{pq}\right)
+ &\le
+ \log_2\left(1+\frac1p\right)
+ \log_2\left(1+\frac1q\right). \label{eq:prod-D}
+\end{align}
+
+For fixed $p\ge 1$, define
+\[
+ F_p(q)=\frac{\log(pq+1)}{\log(q+1)}\qquad(q>1),
+\]
+where $\log$ is the natural logarithm.  The derivative has the sign of
+\[
+ p(q+1)\log(q+1)-(pq+1)\log(pq+1).
+\]
+With $u=q+1$ and $v=pq+1=1+p(u-1)$, this sign is non-positive by
+Lemma~\ref{lem:monotone}.  Indeed, $v\ge u$, and hence
+\[
+ \frac{v\log v}{v-1}\ge \frac{u\log u}{u-1}.
+\]
+Since $v-1=p(u-1)$, this gives $v\log v\ge pu\log u$, which is exactly
+the required non-positivity of the derivative sign.  Hence $F_p$ is
+decreasing, and
+$F_p(q)\le F_p(1)=\log(p+1)/\log 2$.  This is \eqref{eq:prod-B}.
+
+For \eqref{eq:prod-D}, write $a=1/p$ and $b=1/q$.  For fixed
+$0<a\le 1$, define
+\[
+ G_a(b)=\frac{\log(1+ab)}{\log(1+b)}\qquad(0<b\le 1).
+\]
+The derivative has the sign of
+\[
+ a(1+b)\log(1+b)-(1+ab)\log(1+ab).
+\]
+With $u=1+b$ and $v=1+ab=1+a(u-1)$, this sign is non-negative by
+Lemma~\ref{lem:monotone}.  Here $v\le u$, and so
+\[
+ \frac{v\log v}{v-1}\le \frac{u\log u}{u-1}.
+\]
+Since $v-1=a(u-1)$, this gives $v\log v\le au\log u$, which is exactly
+the required non-negativity of the derivative sign.  Thus $G_a$ is
+increasing on $(0,1]$, and
+$G_a(b)\le G_a(1)=\log(1+a)/\log 2$.  This is \eqref{eq:prod-D}.
+
+Taking $p=i+1$ and $q=j+1$ gives the asserted inequalities for
+$B_\ell$ and $\Delta_\ell$.
+\end{proof}
+
+\section{The Strengthened Scalar Estimate}
+
+For $0<\alpha<1$, set
+\[
+ a_\alpha=\inf_{n\in\N}\frac{\ph(n+1)-\alpha}{\ph(n)}.
+\]
+Then $0<a_\alpha<1$.  Positivity follows from
+$\ph(n+1)>1>\alpha$ for every $n\ge 1$.  For the upper bound, use
+$\ph(n+1)-\ph(n)\to 0$: choose $n$ with
+$\ph(n+1)-\ph(n)<\alpha$.  Then
+\[
+ \frac{\ph(n+1)-\alpha}{\ph(n)}<1,
+\]
+and hence $a_\alpha<1$.
+Equivalently,
+\begin{equation}
+ \ph(n)a_\alpha+\alpha\le \ph(n+1)
+ \qquad(n\in\N).
+ \label{eq:a-alpha}
+\end{equation}
+For $u\ge 0$, define
+\[
+ M_\alpha(u)=
+ \max\left\{u,\alpha,\sup_{m\in\N}
+ \frac{\ph(m)u+\alpha}{\ph(m+1)}\right\}.
+\]
+If $0\le u<a_\alpha$, then $M_\alpha(u)\le 1$: indeed $u<1$ and
+$\alpha<1$, while \eqref{eq:a-alpha} gives
+\[
+ \frac{\ph(m)u+\alpha}{\ph(m+1)}
+ \le
+ \frac{\ph(m)a_\alpha+\alpha}{\ph(m+1)}
+ \le 1
+ \qquad(m\in\N).
+\]
+
+\begin{lemma}[strengthened scalar estimate]\label{lem:strong-scalar}
+Let $0<\alpha<1$, $0\le s\le t$, and $k\ge 2$.  Then
+\begin{equation}
+ M_\alpha(s)+\min\{\ph(k-1)t,\ph(k)t-s\}
+ \le
+ \ph(k)M_\alpha(t).
+ \label{eq:strong-scalar-estimate}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ a=\ph(k-1),\qquad b=\ph(k),\qquad \delta=b-a.
+\]
+Since
+\[
+ \delta=\log_2(k+1)-\log_2(k)=\log_2\left(1+\frac1k\right),
+\]
+we have $0<\delta<1$, and therefore $\delta t\in[0,t]$.  It suffices
+to prove \eqref{eq:strong-scalar-estimate} for each affine term in the
+maximum defining $M_\alpha(s)$.
+
+For the term $s$, use the second member of the minimum:
+\[
+ s+\min\{at,bt-s\}\le bt\le bM_\alpha(t).
+\]
+For the term $\alpha$, use the first member of the minimum and the
+$(k-1)$-st affine term in $M_\alpha(t)$:
+\[
+ \alpha+\min\{at,bt-s\}\le \alpha+at\le bM_\alpha(t).
+\]
+
+It remains to consider the $m$-th affine term.  Put
+\[
+ c=\ph(m),\qquad d=\ph(m+1),\qquad \eta=d-c.
+\]
+For fixed $t$, the function
+\[
+ s\mapsto \frac{cs+\alpha}{d}+\min\{at,bt-s\}
+\]
+increases on $[0,\delta t]$ and decreases on $[\delta t,t]$.  Its maximum
+over $0\le s\le t$ is therefore attained at $s=\delta t$, where it equals
+\[
+ \frac{\alpha+t(c\delta+ad)}{d}
+ =
+ \frac{\alpha+t(bd-\delta\eta)}{d}.
+\]
+Thus it is enough to prove
+\begin{equation}
+ M_\alpha(t)\ge
+ \frac{\alpha+t(bd-\delta\eta)}{bd}.
+ \label{eq:scalar-target}
+\end{equation}
+
+Apply Lemma~\ref{lem:product} with $i=k-1$ and $j=m$.  There is
+$\ell\in\N$ such that, with
+\[
+ D=B_\ell=\ph(\ell+1),
+ \qquad
+ \lambda=\Delta_\ell=\ph(\ell+1)-\ph(\ell),
+\]
+we have $D\le bd$ and $\lambda\le \delta\eta$.  The $\ell$-th affine term
+in $M_\alpha(t)$ gives
+\[
+ M_\alpha(t)
+ \ge
+ \frac{\ph(\ell)t+\alpha}{\ph(\ell+1)}
+ =
+ t+\frac{\alpha-\lambda t}{D}.
+\]
+If $\alpha-\delta\eta t<0$, the right-hand side of
+\eqref{eq:scalar-target} is below $t$, while $M_\alpha(t)\ge t$.  If
+$\alpha-\delta\eta t\ge 0$, then
+$\alpha-\lambda t\ge\alpha-\delta\eta t\ge 0$ and $D\le bd$, so
+\[
+ M_\alpha(t)
+ \ge
+ t+\frac{\alpha-\delta\eta t}{bd}
+ =
+ \frac{\alpha+t(bd-\delta\eta)}{bd}.
+\]
+This proves \eqref{eq:scalar-target}, hence
+\eqref{eq:strong-scalar-estimate}.
+\end{proof}
+
+\begin{remark}
+The factor $M_\alpha(t)$ on the right-hand side of
+Lemma~\ref{lem:strong-scalar} is what makes the estimate stable under the
+recursive definition of the Schlumprecht norm.
+\end{remark}
+
+\section{The Far-Coordinate Perturbation}
+
+Define the iterative norms by
+\[
+ \|x\|_0=\|x\|_\infty,\qquad
+ \|x\|_{r+1}=
+ \max\left\{\|x\|_\infty,
+ \sup_{k\ge 2}\sup_{E_1<\cdots<E_k}
+ \frac1{\ph(k)}\sum_{i=1}^k\|E_i x\|_r\right\}.
+\]
+Then $\|x\|_{\mathcal S}=\sup_r\|x\|_r$.
+
+\begin{lemma}[comparison by local majorants]\label{lem:comparison}
+Let $y\in c_{00}$.  Suppose that to every finite $F\subset\N$ one assigns
+$\rho(F)\ge 0$ such that
+\begin{align*}
+ \|Fy\|_\infty&\le \rho(F),\\
+ G\subset F&\Longrightarrow \rho(G)\le \rho(F),\\
+ \sum_{i=1}^k\rho(E_i)&\le \ph(k)\rho(F)
+\end{align*}
+whenever $k\ge 2$ and $E_1<\cdots<E_k$ are finite subsets of $F$.  Then
+\[
+ \|Fy\|_{\mathcal S}\le \rho(F)
+ \qquad(F\subset\N\text{ finite}).
+\]
+\end{lemma}
+
+\begin{proof}
+Induct on the iterative norms.  The assertion is true for $\|\cdot\|_0$
+by the first assumption.  Suppose it is true for $\|\cdot\|_r$.
+Fix $F$ and an admissible family $E_1<\cdots<E_k$, $k\ge 2$.  Put
+$G_i=E_i\cap F$ and discard empty intersections.
+
+If no $G_i$ remains, the sum is zero.  If exactly one set $G$ remains, then
+\[
+ \|Gy\|_r\le \rho(G)\le\rho(F)\le \ph(k)\rho(F).
+\]
+The last inequality uses $k\ge 2$, hence $\ph(k)\ge 1$.
+If $q\ge 2$ sets $G_1<\cdots<G_q$ remain, then $q\le k$, and
+\[
+ \sum_{j=1}^q\|G_jy\|_r
+ \le
+ \sum_{j=1}^q\rho(G_j)
+ \le
+ \ph(q)\rho(F)
+ \le
+ \ph(k)\rho(F).
+\]
+Thus every admissible sum in the definition of $\|Fy\|_{r+1}$ is bounded
+by $\ph(k)\rho(F)$, and so $\|Fy\|_{r+1}\le\rho(F)$.  Taking the supremum
+over $r$ proves the claim.
+\end{proof}
+
+\begin{lemma}[far-coordinate unit-ball lemma]\label{lem:far}
+Let $0<\alpha<1$.  If $x\in c_{00}$ and
+$\|x\|_{\mathcal S}<a_\alpha$, then, for every $N>\max\supp x$,
+\[
+ \|x+\alpha e_N\|_{\mathcal S}\le 1,
+ \qquad
+ \|x-\alpha e_N\|_{\mathcal S}\le 1.
+\]
+\end{lemma}
+
+\begin{proof}
+By $1$-unconditionality and $N\notin\supp x$,
+\[
+ \|x+\alpha e_N\|_{\mathcal S}
+ =
+ \||x|+\alpha e_N\|_{\mathcal S},
+ \qquad
+ \|x-\alpha e_N\|_{\mathcal S}
+ =
+ \||x|+\alpha e_N\|_{\mathcal S}.
+\]
+Thus it is enough to consider $x\ge 0$ and $y=x+\alpha e_N$.  For each
+finite $F\subset\N$, define
+\[
+ \rho(F)=
+ \begin{cases}
+  \|Fx\|_{\mathcal S},& N\notin F,\\
+  M_\alpha(\|Fx\|_{\mathcal S}),& N\in F.
+ \end{cases}
+\]
+The lattice monotonicity of the Schlumprecht norm and the monotonicity of
+$M_\alpha$ give $G\subset F\Rightarrow \rho(G)\le\rho(F)$.  Also
+$\|Fy\|_\infty\le\rho(F)$, since $M_\alpha(u)\ge u$ and
+$M_\alpha(u)\ge\alpha$.
+
+We verify the local majorant inequality.  Fix finite $F$ and
+$E_1<\cdots<E_k\subset F$, $k\ge 2$.  If $N\notin F$, then
+\[
+ \sum_i\rho(E_i)=\sum_i\|E_i x\|_{\mathcal S}
+ \le \ph(k)\|Fx\|_{\mathcal S}
+ =\ph(k)\rho(F).
+\]
+Assume $N\in F$ and set $t=\|Fx\|_{\mathcal S}$.
+If none of the $E_i$ contains $N$, then
+\[
+ \sum_i\rho(E_i)=\sum_i\|E_i x\|_{\mathcal S}
+ \le \ph(k)t
+ \le \ph(k)M_\alpha(t)
+ =\ph(k)\rho(F).
+\]
+If exactly one set, say $E_j$, contains $N$, put
+$s=\|E_jx\|_{\mathcal S}$.  The remaining pieces satisfy
+\[
+ \sum_{i\ne j}\|E_i x\|_{\mathcal S}\le \ph(k-1)t,
+ \qquad
+ \sum_{i\ne j}\|E_i x\|_{\mathcal S}\le \ph(k)t-s.
+\]
+For the first inequality, if $k=2$ then there is only one remaining piece,
+say $E_i$, and
+\[
+ \sum_{i\ne j}\|E_i x\|_{\mathcal S}
+ =
+ \|E_i x\|_{\mathcal S}
+ \le
+ \|Fx\|_{\mathcal S}
+ =
+ t
+ =
+ \ph(1)t.
+\]
+If $k>2$, the $k-1$ remaining pieces form an ordered admissible family, so
+the norm recursion gives the bound with $\ph(k-1)$.  The second inequality
+follows from the full $k$-tuple.  Lemma~\ref{lem:strong-scalar} gives
+\[
+ \sum_i\rho(E_i)
+ \le
+ M_\alpha(s)+\min\{\ph(k-1)t,\ph(k)t-s\}
+ \le
+ \ph(k)M_\alpha(t)
+ =
+ \ph(k)\rho(F).
+\]
+Lemma~\ref{lem:comparison} therefore yields
+$\|Fy\|_{\mathcal S}\le\rho(F)$ for every finite $F$.  Taking
+$F=\supp x\cup\{N\}$ gives
+\[
+ \|x+\alpha e_N\|_{\mathcal S}
+ \le
+ M_\alpha(\|x\|_{\mathcal S})
+ \le 1,
+\]
+because $\|x\|_{\mathcal S}<a_\alpha$.  The estimate for
+$x-\alpha e_N$ follows from the unconditionality reduction at the start of
+the proof.
+\end{proof}
+
+\section{The Converse Formula}
+
+For a Banach space $X$, use the source paper's notation
+\[
+ r_X(\eps)=\sup\{r>0:rB_{X^*}\subset s_\eps(B_{X^*})\}.
+\]
+For $X=\mathcal S^*$, identify $X^*=\mathcal S^{**}$ with $\mathcal S$,
+since $\mathcal S$ is reflexive.
+
+\begin{theorem}\label{thm:main}
+For every $0<\eps<2$,
+\[
+ r_{\mathcal S^*}(\eps)=
+ \inf_{n\in\N}
+ \frac{\log_2(n+2)-\eps/2}{\log_2(n+1)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\beta=\eps/2$ and
+\[
+ a_\beta=\inf_{n\in\N}\frac{\ph(n+1)-\beta}{\ph(n)}.
+\]
+The upper bound $r_{\mathcal S^*}(\eps)\le a_\beta$ is
+\eqref{eq:source-upper}, proved by Kochanek and Miarka.  We prove the
+reverse inequality.
+
+First note that $\alpha\mapsto a_\alpha$ is continuous on $(0,1)$:
+it is the infimum of affine functions with slopes bounded in absolute value
+by $1$.  Let $x\in c_{00}$ and $\|x\|_{\mathcal S}<a_\beta$.  Choose
+$\alpha\in(\beta,1)$ close enough to $\beta$ that
+$\|x\|_{\mathcal S}<a_\alpha$.  For every $N>\max\supp x$,
+Lemma~\ref{lem:far} gives
+\[
+ x+\alpha e_N,\ x-\alpha e_N\in \Ball_{\mathcal S}.
+\]
+The basis of $\mathcal S$ is weakly null, because $\mathcal S$ is
+reflexive and its basis is shrinking.  Hence both sequences
+$x+\alpha e_N$ and $x-\alpha e_N$ converge weakly, equivalently
+weak-star in $\mathcal S=(\mathcal S^*)^*$, to $x$.  Their mutual distance is
+\[
+ \|(x+\alpha e_N)-(x-\alpha e_N)\|_{\mathcal S}=2\alpha>\eps.
+\]
+Thus every weak-star neighborhood of $x$ intersects $\Ball_{\mathcal S}$
+in a set of diameter greater than $\eps$, and $x\in s_\eps(\Ball_{\mathcal S})$.
+
+Now fix $0<r<a_\beta$ and $z\in r\Ball_{\mathcal S}$.  Choose
+$z_m\in c_{00}$ with $z_m\to z$ in norm.  For all large $m$,
+$\|z_m\|_{\mathcal S}<a_\beta$, hence
+$z_m\in s_\eps(\Ball_{\mathcal S})$.  The Szlenk derivation of the
+weak-star compact ball is weak-star closed, hence norm closed.  Indeed, if
+$K$ is weak-star compact and $x\in K\setminus s_\eps(K)$, then some
+weak-star open neighborhood $V\ni x$ has $\diam(K\cap V)\le\eps$; the same
+$V$ shows every $y\in K\cap V$ also lies outside $s_\eps(K)$, so
+$K\setminus s_\eps(K)$ is relatively weak-star open.  Therefore
+$z\in s_\eps(\Ball_{\mathcal S})$.  Since this holds for every
+$z\in r\Ball_{\mathcal S}$ and every $r<a_\beta$, we have
+$r_{\mathcal S^*}(\eps)\ge a_\beta$.  Combined with the source paper's
+upper estimate, this proves the formula.
+\end{proof}
+
+\section*{Verification Notes}
+
+The packet includes \texttt{code/check\_scalar\_and\_finite\_cases.py}.  The
+scalar estimate is proved by Lemma~\ref{lem:product} and
+Lemma~\ref{lem:strong-scalar}; the code is only a sanity check.  It tests
+the scalar inequalities on a large finite grid and random sample and computes
+representative finite-support Schlumprecht norms by interval dynamic
+programming.  The command used was:
+\begin{quote}\small\ttfamily
+conda run --no-capture-output -n sandbox python\\
+code/check\_scalar\_and\_finite\_cases.py
+\end{quote}
+
+\section*{Novelty and Literature Check}
+
+Bounded check performed on June 14, 2026: searched the arXiv page for
+arXiv:2409.05516 and web queries for the exact source title together with
+``Schlumprecht'', ``Szlenk'', ``converse'', and ``$r_{S^*}$''.  This found the
+source paper and no later paper explicitly resolving the converse formula.
+This is not an exhaustive bibliographic search, but no immediate
+literature-already-answered match was found.
+
+\section*{Human Review Recommendation}
+
+This should be reviewed as a candidate full solution.  The most important
+points to check are the product lemma, the strengthened scalar estimate, and
+the local majorant comparison lemma.
+
+\begin{thebibliography}{9}
+\bibitem{KM}
+T. Kochanek and M. Miarka,
+\emph{When is the Szlenk derivation of a dual unit ball another ball?},
+arXiv:2409.05516 (2024).
+
+\bibitem{S}
+T. Schlumprecht,
+\emph{An arbitrarily distortable Banach space},
+Israel J. Math. 76 (1991), 81--95.
+\end{thebibliography}
+
+\end{document}

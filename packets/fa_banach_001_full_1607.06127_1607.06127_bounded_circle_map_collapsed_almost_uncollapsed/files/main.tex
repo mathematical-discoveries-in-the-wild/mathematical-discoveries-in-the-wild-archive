@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\rhoinf}{\rho}
+\newcommand{\rhobar}{\overline{\rho}}
+
+\title{A Bounded Collapsed Almost Uncollapsed Map}
+\author{Automated discovery packet}
+\date{June 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+Braga's paper \cite{Braga} asks Problem 2.6:
+``Is there a map \(X\to Y\) which is collapsed, almost uncollapsed and
+bounded (in particular not solvent), for some Banach spaces \(X\) and \(Y\)?''
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions used}
+
+For a map \(f:(M,d)\to(N,\partial)\), the source defines
+\[
+  \rhoinf_f(t)=\inf\{\partial(f(x),f(y)):\ d(x,y)\geq t\}
+\]
+and
+\[
+  \rhobar_f(t)=\inf\{\partial(f(x),f(y)):\ d(x,y)=t\}.
+\]
+The map is uncollapsed if \(\rhoinf_f(t)>0\) for some \(t>0\), and almost
+uncollapsed if \(\rhobar_f(t)>0\) for some \(t>0\). In the terminology of the
+paper, collapsed means not uncollapsed.
+
+\section*{Proof Intuition}
+
+The exact-distance requirement in almost uncollapsedness is much weaker than
+the large-distance requirement in uncollapsedness. A periodic map into the
+unit circle separates all pairs at one chosen distance, for instance distance
+\(\pi\), but repeats values at arbitrarily large distances. This gives
+almost uncollapsedness and collapsedness at the same time. Since the circle is
+bounded, the same map is automatically not solvent. If one wants the domain
+to be infinite-dimensional, the same idea can be made set-theoretic: identify
+points modulo a large-period cyclic subgroup and send different cosets to
+different unit vectors.
+
+\section*{Result}
+
+\begin{theorem}
+There are Banach spaces \(X,Y\) and a bounded map \(f:X\to Y\) which is
+collapsed and almost uncollapsed. In particular, Problem 2.6 of \cite{Braga}
+has an affirmative answer. Moreover, if the problem is read as asking for an
+infinite-dimensional domain, \(X\) can be chosen infinite-dimensional.
+\end{theorem}
+
+\begin{proof}
+Take \(X=\R\), take \(Y=\R^2\) with its Euclidean norm, and define
+\[
+       f(x)=(\cos x,\sin x).
+\]
+The map is bounded, since \(\|f(x)\|_2=1\) for every \(x\in\R\).
+
+It is almost uncollapsed. Indeed, if \(|x-y|=\pi\), then \(y=x+\pi\) or
+\(y=x-\pi\), and hence \(f(y)=-f(x)\). Therefore
+\[
+       \|f(x)-f(y)\|_2=2
+\]
+for every pair \(x,y\in\R\) with \(|x-y|=\pi\). Thus
+\[
+       \rhobar_f(\pi)=2>0.
+\]
+
+It is collapsed. Let \(t>0\). Choose an integer \(k\geq1\) such that
+\(2\pi k\geq t\). Then \(|2\pi k-0|\geq t\), while
+\[
+       f(2\pi k)=f(0).
+\]
+Consequently \(\rhoinf_f(t)=0\) for every \(t>0\). Thus \(f\) is not
+uncollapsed, i.e. it is collapsed in the source terminology.
+
+Finally, \(f\) is not solvent. Its image has diameter at most \(2\), so for
+any \(n>2\) no interval of domain distances can force all image distances to
+be greater than \(n\). This proves the claimed bounded collapsed almost
+uncollapsed example.
+
+For the infinite-dimensional variant, let \(X\) be any infinite-dimensional
+Banach space and choose \(u\in X\) with \(\|u\|=1\). Let
+\[
+       A=2\pi\mathbb{Z}u
+\]
+and let \(I=X/A\) be the set of cosets of the additive subgroup \(A\). Put
+\(Y=\ell_2(I)\), with its standard unit vectors \((e_i)_{i\in I}\), and define
+\[
+       F(x)=e_{x+A}.
+\]
+This map is bounded, since every value has norm \(1\). If \(\|x-y\|=\pi\) and
+\(x+A=y+A\), then \(x-y=2\pi k u\) for some \(k\in\mathbb{Z}\), so
+\(\|x-y\|=2\pi |k|\), impossible. Hence exact-distance-\(\pi\) pairs always
+belong to different cosets, and therefore
+\[
+       \|F(x)-F(y)\|_2=\sqrt{2}
+       \qquad(\|x-y\|=\pi).
+\]
+Thus \(\rhobar_F(\pi)=\sqrt{2}>0\). On the other hand, for every \(t>0\) one
+can choose \(k\geq1\) with \(2\pi k\geq t\), and then
+\[
+       \|2\pi k u-0\|\geq t,\qquad F(2\pi k u)=F(0).
+\]
+So \(\rhoinf_F(t)=0\) for every \(t>0\), and \(F\) is collapsed. Its image
+has diameter \(\sqrt{2}\), so it is not solvent. This variant is not claimed
+to be continuous; it is included only to remove any possible finite-dimensional
+reading concern.
+\end{proof}
+
+\section*{Verification notes}
+
+The first proof uses only the source definitions and the elementary identities
+\(f(x+\pi)=-f(x)\) and \(f(x+2\pi k)=f(x)\). The infinite-dimensional variant
+uses only cosets of the cyclic subgroup \(2\pi\mathbb{Z}u\). The script
+\texttt{code/check\_circle\_map.py} performs a finite numerical smoke check
+of these identities and the boundedness normalization; it is not needed for
+the proof. The script \texttt{code/make\_open\_problem\_crop.py} recreates
+the source screenshot from \texttt{source\_paper.pdf}.
+
+Verifier focus: confirm that the paper uses ``collapsed'' as the negation of
+``uncollapsed'', as indicated in the surrounding text before Proposition 2.5,
+and that Problem 2.6 does not impose any additional regularity such as being a
+cocycle or a coarse map. The finite-dimensional displayed example is in fact
+Lipschitz, but it is not coarse-embedding-like because it is bounded. The
+infinite-dimensional variant answers only the unrestricted-map reading.
+
+\section*{Novelty and literature check}
+
+Local duplicate check on June 14, 2026 searched
+\texttt{registry\_index.tsv}, \texttt{solutions/index.tsv},
+\texttt{attempts/index.tsv}, and \texttt{proof\_gaps/index.tsv} for
+\texttt{1607.06127}, title keywords, \texttt{collapsed},
+\texttt{almost uncollapsed}, \texttt{bounded}, and related terms; no matching
+packet or attempt was found.
+
+Web searches on June 14, 2026 used exact and close phrase searches for:
+\begin{itemize}
+\item collapsed, almost uncollapsed, bounded map, and Banach spaces;
+\item the source title together with almost uncollapsed and collapsed;
+\item the exact Problem 2.6 wording and shorter variants.
+\end{itemize}
+They found the source paper but no separate later paper explicitly answering
+this problem. Novelty confidence is moderate rather than high because the
+example is elementary and may be folklore.
+
+\section*{Human review recommendation}
+
+Send to human as a likely valid full answer to Problem 2.6. The main semantic
+point to check is whether the author intended an unstated restriction to
+cocycles or to another class of maps; under the printed statement, the circle
+map answers the question.
+
+\begin{thebibliography}{9}
+\bibitem{Braga}
+B. M. Braga,
+\emph{On weaker notions of nonlinear embeddings between Banach spaces},
+arXiv:1607.06127, 2016.
+\end{thebibliography}
+
+\end{document}

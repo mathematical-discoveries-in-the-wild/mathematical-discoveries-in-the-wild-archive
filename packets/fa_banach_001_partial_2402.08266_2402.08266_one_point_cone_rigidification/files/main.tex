@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\F}{\mathcal F}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Eext}{E_{\mathrm{ext}}}
+\newcommand{\diam}{\operatorname{diam}}
+
+\title{A One-Point Rigidification for Finite Lipschitz-Free Spaces}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Open Problem}
+
+The source paper is Cuth--Doucha--Titkos, \emph{Isometries of Lipschitz-free Banach spaces}, arXiv:2402.08266 \cite{CDT}.  In Section 8.2 it asks:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We address Question 3 in a finite graph-theoretic subcase.  The source proves that every metric space embeds isometrically into a Lipschitz-free rigid metric space after adding three points.  It asks whether one point always suffices.
+
+\section*{Proof Intuition}
+
+The source's main rigidity criterion says that a weak Prague metric space is Lipschitz-free rigid once its preserved-extreme graph is 3-connected.  If a finite metric space already has a 2-connected preserved-extreme graph, then adding one far-away point joined at the same distance to every old point turns that graph into its cone.  Coning raises 2-connectivity to 3-connectivity.  The large common distance prevents the new point from lying between old pairs, while every new radial pair becomes preserved extreme.
+
+\section*{Result}
+
+For a finite metric space \(M\), let \(G_{\mathrm{ext}}(M)\) be the undirected graph whose vertices are the endpoints of preserved extreme molecules and whose edges are the unordered pairs \(\{x,y\}\) such that \(m_{x,y}\) is a preserved extreme point of the unit ball of \(\F(M)\).
+
+\begin{theorem}[One-point cone rigidification]
+\label{thm:one-point}
+Let \(M\) be a finite metric space such that \(G_{\mathrm{ext}}(M)\) has vertex set \(M\) and is 2-connected.  Fix \(R>\diam(M)\), add a point \(p\notin M\), and define a metric \(d_R\) on
+\[
+  M_R=M\cup\{p\}
+\]
+by keeping the original metric on \(M\) and setting
+\[
+  d_R(p,x)=R \qquad (x\in M).
+\]
+Then \(M_R\) is Lipschitz-free rigid.  In particular, \(M\) embeds isometrically into a Lipschitz-free rigid metric space with one additional point.
+\end{theorem}
+
+\begin{proof}
+The formula defines a metric: for \(x,y\in M\), one has
+\[
+  |d_R(p,x)-d_R(p,y)|=0\le d(x,y)
+\]
+and
+\[
+  d(x,y)\le \diam(M)<R+R=d_R(x,p)+d_R(p,y).
+\]
+
+Because \(M_R\) is finite, a molecule \(m_{a,b}\) is preserved extreme exactly when no third point lies between \(a\) and \(b\).  This follows from the source's extreme-point criterion: in a finite metric space the positive gap in
+\[
+  d(a,z)+d(z,b)-d(a,b)
+\]
+over all non-endpoint \(z\) is attained whenever \([a,b]=\{a,b\}\).
+
+We now identify the preserved-extreme graph of \(M_R\).  If \(x,y\in M\), then the new point \(p\) does not lie between them, since
+\[
+  d_R(x,p)+d_R(p,y)=2R>\diam(M)\ge d(x,y).
+\]
+Thus \(\{x,y\}\) is preserved extreme in \(M_R\) exactly when it was preserved extreme in \(M\).  On the other hand, if \(x\in M\) and \(y\in M\setminus\{x\}\), then
+\[
+  d_R(p,x)=R<R+d(x,y)=d_R(p,y)+d(y,x),
+\]
+and symmetrically \(d_R(p,y)<d_R(p,x)+d(x,y)\).  Hence no old point lies between \(p\) and \(x\), so every pair \(\{p,x\}\) is preserved extreme in \(M_R\).
+
+Consequently \(G_{\mathrm{ext}}(M_R)\) is the cone over \(G_{\mathrm{ext}}(M)\), with cone vertex \(p\).  A cone over a 2-connected graph is 3-connected: after deleting \(p\) and at most one old vertex, the old graph remains connected; if \(p\) is not deleted, then \(p\) is adjacent to every remaining old vertex.  Therefore \(G_{\mathrm{ext}}(M_R)\) is 3-connected.
+
+The space \(M_R\) is finite, and its preserved-extreme graph has all points as vertices, so it is a weak Prague space.  By Cuth--Doucha--Titkos Theorem 4.9 \cite{CDT}, every weak Prague metric space with 3-connected preserved-extreme graph is Lipschitz-free rigid.  Hence \(M_R\) is Lipschitz-free rigid.
+\end{proof}
+
+\begin{corollary}
+Every finite 2-connected graph, equipped with its graph metric, embeds isometrically into a Lipschitz-free rigid metric space after adding one point.
+\end{corollary}
+
+\begin{proof}
+For a connected graph with its graph metric, the source Lemma 3.8 gives \(E_{\mathrm{ext}}\) equal to the graph edge set.  Apply Theorem~\ref{thm:one-point}.
+\end{proof}
+
+\section*{Verification And Limitations}
+
+The proof gives a one-point positive answer to Question 3 for finite metric spaces whose preserved-extreme graph is 2-connected.  The construction is explicit: put the new point at any common distance \(R>\diam(M)\).
+
+This does not settle the source's full Question 3.  The argument does not cover finite spaces whose preserved-extreme graph has cut vertices, and it does not treat infinite metric spaces.  It also does not address Question 2 on \(\mathbb R^d\).
+
+Novelty check: the run indexes had no exact entry for arXiv:2402.08266.  Web searches for the exact one-point rigidification wording and for ``Lipschitz-free rigid'' variants returned the source paper but no later solution.  Local corpus search found no separate answer.
+
+\begin{thebibliography}{9}
+\bibitem{CDT}
+M. Cuth, M. Doucha, and T. Titkos,
+\emph{Isometries of Lipschitz-free Banach spaces},
+arXiv:2402.08266, 2024.
+\url{https://arxiv.org/abs/2402.08266}
+\end{thebibliography}
+
+\end{document}
+

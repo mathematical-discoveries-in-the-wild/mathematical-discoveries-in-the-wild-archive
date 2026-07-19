@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\elltwo}{\ell^2}
+
+\title{A Literal Counterexample to ``Non-Weak-Embedding Implies Expander''}
+\author{Run fa\_banach\_001, lane 7}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a likely valid counterexample to the literal wording of the
+last open question in Arzhantseva--Tessera~\cite{AT}: a bounded-degree sequence
+of finite connected graphs need not be an expander merely because it does not
+weakly embed into \(\ell^2\).
+
+The result should be read as a wording/normalization counterexample.  It does
+not address the more interesting strengthened question in which one rules out
+linear-size expander pieces or asks for a structural characterization modulo
+such pieces.
+
+\section*{Source Problem Evidence}
+
+The source question appears in Section 8, ``Open problems'', on page 20 of the
+arXiv PDF:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Transcription}
+
+After observing that expanders, and even large subsets of expanders, do not
+weakly embed into \(\ell^p\), while the paper's relative expander examples do
+weakly embed into \(\ell^2\), the authors ask whether a sequence of finite
+graphs with uniformly bounded degree that does not weakly embed into
+\(\ell^2\) is necessarily an expander.
+
+\section*{Definitions}
+
+A sequence of maps \(f_n:X_n\to \ell^2\) is a weak embedding if there is a
+constant \(K\) such that every \(f_n\) is \(K\)-Lipschitz and, for every fixed
+\(R>0\),
+\[
+  \lim_{n\to\infty}
+  \sup_{x\in X_n}
+  \frac{|f_n^{-1}(B(f_n(x),R))|}{|X_n|}
+  =0.
+\]
+An expander sequence is a sequence of finite connected graphs of uniformly
+bounded degree, with \(|X_n|\to\infty\), whose Cheeger constants are bounded
+below by a positive constant.
+
+\section*{Proof Intuition}
+
+The obstruction to weak embedding is inherited from any linear-size expander
+subgraph.  If a graph \(X_n\) contains an isometric copy of an expander
+\(E_n\) with \(|E_n|\ge c|X_n|\), then any uniformly Lipschitz map
+\(X_n\to\ell^2\) collapses a positive proportion of \(E_n\), hence a positive
+proportion of \(X_n\), into one bounded Hilbert ball.  But this has nothing to
+do with the global Cheeger constant of \(X_n\).  Attaching a long path to
+\(E_n\) by one edge destroys expansion while preserving the linear-size
+expander obstruction to weak embedding.
+
+\begin{lemma}\label{lem:collapse}
+Let \((E_n)\) be a bounded-degree expander sequence.  For every \(K>0\) there
+are \(R>0\) and \(c>0\) such that, for every sequence of \(K\)-Lipschitz maps
+\(f_n:E_n\to\ell^2\), for all \(n\) sufficiently large there is a vertex
+\(v_n\in E_n\) with
+\[
+  |f_n^{-1}(B(f_n(v_n),R))|\ge c|E_n|.
+\]
+\end{lemma}
+
+\begin{proof}
+The usual expander Poincare inequality gives a constant \(B\), depending only
+on the expander family and its degree bound, such that every \(K\)-Lipschitz
+map \(f:E_n\to\ell^2\) satisfies
+\[
+  \frac{1}{|E_n|^2}\sum_{x,y\in E_n}\|f(x)-f(y)\|^2 \le B K^2 .
+\]
+This is precisely the \(p=2\) form of the expander inequality recalled in
+Section 2 of~\cite{AT}.  Therefore some vertex \(v\in E_n\) satisfies
+\[
+  \frac{1}{|E_n|}\sum_{y\in E_n}\|f(v)-f(y)\|^2 \le B K^2 .
+\]
+By Markov's inequality, at least half of the vertices \(y\in E_n\) obey
+\(\|f(v)-f(y)\|\le \sqrt{2B}\,K\).  Take \(R=\sqrt{2B}\,K\) and \(c=1/2\).
+\end{proof}
+
+\begin{theorem}
+There exists a sequence \((X_n)\) of finite connected graphs with uniformly
+bounded degree such that:
+\begin{enumerate}
+  \item \((X_n)\) is not an expander sequence;
+  \item \((X_n)\) does not weakly embed into \(\ell^2\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let \((E_n)\) be any bounded-degree expander sequence, and write
+\(m_n=|E_n|\).  Let \(P_n\) be a path with \(m_n\) vertices.  Choose a vertex
+\(a_n\in E_n\) and an endpoint \(b_n\in P_n\), and form \(X_n\) by joining
+\(a_n\) and \(b_n\) with one new edge.
+
+The degrees of \(X_n\) are uniformly bounded.  Also \(X_n\) is connected and
+\(|X_n|=2m_n\to\infty\).
+
+The sequence \((X_n)\) is not an expander.  Indeed, let \(A_n\) be the terminal
+half of the path \(P_n\), away from the attachment point.  Then
+\(|A_n|\le |X_n|/2\), while only one edge leaves \(A_n\).  Hence
+\[
+  h(X_n)\le \frac{1}{|A_n|}\to 0.
+\]
+
+It remains to prove that \((X_n)\) does not weakly embed into \(\ell^2\).
+The copy of \(E_n\) inside \(X_n\) is isometric: the attached path creates no
+shortcut between two vertices of \(E_n\).  Suppose \(f_n:X_n\to\ell^2\) is a
+sequence of \(K\)-Lipschitz maps.  Restrict \(f_n\) to \(E_n\).  By
+Lemma~\ref{lem:collapse}, there are \(R>0\), \(c>0\), and vertices
+\(v_n\in E_n\) such that, for infinitely many \(n\) and in fact eventually,
+\[
+  |f_n^{-1}(B(f_n(v_n),R))\cap E_n|\ge c|E_n|.
+\]
+Consequently
+\[
+  \sup_{x\in X_n}
+  \frac{|f_n^{-1}(B(f_n(x),R))|}{|X_n|}
+  \ge
+  \frac{c|E_n|}{2|E_n|}
+  =
+  \frac{c}{2}
+\]
+along the same tail.  Thus the weak-embedding condition fails for every
+uniform Lipschitz constant \(K\).  Therefore \((X_n)\) does not weakly embed
+into \(\ell^2\).
+\end{proof}
+
+\section*{Verification Notes}
+
+No computation is needed.  The proof reduces the non-weak-embedding assertion
+to the standard expander Poincare inequality and uses an explicit one-edge
+bottleneck to force \(h(X_n)\to 0\).  The construction also shows a slightly
+more general principle: any bounded-degree graph sequence containing a
+linear-size isometric expander piece need not weakly embed into \(\ell^2\),
+regardless of its global Cheeger constant.
+
+\section*{Limitations}
+
+This packet answers only the literal formulation displayed above.  It is not a
+new relative-expander construction, and it does not address the intended
+frontier suggested by~\cite{AT}: understanding non-weak-embeddability once
+linear-size expander pieces have been excluded.  A natural repaired version
+would ask whether a bounded-degree sequence with no linear-size expander
+pieces, or no large subsets satisfying the expander Poincare collapse, must
+weakly embed into \(\ell^2\).
+
+\section*{Novelty and Literature Check}
+
+Before promotion, I searched the run indexes for arXiv:1402.1481, ``relative
+expanders'', ``weakly embed into \(\ell^2\)'', and ``necessarily an
+expander''.  No existing packet or attempt covered this literal final
+question.  Web searches for the exact wording found the source paper and later
+papers answering other open problems from Section 8, including the finitely
+generated group problem~\cite{AT2} and the coarse Baum--Connes problem, but no
+exact prior answer to this literal graph-sequence question.
+
+The novelty confidence is deliberately modest.  The construction is elementary
+and the source paper itself points out that large subsets of expanders obstruct
+weak embedding.  The value of the packet is to record a precise counterexample
+to the literal wording and to clarify the hypothesis needed for a more
+interesting version.
+
+\section*{Human Review Recommendation}
+
+Check that the weak-embedding normalization in~\cite{AT} uses \(|X_n|\) in the
+denominator, and that \(|E_n|/|X_n|=1/2\).  Then verify that the attached path
+does not create shortcuts inside \(E_n\) and that the terminal half of the path
+forces \(h(X_n)\to 0\).
+
+\begin{thebibliography}{9}
+
+\bibitem{AT}
+G. Arzhantseva and R. Tessera,
+\emph{Relative expanders},
+arXiv:1402.1481, 2014.
+\url{https://arxiv.org/abs/1402.1481}
+
+\bibitem{AT2}
+G. Arzhantseva and R. Tessera,
+\emph{Admitting a coarse embedding is not preserved under group extensions},
+arXiv:1605.01192, 2016.
+\url{https://arxiv.org/abs/1605.01192}
+
+\end{thebibliography}
+
+\end{document}

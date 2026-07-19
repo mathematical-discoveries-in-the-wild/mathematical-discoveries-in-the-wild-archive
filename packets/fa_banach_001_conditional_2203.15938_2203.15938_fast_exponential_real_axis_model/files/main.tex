@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{dependency}{Conditional Dependency}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Dom}{\operatorname{Dom}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+
+\title{A conditional real-axis model for the fast exponential Schrodinger example}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_00}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a conditional reduction packet.  It does not claim a full solution of
+the open question in Arnal--Siegl.  The packet proves the limiting first-order
+model and records the exact localization dependency that would promote the
+result to a full real-axis asymptotic for the source Schrodinger operator.
+
+\section*{Source and Open Question}
+
+The source is Antonio Arnal and Petr Siegl, ``Resolvent estimates for
+one-dimensional Schrodinger operators with complex potentials'', arXiv:2203.15938,
+published in \emph{Journal of Functional Analysis} 284 (2023), Article 109856
+\cite{ArnalSiegl2023}.  Section 7.3 considers
+\[
+    H=-\partial_x^2+i\e^{x^2},\qquad
+    \Dom(H)=W^{2,2}(\R)\cap \Dom(\e^{x^2}),
+\]
+and gives the imaginary-axis asymptotic.  It then states that the real-axis
+Theorem 4.2 is not applicable and leaves the critical region next to the real
+axis open.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+Arnal--Siegl's real-axis proof localizes the Fourier variable near the turning
+frequencies \(\pm\sqrt a\), rescales by a parameter \(t_a\) satisfying
+\(t_aV_2(t_a)=2\sqrt a\), and obtains a first-order model
+\(-\partial_x+V_2(t_ax)/V_2(t_a)\).  For regularly varying \(V_2\), this model
+converges to \(-\partial_x+|x|^\beta\).
+
+For \(V_2(x)=\e^{x^2}\), the normalized model is instead
+\[
+    B_t=-\partial_x+\e^{t^2(x^2-1)}.
+\]
+The potential tends to zero on \((-1,1)\) and to \(+\infty\) outside that
+interval.  Thus \(B_t^{-1}\) should converge to Volterra integration on
+\((-1,1)\), with a one-sided boundary condition at \(1\).  The Volterra norm on
+an interval of length \(2\) is \(4/\pi\).  This packet proves that model
+statement rigorously.
+
+\section*{Conditional Dependencies}
+
+\begin{dependency}[real-axis localization transfer]\label{dep:transfer}
+Let \(t_a>0\) be determined by \(t_a\e^{t_a^2}=2\sqrt a\), and let
+\[
+    B_t=-\partial_x+\e^{t^2(x^2-1)}
+\]
+be realized in \(L^2(\R)\) with maximal domain
+\[
+    \Dom(B_t)=\{u\in L^2(\R):-u'+\e^{t^2(x^2-1)}u\in L^2(\R)\}.
+\]
+The required transfer assertion is
+\[
+    \|(H-a)^{-1}\|
+    = \e^{-t_a^2}\,\|B_{t_a}^{-1}\|\,(1+o(1)),
+    \qquad a\to+\infty.
+\]
+\end{dependency}
+
+Dependency \ref{dep:transfer} is exactly where the source proof does not apply:
+the regular-variation limit \(V_2(tx)/V_2(t)\to |x|^\beta\) and the symbol
+estimate \(|V_2^{(n)}(x)|\le C_n(1+V_2(x))\langle x\rangle^{-n}\) fail for
+\(V_2(x)=\e^{x^2}\).  The rest of this packet is independent of that missing
+step.
+
+\section*{The Model Theorem}
+
+\begin{theorem}[fast exponential first-order model]\label{thm:model}
+For \(t>0\), let
+\[
+    B_t=-\partial_x+W_t(x),
+    \qquad W_t(x)=\e^{t^2(x^2-1)}
+\]
+on \(L^2(\R)\) with maximal domain.  Then \(0\in\rho(B_t)\), and
+\[
+    \|B_t^{-1}\|\longrightarrow \frac{4}{\pi},
+    \qquad t\to+\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+The source appendix proves the needed maximal-accretive framework for
+operators \(-\partial_x+W\) with \(\Re W\ge0\) and confining real part.  In the
+present real positive case \(W_t(x)\to+\infty\) as \(|x|\to\infty\), so
+\(B_t\) has compact resolvent and empty spectrum.  Solving the first-order
+equation with the \(L^2\) condition at \(+\infty\) gives the inverse kernel
+\[
+    (B_t^{-1}f)(x)=\int_x^\infty K_t(x,y)f(y)\,\dd y,
+    \qquad
+    K_t(x,y)=\mathbf 1_{\{x<y\}}
+       \exp\!\left(-\int_x^y W_t(s)\,\dd s\right).
+\]
+Let
+\[
+    K_0(x,y)=\mathbf 1_{\{-1<x<y<1\}},
+\]
+and let \(T_0\) be the corresponding integral operator.  Pointwise,
+\(K_t(x,y)\to K_0(x,y)\) away from the boundary points \(\pm1\).  Indeed,
+on compact subintervals of \((-1,1)\), \(W_t\to0\), while on any interval with
+positive distance from \((-1,1)\), \(W_t\to+\infty\) uniformly.
+
+We now show convergence in Hilbert--Schmidt norm.  Fix \(R>1\).  On
+the finite square \([-R,R]^2\), dominated convergence gives
+\[
+    \iint_{[-R,R]^2}|K_t-K_0|^2\,\dd x\,\dd y \to0.
+\]
+It remains to control the tails.  Since \(W_t(\pm R)=\e^{t^2(R^2-1)}\to+\infty\),
+the regions \(x,y>R\) and \(x,y<-R\) satisfy
+\[
+    \iint_{\{R<x<y\}}K_t(x,y)^2\,\dd x\,\dd y
+      \le \frac{1}{2}\int_R^\infty \frac{\dd x}{W_t(x)}\to0,
+\]
+and, by the same estimate after reflecting \(x\mapsto -x\),
+\[
+    \iint_{\{x<y<-R\}}K_t(x,y)^2\,\dd x\,\dd y\to0.
+\]
+For \(x<-R<y<R\), the interval \([x,-R]\) lies where \(W_t\ge W_t(R)\), hence
+\[
+    K_t(x,y)^2\le \exp\{-2(-R-x)W_t(R)\},
+\]
+and integration over \(x<-R\) and \(-R<y<R\) gives a bound \(R/W_t(R)\to0\).
+The region \(-R<x<R<y\) is identical, and the mixed region \(x<-R<R<y\) is
+even smaller.  Therefore \(K_t\to K_0\) in \(L^2(\R^2)\), and
+\[
+    \|B_t^{-1}-T_0\|\le \|K_t-K_0\|_{L^2(\R^2)}\to0.
+\]
+
+It remains to compute \(\|T_0\|\).  Under the translation of \((-1,1)\) to
+\((0,2)\), \(T_0\) becomes the Volterra operator \(Vf(s)=\int_s^2 f(r)\,\dd r\).
+The non-zero singular values of the Volterra operator on an interval of length
+\(L\) are \(2L/((2n+1)\pi)\), \(n=0,1,\ldots\), obtained by differentiating the
+eigenvalue equation for \(V^*V\).  With \(L=2\), the largest singular value is
+\(4/\pi\).  Hence \(\|B_t^{-1}\|\to4/\pi\).
+\end{proof}
+
+\section*{Conditional Consequence for the Source Operator}
+
+\begin{theorem}[conditional real-axis asymptotic]\label{thm:conditional}
+Assume Dependency \ref{dep:transfer}.  Then, for
+\[
+    H=-\partial_x^2+i\e^{x^2},\qquad
+    t_a\e^{t_a^2}=2\sqrt a,
+\]
+one has
+\[
+    \|(H-a)^{-1}\|=\frac{4}{\pi}\e^{-t_a^2}(1+o(1)),
+    \qquad a\to+\infty.
+\]
+Equivalently, since \(t_a^2=\frac12 W_0(8a)\),
+\[
+    \|(H-a)^{-1}\|
+    =\frac{\sqrt2}{\pi}\sqrt{\frac{W_0(8a)}{a}}\,(1+o(1))
+    =\frac{\sqrt2}{\pi}\frac{\sqrt{\log a}}{\sqrt a}\,(1+o(1)).
+\]
+Moreover, for every fixed \(\eta>0\), the resolvent is conditionally uniformly
+bounded in the region
+\[
+    0\le b<\left(\frac{\pi}{4}-\eta\right)\e^{t_a^2}
+\]
+next to the positive real axis.
+\end{theorem}
+
+\begin{proof}
+The norm asymptotic follows immediately by combining Dependency
+\ref{dep:transfer} with Theorem \ref{thm:model}.  The Lambert \(W\) formula is
+obtained from
+\[
+    t_a\e^{t_a^2}=2\sqrt a
+    \quad\Longleftrightarrow\quad
+    2t_a^2\e^{2t_a^2}=8a.
+\]
+For the boundedness region, the triangle inequality gives
+\[
+    \|(H-a-ib)u\|\ge \|(H-a)u\|-b\|u\|.
+\]
+The preceding asymptotic says that the lower bound for \(H-a\) is
+\[
+    \|(H-a)u\|\ge \left(\frac{\pi}{4}\e^{t_a^2}+o(\e^{t_a^2})\right)\|u\|.
+\]
+Thus any fixed margin below \((\pi/4)\e^{t_a^2}\) gives a uniform resolvent
+bound.
+\end{proof}
+
+\section*{Verification Notes}
+
+The script \texttt{code/model\_kernel\_check.py} discretizes the explicit
+kernel \(K_t\) and compares its largest singular value with \(4/\pi\).  A sample
+run in the sandbox environment produced ratios decreasing toward \(1\) for
+\(t=24,36,48,64,80\).  This computation is not used in the proof and is not
+evidence for Dependency \ref{dep:transfer}; it is only a sanity check for the
+model constant.
+
+\section*{Novelty and Literature Check}
+
+The lightweight run indexes had no exact packet for arXiv:2203.15938.  Web
+searches on 2026-07-18 for the arXiv id, the source title, the exact phrase
+``critical region next to the real axis'', and variants involving
+\(\e^{x^2}\), Arnal, Siegl, and Krejcirik found the published JFA metadata and
+Arnal's 2023 thesis metadata, but no obvious later paper resolving this exact
+fast-exponential real-axis edge.  Because the packet is conditional, this is
+recorded only as a bounded status check, not as a novelty claim for a full
+solution.
+
+\section*{Limitations and Human Review Focus}
+
+The proved model theorem does not by itself answer the source question.  The
+missing step is to prove Dependency \ref{dep:transfer}.  A reviewer should
+focus on whether the Fourier-side localization, partition of unity, and
+commutator estimates in the proof of Arnal--Siegl Theorem 4.2 can be replaced
+by estimates adapted to \(V_2(x)=\e^{x^2}\).  The obstruction is concrete:
+the derivatives of \(\e^{x^2}\) grow like polynomials times \(\e^{x^2}\), so the
+source's symbol-class estimates are not available globally.
+
+\begin{thebibliography}{9}
+\bibitem{ArnalSiegl2023}
+Antonio Arnal and Petr Siegl,
+\emph{Resolvent estimates for one-dimensional Schrodinger operators with
+complex potentials},
+Journal of Functional Analysis 284 (2023), no. 9, Article 109856;
+arXiv:2203.15938.
+\end{thebibliography}
+
+\end{document}

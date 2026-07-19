@@ -1,0 +1,264 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\M}{\mathcal M}
+\newcommand{\X}{\mathcal X}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\linspan}{\operatorname{span}}
+
+\title{A Compact \(c_0\) Subset With No Lipschitz \(p\)-Approximate Schauder Frame}
+\author{Run fa\_banach\_001, lane 7}
+\date{June 16, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a counterexample to the universal part of Problem~3.1(1) in
+Krishna--Johnson, arXiv:2211.10652 \cite{KJ2022}. Not every subset of a
+Banach space has a Lipschitz \(p\)-approximate Schauder frame for some
+\(1\leq p<\infty\). In fact, there is a compact subset of a Banach space
+isometric to \(c_0\) which has no Lipschitz \(p\)-ASF for any finite \(p\).
+
+\section*{Source Problem}
+
+The source paper formulates the following open problem on PDF page~10.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Problem~3.1 from arXiv:2211.10652, PDF page~10.}
+\end{figure}
+
+The construction below answers the ``in particular'' question in item~(1)
+negatively. It does not claim a classification of all subsets and does not
+settle item~(2)'s weaker representation problem.
+
+\section*{Definitions Used}
+
+For a subset \(\M\subseteq \X\), a Lipschitz \(p\)-ASF in the sense of
+\cite{KJ2022} consists of scalar coefficient maps \(f_n\), points
+\(\tau_n\in\M\), an analysis map
+\[
+  \theta_f:\M\to \ell^p,\qquad \theta_f(x)=(f_n(x))_{n=1}^\infty,
+\]
+a bounded synthesis operator
+\[
+  \theta_\tau:\ell^p\to \X,\qquad
+  \theta_\tau((a_n))=\sum_{n=1}^\infty a_n\tau_n,
+\]
+and a Lipschitz frame map
+\[
+  S_{f,\tau}=\theta_\tau\theta_f:\M\to\M
+\]
+which is invertible and bi-Lipschitz.
+
+\section*{Proof Intuition}
+
+The analysis map of a Lipschitz \(p\)-ASF is not merely a coefficient map: it
+must bi-Lipschitzly encode the metric of \(\M\) into \(\ell^p\). Indeed, the
+frame map is the synthesis operator applied to the analysis map, and the frame
+map has a Lipschitz inverse. Thus a subset with no bi-Lipschitz embedding into
+any \(\ell^p\), \(p<\infty\), cannot have a Lipschitz \(p\)-ASF.
+
+The counterexample is a compact bouquet in \(c_0\) containing smaller and
+smaller copies of the balls of \(\ell_\infty^n\) for all \(n\). Compactness
+comes from shrinking the \(n\)-dimensional pieces to zero. The obstruction is
+local: a bi-Lipschitz embedding into a fixed \(\ell^p\) would, on every
+finite-dimensional piece, produce uniformly distorted embeddings of
+\(\ell_\infty^n\) into \(\ell^p\). Rademacher differentiation turns these into
+linear embeddings, while cotype of \(\ell^p\) forces the distortion to grow
+with \(n\).
+
+\begin{lemma}\label{lem:asf-embeds}
+If \(\M\subseteq\X\) has a Lipschitz \(p\)-ASF for some \(1\leq p<\infty\),
+then \(\M\) admits a bi-Lipschitz embedding into \(\ell^p\).
+\end{lemma}
+
+\begin{proof}
+Let \(A=\theta_f:\M\to\ell^p\), \(V=\theta_\tau:\ell^p\to\X\), and
+\(S=VA:\M\to\M\). By definition, \(A\) is Lipschitz, \(V\) is bounded, and
+\(S\) is bi-Lipschitz. Thus there are constants \(L,m>0\) such that
+\[
+  \|A x-A y\|_p\leq L\|x-y\|,\qquad
+  \|Sx-Sy\|\geq m\|x-y\|
+\]
+for all \(x,y\in\M\). Since \(S=VA\),
+\[
+  \|A x-A y\|_p
+  \geq \frac{1}{\|V\|}\|V(Ax-Ay)\|
+  = \frac{1}{\|V\|}\|Sx-Sy\|
+  \geq \frac{m}{\|V\|}\|x-y\|.
+\]
+Hence \(A\) is a bi-Lipschitz embedding of \(\M\) into \(\ell^p\).
+\end{proof}
+
+\begin{lemma}\label{lem:no-lp}
+There is a compact set \(\M\subset c_0\) which does not admit a bi-Lipschitz
+embedding into \(\ell^p\) for any \(1\leq p<\infty\).
+\end{lemma}
+
+\begin{proof}
+Let \(E_n=\ell_\infty^n\) and let
+\[
+  X_0=\left(\bigoplus_{n=1}^{\infty}E_n\right)_{c_0}.
+\]
+This Banach space is isometric to \(c_0\), after enumerating the finitely many
+coordinates in each block. Put \(r_n=2^{-n}\). We regard \(E_n\) as the
+\(n\)-th coordinate block of \(X_0\), and define
+\[
+  \M=\{0\}\cup \bigcup_{n=1}^{\infty} r_n B_{E_n},
+\]
+where \(r_n B_{E_n}\) is placed in the \(n\)-th block and all other blocks are
+zero.
+
+The set \(\M\) is compact. Indeed, for every \(\varepsilon>0\) all but
+finitely many blocks lie in the \(\varepsilon\)-ball around \(0\), and the
+remaining union is finite-dimensional compact.
+
+Suppose, towards a contradiction, that \(F:\M\to\ell^p\) is bi-Lipschitz for
+some \(1\leq p<\infty\). Then there are constants \(0<a\leq b<\infty\) such
+that
+\[
+  a\|x-y\|_{X_0}\leq \|F(x)-F(y)\|_p\leq b\|x-y\|_{X_0}
+  \qquad (x,y\in\M).
+\]
+Fix \(n\). On the relative interior of the block \(r_n B_{E_n}\), define
+\[
+  \Phi_n(u)=r_n^{-1}F(r_n u),\qquad u\in (-1,1)^n\subset \ell_\infty^n.
+\]
+Then
+\[
+  a\|u-v\|_\infty\leq \|\Phi_n(u)-\Phi_n(v)\|_p
+  \leq b\|u-v\|_\infty
+  \qquad (u,v\in (-1,1)^n).
+\]
+
+Since \(\ell^p\) has the Radon--Nikodym property for \(1\leq p<\infty\),
+the Banach-valued Rademacher theorem gives a point of Fréchet
+differentiability of \(\Phi_n\). Let
+\[
+  T_n:\ell_\infty^n\to\ell^p
+\]
+be the derivative at such a point. Passing to difference quotients in the
+upper and lower Lipschitz inequalities yields
+\[
+  a\|h\|_\infty\leq \|T_n h\|_p\leq b\|h\|_\infty
+  \qquad (h\in\ell_\infty^n).
+\]
+
+Now let \(q=\max\{p,2\}\). The space \(\ell^p\) has finite cotype \(q\);
+write \(C_p\) for a cotype \(q\) constant. Applying the cotype inequality in
+\(\ell^p\) to the vectors \(T_n e_1,\dots,T_n e_n\), where \(e_i\) is the
+canonical basis of \(\ell_\infty^n\), gives
+\[
+  \left(\sum_{i=1}^n \|T_n e_i\|_p^q\right)^{1/q}
+  \leq
+  C_p\,\mathbb E_\varepsilon
+  \left\|\sum_{i=1}^n \varepsilon_i T_n e_i\right\|_p .
+\]
+The lower estimate on \(T_n\) gives the left side at least \(a n^{1/q}\).
+The upper estimate gives the right side at most
+\[
+  C_p b\,\mathbb E_\varepsilon
+  \left\|\sum_{i=1}^n \varepsilon_i e_i\right\|_\infty
+  = C_p b.
+\]
+Thus
+\[
+  \frac{b}{a}\geq \frac{n^{1/q}}{C_p}
+\]
+for every \(n\), an impossibility. Therefore \(\M\) cannot bi-Lipschitz embed
+into any \(\ell^p\), \(1\leq p<\infty\).
+\end{proof}
+
+\begin{theorem}
+There is a compact subset \(\M\) of a Banach space isometric to \(c_0\) such
+that \(\M\) has no Lipschitz \(p\)-approximate Schauder frame for any
+\(1\leq p<\infty\).
+\end{theorem}
+
+\begin{proof}
+Take the compact set \(\M\subset c_0\) from Lemma~\ref{lem:no-lp}. If \(\M\)
+had a Lipschitz \(p\)-ASF for some \(1\leq p<\infty\), then
+Lemma~\ref{lem:asf-embeds} would give a bi-Lipschitz embedding of \(\M\) into
+\(\ell^p\), contradicting Lemma~\ref{lem:no-lp}.
+\end{proof}
+
+\section*{Verification Notes}
+
+The only external geometry used is standard: \(\ell^p\) has cotype
+\(\max\{p,2\}\), and Lipschitz maps from finite-dimensional domains into
+Banach spaces with the Radon--Nikodym property are differentiable almost
+everywhere. The proof does not require finite-dimensional pieces to be
+linearly complemented in the target; differentiating a hypothetical
+bi-Lipschitz embedding supplies the linear maps \(T_n\).
+
+The compactness check is also important. The pieces \(r_nB_{\ell_\infty^n}\)
+are infinite compact sets, not finite nets, but their radii tend to zero.
+Thus every sequence either has infinitely many terms in a finite union of
+compact blocks or eventually lies arbitrarily close to \(0\).
+
+\section*{Novelty and Search Bounds}
+
+On June~16, 2026, the run indexes were searched for arXiv:2211.10652,
+``Lipschitz p-Approximate Schauder Frames'', ``Lipschitz p-ASF'',
+``approximate Schauder frame'', and variants. No prior packet or attempt for
+this source was found.
+
+External web/arXiv searches for the exact title, ``Lipschitz p-ASF every
+subset'', ``Classify which subsets Lipschitz p-ASF'', and ``Lipschitz
+approximate Schauder frame subset Banach'' found the source paper and adjacent
+frame papers by the same authors, but no later solution to Problem~3.1 and no
+counterexample of the compact \(c_0\) form above. The packet should therefore
+be reviewed as a new counterexample to the universal part of Problem~3.1(1),
+subject to human verification.
+
+\section*{Limitations}
+
+This does not classify all subsets admitting Lipschitz \(p\)-ASFs. It also
+does not settle Problem~3.1(2), whose stated representation property is weaker
+than the Lipschitz \(p\)-ASF structure used in Lemma~\ref{lem:asf-embeds}.
+
+\section*{Human Review Recommendation}
+
+Review as a counterexample packet. The main points to check are:
+\begin{enumerate}
+\item the implication from Lipschitz \(p\)-ASF to bi-Lipschitz embeddability
+into \(\ell^p\);
+\item the compactness of the block bouquet \(\M\subset c_0\);
+\item the differentiation/cotype obstruction for uniformly embedding all
+\(\ell_\infty^n\) balls into one \(\ell^p\).
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{KJ2022}
+K. Mahesh Krishna and P. Sam Johnson,
+\emph{Lipschitz \(p\)-Approximate Schauder Frames},
+arXiv:2211.10652.
+
+\bibitem{BL2000}
+Y. Benyamini and J. Lindenstrauss,
+\emph{Geometric Nonlinear Functional Analysis, Volume 1},
+American Mathematical Society Colloquium Publications, vol.~48, 2000.
+
+\bibitem{LT1991}
+M. Ledoux and M. Talagrand,
+\emph{Probability in Banach Spaces},
+Springer, 1991.
+
+\end{thebibliography}
+
+\end{document}

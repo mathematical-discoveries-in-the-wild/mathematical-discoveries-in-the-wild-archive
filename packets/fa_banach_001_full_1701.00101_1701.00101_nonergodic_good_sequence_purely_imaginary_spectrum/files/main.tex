@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Reals}{\mathbb R}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\eps}{\varepsilon}
+
+\title{A Non-Ergodic Good Sequence With Purely Imaginary Nontrivial Spectrum}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_00}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Question}
+
+The source paper is Cuny, Eisner, and Farkas, \emph{Wiener's lemma along primes and other subsequences}, arXiv:1701.00101.  In Definition 2.2, a subsequence $(k_n)$ of $\N$ is called \emph{good} if
+\[
+        c(\lambda):=\lim_{N\to\infty}\frac1N\sum_{n=1}^N \lambda^{k_n}
+\]
+exists for every $\lambda\in\T$.  It is \emph{ergodic} if $c=\mathbf 1_{\{1\}}$.
+
+Question 2.7 asks two questions.  The second is:
+
+\begin{quote}
+Is there a non-ergodic, good sequence $(k_n)$ with
+$\Re c(\lambda)=0$ for each $\lambda\in\T\setminus\{1\}$?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+There exists a non-ergodic good subsequence $(k_n)$ of $\N$ such that
+\[
+        \Re c(\lambda)=0 \qquad \forall \lambda\in\T\setminus\{1\}.
+\]
+Thus the second question in Question 2.7 has an affirmative answer.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+It is enough to build a set of integers whose Fourier-Bohr coefficients are supported, away from $1$, only at two conjugate roots of unity, and whose two coefficients are purely imaginary.  A deterministic periodic residue distribution modulo $3$ gives exactly the desired coefficients at the cubic roots, but a purely periodic set would introduce unwanted coefficients at other roots of unity.  Randomizing one residue class removes these extra frequencies: the centered random part has uniformly vanishing exponential sums almost surely, while the periodic expectation keeps the desired cubic-root coefficients.
+
+\section*{Proof}
+
+Let $\omega=\exp(2\pi i/3)$.  Define a random subset $A\subset\N$ as follows, independently for different integers:
+\[
+  \Prob(m\in A)=
+  \begin{cases}
+    1/2, & m\equiv 0 \pmod 3,\\
+    1, & m\equiv 1 \pmod 3,\\
+    0, & m\equiv 2 \pmod 3.
+  \end{cases}
+\]
+Let $1_A(m)$ be its indicator and put
+\[
+  d_m =
+  \begin{cases}
+    1/2, & m\equiv 0 \pmod 3,\\
+    1, & m\equiv 1 \pmod 3,\\
+    0, & m\equiv 2 \pmod 3.
+  \end{cases}
+\]
+The deterministic mean density is
+\[
+        \delta=\frac{1}{3}\left(\frac12+1+0\right)=\frac12.
+\]
+
+\begin{lemma}[Uniform cancellation of the centered random part]
+Almost surely,
+\[
+  \sup_{\lambda\in\T}
+  \left|
+    \frac1M\sum_{m=1}^M (1_A(m)-d_m)\lambda^m
+  \right|\longrightarrow 0 .
+\]
+\end{lemma}
+
+\begin{proof}
+Write $X_m=1_A(m)-d_m$.  These are independent, mean-zero, real, and bounded by $1$ in absolute value.  For a fixed $\lambda\in\T$, Hoeffding's inequality applied to real and imaginary parts gives
+\[
+  \Prob\left(\left|\sum_{m=1}^M X_m\lambda^m\right|>\eps M\right)
+  \leq 4\exp(-c\eps^2 M)
+\]
+with an absolute constant $c>0$.
+
+Let $\mathcal G_M$ be a grid on $\T$ with mesh at most $\eps/M$ and cardinality $O(M/\eps)$.  By the union bound,
+\[
+  \Prob\left(\max_{\zeta\in\mathcal G_M}
+  \left|\sum_{m=1}^M X_m\zeta^m\right|>\eps M\right)
+  \leq C_\eps M \exp(-c\eps^2 M),
+\]
+which is summable in $M$.  Borel--Cantelli implies that, almost surely, the grid maximum is at most $\eps M$ for all large $M$.
+
+If $\lambda$ is within $\eps/M$ in angular distance of $\zeta\in\mathcal G_M$, then
+\[
+  \left|\sum_{m=1}^M X_m(\lambda^m-\zeta^m)\right|
+  \leq \sum_{m=1}^M m\,|\lambda-\zeta|
+  \leq C\eps M.
+\]
+Since $\eps>0$ is arbitrary (take a countable sequence $\eps\downarrow0$), the asserted uniform convergence follows.
+\end{proof}
+
+Fix a realization of $A$ for which the lemma holds.  Then
+\[
+ \frac1M\sum_{m=1}^M 1_A(m)\lambda^m
+ -
+ \frac1M\sum_{m=1}^M d_m\lambda^m
+ \longrightarrow 0
+\]
+uniformly in $\lambda$.
+
+The deterministic periodic average is immediate.  If $\lambda^3\neq1$, then
+\[
+        \frac1M\sum_{m=1}^M d_m\lambda^m \longrightarrow 0.
+\]
+If $\lambda^3=1$, then
+\[
+        \frac1M\sum_{m=1}^M d_m\lambda^m
+        \longrightarrow
+        \frac13\left(\frac12+\lambda\right).
+\]
+In particular, at $\lambda=1$ this limit is $\delta=1/2$, so $A$ has natural density $1/2$.
+
+Let $(k_n)$ be the increasing enumeration of $A$.  Since $A$ has positive natural density, for every $\lambda\in\T$,
+\[
+        \frac1N\sum_{n=1}^N \lambda^{k_n}
+        =
+        \frac{1}{|A\cap[1,k_N]|}\sum_{\substack{m\leq k_N\\m\in A}}\lambda^m
+        \longrightarrow c(\lambda),
+\]
+where
+\[
+c(\lambda)=
+\begin{cases}
+1, & \lambda=1,\\
+0, & \lambda^3\neq 1,\\
+\displaystyle \frac{1}{3\delta}\left(\frac12+\lambda\right),
+  & \lambda^3=1.
+\end{cases}
+\]
+For the two nontrivial cubic roots this gives
+\[
+        c(\omega)=\frac23\left(\frac12+\omega\right)=\frac{i\sqrt3}{3},
+        \qquad
+        c(\omega^2)=\frac23\left(\frac12+\omega^2\right)=-\frac{i\sqrt3}{3}.
+\]
+Thus $(k_n)$ is good and not ergodic, because $c(\omega)\neq0$.  Moreover, the displayed formula shows that every nontrivial coefficient is either $0$ or purely imaginary.  Hence $\Re c(\lambda)=0$ for every $\lambda\neq1$, as required.
+
+\section*{Verification Notes}
+
+The construction is non-explicit only in the harmless probabilistic-method sense: the proof shows that almost every random realization works, so at least one deterministic increasing subsequence exists.  The script \texttt{code/verify\_residue\_coefficients.py} verifies the finite residue calculation
+\[
+        c(1)=1,\qquad c(\omega)=i\sqrt3/3,\qquad c(\omega^2)=-i\sqrt3/3.
+\]
+
+The first sentence of Question 2.7, about whether the existence of the quadratic averages for all probability measures implies goodness, is not addressed here.
+
+\section*{Novelty Check}
+
+The lightweight run indexes were searched for arXiv id \texttt{1701.00101}, the title, \texttt{Wiener's lemma}, \texttt{good sequence}, \texttt{non-ergodic}, and \texttt{Re c(lambda)}.  Web searches for exact phrases from Question 2.7 and the source title found no later explicit answer in the bounded search performed on 2026-07-03.  This packet should be reviewed as a new full answer to the second part of the source question.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{CEF}
+C.~Cuny, T.~Eisner, and B.~Farkas.
+\newblock Wiener's lemma along primes and other subsequences.
+\newblock arXiv:1701.00101, 2017.
+
+\bibitem{Hoeffding}
+W.~Hoeffding.
+\newblock Probability inequalities for sums of bounded random variables.
+\newblock \emph{Journal of the American Statistical Association}, 58(301):13--30, 1963.
+\end{thebibliography}
+
+\end{document}

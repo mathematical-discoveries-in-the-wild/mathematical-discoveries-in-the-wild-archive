@@ -1,0 +1,382 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Lq}{L^q(S)}
+\newcommand{\lesssimc}{\lesssim_{p,q}}
+\newcommand{\simeqc}{\simeq_{p,q}}
+
+\title{Characteristic Domination for General \(L^q\)-Valued Local Martingales}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial result, likely valid, for Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of vector-valued
+martingales} \cite{Yaroslavtsev2019}.  It proves the full
+general-local-martingale characteristic-domination conclusion for
+\(X=L^q(S)\), \(1<q<\infty\), and \(1<p<\infty\).
+
+It is partial relative to the source's broad UMD-space problem because it only
+handles \(L^q\)-spaces, and it does not cover the endpoint \(p=1\).
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  After proving the
+quasi-left-continuous characteristic-domination theorem, Yaroslavtsev states
+that the general local-martingale case is open and identifies the missing
+issue as a discrete independent-increment comparison.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The continuation formulates the independent mean-zero aggregate-domination
+problem and notes that even the symmetric case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let \(1<p,q<\infty\), let \((S,\Sigma,\rho)\) be a measure space, and put
+\(X=L^q(S)\).  Let \(N\) and \(M\) be \(X\)-valued local martingales.  Assume
+that \(N\) is characteristically dominated by \(M\) in the sense of
+\cite[Definition 12.9]{Yaroslavtsev2019}: for every \(x^*\in X^*\),
+\[
+  |\langle N_0,x^*\rangle|\le |\langle M_0,x^*\rangle|,\qquad
+  [\![N^c]\!]_\infty\le [\![M^c]\!]_\infty,
+\]
+and
+\[
+  \nu^N(\R_+\times B)\le \nu^M(\R_+\times B)
+  \qquad (B\in\cB(X),\;0\notin B)
+\]
+almost surely.  Then
+\[
+  \E\sup_{t\ge0}\norm{N_t}_{L^q(S)}^p
+  \le
+  C_{p,q}\,
+  \E\sup_{t\ge0}\norm{M_t}_{L^q(S)}^p .
+\]
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+The earlier discrete packet proved the independent-sum bottleneck by using the
+sharp \(L^q\)-valued Rosenthal theorem of Dirksen and Yaroslavtsev
+\cite{DirksenYaroslavtsev2017}.  The general local case has one extra trap:
+characteristic domination compares only the total spatial jump compensators
+\(\nu(\R_+\times\cdot)\).  It does not compare the accessible and
+quasi-left-continuous jump components separately.
+
+The way around this is to show that, in \(L^q\), the relevant Rosenthal
+sum/intersection norm of the identity jump \(x\) depends only on the total
+spatial compensator.  Time labels and the accessible/qlc tag can be erased.
+For the basic \(S\), \(D_{q,q}\), and \(D_{p,q}\) gauges this is immediate
+from the formulas.  For sum spaces, a time-dependent split can be conditionally
+averaged over the spatial jump value \(x\); Jensen's inequality decreases all
+three gauges.  Thus the jump part has a single monotone norm controlled by
+\(\nu(\R_+\times\cdot)\).  The continuous part is already controlled by
+Yaroslavtsev's continuous characteristic-domination estimate.
+
+\section*{The Total Jump Rosenthal Norm}
+
+Let \(\bar\nu=\bar\nu_\omega\) be a predictable random measure on
+\(X\setminus\{0\}\), where \(X=L^q(S)\).  For a measurable
+\(F:\Omega\times X\to X\), define
+\[
+  \norm{F}_{\mathsf S(\bar\nu)}
+  =
+  \left(
+  \E \left\|
+      \left(\int_X |F(\omega,x)|^2\,\bar\nu_\omega(dx)\right)^{1/2}
+    \right\|_{L^q(S)}^p
+  \right)^{1/p},
+\]
+\[
+  \norm{F}_{\mathsf D_{r}(\bar\nu)}
+  =
+  \left(
+  \E \int_X \norm{F(\omega,x)}_{L^q(S)}^r\,\bar\nu_\omega(dx)
+  \right)^{1/r}
+  \quad (r=p),
+\]
+and
+\[
+  \norm{F}_{\mathsf D_q(\bar\nu)}
+  =
+  \left(
+  \E \left(\int_X \norm{F(\omega,x)}_{L^q(S)}^q\,\bar\nu_\omega(dx)\right)^{p/q}
+  \right)^{1/p}.
+\]
+Let \(\mathsf R_{p,q}(\bar\nu)\) be the norm of the identity map
+\(I(\omega,x)=x\) in the same six sum/intersection spaces as in the
+Dirksen--Yaroslavtsev theorem:
+\[
+\begin{array}{ll}
+\mathsf S\cap \mathsf D_q\cap \mathsf D_p, & 2\le q\le p<\infty,\\
+\mathsf S\cap(\mathsf D_q+\mathsf D_p), & 2\le p\le q<\infty,\\
+(\mathsf S\cap \mathsf D_q)+\mathsf D_p, & 1<p<2\le q<\infty,\\
+(\mathsf S+\mathsf D_q)\cap\mathsf D_p, & 1<q<2\le p<\infty,\\
+\mathsf S+(\mathsf D_q\cap\mathsf D_p), & 1<q\le p\le2,\\
+\mathsf S+\mathsf D_q+\mathsf D_p, & 1<p\le q\le2.
+\end{array}
+\]
+Intersections carry the maximum norm, and sums carry the usual infimum norm.
+
+\section*{Collapse and Monotonicity}
+
+\begin{lemma}\label{lem:collapse}
+Let \(\kappa_\omega(dt,dx)\) be a predictable random measure on
+\(\R_+\times X\), and let
+\[
+  \bar\kappa_\omega(B)=\kappa_\omega(\R_+\times B)
+\]
+be its total spatial marginal.  The Rosenthal sum/intersection norm of the
+identity jump \(x\), computed with respect to \(\kappa\), equals the same norm
+computed with respect to \(\bar\kappa\).  In particular it is insensitive to
+the time distribution of the compensator.
+
+Moreover, if \(\bar\nu_\omega\le \bar\mu_\omega\) almost surely, then
+\[
+  \mathsf R_{p,q}(\bar\nu)\le \mathsf R_{p,q}(\bar\mu).
+\]
+\end{lemma}
+
+\begin{proof}
+For the basic gauges, the first assertion is just Fubini:
+\[
+  \int_{\R_+\times X}|x|^2\,\kappa_\omega(dt,dx)
+  =
+  \int_X |x|^2\,\bar\kappa_\omega(dx),
+\]
+and similarly for \(\norm{x}_{L^q}^p\) and \(\norm{x}_{L^q}^q\).
+
+The only point is a sum norm, where one may have allowed a decomposition
+\[
+   x=F_1(\omega,t,x)+\cdots+F_m(\omega,t,x)
+\]
+depending on time.  Disintegrate \(\kappa_\omega(dt,dx)\) over its
+\(x\)-marginal and define
+\[
+   G_j(\omega,x)=\E_\kappa(F_j(\omega,t,x)\mid \omega,x).
+\]
+Then \(x=\sum_j G_j(\omega,x)\).  Since \(u\mapsto |u|^2\) in the lattice
+order and \(u\mapsto\norm{u}_{L^q}^r\) for \(r=p,q\) are convex, Jensen's
+inequality gives
+\[
+ \int |G_j|^2\,d\bar\kappa\le \int |F_j|^2\,d\kappa,\qquad
+ \int \norm{G_j}_{L^q}^r\,d\bar\kappa\le
+ \int \norm{F_j}_{L^q}^r\,d\kappa .
+\]
+After taking the outer \(L^p(\Omega)\) norms, no basic gauge increases.  Thus
+time-dependent decompositions give no smaller sum/intersection norm than
+spatial decompositions.  The reverse inequality is obtained by viewing any
+spatial decomposition as time-independent.
+
+For monotonicity, the three basic gauges are monotone under measure domination.
+For sums, argue recursively.  Suppose a sum expression \(E+F\) is under
+consideration and choose an almost optimal split \(I=U+V\) for the larger
+measure \(\bar\mu\).  Let \(h=d\bar\nu/d\bar\mu\), \(0\le h\le1\).  Restrict
+the split measure of \((x,U,V)\) by the weight \(h(\omega,x)\).  This gives a
+split of the identity under \(\bar\nu\), and the aggregate measures of the two
+pieces are dominated by the corresponding pieces for \(\bar\mu\).  The
+recursive hypothesis bounds the \(E\)- and \(F\)-norms of the restricted
+pieces by those of \(U\) and \(V\).  Letting the near-optimality error tend to
+zero gives the sum step.  Intersections are immediate from the maximum norm.
+
+The argument is first written for simple finite-range decompositions.  The
+general case follows by the standard separable-range and monotone/density
+approximations used in the Dirksen--Yaroslavtsev spaces.
+\end{proof}
+
+\begin{corollary}\label{cor:jumpnorm}
+Let \(L\) be an \(L^q(S)\)-valued local martingale with \(L_0=0\), and let
+\(L^d=L^q+L^a\) be the purely discontinuous part of its canonical
+decomposition.  Then, for \(1<p,q<\infty\),
+\[
+   \left(\E\sup_{t\ge0}\norm{L^d_t}_{L^q(S)}^p\right)^{1/p}
+   \simeqc
+   \mathsf R_{p,q}\bigl(\nu^L(\R_+\times\cdot)\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+Dirksen and Yaroslavtsev prove sharp estimates for both jump types.  For the
+quasi-left-continuous part, their non-atomic random-measure theorem identifies
+the maximal \(L^p(\Omega;L^q(S))\) norm of
+\(\int x\,d\bar\mu^{L^q}\) with the \(\cI_{p,q}\)-norm computed from the
+compensator \(\nu^{L^q}\).  For the accessible part, their accessible-jump
+theorem identifies the maximal norm with the accessible \(\cA_{p,q}\)-norm,
+whose defining predictable square and \(D\)-gauges are exactly the same
+integrals against the accessible compensator \(\nu^{L^a}\).
+
+Their combined general-local estimate, applied with continuous part zero, gives
+\[
+   \norm{L^d}_{p,*}
+   \simeqc
+   \norm{x}_{\cI_{p,q}(\nu^{L^q})}
+   +
+   \norm{L^a}_{\cA_{p,q}},
+\]
+where \(\norm{L}_{p,*}:=(\E\sup_t\norm{L_t}_{L^q}^p)^{1/p}\).  By Lemma
+\ref{lem:collapse}, the right side is equivalent to the single
+sum/intersection norm of the identity with respect to the total spatial
+measure
+\[
+  \nu^{L^q}(\R_+\times\cdot)+\nu^{L^a}(\R_+\times\cdot)
+  =
+  \nu^L(\R_+\times\cdot).
+\]
+This proves the claim.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:main}}
+
+It suffices to treat martingales starting at zero; the initial values are
+handled at the end.  Since \(L^q(S)\) is UMD for \(1<q<\infty\), Yaroslavtsev's
+canonical decomposition theorem \cite[Theorem 3.5]{Yaroslavtsev2019} applies.
+Write
+\[
+   M=M^c+M^d,\qquad N=N^c+N^d,
+\]
+where \(M^d=M^q+M^a\) and \(N^d=N^q+N^a\).
+
+For the continuous terms, Yaroslavtsev's continuous characteristic-domination
+estimate, used in the source proof of the quasi-left-continuous domination
+theorem, gives
+\[
+   \left(\E\sup_t\norm{N^c_t}_{L^q}^p\right)^{1/p}
+   \lesssimc
+   \left(\E\sup_t\norm{M^c_t}_{L^q}^p\right)^{1/p}.
+\]
+
+For the discontinuous terms, Corollary \ref{cor:jumpnorm} and the total
+compensator domination give
+\[
+\begin{aligned}
+   \left(\E\sup_t\norm{N^d_t}_{L^q}^p\right)^{1/p}
+   &\simeqc
+   \mathsf R_{p,q}\bigl(\nu^N(\R_+\times\cdot)\bigr)\\
+   &\le
+   \mathsf R_{p,q}\bigl(\nu^M(\R_+\times\cdot)\bigr)\\
+   &\simeqc
+   \left(\E\sup_t\norm{M^d_t}_{L^q}^p\right)^{1/p}.
+\end{aligned}
+\]
+Notice that no comparison of accessible parts with accessible parts, or
+quasi-left-continuous parts with quasi-left-continuous parts, is used here.
+The comparison is made only after the two jump types have been folded into the
+total spatial compensator.
+
+Combining the continuous and discontinuous estimates, and using the strong
+\(L^p\) equivalence for the canonical decomposition
+\cite[Theorem 3.5]{Yaroslavtsev2019}, yields
+\[
+\begin{aligned}
+ \left(\E\sup_t\norm{N_t}_{L^q}^p\right)^{1/p}
+ &\le
+ \left(\E\sup_t\norm{N^c_t}_{L^q}^p\right)^{1/p}
+ +
+ \left(\E\sup_t\norm{N^d_t}_{L^q}^p\right)^{1/p}\\
+ &\lesssimc
+ \left(\E\sup_t\norm{M^c_t}_{L^q}^p\right)^{1/p}
+ +
+ \left(\E\sup_t\norm{M^d_t}_{L^q}^p\right)^{1/p}\\
+ &\lesssimc
+ \left(\E\sup_t\norm{M_t}_{L^q}^p\right)^{1/p}.
+\end{aligned}
+\]
+
+If the martingales do not start at zero, the hypothesis on initial values
+implies \(\norm{N_0}_{L^q}\le\norm{M_0}_{L^q}\).  Apply the zero-start result
+to \(N-N_0\) and \(M-M_0\), and use
+\[
+  \sup_t\norm{N_t}_{L^q}
+  \le
+  \norm{N_0}_{L^q}+\sup_t\norm{N_t-N_0}_{L^q},
+\]
+together with the analogous bound for \(M\).  This gives the stated
+inequality.
+
+\section*{Verification Notes}
+
+The proof was checked against the source passages:
+\begin{itemize}
+\item Yaroslavtsev's canonical-decomposition theorem: canonical decomposition
+and strong maximal \(L^p\) equivalence in UMD spaces.
+\item Yaroslavtsev's decoupled-tangent and uniqueness results: independent
+increments given local characteristics, used as background for Remark 12.10's
+reduction.
+\item Yaroslavtsev \cite[Definition 12.9 and Remark 12.10]{Yaroslavtsev2019}:
+characteristic domination compares the continuous covariation and the total
+spatial jump compensator.
+\item Dirksen--Yaroslavtsev's accessible-jump, non-atomic random-measure, and
+combined general-local estimates: sharp \(L^q\)-valued estimates for the jump
+parts used in Corollary \ref{cor:jumpnorm}.
+\end{itemize}
+
+The main audit point is Lemma \ref{lem:collapse}.  It is the step that prevents
+the false componentwise comparison
+\(\nu^{N^a}\le\nu^{M^a}\), which characteristic domination does not provide.
+
+\section*{Limitations and Novelty Check}
+
+The result covers arbitrary measure spaces \(S\), all \(1<q<\infty\), and all
+\(1<p<\infty\).  It does not cover \(p=1\), because the sharp
+Dirksen--Yaroslavtsev \(L^q\) Rosenthal estimates used here are stated for
+\(1<p<\infty\).  It does not settle the source question for arbitrary UMD
+spaces.
+
+Cheap run-index searches found earlier packets for \(c_0\), Hilbert spaces,
+\(\ell_q\) at the natural exponent, and the discrete \(L^q\) aggregate
+comparison, but no packet proving the full \(L^q\) general-local conclusion.
+The literature checked for this push included arXiv:1907.11588,
+arXiv:1707.00109, and nearby BDG/local-characteristics material.  I found the
+ingredients above, but not an explicit statement of this total-compensator
+\(L^q\) consequence.
+
+\section*{Human Review Recommendation}
+
+High priority.  If Lemma \ref{lem:collapse} is accepted, the proof appears to
+close the full \(L^q(S)\), \(1<p,q<\infty\), general-local-martingale subcase
+of Remark 12.10.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev,
+\emph{Local characteristics and tangency of vector-valued martingales},
+arXiv:1907.11588.
+
+\bibitem{DirksenYaroslavtsev2017}
+S. Dirksen and I. S. Yaroslavtsev,
+\emph{\(L^q\)-valued Burkholder--Rosenthal inequalities and sharp estimates for
+stochastic integrals},
+arXiv:1707.00109.
+
+\end{thebibliography}
+
+\end{document}

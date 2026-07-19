@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{Physical-Space Matrix Hypercontractivity over Large Alphabets for Target Exponents at Least Two}
+\author{Run fa\_banach\_001, lane 19}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Arunachalam and Doriguello ask in Future work item 4 of
+arXiv:2109.02600 whether one can prove a general $(q,p)$-hypercontractive
+statement for matrices, first for matrix-valued functions over $\{0,1\}^n$,
+and then for functions over $\Z_r^n$. The source passage is shown in
+Figure~\ref{fig:open}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Future work item 4 in arXiv:2109.02600, PDF page 9.}
+\label{fig:open}
+\end{figure}
+
+This packet proves a physical-space theorem in the range
+$1\leq p\leq 2\leq q<\infty$. It is therefore stronger than the earlier
+coefficient-space packet for this target, but still does not settle the
+intermediate range $p<q<2$.
+
+\section*{Notation}
+
+Let $G=\Z_r^n$ with normalized counting measure and characters
+$\chi_S(x)=\omega_r^{S\cdot x}$, where $\omega_r=e^{2\pi i/r}$. For
+$f:G\to\C^{m\times m}$ write
+\[
+  \widehat f(S)=\E_{x\in G} f(x)\overline{\chi_S(x)}, \qquad
+  T_\rho f=\sum_{S\in G}\rho^{|S|}\widehat f(S)\chi_S .
+\]
+Here $|S|=|\{j:S_j\neq0\}|$. The mixed norm is
+\[
+  \|f\|_{L_s(S_s)}
+  =
+  \left(\E_{x\in G}\|f(x)\|_s^s\right)^{1/s},
+\]
+where $\|\cdot\|_s$ is the unnormalized Schatten $s$-norm. For
+$1\leq s\leq 2$ set
+\[
+  \zeta_r(s)=
+  \frac{(s-1)\bigl(1-(s-1)^{r-1}\bigr)}{(r-1)(2-s)}
+\]
+with the continuous values $\zeta_r(1)=0$ and $\zeta_r(2)=1$. For
+$2\leq q<\infty$ set
+\[
+  \eta_r(q)=
+  \frac{(q-1)\bigl((q-1)^{r-1}-1\bigr)}{(r-1)(q-2)}
+\]
+with $\eta_r(2)=1$.
+
+\section*{Proof Intuition}
+
+The paper proves an $r$-point Ball--Carlen--Lieb convexity inequality:
+for $1\leq p\leq2$, the $L_p(S_p)$ norm of one $\Z_r$ coordinate controls
+a weighted Hilbertian sum of its matrix Fourier coefficients, with weight
+$\zeta_r(p)$ on all nonzero frequencies.
+
+For $q\geq2$ the Ball--Carlen--Lieb smoothness inequality gives the reverse
+estimate with constant $\eta_r(q)$. Applying this smoothness estimate to the
+noisy coefficients, using $\|A\|_q\leq\|A\|_p$, and then applying the source
+convexity estimate yields the one-coordinate $L_p(S_p)\to L_q(S_q)$
+contraction whenever $\eta_r(q)\rho^2\leq\zeta_r(p)$. The product result is
+obtained by treating all other coordinates as a finite direct sum of matrix
+algebras.
+
+\section*{Auxiliary Inequalities}
+
+\begin{lemma}[Source $r$-point convexity]
+\label{lem:convexity}
+Let $1\leq p\leq2$ and let $A_0,\ldots,A_{r-1}$ be matrices, or elements of
+a finite direct sum of matrix algebras. Then
+\[
+  \left(
+  \frac1r\sum_{x=0}^{r-1}
+  \left\|\sum_{k=0}^{r-1}\omega_r^{kx}A_k\right\|_p^p
+  \right)^{2/p}
+  \geq
+  \|A_0\|_p^2+\zeta_r(p)\sum_{k=1}^{r-1}\|A_k\|_p^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+For matrices this is exactly the $r$-point Ball--Carlen--Lieb inequality
+proved in Section 3.1 of arXiv:2109.02600. The same statement for finite
+direct sums follows by applying the matrix statement to the corresponding
+block-diagonal embedding; rescaling the trace only rescales both sides by the
+same homogeneous factor.
+\end{proof}
+
+\begin{lemma}[$r$-point smoothness]
+\label{lem:smoothness}
+Let $2\leq q<\infty$ and let $A_0,\ldots,A_{r-1}$ be matrices, or elements of
+a finite direct sum of matrix algebras. Then
+\[
+  \left(
+  \frac1r\sum_{x=0}^{r-1}
+  \left\|\sum_{k=0}^{r-1}\omega_r^{kx}A_k\right\|_q^q
+  \right)^{2/q}
+  \leq
+  \|A_0\|_q^2+\eta_r(q)\sum_{k=1}^{r-1}\|A_k\|_q^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+We mimic the block-diagonal proof of the source convexity inequality, using
+the Ball--Carlen--Lieb smoothness inequality in place of convexity. That
+smoothness inequality says that if the same trace-orthogonality condition used
+in the source proof holds for $Z$ and $W$, then
+\[
+  \|Z+W\|_q^2\leq \|Z\|_q^2+(q-1)\|W\|_q^2 .
+\]
+For $j=0,\ldots,r-1$, define the $r$-block matrices
+\[
+  Z_j=\operatorname{diag}\bigl(A_j,\omega_r^jA_j,\ldots,
+  \omega_r^{(r-1)j}A_j\bigr).
+\]
+As in the source proof, the root-of-unity cancellation gives the required
+trace-orthogonality between $Z_j$ and $Z_k$ whenever $j\neq k$, and also
+between each selected $Z_j$ and the remaining tail.
+
+For any permutation $(k_1,\ldots,k_{r-1})$ of $\{1,\ldots,r-1\}$, repeated
+application of smoothness gives
+\[
+  \left\|\sum_{j=0}^{r-1}Z_j\right\|_q^2
+  \leq
+  \|Z_0\|_q^2+\sum_{\ell=1}^{r-1}(q-1)^\ell\|Z_{k_\ell}\|_q^2 .
+\]
+Averaging over all permutations yields
+\[
+  \left\|\sum_{j=0}^{r-1}Z_j\right\|_q^2
+  \leq
+  \|Z_0\|_q^2+\eta_r(q)\sum_{j=1}^{r-1}\|Z_j\|_q^2 .
+\]
+Finally,
+\[
+  \left\|\sum_j Z_j\right\|_q^q
+  =
+  \sum_{x=0}^{r-1}
+  \left\|\sum_{j=0}^{r-1}\omega_r^{jx}A_j\right\|_q^q,
+  \qquad
+  \|Z_j\|_q^2=r^{2/q}\|A_j\|_q^2.
+\]
+Dividing by $r^{2/q}$ gives the displayed inequality. The finite direct-sum
+case follows by the same block-diagonal embedding.
+\end{proof}
+
+\section*{Main Theorem}
+
+\begin{theorem}[Physical-space matrix hypercontractivity for $q\geq2$]
+\label{thm:main}
+Let $r\geq2$, $n,m\geq1$, and $1\leq p\leq2\leq q<\infty$. If
+\[
+  0\leq \rho\leq \left(\frac{\zeta_r(p)}{\eta_r(q)}\right)^{1/2},
+\]
+then every $f:\Z_r^n\to\C^{m\times m}$ satisfies
+\[
+  \|T_\rho f\|_{L_q(S_q)}\leq \|f\|_{L_p(S_p)} .
+\]
+For $r=2$, this is the classical threshold
+$\rho\leq\sqrt{(p-1)/(q-1)}$.
+\end{theorem}
+
+\begin{proof}
+First consider one coordinate, so $f:\Z_r\to\mathcal A$ where $\mathcal A$ is
+a finite direct sum of matrix algebras. Write
+$f(x)=\sum_{k=0}^{r-1}\omega_r^{kx}A_k$. By Lemma~\ref{lem:smoothness},
+\[
+  \|T_\rho f\|_{L_q(S_q)}^2
+  \leq
+  \|A_0\|_q^2+\eta_r(q)\rho^2\sum_{k=1}^{r-1}\|A_k\|_q^2.
+\]
+Since $q\geq p$, Schatten monotonicity gives $\|A_k\|_q\leq\|A_k\|_p$.
+The assumed bound on $\rho$ therefore implies
+\[
+  \|T_\rho f\|_{L_q(S_q)}^2
+  \leq
+  \|A_0\|_p^2+\zeta_r(p)\sum_{k=1}^{r-1}\|A_k\|_p^2.
+\]
+Lemma~\ref{lem:convexity} bounds the last expression by
+$\|f\|_{L_p(S_p)}^2$. This proves the one-coordinate estimate with values in
+any finite direct sum of matrix algebras.
+
+For $G=\Z_r^n$, write $T_\rho=T_\rho^{(1)}\cdots T_\rho^{(n)}$, where
+$T_\rho^{(j)}$ acts on the $j$th coordinate. The single-coordinate noise
+kernel is the probability measure assigning mass
+$(1+(r-1)\rho)/r$ to $0$ and $(1-\rho)/r$ to each nonzero element, so
+$T_\rho^{(j)}$ is an $L_p(S_p)$ contraction for $0\leq\rho\leq1$.
+
+Apply the one-coordinate estimate to the last coordinate, viewing the first
+$n-1$ coordinates and the matrix variable as one finite direct sum of matrix
+algebras. Since the remaining coordinate noises commute with the last one and
+are $L_p(S_p)$ contractions,
+\[
+\begin{aligned}
+  \|T_\rho f\|_{L_q(S_q)}
+  &=
+  \left\|T_\rho^{(n)}T_\rho^{(1)}\cdots T_\rho^{(n-1)}f\right\|_{L_q(S_q)}\\
+  &\leq
+  \left\|T_\rho^{(1)}\cdots T_\rho^{(n-1)}f\right\|_{L_p(S_p)}
+  \leq \|f\|_{L_p(S_p)} .
+\end{aligned}
+\]
+This proves the theorem.
+\end{proof}
+
+\section*{Scope and Remaining Range}
+
+The theorem is a physical-space matrix-valued hypercontractivity statement
+over $\Z_r^n$ for every $1\leq p\leq2\leq q<\infty$. It therefore answers the
+large-target-exponent part of the source question with an explicit
+dimension-free constant. It also recovers the optimal scalar threshold in the
+Boolean case $r=2$ for this range.
+
+The theorem does not settle $p<q<2$. The simple smoothness/convexity sandwich
+used above is intrinsically pinned at the Hilbert exponent $2$. Extending it
+below $2$ appears to require sharper Schatten Hanner-type information; this is
+exactly the sort of terrain the source paper flags when discussing why matrix
+Hanner inequalities are only known in restricted ranges. Small random $2\times2$
+tests did not reveal a counterexample, so this packet records the result as a
+partial theorem rather than a disproof of the remaining range.
+
+\section*{References}
+
+\begin{enumerate}
+\item S. Arunachalam and J. F. Doriguello,
+\emph{Matrix hypercontractivity, streaming algorithms and LDCs: the large
+alphabet case}, arXiv:2109.02600; ACM Transactions on Computation Theory
+16(4), Article 21, 2024.
+\item K. Ball, E. A. Carlen, and E. H. Lieb,
+\emph{Sharp uniform convexity and smoothness inequalities for trace norms},
+Inventiones Mathematicae 115 (1994), 463--482.
+\end{enumerate}
+
+\end{document}

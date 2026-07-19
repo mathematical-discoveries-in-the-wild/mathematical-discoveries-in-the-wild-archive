@@ -1,0 +1,306 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!60!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Herm}{\operatorname{Herm}}
+
+\hypersetup{
+  pdftitle={A quaternion phase-correlation counterexample},
+  pdfauthor={Automated mathematics run fa banach 001, lane 9}
+}
+
+\title{A quaternion phase-correlation counterexample\\
+\large Negative answer to Farhangi--Tucker-Drob Question 3.7}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 9}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black!35}{yellow!10}{\parbox{0.88\linewidth}{
+\textbf{Status.} Candidate counterexample, likely valid; independent human
+review is required.  The proof is exact and self-contained.  A bounded search
+found no prior answer to the source question, but does not establish
+publication-level novelty.
+}}
+\end{center}
+
+\begin{abstract}
+We give a normalized positive-definite function on the countably infinite
+amenable group $Q_8\times\Z$ which cannot be represented as the correlation
+function of any circle-valued observable in a measure-preserving system.  The
+obstruction is a rank-two extreme point of the $4\times4$ complex correlation
+elliptope obtained from four quaternion translates of a vector in $\C^2$.
+Thus property (i) in Question 3.7 of Farhangi and Tucker-Drob already fails;
+property (ii) cannot repair the representation.
+\end{abstract}
+
+\section{Source question}
+
+The source is S. Farhangi and R. Tucker-Drob, \emph{Asymptotic dynamics on
+amenable groups and van der Corput sets}, arXiv:2409.00806v3
+\cite{FarhangiTuckerDrob}.  The question appears as Question 3.7 on PDF page 18
+(the source label is \texttt{MainConjecture}).  The preceding paragraph says
+that a positive answer for amenable groups would complete an equivalence in
+their Theorem 3.5.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 3.7 and its lead-in, rendered from page 18 of the source
+  PDF.}
+  \label{fig:source-question}
+\end{figure}
+
+In transcription, the question asks: given a countable group $G$ and a
+positive-definite $\phi:G\to\C$ with $\phi(e)=1$, must there exist an m.p.s.
+$(X,\mathcal B,\mu,(\tau_g)_{g\in G})$ and measurable $f:X\to\mathbb S^1$ such
+that
+\begin{enumerate}[label=(\roman*)]
+\item $\phi(h)=\langle\tau_hf,f\rangle$ for every $h\in G$;
+\item $\int_X f\,d\mu=0$ if and only if $f$ is orthogonal to the invariant
+subspace of $L^2(X,\mu)$?
+\end{enumerate}
+
+Throughout, as in the source, Hilbert-space inner products are linear in the
+first variable.  Thus positive definiteness means
+\[
+  \sum_{i,j}c_i\overline{c_j}\phi(g_j^{-1}g_i)\geq0.
+\]
+
+\section{Proof intuition}
+
+Four unit vectors have a correlation matrix $C$.  If the vectors are four
+translates of a circle-valued random variable, then pointwise they are four
+complex phases; consequently $C$ is an average of rank-one phase matrices.
+We construct four quaternion translates in $\C^2$ whose matrix $C$ has rank
+two but is extreme among \emph{all} complex correlation matrices.  An extreme
+matrix cannot be a nontrivial average of other correlation matrices.  It
+therefore cannot be an average of rank-one phase matrices.  The quaternion
+coefficient function realizes precisely these four entries, forcing the
+contradiction.
+
+\section{An extremality lemma}
+
+Let
+\[
+ \mathcal E_n=\{C\in M_n(\C): C=C^*,\ C\geq0,\ C_{ii}=1\}
+\]
+be the complex correlation elliptope.  The following standard criterion is
+included with its proof; see Li and Tam \cite{LiTam} for background.
+
+\begin{lemma}[Projector-spanning criterion]\label{lem:extreme}
+Let $v_1,\dots,v_n$ be unit vectors spanning a finite-dimensional complex
+Hilbert space $H$, and let $C_{ij}=\langle v_i,v_j\rangle$.  If the rank-one
+orthogonal projectors $P_i=v_iv_i^*$ span $\Herm(H)$ over $\mathbb R$, then
+$C$ is an extreme point of $\mathcal E_n$.
+\end{lemma}
+
+\begin{proof}
+Suppose $C=(A+B)/2$ with $A,B\in\mathcal E_n$.  Since $0\leq A,B\leq2C$,
+the usual dominated Gram-factorization gives positive operators $S,T$ on $H$
+such that
+\[
+ A_{ij}=\langle Sv_i,v_j\rangle,
+ \qquad B_{ij}=\langle Tv_i,v_j\rangle.
+\]
+For completeness, this factorization is obtained by defining the quadratic
+form associated to $A$ on linear combinations of the $v_i$; domination by the
+Gram form of $C$ makes it well-defined and bounded, hence represented by a
+positive operator.  The same applies to $B$.
+
+The equality $(A+B)/2=C$ and the spanning assumption on the vectors imply
+$(S+T)/2=I_H$.  Since every diagonal entry of $A$ equals one,
+\[
+ 0=A_{ii}-C_{ii}=\langle(S-I_H)v_i,v_i\rangle
+   =\operatorname{tr}((S-I_H)P_i)
+ \quad(1\leq i\leq n).
+\]
+The Hermitian operator $S-I_H$ is therefore Hilbert--Schmidt orthogonal, over
+$\mathbb R$, to a spanning set of $\Herm(H)$.  Hence $S=I_H$.  It follows that
+$T=I_H$ and $A=B=C$, proving extremality.
+\end{proof}
+
+\section{The counterexample}
+
+Let
+\[
+ X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+ Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\qquad
+ Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\]
+be the Pauli matrices, and put
+\[
+ Q_8=\{\pm I,\ \pm iX,\ \pm iY,\ \pm iZ\}\subset U(2).
+\]
+This is the quaternion group.  Set $G=Q_8\times\Z$, a countably infinite
+amenable group, and let $\pi(q,m)=q$ be its two-dimensional unitary
+representation.
+
+Set $r=1/\sqrt3$ and choose
+\[
+ \xi=\begin{pmatrix}
+ \sqrt{(1+r)/2}\\[2mm]
+ e^{i\pi/4}\sqrt{(1-r)/2}
+ \end{pmatrix}.
+\]
+Then $\|\xi\|=1$ and its three Pauli expectations are all $r$:
+\[
+ \langle X\xi,\xi\rangle=\langle Y\xi,\xi\rangle
+ =\langle Z\xi,\xi\rangle=r.
+\]
+Define
+\[
+ \phi(g)=\langle\pi(g)\xi,\xi\rangle\qquad(g\in G).
+\]
+As a coefficient of a unitary representation, $\phi$ is positive definite in
+the source convention, and $\phi(e)=1$.
+
+\begin{theorem}\label{thm:negative}
+There is no measure-preserving $G$-system and no measurable
+$f:X\to\mathbb S^1$ satisfying
+\[
+ \phi(h)=\langle\tau_hf,f\rangle\qquad(h\in G).
+\]
+Consequently Question 3.7 has a negative answer, even for a countably infinite
+amenable group.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ q_1=I,\quad q_2=iX,\quad q_3=iY,\quad q_4=iZ,
+ \qquad g_j=(q_j,0)\in G,
+\]
+and set $v_j=q_j\xi$.  If $P_j=v_jv_j^*$, then the coordinates of $2P_j$ in
+the ordered real basis $(I,X,Y,Z)$ are the rows of
+\[
+ M=\begin{pmatrix}
+ 1&r&r&r\\
+ 1&r&-r&-r\\
+ 1&-r&r&-r\\
+ 1&-r&-r&r
+ \end{pmatrix}.
+\]
+Indeed, conjugation by $iX$, $iY$, or $iZ$ fixes the corresponding Bloch
+coordinate and flips the other two.  Direct calculation gives
+\[
+ \det M=-\frac{16}{3\sqrt3}\neq0.
+\]
+Thus $P_1,\dots,P_4$ span $\Herm(2)$.  By
+Lemma~\ref{lem:extreme}, their Gram matrix $C$ is extreme in $\mathcal E_4$.
+Explicitly,
+\[
+ C=(\langle v_i,v_j\rangle)_{i,j=1}^4
+ =\begin{pmatrix}
+ 1&-ir&-ir&-ir\\
+ ir&1&-ir&ir\\
+ ir&ir&1&-ir\\
+ ir&-ir&ir&1
+ \end{pmatrix}.
+\]
+The vectors span $\C^2$, so $\operatorname{rank}C=2$; equivalently its
+spectrum is $\{2,2,0,0\}$.
+
+Assume, for contradiction, that the requested circle-valued realization
+exists.  Put $z_j=\tau_{g_j}f$.  Since the Koopman operators form a unitary
+representation and the source convention is linear in the first variable,
+\[
+ \langle z_i,z_j\rangle
+ =\langle\tau_{g_j^{-1}g_i}f,f\rangle
+ =\phi(g_j^{-1}g_i)
+ =\langle q_i\xi,q_j\xi\rangle=C_{ij}.
+\]
+For almost every $x$, all four coordinates of
+$z(x)=(z_1(x),\dots,z_4(x))$ lie on $\T$.  Hence
+\[
+ C=\int_X z(x)z(x)^*\,d\mu(x).
+\]
+Every integrand is a rank-one member of $\mathcal E_4$.  Because the phase
+matrices $zz^*$ form a compact set and $\mathcal E_4$ is finite-dimensional,
+the integral belongs to their convex hull.  Extremality of $C$ in the larger
+set $\mathcal E_4$ forces every nonzero term in any finite convex
+representation to equal $C$.  This is impossible: each phase matrix has rank
+one, whereas $C$ has rank two.  The contradiction proves the theorem.
+\end{proof}
+
+\paragraph{Why condition (ii) is irrelevant.}
+The construction disproves the correlation representation demanded in (i),
+before any condition involving invariant functions or the integral of $f$ is
+considered.
+
+\section{Verification and limitations}
+
+The companion script
+\texttt{code/verify\_quaternion\_elliptope.py} checks all 64 products in the
+matrix model of $Q_8$, the normalization and Bloch coordinates of $\xi$, the
+projector-coordinate determinant and rank, the displayed Gram matrix, and its
+spectrum.  It returns projector-span rank $4$ and Gram rank $2$.  These
+floating-point checks are safeguards against transcription and sign errors;
+the determinant and rank arguments in the proof are exact and do not depend
+on the script.
+
+The construction uses a representation of $Q_8\times\Z$ that is trivial on
+the $\Z$ factor.  This is allowed: the question imposes no faithfulness or
+mixing assumption.  The example therefore addresses both the literal
+``countable group'' statement and the countably infinite amenable setting
+motivating it.
+
+\section{Bounded novelty check}
+
+On 19 July 2026, the run registry and local full-text indexes were searched for
+arXiv:2409.00806 and the core terms \emph{circle-valued}, \emph{positive
+definite}, \emph{phase correlation}, \emph{quaternion}, and \emph{extreme
+correlation}.  Web/arXiv searches used the exact title and question phrase,
+the authors together with ``Question 3.7'', and close variants.  Searches also
+looked for later work explicitly answering the question.  They found the
+standard extreme-correlation background \cite{LiTam}, but no explicit answer
+to Question 3.7 and no application of this obstruction to it.
+
+This search was bounded rather than exhaustive.  Accordingly, the packet
+claims a complete mathematical counterexample subject to human verification,
+but makes no claim of publication-level novelty.
+
+\section{Human-review recommendation}
+
+The first review priority is the identity
+$C_{ij}=\phi(g_j^{-1}g_i)$ and its Koopman counterpart, because it is where
+left/right and inner-product conventions enter.  The second is the
+extreme-point step converting a phase-valued realization into a forbidden
+rank-one barycenter.  If those two short steps pass independent review, the
+argument is a full negative answer to the question as stated.
+
+{\footnotesize
+\begin{thebibliography}{9}
+\setlength{\itemsep}{0pt}
+
+\bibitem{FarhangiTuckerDrob}
+S.~Farhangi and R.~Tucker-Drob,
+\newblock \emph{Asymptotic dynamics on amenable groups and van der Corput sets},
+\newblock arXiv:2409.00806v3, 2025; Groups, Geometry, and Dynamics (2026),
+\newblock \url{https://arxiv.org/abs/2409.00806}.
+
+\bibitem{LiTam}
+C.-K.~Li and B.-S.~Tam,
+\newblock A note on extreme correlation matrices,
+\newblock \emph{SIAM J. Matrix Anal. Appl.} \textbf{15} (1994), no.~3,
+903--908,
+\newblock \url{https://doi.org/10.1137/S0895479892240683}.
+
+\end{thebibliography}
+}
+
+\end{document}

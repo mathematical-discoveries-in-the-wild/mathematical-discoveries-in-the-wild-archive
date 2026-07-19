@@ -1,0 +1,349 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A Noninteger Holder Critical-Line Obstruction for RKHS Sandwiches}
+\author{Agent lane 7}
+\date{June 16, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source is Max Sch\"olpple and Ingo Steinwart,
+\emph{Which Spaces can be Embedded in Reproducing Kernel Hilbert Spaces?},
+arXiv:2312.14711 \cite{SS}. The paper proves that the existence of an
+intermediate reproducing kernel Hilbert space \(H\) between two Banach spaces
+of functions \(E\hookrightarrow F\) is equivalent, in the Banach function
+space setting considered there, to the 2-factorability of the inclusion
+\(E\hookrightarrow F\). It also records the necessary consequence that such
+an inclusion must be of cotype \(2\).
+
+For Holder spaces over bounded subsets of \(\R^d\) with nonempty interior,
+the source proves that no RKHS sandwich
+\[
+  \operatorname{Hol}^{\alpha}(X)\hookrightarrow H
+  \hookrightarrow \operatorname{Hol}^{\beta}(X)
+\]
+can exist when \(\alpha-\beta<d/2\). In the higher smoothness
+Holder-Zygmund/Besov scale it proves positive results when
+\(\alpha-\beta>d/2\), and identifies the critical line
+\(\alpha-\beta=d/2\) as a remaining border case.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+This packet proves a broad negative result on that critical line. We write
+\(\Lam^s([0,1]^d)\) for the Holder-Zygmund space \(B^s_{\infty,\infty}\);
+for noninteger \(s=m+\theta\), \(m\in\N_0\), \(0<\theta<1\), this is the
+usual classical Holder space \(C^{m,\theta}\), up to equivalence of norms.
+One concrete equivalent seminorm is given by finite differences:
+if \(r>s\) is an integer and
+\[
+  \Delta_h^r f(x)=\sum_{\nu=0}^r (-1)^{r-\nu}\binom r\nu f(x+\nu h),
+\]
+where only admissible \(x,h\) with all points \(x,\ldots,x+rh\) in
+\([0,1]^d\) are used, then
+\[
+  \norm{f}_{\Lam^s}
+  \simeq
+  \norm{f}_{\infty}
+  + \sup_{0<\abs{h}\le 1}\abs{h}^{-s}
+    \norm{\Delta_h^r f}_{\infty}.
+\]
+
+\begin{theorem}\label{thm:noninteger-critical}
+Let \(d\ge1\), \(\beta>0\), and
+\[
+  \alpha=\beta+d/2.
+\]
+Assume that \(\alpha\notin \N\). Then the inclusion
+\[
+  \Lam^\alpha([0,1]^d)\hookrightarrow \Lam^\beta([0,1]^d)
+\]
+is not cotype \(2\). Consequently, there is no reproducing kernel Hilbert
+space \(H\) on \([0,1]^d\) such that
+\[
+  \Lam^\alpha([0,1]^d)\hookrightarrow H
+  \hookrightarrow \Lam^\beta([0,1]^d).
+\]
+\end{theorem}
+
+Since \(\alpha\) is noninteger, the domain in Theorem
+\ref{thm:noninteger-critical} is the ordinary classical Holder space
+\(C^\alpha([0,1]^d)\). The target exponent \(\beta\) may be integer or
+noninteger; the Holder-Zygmund formulation is used so that integer target
+endpoints are included in the same statement.
+
+\section*{Idea of the Proof}
+
+The source's metric packing obstruction tests one scale at a time. At the
+critical line \(\alpha-\beta=d/2\), a single dyadic scale is exactly balanced:
+there are \(2^{jd}\) available bumps at scale \(2^{-j}\), and each bump has
+target norm of size \(2^{-j(\alpha-\beta)}=2^{-jd/2}\). Thus one level
+contributes a fixed amount to the cotype square-sum.
+
+The extra observation is that one may stack all dyadic levels. If
+\(\alpha\) is noninteger, signed smooth bumps of height \(2^{-j\alpha}\)
+at every level remain uniformly bounded in \(C^\alpha\). The lower levels
+are controlled by their Lipschitz constants, and the higher levels by their
+small sup norms. But in \(\Lam^\beta\) the square-sum receives a fixed
+positive contribution from every level, so the first \(m\) levels force a
+\(\sqrt m\) lower bound. This contradicts cotype \(2\), and the source's
+2-factorability theorem then excludes an intermediate RKHS.
+
+\section*{Multiscale Bump Lemma}
+
+Fix a nonzero function \(\phi\in C_c^\infty((0,1/4)^d)\). For
+\(j\ge0\) and \(k=(k_1,\ldots,k_d)\in\{0,\ldots,2^j-1\}^d\), set
+\[
+  \phi_{j,k}(x)=2^{-j\alpha}\phi(2^j x-k),
+  \qquad x\in[0,1]^d.
+\]
+The supports of \(\{\phi_{j,k}\}_k\) are separated within each fixed level
+\(j\), and there are \(2^{jd}\) of them.
+
+\begin{lemma}\label{lem:signed-domain-bound}
+Let \(\alpha=n+\theta\) with \(n\in\N_0\) and \(0<\theta<1\). There exists a
+constant \(C_\alpha\) such that for every finite set
+\[
+  A\subset \{(j,k):j\ge0,\ k\in\{0,\ldots,2^j-1\}^d\}
+\]
+and every choice of signs \(\eps_{j,k}\in\{-1,1\}\),
+\[
+  \left\|
+    \sum_{(j,k)\in A}\eps_{j,k}\phi_{j,k}
+  \right\|_{C^{n,\theta}([0,1]^d)}
+  \le C_\alpha .
+\]
+Consequently the same signed sums are uniformly bounded in
+\(\Lam^\alpha([0,1]^d)\).
+\end{lemma}
+
+\begin{proof}
+For a fixed level \(j\), define
+\[
+  g_j=\sum_{k:(j,k)\in A}\eps_{j,k}\phi_{j,k}.
+\]
+Let \(\rho\) be a multi-index with \(\abs{\rho}\le n\). Since supports at
+level \(j\) are separated and each scaled bump is supported in a cube of
+side length \(2^{-j}/4\),
+\[
+  \norm{D^\rho g_j}_\infty
+  \le C_\rho 2^{-j(\alpha-\abs{\rho})}.
+\]
+For \(\abs{\rho}=n\), the same scaling and the separation of supports give
+the global Lipschitz estimate
+\[
+  \operatorname{Lip}(D^\rho g_j)
+  \le C_\rho 2^{j(1-\theta)}.
+\]
+Indeed, points in the same support are controlled by differentiating one more
+time, points in different supports are separated by a distance comparable to
+\(2^{-j}\), and outside the supports the derivative is zero.
+
+The lower-order \(C^n\) part is bounded because
+\[
+  \sum_{j\ge0}2^{-j(\alpha-\abs{\rho})}<\infty
+  \qquad (\abs{\rho}\le n).
+\]
+It remains to control the \(\theta\)-Holder seminorms of the derivatives
+\(D^\rho\) with \(\abs{\rho}=n\). Let \(x,y\in[0,1]^d\), \(x\ne y\), and put
+\(h=\abs{x-y}\). Choose \(J\ge0\) so that
+\[
+  2^{-(J+1)}<h\le 2^{-J},
+\]
+with the evident modification if \(h>1/2\). For the low levels \(j\le J\),
+the Lipschitz estimate gives
+\[
+  \sum_{j\le J}\abs{D^\rho g_j(x)-D^\rho g_j(y)}
+  \le
+  C h \sum_{j\le J}2^{j(1-\theta)}
+  \le C_\theta h^\theta .
+\]
+For the high levels \(j>J\), the sup-norm estimate gives
+\[
+  \sum_{j>J}\abs{D^\rho g_j(x)-D^\rho g_j(y)}
+  \le
+  C\sum_{j>J}2^{-j\theta}
+  \le C_\theta h^\theta .
+\]
+This proves the uniform \(C^{n,\theta}\) bound. The equivalence
+\(C^{n,\theta}=\Lam^\alpha\) for noninteger \(\alpha\) gives the final
+assertion.
+\end{proof}
+
+\begin{lemma}\label{lem:target-lower-bound}
+For every \(\beta>0\) there exists \(c_\beta>0\) such that, for all \(j,k\),
+\[
+  \norm{\phi_{j,k}}_{\Lam^\beta([0,1]^d)}
+  \ge c_\beta\,2^{-j(\alpha-\beta)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose an integer \(r>\beta\). Since \(\phi\) is nonzero and compactly
+supported, its \(r\)-th finite differences are not identically zero. Hence
+there exist \(x_0\in(0,1/4)^d\), a vector \(h_0\in\R^d\), and a number
+\(\eta>0\) such that all points \(x_0,\ldots,x_0+rh_0\) remain in
+\((0,1/4)^d\) and
+\[
+  \abs{\Delta_{h_0}^r\phi(x_0)}\ge \eta .
+\]
+For each \(j,k\), put \(x_{j,k}=2^{-j}(k+x_0)\) and
+\(h_j=2^{-j}h_0\). Then all points used in the finite difference of
+\(\phi_{j,k}\) are admissible, and scaling gives
+\[
+  \Delta_{h_j}^r\phi_{j,k}(x_{j,k})
+  =
+  2^{-j\alpha}\Delta_{h_0}^r\phi(x_0).
+\]
+Therefore the finite-difference norm of \(\Lam^\beta\) yields
+\[
+  \norm{\phi_{j,k}}_{\Lam^\beta}
+  \ge
+  c \abs{h_j}^{-\beta}
+  \abs{\Delta_{h_j}^r\phi_{j,k}(x_{j,k})}
+  \ge
+  c_\beta 2^{j\beta}2^{-j\alpha}
+  =
+  c_\beta 2^{-j(\alpha-\beta)}.
+\]
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:noninteger-critical}}
+
+Let
+\[
+  A_m=\{(j,k):0\le j<m,\ k\in\{0,\ldots,2^j-1\}^d\}.
+\]
+By Lemma \ref{lem:signed-domain-bound}, for independent Rademacher signs
+\(\eps_{j,k}\),
+\[
+  \mathbb{E}
+  \left\|
+    \sum_{(j,k)\in A_m}\eps_{j,k}\phi_{j,k}
+  \right\|_{\Lam^\alpha}
+  \le C_\alpha .
+\]
+On the other hand, Lemma \ref{lem:target-lower-bound} and the critical
+identity \(\alpha-\beta=d/2\) give
+\[
+\begin{aligned}
+  \left(
+    \sum_{(j,k)\in A_m}
+    \norm{\phi_{j,k}}_{\Lam^\beta}^2
+  \right)^{1/2}
+  &\ge
+  c_\beta
+  \left(
+    \sum_{j=0}^{m-1}2^{jd}2^{-2j(\alpha-\beta)}
+  \right)^{1/2}  \\
+  &=
+  c_\beta
+  \left(
+    \sum_{j=0}^{m-1}1
+  \right)^{1/2}
+  =
+  c_\beta\sqrt m .
+\end{aligned}
+\]
+Thus the cotype-2 constants of the inclusion
+\[
+  \Lam^\alpha([0,1]^d)\hookrightarrow \Lam^\beta([0,1]^d)
+\]
+are at least \(c_\beta C_\alpha^{-1}\sqrt m\) for every \(m\), and so the
+inclusion is not cotype \(2\).
+
+By the source paper's 2-factorization theorem, an RKHS sandwich
+\[
+  \Lam^\alpha([0,1]^d)\hookrightarrow H
+  \hookrightarrow \Lam^\beta([0,1]^d)
+\]
+would make the inclusion
+\(\Lam^\alpha([0,1]^d)\hookrightarrow \Lam^\beta([0,1]^d)\) 2-factorable
+\cite[Theorem 6]{SS}. By the source paper's type/cotype obstruction, every
+2-factorable inclusion is cotype \(2\) \cite[Lemma 5 and Corollary 8]{SS}.
+This contradicts the preceding paragraph and proves the theorem.
+
+\section*{Limitations and Remaining Border}
+
+The assumption \(\alpha\notin\N\) is essential for the present argument: it
+is exactly what gives the uniform signed multiscale bound in the classical
+Holder domain norm. The remaining critical cases are the integer-domain
+smoothness endpoints. They are not a formal afterthought. In dimension one,
+the endpoint \(\alpha=1\), \(\beta=1/2\) is positive, since
+\[
+  C^1([0,1])\hookrightarrow H^1([0,1])
+  \hookrightarrow C^{1/2}([0,1])
+\]
+and \(H^1([0,1])\) is a bounded-kernel RKHS. Thus the integer line requires
+separate tools and is the next genuine frontier.
+
+\section*{Verification and Novelty Check}
+
+The proof is noncomputational. The verification points are:
+\begin{enumerate}
+\item the signed multiscale bump family is uniformly bounded in
+      \(C^\alpha=\Lam^\alpha\) for noninteger \(\alpha\);
+\item every bump has the stated \(\Lam^\beta\) lower bound, including integer
+      \(\beta\), by finite differences;
+\item the critical identity \(\alpha-\beta=d/2\) makes every dyadic level
+      contribute a fixed positive amount to the target square-sum;
+\item Sch\"olpple and Steinwart's RKHS theorem converts any sandwich into a
+      2-factorization, hence into a cotype-2 inclusion.
+\end{enumerate}
+
+The run indexes were searched for arXiv id \(2312.14711\), Holder critical
+line terminology, \(\alpha-\beta=d/2\), cotype, and 2-factorability. The
+existing hits are the all-dimensional bounded-kernel endpoint packet and a
+one-dimensional companion Holder-to-Holder packet, not this noninteger
+critical-line theorem. Bounded web searches on June 16, 2026 for the source
+title plus ``border cases'', for ``Holder RKHS alpha-beta=d/2 border cases'',
+for ``Holder-Zygmund RKHS \(B_{\infty,\infty}\) border'', and for
+``\(B^s_{\infty,\infty}\) 2-factorable RKHS Holder critical border'' found
+the source arXiv record but no exact later answer to this subcase.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid partial result. The highest-value checks are the
+finite-difference lower bound in Lemma \ref{lem:target-lower-bound}, the
+global Lipschitz estimate for the separated same-level bumps in Lemma
+\ref{lem:signed-domain-bound}, and the precise interpretation of
+Holder-Zygmund endpoints against the conventions used in the source paper.
+
+\begin{thebibliography}{9}
+
+\bibitem{SS}
+Max Sch\"olpple and Ingo Steinwart.
+\newblock \emph{Which Spaces can be Embedded in Reproducing Kernel Hilbert Spaces?}
+\newblock arXiv:2312.14711, 2023.
+
+\bibitem{Triebel}
+Hans Triebel.
+\newblock \emph{Theory of Function Spaces}.
+\newblock Birkh\"auser, 1983.
+
+\end{thebibliography}
+
+\end{document}

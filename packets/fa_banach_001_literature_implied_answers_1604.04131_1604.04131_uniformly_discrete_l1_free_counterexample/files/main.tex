@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{proposition}{Proposition}
+\newtheorem*{remark}{Remark}
+
+\title{A Literature-Implied Negative Answer to a Cuth--Johanis Question}
+\author{Automatic Math Discovery Run: FA/Banach 001}
+\date{June 10, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+The source paper is Cuth--Johanis, \emph{Isometric embedding of $\ell_1$ into
+Lipschitz-free spaces and $\ell_\infty$ into their duals}, arXiv:1604.04131.
+The relevant question appears on page 2:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{Status of this packet}
+
+This packet is filed as a literature-implied answer, not as a new original
+pipeline proof. Ostrovskii later proved a necessary and sufficient criterion
+for a transportation cost space, equivalently a Lipschitz-free space, to contain
+an isometric copy of $\ell_1$; see arXiv:1910.03625. The criterion gives a
+short negative answer to Question 2 by one of the uniformly discrete examples
+listed in the Cuth--Johanis paper.
+
+\section*{The later criterion}
+
+We use the following theorem of Ostrovskii. A sequence of disjoint pairs
+$(x_i,y_i)$ in a metric space has the \emph{minimum matching property} if, for
+every $n$, the edges $\{x_i y_i:1\le i\le n\}$ form a minimum-weight perfect
+matching on the vertices $\{x_i,y_i:1\le i\le n\}$.
+
+\begin{theorem}[Ostrovskii]
+Let $M$ be an infinite metric space. The Lipschitz-free space $\mathcal F(M)$
+contains a subspace isometric to $\ell_1$ if and only if $M$ contains a sequence
+of disjoint pairs with the minimum matching property.
+\end{theorem}
+
+\section*{A uniformly discrete counterexample}
+
+Let $M=\{v_n:n\in\mathbb N\}$ and define, for distinct $i,j$,
+\[
+  d(v_i,v_j)=1+\frac{1}{\max\{i,j\}}.
+\]
+This is a metric: if $i<j<k$, then
+\[
+d(v_i,v_k)\le d(v_i,v_j)+d(v_j,v_k),\quad
+d(v_i,v_j)\le d(v_i,v_k)+d(v_j,v_k),
+\]
+and the remaining triangle inequality is symmetric. Also $d(v_i,v_j)>1$ for
+$i\ne j$, so $M$ is uniformly discrete.
+
+\begin{proposition}
+The space $\mathcal F(M)$ contains no subspace isometric to $\ell_1$.
+\end{proposition}
+
+\begin{proof}
+By Ostrovskii's criterion, it is enough to show that no infinite sequence of
+disjoint pairs in $M$ has the minimum matching property.
+
+Take any infinite sequence of disjoint pairs. Choose two pairs so that the
+indices of the second pair are larger than the indices of the first pair; after
+renaming their four vertices, write the indices as
+\[
+  q_1<q_2<q_3<q_4 .
+\]
+The two original edges have total weight
+\[
+  d(v_{q_1},v_{q_2})+d(v_{q_3},v_{q_4})
+  =2+\frac1{q_2}+\frac1{q_4}.
+\]
+The crossed matching has total weight
+\[
+  d(v_{q_1},v_{q_3})+d(v_{q_2},v_{q_4})
+  =2+\frac1{q_3}+\frac1{q_4}.
+\]
+Since $q_2<q_3$, the crossed matching is strictly lighter. Thus the original
+two-edge matching is not a minimum-weight perfect matching on these four
+vertices. Consequently no infinite sequence of disjoint pairs in $M$ satisfies
+the minimum matching property, and $\mathcal F(M)$ does not contain an
+isometric copy of $\ell_1$.
+\end{proof}
+
+\section*{Verification code}
+
+The file \texttt{code/verify\_metric\_and\_matching.py} checks, on finite
+initial segments, the triangle inequalities and the crossing inequality used in
+the proof. These computations are not a substitute for the proof above; they
+are included only as a reproducibility check for the chosen metric.
+
+\end{document}

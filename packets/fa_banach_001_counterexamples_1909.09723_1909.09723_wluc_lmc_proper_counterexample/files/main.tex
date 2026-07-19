@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem*{theorem}{Counterexample}
+\newtheorem*{lemma}{Lemma}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\WLUC}{\operatorname{WLUC}}
+\newcommand{\LMC}{\operatorname{LMC}}
+\newcommand{\Cb}{C_b}
+\newcommand{\betaN}{\beta\N}
+\newcommand{\Fin}{[\beta\N]^{<\omega}}
+
+\title{A Rectangular-Band Counterexample Separating \(\WLUC(S)\) from \(\LMC(S)\)}
+\author{Run fa\_banach\_001, lane 2}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Counterexample, likely valid. This answers affirmatively the question in
+Wisnicki's \emph{Amenable semigroups and nonexpansive dynamical systems}
+\cite{Wisnicki}: there is a Hausdorff topological semigroup \(S\) for which
+\[
+  \WLUC(S) \subsetneq \LMC(S).
+\]
+
+\section*{Source Question}
+
+The source defines \(f\in \WLUC(S)\) when the orbit map
+\[
+  S\ni s\longmapsto L_s f\in C(S)
+\]
+is continuous for the weak topology of \(C(S)\), and \(f\in \LMC(S)\) when the
+same map is continuous for the topology induced by multiplicative means on
+\(C(S)\). Since multiplicative means are among the bounded linear functionals,
+one always has \(\WLUC(S)\subseteq \LMC(S)\). After Theorem 3.5, the source
+asks whether this inclusion can be proper.
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+Weak continuity tests a left-translation orbit against all bounded linear
+functionals on \(C(S)\), while \(\LMC\)-continuity tests only multiplicative
+means. The construction makes this gap visible. We build a rectangular band
+\(S=A\times\N\), with multiplication \((a,m)(b,n)=(a,n)\). Left translates of
+one function \(f\) then depend only on the \(a\)-coordinate and on the
+\(\N\)-coordinate.
+
+The space \(A\) is arranged so that a net of finite subsets
+\(E\subset\beta\N\) converges to a point \(\infty\). For each \(E\), choose a
+continuous function \(u_E\) on \(\beta\N\) which vanishes on \(E\) but still has
+large integral against a fixed atomless probability measure. Vanishing at each
+prescribed ultrafilter gives continuity against every multiplicative mean.
+Large integrals give a single bounded linear functional witnessing failure of
+weak continuity.
+
+\section*{The Counterexample}
+
+\begin{theorem}
+There is a Hausdorff topological semigroup \(S\) and a function
+\(f\in\Cb(S)\) such that \(f\in \LMC(S)\) but \(f\notin \WLUC(S)\). Hence
+\(\WLUC(S)\) is a proper subspace of \(\LMC(S)\) in general.
+\end{theorem}
+
+\begin{proof}
+Let \(\N\) have the discrete topology and let \(\betaN\) be its Stone-Cech
+compactification. First choose an atomless regular Borel probability measure
+\(\mu\) on \(\betaN\). For example, take a map from \(\N\) to \([0,1]\) with
+dense range and extend it to a continuous surjection \(q:\betaN\to[0,1]\).
+The Lebesgue state on \(q^\ast C([0,1])\subset C(\betaN)\) extends to a state
+on \(C(\betaN)\); by the Riesz representation theorem this state is integration
+against a regular probability measure \(\mu\), and \(q_\ast\mu\) is Lebesgue
+measure. If \(\mu\) had an atom at \(p\in\betaN\), then \(q_\ast\mu\) would
+have an atom at \(q(p)\), so \(\mu\) is atomless.
+
+For every finite set \(E\in\Fin\), regularity gives an open set
+\(U_E\supset E\) with \(\mu(U_E)<1/2\). By Urysohn's lemma choose
+\[
+  u_E\in C(\betaN,[0,1])
+\]
+such that \(u_E=0\) on \(E\) and \(u_E=1\) on \(\betaN\setminus U_E\). Then
+\[
+  \int_{\betaN} u_E\,d\mu \geq 1-\mu(U_E)>1/2. \tag{1}
+\]
+
+Let
+\[
+  A=\{\infty\}\cup \Fin .
+\]
+Every point \(E\in\Fin\) is isolated, and a neighborhood basis of \(\infty\)
+is
+\[
+  N_F=\{\infty\}\cup\{E\in\Fin: F\subseteq E\},\qquad F\in\Fin.
+\]
+This space is Hausdorff: finite subsets are isolated, and \(\infty\) is
+separated from \(E_0\in\Fin\) by \(N_{\{p\}}\) for any \(p\in\betaN\setminus
+E_0\).
+
+Now put
+\[
+  S=A\times \N
+\]
+with the product topology and define multiplication by
+\[
+  (a,m)(b,n)=(a,n).
+\]
+This is an associative rectangular-band multiplication, and it is jointly
+continuous because it is just the product of the first-coordinate projection
+from the left factor and the second-coordinate projection from the right
+factor. Thus \(S\) is a Hausdorff topological semigroup.
+
+Define \(f:S\to\C\) by
+\[
+  f(\infty,n)=0,\qquad f(E,n)=u_E(n)\quad(E\in\Fin,\ n\in\N),
+\]
+where \(n\) is identified with its principal ultrafilter in \(\betaN\). The
+function is bounded by \(1\). It is continuous at isolated points
+\((E,n)\). At \((\infty,n)\), the neighborhood \(N_{\{n\}}\times\{n\}\) is
+sent to \(0\), since \(E\supset\{n\}\) implies \(u_E(n)=0\). Hence
+\(f\in\Cb(S)\).
+
+For \(s=(a,m)\in S\), the left translate of \(f\) is
+\[
+  L_s f(b,n)=f((a,m)(b,n))=f(a,n).
+\]
+Thus \(L_s f\) depends only on \(a\) and \(n\). Let
+\[
+  j:\ell^\infty(\N)\longrightarrow \Cb(S),\qquad j(g)(a,n)=g(n).
+\]
+This is an isometric unital \(^\ast\)-homomorphism. If \(a=E\in\Fin\), then
+\[
+  L_{(E,m)}f=j(u_E|_{\N}),
+\]
+and \(L_{(\infty,m)}f=0\).
+
+We claim first that \(f\in \LMC(S)\). Let \(\chi\) be any multiplicative mean
+on \(\Cb(S)\). The restriction \(\chi\circ j\) is a character on
+\(\ell^\infty(\N)=C(\betaN)\), so there is a point \(p_\chi\in\betaN\) such
+that
+\[
+  \chi(j(g))=\widehat g(p_\chi)\qquad(g\in\ell^\infty(\N)).
+\]
+Consequently,
+\[
+  \chi(L_{(E,m)}f)=u_E(p_\chi),\qquad
+  \chi(L_{(\infty,m)}f)=0.
+\]
+This scalar map is continuous at every isolated \(E\in\Fin\). At \(\infty\),
+the neighborhood \(N_{\{p_\chi\}}\times \N\) is mapped to \(0\), because
+every \(E\supset\{p_\chi\}\) satisfies \(u_E(p_\chi)=0\). Hence
+\[
+  s\longmapsto \chi(L_s f)
+\]
+is continuous for every multiplicative mean \(\chi\), exactly saying
+\(f\in\LMC(S)\).
+
+It remains to show that \(f\notin\WLUC(S)\). On the closed subspace
+\(j(\ell^\infty(\N))\subset\Cb(S)\), define
+\[
+  M(j(g))=\int_{\betaN}\widehat g\,d\mu .
+\]
+This is a bounded linear functional of norm \(1\), so by Hahn-Banach it has an
+extension \(\Phi\in\Cb(S)^\ast\). Direct \(\Fin\) by inclusion and consider
+the net
+\[
+  s_E=(E,0)\longrightarrow s_\infty=(\infty,0)
+\]
+in \(S\). By (1),
+\[
+  \Phi(L_{s_E}f)=\int_{\betaN}u_E\,d\mu>1/2
+\]
+for every \(E\in\Fin\), while
+\[
+  \Phi(L_{s_\infty}f)=0.
+\]
+Therefore the orbit map \(s\mapsto L_s f\) is not weakly continuous at
+\(s_\infty\). Thus \(f\notin\WLUC(S)\).
+
+We have exhibited \(f\in \LMC(S)\setminus\WLUC(S)\), so the inclusion
+\(\WLUC(S)\subseteq\LMC(S)\) is proper for this Hausdorff topological
+semigroup \(S\).
+\end{proof}
+
+\section*{Verification Notes}
+
+No numerical or finite search is used. The proof verifies the required
+properties directly:
+\begin{itemize}
+\item \(S=A\times\N\) is a jointly continuous rectangular band.
+\item The constructed \(f\) is bounded and continuous because \(\N\) is
+discrete and the neighborhoods \(N_{\{n\}}\) force \(u_E(n)=0\) near
+\(\infty\).
+\item Every multiplicative mean on \(\Cb(S)\), restricted to functions
+depending only on the \(\N\)-coordinate, is evaluation at an ultrafilter
+\(p\in\betaN\); the neighborhoods \(N_{\{p\}}\) make the scalar orbit
+continuous.
+\item A Hahn-Banach extension of integration against \(\mu\) witnesses failure
+of weak continuity.
+\end{itemize}
+
+\section*{Novelty Check and Limitations}
+
+Local run indexes searched on 2026-07-19:
+\[
+\texttt{registry\_index.tsv},\quad
+\texttt{solutions/index.tsv},\quad
+\texttt{attempts/index.tsv},\quad
+\texttt{proof\_gaps/index.tsv}.
+\]
+Search terms included arXiv:1909.09723, \(\WLUC\), \(\LMC\), ``weakly left
+uniformly continuous'', ``left multiplicatively continuous'', and ``proper
+subspace''. No prior packet for this question was found.
+
+External searches on 2026-07-19 used exact phrases including
+``WLUC(S) LMC(S) proper subspace'', ``weakly left uniformly continuous left
+multiplicatively continuous'', and ``RMC(S) WRUC(S) proper''. These found the
+source arXiv paper, the 2026 publication record for the same work, and standard
+background on semigroup compactifications, but no later explicit answer to this
+proper-subspace question.
+
+The example is intentionally nonmetrizable and uses the Stone-Cech
+compactification of a discrete countable space. It answers the source question
+as stated for Hausdorff semitopological semigroups, and in fact for a
+topological semigroup. It does not decide whether equality may hold under
+additional hypotheses such as metrizability, local compactness of \(S\), or
+first countability.
+
+\section*{Human Review Recommendation}
+
+Accept as a likely valid counterexample to equality \(\WLUC(S)=\LMC(S)\).
+Reviewers should focus on two points: the topology on \(A\), especially the use
+of finite subsets of all of \(\betaN\), and the passage from multiplicative
+means on \(\Cb(S)\) to point evaluations on the \(\N\)-coordinate subalgebra.
+
+\begin{thebibliography}{9}
+
+\bibitem{Wisnicki}
+A. Wisnicki,
+\emph{Amenable semigroups and nonexpansive dynamical systems},
+arXiv:1909.09723v1, 2019.
+
+\bibitem{GillmanJerison}
+L. Gillman and M. Jerison,
+\emph{Rings of Continuous Functions},
+Van Nostrand, 1960.
+
+\bibitem{Rudin}
+W. Rudin,
+\emph{Functional Analysis},
+2nd ed., McGraw-Hill, 1991.
+
+\end{thebibliography}
+
+\end{document}

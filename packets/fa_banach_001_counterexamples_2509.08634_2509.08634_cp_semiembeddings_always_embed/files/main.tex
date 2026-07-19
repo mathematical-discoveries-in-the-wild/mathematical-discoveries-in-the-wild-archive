@@ -1,0 +1,211 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newcommand{\Cp}{C_p}
+\newcommand{\spn}{\operatorname{span}}
+
+\title{\(C_p\)-Semi-embeddings Always Embed}
+\author{Agent lane 05}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target}
+
+The source paper is Kakol--Kurka--Sliwa, \emph{Lotz-Peck-Porta and
+Rosenthal's theorems for spaces \(C_p(X)\)}, arXiv:2509.08634 \cite{KKS}.
+On page 4, Problem 10 asks:
+
+\begin{quote}
+Let \(X\) be an infinite compact space. Is it true that each semi-embedding
+\(T:\Cp(X)\to \Cp(Y)\) is an embedding for any compact space \(Y\) if and
+only if \(X\) is scattered?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here \(\Cp(X)\) denotes \(C(X)\) with the topology of pointwise convergence.
+Following the source paper, a continuous linear map \(T:E\to F\) between
+locally convex spaces is \emph{polar} if there is a base \(\mathcal U\) of
+closed zero-neighborhoods in \(E\) such that \(T(U)\) is closed in \(F\) for
+every \(U\in\mathcal U\).  A \emph{semi-embedding} is an injective polar map.
+
+\section*{Result}
+
+Problem 10 has a negative answer.  The proposed ``if and only if \(X\) is
+scattered'' characterization is false, because the semi-embedding property
+does not detect scatteredness at all: between \(C_p\)-spaces, every
+semi-embedding is automatically a topological embedding.
+
+\section*{Proof Intuition}
+
+A continuous linear map \(T:\Cp(X)\to\Cp(Y)\) is controlled point by point on
+the codomain.  For each \(y\in Y\), the functional
+\(\delta_y\circ T\) on \(\Cp(X)\) depends on only finitely many points of
+\(X\).  These finite-support functionals generate the topology inherited by
+the range \(T(\Cp(X))\).  If \(T\) were not an embedding, some point evaluation
+\(\delta_x\) on \(X\) would not be continuous for this inherited topology.
+The polar condition rules this out.  Indeed, take a polar neighborhood whose
+preimage controls \(f(x)\).  It contains a finite-coordinate kernel
+\(M=\{f:f|_F=0\}\), and its closedness in the inherited topology forces the
+closure of \(M\) to remain inside the strip \(|f(x)|\le 1\).  Since that
+closure is a linear subspace, \(\delta_x\) annihilates it.  The annihilator of
+that closure is exactly the part of the inherited dual supported on the finite
+set \(F\), so \(\delta_x\) must already belong to the inherited dual.
+
+\begin{theorem}
+Let \(X\) and \(Y\) be Tychonoff spaces.  Every semi-embedding
+\[
+  T:\Cp(X)\longrightarrow \Cp(Y)
+\]
+is a topological embedding.
+\end{theorem}
+
+\begin{proof}
+Let \(E=C(X)\) as a vector space, and let
+\(\tau_p=\sigma(E,\{\delta_x:x\in X\})\) be the topology of \(\Cp(X)\).
+For each \(y\in Y\), put
+\[
+  h_y=\delta_y\circ T\in E'.
+\]
+Since every continuous linear functional on \(\Cp(X)\) is a finite linear
+combination of point evaluations, each \(h_y\) belongs to
+\(\spn\{\delta_x:x\in X\}\).  Let
+\[
+  H=\spn\{h_y:y\in Y\}\subset E'
+\]
+and let \(\rho=\sigma(E,H)\).  The topology \(\rho\) is precisely the topology
+pulled back from the subspace \(T(E)\subset \Cp(Y)\).  Since \(T\) is
+injective, \(T:(E,\rho)\to T(E)\) is a linear homeomorphism onto its range.
+Also \(\rho\le \tau_p\), because \(T:\Cp(X)\to\Cp(Y)\) is continuous.
+
+We claim that \(\delta_x\in H\) for every \(x\in X\).  Fix \(x_0\in X\).
+Because \(T\) is polar, there is a base \(\mathcal U\) of closed
+\(\tau_p\)-neighborhoods such that \(T(U)\) is closed in \(\Cp(Y)\) for every
+\(U\in\mathcal U\).  Choose \(U\in\mathcal U\) with
+\[
+  U\subseteq \{f\in E: |f(x_0)|\le 1\}.
+\]
+The set \(T(U)\) is closed in \(\Cp(Y)\), hence closed in the range \(T(E)\).
+Transporting this statement through the homeomorphism
+\((E,\rho)\cong T(E)\), we get that \(U\) is \(\rho\)-closed.
+
+Since \(U\) is a \(\tau_p\)-neighborhood of zero, there are a finite set
+\(F\subset X\) and \(\varepsilon>0\) such that
+\[
+  V=\{f\in E: |f(t)|<\varepsilon\text{ for all }t\in F\}\subseteq U.
+\]
+Let
+\[
+  M=\{f\in E: f(t)=0\text{ for all }t\in F\}.
+\]
+Then \(M\subset V\subset U\).  Since \(U\) is \(\rho\)-closed, the
+\(\rho\)-closure \(\overline M^\rho\) is contained in \(U\).  The set
+\(\overline M^\rho\) is a linear subspace.  Therefore, if
+\(g\in\overline M^\rho\), then \(ag\in\overline M^\rho\subset U\) for every
+scalar \(a\).  As \(U\subseteq\{|f(x_0)|\le 1\}\), this implies
+\(|a g(x_0)|\le 1\) for every scalar \(a\), hence \(g(x_0)=0\).  Thus
+\[
+  \delta_{x_0}\in(\overline M^\rho)^\perp .
+\]
+
+It remains to identify this annihilator.  In the weak topology \(\rho\), the
+closure of \(M\) is
+\[
+  \overline M^\rho
+  =\bigcap_{\lambda\in H\cap M^\perp}\ker \lambda .
+\]
+The annihilator of this intersection is the pointwise closure of
+\(H\cap M^\perp\) in the algebraic dual.  But
+\[
+  M^\perp=\spn\{\delta_t:t\in F\}
+\]
+is finite-dimensional, so the subspace \(H\cap M^\perp\) is pointwise closed.
+Hence
+\[
+  (\overline M^\rho)^\perp=H\cap M^\perp
+\]
+as subspaces of the algebraic dual.  Consequently \(\delta_{x_0}\in H\).
+Since \(x_0\) was arbitrary, every point evaluation \(\delta_x\) is
+\(\rho\)-continuous.
+
+The topology \(\tau_p\) is generated by the point evaluations \(\delta_x\).
+Thus \(\tau_p\le \rho\).  We already had \(\rho\le\tau_p\), so
+\(\rho=\tau_p\).  Therefore the range topology inherited from \(\Cp(Y)\) is
+exactly the original topology of \(\Cp(X)\), and \(T\) is a topological
+embedding.
+\end{proof}
+
+\begin{corollary}
+The characterization proposed in Problem 10 of \cite{KKS} is false.
+\end{corollary}
+
+\begin{proof}
+Take \(X=[0,1]\).  This is an infinite compact non-scattered space.  By the
+theorem, for every compact space \(Y\), each semi-embedding
+\(T:\Cp([0,1])\to\Cp(Y)\) is an embedding.  Thus the property appearing in
+Problem 10 holds although \(X\) is not scattered.
+\end{proof}
+
+\section*{Verification Notes}
+
+No computational check is involved.  The proof uses only:
+\begin{itemize}
+\item the standard description of \(\Cp(X)'\) as finite linear combinations
+of point evaluations;
+\item the fact that \(T(U)\) closed in \(\Cp(Y)\) makes \(U\) closed for the
+range-induced topology \(\rho=\sigma(E,H)\);
+\item the closure/annihilator formula for a subspace in a weak topology.
+\end{itemize}
+
+The argument also explains why the dense-restriction map mentioned in the
+source paper is not a semi-embedding: the induced weaker topology does not
+make the missing point evaluations continuous, so it cannot have the required
+closed-neighborhood base.
+
+\section*{Novelty And Search Bounds}
+
+Before promotion, the run's registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:2509.08634, the title keywords, and the core phrases
+``semi-embedding'', ``\(C_p(X)\)'', ``\(C_p(Y)\)'', and ``polar map''.  No
+existing packet for this result was found.
+
+External web searches on 2026-06-15 used exact and near-exact phrases from
+Problem 10, including
+``Let X be an infinite compact space semi-embedding \(C_p(X)\) \(C_p(Y)\)'',
+``semi-embedding \(C_p(X)\) \(C_p(Y)\) compact scattered'', and
+``polar map \(C_p(X)\) quasibarrelled semi-embedding''.  No later paper
+explicitly answering Problem 10 was found.  The result should nevertheless be
+reviewed with medium novelty confidence, because the proof is short and may
+exist as folklore in \(C_p\)-theory.
+
+\section*{Human Review Recommendation}
+
+Review as a candidate full negative answer to Problem 10.  The key checks are:
+first, that the source definition of semi-embedding allows the cofinal closed
+neighborhood \(U\) used above; second, that the induced topology on \(T(E)\)
+is exactly \(\sigma(E,H)\); and third, that the double-annihilator step is
+valid for the weak closure of \(M\), using the finite-dimensionality of
+\(M^\perp\).
+
+\begin{thebibliography}{9}
+\bibitem{KKS}
+J. Kakol, O. Kurka, and W. Sliwa,
+\emph{Lotz-Peck-Porta and Rosenthal's theorems for spaces \(C_p(X)\)},
+arXiv:2509.08634, 2025.
+
+\bibitem{Ark}
+A. V. Arkhangel'skii,
+\emph{Topological Function Spaces},
+Kluwer Academic Publishers, 1992.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,198 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Nul}{\mathcal N}
+\newcommand{\Ran}{\mathcal R}
+
+\title{A Two-Dimensional Counterexample to the Unrestricted\\
+Stability-Radius Representation}
+\author{Run \texttt{fa\_banach\_001}, lane 11}
+\date{19 July 2026}
+
+\begin{document}
+\emergencystretch=3em
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid.  This packet gives a full negative
+answer to the explicit open problem in Badea--Mbekhta
+\cite{BadeaMbekhta}; it is subject to human novelty and proof review.}}
+\end{center}
+
+\section{Source problem}
+
+For bounded operators $T,S:X\to Y$, Badea and Mbekhta define the stability
+radius $d(T;S)$ using the punctured disk around zero.  For Fredholm $T$ it
+is the supremum of the radii $r>0$ on which the nullity and deficiency of
+$T-\lambda S$ are constant for $0<|\lambda|<r$.
+
+Their Theorem 5.1 assumes that $\dim\Nul(T-\lambda S)$ is also constant at
+$\lambda=0$, equivalently that the stability number $k(T;S)$ is zero, and
+proves
+\begin{equation}\label{eq:source-formula}
+\begin{split}
+d(T;S)
+&=\sup\left\{\frac1{r(SL)}:TLT=T\right\}\\
+&=\sup\left\{\frac1{r(SL)}:TLT=T,\ LTL=L\right\}.
+\end{split}
+\end{equation}
+Here $r(\cdot)$ denotes spectral radius.  In the introduction, page 2, and
+again in Remark 5.4, page 13, the paper asks whether
+\eqref{eq:source-formula} remains valid without the local-nullity constancy
+hypothesis.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{Source page 2: the representation and the question about dropping
+the constancy hypothesis.}
+\end{figure}
+
+\clearpage
+\section{Idea of the proof}
+
+The omitted hypothesis permits the pencil to gain rank immediately away
+from zero.  A diagonal $2\times2$ pencil makes this jump transparent and
+places its next singular point at distance one, so its stability radius is
+finite.  Meanwhile, the singular operator $T$ has a one-parameter family
+of generalized inverses whose nonzero eigenvalue tends to zero.  Their
+spectral radii therefore force both right-hand sides of
+\eqref{eq:source-formula} to be infinite.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Let $X=Y=\C^2$, equipped with any norm, and set
+\[
+T=\begin{pmatrix}1&0\\0&0\end{pmatrix},
+\qquad S=I_2.
+\]
+Then $T$ is Fredholm, $k(T;S)=1$, and $d(T;S)=1$.  Nevertheless,
+\[
+\sup_{TLT=T}\frac1{r(SL)}
+=
+\sup_{\substack{TLT=T\\LTL=L}}\frac1{r(SL)}
+=+\infty.
+\]
+Consequently, the constancy hypothesis in the source theorem cannot be
+removed.
+\end{theorem}
+
+\begin{proof}
+Every operator on the finite-dimensional space $\C^2$ is bounded, and $T$
+is Fredholm.  The pencil is
+\[
+T-\lambda S=
+\begin{pmatrix}1-\lambda&0\\0&-\lambda\end{pmatrix},
+\qquad
+\det(T-\lambda S)=\lambda(\lambda-1).
+\]
+Thus $T-\lambda S$ is invertible for every
+$\lambda\notin\{0,1\}$.  At $\lambda=1$ it has nullity and deficiency
+one.  Hence, on every punctured disk $0<|\lambda|<r$ with $r\leq1$,
+the nullity and deficiency are both zero, whereas every disk with $r>1$
+contains the exceptional point $\lambda=1$.  By the source definition,
+\[
+d(T;S)=1.
+\]
+
+The omitted assumption genuinely fails.  Indeed,
+$\Nul(T)=\operatorname{span}\{e_2\}$, while
+$\dim\Nul(T-\lambda I_2)=0$ for all sufficiently small nonzero
+$\lambda$.  Directly from the source definition of $k(T;S)$, the decreasing
+spaces satisfy
+\[
+R_1=S^{-1}TR_0=\Ran(T)=\operatorname{span}\{e_1\},
+\qquad R_m=\operatorname{span}\{e_1\}\quad(m\geq1).
+\]
+Therefore $X_\infty=\operatorname{span}\{e_1\}$ and
+\[
+k(T;S)=\dim\frac{\Nul(T)}{\Nul(T)\cap X_\infty}=1.
+\]
+
+Now fix $\varepsilon>0$ and put
+\[
+L_\varepsilon=
+\begin{pmatrix}
+1&1\\
+-1+\varepsilon&-1+\varepsilon
+\end{pmatrix}.
+\]
+Straight multiplication gives
+\[
+TL_\varepsilon T=T,
+\qquad
+L_\varepsilon T L_\varepsilon=L_\varepsilon.
+\]
+Thus $L_\varepsilon$ is admissible in both suprema in
+\eqref{eq:source-formula}.  A second multiplication gives
+\[
+L_\varepsilon^2=\varepsilon L_\varepsilon.
+\]
+Equivalently, $\det L_\varepsilon=0$ and
+$\operatorname{tr}L_\varepsilon=\varepsilon$, so its eigenvalues are
+$0$ and $\varepsilon$.  Since $S=I_2$,
+\[
+r(SL_\varepsilon)=r(L_\varepsilon)=\varepsilon.
+\]
+Each right-hand supremum is therefore at least $1/\varepsilon$ for every
+$\varepsilon>0$, hence is $+\infty$.  This contradicts the value
+$d(T;S)=1$ and proves the claim.
+\end{proof}
+
+\section{Verification and robustness}
+
+The script \texttt{code/verify\_matrices.py} checks all displayed matrix
+identities over the rational numbers for several positive values of
+$\varepsilon$.  It also checks
+$\det(T-\lambda I_2)=\lambda(\lambda-1)$.
+
+At $\varepsilon=0$ one obtains the nilpotent generalized inverse
+\[
+L_0=\begin{pmatrix}1&1\\-1&-1\end{pmatrix},\qquad L_0^2=0.
+\]
+The positive-$\varepsilon$ family is included to avoid any dependence on a
+convention for $1/0$: all terms $1/r(SL_\varepsilon)$ are finite, but they
+are unbounded.
+
+The example works with any norm on $\C^2$, so it is simultaneously a
+Banach-space and Hilbert-space counterexample.
+
+\section{Scope and novelty check}
+
+This result only disproves the proposed removal of the condition
+$k(T;S)=0$.  It does not affect Theorem 5.1 under its stated hypotheses and
+does not exclude a modified formula with extra restrictions on $L$.
+
+Before promotion, the run's registry, solution, attempt, and proof-gap
+indexes and its parsed arXiv source corpus were searched for
+arXiv:math/0011229, the exact paper title, the displayed $r(SL)$ formula,
+and the constancy condition.  Bounded web searches used the exact title,
+DOI 10.1006/jmaa.2000.7445, open-problem wording, and formula fragments.
+They returned the source and later work on generalized resolvents citing it,
+but no claimed resolution or matching counterexample.  The search was not an
+exhaustive citation review, so the novelty assessment is provisional.
+
+\section{Human-review recommendation}
+
+Verify the source's extended-real convention and punctured-disk definition,
+then check the four $2\times2$ identities in Theorem~\ref{thm:counterexample}.
+The $\varepsilon>0$ family makes the conclusion independent of the former
+convention.  If those checks pass, this packet gives a full negative answer
+to the source open problem.
+
+\begin{thebibliography}{9}
+\bibitem{BadeaMbekhta}
+C. Badea and M. Mbekhta,
+\emph{The stability radius of Fredholm linear pencils},
+J. Math. Anal. Appl. 260 (2001), 159--172;
+arXiv:math/0011229v2.
+\end{thebibliography}
+
+\end{document}

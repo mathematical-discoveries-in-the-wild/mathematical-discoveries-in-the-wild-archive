@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\one}{\mathbf{1}}
+
+\title{A \(0<q\le 5\) partial solution to the non-negative Hunter moment conjecture}
+\author{Run \texttt{fa\_banach\_001}, lane 5}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Brazitikos and Pandis conjecture that, for non-negative coefficients
+\(\sum_i a_i^2=1\), the real moment
+\(\E(a_1X_1+\cdots+a_nX_n)^q\) is bounded below by the least equal-support
+moment \(\min_{1\le m\le n}\rho(m,q)\).  This packet proves the conjecture
+for all dimensions in the range \(0<q\le 5\).  The new step beyond the known
+\(q\le 4\) Schur-concavity range is to combine the source paper's integer
+endpoint \(k=5\) theorem with Borell log-concavity of normalized moments.
+\end{abstract}
+
+\section{Source question}
+
+The source is:
+
+\begin{quote}
+Silouanos Brazitikos and Christos Pandis, \emph{Sharp inequalities for symmetric
+polynomials, Hunter's conjecture, and moments of exponential random variables},
+arXiv:2512.12254.
+\end{quote}
+
+The relevant open problem is Conjecture 4.8 in the source PDF:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For \(m\in\mathbb{N}\) and \(q>0\), write
+\[
+ \rho(m,q)=\E\left(\frac{X_1+\cdots+X_m}{\sqrt m}\right)^q
+ = \frac{\Gamma(m+q)}{\Gamma(m)m^{q/2}},
+\]
+where the \(X_i\) are i.i.d. standard exponential random variables.
+
+\section{Proof intuition}
+
+The source paper proves the conjectured lower bound at every non-negative
+integer exponent.  At the integer \(k=5\), the least equal-support moment is
+still the one-coordinate value \(\rho(1,5)=\Gamma(6)\).  On the other hand, any
+positive linear combination of independent exponentials has a log-concave
+density, and Borell's lemma says that
+\[
+q\mapsto \frac{\E Y^q}{\Gamma(q+1)}
+\]
+is log-concave.  Interpolating between \(q=0\), where the normalized moment is
+\(1\), and \(q=5\), where the source's integer theorem gives a value at least
+\(1\), forces the normalized moment to stay at least \(1\) throughout
+\([0,5]\).  A separate scalar lemma checks that, throughout the same interval,
+\(\rho(1,q)\) is exactly the minimum among the \(\rho(m,q)\).
+
+\section{Scalar minimum through \(q=5\)}
+
+\begin{lemma}\label{lem:rho-min}
+For every integer \(m\ge 1\) and every \(0\le q\le 5\),
+\[
+\rho(m,q)\ge \rho(1,q)=\Gamma(q+1).
+\]
+Consequently, for every \(n\ge 1\),
+\[
+\min_{1\le m\le n}\rho(m,q)=\rho(1,q),\qquad 0\le q\le 5.
+\]
+\end{lemma}
+
+\begin{proof}
+For \(m=1\) there is equality.  Fix \(m\ge 2\) and set
+\[
+R_m(q)=\frac{\rho(m,q)}{\Gamma(q+1)}
+ =\frac{\Gamma(m+q)}{\Gamma(m)\Gamma(q+1)m^{q/2}}.
+\]
+The function \(\log R_m(q)\) is concave on \([0,\infty)\), because
+\[
+\frac{d^2}{dq^2}\log R_m(q)=\psi_1(m+q)-\psi_1(q+1)\le 0,
+\]
+where \(\psi_1\) is the trigamma function, which is decreasing on
+\((0,\infty)\).  Since \(R_m(0)=1\), it remains enough to show \(R_m(5)\ge 1\).
+
+At \(q=5\),
+\[
+R_m(5)=\frac{(m+1)(m+2)(m+3)(m+4)}{120m^{3/2}}.
+\]
+For real \(m\ge 2\), let the right-hand side be \(r(m)\).  Then
+\[
+\frac{d}{dm}\log r(m)
+=\sum_{j=1}^4\frac{1}{m+j}-\frac{3}{2m}
+=\frac{5m^4+30m^3+35m^2-50m-72}
+{2m(m+1)(m+2)(m+3)(m+4)} >0
+\]
+for \(m\ge 2\).  Thus \(r(m)\ge r(2)=3/(2\sqrt2)>1\) for all \(m\ge 2\).
+By concavity of \(\log R_m\),
+\[
+\log R_m(q)\ge \left(1-\frac q5\right)\log R_m(0)
+ + \frac q5\log R_m(5)\ge 0
+\]
+for \(0\le q\le 5\).  This proves the lemma.
+\end{proof}
+
+\section{Partial solution}
+
+\begin{theorem}\label{thm:q-le-five}
+Let \(0<q\le 5\), let \(a_1,\ldots,a_n\ge 0\) satisfy
+\(\sum_{i=1}^n a_i^2=1\), and let \(X_1,\ldots,X_n\) be i.i.d. standard
+exponential random variables.  Then
+\[
+\E(a_1X_1+\cdots+a_nX_n)^q
+\ge \min_{1\le m\le n}\rho(m,q).
+\]
+In fact, the stronger bound
+\[
+\E(a_1X_1+\cdots+a_nX_n)^q\ge \Gamma(q+1)
+\]
+holds throughout this range.
+\end{theorem}
+
+\begin{proof}
+Discard zero coefficients and put
+\[
+Y=a_1X_1+\cdots+a_nX_n.
+\]
+For \(a_i>0\), the random variable \(a_iX_i\) has log-concave density
+\[
+t\mapsto a_i^{-1}e^{-t/a_i}\one_{[0,\infty)}(t).
+\]
+By the Prekopa-Leindler theorem, convolution preserves log-concavity, so \(Y\)
+has a log-concave density on \((0,\infty)\).
+
+The source paper's Lemma 4.13, a Borell log-concavity lemma, therefore applies:
+\[
+G_Y(s):=\frac{\E Y^s}{\Gamma(s+1)}
+\]
+is log-concave on \((-1,\infty)\).  We have \(G_Y(0)=1\).
+
+By Theorem 4.5 of the source paper, applied at the integer exponent \(k=5\),
+\[
+\E Y^5\ge \min_{1\le m\le n}\rho(m,5).
+\]
+Lemma~\ref{lem:rho-min} gives \(\min_m\rho(m,5)=\rho(1,5)=\Gamma(6)\), hence
+\[
+G_Y(5)=\frac{\E Y^5}{\Gamma(6)}\ge 1.
+\]
+For \(0\le q\le 5\), log-concavity now yields
+\[
+G_Y(q)\ge G_Y(0)^{1-q/5}G_Y(5)^{q/5}\ge 1.
+\]
+Thus \(\E Y^q\ge \Gamma(q+1)\).  A final application of
+Lemma~\ref{lem:rho-min} identifies \(\Gamma(q+1)=\rho(1,q)\) as
+\(\min_{1\le m\le n}\rho(m,q)\), proving the conjectured inequality in the
+claimed range.
+\end{proof}
+
+\section{Verification and novelty notes}
+
+The auxiliary script \texttt{code/check\_q\_le\_5\_endpoint.py} numerically
+checks the scalar endpoint ratios \(R_m(5)\), verifies the finite-grid
+minimum \(\rho(m,q)/\Gamma(q+1)\ge 1\) for \(0\le q\le 5\), and records that
+the naive integer-endpoint interpolation strategy fails just beyond \(q=5\).
+These computations are not used as proof.
+
+Local index search found no previous packet for arXiv:2512.12254 or this
+specific \(q\le 5\) consequence.  A bounded web/arXiv search on 2026-07-18
+found the later adjacent preprint arXiv:2602.03058, \emph{Moments of sums of
+exponentials, beyond CHS}.  Its Theorem 2 proves Schur-concavity of the
+non-negative moment map for \(0\le p\le 4\), which gives the source conjecture
+in the already-known range \(q\le 4\).  The present packet extends the
+all-dimensional verified range to \(q\le 5\) by a different endpoint argument.
+
+\section{Limitations}
+
+This is not a full solution of Conjecture 4.8.  The interval \(q>5\) remains
+open here.  The same Borell interpolation method cannot simply continue from
+the integer endpoints \(5\) and \(6\): numerically, near \(q=5.35\), the chord
+between the known integer endpoint lower bounds is below the conjectured
+minimum of the \(\rho(m,q)\) curve.
+
+\section{Human review recommendation}
+
+This packet should be reviewed as a likely valid partial solution.  The most
+important checks are the invocation of Theorem 4.5 at \(k=5\), the
+log-concavity of the convolution density for positive coefficients, and the
+scalar Lemma~\ref{lem:rho-min}.
+
+\begin{thebibliography}{9}
+
+\bibitem{BP}
+S. Brazitikos and C. Pandis,
+\emph{Sharp inequalities for symmetric polynomials, Hunter's conjecture, and
+moments of exponential random variables},
+arXiv:2512.12254, 2025.
+
+\bibitem{BTT}
+S. Brazitikos, C. Tang, and T. Tkocz,
+\emph{Moments of sums of exponentials, beyond CHS},
+arXiv:2602.03058, 2026.
+
+\bibitem{Prekopa}
+A. Prekopa,
+Logarithmic concave measures with application to stochastic programming,
+\emph{Acta Scientiarum Mathematicarum} 32 (1971), 301--316.
+
+\end{thebibliography}
+
+\end{document}

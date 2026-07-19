@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\rhoBar}{\overline{\rho}}
+\newcommand{\deltaBar}{\overline{\delta}}
+\newcommand{\wstar}{w^*}
+
+\title{A Sharpened Asplund Averaging Exponent for Simultaneous AUS/AUC Renormings}
+\author{Automated Math Discovery Smoke Test}
+\date{June 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Remark 4.4 from:
+
+\begin{quote}
+Stephen J. Dilworth, Denka Kutzarova, Gilles Lancien, Lovasoa N.
+Randrianarivony, \emph{Equivalent norms with the property $(\beta)$ of
+Rolewicz}, arXiv:1506.07978.
+\end{quote}
+
+The source paper proves that if a reflexive Banach space admits separately an
+equivalent AUS norm of power type $p$ and an equivalent AUC norm of power type
+$q$, then it admits a single equivalent norm which is simultaneously AUS of
+power type $p$ and AUC of power type $4q$. Immediately after this lemma, the
+authors ask whether both original power types can be preserved.
+
+The source location is Remark 4.4 on page 10.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+Lemma 4.3 in the source paper uses dual norms
+\[
+  \norm{x^*}_{n,*}=N^*(x^*)+n^{-1}M^*(x^*)
+\]
+and averages their predual norms with weights $n^{-3}$. In the AUC part of
+the proof, the paper records a strict $t^q$ gain at one index
+$n_0\simeq t^{-q}$, producing the displayed loss $t^{4q}$.
+
+The same argument actually gives a strict $t^q$ gain for every tail index
+$n\ge n_0$, not just for the single index $n_0$. If the averaging weights are
+changed from $n^{-3}$ to $n^{-\theta}$ with $\theta>2$, the AUS estimate is
+unchanged because $\sum n^{1-\theta}<\infty$. The AUC estimate gains the whole
+tail
+\[
+  t^q\sum_{n\ge n_0} n^{-\theta}
+  \simeq t^q n_0^{1-\theta}
+  \simeq t^{q\theta}.
+\]
+Choosing $2<\theta<r/q$ gives AUC power type $r$ for every $r>2q$.
+
+This still does not answer the exact preservation question: the method cannot
+reach $q$, and even this weighted version stops strictly above $2q$.
+
+\section*{Candidate Partial Result}
+
+\begin{theorem}
+Let $X$ be a reflexive Banach space. Suppose that $X$ admits an equivalent
+AUS norm of power type $p$ and an equivalent AUC norm of power type $q$, where
+$1<p,q<\infty$. Then, for every $r>2q$, $X$ admits an equivalent norm which is
+simultaneously AUS of power type $p$ and AUC of power type $r$.
+\end{theorem}
+
+\begin{proof}
+We modify the proof of Lemma 4.3 in Dilworth--Kutzarova--Lancien--
+Randrianarivony. Let $N$ be an equivalent norm with
+\[
+  \deltaBar_N(t)\ge a t^q\qquad (0<t\le 1)
+\]
+and let $M$ be an equivalent norm with
+\[
+  \rhoBar_M(t)\le b t^p\qquad (0<t\le 1).
+\]
+After replacing constants, assume
+\[
+  N(x)\le M(x)\le C N(x)\qquad (x\in X).
+\]
+
+For $n\ge 1$ define an equivalent dual norm on $X^*$ by
+\[
+  \norm{x^*}_{n,*}=N^*(x^*)+n^{-1}M^*(x^*),
+\]
+and let $\norm{\cdot}_n$ denote its predual norm on $X$. As in Lemma 4.3 of
+the source paper, there is a constant $K$ such that
+\[
+  \rhoBar_{\norm{\cdot}_n}(t)\le K n t^p
+  \qquad (0<t\le 1,\ n\ge 1).                 \tag{1}
+\]
+Also
+\[
+  (1+n^{-1})^{-1}N(x)\le \norm{x}_n\le N(x)
+  \qquad (x\in X).                            \tag{2}
+\]
+
+Fix $r>2q$, and choose $\theta$ with
+\[
+  2<\theta<r/q.
+\]
+Define
+\[
+  |x|=\sum_{n=1}^{\infty} n^{-\theta}\norm{x}_n .
+\]
+By (2), this is an equivalent norm on $X$.
+
+\subsection*{AUS estimate}
+
+Let $|x|=1$ and $0<t\le 1$. Since $|\cdot|$, $N$, and the norms
+$\norm{\cdot}_n$ are uniformly equivalent, there are constants $A,B>0$ such
+that
+\[
+  A|z|\le \norm{z}_n\le B|z|,
+  \qquad
+  A|z|\le N(z)\le B|z|
+\]
+for all $z\in X$ and $n\ge 1$.
+
+Choose $n_1$ so large that
+\[
+  2B\sum_{n>n_1} n^{-\theta}\le t^p .
+\]
+For each $1\le n\le n_1$, (1) gives a finite-codimensional subspace on which
+\[
+  \norm{x+y}_n\le \norm{x}_n+K' n t^p
+\]
+whenever $|y|\le t$, where $K'$ is independent of $n,x,t$. Intersecting these
+finitely many subspaces, and then summing, yields
+\[
+\begin{aligned}
+  |x+y|
+  &\le \sum_{n\le n_1}n^{-\theta}\norm{x+y}_n
+       +\sum_{n>n_1}n^{-\theta}\norm{x+y}_n\\
+  &\le \sum_{n\le n_1}n^{-\theta}\norm{x}_n
+       +K't^p\sum_{n=1}^{\infty}n^{1-\theta}
+       +\sum_{n>n_1}n^{-\theta}\norm{x}_n+t^p\\
+  &\le 1+C_1t^p .
+\end{aligned}
+\]
+Here $\sum n^{1-\theta}<\infty$ because $\theta>2$. Thus $|\cdot|$ is AUS of
+power type $p$.
+
+\subsection*{AUC estimate}
+
+Let $|x|=1$ and $0<t\le 1$. The AUC assumption for $N$ gives a constant
+$\eta>0$ and a finite-codimensional subspace $E_0$ such that, for all
+$y\in E_0$ with $|y|\ge t$ and $|y|\le 1$,
+\[
+  N(x+y)\ge N(x)(1+\eta t^q).                 \tag{3}
+\]
+Choose a large constant $\alpha$ and an integer $n_0$ satisfying
+\[
+  n_0-1\le \alpha t^{-q}\le n_0.
+\]
+Taking $\alpha$ large enough, (2) and (3) imply that, for every $n\ge n_0$,
+\[
+\begin{aligned}
+  \norm{x+y}_n
+  &\ge (1+n^{-1})^{-1}N(x+y)\\
+  &\ge (1-n^{-1})N(x)(1+\eta t^q)\\
+  &\ge \norm{x}_n+d\,t^q
+\end{aligned}                                      \tag{4}
+\]
+with a constant $d>0$ independent of $x,y,t,n$. In the last step we used
+$\norm{x}_n\le N(x)$ and the lower bound $N(x)\ge A|x|=A$.
+
+For the finitely many indices $n<n_0$, choose norming functionals for $x$ in
+the norms $\norm{\cdot}_n$ and intersect their kernels with $E_0$. The resulting
+finite-codimensional subspace $E$ still satisfies (3), and for $y\in E$,
+\[
+  \norm{x+y}_n\ge \norm{x}_n \qquad (n<n_0).       \tag{5}
+\]
+Combining (4) and (5), for all $y\in E$ with $|y|\ge t$ and $|y|\le 1$,
+\[
+\begin{aligned}
+  |x+y|
+  &\ge |x| + d t^q \sum_{n\ge n_0}n^{-\theta}\\
+  &\ge 1+d_1 t^q n_0^{1-\theta}\\
+  &\ge 1+d_2 t^{q\theta}.
+\end{aligned}
+\]
+Thus $|\cdot|$ is AUC of power type $q\theta$.
+
+Since $q\theta<r$ and $0<t\le 1$, the estimate
+$\deltaBar_{|\cdot|}(t)\ge d_2t^{q\theta}$ implies
+$\deltaBar_{|\cdot|}(t)\ge d_2t^r$ after decreasing constants if necessary.
+Therefore $|\cdot|$ is AUC of power type $r$, while the first part showed it
+is AUS of power type $p$.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is not computational. It is a direct modification of the source
+paper's Asplund averaging construction. The only new point is the tail
+summation in the AUC estimate. The proof deliberately keeps the same auxiliary
+dual norms $N^*+n^{-1}M^*$ used in the paper, so that the AUS estimate
+quoted as (1) is exactly the estimate already used in Lemma 4.3.
+
+The result is a partial answer only. It improves the source-paper exponent
+$4q$ to every exponent strictly larger than $2q$, but the question from Remark
+4.4 asks for the exact exponent $q$.
+
+\section*{Novelty and Search Bounds}
+
+Before promoting this packet, the run indexes
+\[
+\texttt{registry\_index.tsv},\quad
+\texttt{solutions/index.tsv},\quad
+\texttt{attempts/index.tsv},\quad
+\texttt{proof\_gaps/index.tsv}
+\]
+were searched for arXiv:1506.07978, Rolewicz, AUS/AUC power types, and the
+phrase ``preserve both power types.'' The local parsed arXiv source corpus was
+also searched for the exact phrase and close AUS/AUC power-type formulations.
+No duplicate packet or local later answer was found.
+
+A bounded web search for close phrases such as ``preserve both power types,''
+``both power types together,'' and ``simultaneously AUS AUC power type'' found
+no exact later resolution in that search window. This is not a full literature
+survey, so the novelty confidence should be treated as bounded rather than
+definitive.
+
+\section*{Human Review Recommendation}
+
+Recommended verdict after review, if the estimates check out: accept as a
+partial result improving Lemma 4.3's quantitative exponent loss. The remaining
+open question is whether the AUC exponent can be reduced from every $r>2q$ all
+the way to $q$.
+
+\begin{thebibliography}{9}
+\bibitem{DKLR2015}
+S. J. Dilworth, D. Kutzarova, G. Lancien, and L. N. Randrianarivony,
+\emph{Equivalent norms with the property $(\beta)$ of Rolewicz},
+arXiv:1506.07978, 2015.
+\end{thebibliography}
+
+\end{document}

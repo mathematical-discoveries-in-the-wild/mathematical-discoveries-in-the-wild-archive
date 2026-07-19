@@ -1,0 +1,502 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\osc}{\operatorname{osc}}
+\newcommand{\tp}{\operatorname{tp}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\Sph}{\mathbb{S}}
+
+\title{A Formula-Aware Krivine--Maurey Proof of\\Stability Implies Oscillation Stability}
+\author{fa\_banach\_001, agent\_lane\_19}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+James Hanson asks in \emph{Indiscernible Subspaces and Minimal Wide Types},
+arXiv:2004.03062, Question 4.3:
+\begin{quote}
+Does (model theoretic) stability imply oscillation stability? That is to say,
+if \(T\) is a stable Banach theory, is every unary formula oscillation stable
+on models of \(T\)?
+\end{quote}
+
+This packet gives a claimed positive answer.
+
+\section*{Proof Intuition}
+
+The Dvoretzky--Milman route naturally produces finite-dimensional Hilbert
+pieces on which a formula is nearly constant, but those pieces need not be
+nested. That is why a direct compactness pullback from an ultrapower is too
+weak: it would falsely prove oscillation stability for arbitrary uniformly
+continuous Hilbert-sphere colorings.
+
+The proof below uses a different stable-Banach mechanism. Krivine and Maurey,
+in Raynaud's type-space formulation, prove that a stable Banach space contains
+an \(\ell_p\)-type: in a suitable compact type semigroup, one has
+\[
+  c_1\tau * \cdots * c_n\tau = \|(c_1,\ldots,c_n)\|_p\,\tau .
+\]
+The key observation is that this argument can be run in an enriched type
+space which records not only norm-type coordinates, but also all stable
+formula coordinates relevant to a fixed unary instance \(\varphi(x,a)\). The
+Raynaud/Krivine--Maurey proof uses only compactness, stability of coordinates,
+dilation, convolution, minimal closed conic classes, and continuity points.
+Those hypotheses remain true after adding stable formula coordinates.
+
+Therefore the displayed equality is equality of enriched types. In particular,
+if \(\|(c_i)\|_p=1\), then the coordinate recording the normalized pullback
+\(\varphi(\sigma_c(\bar x),a)\) has the same value as the one-vector
+coordinate. A block extraction converts the type into an actual basic sequence
+inside the original subspace. The closed span of that block sequence is the
+required oscillation-stable subspace.
+
+\section*{Definitions}
+
+Let \(M\models T\) be a Banach structure and let \(Y\subseteq M\) be an
+infinite-dimensional closed linear subspace. A bounded uniformly continuous
+function \(f\) on the unit sphere \(S_Y\) is oscillation stable on \(Y\) if for
+every \(\eps>0\) there is an infinite-dimensional closed subspace
+\(Z\subseteq Y\) such that
+\[
+  \sup\{|f(u)-f(v)|:u,v\in S_Z\}<\eps .
+\]
+A unary formula \(\varphi(x,a)\) is oscillation stable if this holds for
+\(f(x)=\varphi(x,a)\) on every model and every infinite-dimensional subspace.
+
+We use Hanson's Banach-language convention that the language contains
+normalized linear-combination symbols \(\sigma_c\). Thus, for each scalar
+tuple \(c=(c_1,\ldots,c_n)\), the pullback
+\[
+  (x_1,\ldots,x_n)\mapsto
+  \varphi(\sigma_c(x_1,\ldots,x_n),a)
+\]
+is again a formula. Since \(T\) is stable, all such pullbacks are stable.
+
+\section*{Referee Check and Repair}
+
+The first version of this packet had two compressed steps. The
+formula-aware Raynaud transfer was stated rather than unpacked, and the final
+passage from type limits to an actual subspace was described as a subsequence
+diagonalization. The latter wording is not strong enough: a property which
+holds only for sufficiently far finite blocks does not automatically control
+vectors involving the first few vectors of the closed span.
+
+The proof below repairs this by using blocks, not a bare subsequence. Each new
+block is chosen so that it realizes the same enriched type relative to the
+finite net of the span already constructed. Thus every finite-dimensional
+initial span is made almost monochromatic before passing to the closed span.
+
+\section*{The Enriched Type Semigroup}
+
+Fix a separable infinite-dimensional closed subspace \(X\subseteq Y\), a
+countable rational vector subspace \(D\subseteq X\) which is dense in \(X\),
+and a parameter \(a\). Let \(\Delta\) be a countable family of one-variable
+formulas over \(D\cup\{a\}\) containing:
+\begin{itemize}
+\item all coordinates \(x\mapsto \|\lambda x+d\|\), with
+  \(\lambda\in\Q\) and \(d\in D\);
+\item the unit-ball coordinate \(x\mapsto \varphi(x,a)\), used only on
+  normalized variables;
+\item every formula obtained from the preceding coordinates by rational
+  scalar dilation, rational finite sums, the normalized combination symbols
+  \(\sigma_c\), and continuous connectives.
+\end{itemize}
+For formula coordinates whose output is evaluated on the unit ball, the
+closure is taken through the normalized symbols \(\sigma_c\). The raw
+convolution coordinates used to define the type semigroup are the norm-type
+coordinates on sufficiently large Banach balls; the \(\varphi\)-coordinates
+are read from the associated normalized pullbacks. We also close \(\Delta\)
+under the two-variable pullbacks \(\theta(u+v)\) which occur when sums of
+norm-type coordinates are formed. Since \(T\) is stable, every formula in this
+fragment is stable.
+
+For \(x\in D\), write
+\[
+  \bar x=(\theta(x))_{\theta\in\Delta}.
+\]
+Let \(\T\) be the pointwise closure of \(\{\bar x:x\in D\}\). We call its
+elements \(\Delta\)-types. The norm coordinate
+\(\nu(\tau)=\tau(\|x\|)\) defines bounded parts
+\(\T_M=\{\tau:\nu(\tau)\le M\}\), and each \(\T_M\) is compact: the norm
+coordinates put all representatives in a bounded ball of \(X\), while all
+formula coordinates are uniformly bounded on bounded sorts.
+
+\begin{lemma}[enriched convolution]\label{lem:enriched-conv}
+For \(\tau,\rho\in\T\) and \(\alpha\in\Q\), choose defining sequences
+\((x_i)\), \((z_j)\) in \(D\). The formulas
+\[
+  \alpha\tau=\lim_i\overline{\alpha x_i},
+  \qquad
+  \tau*\rho=\lim_i\lim_j\overline{x_i+z_j}
+\]
+define elements of \(\T\), independent of the defining sequences. Convolution
+is commutative and associative, dilation distributes over convolution, and
+for every rational tuple \(c=(c_1,\ldots,c_n)\) the map
+\[
+  \widehat T_c(\tau)=c_1\tau*\cdots*c_n\tau
+\]
+is Baire class one and is continuous at a comeager set of points in every
+closed admissible conic class.
+\end{lemma}
+
+\begin{proof}
+Fix a coordinate \(\theta\in\Delta\). For two defining sequences
+\((x_i)\) and \((x'_i)\) of the same type and \((z_j)\), \((z'_j)\) of a
+second type, the values of \(\theta(x_i+z_j)\) and
+\(\theta(x'_i+z'_j)\) are governed by the stable formula \(\theta(u+v)\).
+Grothendieck's double-limit criterion gives equality of the two possible
+iterated limits, and also permits the order of the two limits to be
+interchanged. This proves well-definedness and commutativity coordinate by
+coordinate. Associativity and distributivity follow by applying the same
+argument to the stable formula \(\theta(u+v+w)\) and to rational scalar
+multiples.
+
+For fixed \(\rho\), if \(\tau_m\to\tau\), choose realizations \(x_m\in D\)
+with \(\bar x_m\) close to \(\tau_m\) and \(\bar x_m*\rho\) close to
+\(\tau_m*\rho\). Then \((x_m)\) defines \(\tau\), so
+\(\tau_m*\rho\to\tau*\rho\). Thus convolution is separately continuous.
+On the compact annuli \(\T_{M+1}\setminus\operatorname{int}\T_M\), separately
+continuous real coordinates are Baire class one; since the fragment is
+countable, convolution and all countably many maps \(\widehat T_c\) have a
+common comeager set of continuity points in each closed conic class.
+\end{proof}
+
+\section*{The Formula-Aware Raynaud Type}
+
+A type is \emph{symmetric} if \((-1)\tau=\tau\). A nonzero closed set
+\(\C\) of symmetric types is a \emph{conic class} if it is closed under
+rational dilations and convolution. It is \emph{admissible} if it contains a
+type with positive norm coordinate.
+
+\begin{proposition}[formula-aware Raynaud type]\label{prop:raynaud}
+There are \(1\le p<\infty\) and a symmetric admissible
+\(\Delta\)-type \(\tau\), realized by blocks from \(X\), such that after
+normalizing \(\nu(\tau)=1\),
+\[
+   \widehat T_c(\tau)=\|c\|_p\,\tau
+   \tag{2}
+\]
+for every rational finite scalar tuple \(c\).
+\end{proposition}
+
+\begin{proof}
+We give the exact Raynaud--Krivine--Maurey argument, noting at each point why
+the added formula coordinates do not change it.
+
+First, symmetric admissible types exist. Take a bounded separated sequence
+\((u_i)\) in \(D\). Any cluster type \(q\) gives
+\(q*(-q)\), the type of differences \(u_i-u_j\), and this type is symmetric
+and has positive norm coordinate. Intersections of chains of closed
+admissible conic classes remain admissible: scale an admissible element into
+a fixed compact norm annulus and use the finite intersection property.
+Therefore Zorn's lemma gives a minimal closed admissible conic class
+\(\C\). By Lemma~\ref{lem:enriched-conv}, the countable family of maps
+\(\widehat T_c\), \(c\in\Q^{<\N}\), has a common point of continuity
+\(q\in\C\). Replacing \(q\) by a rational dilation if necessary, assume
+\(\tau=q*(-q)\) is admissible.
+
+Let \((x_i)\subseteq D\) define \(q\), and let
+\(y_i=x_{2i-1}-x_{2i}\) define \(\tau\). Passing to a subsequence, form the
+usual spreading model \(E\) of \((y_i)\), with spreading basis
+\((e_i)\). A rational vector
+\(\sum_{i=1}^n b_i e_i\) is said to realize
+\(b_1\tau*\cdots*b_n\tau\). This realization convention is compatible with
+convolution by construction.
+
+The important comparison estimate is the following. If rational vectors
+\(u,v\in\Span_\Q\{e_i\}\) realize enriched types \(\rho_u,\rho_v\), then for
+every coordinate \(\theta\in\Delta\),
+\[
+  |\rho_u(\theta)-\rho_v(\theta)|
+  \le \omega_\theta(\|u-v\|_E),
+  \tag{3}
+\]
+where \(\omega_\theta\) is a modulus of uniform continuity for \(\theta\) on
+a bounded sort containing the relevant representatives. Indeed, write \(u\)
+and \(v\) with the same number of coordinates, realize them by far-out
+blocks of the defining sequence \((y_i)\), apply the uniform continuity of
+\(\theta\) in the original Banach norm, and pass to the iterated limits which
+define both the spreading norm and the enriched types. This is the point at
+which formula coordinates enter the proof. When \(\theta\) is a unit-ball
+formula coordinate, it is first composed with the appropriate normalized
+combination symbol \(\sigma_c\); hence all evaluations remain in the correct
+sort, and the same uniform-continuity estimate applies.
+
+For a rational tuple \(c=(c_1,\ldots,c_m)\), define the block operator
+\[
+  A_c e_k=\sum_{j=1}^m c_j e_{m(k-1)+j}.
+\]
+Then \(A_c u\) realizes \(\widehat T_c(\rho_u)\). The operators \(A_c\)
+commute up to the tensor product rule
+\[
+  A_cA_d=A_{c\otimes d},
+  \qquad
+  \widehat T_c\widehat T_d=\widehat T_{c\otimes d}.
+\]
+The classical Krivine--Maurey approximate-eigenvector lemma for the
+spreading basis says that for every finite commuting family
+\(c^{(1)},\ldots,c^{(N)}\) there are numbers
+\(\beta_1,\ldots,\beta_N\) and normalized rational vectors \(h_m\in E\) such
+that
+\[
+  \|A_{c^{(\ell)}}h_m-\beta_\ell h_m\|_E\longrightarrow0
+  \quad(1\le \ell\le N),
+  \tag{4}
+\]
+with \(\|c^{(\ell)}\|_\infty\le\beta_\ell\le\|c^{(\ell)}\|_1\).
+This is the finite joint approximate point-spectrum step in the original
+Krivine--Maurey proof; it uses only the spreading basis and the Banach-space
+norm, not the list of type coordinates.
+
+Let \(\rho_m\) be the enriched type realized by \(h_m\). The set of all
+limits of such approximating sequences is a closed admissible conic subclass
+of \(\C\): dilation is immediate, convolution is obtained by putting two
+realizing vectors on disjoint later supports, and closure follows by a
+diagonal choice. Minimality of \(\C\) therefore implies that the common
+continuity point \(q\), and hence \(\tau=q*(-q)\), is a limit of
+approximating types satisfying (4).
+
+Now evaluate at \(\tau\). Since \(q\) was chosen as a common continuity point
+for all \(\widehat T_c\), and since (3) turns the norm convergence (4) into
+coordinatewise convergence for every \(\theta\in\Delta\), we obtain
+\[
+  \widehat T_{c^{(\ell)}}(\tau)=\beta_\ell\,\tau
+  \quad(1\le \ell\le N)
+  \tag{5}
+\]
+as equality in the enriched type space. Thus every coordinate, including
+\(\varphi(x,a)\), is carried along by the same equality.
+
+Finally define \(N(c)\) by \(\widehat T_c(\tau)=N(c)\tau\). The norm
+coordinate shows that \(N\) is a normalized, permutation-invariant,
+1-unconditional norm on rational \(c_{00}\), satisfying
+\[
+  N(c\otimes d)=N(c)N(d),
+  \qquad
+  \|c\|_\infty\le N(c)\le\|c\|_1.
+\]
+The standard Krivine--Maurey multiplicative-norm calculation gives
+\(N(c)=\|c\|_p\) for a single \(1\le p<\infty\). For completeness, recall
+the calculation: \(N(1,\ldots,1)=n^{1/p}\) follows from tensor
+multiplicativity and monotonicity by comparing \(n^k\) with powers of \(2\);
+applying the same argument to tensor powers of an arbitrary positive rational
+vector and using multinomial counting gives
+\(N(c)^p=\sum_i |c_i|^p\); unconditionality gives signs. This proves (2).
+\end{proof}
+
+\section*{From The Type To A Real Subspace}
+
+\begin{lemma}[block extraction]\label{lem:block-extraction}
+Let \(\tau\) be as in Proposition~\ref{prop:raynaud}, normalized so that
+\(\nu(\tau)=1\), and put \(r=\tau(\varphi(x,a))\). For every
+\(\eps>0\) there is a normalized basic block sequence
+\((z_k)\subseteq X\) such that for
+\[
+  Z=\overline{\Span}\{z_k:k\in\N\}
+\]
+one has
+\[
+  |\varphi(u,a)-r|<\eps
+  \qquad (u\in S_Z).
+\]
+\end{lemma}
+
+\begin{proof}
+Let \((y_i)\subseteq X\) be a defining block sequence for \(\tau\). Equality
+(2) says that if \(c\in\Q^n\) and \(\|c\|_p=1\), then the enriched type of
+the corresponding normalized block combination, in the iterated block limit,
+is again \(\tau\). In particular, both its norm coordinate and the
+\(\varphi(\sigma_c(\bar x),a)\)-coordinate are the same as those of \(\tau\).
+
+We construct \(z_1,z_2,\ldots\) recursively as finite rational blocks of
+\((y_i)\), with successive disjoint supports. Fix an increasing exhaustion
+\(\Delta_1\subseteq\Delta_2\subseteq\cdots\) of the fragment by finite sets
+of coordinates and choose \(\delta_m\downarrow0\). The induction invariant is
+stronger than small oscillation: for every rational unit vector
+\(b=(b_1,\ldots,b_m)\) in a prescribed finite \(\delta_m\)-net of the
+\(\ell_p^m\)-sphere, the normalized block vector
+\(\sigma_b(z_1,\ldots,z_m)\) has \(\Delta_m\)-type within \(\delta_m\) of
+\(\tau\).
+
+Assume \(z_1,\ldots,z_{m-1}\) have been chosen. Take a finite rational net
+for the unit sphere of \(\ell_p^m\). For a net vector
+\((b_1,\ldots,b_m)\), put
+\(s=\left(\sum_{j<m}|b_j|^p\right)^{1/p}\). By the induction hypothesis,
+when \(s>0\) the normalized previous part
+\(s^{-1}\sum_{j<m}b_jz_j\) has enriched type close to \(\tau\) on a finite
+coordinate set. Equality (2) gives
+\[
+  s\tau*b_m\tau=(s^p+|b_m|^p)^{1/p}\tau=\tau
+\]
+for the corresponding model combination. Hence the requirements that
+\(\sigma_b(z_1,\ldots,z_m)\) be \(\Delta_m\)-close to \(\tau\), for all net
+vectors \(b\), form a finite set of open conditions in the enriched type
+topology. Since \(\tau\) is realized by arbitrarily far normalized blocks of
+\((y_i)\), a far-out rational block can be chosen as \(z_m\) satisfying all
+these conditions. The case \(s=0\) is just the requirement that \(z_m\)
+itself realize \(\tau\) on \(\Delta_m\).
+
+This recursive construction has the following consequence. For each \(m\),
+every unit vector in the finite-dimensional space
+\(\Span(z_1,\ldots,z_m)\) has \(\varphi\)-value within \(\eps/2\) of \(r\):
+approximate it by a point of the rational net used at stage \(m\), then use
+the common modulus of uniform continuity of \(\varphi\) and the fact that the
+net point has \(\Delta_m\)-type close to \(\tau\). The norm coordinates in
+the same finite sets make \((z_k)\) a basic sequence, because the
+finite-dimensional norms are uniformly close to the corresponding
+\(\ell_p\)-sum norms on the chosen nets.
+
+Now let \(u\in S_Z\). Pick \(m\) and
+\(u_m\in S_{\Span(z_1,\ldots,z_m)}\) with \(\|u-u_m\|\) so small that
+uniform continuity changes \(\varphi\) by less than \(\eps/2\). The previous
+paragraph gives \(|\varphi(u_m,a)-r|<\eps/2\), hence
+\(|\varphi(u,a)-r|<\eps\).
+\end{proof}
+
+\section*{Main Theorem}
+
+\begin{theorem}\label{thm:main}
+Let \(T\) be a stable Banach theory. Then every unary formula of \(T\) is
+oscillation stable on models of \(T\).
+\end{theorem}
+
+\begin{proof}
+Let \(M\models T\), let \(\varphi(x,a)\) be a unary formula instance, let
+\(Y\subseteq M\) be an infinite-dimensional closed subspace, and fix
+\(\eps>0\).
+
+Choose a separable infinite-dimensional closed subspace \(X\subseteq Y\), and
+build the enriched fragment over \(X\) and \(a\) as above. By
+Proposition~\ref{prop:raynaud} and Lemma~\ref{lem:block-extraction}, there is
+an infinite-dimensional closed subspace \(Z\subseteq X\subseteq Y\) and a
+real number \(r\) such that
+\[
+  |\varphi(u,a)-r|<\eps/2
+  \qquad (u\in S_Z).
+\]
+Therefore, for all \(u,v\in S_Z\),
+\[
+  |\varphi(u,a)-\varphi(v,a)|<\eps
+\]
+so \(\varphi(x,a)\) is oscillation stable on \(Y\). Since \(M,Y,a\), and
+\(\eps\) were arbitrary, the theorem follows.
+\end{proof}
+
+\section*{Why The Naive Symmetry Route Is Not Used}
+
+The proof does not rely on the false principle that a symmetric uniformly
+continuous coloring on the Hilbert sphere becomes constant on vectors with
+small \(\ell_\infty\)-coordinates. That principle fails: if \(u_n\) is the
+flat vector of support \(n\) in \(\ell_2\), and \(A\) is the union of the
+sign/permutation orbits of \(u_{2^k}\), then \(x\mapsto d(x,A)\) is
+Lipschitz and symmetric but separates the support sizes \(2^k\) and
+\(3\cdot2^k\) by a fixed amount.
+
+The present argument uses more than symmetry. It uses stability of every
+normalized linear-combination pullback, which is precisely what makes the
+formula coordinate part of the Krivine--Maurey type equality.
+
+\section*{Verification Notes}
+
+The proof was checked against three prior failed routes:
+\begin{itemize}
+\item The compactness/Dvoretzky--Milman Hilbert-subspace route fails because
+  finite good subspaces need not be nested.
+\item The minimal-wide-type route isolates the same obstruction as preservation
+  of tail finite satisfiability through the Hilbert Morley spine.
+\item The bare symmetric-flattening lemma is false, as explained above.
+\end{itemize}
+
+The formula-aware Krivine--Maurey route avoids all three. It builds the
+sequence inside the original subspace \(Y\), and the formula value is a
+coordinate of the same stable type equality that produces the \(\ell_p\)
+spreading behavior.
+
+Human review should focus on Proposition~\ref{prop:raynaud} and
+Lemma~\ref{lem:block-extraction}. Proposition~\ref{prop:raynaud} is where the
+exact Raynaud/Krivine--Maurey conic-class proof is transferred from norm types
+to the enriched stable type space. Lemma~\ref{lem:block-extraction} is the
+repair of the old subsequence diagonalization: it uses blocks so that finite
+initial spans, and hence the closed span, are controlled.
+
+\section*{Novelty Check}
+
+Local run indexes were searched for arXiv:2004.03062, Hanson, Question 4.3,
+minimal wide types, oscillation stability, Krivine--Maurey, and stable Banach
+theory. Existing durable work contained only a Hilbert-operator partial result,
+a WAP conditional reduction, and failed attempt notes.
+
+Fresh web searches on 2026-06-16 for exact and close phrases including
+\begin{itemize}
+\item ``Does (model theoretic) stability imply oscillation stability''
+\item ``Hanson oscillation stability stable Banach theory''
+\item ``stability implies oscillation stability Banach unary formula''
+\item ``Question 4.3 Indiscernible Subspaces oscillation stability''
+\end{itemize}
+found Hanson's source paper, the absorbing paper, and the
+Shelah--Usvyatsov minimal-types paper. They did not reveal a later explicit
+answer to Question 4.3. The proof here appears to be a new synthesis of
+Hanson's question with the Krivine--Maurey/Raynaud stable type machinery.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{Hanson2020}
+James Hanson.
+\newblock \emph{Indiscernible Subspaces and Minimal Wide Types}.
+\newblock arXiv:2004.03062.
+
+\bibitem{Hanson2020b}
+James Hanson.
+\newblock \emph{Strongly Minimal Sets and Categoricity in Continuous Logic}.
+\newblock arXiv:2011.00610.
+
+\bibitem{KM1981}
+Jean-Louis Krivine and Bernard Maurey.
+\newblock \emph{Espaces de Banach stables}.
+\newblock Israel Journal of Mathematics 39 (1981), 273--295.
+
+\bibitem{Raynaud1983}
+Yves Raynaud.
+\newblock \emph{Espaces de Banach superstables, distances stables et
+homeomorphismes uniformes}.
+\newblock Israel Journal of Mathematics 44 (1983), 33--52.
+
+\bibitem{BenYaacov2013}
+Itai Ben Yaacov.
+\newblock \emph{Model theoretic stability and definability of types, after
+A. Grothendieck}.
+\newblock arXiv:1306.5852.
+
+\bibitem{ShelahUsvyatsov2014}
+Saharon Shelah and Alexander Usvyatsov.
+\newblock \emph{Minimal types in stable Banach spaces}.
+\newblock arXiv:1402.6513.
+
+\bibitem{BragaSwift2017}
+Bruno M. Braga and Christopher Swift.
+\newblock \emph{Coarse and uniform embeddings into superstable Banach spaces}.
+\newblock arXiv:1704.04468.
+
+\end{thebibliography}
+
+\end{document}

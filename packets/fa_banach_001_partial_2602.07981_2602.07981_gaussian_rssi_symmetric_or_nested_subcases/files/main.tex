@@ -1,0 +1,183 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\gauss}{\gamma}
+
+\begin{document}
+
+\begin{center}
+{\Large Symmetric and nested subcases of the Gaussian RSSI question}\\[0.5em]
+{\small Run \texttt{fa\_banach\_001}, arXiv:2602.07981, candidate partial result}
+\end{center}
+
+\section*{Source and Question}
+
+The source paper is E. Milman, S. Nakamura, and H. Tsuji,
+\emph{The Gaussian Conjugate Rogers--Shephard Inequality},
+arXiv:2602.07981 \cite{MNT}.  After proving the Gaussian conjugate
+Rogers--Shephard inequality and the extension
+\[
+  \gauss(K)\gauss(L)\leq \gauss(K\cap L)\gauss(aK+bL)
+\]
+for \(|a|,|b|\geq 1\) and \(|a+b|\geq 1\), the authors ask whether the
+case \(a=1,b=-1\) also holds:
+\[
+  \gauss(K)\gauss(L)\leq \gauss(K\cap L)\gauss(K-L)
+  \tag{GRSI}
+\]
+for all convex \(K,L\subset \R^n\) with non-empty interior and Gaussian
+barycenters at the origin.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\textbf{Status.}  This packet proves narrow subcases of the source's open
+problem, not the full Gaussian \(K-L\) inequality.
+
+\begin{theorem}\label{thm:main}
+Let \(K,L\subset \R^n\) be convex sets with non-empty interior and Gaussian
+barycenters at the origin.  Then the Gaussian \(K-L\) inequality
+\[
+  \gauss(K)\gauss(L)\leq \gauss(K\cap L)\gauss(K-L)
+\]
+holds in each of the following cases:
+\begin{enumerate}
+\item one of \(K,L\) is centrally symmetric;
+\item \(K\subset L\) or \(L\subset K\).
+\end{enumerate}
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The centrally symmetric case is a sign-flip consequence of the source
+paper's already-proved \(K+L\) theorem.  If, for example, \(K=-K\), apply the
+source theorem to \(K\) and \(-L\).  Reflection preserves Gaussian measure,
+and the symmetry of \(K\) converts the intersection \(K\cap(-L)\) back to
+\(K\cap L\) in measure.
+
+The nested case is even simpler.  Gaussian barycenter zero forces the origin
+to lie in each closed convex set.  If \(K\subset L\), then \(K\cap L=K\) and
+\(-L\subset K-L\), so \(\gauss(K-L)\geq\gauss(L)\).  The case \(L\subset K\)
+is symmetric.
+
+\begin{lemma}\label{lem:origin}
+Let \(K\subset \R^n\) be a convex set with non-empty interior and finite
+Gaussian measure.  If the Gaussian barycenter of \(K\) is the origin, then
+\(0\in \overline K\).  In particular, replacing \(K\) by \(\overline K\) does
+not change its Gaussian measure or barycenter, and then \(0\in K\).
+\end{lemma}
+
+\begin{proof}
+If \(0\notin \overline K\), the strong separation theorem gives a vector
+\(u\in \R^n\) and \(c>0\) such that \(\langle u,x\rangle\geq c\) for all
+\(x\in K\), after changing the sign of \(u\) if necessary.  Integrating over
+\(K\) gives
+\[
+  \left\langle u,\int_K x\,d\gauss(x)\right\rangle
+  =\int_K \langle u,x\rangle\,d\gauss(x)
+  \geq c\,\gauss(K)>0,
+\]
+contradicting the assumption that the Gaussian barycenter is the origin.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+First assume that \(L=-L\).  Then \(K-L=K+L\), and the desired inequality is
+exactly the Gaussian conjugate Rogers--Shephard inequality proved in the
+source paper.  If instead \(K=-K\), apply the same source theorem to the pair
+\((K,-L)\), whose Gaussian barycenters are still at the origin:
+\[
+  \gauss(K)\gauss(-L)\leq \gauss(K\cap(-L))\gauss(K+(-L)).
+\]
+By reflection invariance, \(\gauss(-L)=\gauss(L)\), and since \(K=-K\),
+\[
+  \gauss(K\cap(-L))=\gauss((-K)\cap L)=\gauss(K\cap L).
+\]
+Also \(K+(-L)=K-L\).  This proves the centrally symmetric case.
+
+For the nested case, replace \(K,L\) by their closures; convex boundaries have
+Gaussian measure zero, and Lemma~\ref{lem:origin} gives \(0\in K\cap L\).
+If \(K\subset L\), then \(K\cap L=K\), and because \(0\in K\),
+\(-L\subset K-L\).  Hence
+\[
+  \gauss(K\cap L)\gauss(K-L)
+  =\gauss(K)\gauss(K-L)
+  \geq \gauss(K)\gauss(-L)
+  =\gauss(K)\gauss(L).
+\]
+If \(L\subset K\), then \(K\cap L=L\), and because \(0\in L\), \(K\subset
+K-L\).  Thus
+\[
+  \gauss(K\cap L)\gauss(K-L)
+  =\gauss(L)\gauss(K-L)
+  \geq \gauss(L)\gauss(K).
+\]
+\end{proof}
+
+\begin{corollary}[Parameter sign-flip with one symmetric set]\label{cor:param}
+Let \(a,b>0\), and let \(\alpha=\max(1/b,1)\), \(\beta=\max(1/a,1)\).
+Assume that the source paper's \(\sigma=+1\) inequality
+\[
+  \gauss(K)\gauss(L)
+  \leq \gauss(\alpha K\cap \beta L)\gauss(aK+bL)
+\]
+holds for all centered convex \(K,L\).  Then the corresponding
+\(\sigma=-1\) inequality
+\[
+  \gauss(K)\gauss(L)
+  \leq \gauss(\alpha K\cap \beta L)\gauss(aK-bL)
+\]
+holds whenever one of \(K,L\) is centrally symmetric.
+\end{corollary}
+
+\begin{proof}
+If \(L=-L\), then \(aK-bL=aK+bL\).  If \(K=-K\), apply the \(\sigma=+1\)
+inequality to \(K\) and \(-L\), and use reflection invariance exactly as in
+the proof of Theorem~\ref{thm:main}.
+\end{proof}
+
+\section*{Limitations}
+
+The argument gives no information about the genuinely nonsymmetric,
+nonnested case of the source problem.  It also does not repair the Gaussian
+saturation method that the source paper explains fails for the \(K-L\) case;
+it only bypasses the sign issue in situations where reflection converts
+\(-L\) back to \(L\) in the relevant measure factors.
+
+\section*{Verification and Novelty Check}
+
+The cheap run indexes were searched for arXiv:2602.07981, Gaussian conjugate
+Rogers--Shephard, the \(K-L\) open problem, and related Rogers--Shephard
+keywords.  No exact prior packet for these subcases was found.  The
+centrally symmetric subcase is a direct corollary of the source paper's main
+theorem; the nested subcase is elementary.
+
+\section*{Human Review Recommendation}
+
+Review as a valid but narrow partial result.  The main checks are the
+reflection step in the one-symmetric-set case and the closure/origin argument
+in the nested case.  Do not treat this as evidence for the full nonsymmetric
+Gaussian \(K-L\) problem.
+
+\begin{thebibliography}{9}
+
+\bibitem{MNT}
+E. Milman, S. Nakamura, and H. Tsuji,
+\emph{The Gaussian Conjugate Rogers--Shephard Inequality},
+arXiv:2602.07981, 2026.
+
+\end{thebibliography}
+
+\end{document}
+

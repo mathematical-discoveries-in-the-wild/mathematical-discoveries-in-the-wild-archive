@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Lipz}{\operatorname{Lip}_0}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\Id}{\operatorname{Id}}
+
+\title{Averaging Nonlinear Lipschitz Extension Operators}
+\author{Automated discovery packet}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+In Remark 2.2(ii) of arXiv:2001.09303, Sofi asks whether the Hilbert-space
+conclusion in Corollary 2.4 remains valid if the extension operator
+\[
+        F:\Lipz(Z)\longrightarrow \Lipz(X)
+\]
+is assumed to be Lipschitz rather than linear, for each subspace \(Z\) of the
+Banach space \(X\). The question appears on page 10:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+The answer is affirmative. In fact, it is enough to assume the existence of
+such a Lipschitz extension operator for every closed subspace \(Z\) of \(X\).
+
+\section*{Proof Intuition}
+
+The restriction map \(\rho_Z:\Lipz(X)\to \Lipz(Z)\) is a bounded linear
+surjection. A Lipschitz extension operator is exactly a nonlinear Lipschitz
+right inverse of this map. Since \(\Lipz(X)\) is canonically the dual of the
+Lipschitz-free space \(\FF(X)\), one can average the difference translates
+\[
+        F(g+h)-F(g),\qquad g\in \Lipz(Z),
+\]
+using an invariant mean on the additive abelian group \(\Lipz(Z)\). Translation
+invariance forces additivity in \(h\), and weak-star compactness keeps the
+average inside \(\Lipz(X)\). This converts the nonlinear right inverse into a
+bounded linear right inverse, after which Sofi's Corollary 2.4 applies.
+
+\section*{A Linearization Lemma}
+
+\begin{lemma}
+Let \(X\) be a Banach space and let \(Z\subset X\) be a closed subspace.
+Suppose that there is a Lipschitz map
+\[
+        F:\Lipz(Z)\longrightarrow \Lipz(X)
+\]
+such that \(F(f)|_Z=f\) for every \(f\in \Lipz(Z)\). Then there is a bounded
+linear map
+\[
+        G:\Lipz(Z)\longrightarrow \Lipz(X)
+\]
+such that \(G(f)|_Z=f\) for every \(f\in \Lipz(Z)\). Moreover one may take
+\(\|G\|\leq \Lip(F)\) after replacing \(F\) by \(F-F(0)\).
+\end{lemma}
+
+\begin{proof}
+Let \(\rho:\Lipz(X)\to\Lipz(Z)\) be the restriction map. Since
+\(\rho F=\Id_{\Lipz(Z)}\), we have \(\rho F(0)=0\). Replacing \(F\) by
+\(F-F(0)\), we may assume \(F(0)=0\) and still have \(\rho F=\Id\). Put
+\(Y=\Lipz(Z)\), \(V=\Lipz(X)\), and let \(L=\Lip(F)\).
+
+We use the standard invariant mean on the additive abelian group \(Y\). Thus
+there is a positive norm-one functional \(m\) on \(\ell_\infty(Y)\) such that
+\[
+        m(\varphi(\,\cdot+a\,))=m(\varphi)
+        \qquad (a\in Y,\ \varphi\in \ell_\infty(Y)).
+\]
+Recall that \(V=\FF(X)^*\), where \(\FF(X)\) is the Lipschitz-free space over
+\(X\). For \(h\in Y\), define a bounded \(V\)-valued function on \(Y\) by
+\[
+        \Delta_h(g)=F(g+h)-F(g),\qquad g\in Y.
+\]
+It is bounded because
+\[
+        \|\Delta_h(g)\|_{\Lip}\leq L\|h\|_{\Lip}\qquad(g\in Y).
+\]
+Define \(G h\in \FF(X)^*=V\) by weak-star averaging:
+\[
+        \langle \mu,Gh\rangle
+        =
+        m\bigl(g\mapsto \langle \mu,\Delta_h(g)\rangle\bigr),
+        \qquad \mu\in \FF(X).
+\]
+This gives \(\|Gh\|_{\Lip}\leq L\|h\|_{\Lip}\).
+
+We first check linearity. For \(h,k\in Y\),
+\[
+ \Delta_{h+k}(g)
+ =F(g+h+k)-F(g)
+ =\Delta_k(g+h)+\Delta_h(g).
+\]
+Translation invariance of \(m\) therefore gives
+\[
+        G(h+k)=Gk+Gh.
+\]
+Thus \(G\) is additive. Since \(G\) is Lipschitz at the origin, additivity
+implies real linearity.
+
+It remains to verify that \(G\) is still an extension operator. Let
+\(J:\FF(Z)\to\FF(X)\) be the canonical isometric linear embedding induced by
+the inclusion \(Z\subset X\). Then \(\rho=J^*\). For \(\nu\in\FF(Z)\) and
+\(h\in Y\),
+\begin{align*}
+ \langle \nu,\rho Gh\rangle
+ &=\langle J\nu,Gh\rangle \\
+ &=m\bigl(g\mapsto
+      \langle J\nu,F(g+h)-F(g)\rangle\bigr)\\
+ &=m\bigl(g\mapsto
+      \langle \nu,\rho F(g+h)-\rho F(g)\rangle\bigr)\\
+ &=m\bigl(g\mapsto \langle \nu,(g+h)-g\rangle\bigr)\\
+ &=\langle \nu,h\rangle .
+\end{align*}
+Hence \(\rho Gh=h\) for every \(h\in\Lipz(Z)\), i.e. \(G(h)|_Z=h\). This is
+the desired bounded linear extension operator.
+\end{proof}
+
+\section*{Solution of Sofi's Question}
+
+\begin{theorem}
+Let \(X\) be a Banach space. Assume that for every closed subspace \(Z\subset
+X\) there exists a Lipschitz extension operator
+\[
+        F_Z:\Lipz(Z)\longrightarrow \Lipz(X).
+\]
+Then \(X\) is isomorphic to a Hilbert space. Consequently the question in
+Remark 2.2(ii) has an affirmative answer.
+\end{theorem}
+
+\begin{proof}
+By the lemma, for every closed subspace \(Z\subset X\), the presumed Lipschitz
+extension operator \(F_Z\) yields a bounded linear extension operator
+\[
+        G_Z:\Lipz(Z)\longrightarrow \Lipz(X).
+\]
+Sofi's Corollary 2.4 states that, for a Banach space \(X\), the existence of a
+bounded linear extension operator \(\Lipz(Z)\to\Lipz(X)\) for every closed
+subspace \(Z\subset X\) is equivalent to \(X\) being isomorphic to a Hilbert
+space. Applying that corollary gives the conclusion.
+\end{proof}
+
+\begin{corollary}
+For a Banach space \(X\), the following are equivalent:
+\begin{enumerate}
+\item \(X\) is isomorphic to a Hilbert space.
+\item For every closed subspace \(Z\subset X\), there exists a bounded linear
+extension operator \(\Lipz(Z)\to\Lipz(X)\).
+\item For every closed subspace \(Z\subset X\), there exists a Lipschitz
+extension operator \(\Lipz(Z)\to\Lipz(X)\).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The equivalence of (1) and (2) is Sofi's Corollary 2.4. The implication
+(2)\(\Rightarrow\)(3) is immediate, since bounded linear maps are Lipschitz.
+The implication (3)\(\Rightarrow\)(2) is the linearization lemma applied to
+each closed subspace \(Z\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is deterministic and uses only the standard invariant mean on an
+abelian group and the canonical duality \(\Lipz(M)=\FF(M)^*\). The critical
+identity is \(\rho=J^*\), where \(J:\FF(Z)\to\FF(X)\) is induced by the
+inclusion \(Z\subset X\). This makes the weak-star average compatible with
+restriction and proves \(\rho G=\Id_{\Lipz(Z)}\).
+
+The argument does not address the separate questions in the source about
+Lipschitz retracts of biduals, type \(2\), or the parameter \(\lambda(M)\).
+
+\section*{Novelty and Literature Check}
+
+Before promotion, the local registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:2001.09303 and for the core phrases
+\(\Lipz(Z)\to\Lipz(X)\), ``Lipschitz extension operator'', ``linear right
+inverse'', and ``invariant mean''. No existing run packet for this question was
+found.
+
+Web searches on June 15, 2026 for the exact question and for variants of
+``Lipschitz right inverse linear right inverse invariant mean Banach'' found
+the source arXiv paper and related invariant-mean linearization material, but
+no explicit later answer to this \(\Lipz(Z)\to\Lipz(X)\) question. The
+supporting Baudier--Lancien manuscript records the classical invariant-mean
+linearization background, including vector-valued invariant means and
+Lindenstrauss' linear extension theorem, but the exact application above is
+the packet's contribution subject to human review.
+
+\begin{thebibliography}{9}
+
+\bibitem{Sofi}
+M. A. Sofi,
+\emph{Extension operators and nonlinear structure of Banach spaces},
+arXiv:2001.09303, 2020.
+
+\bibitem{BaudierLancien}
+F. Baudier and G. Lancien,
+\emph{Nonlinear geometry of Banach spaces},
+arXiv:2512.00817, 2025.
+
+\bibitem{GodefroyKalton}
+G. Godefroy and N. J. Kalton,
+\emph{Lipschitz-free Banach spaces},
+Studia Mathematica 159 (2003), 121--141.
+
+\bibitem{Lindenstrauss}
+J. Lindenstrauss,
+\emph{On nonlinear projections in Banach spaces},
+Michigan Mathematical Journal 11 (1964), 263--287.
+
+\end{thebibliography}
+
+\end{document}

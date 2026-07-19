@@ -1,0 +1,307 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem*{theorem}{Counterexample}
+\newtheorem*{lemma}{Counting lemma}
+
+\title{A counterexample to sparse Euclidean grids in every finite-dimensional Banach space}
+\author{Run fa\_banach\_001, lane 1}
+\date{2026-06-14}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper is Daniel J. Fresen, \emph{Euclidean arrangements in Banach
+spaces}, arXiv:1309.5526.  Problem 4 appears across pages 3--4 of the source
+PDF.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In transcription, Problem 4 asks whether there are a universal constant
+$C>0$ and a sequence $\omega_n\to\infty$ such that every real
+$n$-dimensional Banach space $X$ admits a basis $(e_j)_{j=1}^n$ satisfying
+\[
+  \|a\|_2
+  \leq
+  \left\|\sum_{j=1}^n a_j e_j\right\|_X
+  \leq
+  C\|a\|_2
+\]
+whenever $a$ is $\omega_n$-sparse.
+
+\section*{Proof Intuition}
+
+It is enough to test the problem on $X=\ell_\infty^n$.  A basis of
+$\ell_\infty^n$ is an invertible matrix $T$, and the desired estimate says
+that $T$ embeds every sparse coordinate Euclidean ball into the cube with
+distortion $C$.
+
+The obstruction comes from signed vectors with an intermediate support size
+$h$.  The upper estimate says that, in each row of $T$, only $O_C(h)$
+coordinates can be as large as $1/\sqrt h$ when $h$ is much smaller than the
+available sparsity $k$.  On the other hand, the lower estimate for all signed
+vectors $\varepsilon 1_S/\sqrt h$ says that every signed $h$-set must contain
+a positive proportion of its signs inside one of these row-dependent high
+coordinate patterns.  There are only $2n$ such signed patterns, each of size
+$O_C(h)$, and they cannot cover all signed $h$-sets once $h\to\infty$.
+
+\begin{lemma}
+\label{counting-lemma}
+Fix constants $M,\eta>0$.  Let $h=h(n)$ be a sequence of positive integers
+such that $h\to\infty$ and $h\leq \sqrt{\log n}$.  In the set of signed
+coordinates
+\[
+  \Omega_n=\{1,\ldots,n\}\times\{-1,1\},
+\]
+consider signed $h$-sets of the form
+\[
+  E(S,\varepsilon)=\{(j,\varepsilon_j):j\in S\},
+  \qquad |S|=h,\quad \varepsilon_j\in\{-1,1\}.
+\]
+Then, for all sufficiently large $n$, no collection of at most $2n$ subsets
+of $\Omega_n$, each of cardinality at most $Mh$, can have the property that
+every signed $h$-set contains at least $\eta h$ points from one member of the
+collection.
+\end{lemma}
+
+\begin{proof}
+The total number of signed $h$-sets is
+\[
+  \binom{n}{h}2^h.
+\]
+Fix a set $H\subseteq\Omega_n$ with $|H|\leq Mh$.  The number of signed
+$h$-sets containing at least $q_0=\lceil \eta h\rceil$ points of $H$ is at
+most
+\[
+  \sum_{q=q_0}^h \binom{Mh}{q}\binom{n}{h-q}2^{h-q}.
+\]
+For large $n$ we have $h\leq n/2$, and hence
+\[
+  \frac{\binom{n}{h-q}}{\binom{n}{h}}
+  \leq
+  \left(\frac{2h}{n}\right)^q.
+\]
+Using also $\sum_q \binom{Mh}{q}\leq 2^{Mh}$, the fraction of all signed
+$h$-sets hit by this fixed $H$ is at most
+\[
+  h\,2^{Mh}\left(\frac{h}{n}\right)^{\eta h}.
+\]
+Multiplying by $2n$, the fraction hit by any collection of at most $2n$ such
+sets is bounded by
+\[
+  2nh\,2^{Mh}\left(\frac{h}{n}\right)^{\eta h}.
+\]
+Since $h\to\infty$ and $h\leq \sqrt{\log n}$, the logarithm of this last
+quantity tends to $-\infty$.  Thus it is eventually less than $1$, so some
+signed $h$-set is not covered.
+\end{proof}
+
+\begin{theorem}
+Fresen's Problem 4 has a negative answer.  More precisely, fix $C\geq 1$.
+There do not exist sequences $n_m\to\infty$, $k_m\to\infty$, and linear maps
+$T_m:\mathbb R^{n_m}\to\ell_\infty^{n_m}$ such that, for every
+$k_m$-sparse vector $a\in\mathbb R^{n_m}$,
+\[
+  \|a\|_2\leq \|T_m a\|_\infty\leq C\|a\|_2.
+\]
+Consequently there is no universal constant $C$ and no sequence
+$\omega_n\to\infty$ satisfying Problem 4, even for the spaces
+$X=\ell_\infty^n$.
+\end{theorem}
+
+\begin{proof}
+Assume toward a contradiction that such $C$, $n_m$, $k_m$, and $T_m$ exist.
+Suppress the index $m$ and write $T=(r_{ij})_{i,j=1}^n$, with row vectors
+$r_i=(r_{ij})_{j=1}^n$.  For every row $i$ and every set
+$A\subseteq\{1,\ldots,n\}$ with $|A|\leq k$, the upper estimate gives
+\[
+  \left(\sum_{j\in A} r_{ij}^2\right)^{1/2}\leq C.
+\]
+Indeed, the left-hand side is the operator norm of the $i$th coordinate
+functional restricted to the coordinate subspace supported on $A$.
+
+Let
+\[
+  h=\left\lfloor \min\left\{\frac{k}{64C^2},\,\sqrt{\log n}\right\}\right\rfloor.
+\]
+Since $k\to\infty$ and $n\to\infty$, we have $h\to\infty$ along a subsequence;
+we work on that subsequence.  Put
+\[
+  \theta=\frac{1}{4\sqrt h}.
+\]
+For each row $i$, let
+\[
+  A_i=\{j: |r_{ij}|\geq \theta\}.
+\]
+We claim that $|A_i|\leq 16C^2h$ for every $i$.  If $|A_i|\geq k$, then
+choosing $k$ elements of $A_i$ would give
+\[
+  \left(\sum_{j\in A} r_{ij}^2\right)^{1/2}
+  \geq \theta\sqrt{k}
+  =
+  \sqrt{\frac{k}{16h}}
+  \geq 2C,
+\]
+contradicting the upper estimate.  Hence $|A_i|<k$.  If
+$|A_i|>16C^2h$, then applying the upper estimate to $A_i$ itself gives
+\[
+  C
+  \geq
+  \left(\sum_{j\in A_i} r_{ij}^2\right)^{1/2}
+  >
+  \theta\sqrt{16C^2h}
+  =
+  C,
+\]
+again a contradiction.
+
+For each row $i$ and each sign $s\in\{-1,1\}$, define a subset of signed
+coordinates
+\[
+  H_i^s=\{(j,\varepsilon)\in\Omega_n: s\,\varepsilon\, r_{ij}\geq \theta\}.
+\]
+The previous paragraph gives $|H_i^s|\leq 16C^2h$.
+
+Now take any signed $h$-set
+\[
+  E(S,\varepsilon)=\{(j,\varepsilon_j):j\in S\},
+  \qquad |S|=h,
+\]
+and define $a_j=\varepsilon_j/\sqrt h$ for $j\in S$, with $a_j=0$ otherwise.
+The vector $a$ is $h$-sparse and $\|a\|_2=1$.  By the lower estimate there
+are a row $i$ and a sign $s\in\{-1,1\}$ such that
+\[
+  \sum_{j\in S} s\,r_{ij}\varepsilon_j \geq \sqrt h.
+\]
+Let
+\[
+  B=\{j\in S: s\,r_{ij}\varepsilon_j\geq \theta\}.
+\]
+The contribution of $S\setminus B$ to the last sum is at most
+$h\theta=\sqrt h/4$, so the contribution of $B$ is at least $3\sqrt h/4$.
+On the other hand, by Cauchy's inequality and the upper estimate on the
+coordinate set $B$,
+\[
+  \sum_{j\in B} s\,r_{ij}\varepsilon_j
+  \leq
+  \left(\sum_{j\in B}r_{ij}^2\right)^{1/2}|B|^{1/2}
+  \leq C|B|^{1/2}.
+\]
+Therefore
+\[
+  |B|\geq \frac{9}{16C^2}h.
+\]
+Equivalently, every signed $h$-set contains at least
+$\eta h$ points from one of the $2n$ sets $H_i^s$, where
+$\eta=9/(16C^2)$.
+
+This contradicts the counting lemma with $M=16C^2$.  Hence no such sequence of
+maps exists.
+
+Finally, if Problem 4 were true with a universal constant $C$ and a sequence
+$\omega_n\to\infty$, then applying it to $X=\ell_\infty^n$ and taking $T_n$
+to be the matrix whose columns are the asserted basis vectors would give
+exactly such a forbidden sequence with $k_n=\lfloor \omega_n\rfloor$ along
+large $n$.  This proves the claimed negative answer.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof is deterministic and uses only the source problem's two-sided
+sparse estimate.  It does not require $T$ to be invertible, so it applies
+a fortiori to matrices whose columns are bases of $\ell_\infty^n$.
+
+A bounded novelty check was performed on 2026-06-14: the run indexes and
+local packets were searched for arXiv:1309.5526, ``Euclidean grid'',
+``ell\_infty'', sparse/logarithmic keywords, and row-polytope phrases.
+External exact-phrase searches for the source problem together with
+``ell\_infty'', ``sparse Euclidean grid'', and ``omega\_n'' did not reveal a
+known answer.  Novelty confidence is moderate pending human review.
+
+\section*{Relation to previous local work}
+
+This packet strengthens the previous local logarithmic-ceiling packet, which
+only ruled out superlogarithmic sparsity in $\ell_\infty^n$.  The counting
+argument above rules out every unbounded sparsity sequence in $\ell_\infty^n$
+for fixed distortion $C$.
+
+For reviewer convenience, the previous partial packet is nested inside this
+packet at
+\[
+  \texttt{superseded\_partial/1309.5526\_linf\_sparse\_grid\_logarithmic\_ceiling/}.
+\]
+It is retained as provenance, not as a separate current claim.
+
+\section*{Appendix: superseded logarithmic-ceiling partial result}
+
+Before the full counterexample above was found, lane 1 isolated the following
+partial obstruction.  It is mathematically useful because it identifies why
+the remaining frontier originally looked like $k\simeq c\log n$.
+
+\paragraph{Superseded partial theorem.}
+Let $T:\mathbb R^n\to\ell_\infty^n$ be linear, let $C\geq 1$, and let
+$1\leq k\leq n$.  Suppose that for every $k$-sparse vector
+$a\in\mathbb R^n$,
+\[
+  \|a\|_2\leq \|Ta\|_\infty\leq C\|a\|_2.
+\]
+Then
+\[
+  k\leq 2C^2\log(2n).
+\]
+Thus no affirmative answer to Problem 4 could have
+$\omega_n/\log n\to\infty$.
+
+\paragraph{Proof of the superseded partial theorem.}
+Let $r_i=(T_{ij})_{j=1}^n$ be the $i$th row of $T$.  The upper estimate gives,
+for every set $S\subset\{1,\ldots,n\}$ with $|S|\leq k$,
+\[
+  \left(\sum_{j\in S} r_{ij}^2\right)^{1/2}\leq C.
+\]
+Fix a set $S$ with $|S|=k$ and let $(\varepsilon_j)_{j\in S}$ be independent
+Rademacher signs.  For row $i$, set
+\[
+  Z_i=\frac{1}{\sqrt k}\sum_{j\in S}\varepsilon_j T_{ij}.
+\]
+Hoeffding's inequality and the preceding row bound give
+\[
+  \mathbb P\{|Z_i|\geq 1\}\leq 2\exp\left(-\frac{k}{2C^2}\right).
+\]
+After a union bound over the $n$ rows,
+\[
+  \mathbb P\left\{\max_i |Z_i|\geq 1\right\}
+  \leq 2n\exp\left(-\frac{k}{2C^2}\right).
+\]
+If $k>2C^2\log(2n)$, this probability is less than $1$, so there is a sign
+choice with $\max_i|Z_i|<1$.  The vector
+$a_j=\varepsilon_j/\sqrt k$ on $S$ and $a_j=0$ off $S$ is $k$-sparse and has
+$\|a\|_2=1$, but $\|Ta\|_\infty<1$, contradicting the lower estimate.
+
+\paragraph{How the counterexample supersedes it.}
+The partial theorem uses random signs on the whole available support $k$, so
+it only contradicts the lower estimate when $k$ is larger than a logarithmic
+threshold.  The counterexample proof instead tests an intermediate support
+$h\leq \min\{k/(64C^2),\sqrt{\log n}\}$ and counts all signed $h$-sets.  Since
+such an $h$ still tends to infinity whenever $k\to\infty$, the remaining
+logarithmic window also collapses.
+
+\section*{Human-review recommendation}
+
+Check the counting lemma and the high-coordinate extraction step.  If those
+are correct, this is a complete negative answer to Problem 4 as stated.
+
+\begin{thebibliography}{9}
+\bibitem{Fresen2013}
+Daniel J. Fresen,
+\emph{Euclidean arrangements in Banach spaces},
+arXiv:1309.5526, 2013.
+\end{thebibliography}
+
+\end{document}

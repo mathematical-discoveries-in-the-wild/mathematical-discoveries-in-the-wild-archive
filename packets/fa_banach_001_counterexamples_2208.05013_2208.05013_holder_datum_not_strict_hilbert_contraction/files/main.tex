@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\PD}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{A Holder-Datum Counterexample to Strict Hilbert Contractivity}
+\author{Run \texttt{fa\_banach\_001}, lane 15}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+The source paper is Max Fathi, Samuel Sra, and Melanie Weber,
+\emph{Computing Brascamp-Lieb Constants through the lens of Thompson Geometry},
+arXiv:2208.05013.  In Section 6, after introducing the normalized Picard map
+\[
+  \widetilde G(X)=\frac{G(X)}{\|G(X)\|},
+\]
+for an arbitrary matrix norm, the authors ask whether $\widetilde G$ is
+strictly contractive with respect to Hilbert's projective metric.  The relevant
+source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+Hilbert's projective metric ignores positive scalar multiples.  Therefore the
+normalization in $\widetilde G=G/\|G\|$ cannot create projective contraction if
+the underlying map $G$ is already the identity on a feasible datum.  The
+Holder datum with repeated identity maps gives exactly this situation.
+
+\section*{Definitions}
+
+For positive definite matrices $X,Y\in \PD_d$, Hilbert's projective metric is
+\[
+  \delta_H(X,Y)=\log\bigl(M(X/Y)M(Y/X)\bigr),
+  \qquad
+  M(X/Y)=\inf\{\lambda>0:X\preceq \lambda Y\}.
+\]
+The source Picard map is
+\[
+  G(X)=\left(\sum_{j=1}^m w_j A_j(A_j^\ast X A_j)^{-1}A_j^\ast\right)^{-1}.
+\]
+Strict contractivity means
+\[
+  \delta_H(\widetilde G(X),\widetilde G(Y))<\delta_H(X,Y)
+\]
+for all projectively distinct positive definite matrices $X,Y$ in the domain.
+
+\section*{Counterexample}
+
+\begin{theorem}
+The unqualified assertion that $\widetilde G$ is strictly contractive in
+Hilbert's projective metric is false for feasible Brascamp-Lieb data.
+\end{theorem}
+
+\begin{proof}
+Fix any dimension $d\ge 2$ and consider the Holder Brascamp-Lieb datum
+\[
+  m=2,\qquad A_1=A_2=I_d,\qquad w_1=w_2=\frac12.
+\]
+This is feasible: it is the standard Holder datum from the source paper, with
+$\sum_j w_j=1$.  Equivalently, Tao's feasibility conditions give
+\[
+  d=\sum_{j=1}^2 w_j d
+\]
+and, for every subspace $H\subseteq \R^d$,
+\[
+  \dim H=\sum_{j=1}^2 w_j\dim(I_dH).
+\]
+
+For this datum, the Picard map is exactly the identity:
+\[
+\begin{aligned}
+  G(X)
+  &=\left(\frac12 I_d(I_d^\ast X I_d)^{-1}I_d^\ast
+          +\frac12 I_d(I_d^\ast X I_d)^{-1}I_d^\ast\right)^{-1}  \\
+  &=\left(\frac12 X^{-1}+\frac12 X^{-1}\right)^{-1}
+   =X.
+\end{aligned}
+\]
+Hence
+\[
+  \widetilde G(X)=\frac{X}{\|X\|}
+\]
+for every positive definite $X$ and every matrix norm used in the
+normalization.
+
+Hilbert's projective metric is invariant under positive scalar rescaling:
+for all $\alpha,\beta>0$,
+\[
+  \delta_H(\alpha X,\beta Y)=\delta_H(X,Y).
+\]
+Indeed $M(\alpha X/\beta Y)=(\alpha/\beta)M(X/Y)$ and
+$M(\beta Y/\alpha X)=(\beta/\alpha)M(Y/X)$, so the two scalar factors cancel.
+Therefore
+\[
+  \delta_H(\widetilde G(X),\widetilde G(Y))
+  =\delta_H(X,Y)
+\]
+for every pair of projectively distinct positive definite matrices $X,Y$.
+
+For an explicit pair in dimension $2$, take
+\[
+  X=\diag(2,1),\qquad Y=I_2.
+\]
+Then $M(X/Y)=2$ and $M(Y/X)=1$, so $\delta_H(X,Y)=\log 2>0$, and equality of
+distances proves that $\widetilde G$ is not strictly contractive.
+\end{proof}
+
+\begin{remark}
+This counterexample is intentionally narrow.  The Holder datum above is
+feasible but not simple: every nonzero proper subspace $H$ is critical, since
+\[
+  \dim H=\sum_{j=1}^2 w_j\dim(I_dH).
+\]
+Thus the example refutes the literal general feasible-datum formulation of the
+Section 6 question, but it does not settle a possible intended version
+restricted to simple Brascamp-Lieb data.
+\end{remark}
+
+\section*{Verification Notes}
+
+The script \texttt{code/verify\_holder\_identity.py} checks the displayed
+$2\times 2$ witness using the diagonal formula
+\[
+  \delta_H(\diag(x_1,x_2),\diag(y_1,y_2))
+  = \log\frac{\max_i x_i/y_i}{\min_i x_i/y_i}.
+\]
+It prints equality of the pre- and post-iteration distances, both equal to
+$\log 2$.
+
+\section*{Novelty and Limitations}
+
+Local run indexes were searched for arXiv:2208.05013, the paper title,
+Brascamp-Lieb, Thompson geometry, Hilbert projective metric, and strict
+contractivity.  A bounded web search on 2026-07-03 for the exact
+open-question phrases, arXiv id, and close variants found no separate answer
+source.  Because the example is elementary, novelty confidence is only
+moderate.
+
+Human review should check whether the intended source question silently
+assumes simple data.  Under that stronger reading, this packet should be read
+as a literal-scope caveat, not as a solution of the simple-data strict
+contractivity problem.
+
+\begin{thebibliography}{9}
+\bibitem{FathiSraWeber}
+Max Fathi, Samuel Sra, and Melanie Weber.
+\emph{Computing Brascamp-Lieb Constants through the lens of Thompson Geometry}.
+arXiv:2208.05013.
+\end{thebibliography}
+
+\end{document}

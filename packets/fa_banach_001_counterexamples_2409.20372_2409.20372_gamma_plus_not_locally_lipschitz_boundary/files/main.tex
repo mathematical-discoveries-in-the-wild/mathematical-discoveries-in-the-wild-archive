@@ -1,0 +1,313 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\gp}{\gamma_+}
+\newcommand{\psd}{\mathcal S_+}
+\newcommand{\C}{\mathbb C}
+\newcommand{\tr}{\operatorname{tr}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\title{A Rank-Two Boundary Point Where $\gamma_+$ Is Not Locally Lipschitz}
+\author{Run \texttt{fa\_banach\_001}, lane 3}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+
+\section{Source question}
+
+Balan and Jiang define, for a Hermitian positive semidefinite matrix $B$,
+\[
+ \gp(B)=\inf\left\{\sum_j\|x_j\|_1^2:
+ B=\sum_jx_jx_j^*\right\}.
+\]
+They prove continuity on the full positive semidefinite cone and recall local
+Lipschitz regularity on its positive definite interior. Remark~2.7 asks whether
+local Lipschitz regularity remains true on the entire cone
+\cite[Remark~2.7, PDF p.~7]{BalanJiang}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Claimed contribution}
+
+\begin{theorem}\label{thm:main}
+On the cone $\psd^4(\C)$, the functional $\gp$ is not locally Lipschitz at
+\[
+ A=\begin{pmatrix}
+ 17&-5&-15&4\\
+ -5&2&3&-4\\
+ -15&3&17&4\\
+ 4&-4&4&16
+ \end{pmatrix}.
+\]
+The matrix $A$ is positive semidefinite of rank two and $\gp(A)=125$.
+Consequently the question in Remark~2.7 has a negative answer.
+\end{theorem}
+
+The assertion is independent of the chosen norm on the ambient Hermitian
+matrix space, since that space is finite dimensional. In particular it holds
+for the entrywise $\ell_1$ metric used in the source.
+
+\section{Proof intuition}
+
+At a locally Lipschitz point, a convex homogeneous functional has a finite
+supporting linear form. For $\gp$, such a form is a Hermitian matrix $T$ with
+$x^*Tx\leq\|x\|_1^2$ for every vector $x$ and
+$\tr(AT)=\gp(A)$. We choose $A=VV^T$ so that the two-dimensional norm
+$z\mapsto\|Vz\|_1$ has three exact contact directions forming a weighted
+tight frame. Those contacts compute $\gp(A)$ exactly. They also force $T$ to
+calibrate three vectors. A linear relation among the vectors is incompatible
+with the three forced derivatives of the $\ell_1$ norm, so the supporting
+form cannot exist.
+
+\section{Proof}
+
+We first isolate the convex-analytic implication used at the boundary.
+
+\begin{lemma}[Local Lipschitzness forces a supporting form]\label{lem:support}
+Let $f:\psd^n(\C)\to[0,\infty)$ be convex and positively homogeneous. If
+$f$ is locally Lipschitz at $A\in\psd^n(\C)$ relative to the cone, then there
+is a Hermitian matrix $T$ such that
+\[
+ f(B)\geq \tr(TB)\quad(B\in\psd^n(\C)),
+ \qquad f(A)=\tr(TA).
+\]
+For $f=\gp$, this implies
+\[
+ x^*Tx\leq\|x\|_1^2\quad(x\in\C^n).
+\]
+\end{lemma}
+
+\begin{proof}
+Choose a closed convex neighborhood
+$D=\psd^n(\C)\cap\overline B(A,r)$ on which $f$ is $L$-Lipschitz, and define
+on the real vector space of Hermitian matrices
+\[
+ g(X)=\inf_{Y\in D}\bigl(f(Y)+L\|X-Y\|\bigr).
+\]
+This is the infimal convolution of the proper convex function
+$f+\mathbf 1_D$ and the convex function $L\|\cdot\|$. Hence $g$ is convex;
+it is finite on the whole ambient space because $A\in D$. The Lipschitz
+inequality shows that $g=f$ on $D$. Since a finite convex function on a
+finite-dimensional vector space has a subgradient at every point, there is a
+Hermitian $T$ such that
+\[
+ g(X)\geq g(A)+\tr(T(X-A))
+\]
+for every Hermitian $X$.
+
+For $B\in\psd^n(\C)$ and sufficiently small $t>0$, the point
+$A+t(B-A)$ belongs to $D$. The subgradient inequality and convexity of $f$
+give
+\begin{align*}
+ f(A)+t\tr(T(B-A))
+ &\leq f(A+t(B-A))\\
+ &\leq (1-t)f(A)+tf(B).
+\end{align*}
+After division by $t$, this yields
+$f(B)\geq f(A)+\tr(T(B-A))$ for every $B$ in the cone. Applying this to
+$B=0$ and $B=2A$, and using positive homogeneity, gives
+$\tr(TA)=f(A)$ and then $f(B)\geq\tr(TB)$.
+
+Finally, $\gp(xx^*)=\|x\|_1^2$: the one-term factorization gives the upper
+bound, while entrywise triangle inequality gives the reverse bound for every
+factorization. Substituting $B=xx^*$ proves the last assertion.
+\end{proof}
+
+Now set
+\[
+ V=\begin{pmatrix}
+ 4&1\\-1&-1\\-4&1\\0&4
+ \end{pmatrix},
+ \qquad
+ H=\begin{pmatrix}81&7\\7&44\end{pmatrix}.
+\]
+Then $A=VV^T$ is the matrix in Theorem~\ref{thm:main}; in particular it is
+positive semidefinite of rank two.
+
+\begin{lemma}[Exact two-dimensional minorant]\label{lem:minorant}
+For every $z\in\C^2$,
+\[
+ \|Vz\|_1^2\geq z^*Hz.
+\]
+Equality holds for the three real directions
+\[
+ q_0=(1,0)^T,\qquad q_+=(1,4)^T,\qquad q_-=(-1,4)^T.
+\]
+\end{lemma}
+
+\begin{proof}
+First take a real vector $(a,b)$. If $a=0$, the inequality is immediate:
+$\|V(0,b)^T\|_1^2=49b^2\geq44b^2$. If $a\ne0$, homogeneity and global sign
+reduce the assertion to $(a,b)=(1,t)$. Put
+\[
+ N(t)=\|V(1,t)^T\|_1
+ =|4+t|+|1+t|+|t-4|+4|t|,
+ \quad Q(t)=81+14t+44t^2.
+\]
+Directly on the five sign intervals,
+\[
+\begin{array}{ccl}
+\toprule
+t\text{ range}&N(t)&N(t)^2-Q(t)\\
+\midrule
+t\leq-4&-1-7t&5(t^2-16)\\
+-4\leq t\leq-1&7-5t&-19(t+4)(t+8/19)\\
+-1\leq t\leq0&9-3t&-t(68+35t)\\
+0\leq t\leq4&9+5t&19t(4-t)\\
+t\geq4&1+7t&5(t^2-16)\\
+\bottomrule
+\end{array}
+\]
+and every expression in the last column is nonnegative on its stated range.
+Equality occurs precisely at $t=-4,0,4$, which gives the three displayed
+directions.
+
+For $z=u+iv$ with $u,v\in\mathbb R^2$, the Euclidean triangle inequality in
+$\mathbb R^2$ gives
+\[
+ \|Vz\|_1
+ =\sum_j\sqrt{(Vu)_j^2+(Vv)_j^2}
+ \geq\sqrt{\|Vu\|_1^2+\|Vv\|_1^2}.
+\]
+The real inequality applied to $u$ and $v$ therefore yields
+\[
+ \|Vz\|_1^2\geq u^THu+v^THv=z^*Hz.
+\]
+\end{proof}
+
+The three contact directions satisfy the exact weighted frame identity
+\begin{equation}\label{eq:frame}
+ \frac{15}{16}q_0q_0^T+
+ \frac1{32}q_+q_+^T+
+ \frac1{32}q_-q_-^T=I_2.
+\end{equation}
+Moreover,
+\[
+ x_0:=Vq_0=(4,-1,-4,0)^T,\quad \|x_0\|_1=9,
+\]
+\[
+ x_+:=Vq_+=(8,-5,0,16)^T,\quad \|x_+\|_1=29,
+\]
+\[
+ x_-:=Vq_-=(0,-3,8,16)^T,\quad \|x_-\|_1=27.
+\]
+Equation~\eqref{eq:frame} provides a factorization of $A=VV^T$ whose cost is
+\[
+ \frac{15}{16}\,9^2+\frac{1}{32}\,29^2+\frac{1}{32}\,27^2=125.
+\]
+Thus $\gp(A)\leq125$.
+
+Conversely, in any factorization $A=\sum_jy_jy_j^*$, every $y_j$ belongs to
+$\operatorname{ran}A=\operatorname{ran}V$: this follows by testing the
+factorization against vectors in $\ker A$. Hence $y_j=Vz_j$ for some
+$z_j\in\C^2$, and the injectivity of $V$ gives
+$\sum_jz_jz_j^*=I_2$. Lemma~\ref{lem:minorant} now gives
+\[
+ \sum_j\|y_j\|_1^2
+ \geq\sum_jz_j^*Hz_j
+ =\tr\left(H\sum_jz_jz_j^*\right)
+ =\tr H=125.
+\]
+Therefore
+\begin{equation}\label{eq:exactvalue}
+ \gp(A)=125.
+\end{equation}
+
+Suppose, toward a contradiction, that $\gp$ is locally Lipschitz at $A$.
+Lemma~\ref{lem:support} supplies a Hermitian matrix $T$ with
+\[
+ x^*Tx\leq\|x\|_1^2\quad(x\in\C^4),
+ \qquad \tr(AT)=125.
+\]
+Let $K=V^*TV$. Applying the inequality to $Vq$ and using
+\eqref{eq:frame},
+\begin{align*}
+125=\tr K
+&=\frac{15}{16}q_0^*Kq_0+
+  \frac1{32}q_+^*Kq_++
+  \frac1{32}q_-^*Kq_-\\
+&\leq\frac{15}{16}\|x_0\|_1^2+
+  \frac1{32}\|x_+\|_1^2+
+  \frac1{32}\|x_-\|_1^2=125.
+\end{align*}
+All three weights are positive, so equality holds in all three vector
+inequalities:
+\[
+ x_\bullet^*Tx_\bullet=\|x_\bullet\|_1^2
+ \quad(\bullet\in\{0,+,-\}).
+\]
+
+At such an equality vector, the nonnegative function
+$x\mapsto\|x\|_1^2-x^*Tx$ has a minimum. Real and imaginary perturbations in
+any nonzero coordinate show
+\[
+ (Tx)_j=\|x\|_1\operatorname{sign}(x_j)
+ \quad\text{whenever }x_j\ne0.
+\]
+The second coordinate is negative in each of $x_0,x_+,x_-$, so
+\[
+ (Tx_0)_2=-9,\qquad (Tx_+)_2=-29,\qquad (Tx_-)_2=-27.
+\]
+But $x_+-x_-=2x_0$. Applying $T$ and taking the second coordinate would give
+\[
+ -29-(-27)=2(-9),
+\]
+that is, $-2=-18$, a contradiction. This proves
+Theorem~\ref{thm:main}.
+
+\section{Verification and limitations}
+
+The exact symbolic checker in \texttt{code/verify\_counterexample.py}
+verifies $A=VV^T$, $\operatorname{rank}A=2$, all five polynomial
+factorizations in Lemma~\ref{lem:minorant}, the tight-frame identity, the
+factorization cost $125$, and the final contact-vector contradiction. It runs
+with:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_counterexample.py
+\end{verbatim}
+
+The proof gives a negative answer in dimension four. It does not classify
+which boundary points retain local Lipschitz regularity and does not decide
+whether a dimension-three counterexample exists.
+
+\section{Novelty check}
+
+The bounded search on 19 July 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; exact searches for arXiv:2409.20372, its title,
+the phrase ``locally Lipschitz on the entire positive semidefinite cone,'' and
+the core terms \texttt{gamma\_+}, rank-one decomposition, and Lipschitz
+boundary regularity. We checked the source paper, its 2021 predecessor
+\cite{BORWZ}, and a January 2026 author presentation that still labels the
+Lipschitz problem open \cite{BalanSlides}. No later solution or counterexample
+was found. This supports, but cannot certify, novelty.
+
+\begin{thebibliography}{9}
+\bibitem{BalanJiang}
+R. Balan and F. Jiang,
+\emph{Factorization of positive-semidefinite operators with absolutely
+summable entries}, arXiv:2409.20372 (2024),
+\url{https://arxiv.org/abs/2409.20372}.
+
+\bibitem{BORWZ}
+R. Balan, K. A. Okoudjou, M. Rawson, Y. Wang, and R. Zhang,
+\emph{Optimal $\ell^1$ rank one matrix decomposition},
+in \emph{Harmonic Analysis and Applications}, Springer (2021), 21--41.
+
+\bibitem{BalanSlides}
+R. Balan,
+\emph{Factorization of positive-semidefinite operators with absolutely
+summable entries}, ILAS/JMM presentation, January 2026,
+\url{https://math.umd.edu/~rvbalan/PRESENTATIONS/RaduBalan_JMM2026_ILAS.pdf}.
+\end{thebibliography}
+
+\end{document}

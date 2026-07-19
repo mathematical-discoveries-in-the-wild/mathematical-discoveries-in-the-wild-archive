@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ellinf}{\ell_\infty}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\co}{c_0}
+\newcommand{\Gammafin}{[\N]^{<\omega}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\begin{document}
+
+\begin{center}
+{\Large A second-predual counterexample for Gaussian random-field samples}
+
+\medskip
+{\small Run \texttt{fa\_banach\_001}; source arXiv:2203.04650}
+\end{center}
+
+\section*{Source question}
+
+Korolev, Latz, and Schoenlieb ask in the Outlook of \emph{Gaussian random
+fields on non-separable Banach spaces} whether the presence of a second
+predual can strengthen their bounded-pairing and weak-star-completion
+conclusions to actual membership of the sample in \(U\).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The source Outlook question, local build PDF page 14.}
+\end{figure}
+
+In the notation of the source paper, a positive nuclear covariance is written
+as
+\[
+  c=\sum_{i=1}^\infty \lambda_i \phi_i\otimes \phi_i,
+  \qquad \lambda_i\ge 0,\quad \sum_i\lambda_i<\infty,
+\]
+with \(\norm{\phi_i}_U=1\), and the associated formal Gaussian sample is
+\[
+  \theta=\sum_{i=1}^\infty \lambda_i^{1/2}\xi_i\phi_i,
+\]
+where the \(\xi_i\)'s are independent standard Gaussian variables.  The source
+paper proves that each fixed predual pairing is finite almost surely and that
+\(\theta\) belongs to a weak-star completion.  The question is whether, in
+second-predual cases, one can conclude \(\theta\in U\) almost surely.
+
+\section*{Proof intuition}
+
+The obstruction is that scalar testing by each fixed predual vector does not
+control a supremum over too many coordinates.  In \(\ell_\infty\), make the
+coordinates correspond to finite subsets \(F\subset\mathbb N\).  The \(i\)-th
+covariance direction is the indicator of the family of finite sets containing
+\(i\).  Then the coordinate indexed by \(F\) is the finite partial subseries
+\(\sum_{i\in F}\xi_i/i\).  Taking \(F\) to be the positive indices among
+\(\{1,\ldots,N\}\), these coordinates dominate a Bernoulli-thinned harmonic
+series, and hence become unbounded almost surely.
+
+\section*{Counterexample}
+
+\begin{theorem}
+Let \(U=\ell_\infty(\Gammafin)\).  Then \(U=\co(\Gammafin)^{**}\), so \(U\)
+has the second predual \(\co(\Gammafin)\).  There are norm-one vectors
+\((u_i)\subset U\) and positive numbers \((\lambda_i)\in\ell_1\) such that
+the positive nuclear kernel
+\[
+  c=\sum_{i=1}^\infty \lambda_i u_i\otimes u_i
+      \in U\widehat{\otimes}_\pi U
+\]
+has the source paper's scalar bounded-pairing property, but the corresponding
+Gaussian sample
+\[
+  \theta=\sum_{i=1}^\infty \lambda_i^{1/2}\xi_i u_i
+\]
+does not belong to \(U\) almost surely.
+\end{theorem}
+
+\begin{proof}
+Let \(\Gammafin\) be the countable set of all finite subsets of \(\mathbb N\).
+For \(i\in\mathbb N\), define \(u_i\in \ell_\infty(\Gammafin)\) by
+\[
+  u_i(F)=
+  \begin{cases}
+  1, & i\in F,\\
+  0, & i\notin F,
+  \end{cases}
+  \qquad F\in\Gammafin.
+\]
+Then \(\norm{u_i}_\infty=1\).  Put \(\lambda_i=i^{-2}\).  Since
+\(\sum_i\lambda_i<\infty\), the series
+\[
+  c=\sum_{i=1}^\infty i^{-2}u_i\otimes u_i
+\]
+converges in the projective tensor product.  It is symmetric and positive in
+the covariance sense, because for every \(\eta\in\ell_1(\Gammafin)\),
+\[
+  \langle \eta,C\eta\rangle
+  =\sum_{i=1}^\infty i^{-2}\langle \eta,u_i\rangle^2\ge 0.
+\]
+
+Let
+\[
+  \theta(F)=\sum_{i\in F}\frac{\xi_i}{i}, \qquad F\in\Gammafin.
+\]
+Each coordinate is a finite sum.  Moreover, if \(\eta\in\ell_1(\Gammafin)\)
+and
+\[
+  b_i=\langle \eta,u_i\rangle=\sum_{F\ni i}\eta_F,
+\]
+then \(|b_i|\le \norm{\eta}_1\), so
+\[
+  \sum_{i=1}^\infty \frac{b_i^2}{i^2}
+  \le \norm{\eta}_1^2\sum_{i=1}^\infty \frac{1}{i^2}<\infty.
+\]
+Hence the scalar Gaussian series
+\[
+  \sum_{i=1}^\infty \frac{\xi_i b_i}{i}
+\]
+converges almost surely.  This is exactly the bounded-pairing conclusion for
+each fixed predual vector \(\eta\).
+
+It remains to show that \(\theta\notin\ell_\infty(\Gammafin)\) almost surely.
+Let \(B_i=\mathbf 1_{\{\xi_i>1\}}\).  By the weighted strong law of large
+numbers, or equivalently by summation by parts from the ordinary strong law,
+\[
+  \frac{\sum_{i=1}^N B_i/i}{\sum_{i=1}^N 1/i}
+  \longrightarrow \Prob(\xi_1>1)>0
+  \qquad\hbox{almost surely}.
+\]
+Thus \(\sum_i B_i/i=\infty\) almost surely.
+
+For each \(N\), set \(F_N=\{1\le i\le N:\xi_i>1\}\).  This is a finite subset
+of \(\mathbb N\), hence \(F_N\in\Gammafin\), and
+\[
+  \norm{\theta}_\infty
+  \ge \theta(F_N)
+  =\sum_{\substack{1\le i\le N\\ \xi_i>1}}\frac{\xi_i}{i}
+  \ge \sum_{i=1}^N \frac{B_i}{i}.
+\]
+The right-hand side is unbounded in \(N\) almost surely.  Therefore
+\(\theta\notin U\) almost surely.
+\end{proof}
+
+\begin{corollary}[Isomorphic transfer]
+Let \(V\) be any Banach space linearly isomorphic to \(\ell_\infty\).  Then
+there is a positive nuclear covariance kernel in
+\(V\widehat{\otimes}_\pi V\) for which all fixed predual pairings are finite
+almost surely, but the associated Gaussian sample is not in \(V\) almost
+surely.
+\end{corollary}
+
+\begin{proof}
+Let \(T:\ell_\infty(\Gammafin)\to V\) be an isomorphism and use the vectors
+\(u_i\) from the theorem.  Define
+\[
+  v_i=\frac{Tu_i}{\norm{Tu_i}_V},\qquad \lambda_i=i^{-2}.
+\]
+Then \(\norm{v_i}_V=1\) and \(\sum_i\lambda_i<\infty\), so
+\(\sum_i \lambda_i v_i\otimes v_i\) is a positive nuclear kernel in
+\(V\widehat{\otimes}_\pi V\).  If the corresponding Gaussian series belonged
+to \(V\), applying \(T^{-1}\) would give a bounded element of
+\(\ell_\infty(\Gammafin)\) with coordinates
+\[
+  F\mapsto \sum_{i\in F}\frac{\xi_i}{i\,\norm{Tu_i}_V}.
+\]
+Since \(\norm{Tu_i}_V\le \norm{T}\), the same choice
+\(F_N=\{1\le i\le N:\xi_i>1\}\) gives coordinates at least
+\(\norm{T}^{-1}\sum_{i\le N}B_i/i\), which are unbounded almost surely.
+\end{proof}
+
+\section*{Consequence for the source question}
+
+The source paper itself recalls that, under its Theorem 8.49 hypothesis, the
+spaces \(\operatorname{lip}(X^\alpha)\), \(\operatorname{AE}(X^\alpha)\), and
+\(\operatorname{Lip}(X^\alpha)\) are linearly homeomorphic to \(c_0\),
+\(\ell_1\), and \(\ell_\infty\), respectively.  The corollary therefore gives
+a counterexample in those Lipschitz-space instances: a second-predual
+structure does not by itself upgrade the source paper's weak-star conclusion
+to \(\theta\in U\) almost surely.
+
+\section*{Limitations}
+
+This packet does not rule out stronger positive theorems for special covariance
+kernels, for example the exponential kernels studied in the source paper, or
+for covariance operators satisfying the appropriate Banach-space Gaussian
+radonifying condition.  It only refutes the broad strengthening based solely on
+the existence of a second predual.
+
+\section*{Novelty and literature check}
+
+Before promotion, the cheap run indexes were searched for arXiv:2203.04650 and
+for the phrases ``Gaussian random fields'', ``non-separable Banach'', ``second
+predual'', ``nuclear covariance'', ``\(\ell_\infty\)'', and close variants.
+No duplicate packet or attempt was found.
+
+External web searches were run for the exact source title, for
+``Gaussian random fields non-separable Banach second predual theta in U'', and
+for variants of ``nuclear covariance Gaussian series \(\ell_\infty\) not
+bounded''.  The only exact source-title hit was the arXiv paper itself, and no
+later paper explicitly answering the Outlook question was found in this
+bounded search.  The construction is elementary and should still be reviewed
+against the broader Gaussian-measures literature, where the general distinction
+between nuclear covariance and radonifying sample operators is classical.
+
+\section*{References}
+
+\begin{itemize}
+\item Y. Korolev, J. Latz, C.-B. Schoenlieb, \emph{Gaussian random fields on
+non-separable Banach spaces}, arXiv:2203.04650.
+\item N. Weaver, \emph{Lipschitz Algebras}, second edition, World Scientific,
+2018.  Used here only through Theorem 8.49 as quoted in the source paper.
+\end{itemize}
+
+\end{document}

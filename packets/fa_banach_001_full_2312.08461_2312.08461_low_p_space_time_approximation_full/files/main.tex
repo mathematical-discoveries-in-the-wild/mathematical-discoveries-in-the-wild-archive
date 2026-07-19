@@ -1,0 +1,260 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1.04in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\D}{\mathbb D}
+\newcommand{\FL}{\mathscr F L}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\norm}[2]{\left\|#1\right\|_{#2}}
+\newcommand{\SigmaNM}{\Sigma_{N,M}}
+
+\title{A full low-$p$ extension of space-time shallow-network approximation}
+\author{Agent lane 14}
+\date{Run \texttt{fa\_banach\_001}, 2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet upgrades the previous type-$p$ partial note to a candidate full
+solution of the low-$p$ future-work line in Abdeljawad--Dittrich
+\cite{AbdeljawadDittrich2023}.  The source theorem is stated for
+Bochner-Sobolev error exponents $2\leq p_1\leq p_2$, because the proof uses a
+type-2 Maurey estimate.  The packet proves that the same $N^{-1/2}$ rate
+continues to hold in the entire low range
+\[
+        1\leq p_1\leq p_2\leq2 .
+\]
+In particular, the single-exponent case $1\leq p<2$ mentioned in the
+introduction is covered, including the endpoint $p=1$.
+
+\section*{Source target}
+
+The source explicitly marks the low-$p$ case as future work:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In text form, the authors write that their analysis is limited to
+Bochner-Sobolev error with $p\geq2$ because the available method uses a type-2
+Banach space; for $p<2$, the Bochner-Sobolev space is type-$p$, and they leave
+that line for future projects \cite[p. 4]{AbdeljawadDittrich2023}.
+
+\section*{Proof Intuition}
+
+The source proof already contains more structure than the type-2 explanation
+uses.  In the dictionary-bound step, before taking any $L^{p_1,p_2}$ norm, it
+proves a uniform pointwise bound for every relevant derivative of every scaled
+neuron.  Therefore one does not need Banach-space type to sample the
+representing measure in the low-$p$ range.
+
+Sample the explicit signed measure representation of $f$ that the source
+constructs.  For each derivative and each point $(x,y)$, the sampling error is
+a scalar average of uniformly bounded independent random variables, so its
+$p_2$-moment is $O(N^{-p_2/2})$ for $1\leq p_2\leq2$.  Since
+$p_1\leq p_2$, Jensen's inequality lets this pointwise estimate pass through
+the mixed $L^{p_1}(U;L^{p_2}(V))$ norm.  Summing over finitely many Sobolev
+derivatives gives the same $N^{-1/2}$ rate as the high-$p$ theorem, now for
+all $1\leq p_1\leq p_2\leq2$.
+
+\section*{A pointwise sampling lemma}
+
+\begin{lemma}
+\label{lem:pointwise-sampling}
+Let $U,V$ be bounded measurable sets, let $1\leq p_1\leq p_2\leq2$, and let
+$n_1,n_2\in\N$.  Let $\D$ be a family of functions on $U\times V$ such that,
+for every $h\in\D$ and every pair of multiindices $|\alpha|\leq n_1$,
+$|\beta|\leq n_2$,
+\[
+        |\partial_x^\alpha\partial_y^\beta h(x,y)|
+        \leq H_{\alpha,\beta}
+        \qquad ((x,y)\in U\times V).
+\]
+Suppose
+\[
+        f=\int h\,d\mu(h)
+\]
+in distributions, where $\mu$ is a finite signed Borel measure supported on
+$\D$.  Put $M=\|\mu\|$.  Then for every $N\geq1$ there is an
+$f_N\in\Sigma_{N,M}(\D)$ such that
+\[
+ \|f-f_N\|_{W_{n_1,p_1}^{n_2,p_2}(U,V)}
+ \leq
+ C_{\mathbf n,\mathbf p,H}\,
+ M\,|U|^{1/p_1}|V|^{1/p_2}N^{-1/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $d\mu=s\,d|\mu|$, with $|s|\leq1$, and let $\rho=|\mu|/M$ if
+$M>0$; the case $M=0$ is trivial.  Let $h_1,\ldots,h_N$ be independent
+$\rho$-distributed samples and set
+\[
+        f_N=\frac{M}{N}\sum_{j=1}^N s(h_j)h_j .
+\]
+Then $f_N\in\Sigma_{N,M}(\D)$.  Fix $\alpha,\beta$ and write
+\[
+        G_{\alpha,\beta}
+        =\partial_x^\alpha\partial_y^\beta(f_N-f).
+\]
+For each $(x,y)$, this is the mean of $N$ centered scalar random variables,
+each bounded in modulus by $2M H_{\alpha,\beta}$.  Hence, for
+$1\leq p_2\leq2$,
+\[
+        \mathbb E |G_{\alpha,\beta}(x,y)|^{p_2}
+        \leq
+        (2M H_{\alpha,\beta})^{p_2}N^{-p_2/2}.
+\]
+Using Fubini and Jensen's inequality with the concave exponent
+$p_1/p_2\leq1$,
+\[
+\begin{aligned}
+\mathbb E\|G_{\alpha,\beta}\|_{L^{p_1}(U;L^{p_2}(V))}^{p_1}
+&=
+\mathbb E\int_U
+   \left(\int_V |G_{\alpha,\beta}(x,y)|^{p_2}\,dy\right)^{p_1/p_2}dx \\
+&\leq
+\int_U
+   \left(\int_V
+       \mathbb E |G_{\alpha,\beta}(x,y)|^{p_2}\,dy
+   \right)^{p_1/p_2}dx \\
+&\leq
+(2M H_{\alpha,\beta})^{p_1}
+|U|\,|V|^{p_1/p_2}N^{-p_1/2}.
+\end{aligned}
+\]
+Therefore some sample satisfies the corresponding bound for all finitely many
+derivatives after summing the expectations over $|\alpha|\leq n_1$ and
+$|\beta|\leq n_2$.  This is the asserted Sobolev estimate, with the finite
+derivative sum absorbed into $C_{\mathbf n,\mathbf p,H}$.
+\end{proof}
+
+\section*{\texorpdfstring{Low-$p$ theorem}{Low-p theorem}}
+
+\begin{theorem}
+\label{thm:low-p-full}
+Use the notation and the activation, weight, Fourier-Lebesgue, bounded-domain,
+and scaled-dictionary hypotheses from the proof of
+\cite[Theorem 3.9]{AbdeljawadDittrich2023}.  Replace the source condition
+$2\leq p_1\leq p_2<\infty$ by
+\[
+        1\leq p_1\leq p_2\leq2 .
+\]
+Let $1\leq q_i\leq2$ and let $f\in\FL^{q_1,q_2}(\widetilde\omega)$.  For
+$M$ sufficiently large there is a constant $C>0$, independent of $N$ and $f$,
+such that
+\[
+ \inf_{f_N\in\SigmaNM(\D_{\widetilde\sigma}^{d_1,d_2})}
+        \|f-f_N\|_{W_{n_1,p_1}^{n_2,p_2}(U,V)}
+ \leq
+ C\,N^{-1/2}|U|^{1/p_1}|V|^{1/p_2}
+        \|f\|_{\FL^{q_1,q_2}(\widetilde\omega)}
+\]
+for every $N\geq1$.
+\end{theorem}
+
+\begin{proof}
+The source proof of Theorem 3.9 constructs an explicit signed measure
+representation of $f$ by the scaled shallow dictionary
+$\D_{\widetilde\sigma}^{d_1,d_2}$.  Its variation estimate gives a measure
+$\mu$ with
+\[
+        \|\mu\|
+        \leq
+        A\|f\|_{\FL^{q_1,q_2}(\widetilde\omega)}
+\]
+where $A$ depends only on the structural parameters of the theorem.  The same
+argument also proves that
+\[
+        f\in
+        \FL^1\bigl(\omega(\cdot,\cdot)\langle\cdot\rangle
+              \langle\cdot\rangle\bigr)
+        \subseteq \FL^1(\omega).
+\]
+By the source's low-degree embedding lemma
+\cite[Lemma 3.7]{AbdeljawadDittrich2023}, applied with $t_1=t_2=1$, this
+places $f$ in $W_{n_1,p_1}^{n_2,p_2}(U,V)$ for all $1\leq p_i\leq2$.
+
+It remains to approximate the representing measure.  In the dictionary-bound
+part of the source proof, the authors show pointwise, before integration, that
+for every $|\alpha|\leq n_1$ and $|\beta|\leq n_2$,
+\[
+ \bigl|
+ \partial_x^\alpha\partial_y^\beta
+ \widetilde\sigma(\cdot,\cdot;\xi,b)(x,y)
+ \bigr|
+ \leq H_{\alpha,\beta}
+\]
+uniformly in $(\xi,b)$ and $(x,y)\in U\times V$; this is the estimate that
+then yields their displayed $L^{p_1,p_2}$ dictionary bound
+\[
+        \|\widetilde\sigma(\cdot,\cdot;\xi,b)\|_
+        {W_{n_1,p_1}^{n_2,p_2}(U,V)}
+        \leq B|U|^{1/p_1}|V|^{1/p_2}.
+\]
+Lemma \ref{lem:pointwise-sampling}, applied to this representing measure and
+these pointwise derivative bounds, gives an $N$-term network
+$f_N\in\Sigma_{N,\|\mu\|}(\D_{\widetilde\sigma}^{d_1,d_2})$ with
+\[
+\begin{aligned}
+ \|f-f_N\|_{W_{n_1,p_1}^{n_2,p_2}(U,V)}
+ &\leq
+ C_{\mathbf n,\mathbf p,H}\,
+ \|\mu\|\,|U|^{1/p_1}|V|^{1/p_2}N^{-1/2} \\
+ &\leq
+ C\,N^{-1/2}|U|^{1/p_1}|V|^{1/p_2}
+        \|f\|_{\FL^{q_1,q_2}(\widetilde\omega)} .
+\end{aligned}
+\]
+Taking $M\geq\|\mu\|$ proves the asserted infimum bound.
+\end{proof}
+
+\section*{Verification and scope}
+
+The proof is symbolic; no numerical verification is needed.  The source crop
+was generated by \texttt{code/make\_open\_problem\_crop.py}.  Human review
+should check the passage from the source's pointwise derivative estimate to
+Lemma \ref{lem:pointwise-sampling}; this is the entire upgrade mechanism.
+
+This packet fully covers the source's stated low-$p$ obstruction for the same
+two-block shallow-network theorem, including the single-block case
+$p_1=p_2=p<2$ and the endpoint $p=1$.  It does not address separate future
+directions in the paper such as Bochner-Besov targets or arbitrary
+Bochner-Banach spaces.
+
+\section*{Novelty check}
+
+The local lightweight indexes were searched for \texttt{2312.08461}, the
+paper title, \texttt{Fourier Lebesgue}, \texttt{Bochner-Sobolev},
+\texttt{type-p}, $p<2$, and neural-network approximation keywords.
+The only existing packet was the earlier lane-14 partial note, which this
+packet replaces and strengthens.
+
+Web searches on 2026-07-18 for the arXiv id, the exact title, and phrases
+combining low-p or $p<2$ Bochner-Sobolev error, shallow neural networks,
+Fourier-Lebesgue spaces, and the rate $N^{-1/2}$ found the source paper and
+generic related material, but no later resolution of this low-$p$ extension.
+
+\begin{thebibliography}{9}
+
+\bibitem{AbdeljawadDittrich2023}
+A. Abdeljawad and T. Dittrich,
+\emph{Space-Time Approximation with Shallow Neural Networks in Fourier
+Lebesgue spaces},
+arXiv:2312.08461, 2023.
+
+\end{thebibliography}
+
+\end{document}

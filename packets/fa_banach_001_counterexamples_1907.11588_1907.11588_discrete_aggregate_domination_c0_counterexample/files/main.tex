@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{A c0 Counterexample to Aggregate Domination for Independent Sums}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample, likely valid, to the discrete
+problem stated in Remark 12.10 of Yaroslavtsev's paper
+\emph{Local characteristics and tangency of vector-valued martingales}
+\cite{Yaroslavtsev2019}.  The result refutes the broad Banach-space problem as
+stated there.  It does not settle the corresponding UMD-space problem for
+general characteristically dominated local martingales, since the counterexample
+uses \(X=c_0\), which is not UMD.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source crop
+below shows the formal statement.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The next page adds that, by symmetrization, one can assume the variables are
+symmetric, and that even this case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+In modern notation, the question asks: if \(X\) is a Banach space,
+\(1\leq p<\infty\), and \((\xi_n)\), \((\eta_n)\) are independent mean-zero
+\(X\)-valued random variables satisfying
+\[
+   \sum_n {\mathbb P}(\xi_n\in B)
+   \leq
+   \sum_n {\mathbb P}(\eta_n\in B)
+   \qquad
+   \text{for every Borel }B\subset X\setminus\{0\},
+\]
+must there be a constant \(C=C(p,X)\) such that
+\[
+   {\mathbb E}\Bigl\|\sum_n \xi_n\Bigr\|^p
+   \leq
+   C\,{\mathbb E}\Bigl\|\sum_n \eta_n\Bigr\|^p?
+\]
+
+\section*{Idea of the Proof}
+
+Aggregate domination records only the total amount of mass assigned to each
+jump vector.  It forgets how that mass is grouped into independent variables.
+In \(c_0\), this grouping matters.  If the first \(N\) signed basis vectors are
+used once each, the sum has sup norm exactly \(1\).  If instead one takes
+\(N\) independent uniformly chosen signed basis vectors among the first \(N\)
+coordinates, then the aggregate jump measure is identical, but the sup norm of
+the sum is the largest signed occupancy count among \(N\) boxes.  That maximum
+diverges.
+
+\section*{Counterexample}
+
+\begin{theorem}
+For every \(1\leq p<\infty\), there is no constant \(C=C(p,c_0)\) satisfying
+the inequality in Remark 12.10 for all finite independent symmetric
+\(c_0\)-valued families.  This remains true even when the aggregate measures
+\(\sum_n {\mathbb P}(\xi_n\in\cdot)\) and
+\(\sum_n {\mathbb P}(\eta_n\in\cdot)\) are equal on \(c_0\setminus\{0\}\).
+\end{theorem}
+
+\begin{proof}
+Let \((e_k)_{k\geq 1}\) be the canonical unit vector basis of \(c_0\).  Fix
+\(N\geq 2\).  Let \(\varepsilon_1,\ldots,\varepsilon_N\) be independent
+Rademacher signs and set
+\[
+   \eta_k=\varepsilon_k e_k,\qquad 1\leq k\leq N.
+\]
+Let \(I_1,\ldots,I_N\) be independent uniform random variables on
+\(\{1,\ldots,N\}\), independent of another Rademacher family
+\(\delta_1,\ldots,\delta_N\), and set
+\[
+   \xi_j=\delta_j e_{I_j},\qquad 1\leq j\leq N.
+\]
+All these variables are independent and symmetric, hence mean zero.
+
+For every Borel set \(B\subset c_0\setminus\{0\}\),
+\[
+\sum_{j=1}^N {\mathbb P}(\xi_j\in B)
+=
+N\cdot \frac{1}{2N}
+\bigl(
+\#\{1\leq k\leq N:\ e_k\in B\}
++\#\{1\leq k\leq N:\ -e_k\in B\}
+\bigr)
+=
+\sum_{k=1}^N {\mathbb P}(\eta_k\in B).
+\]
+Thus the hypothesis holds with equality.
+
+On the other hand,
+\[
+   \Bigl\|\sum_{k=1}^N \eta_k\Bigr\|_\infty=1
+   \quad\text{almost surely}.
+\]
+It remains to show that
+\[
+   {\mathbb E}\Bigl\|\sum_{j=1}^N \xi_j\Bigr\|_\infty^p\to\infty.
+\]
+Let
+\[
+   S_N=\sum_{j=1}^N \xi_j,
+   \qquad
+   r_N=\left\lfloor\frac{\log N}{4\log\log N}\right\rfloor
+\]
+for \(N\) sufficiently large.  For each \(1\leq k\leq N\), let \(A_k\) be the
+event that exactly \(r_N\) of the variables \(\xi_j\) are equal to \(+e_k\)
+and none is equal to \(-e_k\).  If \(A_k\) occurs, then the \(k\)-th coordinate
+of \(S_N\) is \(r_N\), so \(\|S_N\|_\infty\geq r_N\).
+
+Put \(r=r_N\) and \(Z_N=\sum_{k=1}^N {\bf 1}_{A_k}\).  For a fixed \(k\),
+\[
+   p_N:={\mathbb P}(A_k)
+   =\binom{N}{r}\left(\frac{1}{2N}\right)^r
+     \left(1-\frac{1}{N}\right)^{N-r}.
+\]
+Since \(r=o(\sqrt N)\),
+\[
+   p_N\geq \frac{c}{2^r r!}
+\]
+with an absolute constant \(c>0\), for all large \(N\).  Hence
+\[
+   {\mathbb E}Z_N=Np_N
+   \geq
+   c\,\frac{N}{2^r r!}\to\infty,
+\]
+because
+\[
+   \log(2^r r!)=r\log r+O(r)
+   =\left(\frac{1}{4}+o(1)\right)\log N.
+\]
+
+For \(k\neq \ell\),
+\[
+\begin{split}
+   q_N:={\mathbb P}(A_k\cap A_\ell)
+   &=
+   \frac{N!}{r!\,r!\,(N-2r)!}
+   \left(\frac{1}{2N}\right)^{2r}
+   \left(1-\frac{2}{N}\right)^{N-2r}.
+\end{split}
+\]
+A direct comparison with \(p_N^2\) gives
+\[
+   \frac{q_N}{p_N^2}
+   =
+   \frac{(N-r)!^2}{N!(N-2r)!}
+   \frac{ (1-2/N)^{N-2r}}{ (1-1/N)^{2N-2r}}
+   \leq C_0
+\]
+for all large \(N\), since \(r=o(\sqrt N)\).  Therefore
+\[
+   {\mathbb E}Z_N^2
+   =Np_N+N(N-1)q_N
+   \leq {\mathbb E}Z_N + C_0({\mathbb E}Z_N)^2
+   \leq C_1({\mathbb E}Z_N)^2
+\]
+for all large \(N\).  By the Paley--Zygmund inequality,
+\[
+   {\mathbb P}(Z_N>0)
+   \geq \frac{({\mathbb E}Z_N)^2}{ {\mathbb E}Z_N^2}
+   \geq C_1^{-1}.
+\]
+Consequently,
+\[
+   {\mathbb E}\|S_N\|_\infty^p
+   \geq r_N^p\,{\mathbb P}(Z_N>0)
+   \geq C_1^{-1}
+      \left\lfloor\frac{\log N}{4\log\log N}\right\rfloor^p
+   \to\infty.
+\]
+Thus the ratio
+\[
+ \frac{{\mathbb E}\|\sum_{j=1}^N\xi_j\|_\infty^p}
+      {{\mathbb E}\|\sum_{k=1}^N\eta_k\|_\infty^p}
+\]
+is unbounded.  No constant \(C(p,c_0)\) can exist.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses only finite sequences, so there is no convergence issue in the
+sums.  The variables are symmetric, so the counterexample also refutes the
+symmetric version mentioned immediately after Remark 12.10.  The same
+construction lives inside \(c_0\) for all \(N\), so the failure is for one fixed
+Banach space, not for a changing finite-dimensional space.
+
+The small script \texttt{code/occupancy\_lower\_bound.py} prints the first- and
+second-moment quantities used in the Paley--Zygmund estimate for sample values
+of \(N\).  It is only a sanity check; the preceding occupancy estimate is the
+proof.
+
+\section*{Novelty and Literature Check}
+
+The run indexes were searched for \texttt{1907.11588},
+\texttt{characteristically dominated}, \texttt{recoupling},
+\texttt{UMD+}, and the discrete aggregate-domination formulation; no prior run
+packet for this target was found.  Web searches were run for exact and nearby
+phrases including ``It is not known whether characteristically dominated
+martingales'', ``characteristically dominated martingales independent random
+variables'', and ``sum\_n P(xi\_n in B) sum\_n P(eta\_n in B) Banach''.  These
+found the source paper and related comparison literature, including
+Montgomery-Smith--Pruss \cite{MontgomerySmithPruss2001}, but no existing answer
+to this aggregate-domination formulation.
+
+\section*{Limitations}
+
+This is a counterexample to the broad Banach-space discrete question in Remark
+12.10.  It does not resolve whether the desired comparison might hold under
+additional geometric assumptions, especially for UMD spaces.  Therefore it does
+not by itself settle the full general-local-martingale characteristically
+dominated problem in the UMD setting.
+
+\section*{Human Review Recommendation}
+
+Review the second-moment occupancy estimate and the exact matching of aggregate
+measures.  If those two points check out, the counterexample should be accepted
+as a negative answer to the Banach-space discrete question exactly as stated in
+Remark 12.10.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev,
+\emph{Local characteristics and tangency of vector-valued martingales},
+arXiv:1907.11588, 2019.
+
+\bibitem{MontgomerySmithPruss2001}
+S. J. Montgomery-Smith and A. R. Pruss,
+\emph{A comparison inequality for sums of independent random variables},
+J. Math. Anal. Appl. 254 (2001), no. 1, 35--42;
+arXiv:math/9811124.
+
+\end{thebibliography}
+
+\end{document}

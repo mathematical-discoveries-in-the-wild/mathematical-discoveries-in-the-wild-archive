@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\eps}{\varepsilon}
+
+\title{Finite-Dimensional Quotients Obstruct Epsilon-Hypercyclicity}
+\author{FA Banach run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_08}}
+\date{2026-06-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate partial result, likely valid.  It does not
+construct a new \(\eps\)-hypercyclic non-hypercyclic operator.  Instead it
+isolates a general obstruction which any solution to the open problem in
+Tapia-Garcia, arXiv:2103.08075, must avoid.
+
+\section*{Source Context}
+
+Tapia-Garcia studies \(\eps\)-hypercyclic operators.  For a Banach space \(X\),
+an operator \(T\in\mathcal L(X)\) is \(\eps\)-hypercyclic if there is a vector
+\(x\in X\) such that, for every nonzero \(y\in X\), some \(n\geq 0\) satisfies
+\[
+  \|T^n x-y\|\leq \eps\|y\|.
+\]
+The introduction asks whether every separable infinite-dimensional Banach space
+admits an \(\eps\)-hypercyclic operator which is not hypercyclic, with
+\(\eps\in(0,1)\).
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source paper gives positive constructions in several classical cases,
+especially when the space contains a complemented subspace of the form needed
+for its operator-weighted shift construction.  The result below records a
+different, negative constraint on possible constructions.
+
+\section*{Result}
+
+\begin{lemma}[No finite-dimensional \(\eps\)-hypercyclic operators]
+\label{lem:finite-dimensional}
+Let \(F\neq\{0\}\) be a finite-dimensional real or complex Banach space.  If
+\(A\in\mathcal L(F)\) and \(0\leq\eps<1\), then \(A\) is not
+\(\eps\)-hypercyclic.
+\end{lemma}
+
+\begin{proof}
+It is enough to argue over the complexification in the real case.  Suppose that
+some \(u\in F\) were an \(\eps\)-hypercyclic vector for \(A\).  Fix any
+nonzero \(v\in F\).  Applying the definition to the targets \(t v\), with
+\(t>0\), gives integers \(n(t)\) such that
+\[
+  \|A^{n(t)}u-tv\|\leq \eps t\|v\|.
+\]
+Thus
+\[
+  (1-\eps)t\|v\|\leq \|A^{n(t)}u\|
+  \leq (1+\eps)t\|v\|.
+\]
+Letting \(t\downarrow0\) and \(t\uparrow\infty\), the orbit
+\((A^n u)\) must have a subsequence converging to \(0\) and must also be
+unbounded.
+
+Let \(E=\operatorname{span}\{A^n u:n\geq0\}\), a finite-dimensional
+\(A\)-invariant cyclic subspace.  Since \(A^{n_j}u\to0\) along a subsequence,
+the restriction \(A_E=A|_E\) cannot have an eigenvalue \(\lambda\) with
+\(|\lambda|\geq1\).  Indeed, if \(A_E^*\varphi=\lambda\varphi\) for some
+nonzero \(\varphi\in E^*\), then cyclicity of \(u\) in \(E\) gives
+\(\varphi(u)\neq0\); otherwise \(\varphi\) would vanish on every \(A^n u\) and
+hence on all of \(E\).  But then
+\[
+  |\varphi(A^n u)|=|\lambda|^n|\varphi(u)|
+\]
+cannot tend to \(0\) along any subsequence.  Therefore all eigenvalues of
+\(A_E\) have modulus strictly less than \(1\), so \(A_E^n u\to0\).  In
+particular the orbit is bounded, contradicting the unboundedness forced above.
+\end{proof}
+
+\begin{proposition}[Epsilon-hypercyclicity passes to quotients with loss]
+\label{prop:quotient}
+Let \(q:X\to Y\) be a quotient map between Banach spaces, and suppose
+\(T\in\mathcal L(X)\), \(S\in\mathcal L(Y)\) satisfy \(qT=Sq\).  If \(x\) is
+an \(\eps\)-hypercyclic vector for \(T\), then \(qx\) is a \(\delta\)-hypercyclic
+vector for \(S\) for every \(\delta>\eps\).
+\end{proposition}
+
+\begin{proof}
+Fix \(\delta>\eps\) and \(0\neq z\in Y\).  If \(\eps=0\), choose any
+preimage \(y\in X\) of \(z\).  Otherwise choose \(\eta>0\) such that
+\(\eps(1+\eta)<\delta\), and then choose \(y\in X\) with \(q y=z\) and
+\(\|y\|\leq(1+\eta)\|z\|\), using the quotient norm.  By
+\(\eps\)-hypercyclicity there is \(n\) such that
+\[
+  \|T^n x-y\|\leq \eps\|y\|.
+\]
+Applying \(q\) gives
+\[
+  \|S^n qx-z\|
+  =\|q(T^n x-y)\|
+  \leq \eps\|y\|
+  < \delta\|z\|
+\]
+in the case \(\eps>0\), and the same conclusion with error \(0\) in the case
+\(\eps=0\).
+\end{proof}
+
+\begin{corollary}[Finite-dimensional quotient obstruction]
+\label{cor:finite-quotient}
+Let \(X\) be a Banach space, \(T\in\mathcal L(X)\), and \(0\leq\eps<1\).  If
+\(T\) is \(\eps\)-hypercyclic, then there is no closed \(T\)-invariant subspace
+\(M\subset X\) for which \(X/M\) is nonzero and finite-dimensional.
+Equivalently, \(T\) has no nonzero finite-dimensional invariant quotient.
+\end{corollary}
+
+\begin{proof}
+If such an \(M\) existed, \(T\) would induce an operator \(\overline T\) on the
+nonzero finite-dimensional quotient \(X/M\).  Choose
+\(\delta\) with \(\eps<\delta<1\).  Proposition~\ref{prop:quotient} would make
+\(\overline T\) \(\delta\)-hypercyclic, contradicting
+Lemma~\ref{lem:finite-dimensional}.
+\end{proof}
+
+\section*{Proof Intuition}
+
+The point is that \(\eps<1\) is strong enough to see scale.  If an orbit
+approximates every nonzero target within relative error \(\eps\), then along
+the fixed ray \(\{t v:t>0\}\) its norms must come arbitrarily close to zero
+and also become arbitrarily large.  Finite-dimensional linear dynamics cannot
+do both.  A subsequence tending to zero rules out every spectral component of
+modulus at least one on the cyclic subspace generated by the vector; hence the
+orbit actually tends to zero and is bounded.
+
+The quotient statement then says that any \(\eps\)-hypercyclic construction
+with \(\eps<1\) must remain \(\delta\)-hypercyclic on every induced quotient
+for all \(\delta>\eps\).  Since finite-dimensional quotients cannot have this
+property, finite-dimensional marker coordinates cannot be used to force
+non-hypercyclicity.
+
+\section*{Implication for the Source Problem}
+
+This does not answer Tapia-Garcia's question.  It does, however, remove a
+natural route: decomposing a Banach space as a hyperplane plus a scalar
+coordinate, making the hyperplane part hypercyclic, and using the scalar part
+as a non-hypercyclic obstruction.  Such an operator would have a nonzero
+finite-dimensional invariant quotient, so it cannot be \(\eps\)-hypercyclic
+for any \(\eps<1\).
+
+Thus any full construction on arbitrary separable Banach spaces must either
+build the non-hypercyclic obstruction in an infinite-dimensional quotient or
+subspace, or use a construction whose failure of hypercyclicity is not detected
+by a finite-dimensional quotient.
+
+\section*{Verification and Novelty Check}
+
+The proof is non-computational.  The local run indexes were searched for the
+arXiv id, epsilon-hypercyclicity terms, and finite-dimensional quotient terms;
+no duplicate packet or attempt for this obstruction was found.  Web searches
+for the same exact themes found the source paper and Bayart's later
+sharp-threshold construction, but no exact occurrence of this
+finite-dimensional quotient obstruction.
+
+The novelty confidence is therefore moderate rather than high: the observation
+is elementary and may be known folklore in linear dynamics, but it was not
+visible in the bounded search and is directly useful for steering further work
+on the source problem.
+
+\begin{thebibliography}{9}
+
+\bibitem{TapiaGarcia}
+S. Tapia-Garcia,
+\emph{An epsilon-hypercyclicity criterion and its application on classical
+Banach spaces},
+arXiv:2103.08075, 2021.
+
+\bibitem{Bayart2023}
+F. Bayart,
+\emph{\(\eps\)-hypercyclic operators that are not \(\delta\)-hypercyclic for
+\(\delta<\eps\)},
+arXiv:2303.16677, 2023.
+
+\end{thebibliography}
+
+\end{document}

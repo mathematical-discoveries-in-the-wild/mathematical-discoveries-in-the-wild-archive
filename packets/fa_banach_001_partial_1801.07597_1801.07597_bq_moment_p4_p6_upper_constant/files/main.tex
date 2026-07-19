@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\Bq}{B_q^n}
+
+\title{The finite-dimensional Khintchine constants on \(B_q^n\) for \(p=4\) and \(p=6\)}
+\author{Run \texttt{fa\_banach\_001}, lane 17}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Alexandros Eskenazis, Piotr Nayar, and Tomasz Tkocz, \emph{Sharp comparison of moments and the log-concave moment problem}, arXiv:1801.07597.  Their Question 5 asks:
+
+\begin{quote}
+Fix \(q\in(2,\infty)\), \(n\ge1\), and let \(X=(X_1,\ldots,X_n)\) be a random vector uniformly distributed on \(B_q^n\).  For \(p\ge2\), what are the optimal values of \(B_{p,q,n}\) in the finite-dimensional Khintchine inequality?  More ambitiously, which unit vectors maximise the moments \(\|\sum_{i=1}^n a_iX_i\|_p\)?
+\end{quote}
+
+The same question also asks for the dual missing lower constants when \(p\in[1,2]\), and the paper separately notes that \(q>2\), \(p\in(-1,1)\) remains open.
+
+\begin{center}
+\includegraphics[width=0.78\textwidth]{figures/open_problem_page_4.png}
+\end{center}
+
+\section*{Result}
+
+This packet solves the \(p=4\) and \(p=6\) cases of the missing finite-dimensional upper-constant problem for every \(q\in(2,\infty)\) and every \(n\ge1\).  The optimising directions are exactly the equal-modulus directions, \(|a_1|=\cdots=|a_n|=n^{-1/2}\).
+
+\section*{Proof Intuition}
+
+The source paper reduces the uniform measure on \(B_q^n\) to sums of independent coordinates \(Y_i\) with density proportional to \(e^{-|x|^q}\).  For \(p=4\), the moment is
+\[
+\E\left(\sum a_iY_i\right)^4
+=3m_2^2+(m_4-3m_2^2)\sum a_i^4,
+\]
+where \(m_r=\E Y^r\).  Since the \(q>2\) coordinate law has fourth moment strictly below the Gaussian fourth moment after variance normalisation, the coefficient of \(\sum a_i^4\) is negative.  The maximum therefore occurs when \(\sum a_i^4\) is as small as possible, i.e. at equal moduli.
+
+For \(p=6\), the moment is still only a cubic symmetric polynomial in \(x_i=a_i^2\).  The same fourth-moment deficit gives one negative coefficient.  A second inequality, \(m_6<5m_4m_2\), obtained by applying the source paper's one-coordinate convex comparison with fourth-moment normalisation, makes the Schur-concavity derivative bracket negative on the whole simplex.  Thus the sixth moment is strictly Schur-concave in \(a_i^2\), and the equal-modulus vector is again the unique maximiser up to signs.
+
+\begin{lemma}[Moment deficits]\label{lem:deficits}
+Let \(q>2\), and let \(Y\) have density proportional to \(e^{-|x|^q}\).  Put \(m_{2r}=\E Y^{2r}\).  Then
+\[
+m_4<3m_2^2,\qquad m_6<5m_4m_2.
+\]
+\end{lemma}
+
+\begin{proof}
+Lemma 11 in the source paper says that if \(0<q_0<q_1\), \(r>0\), and \(h\) is convex on \([0,\infty)\), then
+\[
+\E h\left(\left|Y^{(q_0)}/\|Y^{(q_0)}\|_r\right|^r\right)
+\ge
+\E h\left(\left|Y^{(q_1)}/\|Y^{(q_1)}\|_r\right|^r\right),
+\]
+where \(Y^{(s)}\) has density proportional to \(e^{-|x|^s}\).  Take \(q_0=2\), \(q_1=q\), \(r=2\), and \(h(t)=t^2\).  Since the \(q_0=2\) law is Gaussian, this gives \(m_4/m_2^2<3\) for \(q>2\).
+The inequality is strict here, and below, because the normalised \(q=2\) and \(q>2\) laws are distinct and the test functions are strictly convex on the support.
+
+Next take \(r=4\) and \(h(t)=t^{3/2}\).  This gives
+\[
+\frac{m_6}{m_4^{3/2}}
+<
+\frac{\E G^6}{(\E G^4)^{3/2}}
+=\frac{15}{3^{3/2}}=\frac{5}{\sqrt3},
+\]
+where \(G\) is centred Gaussian.  Combining this with \(m_4<3m_2^2\), we get
+\[
+m_6<\frac{5}{\sqrt3}m_4^{3/2}<5m_4m_2.
+\]
+\end{proof}
+
+\begin{theorem}[The missing constants for \(p=4\) and \(p=6\)]\label{thm:main}
+Let \(q\in(2,\infty)\), \(n\ge1\), and let \(X\) be uniformly distributed on \(B_q^n\).  Let \(Y\) have density proportional to \(e^{-|x|^q}\), put \(m_{2r}=\E Y^{2r}\), and set \(\rho_{2r}=m_{2r}/m_2^r\).  Then the optimal finite-dimensional upper constants in Question 5 for \(p=4\) and \(p=6\) are
+\[
+B_{4,q,n}
+=\frac{\beta_{4,q,n}}{\beta_{2,q,n}}
+\left(3+\frac{\rho_4-3}{n}\right)^{1/4}
+\]
+and
+\[
+B_{6,q,n}
+=\frac{\beta_{6,q,n}}{\beta_{2,q,n}}
+\left(\frac{\rho_6+15(n-1)\rho_4+15(n-1)(n-2)}{n^2}\right)^{1/6}.
+\]
+For \(n\ge2\), equality is attained exactly by the unit vectors satisfying \(|a_1|=\cdots=|a_n|=n^{-1/2}\).  For \(n=1\) the statement is tautological.
+\end{theorem}
+
+\begin{proof}
+The source paper's identity (2) gives, for every \(p>-1\),
+\[
+\norm{\sum_{i=1}^n a_iX_i}_p
+=\beta_{p,q,n}\norm{\sum_{i=1}^n a_iY_i}_p,
+\]
+where \(Y_1,\ldots,Y_n\) are independent copies of \(Y\).  Also
+\[
+\norm{\sum_{i=1}^n a_iX_i}_2
+=\beta_{2,q,n}m_2^{1/2}\left(\sum_{i=1}^n a_i^2\right)^{1/2}.
+\]
+It is therefore enough to maximise \(\norm{\sum a_iY_i}_p\) over \(\sum a_i^2=1\).
+
+Write \(x_i=a_i^2\), so \(x_i\ge0\) and \(\sum x_i=1\).  Odd mixed moments vanish.  For \(p=4\),
+\[
+\E\left(\sum_{i=1}^n a_iY_i\right)^4
+=m_4\sum_i x_i^2+6m_2^2\sum_{i<j}x_ix_j
+=3m_2^2+(m_4-3m_2^2)\sum_i x_i^2.
+\]
+By Lemma \ref{lem:deficits}, \(m_4-3m_2^2<0\).  Thus the fourth moment is maximised exactly when \(\sum_i x_i^2\) is minimised on the simplex, namely at \(x_i=1/n\) for all \(i\).  The value at this point is
+\[
+m_2^2\left(3+\frac{\rho_4-3}{n}\right).
+\]
+After taking fourth roots and multiplying by \(\beta_{4,q,n}/(\beta_{2,q,n}m_2^{1/2})\), the stated \(B_{4,q,n}\) follows.
+
+For \(p=6\), expansion gives
+\[
+\begin{aligned}
+\E\left(\sum_{i=1}^n a_iY_i\right)^6
+&=15m_2^3
++c_2\sum_i x_i^2
++c_3\sum_i x_i^3,
+\end{aligned}
+\]
+where
+\[
+c_2=15m_2(m_4-3m_2^2),
+\qquad
+c_3=m_6-15m_4m_2+30m_2^3.
+\]
+We use the standard Schur criterion: a symmetric differentiable function \(F\) on the simplex is Schur-concave if
+\[
+(x_i-x_j)(\partial_iF-\partial_jF)\le0
+\]
+for all \(i,j\).  Here
+\[
+(x_i-x_j)(\partial_iF-\partial_jF)
+=(x_i-x_j)^2\left(2c_2+3c_3(x_i+x_j)\right).
+\]
+By Lemma \ref{lem:deficits}, \(c_2<0\).  If \(c_3\le0\), the bracket is strictly negative.  If \(c_3>0\), then \(x_i+x_j\le1\), so
+\[
+2c_2+3c_3(x_i+x_j)
+\le 2c_2+3c_3
+=3m_6-15m_4m_2<0.
+\]
+Thus the sixth moment is strictly Schur-concave in \(x=(x_1,\ldots,x_n)\).  Since the uniform point \((1/n,\ldots,1/n)\) is majorised by every point of the simplex, it is the unique maximiser.
+
+At \(x_i=1/n\), equivalently \(a_i=\pm n^{-1/2}\), we have
+\[
+\E\left(n^{-1/2}\sum_{i=1}^n Y_i\right)^6
+=\frac{m_6+15(n-1)m_4m_2+15(n-1)(n-2)m_2^3}{n^2}.
+\]
+Dividing by \(m_2^3\), taking sixth roots, and transferring back to \(X\) gives the displayed formula for \(B_{6,q,n}\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The script \texttt{code/verify\_p4\_p6\_moments.py} checks the gamma-function moment formulas
+\[
+m_r=\frac{\Gamma((r+1)/q)}{\Gamma(1/q)}
+\]
+for representative \(q>2\), verifies the inequalities \(\rho_4<3\) and \(\rho_6<5\rho_4\), checks the sixth-moment Schur bracket, and samples random simplex points to confirm that the equal point dominates for \(p=4\) and \(p=6\).
+
+\section*{Limitations and Novelty Check}
+
+This is a partial answer to Question 5.  It does not solve the missing finite-dimensional constants for arbitrary \(p\ge2\), nor the \(p\in[1,2]\) lower-constant side, nor the \(p\in(-1,1)\) problem mentioned immediately after the question.
+
+Cheap run indexes were searched for arXiv:1801.07597 and the phrases ``Sharp comparison of moments'', ``B\_\{p,q,n\}'', ``A\_\{p,q,n\}'', ``Khintchine'', and ``log-concave''.  No existing packet was found for this source question.  Web searches on 2026-07-18 used exact and nearby phrases including ``B\_\{p,q,n\} A\_\{p,q,n\} Khintchine q>2'', ``uniformly distributed on B\_q\^n optimal constants'', ``p=4 B\_\{p,q,n\} B\_q\^n'', and ``sixth moment uniformly distributed on B\_q\^n Khintchine''.  These searches found the source paper and adjacent Khintchine/section literature, but no explicit resolution of the \(p=4\) or \(p=6\) finite-\(n\) subcases of Question 5.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{ENT}
+A. Eskenazis, P. Nayar, and T. Tkocz,
+\emph{Sharp comparison of moments and the log-concave moment problem},
+Advances in Mathematics 334 (2018), 389--416;
+arXiv:1801.07597.
+\url{https://arxiv.org/abs/1801.07597}
+
+\bibitem{MO}
+A. W. Marshall and I. Olkin,
+\emph{Inequalities: theory of majorization and its applications},
+Academic Press, 1979.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\M}{\mathcal M}
+\newcommand{\A}{\mathcal A}
+\newcommand{\D}{\mathcal D}
+\newcommand{\E}{\mathbb E}
+\newcommand{\BMO}{\mathrm{BMO}}
+\newcommand{\dd}{\,dm}
+
+\title{A commuting-symbol characterization for\\
+semicommutative martingale paraproducts}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 8}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Partial result, likely valid, subject to human review.  It settles a natural
+commuting-symbol subcase of the open characterization problem, not the general
+noncommutative problem.
+
+\section{Source question}
+
+Wei and Zhang ask how to characterize boundedness of an operator-valued
+martingale paraproduct on semicommutative $L_2$ \cite[p.~2]{WeiZhang}:
+
+\begin{quote}
+``It still remains open how to characterize the boundedness of $\pi_b$ on
+$L_2(L_\infty(\mathbb R)\overline\otimes\M)$.''
+\end{quote}
+
+The surrounding source passage, including the finite-dimensional logarithmic
+obstruction and the definition of the symbol class, is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Let $d\ge2$, let $\D$ be the $d$-adic filtration on $\mathbb R$, and write
+$\E_k$ and $d_k=\E_k-\E_{k-1}$ for conditional expectation and martingale
+difference.  If $(\M,\tau)$ is a semifinite von Neumann algebra, the
+semicommutative paraproduct is initially defined on finite martingales by
+\[
+  \pi_b f=\sum_k d_kb\,\E_{k-1}f.
+\]
+We use the column martingale BMO seminorm
+\begin{equation}\label{eq:bmoc}
+ \|b\|_{\BMO_{c,d}}
+ :=\sup_n\left\|\E_n\sum_{k\ge n}|d_kb|^2\right\|_{\M}^{1/2}.
+\end{equation}
+Changing $k\ge n$ to $k>n$ gives an equivalent seminorm, with constants
+depending only on $d$; this elementary indexing point is included in the
+proof below.
+
+\section{Idea of the proof}
+
+The obstruction in the general problem is noncommutation of the operator
+coefficients.  If all values of $b$ lie in one abelian von Neumann algebra,
+left multiplication by those values is a commuting normal family on
+$L_2(\M)$.  The abelian spectral theorem simultaneously diagonalizes that
+family.  Each finite truncation of $\pi_b$ then becomes a direct integral of
+scalar paraproducts, tensored with identity operators on multiplicity spaces.
+
+The operator norm of this direct integral is the essential supremum of its
+scalar fiber norms.  Positivity and the same diagonalization show that
+\eqref{eq:bmoc} is precisely the essential supremum of the scalar fiber BMO
+seminorms.  The scalar Carleson embedding theorem compares the scalar
+paraproduct and BMO norms.  Uniform bounds for all truncations give the full
+operator.  Thus the ambient algebra and the input may remain noncommutative;
+only the range of the symbol is required to commute.
+
+\section{Formal result}
+
+\begin{theorem}[Commuting-range characterization]\label{thm:main}
+Let $(\M,\tau)$ be a semifinite von Neumann algebra, and let
+$b:\mathbb R\to\M$ be locally Bochner integrable and adapted to the $d$-adic
+filtration.  Suppose there is an abelian von Neumann subalgebra
+$\A\subseteq\M$ such that $b(t)\in\A$ for almost every $t$.
+
+Then $\pi_b$ extends boundedly to
+\[
+ L_2(L_\infty(\mathbb R)\overline\otimes\M)
+ \cong L_2(\mathbb R;L_2(\M,\tau))
+\]
+if and only if $\|b\|_{\BMO_{c,d}}<\infty$.  Moreover, there are constants
+$0<c_d\le C_d<\infty$, depending only on $d$, such that
+\begin{equation}\label{eq:equiv}
+ c_d\|b\|_{\BMO_{c,d}}
+ \le \|\pi_b\|_{2\to2}
+ \le C_d\|b\|_{\BMO_{c,d}}.
+\end{equation}
+\end{theorem}
+
+\begin{corollary}
+The conclusion holds whenever the operators in the essential range of $b$
+are normal and commute pairwise together with their adjoints.  In particular,
+it holds for matrix-valued symbols which are simultaneously unitarily
+diagonalizable, with constants independent of the matrix size.
+\end{corollary}
+
+\section{Proof}
+
+We first record the scalar input in the precise form needed here.
+
+\begin{lemma}[Scalar paraproduct--Carleson equivalence]\label{lem:scalar}
+For a scalar $d$-adic martingale $\beta$, let
+\[
+ C(\beta)^2=\sup_n\left\|\E_n\sum_{k>n}|d_k\beta|^2
+                    \right\|_\infty.
+\]
+Then the scalar paraproduct $\pi_\beta$ on $L_2(\mathbb R)$ is bounded if
+and only if $C(\beta)<\infty$, and
+\[
+ C(\beta)\le \|\pi_\beta\|_{2\to2}\le 2C(\beta).
+\]
+Furthermore,
+\[
+ C(\beta)\asymp_d
+ \sup_n\left\|\E_n\sum_{k\ge n}|d_k\beta|^2\right\|_\infty^{1/2}.
+\]
+The same estimates hold for Hilbert-space-valued inputs, since the scalar
+paraproduct is tensored with the identity.
+\end{lemma}
+
+\begin{proof}
+The quantity $C(\beta)^2$ is the scalar martingale Carleson constant of the
+positive sequence $a_k=|d_k\beta|^2$.  The usual stopping-time proof of the
+Carleson embedding theorem gives
+\[
+ \sum_k\int a_k\,|\E_{k-1}f|^2\,dm
+ \le 4C(\beta)^2\|f\|_2^2.
+\]
+The left side equals $\|\pi_\beta f\|_2^2$, because the summands
+$d_k\beta\,\E_{k-1}f$ are orthogonal martingale differences.  This proves the
+upper estimate.  Conversely, test on indicators of finite-measure
+$d$-adic sets at level $n$.  For all later levels the conditional expectation
+of such an indicator is the indicator itself, so boundedness of $\pi_\beta$
+gives the Carleson inequality and hence
+$C(\beta)\le\|\pi_\beta\|$.
+
+It remains only to compare the two indexing conventions.  The $k>n$ sum is
+contained in the $k\ge n$ sum.  In the other direction, on every parent
+$d$-adic atom, $d_n\beta$ is constant on each of the $d$ children and has mean
+zero.  Therefore its largest child value squared is at most $d$ times its
+parent average:
+\[
+ |d_n\beta|^2\le d\,\E_{n-1}|d_n\beta|^2.
+\]
+Taking the appropriate conditional sums yields the asserted comparison with
+a constant depending only on $d$.  Tensoring a bounded scalar operator with
+an identity preserves its norm, which proves the Hilbert-valued statement.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Put $H=L_2(\M,\tau)$, and represent $\A$ faithfully on $H$ by left
+multiplication $a\mapsto L_a$.  This is an abelian von Neumann algebra of
+normal operators.  By the spectral representation theorem for abelian von
+Neumann algebras \cite[Ch.~9]{KadisonRingrose}, there are a measure space
+$(\Omega,\nu)$, a measurable field of Hilbert spaces $(H_\omega)$, and a
+unitary
+\[
+ U:H\longrightarrow\int_\Omega^\oplus H_\omega\,d\nu(\omega)
+\]
+such that every $L_a$, $a\in\A$, acts in the fibers as multiplication by a
+scalar function $\widehat a(\omega)$.
+
+Apply this representation to the strongly measurable symbol $b$.  After
+discarding a null set, write
+\[
+ U L_{b(t)}U^{-1}\big|_{H_\omega}
+   =\beta_\omega(t) I_{H_\omega}.
+\]
+Time conditional expectations commute with this fixed fiber decomposition;
+thus $d_kb$ corresponds to $d_k\beta_\omega$.
+
+For integers $r\le s$, let
+\[
+ \pi_b^{[r,s]}f=\sum_{k=r}^s d_kb\,\E_{k-1}f.
+\]
+Conjugating by $I_{L_2(\mathbb R)}\otimes U$ gives the decomposable operator
+\[
+ \int_\Omega^\oplus
+   \bigl(\pi_{\beta_\omega}^{[r,s]}\otimes I_{H_\omega}\bigr)
+ \,d\nu(\omega).
+\]
+Consequently,
+\begin{equation}\label{eq:fibernorm}
+ \|\pi_b^{[r,s]}\|
+ =\operatorname*{ess\,sup}_{\omega\in\Omega}
+   \|\pi_{\beta_\omega}^{[r,s]}\|.
+\end{equation}
+
+The positive operator
+$\E_n\sum_{k\ge n}|d_kb|^2$ lies in $\A$ and has fiber value
+$\E_n\sum_{k\ge n}|d_k\beta_\omega|^2$.  The norm of an element of an
+abelian von Neumann algebra is the essential supremum of its fiber values.
+Since the levels are countable, the two suprema can be interchanged, giving
+\begin{equation}\label{eq:fiberbmo}
+ \|b\|_{\BMO_{c,d}}
+ =\operatorname*{ess\,sup}_{\omega\in\Omega}
+   \|\beta_\omega\|_{\BMO_d}.
+\end{equation}
+
+If the right side of \eqref{eq:fiberbmo} is finite, Lemma~\ref{lem:scalar}
+and \eqref{eq:fibernorm} give a bound, independent of $r,s$,
+\[
+ \|\pi_b^{[r,s]}\|\le C_d\|b\|_{\BMO_{c,d}}.
+\]
+On finite martingales the truncations stabilize.  Uniform boundedness
+therefore defines a bounded operator $\pi_b$ on the dense subspace of finite
+martingales, and then on all of $L_2$, proving the upper estimate in
+\eqref{eq:equiv}.
+
+Conversely, if $\pi_b$ is bounded, every finite interval truncation is bounded
+by $\|\pi_b\|$ (equivalently, one may project its output onto the corresponding
+orthogonal martingale-difference levels).  Equations
+\eqref{eq:fibernorm}--\eqref{eq:fiberbmo}, the lower scalar estimate, and
+monotone passage through finite level intervals yield
+\[
+ \|b\|_{\BMO_{c,d}}\le c_d^{-1}\|\pi_b\|.
+\]
+This proves the theorem.
+\end{proof}
+
+\section{Verification notes and limitations}
+
+\begin{itemize}
+\item The proof is dimension-free because diagonalization produces scalar
+fibers before the scalar Carleson estimate is applied.
+\item The ambient algebra $\M$ need not be abelian.  Inputs remain
+$L_2(\M)$-valued; the abelian hypothesis concerns only the von Neumann algebra
+generated by the symbol range.
+\item The proof uses finite level truncations, so no unjustified pointwise
+convergence of the infinite paraproduct series is required.
+\item The theorem does not address noncommuting symbols.  In that regime the
+fiber reduction fails, and the logarithmic matrix obstruction cited by Wei
+and Zhang remains relevant.
+\item The most useful human check is the measurable direct-integral step for
+the desired level of generality (especially nonseparable ambient algebras).
+For the standard separable-predual setting, or for essentially separably
+valued symbols, the displayed decomposition is routine.  The same proof can
+be phrased inside the abelian von Neumann tensor product to avoid separability.
+\end{itemize}
+
+\paragraph{Novelty check.}
+The run's lightweight indexes and bounded arXiv searches performed on
+19 July 2026 for the phrases ``operator-valued martingale paraproduct commuting
+symbol'', ``semicommutative paraproduct abelian'', and ``commuting normal
+operator symbol BMO'' found no explicit statement of Theorem~\ref{thm:main}.
+The result may be folklore implicit in the abelian spectral theorem and scalar
+Carleson embedding, so this packet claims a likely-valid partial result, not a
+high-confidence literature novelty claim.
+
+\begin{thebibliography}{9}
+\bibitem{WeiZhang}
+Z.~Wei and H.~Zhang,
+\emph{Boundedness of operator-valued commutators involving martingale
+paraproducts}, arXiv:2401.08729 (2024).
+
+\bibitem{KadisonRingrose}
+R.~V. Kadison and J.~R. Ringrose,
+\emph{Fundamentals of the Theory of Operator Algebras, Vol.~II},
+Academic Press, 1986.
+
+\bibitem{NPTV}
+F.~Nazarov, G.~Pisier, S.~Treil, and A.~Volberg,
+\emph{Sharp estimates in vector Carleson imbedding theorem and for vector
+paraproducts}, J. Reine Angew. Math. 542 (2002), 147--171.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,387 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\M}{\mathcal M}
+\newcommand{\K}{\mathcal K}
+\newcommand{\B}{\mathcal B}
+\newcommand{\N}{\mathbb N}
+\newcommand{\T}{\mathbb T}
+
+\title{Sigma-Unital Coronas Fail the Ball-Covering Property}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+Let \(A\) be a nonunital \(C^*\)-algebra.  Write \(\M(A)\) for its multiplier
+algebra and
+\[
+        Q:\M(A)\longrightarrow \M(A)/A
+\]
+for the quotient map.
+
+\begin{theorem}
+\label{thm:sigma-unital-corona}
+If \(A\) is nonunital and \(\sigma\)-unital, then the corona
+\[
+        \M(A)/A
+\]
+fails the ball-covering property.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:stable}
+Let \(D\) be a nonzero \(\sigma\)-unital \(C^*\)-algebra and let \(H\) be an
+infinite-dimensional separable Hilbert space.  Then
+\[
+        \M(\K(H)\otimes_{\min} D)\big/(\K(H)\otimes_{\min}D)
+\]
+fails BCP.
+\end{corollary}
+
+\begin{proof}
+The algebra \(\K(H)\otimes_{\min}D\) is nonunital and \(\sigma\)-unital, so
+Theorem~\ref{thm:sigma-unital-corona} applies.
+\end{proof}
+
+\section*{Idea of the Proof}
+
+The proof replaces finite coordinate projections by annuli in a sequential
+approximate unit.  Choose a positive contractive approximate unit
+\((e_n)\) with \(e_{n+1}e_n=e_n\).  For \(T\in\M(A)\), the quotient norm
+\(\|Q(T)\|\) is visible on right tails \(T(1-e_n)\), and then on finite
+annuli \(T(e_m-e_n)\).  Given countably many proposed centers, recursively
+choose disjoint inner annuli where the assigned center nearly realizes its
+quotient norm.  Around each inner annulus put a slightly larger annulus and
+choose a scalar phase that is Hahn--Banach far from the local piece of the
+center.  The strict sum of the phased outer annuli is a multiplier of norm at
+most one.  Its corona class has norm one and avoids every proposed ball
+\(B(\xi,\|\xi\|)\).
+
+\section*{Preliminaries}
+
+We use the standard equivalent form of BCP: if a normed space \(Y\) has BCP,
+then \(S_Y\) is covered by countably many open balls \(B(y_j,\|y_j\|)\).
+
+Since \(A\) is \(\sigma\)-unital, fix a positive contractive approximate unit
+\((e_n)\) satisfying
+\[
+        e_{n+1}e_n=e_n,\qquad n\ge1.
+\]
+Passing to later terms gives \(e_m e_n=e_n\) whenever \(m\ge n\).  In
+particular the \(e_n\)'s commute and \(e_m-e_n\) is a positive contraction
+whenever \(m\ge n\).
+
+\begin{lemma}[quotient norm on approximate-unit tails]
+\label{lem:tail}
+For every \(T\in\M(A)\),
+\[
+        \|Q(T)\|=\lim_{n\to\infty}\|T(1-e_n)\|.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(Te_n\in A\), we have \(\|Q(T)\|\le \|T(1-e_n)\|\) for every \(n\).
+Conversely, if \(C\in A\), then \(C(1-e_n)\to0\) in norm, and hence
+\[
+        \limsup_n \|T(1-e_n)\|
+        \le
+        \limsup_n \|(T-C)(1-e_n)\|+\limsup_n\|C(1-e_n)\|
+        \le \|T-C\|.
+\]
+Taking the infimum over \(C\in A\) gives the reverse inequality.
+\end{proof}
+
+\begin{lemma}[finite annulus recovery]
+\label{lem:annulus-recovery}
+Let \(T\in\M(A)\), put \(r=\|Q(T)\|\), and let \(N\in\N\) and
+\(\varepsilon>0\).  Then there are integers
+\[
+        N<n<m
+\]
+such that
+\[
+        \|T(e_m-e_n)\|>r-\varepsilon.
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:tail}, choose \(n>N\) such that
+\[
+        \|T(1-e_n)\|>r-\varepsilon/2.
+\]
+For every \(B\in\M(A)\),
+\[
+        \|B\|=\sup_m \|B e_m\|.
+\]
+Indeed, the inequality ``\(\ge\)'' is immediate, while for \(a\in A\) with
+\(\|a\|\le1\),
+\[
+        \|Ba\|=\lim_m\|B e_m a\|\le \sup_m\|B e_m\|,
+\]
+and \(A\) is an essential ideal in \(\M(A)\).  Applying this to
+\(B=T(1-e_n)\), choose \(m>n\) so that
+\[
+        \|T(1-e_n)e_m\|>r-\varepsilon.
+\]
+Since \(e_ne_m=e_n\), this is exactly
+\[
+        \|T(e_m-e_n)\|>r-\varepsilon.
+\]
+\end{proof}
+
+\begin{lemma}[orthogonal strict sums]
+\label{lem:strict-sum}
+Let
+\[
+        a_k<n_k<m_k<b_k<a_{k+1},\qquad k\ge1,
+\]
+and define
+\[
+        g_k=e_{m_k}-e_{n_k},\qquad h_k=e_{b_k}-e_{a_k}.
+\]
+Then the \(h_k\)'s are pairwise orthogonal positive contractions,
+\[
+        h_k g_k=g_k,\qquad h_jg_k=0\quad(j\ne k),
+\]
+and for every bounded scalar sequence \((\lambda_k)\), the series
+\[
+        z=\sum_{k=1}^{\infty}\lambda_k h_k
+\]
+converges strictly to an element of \(\M(A)\) with
+\[
+        \|z\|\le \sup_k|\lambda_k|,
+        \qquad
+        z g_k=\lambda_k g_k.
+\]
+\end{lemma}
+
+\begin{proof}
+All identities follow from \(e_me_n=e_{\min(m,n)}\) for \(m,n\) in the chosen
+subsequence.  For example, if \(a_k<n_k<m_k<b_k\), then
+\[
+        (e_{b_k}-e_{a_k})(e_{m_k}-e_{n_k})=e_{m_k}-e_{n_k}=g_k.
+\]
+If the intervals are disjoint, the same computation gives \(h_jh_k=0\) and
+\(h_jg_k=0\) for \(j\ne k\).
+
+For strict convergence, let \(s_N=\sum_{k\le N}\lambda_kh_k\).  The partial
+sums are uniformly bounded by \(\sup_k|\lambda_k|\), because the \(h_k\)'s are
+orthogonal positive contractions.  If \(a\in A\), then the tail
+\(\sum_{k>N}\lambda_kh_k\) is annihilated by \(e_{a_{N+1}}\), so
+\[
+        \Big\|\Big(\sum_{k>N}\lambda_kh_k\Big)a\Big\|
+        =
+        \Big\|\Big(\sum_{k>N}\lambda_kh_k\Big)(a-e_{a_{N+1}}a)\Big\|
+        \le
+        \sup_k|\lambda_k|\,\|a-e_{a_{N+1}}a\|\to0.
+\]
+The same argument on the other side gives
+\[
+        \Big\|a\Big(\sum_{k>N}\lambda_kh_k\Big)\Big\|\to0.
+\]
+Thus the series is strictly convergent in \(\M(A)\), with the stated norm
+bound and block action.
+\end{proof}
+
+\section*{Proof of the Theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:sigma-unital-corona}]
+Let
+\[
+        \xi_i=Q(T_i),\qquad i\ge1,
+\]
+be an arbitrary countable family of centers in \(\M(A)/A\), with
+\(T_i\in\M(A)\).  Put \(r_i=\|\xi_i\|\).  Add one auxiliary multiplier
+\[
+        T_0=1_{\M(A)},\qquad r_0=1.
+\]
+Choose a map \(\pi:\N\to\{0,1,2,\ldots\}\) such that every value occurs
+infinitely often.
+
+We recursively choose integers
+\[
+        a_k<n_k<m_k<b_k<a_{k+1}
+\]
+and phases \(\lambda_k\in\T\).  Suppose the previous choices have been made,
+and put \(i=\pi(k)\).  Choose \(a_k>b_{k-1}\), with the convention
+\(b_0=0\).  By Lemma~\ref{lem:annulus-recovery}, choose
+\[
+        a_k<n_k<m_k
+\]
+so that, with \(g_k=e_{m_k}-e_{n_k}\),
+\[
+        \|T_i g_k\|>r_i-\frac1k.
+\]
+Choose \(b_k>m_k\), and later choose \(a_{k+1}>b_k\).
+
+Now choose \(\lambda_k\in\T\) so that
+\[
+        \|\lambda_k g_k-T_i g_k\|\ge \|T_i g_k\|.
+\]
+This is just the Hahn--Banach sign trick: if \(T_i g_k\ne0\), take a norm-one
+functional \(\varphi\) with \(\varphi(T_i g_k)=\|T_i g_k\|\), and choose
+\(\lambda_k\in\T\) with
+\(\operatorname{Re}(\lambda_k\varphi(g_k))\le0\).  If \(T_i g_k=0\), any
+\(\lambda_k\) works.
+
+Let
+\[
+        h_k=e_{b_k}-e_{a_k}.
+\]
+By Lemma~\ref{lem:strict-sum}, the series
+\[
+        z=\sum_{k=1}^{\infty}\lambda_k h_k
+\]
+converges strictly to a multiplier with \(\|z\|\le1\), and
+\[
+        z g_k=\lambda_k g_k.
+\]
+
+We first show that \(\|Q(z)\|=1\).  The upper bound follows from \(\|z\|\le1\).
+Let \(C\in A\).  Take \(k\to\infty\) along the infinite set
+\(\{k:\pi(k)=0\}\).  For these \(k\)'s,
+\[
+        \|g_k\|=\|T_0g_k\|>1-\frac1k.
+\]
+Moreover \(n_k\to\infty\), so
+\[
+        \|C g_k\|
+        =
+        \|C(1-e_{n_k})e_{m_k}\|
+        \le
+        \|C(1-e_{n_k})\|\longrightarrow0.
+\]
+Therefore
+\[
+        \|z-C\|
+        \ge
+        \|(z-C)g_k\|
+        \ge
+        \|z g_k\|-\|C g_k\|
+        =
+        \|g_k\|-\|C g_k\|,
+\]
+and letting \(k\to\infty\) along \(\pi(k)=0\) gives \(\|z-C\|\ge1\).  Taking
+the infimum over \(C\in A\), we get \(\|Q(z)\|\ge1\).
+
+Now fix \(i\ge1\) and \(C\in A\).  Let \(k\to\infty\) along the infinite set
+\(\{k:\pi(k)=i\}\).  Since \(n_k\to\infty\), \(\|Cg_k\|\to0\).  Hence
+\[
+        \|z-T_i-C\|
+        \ge
+        \|(z-T_i-C)g_k\|
+        \ge
+        \|\lambda_k g_k-T_ig_k\|-\|Cg_k\|
+        \ge
+        \|T_ig_k\|-\|Cg_k\|
+        >
+        r_i-\frac1k-\|Cg_k\|.
+\]
+Letting \(k\to\infty\) along this subsequence gives
+\[
+        \|z-T_i-C\|\ge r_i.
+\]
+Taking the infimum over \(C\in A\), we obtain
+\[
+        \|Q(z)-\xi_i\|\ge r_i=\|\xi_i\|.
+\]
+
+Thus \(Q(z)\) is a unit vector in \(\M(A)/A\) outside every open ball
+\[
+        B(\xi_i,\|\xi_i\|).
+\]
+Since the countable family of centers was arbitrary, \(\M(A)/A\) fails BCP.
+\end{proof}
+
+\section*{Scope and Relation to Earlier Packets}
+
+The previous stabilized-corona packet proved the result for
+\[
+        (\B(H)\otimes D)/(\K(H)\otimes D)
+\]
+with unital coefficient algebra \(D\), using finite-rank coordinate
+projections and partial isometries.  The present theorem is both simpler and
+broader for multiplier coronas: it applies to every nonunital
+\(\sigma\)-unital \(C^*\)-algebra \(A\).  In particular it covers
+\[
+        A=\K(H)\otimes_{\min}D
+\]
+for every nonzero \(\sigma\)-unital coefficient algebra \(D\), unital or not.
+
+The theorem is still a partial answer to the source question.  It does not
+characterize arbitrary \(C^*\)-algebras with BCP, and it does not address
+coronas of non-\(\sigma\)-unital ideals.
+
+\section*{Verification and Search Bounds}
+
+The proof is self-contained modulo the standard fact that a \(\sigma\)-unital
+\(C^*\)-algebra has a positive contractive approximate unit
+\((e_n)\) satisfying \(e_{n+1}e_n=e_n\).  The run indexes were searched for
+arXiv:2311.14257 together with BCP, UBCP, corona, multiplier algebra,
+\(\sigma\)-unital, approximate unit, Calkin, and stable multiplier keywords.
+Existing run packets covered product quotients, reduced products, continuous
+fields, unital stabilized coronas, and a Hilbert-module block criterion, but
+no packet contained this approximate-unit annulus theorem.
+
+External literature checks during this push found arXiv:2412.07137, which
+proves that several Calkin algebras fail BCP, and arXiv:2111.04921, which
+gives commutative/vector-valued BCP stability results and warns that BCP is
+not hereditary even for 1-complemented subspaces.  Those papers are consistent
+with the present theorem but do not state the sigma-unital multiplier-corona
+annulus result used here.
+
+\section*{Human Review Focus}
+
+Review Lemma~\ref{lem:annulus-recovery} and Lemma~\ref{lem:strict-sum}.
+These are the two structural points: quotient norms must be recoverable on
+finite approximate-unit annuli, and the phased outer annuli must define a
+strict multiplier acting as the chosen phase on the inner annulus.  Once those
+are checked, the final diagonal escape is formal.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{LLLZ}
+Minzeng Liu, Rui Liu, Jimeng Lu, and Bentuo Zheng,
+\emph{Ball covering property from commutative function spaces to
+non-commutative spaces of operators},
+arXiv:2111.04921, 2021.
+
+\bibitem{BLS}
+Qiyao Bao, Rui Liu, and Jie Shen,
+\emph{The ball-covering property of non-commutative spaces of operators on
+Banach spaces},
+arXiv:2412.07137, 2024.
+
+\end{thebibliography}
+
+\end{document}

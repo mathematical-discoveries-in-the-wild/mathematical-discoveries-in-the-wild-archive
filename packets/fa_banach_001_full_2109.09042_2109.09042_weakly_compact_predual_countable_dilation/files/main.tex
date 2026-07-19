@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\Ball}{\mathrm{Ball}}
+\newcommand{\op}{\mathrm{op}}
+
+\title{A Countably Additive Dilation for Operator-Valued Quantum Measures}
+\author{Run fa\_banach\_001, agent\_lane\_06}
+\date{June 28, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+The source paper is Han--Hu--Larson--Liu, \emph{Dilations for operator-valued
+quantum measures}, arXiv:2109.09042 \cite{HHLiu}.  Its abstract states that a
+general projection-valued dilation is known for bounded quantum measures on
+projection lattices of von Neumann algebras with no type \(I_2\) direct summand,
+but that such a dilation need not preserve countable additivity.  The extracted
+open question is:
+
+\begin{quote}
+Does every countably additive \(B(X)\)-valued quantum measure on the projection
+lattice of a von Neumann algebra with no type \(I_2\) direct summand admit a
+countably additive projection-valued dilation?
+\end{quote}
+
+The source paper proves this under extra hypotheses, namely \(X=\ell_p\) for
+\(1\leq p<2\), \(X\) has the Schur property, or the measure has bounded
+\(p\)-variation.  The result below removes those extra hypotheses.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open-question sentence in the abstract of arXiv:2109.09042.}
+\end{figure}
+
+\section*{Proof Intuition}
+
+The obstruction in the elementary dilation norm of \cite{HHLiu} is uniformity:
+after cutting by a tail projection \(q_n\downarrow0\), one has to control
+\(\overline U(aq_n)x\) uniformly in \(\|a\|\leq1\).  Rather than force this in
+the original Banach space \(X\), place the dilation vectors in the von Neumann
+predual \(M_*\).  For each \(x\in X\), the normal map
+\(a\mapsto \overline U(a)x\) gives a weakly compact operator
+\[
+        T x:X^*\longrightarrow M_* .
+\]
+Right multiplication by projections on \(M_*\) is automatically countably
+additive on weakly compact subsets, by the Akemann--Jarchow weak compactness
+criterion.  This supplies exactly the missing uniform tail estimate, while
+evaluation at the identity compresses the dilation back to \(X\).
+
+\section*{Statement}
+
+\begin{theorem}
+Let \(M\) be a sigma-finite von Neumann algebra with no direct summand of type
+\(I_2\), let \(X\) be a Banach space, and let
+\[
+        U:\cP(M)\longrightarrow B(X)
+\]
+be a bounded countably additive operator-valued quantum measure.  Then there are
+a Banach space \(Z\), bounded operators \(T:X\to Z\) and \(S:Z\to X\), and a
+countably additive projection-valued quantum measure
+\[
+        V:\cP(M)\longrightarrow B(Z)
+\]
+such that
+\[
+        U(p)=S V(p)T\qquad (p\in\cP(M)).
+\]
+In fact, the dilation extends to a normal bounded homomorphism
+\(\pi:M\to B(Z)\) satisfying \(\overline U(a)=S\pi(a)T\) for every \(a\in M\),
+where \(\overline U:M\to B(X)\) is the normal Bunce--Wright extension of \(U\).
+\end{theorem}
+
+\section*{External Lemma Used}
+
+We use the following standard form of the Akemann--Jarchow weak compactness
+criterion for von Neumann preduals; see Akemann \cite{Akemann}, Jarchow
+\cite{Jarchow}, and the modern JBW\(^*\)-triple formulation in
+Hamhalter--Kalenda--Peralta--Pfitzner \cite[Theorem 11.3]{HKPP}.
+
+\begin{lemma}[uniform one-sided absolute continuity]\label{lem:uniform}
+Let \(M\) be a von Neumann algebra and let \(K\subset M_*\) be relatively weakly
+compact.  If \((q_n)\) is a decreasing sequence of projections in \(M\) with
+\(q_n\downarrow0\) strongly, then
+\[
+        \sup_{\rho\in K}\|\rho\cdot q_n\|\longrightarrow0,
+        \qquad
+        \sup_{\rho\in K}\|q_n\cdot\rho\|\longrightarrow0,
+\]
+where \((\rho\cdot q)(a)=\rho(aq)\) and \((q\cdot\rho)(a)=\rho(qa)\).
+\end{lemma}
+
+\begin{proof}[Proof sketch of Lemma \ref{lem:uniform}]
+One form of the Akemann--Jarchow criterion says that for a relatively weakly
+compact \(K\subset M_*\) and every \(\varepsilon>0\), there is a positive normal
+functional \(\varphi\in M_*^+\) and \(\delta>0\) such that
+\[
+        \|a\|\leq1,\quad \varphi(a^*a)<\delta
+        \quad\Longrightarrow\quad
+        |\rho(a)|<\varepsilon\quad(\rho\in K).
+\]
+Since \(q_n\downarrow0\), normality gives \(\varphi(q_n)\to0\).  For
+\(\|b\|\leq1\),
+\[
+        \varphi((bq_n)^*(bq_n))=\varphi(q_n b^*b q_n)\leq \varphi(q_n),
+\]
+so \(\sup_{\rho\in K,\|b\|\leq1}|\rho(bq_n)|\to0\), which is exactly
+\(\sup_{\rho\in K}\|\rho\cdot q_n\|\to0\).  The left-hand version follows by
+applying the same argument in the opposite von Neumann algebra.
+\end{proof}
+
+\section*{Proof of the Theorem}
+
+By the Bunce--Wright extension theorem as used in \cite{HHLiu}, \(U\) extends
+uniquely to a bounded linear map
+\[
+        \overline U:M\longrightarrow B(X).
+\]
+Because \(U\) is countably additive and \(M\) is sigma-finite, the extension is
+normal in the weak-operator sense: for every \(x\in X\) and \(x^*\in X^*\), the
+functional
+\[
+        a\longmapsto x^*(\overline U(a)x)
+\]
+belongs to \(M_*\).
+
+Let \(\cW=\cW(X^*,M_*)\) denote the Banach space of weakly compact operators from
+\(X^*\) to \(M_*\), with the usual operator norm.  For \(a\in M\), define
+\(\pi(a):\cW\to\cW\) by right multiplication on \(M_*\):
+\[
+        (\pi(a)A)(x^*)=A(x^*)\cdot a,\qquad
+        ((\rho\cdot a)(b)=\rho(ba)).
+\]
+Then \(\|\pi(a)\|\leq\|a\|\), and \(\pi(ab)=\pi(a)\pi(b)\).  Hence
+\(\pi:M\to B(\cW)\) is a bounded homomorphism.  In particular, for
+\(p\in\cP(M)\), \(\pi(p)\) is an idempotent and
+\(\pi(p+q)=\pi(p)+\pi(q)\) whenever \(p\perp q\).
+
+For \(x\in X\), define \(T_0x:X^*\to M_*\) by
+\[
+        (T_0x)(x^*)(a)=x^*(\overline U(a)x),\qquad a\in M.
+\]
+This is bounded with \(\|T_0x\|\leq\|\overline U\|\,\|x\|\).  It is weakly
+compact: the unit ball of \(X^*\), with its weak-star topology, is compact, and
+the map \(x^*\mapsto (T_0x)(x^*)\) is weak-star to weak continuous because
+evaluation at each \(a\in M\) is the scalar map
+\[
+        x^*\longmapsto x^*(\overline U(a)x).
+\]
+Thus \(T_0x\in\cW\).
+
+Let
+\[
+        Z=\overline{\operatorname{span}}\{\pi(a)T_0x:\ a\in M,\ x\in X\}
+        \subseteq \cW,
+\]
+and let \(T:X\to Z\) be \(T=T_0\).  Define \(S\) first on the algebraic span by
+\[
+        S\left(\sum_{j=1}^m \pi(a_j)T x_j\right)
+        =\sum_{j=1}^m \overline U(a_j)x_j .
+\]
+This is well-defined.  Indeed, if the vector inside \(Z\) is zero, then for every
+\(x^*\in X^*\),
+\[
+        0=\left(\sum_j \pi(a_j)T x_j\right)(x^*)(1)
+        =x^*\left(\sum_j \overline U(a_j)x_j\right),
+\]
+so the displayed vector in \(X\) is zero.  Moreover,
+\[
+\begin{aligned}
+\left\|S\left(\sum_j \pi(a_j)T x_j\right)\right\|
+&=\sup_{\|x^*\|\leq1}
+ \left|\left(\sum_j \pi(a_j)T x_j\right)(x^*)(1)\right|  \\
+&\leq
+\left\|\sum_j \pi(a_j)T x_j\right\|_{\cW}.
+\end{aligned}
+\]
+Therefore \(S\) extends to a contraction \(S:Z\to X\).
+
+For every \(a\in M\) and \(x\in X\),
+\[
+        S\pi(a)Tx=\overline U(a)x.
+\]
+Indeed, applying \(x^*\in X^*\) to the left side gives
+\[
+        (\pi(a)Tx)(x^*)(1)=(Tx)(x^*)(a)=x^*(\overline U(a)x).
+\]
+
+It remains to check countable additivity on projections.  Let
+\((p_j)_{j\geq1}\) be mutually orthogonal projections, and put
+\[
+        p=\sum_{j=1}^\infty p_j,\qquad
+        q_n=p-\sum_{j=1}^n p_j .
+\]
+Then \(q_n\downarrow0\) strongly.  For any \(A\in\cW\), the set
+\(K=A(\Ball_{X^*})\) is relatively weakly compact in \(M_*\), so Lemma
+\ref{lem:uniform} yields
+\[
+        \|\pi(q_n)A\|
+        =\sup_{\|x^*\|\leq1}\|A(x^*)\cdot q_n\|
+        =\sup_{\rho\in K}\|\rho\cdot q_n\|\longrightarrow0.
+\]
+Consequently \(\pi(p)A=\sum_{j=1}^{\infty}\pi(p_j)A\) in norm for every
+\(A\in Z\).  Thus
+\[
+        V(p)=\pi(p)|_Z,\qquad p\in\cP(M),
+\]
+is a countably additive projection-valued quantum measure on \(Z\).  The
+compression identity \(U(p)=S V(p)T\) follows from the identity already proved
+for all \(a\in M\).
+
+Finally, the same estimate shows that \(\pi\) is normal in the strong operator
+sense relevant to the projection lattice: decreasing projection tails act
+strongly as zero on \(Z\).  This is stronger than what is needed for the stated
+dilation problem.
+\qed
+
+\section*{Verification Notes}
+
+No computational search was used.  The proof reduces the source problem to a
+standard weak compactness criterion for subsets of \(M_*\).  The key checks for a
+human reviewer are:
+\begin{enumerate}[leftmargin=*]
+\item \(T_0x:X^*\to M_*\) is weakly compact because it is weak-star to weak
+continuous on the weak-star compact unit ball of \(X^*\).
+\item The compression \(S\) is well-defined and contractive because evaluation at
+the identity is bounded on \(M_*\).
+\item Countable additivity is exactly Lemma \ref{lem:uniform} applied to the
+weakly compact set \(A(\Ball_{X^*})\).
+\end{enumerate}
+
+\section*{Novelty Check and Limitations}
+
+I searched the run indexes for arXiv:2109.09042 and for the phrases
+``operator-valued quantum measure'', ``projection-valued quantum measure'',
+``countably additive'', ``Naimark'', ``Stinespring'', and ``dilation''.  No
+existing packet or attempt for this source paper was present.  I also performed a
+bounded web search for exact phrases from the question and for later papers on
+countably additive projection-valued dilations of operator-valued quantum
+measures.  I found the source paper and background weak compactness literature,
+but no later paper explicitly resolving this exact question.
+
+The result is therefore recorded as a candidate full solution, subject to human
+review.  The main review focus should be the exact form of the
+Akemann--Jarchow criterion in Lemma \ref{lem:uniform}; once that standard lemma is
+accepted, the dilation construction is direct.
+
+\begin{thebibliography}{9}
+
+\bibitem{Akemann}
+C. A. Akemann, \emph{The dual space of an operator algebra}, Trans. Amer. Math.
+Soc. 126 (1967), 286--302.
+
+\bibitem{HHLiu}
+D. Han, Q. Hu, D. R. Larson, and R. Liu, \emph{Dilations for operator-valued
+quantum measures}, arXiv:2109.09042, 2021.
+
+\bibitem{HKPP}
+J. Hamhalter, O. F. K. Kalenda, A. M. Peralta, and H. Pfitzner, \emph{Measures
+of weak non-compactness in preduals of von Neumann algebras and
+JBW\(^*\)-triples}, arXiv:1901.08056, 2019.
+
+\bibitem{Jarchow}
+H. Jarchow, \emph{On weakly compact operators on \(C^*\)-algebras}, Math. Ann.
+273 (1986), 341--343.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem*{theorem}{Counterexample}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Aop}{\mathbf A_0}
+\newcommand{\eps}{\varepsilon}
+
+\title{A Finite-Dimensional Counterexample to a Depth Question in Resonance Index}
+\author{Run fa\_banach\_001, lane 2}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Counterexample, likely valid. This answers negatively the Question following
+Theorem 2.7 in Azamov's \emph{Spectral flow and resonance index}
+\cite{Azamov}. It does not address the later property \(A\)/property \(B\)
+conjectures.
+
+\section*{Source Question}
+
+The source proves that, for a resonance vector \(\chi\), the following are
+equivalent: \(V\chi\perp\mathcal V_\lambda\), \(\chi\) has depth at least one,
+and
+\[
+  \mathbf A_\lambda(r_\lambda)S_\lambda\chi=-\chi .
+\]
+It then asks whether these are also equivalent to the condition that
+\(S_\lambda\chi\) is a resonance vector.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The question is local and finite-dimensional. For a straight-line path
+\(H_s=H_0+sV\), resonance vectors are the range of the Laurent idempotent
+\(P_0\) in the expansion of
+\[
+  A_0(s)=(H_0+sV)^{-1}V
+\]
+at the pole \(s=0\). Thus one can disprove the implication by finding a vector
+\(\chi\in\operatorname{im}P_0\) such that \(S_0\chi\in\operatorname{im}P_0\),
+but \((\mathbf A_0S_0+I)\chi\ne0\). The example below is a \(5\times5\) real
+symmetric matrix calculation.
+
+\section*{Counterexample}
+
+\begin{theorem}
+The condition that \(S_\lambda\chi\) is a resonance vector does not imply
+\(\mathbf A_\lambda(r_\lambda)S_\lambda\chi=-\chi\).
+\end{theorem}
+
+\begin{proof}
+Work on \(\C^5\), put \(\lambda=0\), \(r_\lambda=0\), and let
+\[
+H_0=
+\begin{pmatrix}
+1&0&0&0&0\\
+0&1&0&0&0\\
+0&0&-1&0&0\\
+0&0&0&0&0\\
+0&0&0&0&0
+\end{pmatrix},
+\quad
+V=
+\begin{pmatrix}
+0&-1&-1&0&1\\
+-1&0&-1&1&1\\
+-1&-1&1&1&1\\
+0&1&1&0&0\\
+1&1&1&0&1
+\end{pmatrix}.
+\]
+Both matrices are self-adjoint. In finite dimension the perturbation is
+relatively compact, and \(0\) is outside the essential spectrum. Moreover
+\[
+  \det(H_0+sV)=3s^4(s-1),
+\]
+so \(s=0\) is an isolated resonance point for the line \(H_s=H_0+sV\).
+
+With respect to
+\(\C^5=\widehat{\mathcal H}\oplus\mathcal V_0\), where
+\(\mathcal V_0=\operatorname{span}\{e_4,e_5\}\), the source's operator
+\(S_0=R_0(\widehat H_0)V\) is
+\[
+S_0=
+\begin{pmatrix}
+0&-1&-1&0&1\\
+-1&0&-1&1&1\\
+1&1&-1&-1&-1\\
+0&0&0&0&0\\
+0&0&0&0&0
+\end{pmatrix}.
+\]
+An exact Laurent expansion of \(A_0(s)=(H_0+sV)^{-1}V\) at \(s=0\) is
+\[
+  A_0(s)=\widetilde A_0(s)+s^{-1}P_0+s^{-2}\Aop+s^{-3}\Aop^2,
+\]
+where
+\[
+P_0=
+\begin{pmatrix}
+0&0&0&0&0\\
+0&1&0&0&0\\
+0&0&1&0&0\\
+-2&0&0&1&0\\
+1&0&0&0&1
+\end{pmatrix}
+\]
+and
+\[
+\Aop=
+\begin{pmatrix}
+0&0&0&0&0\\
+0&-\frac13&-\frac13&0&0\\
+0&\frac13&\frac13&0&0\\
+0&-\frac23&\frac13&0&0\\
+0&0&0&0&0
+\end{pmatrix}.
+\]
+Here \(P_0^2=P_0\), \(\Aop^2\) is the coefficient of \(s^{-3}\), and
+\(\Aop^3=0\), as required for the Laurent data of the resonance point.
+
+Now set
+\[
+  \chi=(0,1,0,-2,1)^T.
+\]
+Then
+\[
+  P_0\chi=\chi,
+\]
+so \(\chi\) is a resonance vector. Also
+\[
+  S_0\chi=(0,-1,2,0,0)^T
+\]
+and
+\[
+  P_0S_0\chi=S_0\chi,
+\]
+so \(S_0\chi\) is a nonzero resonance vector. However,
+\[
+  (\Aop S_0+I)\chi
+  =
+  (0,\tfrac23,\tfrac13,-\tfrac23,1)^T
+  \ne0.
+\]
+Equivalently,
+\[
+  \Aop S_0\chi\ne-\chi.
+\]
+Thus condition (iv) in the source question holds while item (iii) of
+Theorem 2.7 fails. This disproves the proposed equivalence.
+\end{proof}
+
+\section*{Verification Notes}
+
+The finite-dimensional computation is reproduced in
+\texttt{code/verify\_counterexample.py}. The script recomputes the Laurent
+coefficients directly from the full inverse \((H_0+sV)^{-1}V\) using exact
+rational arithmetic, checks \(P_0^2=P_0\), \(\Aop^2\) and \(\Aop^3=0\), and
+verifies the displayed identities for \(\chi\).
+
+\section*{Novelty Check and Limitations}
+
+Cheap run indexes contained no prior packet for arXiv:1604.07006. Web searches
+on 2026-07-19 for the exact source question, \(S_\lambda\chi\) resonance-vector
+phrases, and the property \(A\)/property \(B\) conjecture found the source
+paper and adjacent spectral-flow material, but no later explicit answer to this
+local Question.
+
+This packet only answers the Question after Theorem 2.7. It does not disprove
+the later conjectures that property \(B\) implies property \(A\), that property
+\(B\) holds, or that property \(A\) holds.
+
+\section*{Human Review Recommendation}
+
+Accept as a finite-dimensional counterexample to the local Question after
+Theorem 2.7. Reviewers should check the Laurent-coefficient convention against
+equation (2.22) of the source, which is exactly how the verifier constructs
+\(P_0\) and \(\Aop\).
+
+\begin{thebibliography}{9}
+
+\bibitem{Azamov}
+N. Azamov,
+\emph{Spectral flow and resonance index},
+arXiv:1604.07006v2, 2016.
+
+\end{thebibliography}
+
+\end{document}

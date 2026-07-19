@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cM}{\mathcal M}
+
+\title{The Type-I Hypergraph Hanner Conjecture}
+\author{Candidate full solution for arXiv:0903.3237\\Model: GPT5.6}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: full solution, likely valid.}
+Every semi-norming Type-I hypergraph pair with parameter $s\ge2$ satisfies
+the conjectured $|H|$-Hanner inequality.  This proves Conjecture~3.15 of
+Hatami~\cite{Hatami}; non-factorizability is not needed.}}
+\end{center}
+
+\section{Source problem}
+
+Let $H=(\alpha,\beta)$ be a finite hypergraph pair.  In Hatami's notation,
+$H$ is of Type~I with parameter $s$ if, on its support $\cS$,
+\[
+ \alpha(\omega)=\beta(\omega)=\frac{s}{2}.
+\]
+If $m=|\cS|$, then $|H|=ms$.  For a function $f$ on the underlying product
+measure space, the associated hypergraph norm satisfies
+\begin{equation}\label{eq:type-i}
+ \|f\|_H^{ms}
+ =\int \prod_{\omega\in\cS}|f(\omega(x))|^s\,dx.
+\end{equation}
+Conjecture~3.15 asks whether, for $s\ge2$,
+\begin{equation}\label{eq:goal}
+ \|f+g\|_H^{|H|}+\|f-g\|_H^{|H|}
+ \le (\|f\|_H+\|g\|_H)^{|H|}
+      +|\|f\|_H-\|g\|_H|^{|H|}.
+\end{equation}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture~3.15 on page 25 of the source paper.}
+\end{figure}
+
+The source proves the corresponding inequality on $\ell_H$ when $s$ is an
+even integer by expanding the $s$th powers directly.  The point below is to
+perform only the finite expansion indexed by the $m$ support elements, leaving
+the real exponent $s$ inside an ordinary $L_s$ norm; the argument works on an
+arbitrary underlying measure space.
+
+\section{Two elementary ingredients}
+
+We use Hatami's generalized H\"older inequality \cite[Lemma~2.10]{Hatami}.
+In the special form needed here, if $A\subseteq\cS$ and
+$a=\|f\|_H$, $b=\|g\|_H$, then
+\begin{equation}\label{eq:mixed-holder}
+ \int \prod_{\omega\notin A}|f(\omega(x))|^s
+       \prod_{\omega\in A}|g(\omega(x))|^s\,dx
+ \le a^{s(m-|A|)}b^{s|A|}.
+\end{equation}
+Indeed, decompose $H$ into the two nonnegative hypergraph pairs supported on
+$\cS\setminus A$ and $A$, and apply the nonnegative-function clause of that
+lemma to $|f|$ and $|g|$.
+
+We will also need the following small monotonicity observation.
+
+\begin{lemma}\label{lem:monotone}
+For $s\ge1$, the function
+\[
+ \Phi_s(u,v)=(u+v)^s+|u-v|^s
+\]
+is nondecreasing in each variable on $[0,\infty)^2$.
+\end{lemma}
+
+\begin{proof}
+On the region $u\ge v$, its partial derivatives are
+\[
+ s\big((u+v)^{s-1}+(u-v)^{s-1}\big),\qquad
+ s\big((u+v)^{s-1}-(u-v)^{s-1}\big),
+\]
+and both are nonnegative.  The other region follows by symmetry.
+\end{proof}
+
+\section{Idea of the proof}
+
+The obstruction in the source proof is the temptation to expand the real
+$s$th power, which is possible only when $s$ is an even integer.  Instead we
+factor the Type-I integrand as the ordinary $L_s$ norm of the product over the
+$m$ support elements.  That product has an integer-degree expansion for every
+real $s$: its even and odd terms form two functions $E$ and $O$.  The ordinary
+$L_s$ Hanner inequality controls $E+O$ and $E-O$, while Hatami's generalized
+H\"older lemma controls each mixed monomial in $E$ and $O$.  The two resulting
+bounds are precisely the even and odd binomial sums; coordinatewise
+monotonicity of the two-variable Hanner expression then recombines them into
+the conjectured right-hand side.
+
+\section{Full solution}
+
+\begin{theorem}\label{thm:main}
+Let $H$ be a semi-norming hypergraph pair of Type~I with parameter $s\ge2$.
+Then every $L_H$ space satisfies the $|H|$-Hanner inequality
+\eqref{eq:goal}.  In particular, Conjecture~3.15 of \cite{Hatami} holds.
+\end{theorem}
+
+\begin{proof}
+Fix $f,g\in L_H$, and abbreviate $a=\|f\|_H$, $b=\|g\|_H$.
+For $A\subseteq\cS$, put
+\[
+ M_A(x)=\prod_{\omega\notin A}f(\omega(x))
+        \prod_{\omega\in A}g(\omega(x)).
+\]
+Separate the expansion into its even and odd parts:
+\[
+ E=\sum_{|A|\ \mathrm{even}}M_A,
+ \qquad
+ O=\sum_{|A|\ \mathrm{odd}}M_A.
+\]
+Ordinary distributivity gives
+\begin{equation}\label{eq:evenodd}
+ E+O=\prod_{\omega\in\cS}(f(\omega(x))+g(\omega(x))),
+ \qquad
+ E-O=\prod_{\omega\in\cS}(f(\omega(x))-g(\omega(x))).
+\end{equation}
+
+Apply the classical Hanner inequality in the ordinary complex $L_s$ space
+\cite{Hanner}:
+\begin{equation}\label{eq:ordinary-hanner}
+ \|E+O\|_s^s+\|E-O\|_s^s
+ \le \Phi_s(\|E\|_s,\|O\|_s).
+\end{equation}
+By \eqref{eq:mixed-holder},
+\[
+ \|M_A\|_s\le a^{m-|A|}b^{|A|}.
+\]
+The triangle inequality in $L_s$ therefore yields
+\begin{align*}
+ \|E\|_s&\le E_0:=\sum_{k\ \mathrm{even}}\binom{m}{k}a^{m-k}b^k,\\
+ \|O\|_s&\le O_0:=\sum_{k\ \mathrm{odd}}\binom{m}{k}a^{m-k}b^k.
+\end{align*}
+Lemma~\ref{lem:monotone} permits these two upper bounds to be substituted
+simultaneously into \eqref{eq:ordinary-hanner}.  The even and odd binomial
+identities give
+\[
+ E_0+O_0=(a+b)^m,
+ \qquad E_0-O_0=(a-b)^m.
+\]
+Consequently,
+\begin{equation}\label{eq:finish}
+ \|E+O\|_s^s+\|E-O\|_s^s
+ \le (a+b)^{ms}+|a-b|^{ms}.
+\end{equation}
+Finally, \eqref{eq:type-i} and \eqref{eq:evenodd} identify the left-hand
+side of \eqref{eq:finish} with
+$\|f+g\|_H^{ms}+\|f-g\|_H^{ms}$.  Since $ms=|H|$, this is exactly
+\eqref{eq:goal}.
+\end{proof}
+
+\section{Checks and scope}
+
+\begin{enumerate}[leftmargin=2em]
+\item The proof never expands a noninteger power.  It expands a product with
+integer degree $m$ and then invokes the classical $L_s$ inequality.
+\item Complex-valued functions cause no change: \eqref{eq:evenodd} is
+algebraic, the mixed H\"older estimate is applied to absolute values, and the
+classical Hanner inequality holds in complex $L_s$.
+\item Non-factorizability is absent from the argument.  Thus the theorem is
+slightly stronger than the source conjecture.
+\item The restriction $s\ge2$ occurs only in the direction of the ordinary
+$L_s$ Hanner inequality.  For $s<2$ its direction reverses, consistent with
+the obstruction recorded immediately before Conjecture~3.15.
+\end{enumerate}
+
+For a numerical diagnostic, the accompanying script tests the first
+non-even example: the Type-I norm generated by the four-cycle with $s=3$.
+Random search and differential evolution found no positive Hanner defect;
+the optimized value was within $3.1\cdot10^{-15}$ of equality.  This check is
+not used in the proof.
+
+\section{Novelty note}
+
+The run's registry, solution, attempt, and proof-gap indexes contained no
+entry for arXiv:0903.3237.  Exact searches for the source conjecture,
+``Type-I hypergraph pair,'' and ``Hanner inequality'' found Hatami's paper
+and thesis, but no later proof.  Nearby literature on complex $L_p$ Hanner
+inequalities and Schatten norms does not state the even/odd hypergraph
+argument above.  This was a bounded search, not a complete citation audit.
+
+\begin{thebibliography}{9}
+\bibitem{Hatami}
+H. Hatami,
+\emph{On generalizations of Gowers norms and their geometry},
+arXiv:0903.3237 (2009), especially Lemma~2.10 and Conjecture~3.15.
+
+\bibitem{Hanner}
+O. Hanner,
+\emph{On the uniform convexity of $L^p$ and $\ell^p$},
+Arkiv f\"or Matematik 3 (1956), 239--244.
+\end{thebibliography}
+
+\end{document}

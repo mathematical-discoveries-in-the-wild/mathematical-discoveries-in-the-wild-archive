@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\Lf}{L^1([0,1],X)}
+\newcommand{\Linf}{L^\infty([0,1],X^*)}
+\newcommand{\Sf}{S_f}
+\newcommand{\weak}{\mathrm{weak}}
+
+\title{Weak Compactness of State Spaces in \(L^1([0,1],X)\)}
+\author{run fa\_banach\_001, agent\_lane\_16}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\texttt{full\_solution\_likely\_valid} for Problem 3.18 of arXiv:2509.12780,
+under the same separable-dual hypotheses used in the source paper's
+Theorems 2.3 and 2.5. Problem 3.19, the nonseparable-dual variant, is not
+claimed.
+
+\section{Source Problem}
+
+The source is Soumitra Daptari and Saurabh Dwivedi, ``A study on state spaces
+in classical Banach spaces,'' arXiv:2509.12780, to appear in Colloquium
+Mathematicum \cite{DaptariDwivedi2025}. For \(x\in S(X)\), the state space is
+\[
+  S_x=\{x^*\in S(X^*): x^*(x)=1\}.
+\]
+Under the standing identification \(L^1([0,1],X)^*=L^\infty([0,1],X^*)\) when
+\(X^*\) is separable, the source defines \(S_f\) analogously for
+\(f\in S(L^1([0,1],X))\).
+
+Problem 3.18, on page 18, asks for the weak compactness analogue of Theorem
+2.5:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In local source coordinates this is
+\texttt{data/parsed/arxiv\_sources/2509.12780/Banach\_CM\_.tex}, lines
+442--447.
+
+\section{Idea of the Proof}
+
+The norm-compactness theorem in the source proves that a nonsmooth fibre set
+of positive measure lets one choose many separated pointwise states. For weak
+compactness, pairwise norm separation is not enough: weakly compact sets can
+contain separated sequences. The extra ingredient is to alternate between two
+measurably selected pointwise states by Rademacher signs. After evaluation at
+one fixed vector of \(X\), this produces the usual Rademacher sequence in
+\(L^\infty\). The closed span of that sequence is isometric to \(\ell_1\), so
+no subsequence is weakly Cauchy. Eberlein--Smulian then forbids weak
+compactness of \(S_f\).
+
+\section{Theorem}
+
+\begin{theorem}
+Let \(X\) be a real or complex Banach space such that \(X^*\) is separable,
+and let \(\mu\) be Lebesgue measure on \([0,1]\). For
+\(f\in S(L^1(\mu,X))\), regard
+\[
+  S_f=\{h\in S(L^\infty(\mu,X^*)):\int_0^1 h(t)(f(t))\,dt=1\}.
+\]
+Then \(S_f\) is weakly compact in \(L^\infty(\mu,X^*)\) if and only if \(f\)
+is a smooth point of \(L^1(\mu,X)\).
+
+Equivalently, by Theorem 2.3 of \cite{DaptariDwivedi2025}, \(S_f\) is weakly
+compact if and only if \(f(t)\ne0\) almost everywhere and
+\[
+  \frac{f(t)}{\|f(t)\|}
+\]
+is a smooth point of \(X\) for almost every \(t\).
+\end{theorem}
+
+\begin{proof}
+If \(f\) is smooth, then \(S_f\) is a singleton, hence weakly compact. We prove
+the converse.
+
+We shall use the following elementary observation repeatedly. If \(h\in S_f\),
+then the equality
+\[
+  1=\int_0^1 h(t)(f(t))\,dt\le \int_0^1 \|h(t)\|\,\|f(t)\|\,dt
+     \le \int_0^1\|f(t)\|\,dt=1
+\]
+forces \(h(t)(f(t))=\|f(t)\|\) for almost every \(t\), after taking real
+parts in the complex case. Thus, off the zero set of \(f\), \(h(t)\) is a
+pointwise state of \(f(t)/\|f(t)\|\) almost everywhere.
+
+First suppose that \(Z=\{t:\|f(t)\|=0\}\) has positive measure. Choose
+\(h_0\in S_f\), choose \(y\in S(X)\), and choose \(y^*\in S(X^*)\) with
+\(y^*(y)=1\). Since \(Z\) is a positive-measure non-atomic Lebesgue set, it
+supports Rademacher functions \(r_n:Z\to\{-1,1\}\) such that every finite sign
+pattern occurs on a subset of positive measure. Define
+\[
+ h_n(t)=
+ \begin{cases}
+   r_n(t)y^*, & t\in Z,\\
+   h_0(t), & t\notin Z.
+ \end{cases}
+\]
+Then \(h_n\in S_f\) for every \(n\). The bounded evaluation map
+\[
+  P:L^\infty(\mu,X^*)\longrightarrow L^\infty(Z),\qquad
+  P(H)(t)=H(t)(y),
+\]
+sends \(h_n\) to \(r_n\). If \(S_f\) were weakly compact, Eberlein--Smulian
+would give a weakly convergent subsequence of \((h_n)\), and hence a weakly
+convergent subsequence of \((r_n)\) in \(L^\infty(Z)\). This is impossible:
+for every subsequence \((r_{n_j})\), the closed span of \(\{r_{n_j}\}\) is
+isometric to \(\ell_1\), since for finite scalars \((a_j)\),
+\[
+ \left\|\sum_j a_j r_{n_j}\right\|_\infty=\sum_j |a_j|.
+\]
+The unit vector basis of \(\ell_1\) has no weakly Cauchy subsequence: after
+passing to any subsequence, the bounded functional with alternating
+coordinates \(1,-1,1,-1,\ldots\) prevents convergence. This contradiction
+shows that \(\mu(Z)=0\).
+
+Now assume \(f(t)\ne0\) almost everywhere and suppose that \(f\) is not smooth
+in \(L^1(\mu,X)\). By Theorem 2.3 of \cite{DaptariDwivedi2025}, the set
+\[
+  E=\left\{t:\frac{f(t)}{\|f(t)\|}\text{ is not smooth in }X\right\}
+\]
+has positive measure. Put \(u_t=f(t)/\|f(t)\|\) on \(E\). Since
+\(X^*\) is separable, \(X\) is separable and \(S(X^*)\), with the norm
+topology, is Polish. For some \(\delta>0\), the set of \(t\in E\) for which
+\(\operatorname{diam} S_{u_t}\ge \delta\) has positive measure. The measurable
+graph argument used in the source paper, together with von Neumann selection,
+gives measurable maps \(\varphi,\psi:E_0\to S(X^*)\) on a positive-measure
+subset \(E_0\subseteq E\) such that
+\[
+  \varphi(t),\psi(t)\in S_{u_t},\qquad
+  \|\varphi(t)-\psi(t)\|\ge\delta
+\]
+for all \(t\in E_0\).
+
+Let \((x_m)\) be a countable dense subset of \(S(X)\). After replacing
+\(E_0\) by a positive-measure subset \(B\), we may fix \(x_0=x_m\) such that
+\[
+  a(t):=(\varphi(t)-\psi(t))(x_0)
+\]
+satisfies \(|a(t)|\ge \delta/2\) on \(B\). Let \(r_n:B\to\{-1,1\}\) be
+Rademacher functions on \(B\), and let \(h_0\in S_f\). Define
+\[
+ h_n(t)=
+ \begin{cases}
+   \frac{1+r_n(t)}2\,\varphi(t)+\frac{1-r_n(t)}2\,\psi(t), & t\in B,\\
+   h_0(t), & t\notin B.
+ \end{cases}
+\]
+On \(B\), each value is either \(\varphi(t)\) or \(\psi(t)\), hence is a
+state of \(u_t\). Outside \(B\), \(h_0\) is already a state for \(f\) almost
+everywhere. Thus \(h_n\in S_f\) for all \(n\).
+
+Define a bounded linear map
+\[
+  Q:L^\infty(\mu,X^*)\longrightarrow L^\infty(B),\qquad
+  Q(H)(t)=\frac{2H(t)(x_0)}{a(t)}.
+\]
+It is bounded because \(|a(t)|\ge\delta/2\). If
+\(m(t)=(\varphi(t)+\psi(t))/2\) on \(B\), then
+\[
+  Q(h_n)(t)=Q(m)(t)+r_n(t)\qquad(t\in B).
+\]
+Weak compactness of \(S_f\) would again imply, by Eberlein--Smulian and
+boundedness of \(Q\), that some subsequence of \((r_n)\) is weakly convergent
+in \(L^\infty(B)\), contradicting the same \(\ell_1\)-basis argument. Hence
+\(f\) must be smooth.
+\end{proof}
+
+\section{Consequence for Problem 3.18}
+
+Combining the theorem above with Theorems 2.3 and 2.5 of
+\cite{DaptariDwivedi2025} gives the exact weak compactness analogue requested
+in Problem 3.18:
+\[
+  S_f\text{ weakly compact}
+  \quad\Longleftrightarrow\quad
+  S_f\text{ norm compact}
+  \quad\Longleftrightarrow\quad
+  f\text{ is smooth}.
+\]
+Equivalently, under the source hypotheses, this happens precisely when
+\(f(t)\ne0\) a.e. and \(f(t)/\|f(t)\|\) is smooth in \(X\) a.e.
+
+\section{Verification and Novelty Check}
+
+The proof is purely functional-analytic; no computational verification is
+needed. The key points for human review are:
+\begin{itemize}
+\item the measurable selection of two uniformly separated fibre states on a
+positive-measure subset;
+\item the bounded evaluation map \(Q\), whose denominator is bounded away from
+zero after choosing a fixed vector \(x_0\);
+\item the use of Eberlein--Smulian and the isometric \(\ell_1\) span of
+Rademacher functions in \(L^\infty\).
+\end{itemize}
+
+Bounded novelty checks were performed in the run indexes for
+\texttt{2509.12780}, state spaces, weak compactness, \(L^1([0,1],X)\), and
+\(S_f\). No prior packet for this problem was found. Web searches for the
+exact paper title and phrases such as ``state spaces weak compactness
+\(L^1\)'' and ``\(S_f\) weakly compact \(L^1([0,1],X)\)'' found the source
+arXiv record but no later answer.
+
+\section{Limitations}
+
+This packet solves Problem 3.18 in the separable-dual framework of the source
+paper. It does not address Problem 3.19, where \(X^*\) is not separable and
+the measurable-selection machinery used both here and in the source paper is
+not directly available.
+
+\begin{thebibliography}{9}
+\bibitem{DaptariDwivedi2025}
+S. Daptari and S. Dwivedi,
+``A study on state spaces in classical Banach spaces,''
+arXiv:2509.12780, 2025; to appear in Colloquium Mathematicum.
+
+\bibitem{DiestelUhl1977}
+J. Diestel and J. J. Uhl,
+\emph{Vector Measures},
+Mathematical Surveys, No. 15, American Mathematical Society, 1977.
+
+\bibitem{Srivastava1998}
+S. M. Srivastava,
+\emph{A Course on Borel Sets},
+Graduate Texts in Mathematics 180, Springer, 1998.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,d}
+\newcommand{\sfT}{\mathsf T}
+\newcommand{\sfP}{\mathsf P}
+\newcommand{\sfF}{\mathsf F}
+
+\title{A Lacunary Martingale-Model Endpoint for the Subordinated Poisson Square Function}
+\author{fa\_banach\_001, agent\_lane\_18}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is Zhendong Xu and Hao Zhang,
+\emph{From the Littlewood-Paley-Stein Inequality to the
+Burkholder-Gundy Inequality}, arXiv:2111.05164.  Its introduction records that
+Xu had proved
+\[
+  \mathsf L_p^{\sfP}\lesssim \max\{p,\sqrt{p'}\}
+\]
+for the reverse Littlewood-Paley-Stein inequality of the Poisson semigroup
+subordinated to a symmetric diffusion semigroup, and that the corresponding
+problem for \(\mathsf L_p^{\sfP}\) remains open at the endpoint \(p\to1\).
+Equivalently, Xu's Problem 8.4 in arXiv:2105.12175 asks, in particular,
+whether for a symmetric submarkovian or Markovian semigroup there is a
+semigroup-dependent constant \(C\) such that
+\[
+  \|f-\sfF f\|_{L^1(\Omega)}
+  \le C\|G^{\sfP}_2(f)\|_{L^1(\Omega)} .
+\]
+
+\section*{Result Type}
+
+This packet is a partial result.  It proves the endpoint estimate for a
+martingale-generated model class, with sufficiently lacunary generator
+spectrum.  It does not settle the arbitrary symmetric submarkovian case.
+
+\section*{Definitions}
+
+Let \((\Omega,\mathcal A,\mu)\) be a probability space equipped with an
+increasing filtration \((\mathcal A_n)_{n\ge1}\).  Let \(E_n\) denote conditional
+expectation onto \(\mathcal A_n\), set \(D_n=E_n-E_{n-1}\) for \(n\ge2\), and
+write \(F=E_1\).  For a martingale terminal value \(f\), define
+\[
+  S(f-Ff)=\left(\sum_{n\ge2}|D_n f|^2\right)^{1/2}.
+\]
+
+Let \(0=\lambda_1<\lambda_2<\lambda_3<\cdots\), \(\lambda_n\to\infty\), and
+define on martingale differences
+\[
+  \sfT_t f = Ff+\sum_{n\ge2} e^{-\lambda_n t}D_n f,\qquad t>0.
+\]
+This is the Xu-Zhang martingale construction from arXiv:2111.05164, written in
+generator form: choosing \(a_{n-1}=1-e^{-\lambda_n}\) gives their
+\(\sfT_t=T^t\).  In particular \((\sfT_t)_{t>0}\) is a symmetric diffusion
+semigroup.  Its subordinated Poisson semigroup is
+\[
+  \sfP_t f=Ff+\sum_{n\ge2}e^{-t\sqrt{\lambda_n}}D_n f.
+\]
+The Poisson \(g\)-function is
+\[
+  G^{\sfP}(f)
+  =\left(\int_0^\infty\left|t\frac{\partial}{\partial t}\sfP_t f\right|^2
+       \frac{\dd t}{t}\right)^{1/2}.
+\]
+
+\section*{Proof Intuition}
+
+On each martingale difference \(D_n f\), the Poisson derivative contributes the
+scalar kernel \(t\sqrt{\lambda_n}e^{-t\sqrt{\lambda_n}}\).  If the numbers
+\(\sqrt{\lambda_n}\) are sufficiently separated, these kernels form a Riesz
+sequence in \(L^2((0,\infty),dt/t)\).  Therefore the Poisson square function is
+pointwise equivalent to the usual martingale square function.  Davis'
+endpoint square-function inequality then gives the desired \(L^1\) reverse
+estimate.
+
+\begin{lemma}[Lacunary Poisson kernels]
+\label{lem:gram}
+Let \(\alpha_{n+1}/\alpha_n\ge \rho>9\), and define
+\[
+  h_n(t)=2t\alpha_n e^{-t\alpha_n},\qquad t>0,
+\]
+as elements of \(H=L^2((0,\infty),dt/t)\).  Put
+\(\eta=8/(\rho-1)<1\).  Then for every finitely supported scalar sequence
+\((c_n)\),
+\[
+  (1-\eta)\sum_n |c_n|^2
+  \le \left\|\sum_n c_n h_n\right\|_H^2
+  \le (1+\eta)\sum_n |c_n|^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+The diagonal entries are normalized:
+\[
+  \|h_n\|_H^2=4\alpha_n^2\int_0^\infty t e^{-2\alpha_n t}\,\dd t=1.
+\]
+For \(m<n\),
+\[
+  \langle h_m,h_n\rangle_H
+  =4\alpha_m\alpha_n\int_0^\infty t e^{-(\alpha_m+\alpha_n)t}\,\dd t
+  =\frac{4\alpha_m\alpha_n}{(\alpha_m+\alpha_n)^2}.
+\]
+Since \(\alpha_n/\alpha_m\ge \rho^{n-m}\), this is at most
+\(4\rho^{-(n-m)}\).  Hence the sum of absolute off-diagonal entries in every
+row of the Gram matrix is at most
+\[
+  2\sum_{k\ge1}4\rho^{-k}=\frac{8}{\rho-1}=\eta .
+\]
+The conclusion follows from the elementary Gershgorin/Schur bound for this
+Hermitian Gram matrix.
+\end{proof}
+
+\begin{theorem}[Endpoint for lacunary martingale Poisson models]
+\label{thm:endpoint}
+Assume \(\sqrt{\lambda_{n+1}/\lambda_n}\ge\rho>9\) for all \(n\ge2\).
+Then, pointwise for all finite martingales,
+\[
+  \frac{\sqrt{1-\eta}}{2}\,S(f-Ff)
+  \le G^{\sfP}(f)
+  \le \frac{\sqrt{1+\eta}}{2}\,S(f-Ff),
+  \qquad \eta=\frac{8}{\rho-1}.
+\]
+Consequently there is a constant \(C_\rho\), independent of the filtration and
+of \(f\), such that
+\[
+  \|f-Ff\|_{L^1(\Omega)} \le C_\rho\|G^{\sfP}(f)\|_{L^1(\Omega)} .
+\]
+In particular, in this model class the reverse Poisson constants remain
+bounded at the endpoint \(p\downarrow1\).
+\end{theorem}
+
+\begin{proof}
+For a fixed \(\omega\in\Omega\), put \(c_n=D_n f(\omega)\) and
+\(\alpha_n=\sqrt{\lambda_n}\).  Since
+\[
+  t\frac{\partial}{\partial t}\sfP_t f(\omega)
+  =-\sum_{n\ge2}t\alpha_n e^{-t\alpha_n}D_n f(\omega),
+\]
+we have
+\[
+  G^{\sfP}(f)(\omega)
+  =\frac12\left\|\sum_{n\ge2}c_n h_n\right\|_{L^2(dt/t)} .
+\]
+Lemma~\ref{lem:gram} gives the asserted pointwise comparison with
+\((\sum |D_n f(\omega)|^2)^{1/2}\).
+
+Davis' endpoint martingale square-function inequality gives a universal
+constant \(C_D\) such that
+\[
+  \|f-Ff\|_1\le C_D\|S(f-Ff)\|_1
+\]
+for every scalar martingale.  Combining this with the lower pointwise bound
+for \(G^{\sfP}\) yields
+\[
+  \|f-Ff\|_1
+  \le \frac{2C_D}{\sqrt{1-\eta}}\|G^{\sfP}(f)\|_1 .
+\]
+The finite-martingale proof extends to the usual \(L^1\) domain by truncating
+the martingale and applying monotone convergence to the square functions.
+The bounded \(p\downarrow1\) statement follows from the same
+Davis-Burkholder-Gundy inequalities, whose reverse square-function constants
+are bounded on \(1\le p\le2\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The only nontrivial semigroup input is the Xu-Zhang construction: increasing
+\(\lambda_n\) corresponds to an increasing sequence
+\(a_{n-1}=1-e^{-\lambda_n}\), so their Theorem 1.1 gives a symmetric diffusion
+semigroup with eigenvalue \(e^{-\lambda_n t}\) on \(D_nL^p\).  The Poisson
+subordination then replaces \(\lambda_n\) by \(\sqrt{\lambda_n}\), exactly as
+used above.
+
+The lacunarity threshold \(\rho>9\) is not intended to be sharp.  It is chosen
+only to make the Riesz-sequence estimate a one-line Gershgorin argument.
+A sharper Toeplitz or total-positivity analysis may cover much denser spectra,
+including the numerical regime of Xu-Zhang's displayed \(16^n\) heat rates, but
+that strengthening is not needed for this packet.
+
+\section*{Limitations}
+
+This packet does not prove Xu's full Problem 8.4.  The proof uses the
+martingale difference spectral representation and a lacunarity hypothesis on
+the generator.  Arbitrary symmetric diffusion semigroups need not have such a
+discrete martingale-difference model, and the general semigroup-BMO dual route
+remains open in this work.
+
+\section*{Novelty and Literature Check}
+
+Local searches of the run registry, solution index, attempt index, and proof
+gap index for arXiv:2111.05164, Littlewood-Paley-Stein, Poisson reverse
+constants, martingale cotype, and symmetric diffusion semigroups found no prior
+packet for this target.  Local source checks included arXiv:2111.05164,
+arXiv:2105.12175, and arXiv:2105.12795.  Web searches on 2026-07-18 for
+phrases including ``\(L_p^P\)'', ``\(p\to1\)'', ``reverse
+Littlewood-Paley-Stein'', ``Poisson semigroup'', and ``semigroup BMO'' found
+Xu's explicit Problem 8.4 and classical Euclidean positive results, but no
+recorded theorem proving the lacunary martingale-model endpoint above.
+
+\section*{References}
+
+\begin{enumerate}[label={[\arabic*]}]
+\item Z. Xu and H. Zhang, \emph{From the Littlewood-Paley-Stein Inequality to
+the Burkholder-Gundy Inequality}, arXiv:2111.05164; Trans. Amer. Math. Soc.
+376 (2023), 371--389.
+\item Q. Xu, \emph{Holomorphic functional calculus and vector-valued
+Littlewood-Paley-Stein theory for semigroups}, arXiv:2105.12175.
+\item Q. Xu, \emph{Optimal orders of the best constants in the
+Littlewood-Paley inequalities}, arXiv:2105.12795; J. Funct. Anal. 283 (2022),
+109570.
+\item B. Davis, \emph{On the integrability of the martingale square function},
+Israel J. Math. 8 (1970), 187--190.
+\item D. L. Burkholder, \emph{Sharp inequalities for martingales and
+stochastic integrals}, Asterisque 157--158 (1988), 75--94.
+\end{enumerate}
+
+\section*{Human Review Recommendation}
+
+The packet is recommended for review as a partial positive endpoint theorem.
+The main checks are: (i) confirm the indexing between \(a_n\), \(D_n\), and
+\(\lambda_n\) in the Xu-Zhang semigroup; (ii) verify the Gram estimate in
+Lemma~\ref{lem:gram}; and (iii) confirm the endpoint Davis inequality is being
+used in the correct scalar martingale form.
+
+\end{document}

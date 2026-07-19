@@ -1,0 +1,299 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Sigmaa}[1]{\Sigma_{#1}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Res}{\mathrm{R}}
+
+\title{Removing the Extra Smoothing Factor in Fackler's Kato--Beurling Converse}
+\author{Agent lane 14}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Stephan Fackler, \emph{Regularity of Semigroups via the
+Asymptotic Behaviour at Zero}, arXiv:1203.5498.  Corollary 2.5 proves that if
+a \(C_0\)-semigroup \((T(t))_{t\geq0}\) is holomorphic, then for all large
+\(N\) one has
+\[
+  \limsup_{t\downarrow0}
+  \norm{(T(t)-\Id)^N T(t)^K}^{1/N}<2
+\]
+after choosing a sufficiently large integer \(K\).  Remark 2.6 observes that,
+for a bounded holomorphic semigroup on a Hilbert space whose negative
+generator has a bounded \(H^\infty\)-calculus, the extra factor \(T(t)^K\)
+can be omitted, and asks whether this remains true in general.
+
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet gives an affirmative answer.  The proof does not use Hilbert
+space structure or an \(H^\infty\)-calculus.
+
+\section*{Proof Intuition}
+
+For a bounded holomorphic semigroup \(T(t)=e^{-tA}\), the negative generator
+\(A\) is sectorial of some angle strictly smaller than \(\pi/2\).  Choose a
+larger sector angle \(\psi<\pi/2\).  On the two boundary rays of this sector,
+the scalar function \(z\mapsto e^{-z}-1\) is uniformly bounded by a number
+\(q_\psi<2\).  Thus the scalar finite-difference function
+\[
+  f_N(z)=(e^{-z}-1)^N
+\]
+has boundary size at most \(q_\psi^N\), apart from its harmless limit
+\((-1)^N\) at infinity.  A sectorial contour estimate then gives
+\[
+  \norm{f_N(tA)} \le 1+C\log(N+1)q_\psi^N+o(1)
+\]
+uniformly for \(t>0\).  Since \(q_\psi<2\), the \(N\)-th root is eventually
+strictly less than \(2\).  Finally, an arbitrary holomorphic \(C_0\)-semigroup
+can be exponentially rescaled to a bounded holomorphic semigroup on a smaller
+sector, and this rescaling does not change the small-time \(N\)-th finite
+difference limsup.
+
+\section*{Sectorial Estimate}
+
+We use the standard notation
+\[
+  \Sigma_\alpha=\{z\in\C\setminus\{0\}: \abs{\arg z}<\alpha\}.
+\]
+Recall that if \(-A\) generates a bounded holomorphic \(C_0\)-semigroup, then
+\(A\) is sectorial of some angle \(\theta<\pi/2\).
+
+\begin{lemma}[A boundary estimate for finite-limit functions]
+\label{lem:sectorial-estimate}
+Let \(A\) be sectorial of angle \(\theta<\pi/2\), and fix
+\(\psi\in(\theta,\pi/2)\).  There is a constant \(C_{\psi,A}\) with the
+following property.  Let \(f\) be holomorphic in a neighbourhood of
+\(\overline{\Sigma_\psi}\), continuous at \(0\) and at infinity, with
+\(f(0)=0\) and \(f(\infty)=L\).  Put
+\[
+  m_f(r)=\max_{\sigma=\pm1}\abs{f(re^{i\sigma\psi})},\qquad
+  m_f^\infty(r)=\max_{\sigma=\pm1}\abs{f(re^{i\sigma\psi})-L}.
+\]
+Then for every \(R\geq 1\),
+\[
+  \norm{f(A)}
+  \le
+  \abs{L}
+  + C_{\psi,A}\left(
+      \int_0^1 m_f(r)\,\frac{dr}{r}
+      +\int_1^R m_f(r)\,\frac{dr}{r}
+      +\int_R^\infty m_f^\infty(r)\,\frac{dr}{r}
+    \right).
+\]
+\end{lemma}
+
+\begin{proof}
+This is the elementary sectorial functional-calculus estimate obtained from
+the usual keyhole contour around \(\Sigma_\theta\).  For completeness we spell
+out the point of the estimate.  Let
+\[
+  M_{\psi,A}:=\sup_{\lambda\notin\Sigma_\psi}
+       \norm{\lambda(\lambda-A)^{-1}}<\infty .
+\]
+On the two rays \(\lambda=re^{\pm i\psi}\), the resolvent contributes at most
+\(M_{\psi,A}\,dr/r\).  Since \(f(0)=0\), the small circular arc vanishes as its
+radius tends to \(0\).  On the large arc, the constant part \(L\) contributes
+exactly \(L\Id\), and the remainder is controlled by \(m_f^\infty\).  Taking
+the inner radius to \(0\) and the outer radius to infinity gives the displayed
+bound.  This is the standard extended sectorial calculus for functions with
+finite limits at \(0\) and \(\infty\), with the norm estimate read directly
+from the same contour.
+\end{proof}
+
+\begin{lemma}[Uniform finite-difference bound]
+\label{lem:finite-difference-bound}
+Let \(-A\) generate a bounded holomorphic \(C_0\)-semigroup on a Banach space.
+Then there exist \(q<2\) and \(C>0\) such that for every \(N\geq2\) and every
+\(t>0\),
+\[
+  \norm{(e^{-tA}-\Id)^N}
+  \le
+  1+C\left(\frac1N+\log(N+1)q^N+e^{-N}\right).
+\]
+Consequently,
+\[
+  \limsup_{N\to\infty}\ \sup_{t>0}
+  \norm{(e^{-tA}-\Id)^N}^{1/N}<2.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose \(\psi\in(\theta,\pi/2)\), where \(\theta\) is a sectoriality angle for
+\(A\), and put
+\[
+  q:=\sup_{r>0}\abs{1-e^{-re^{i\psi}}}.
+\]
+Then \(q<2\): the displayed function is continuous in \(r\), tends to \(0\) at
+\(r=0\), tends to \(1\) as \(r\to\infty\), and cannot equal \(2\) for finite
+\(r\) because \(\abs{e^{-re^{i\psi}}}=e^{-r\cos\psi}<1\).
+
+Fix \(N\ge2\) and set \(f_N(z)=(e^{-z}-1)^N\).  The operator
+\((e^{-tA}-\Id)^N\) is \(f_N(tA)\).  The scaled operator \(tA\) has the same
+sectorial angle and the same resolvent bound \(M_{\psi,A}\), so Lemma
+\ref{lem:sectorial-estimate} applies with constants independent of \(t\).
+Since \(f_N(0)=0\) and \(f_N(\infty)=(-1)^N\), it remains only to estimate the
+three scalar integrals in Lemma \ref{lem:sectorial-estimate}.
+
+For \(0<r\le1\), the inequality
+\[
+  \abs{1-e^{-w}}\le \abs{w}\qquad(\mathrm{Re}\,w\ge0)
+\]
+gives \(m_{f_N}(r)\le r^N\), and hence
+\[
+  \int_0^1 m_{f_N}(r)\,\frac{dr}{r}\le \frac1N.
+\]
+For \(1\le r\le R\), \(m_{f_N}(r)\le q^N\), so
+\[
+  \int_1^R m_{f_N}(r)\,\frac{dr}{r}\le q^N\log R.
+\]
+Finally let \(c=\cos\psi>0\) and choose \(R=N/c\).  If \(r\ge R\) and
+\(u=e^{-re^{i\psi}}\), then \(\abs{u}\le e^{-N}\), and
+\[
+  \abs{(1-u)^N-1}
+  \le N\abs{u}(1+\abs{u})^{N-1}
+  \le 2N e^{-cr}.
+\]
+The same estimate holds on the lower boundary ray.  Thus
+\[
+  \int_R^\infty m_{f_N}^\infty(r)\,\frac{dr}{r}
+  \le 2N\int_R^\infty e^{-cr}\,\frac{dr}{r}
+  \le 2e^{-N}.
+\]
+Substitution into Lemma \ref{lem:sectorial-estimate} gives the asserted
+uniform bound after increasing \(C\).  Since \(q<2\), the \(N\)-th root of the
+right hand side is eventually strictly smaller than \(2\).
+\end{proof}
+
+\section*{Main Result}
+
+\begin{theorem}
+\label{thm:main}
+Let \((T(t))_{t\ge0}\) be a holomorphic \(C_0\)-semigroup on a Banach space
+\(X\).  Then there exists \(N\in\N\) such that
+\[
+  \limsup_{t\downarrow0}
+  \norm{(T(t)-\Id)^N}^{1/N}<2.
+\]
+In particular, the factor \(T(t)^K\) in Fackler's Corollary 2.5(b) can be
+omitted.
+\end{theorem}
+
+\begin{proof}
+First suppose that \((T(t))\) is bounded holomorphic, and write
+\(T(t)=e^{-tA}\).  Lemma \ref{lem:finite-difference-bound} gives a sequence
+of integers \(N\) for which
+\[
+  \sup_{t>0}\norm{(T(t)-\Id)^N}^{1/N}<2,
+\]
+and hence the required small-time limsup estimate.
+
+For a general holomorphic \(C_0\)-semigroup, restrict the holomorphic
+extension to a slightly smaller sector.  By the semigroup law and local
+boundedness near \(0\), there is \(\omega\in\R\) such that
+\[
+  S(z):=e^{-\omega z}T(z)
+\]
+is bounded holomorphic on that smaller sector.  The bounded case gives an
+integer \(N\) with
+\[
+  \limsup_{t\downarrow0}\norm{(S(t)-\Id)^N}^{1/N}<2.
+\]
+Since \(T(t)=e^{\omega t}S(t)\), we have
+\[
+  T(t)-\Id=e^{\omega t}(S(t)-\Id)+(e^{\omega t}-1)\Id .
+\]
+For this fixed \(N\), expanding the \(N\)-th power shows that
+\[
+  (T(t)-\Id)^N-e^{N\omega t}(S(t)-\Id)^N\to0
+\]
+in operator norm as \(t\downarrow0\), because \((S(t))\) is bounded near
+\(0\).  As \(e^{N\omega t}\to1\), the desired strict inequality transfers
+from \(S\) to \(T\).
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+No numerical computation is used.  The proof is an analytic sectorial-calculus
+argument.  The main review point is Lemma \ref{lem:sectorial-estimate}; it is
+the standard contour estimate for sectorial operators, but it is where all
+operator-theoretic content is concentrated.
+
+Local duplicate checks were run against
+\texttt{runs/fa\_banach\_001/registry\_index.tsv},
+\texttt{solutions/index.tsv}, \texttt{attempts/index.tsv}, and
+\texttt{proof\_gaps/index.tsv} for arXiv id \texttt{1203.5498}, the phrases
+\texttt{additional factor}, \texttt{z\^{}K}, \texttt{Kato-Beurling}, and the
+finite-difference expressions in Corollary 2.5.  No completed existing packet
+for this exact question was found before this promotion.
+
+A bounded web search on July 18, 2026 used the exact phrases
+\texttt{additional factor z\^{}K Kato-Beurling},
+\texttt{limsup (T(t)-Id)\^{}N T(t)\^{}K < 2},
+\texttt{Pazy limsup T(t)-I holomorphic counterexample}, and the source paper
+title.  It found adjacent literature, including Batty--Gomilko--Tomilov's
+Besov-calculus paper and Hytönen--Lappas's quantitative Kato estimates for
+bounded holomorphic semigroups, but no separate paper explicitly answering
+Fackler's Remark 2.6 by removing the \(z^K\) factor.  Novelty confidence is
+\texttt{bounded-search likely new}; this is not a full bibliographic audit.
+
+\section*{Limitations and Review Recommendation}
+
+The theorem answers the question as stated for holomorphic \(C_0\)-semigroups
+on arbitrary Banach spaces.  It does not provide an explicit optimal \(N\);
+the proof gives existence through the sectoriality angle and resolvent
+constant.
+
+Human review should check:
+\begin{itemize}
+  \item the contour estimate in Lemma \ref{lem:sectorial-estimate}, especially
+  the treatment of the finite limit \(f(\infty)\);
+  \item the transfer from a general holomorphic semigroup to an exponentially
+  rescaled bounded holomorphic semigroup;
+  \item the scalar tail estimate for
+  \((1-e^{-re^{i\psi}})^N-1\).
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{Fackler}
+S. Fackler,
+\emph{Regularity of Semigroups via the Asymptotic Behaviour at Zero},
+Semigroup Forum 87 (2013), 21--42; arXiv:1203.5498.
+
+\bibitem{Haase}
+M. Haase,
+\emph{The Functional Calculus for Sectorial Operators},
+Operator Theory: Advances and Applications 169, Birkhauser, 2006.
+
+\bibitem{BattyGomilkoTomilov}
+C. J. K. Batty, A. Gomilko, and Y. Tomilov,
+\emph{A Besov algebra calculus for generators of operator semigroups and
+related norm-estimates},
+Mathematische Annalen 379 (2021), 23--93.
+
+\bibitem{HytonenLappas}
+T. Hytönen and S. Lappas,
+\emph{Quantitative estimates for bounded holomorphic semigroups},
+Semigroup Forum 108 (2024), 115--144.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Ball}{B}
+
+\title{A Counterexample to Bidual Stability of Uniform Property \texorpdfstring{$(S)$}{(S)}}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Open Problem (5) from:
+
+\begin{quote}
+William B. Johnson and Tomasz Kania, \emph{Uniform Property (S)},
+arXiv:2602.09106.
+\end{quote}
+
+The source location is the open-problems section of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Problem (5) asks:
+
+\begin{quote}
+If $X$ has uniform property $(S)$, must $X^{**}$ have it too?
+\end{quote}
+
+We give a negative answer, in the real Banach-space category.
+
+\section*{Definitions}
+
+For a normed space $E$, the paper defines
+\[
+  U_E(x,y;a)
+  =
+  \sup_{\norm{z}\le a}
+  \left|\,\norm{x+z}-\norm{y+z}\,\right|
+\]
+for $x,y\in S_E$ and $a>0$, and
+\[
+  U_E(d;a)
+  =
+  \inf_{\substack{x,y\in S_E\\ \norm{x-y}\ge d}}
+  U_E(x,y;a).
+\]
+The space $E$ has uniform property $(S)$ precisely when
+$U_E(d;a)>0$ for every $0<d<2$ and every $a>0$.
+
+\section*{Counterexample}
+
+\begin{theorem}
+There is a Banach space $X$ with uniform property $(S)$ such that
+$X^{**}$ fails uniform property $(S)$.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  X=L_1[0,1]
+\]
+over the real scalars. By Theorem 1.2 of the source paper,
+$L_1(\mu)$ has uniform property $(S)$ whenever $\mu$ is atomless.
+Thus $X$ has uniform property $(S)$.
+
+We now show that $X^{**}$ does not. Since $X^*=L_\infty[0,1]$, we
+have
+\[
+  X^{**}=(L_\infty[0,1])^*.
+\]
+Represent the commutative unital Banach lattice algebra
+$L_\infty[0,1]$ as $C(K)$ for its Stone/Gelfand compact space $K$.
+The space $K$ has at least two distinct points: for instance, the
+non-trivial idempotent $\chi_{[0,1/2]}$ gives a non-trivial clopen
+set in the Stone representation. Hence
+\[
+  X^{**}\cong C(K)^*=M(K),
+\]
+the Banach lattice of regular signed measures on $K$ with the
+total-variation norm, and there exist two distinct Dirac measures
+$\delta_s,\delta_t$ in $M(K)$.
+
+Define two positive norm-one measures
+\[
+  u=\frac34\delta_s+\frac14\delta_t,
+  \qquad
+  v=\frac14\delta_s+\frac34\delta_t.
+\]
+Then
+\[
+  \norm{u-v}
+  =
+  \left|\frac34-\frac14\right|
+  +
+  \left|\frac14-\frac34\right|
+  =
+  1.
+\]
+We claim that
+\[
+  U_{X^{**}}(u,v;1/8)=0.
+\]
+Let $z\in M(K)$ satisfy $\norm{z}\le 1/8$. Write
+\[
+  z=\alpha\delta_s+\beta\delta_t+z_0,
+\]
+where $z_0$ has no mass at $s$ or $t$. Then
+$|\alpha|\le 1/8$ and $|\beta|\le 1/8$. In particular, all four
+numbers
+\[
+  \frac34+\alpha,\quad \frac14+\beta,\quad
+  \frac14+\alpha,\quad \frac34+\beta
+\]
+are positive. Since the atoms $\{s\}$, $\{t\}$, and
+$K\setminus\{s,t\}$ are disjoint for the variation norm,
+\[
+\begin{aligned}
+  \norm{u+z}
+  &=
+  \left(\frac34+\alpha\right)
+  +
+  \left(\frac14+\beta\right)
+  +
+  \norm{z_0}       \\
+  &=1+\alpha+\beta+\norm{z_0},
+\end{aligned}
+\]
+and similarly
+\[
+\begin{aligned}
+  \norm{v+z}
+  &=
+  \left(\frac14+\alpha\right)
+  +
+  \left(\frac34+\beta\right)
+  +
+  \norm{z_0}       \\
+  &=1+\alpha+\beta+\norm{z_0}.
+\end{aligned}
+\]
+Thus $\norm{u+z}=\norm{v+z}$ for every $z$ with $\norm{z}\le 1/8$.
+Consequently,
+\[
+  U_{X^{**}}(u,v;1/8)=0.
+\]
+Since $u,v\in S_{X^{**}}$ and $\norm{u-v}=1$, this implies
+\[
+  U_{X^{**}}(1;1/8)=0.
+\]
+Therefore $X^{**}$ fails uniform property $(S)$.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is exact. The script
+\texttt{code/check\_atomic\_band.py} samples perturbations in the
+finite-dimensional model $\ell_1^2\oplus_1\R^k$ and checks the identity
+\[
+  \norm{u+z}_1=\norm{v+z}_1
+  \qquad(\norm{z}_1\le 1/8)
+\]
+for the same atom coefficients. This is only a sanity check; the
+measure-theoretic calculation above is the certificate.
+
+\section*{Limitations and Novelty Check}
+
+This packet answers Problem (5) as stated for real Banach spaces. The
+example is deliberately classical: $X=L_1[0,1]$ is one of the paper's
+basic positive examples, and the failure in the bidual is caused by two
+Dirac atoms in the measure representation of $(L_\infty[0,1])^*$.
+
+I have not performed a literature search beyond the source paper and the
+local pipeline corpus, so the novelty status is ``candidate'' pending
+human and literature review.
+
+\end{document}

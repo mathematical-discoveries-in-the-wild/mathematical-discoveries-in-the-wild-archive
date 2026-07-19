@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\wstar}{w^*}
+\newcommand{\clnorm}[1]{\overline{#1}^{\|\cdot\|}}
+
+\title{A Limit-Ordinal Partial Answer for Subspaces Whose Weak-Star Derived Sets Are Proper and Norm Dense}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_03}}
+\date{June 21, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a likely valid partial result for the limit-ordinal question
+at the end of Silber's paper \cite{Silber2022}.  It proves the desired
+conclusion whenever \(X\) contains a non-quasi-reflexive subspace with
+separable dual.  The general case from Silber's question remains open.
+
+\section*{Source Question}
+
+The source paper is Zdenek Silber, \emph{On subspaces whose weak* derived sets
+are proper and norm dense}, arXiv:2203.00288 \cite{Silber2022}.  After proving
+the successor-ordinal theorem, Silber explains that the proof does not cover
+limit ordinals and asks the following question on page 11.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In the notation of \cite{Silber2022}, if \(A\subset X^*\), then
+\[
+  A^{(1)}=\bigcup_{n=1}^{\infty}\overline{A\cap nB_{X^*}}^{\,\wstar},
+\]
+successor derivatives are defined by
+\(A^{(\beta+1)}=(A^{(\beta)})^{(1)}\), and limit derivatives by
+\(A^{(\lambda)}=\bigcup_{\beta<\lambda}A^{(\beta)}\).
+
+\section*{Proof Intuition}
+
+Silber's recursive pieces \(K(\alpha,A,z+af_k)\) are already defined for
+limit ordinals.  If one repeats the successor proof at a limit ordinal
+\(\lambda\), the finite-support approximants land in cofinally increasing
+stages \(K^{(\lambda_n)}\), so their final weak-star limit is only known to
+belong to \(K^{(\lambda+1)}\).  This is the obstruction explicitly identified
+in the source paper.
+
+The obstruction disappears when the relevant finite-dimensional decomposition
+is shrinking: then \(P_n^*y^*\to y^*\) in norm, not merely weak-star.  In a
+non-quasi-reflexive space with separable dual, the Davis-Johnson/Ostrovskii
+minimal-system construction can be run with a dense sequence in the whole dual.
+The same annihilation bookkeeping used to prove the \(u_n\)-basis is shrinking
+then proves the whole FDD is shrinking.  This norm convergence makes the
+limit-stage approximants norm dense.  Properness is kept by the cofinal
+sequence \(\lambda_n\nearrow\lambda\), which forces every element of
+\(K^{(\lambda)}\) to satisfy all but finitely many tail equations.
+
+\section*{A Shrinking-FDD Variant of Silber's Setup}
+
+\begin{lemma}\label{lem:shrinking-fdd-setup}
+Let \(Y\) be a non-quasi-reflexive Banach space with separable dual.  Then
+Silber's Lemma 2.2 may be realized inside \(Y\) so that the finite-dimensional
+decomposition
+\[
+  [x_1,x_2,u_1],\ [x_3,x_4,x_5,u_2],\ldots,
+  [x_{n_p},x_{n_p+1},\ldots,x_{n_p+p},u_p],\ldots
+\]
+of \(W=\overline{\operatorname{span}}\{x_i,u_i:i\in\N\}\) is shrinking.
+\end{lemma}
+
+\begin{proof}
+The proof is the construction behind \cite[Lemma 2.2]{Silber2022}, which is
+taken from \cite[Lemma 2]{Ostrovskii2011}.  In Ostrovskii's proof, one first
+chooses a sequence \((s_i)\subset X^*\) whose restrictions are dense in the
+dual of the auxiliary separable-dual subspace, and one constructs increasing
+finite-dimensional spaces \(G_i\subset X^*\) with \(s_i\in G_i\).  Future
+vectors \(u_j\) and \(x_{n_j+k}\) are chosen in \(G_{j-1}^{\perp}\).
+
+When the ambient space is \(Y\) and \(Y^*\) is separable, choose \((s_i)\) norm
+dense in the whole \(Y^*\).  The Davis-Johnson local-reflexivity construction
+is otherwise unchanged and still gives Silber's uniformly bounded system, the
+bounded row partial sums, and the displayed FDD.
+
+Let \(E_p=[x_{n_p},x_{n_p+1},\ldots,x_{n_p+p},u_p]\).  We verify that
+\((E_p)\) is shrinking.  Take \(w^*\in W^*\), extend it by Hahn-Banach to
+\(\widetilde w^*\in Y^*\), and fix \(\varepsilon>0\).  Choose \(m\) with
+\(\|\widetilde w^*-s_m\|<\varepsilon\).  If \(p>m\), then
+\[
+  E_p\subset G_{p-1}^{\perp}\subset G_m^{\perp}\subset \ker s_m .
+\]
+Hence for \(z\in \overline{\operatorname{span}}\{E_p:p>m\}\),
+\[
+  |w^*(z)|=|(\widetilde w^*-s_m)(z)|\leq \varepsilon\|z\|.
+\]
+Thus the norm of \(w^*\) on the \(m\)-tail is at most \(\varepsilon\).  This is
+the standard tail criterion for a shrinking FDD.  Therefore \(P_m^*w^*\to w^*\)
+in norm for the associated partial-sum projections.
+\end{proof}
+
+\section*{Theorem}
+
+\begin{theorem}
+Let \(\lambda<\omega_1\) be a countable limit ordinal.  Suppose a Banach space
+\(X\) contains a subspace \(Y\) such that \(Y\) is non-quasi-reflexive and
+\(Y^*\) is separable.  Then there is a linear subspace \(A\subset X^*\) such
+that
+\[
+  A^{(\lambda)}\subsetneq \clnorm{A^{(\lambda)}}=X^* .
+\]
+\end{theorem}
+
+\begin{proof}
+It is enough to prove the assertion for the subspace \(W\) produced by
+Lemma~\ref{lem:shrinking-fdd-setup}.  Indeed, if \(E:W\to X\) is the inclusion
+and \(K\subset W^*\) has \(K^{(\lambda)}\) proper and norm dense in \(W^*\), set
+\[
+  A=(E^*)^{-1}(K)\subset X^* .
+\]
+The restriction map \(E^*:X^*\to W^*\) is onto.  By the standard lifting lemma
+used in \cite[Lemma 1]{Ostrovskii1993} and in the proof of
+\cite[Theorem 2.1]{Silber2022},
+\[
+  A^{(\lambda)}=(E^*)^{-1}\bigl(K^{(\lambda)}\bigr).
+\]
+The preimage of a proper subset under an onto map is proper, and the preimage
+of a norm dense set under an open onto operator is norm dense.
+
+We now work in \(W^*\).  Use the notation from \cite{Silber2022}: for each
+row \(k\), let \(f_k\in W^{**}\) be a weak-star cluster point of the bounded
+partial sums \(\sum_{j=1}^m x_j^k\).  The identities
+\[
+  f_k(\widetilde x_s^t)=\delta_{k,t},
+  \qquad
+  f_k(\widetilde u_n)=0
+\]
+hold by \cite[Lemma 2.7]{Silber2022}.  Let \(P_m\) be the FDD partial-sum
+projections.  By Lemma~\ref{lem:shrinking-fdd-setup},
+\[
+  P_m^*y^*\longrightarrow y^*
+  \quad\hbox{in norm for every }y^*\in W^* .
+\]
+
+Choose an increasing sequence \((\lambda_n)\) of ordinals cofinal in
+\(\lambda\), a partition \((A_n)_{n=0}^\infty\) of \(\N\) into infinite sets,
+and a summable sequence \(a_n>0\).  Let \(q(n)\) be the increasing enumeration
+of \(A_0\).  Using Silber's Construction 2.4, set
+\[
+  K_n=K(\lambda_n,A_n,u_n+a_nf_{q(n)})\subset W^*,
+  \qquad
+  K=\bigcap_{n=1}^{\infty}K_n .
+\]
+
+First, \(K^{(\lambda)}\) is proper.  If \(\beta<\lambda\), then there is \(N\)
+such that \(\beta\leq\lambda_n\) for all \(n\geq N\).  Since \(K\subset K_n\),
+monotonicity of derived sets and \cite[Proposition 2.5]{Silber2022} give
+\[
+  K^{(\beta)}
+  \subseteq
+  \bigcap_{n\geq N}\ker(u_n+a_nf_{q(n)}).
+\]
+Hence
+\[
+  K^{(\lambda)}
+  \subseteq
+  \bigcup_{N=1}^{\infty}\bigcap_{n\geq N}\ker(u_n+a_nf_{q(n)}).
+\]
+The biorthogonal functionals \(\widetilde u_n\) are uniformly bounded, so for
+any scalar sequence \(b=(b_n)\in\ell_1\) with all \(b_n\neq0\), the series
+\(y^*=\sum_n b_n\widetilde u_n\) converges in \(W^*\).  Since
+\(f_{q(n)}(\widetilde u_m)=0\),
+\[
+  (u_n+a_nf_{q(n)})(y^*)=b_n\neq0
+\]
+for every \(n\).  Thus \(y^*\notin K^{(\lambda)}\).
+
+It remains to prove norm density.  First, for each \(n\),
+\cite[Lemma 2.8(a)]{Silber2022} applied to
+\((\lambda_n,A_n,u_n+a_nf_{q(n)})\) gives
+\[
+  \widetilde u_n\in K^{(\lambda_n+1)}\subset K^{(\lambda)},
+\]
+because \(\lambda_n+1<\lambda\).  The inclusion into the derived set of the
+intersection uses the same disjoint-support verification as Claim 2 in
+\cite[Theorem 2.10]{Silber2022}: the relevant \(Q_1\)-piece for the \(n\)-th
+coordinate is contained in every \(K_j\), \(j\neq n\).
+
+Let \(U=[u_n]\subset W\), and take \(y^*\in U^\perp\).  Define
+\(y_m^*=P_m^*y^*\).  Then \(y_m^*\to y^*\) in norm, and \(y_m^*\) is finitely
+supported.  As in Claim 3 of \cite[Theorem 2.10]{Silber2022}, put
+\[
+  z_m^*
+  =
+  y_m^*-\sum_{i=1}^{\infty}a_i f_{q(i)}(y_m^*)\widetilde u_i .
+\]
+For each fixed \(m\), this sum is finite.  The finite-support decomposition
+from Silber's Claim 3 and \cite[Lemma 2.8(b)]{Silber2022}, with
+\(\lambda_i\) in place of the common successor predecessor, gives
+\[
+  z_m^*\in K^{(\lambda)} .
+\]
+Indeed each local component lies in
+\((K_i)^{(\lambda_i)}\subset (K_i)^{(\lambda)}\), and the \(Q\)-piece
+disjointness puts it in the corresponding derivative of the full intersection.
+
+Since \(P_m^*y^*\to y^*\) in norm and the functionals \(f_{q(i)}\) and
+\(\widetilde u_i\) are uniformly bounded while \(\sum_i a_i<\infty\), the
+correction terms converge in norm:
+\[
+  \sum_i a_i f_{q(i)}(y_m^*)\widetilde u_i
+  \longrightarrow
+  \sum_i a_i f_{q(i)}(y^*)\widetilde u_i .
+\]
+Thus
+\[
+  z_m^*\longrightarrow
+  z^*:=y^*-\sum_i a_i f_{q(i)}(y^*)\widetilde u_i
+  \quad\hbox{in norm}.
+\]
+So \(z^*\in\clnorm{K^{(\lambda)}}\).  Since each \(\widetilde u_i\) lies in
+\(K^{(\lambda)}\), the norm-convergent series
+\(\sum_i a_i f_{q(i)}(y^*)\widetilde u_i\) also belongs to
+\(\clnorm{K^{(\lambda)}}\).  Therefore \(y^*\in\clnorm{K^{(\lambda)}}\).
+
+Finally, let \(w^*\in W^*\).  Because \((u_n)\) is shrinking, the restriction
+\(w^*|_U\in U^*\) is norm approximable by finite linear combinations of
+\(\widetilde u_n|_U\).  Given \(\varepsilon>0\), choose such a finite
+combination \(u^*=\sum_{j=1}^m\lambda_j\widetilde u_j|_U\) with
+\(\|w^*|_U-u^*\|\leq\varepsilon\), and extend \(w^*|_U-u^*\) to
+\(r^*\in W^*\) with \(\|r^*\|\leq\varepsilon\).  Then
+\[
+  w^*-r^*-\sum_{j=1}^m\lambda_j\widetilde u_j\in U^\perp
+  \subseteq \clnorm{K^{(\lambda)}}.
+\]
+The finite sum belongs to \(K^{(\lambda)}\), so
+\(\operatorname{dist}(w^*,\clnorm{K^{(\lambda)}})\leq\varepsilon\).  Since
+\(\varepsilon\) is arbitrary, \(\clnorm{K^{(\lambda)}}=W^*\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is a direct modification of Silber's proof of Theorem 2.10.  The
+new ingredient is Lemma~\ref{lem:shrinking-fdd-setup}: when the ambient
+non-quasi-reflexive space has separable dual, the dense sequence used in the
+Davis-Johnson/Ostrovskii construction can be made dense in the whole dual,
+which makes the constructed FDD shrinking.  This gives the norm convergence of
+\(P_m^*\) needed at the limit stage.
+
+The proof deliberately does not claim this shrinking-FDD property for
+Ostrovskii's full general hypothesis, where the non-quasi-reflexive part and
+the separable-dual subspace may be different.  In that setting Silber only
+asserts weak-star convergence of \(P_m^*\), and the present argument does not
+bridge that gap.
+
+\section*{Novelty And Literature Check}
+
+Local run indexes were searched for \texttt{2203.00288}, \texttt{weak* derived},
+\texttt{proper norm dense}, and \texttt{limit ordinal}; no prior packet for this
+question was found before the previous \(c_0\) subcase packet from this lane.
+Web searches for exact and close variants of Silber's Question 1 found
+Silber's paper \cite{Silber2022}, Ostrovskii's transfinite subspace-order paper
+\cite{Ostrovskii1993}, Ostrovskii's first-derivative norm-dense paper
+\cite{Ostrovskii2011}, and Ostrovskii's convex successor-order paper
+\cite{Ostrovskii2021}, but no later explicit solution of the limit-ordinal
+subspace question.  This packet should therefore be reviewed as a new partial
+result, not as a literature-status identification.
+
+\section*{Limitations And Human Review Recommendation}
+
+The result covers spaces containing a non-quasi-reflexive subspace with
+separable dual.  It does not settle the remaining case of Silber's question
+where \(X\) is non-quasi-reflexive and contains some infinite-dimensional
+subspace with separable dual, but the available separable-dual subspaces are
+not known to be non-quasi-reflexive.  A reviewer should focus on
+Lemma~\ref{lem:shrinking-fdd-setup} and on the imported finite-support
+decomposition from Claim 3 of \cite[Theorem 2.10]{Silber2022}.
+
+\begin{thebibliography}{9}
+
+\bibitem{Silber2022}
+Z. Silber,
+\emph{On subspaces whose weak* derived sets are proper and norm dense},
+arXiv:2203.00288, 2022.
+
+\bibitem{Ostrovskii1993}
+M. I. Ostrovskii,
+\emph{\(W^*\)-derived sets of transfinite order of subspaces of dual Banach
+spaces},
+arXiv:math/9303203; originally Dokl. Akad. Nauk Ukrain. SSR, 1987, no. 10,
+9--12.
+
+\bibitem{Ostrovskii2011}
+M. I. Ostrovskii,
+\emph{Weak* closures and derived sets in dual Banach spaces},
+Note Mat. 31 (2011), 129--138; arXiv:1003.5176.
+
+\bibitem{Ostrovskii2021}
+M. I. Ostrovskii,
+\emph{Weak* closures and derived sets for convex sets in dual Banach spaces},
+arXiv:2112.04670, 2021.
+
+\end{thebibliography}
+
+\end{document}

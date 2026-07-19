@@ -1,0 +1,324 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\bbeta}{\bar{\beta}}
+
+\title{A Counterexample to Extending One-Point Asymptotic Beta Positivity Beyond One}
+\author{Run \texttt{fa\_banach\_001}, lane 3}
+\date{June 26, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is F. P. Baudier and G. Lancien,
+\emph{An asymptotic analog of a local-to-global phenomenon for uniformly convex
+renormings}, arXiv:2401.17465.  Theorem 1.2 states that if a Banach space
+$(X,\norm{\cdot})$ satisfies
+\[
+  \bbeta_{\norm{\cdot}}(t_0)>0
+  \quad\text{for some }t_0\in(0,1),
+\]
+then $X$ admits an equivalent norm with Rolewicz's property $(\beta)$.
+In the final paragraph, the authors observe that the asymptotic beta modulus
+also makes sense on the larger interval $[0,K(X))$, where
+\[
+  K(X)=\sup\{\lambda>0:\text{ there is a sequence }(x_n)\subset B_X
+       \text{ with }\inf_{n\ne m}\norm{x_n-x_m}\ge \lambda\},
+\]
+and ask:
+
+\begin{quote}
+It would be interesting to see if the condition in Theorem 1.2 could be pushed
+beyond 1.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Answer}
+
+The answer to the natural strengthened statement is negative.  There is a
+non-reflexive Banach space whose given norm has positive asymptotic beta
+modulus at every scale strictly larger than $1$ up to its Kottman range.
+Consequently, one-point positivity at some $t_0\in(1,K(X))$ does not force the
+space to admit an equivalent property-$(\beta)$ norm.
+
+\section*{Definitions}
+
+For a Banach space $(X,\norm{\cdot})$ and a parameter for which separated
+sequences exist in the unit ball, use the extended asymptotic beta modulus
+\[
+\bbeta_X(t)=
+\inf \left\{
+ \sup_{n\in\N}\left(1-\norm{\frac{x+y_n}{2}}\right):
+ x\in B_X,\ (y_n)\subset B_X,\
+ \inf_{n\ne m}\norm{y_n-y_m}\ge t
+\right\}.
+\]
+Rolewicz's property $(\beta)$ is equivalent to positivity of this modulus on
+$(0,1]$ for the given norm.  It is standard, and also recalled in the source
+paper, that property $(\beta)$ implies reflexivity.  Hence a non-reflexive
+space cannot admit any equivalent norm with property $(\beta)$.
+
+\section*{Proof Intuition}
+
+Let
+\[
+  X=\ell_2\oplus_2 c_0,
+  \qquad
+  \norm{(h,z)}=\big(\norm{h}_2^2+\norm{z}_\infty^2\big)^{1/2}.
+\]
+The $c_0$ summand makes $X$ non-reflexive.  However, $c_0$ by itself cannot
+support infinite separated sequences at any scale above $1$: in any bounded
+sequence in $c_0$, two terms are within $1+\eps$ in sup norm.  Thus any
+sequence in $X$ separated by a scale $t>1$ must, for a suitable pair of terms,
+use a definite amount of separation in the Hilbert coordinate.  The Hilbert
+coordinate is strictly convex enough that two such Hilbert-separated terms
+cannot both have almost norm-one midpoint with the same point $x\in B_X$.
+
+\section*{Auxiliary Lemmas}
+
+\begin{lemma}[The $c_0$ Kottman threshold]\label{lem:c0}
+Let $(z_n)$ be a sequence in $B_{c_0}$.  For every $c>1$ there exist distinct
+indices $n,m$ such that
+\[
+  \norm{z_n-z_m}_\infty\le c .
+\]
+\end{lemma}
+
+\begin{proof}
+Write $c=1+\eps$ with $\eps>0$.  Since $c_0\subset[-1,1]^\N$, a diagonal
+argument gives a subsequence, still denoted $(z_n)$, which converges
+coordinatewise.  Choose a finite set $F\subset\N$ such that
+$|z_1(k)|\le \eps/2$ for $k\notin F$.  By coordinatewise convergence, pick
+$m>1$ so large that $|z_m(k)-z_1(k)|\le \eps$ for all $k\in F$.  If
+$k\notin F$, then
+\[
+  |z_m(k)-z_1(k)|\le |z_m(k)|+|z_1(k)|\le 1+\eps/2<1+\eps.
+\]
+Thus $\norm{z_m-z_1}_\infty\le 1+\eps=c$.
+\end{proof}
+
+\begin{lemma}[Two-point Hilbert-sum midpoint drop]\label{lem:twopoint}
+Let $H$ be a Hilbert space, let $Z$ be a Banach space, and put
+$E=H\oplus_2 Z$.  If $0\le c<t\le 2$, then there is a number
+$\eta=\eta(c,t)>0$ such that the following holds.  Whenever
+\[
+  x=(u,v),\quad y=(h,z),\quad y'=(h',z')\in B_E
+\]
+satisfy
+\[
+  \norm{z-z'}_Z\le c
+  \quad\text{and}\quad
+  \norm{y-y'}_E\ge t,
+\]
+then
+\[
+  \max\left\{
+  1-\norm{\frac{x+y}{2}}_E,\,
+  1-\norm{\frac{x+y'}{2}}_E
+  \right\}\ge \eta .
+\]
+\end{lemma}
+
+\begin{proof}
+Assume the contrary.  Then there are triples
+$x_j=(u_j,v_j)$, $y_j=(h_j,z_j)$ and
+$y'_j=(h'_j,z'_j)$ in $B_E$ such that
+\[
+ \norm{z_j-z'_j}_Z\le c,\qquad
+ \norm{y_j-y'_j}_E\ge t,
+\]
+while
+\[
+  \norm{\frac{x_j+y_j}{2}}_E\to 1
+  \quad\text{and}\quad
+  \norm{\frac{x_j+y'_j}{2}}_E\to 1 .
+\]
+Equivalently, $\norm{x_j+y_j}_E\to2$ and
+$\norm{x_j+y'_j}_E\to2$.
+
+From $\norm{x_j+y_j}_E\le\norm{x_j}_E+\norm{y_j}_E\le2$, we get
+$\norm{x_j}_E\to1$ and $\norm{y_j}_E\to1$; similarly
+$\norm{y'_j}_E\to1$.  Put
+\[
+ A_j=(\norm{u_j}_H,\norm{v_j}_Z),\quad
+ B_j=(\norm{h_j}_H,\norm{z_j}_Z),\quad
+ C_j=(\norm{h'_j}_H,\norm{z'_j}_Z)
+\]
+in the Euclidean plane.  Since
+\[
+\norm{x_j+y_j}_E
+\le \norm{A_j+B_j}_2
+\le \norm{A_j}_2+\norm{B_j}_2
+\le 2
+\]
+and the left side tends to $2$, equality is asymptotically attained in the
+Euclidean triangle inequality.  Hence $\norm{A_j-B_j}_2\to0$.  The same
+argument with $y'_j$ gives $\norm{A_j-C_j}_2\to0$.
+
+Moreover,
+\[
+0\le
+(\norm{u_j}_H+\norm{h_j}_H)^2-\norm{u_j+h_j}_H^2
+\le
+\norm{A_j+B_j}_2^2-\norm{x_j+y_j}_E^2\to0.
+\]
+Using the Hilbert identity
+\[
+\norm{u_j-h_j}_H^2
+ =
+(\norm{u_j}_H-\norm{h_j}_H)^2
++\big((\norm{u_j}_H+\norm{h_j}_H)^2-\norm{u_j+h_j}_H^2\big),
+\]
+we obtain $\norm{u_j-h_j}_H\to0$.  Repeating the same argument for $y'_j$
+gives $\norm{u_j-h'_j}_H\to0$, and therefore
+$\norm{h_j-h'_j}_H\to0$.
+
+It follows that
+\[
+\limsup_j \norm{y_j-y'_j}_E^2
+ =
+\limsup_j\left(\norm{h_j-h'_j}_H^2+\norm{z_j-z'_j}_Z^2\right)
+\le c^2<t^2,
+\]
+contradicting $\norm{y_j-y'_j}_E\ge t$ for all $j$.
+\end{proof}
+
+\section*{Main Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+Let $X=\ell_2\oplus_2 c_0$ with its natural $\ell_2$-sum norm.  Then:
+\begin{enumerate}
+\item $K(X)\ge\sqrt2$.
+\item $\bbeta_X(t)>0$ for every $t\in(1,\sqrt2)$.
+\item $X$ does not admit an equivalent norm with property $(\beta)$.
+\end{enumerate}
+In particular, $X$ satisfies $\bbeta_X(t_0)>0$ for some
+$t_0\in(1,K(X))$ but is not property-$(\beta)$ renormable.
+\end{theorem}
+
+\begin{proof}
+For (1), let $(e_n)$ be an orthonormal sequence in $\ell_2$.  The points
+$(e_n,0)$ lie in $B_X$ and satisfy
+\[
+  \norm{(e_n,0)-(e_m,0)}_X=\sqrt2
+  \qquad(n\ne m).
+\]
+Thus $K(X)\ge\sqrt2$.
+
+For (2), fix $t\in(1,\sqrt2)$ and choose $c$ with $1<c<t$, for instance
+$c=(1+t)/2$.  Let $\eta=\eta(c,t)>0$ be given by Lemma~\ref{lem:twopoint}.
+We prove that $\bbeta_X(t)\ge\eta$.
+
+Take an arbitrary $x=(u,v)\in B_X$ and an arbitrary sequence
+$y_n=(h_n,z_n)\in B_X$ with
+\[
+  \inf_{n\ne m}\norm{y_n-y_m}_X\ge t.
+\]
+By Lemma~\ref{lem:c0}, there are distinct indices $n,m$ such that
+\[
+  \norm{z_n-z_m}_\infty\le c.
+\]
+Since also $\norm{y_n-y_m}_X\ge t$, Lemma~\ref{lem:twopoint} applied in
+$H=\ell_2$ and $Z=c_0$ yields
+\[
+  \max\left\{
+  1-\norm{\frac{x+y_n}{2}}_X,\,
+  1-\norm{\frac{x+y_m}{2}}_X
+  \right\}\ge \eta .
+\]
+Consequently
+\[
+  \sup_k\left(1-\norm{\frac{x+y_k}{2}}_X\right)\ge \eta .
+\]
+Because $x$ and the separated sequence $(y_n)$ were arbitrary, the defining
+infimum gives $\bbeta_X(t)\ge\eta>0$.
+
+For (3), $X$ contains the closed subspace $\{0\}\oplus c_0$, so $X$ is
+non-reflexive.  If $X$ admitted an equivalent norm with property $(\beta)$,
+then $X$ would be reflexive, since property $(\beta)$ implies reflexivity.
+This contradiction proves that no equivalent property-$(\beta)$ norm exists.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is deterministic and uses no numerical computation.  The two points
+where human review should focus are:
+\begin{itemize}
+\item Lemma~\ref{lem:c0}, which records exactly that $c_0$ has no infinite
+unit-ball separated sequence at a scale strictly larger than $1$.
+\item Lemma~\ref{lem:twopoint}, where near norm-one midpoints in
+$H\oplus_2 Z$ force the Hilbert parts of both points to converge to the
+Hilbert part of the common base point.
+\end{itemize}
+Together these lemmas give a uniform midpoint drop for every $t>1$ and hence
+positive asymptotic beta modulus at any chosen $t_0\in(1,\sqrt2)$.
+
+\section*{Novelty and Search Bounds}
+
+Before promotion, the run indexes were searched for arXiv:2401.17465, for the
+phrases \texttt{Kottman}, \texttt{pushed beyond 1}, and
+\texttt{property beta}, and for the earlier local attempt on the
+Kottman-domain beta extension.  No durable solution packet or proof-gap packet
+for this target was found; the previous failed attempt is copied into this
+packet under \texttt{history/}.
+
+Bounded web searches on June 26, 2026 for
+\texttt{"2401.17465" "pushed beyond 1"},
+\texttt{"property beta" "Kottman's constant"},
+\texttt{"Rolewicz" "Kottman" "beta" "c0"},
+and the exact paper title returned the source arXiv page and no explicit later
+answer to the Kottman-domain question.  Novelty confidence is therefore
+moderate: the construction is short and should be checked against the
+specialist renorming literature, but no known answer was found in the bounded
+search.
+
+\section*{Human Review Recommendation}
+
+Treat this as a likely valid counterexample to the strengthened
+Kottman-domain version of Theorem 1.2.  A reviewer should verify that the
+source question is intended to include the natural formulation ``some
+$t_0\in(1,K(X))$'' and should audit Lemma~\ref{lem:twopoint}'s compactness
+argument.  If both checks pass, the example $X=\ell_2\oplus_2 c_0$ gives a
+negative answer.
+
+\begin{thebibliography}{9}
+
+\bibitem{BaudierLancien}
+F. P. Baudier and G. Lancien,
+\emph{An asymptotic analog of a local-to-global phenomenon for uniformly
+convex renormings}, arXiv:2401.17465.
+
+\bibitem{Rolewicz}
+S. Rolewicz,
+\emph{On drop property}, Studia Math. 85 (1987), 27--35.
+
+\bibitem{Kutzarova}
+D. Kutzarova,
+\emph{$k$-$\beta$ and $k$-nearly uniformly convex Banach spaces},
+J. Math. Anal. Appl. 162 (1991), no. 2, 322--338.
+
+\bibitem{EltonOdell}
+J. Elton and E. Odell,
+\emph{The unit ball of every infinite-dimensional normed linear space contains
+a $(1+\epsilon)$-separated sequence}, Colloq. Math. 44 (1981), 105--109.
+
+\end{thebibliography}
+
+\end{document}

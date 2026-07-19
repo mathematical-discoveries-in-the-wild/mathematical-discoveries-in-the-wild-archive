@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\K}{\mathcal K}
+\newcommand{\B}{\mathcal B}
+\newcommand{\U}{\mathcal U}
+\newcommand{\wh}{\widehat}
+\newcommand{\eps}{\varepsilon}
+
+\title{The Exact Noncompactness Norm of the Calkin Representation}
+\author{FA Banach run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_05}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate partial result, likely valid.  It sharpens the
+previous lane-5 packet on Remark 1 after Theorem 2.1 of Boedihardjo--Johnson,
+arXiv:1301.0054.  The source question asks whether their Calkin
+representation theorem remains true without assuming that \(X\) has the
+bounded compact approximation property (BCAP).
+
+\section*{Source Context}
+
+Boedihardjo and Johnson define, for each infinite-dimensional Banach space
+\(Y\), the ultrapower space
+\[
+  \widehat Y=\{(y_\alpha^*)_{\alpha,\U}\in (Y^*)^\U:
+  w^*\hbox{-}\lim_{\alpha,\U}y_\alpha^*=0\},
+\]
+where \(\alpha\) ranges over finite-dimensional subspaces of a fixed
+infinite-dimensional Banach space \(X\).  If \(T\in B(X,Y)\), they define
+\(\widehat T\in B(\widehat Y,\widehat X)\) by
+\[
+  (y_\alpha^*)_{\alpha,\U}\mapsto (T^*y_\alpha^*)_{\alpha,\U}.
+\]
+They observe that \(\widehat K=0\) for compact \(K\).  Their Theorem 2.1
+states that, if \(X\) has the \(\lambda\)-BCAP, then
+\[
+  f:B(X)/K(X)\to B(\widehat X),\qquad \dot T\mapsto\widehat T,
+\]
+is a norm-one \((\lambda+1)\)-embedding.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/theorem_context_crop.png}
+\end{center}
+
+Immediately after the proof, the authors ask whether Theorem 2.1 remains true
+without the BCAP hypothesis.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+For \(T\in B(X)\) and a finite-dimensional subspace \(E\subset X\), write
+\(Q_E:X\to X/E\) for the quotient map and set
+\[
+  \kappa_X(T):=\inf_{E\subset X,\ \dim E<\infty}\|Q_E T\|.
+\]
+This is the limiting Kolmogorov noncompactness quantity of the set \(T(B_X)\).
+
+\begin{theorem}
+Let \(X\) be an infinite-dimensional Banach space and use the
+Boedihardjo--Johnson ultrafilter on the directed set of finite-dimensional
+subspaces of \(X\).  Then, for every \(T\in B(X)\),
+\[
+  \|\widehat T\|=\kappa_X(T)
+  =\inf_{E\subset X,\ \dim E<\infty}\|Q_E T\|.
+\]
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The lower bound is the construction from the previous packet: for each
+finite-dimensional \(E\), take a norm-one functional in \(E^\perp\) on which
+\(T^*\) almost attains \(\|T^*|_{E^\perp}\|=\|Q_E T\|\).  These functionals are
+weak-star-null along the tail ultrafilter, so they give a test vector in
+\(\widehat X\).
+
+The new point is the reverse inequality.  Any vector of \(\widehat X\) is
+represented by a bounded weak-star-null family \((x_\alpha^*)\).  Fix a
+finite-dimensional \(F\subset X\).  Since weak-star convergence on \(F\) is
+norm convergence in \(F^*\), the restrictions \(x_\alpha^*|_F\) are small on
+an ultrafilter-large set.  Equivalently, \(x_\alpha^*\) is close to
+\(F^\perp\).  Replacing \(x_\alpha^*\) by a nearby element of \(F^\perp\)
+forces \(T^*x_\alpha^*\) to be bounded by \(\|T^*|_{F^\perp}\|=\|Q_FT\|\).
+Taking the infimum over \(F\) gives the upper bound.
+
+\begin{proof}
+Let \(\Lambda_0\) be the directed set of finite-dimensional subspaces of \(X\),
+ordered by inclusion, and let \(\U\) be an ultrafilter containing every tail
+\[
+  \{\alpha\in\Lambda_0:\alpha\supset \alpha_0\}.
+\]
+For \(E\in\Lambda_0\), duality gives
+\[
+  \|Q_E T\|=\|(Q_E T)^*\|=\|T^*|_{E^\perp}\|.
+\]
+The function \(E\mapsto\|Q_E T\|\) is decreasing on \(\Lambda_0\), so its
+\(\U\)-limit is its infimum, namely \(\kappa_X(T)\).
+
+We first prove \(\|\widehat T\|\ge\kappa_X(T)\).  Fix \(\eps>0\).  For every
+\(E\in\Lambda_0\), choose \(x_E^*\in E^\perp\) with \(\|x_E^*\|=1\) and
+\[
+  \|T^*x_E^*\|\ge \|T^*|_{E^\perp}\|-\eps
+  =\|Q_E T\|-\eps.
+\]
+The family \((x_E^*)_{E,\U}\) belongs to \(\widehat X\), because for each
+\(x\in X\), the tail \(E\supset \operatorname{span}\{x\}\) lies in \(\U\), and
+on that tail \(x_E^*(x)=0\).  Therefore
+\[
+  \|\widehat T\|
+  \ge \lim_{E,\U}\|T^*x_E^*\|
+  \ge \lim_{E,\U}\|Q_E T\|-\eps
+  =\kappa_X(T)-\eps.
+\]
+Letting \(\eps\downarrow0\) gives the lower bound.
+
+For the upper bound, let
+\(\xi=(x_E^*)_{E,\U}\in\widehat X\) with \(\|\xi\|\le1\).  Fix a
+finite-dimensional subspace \(F\subset X\) and \(\eps>0\).  Since
+\(w^*\hbox{-}\lim_{E,\U}x_E^*=0\), and since \(F\) is finite dimensional,
+\[
+  \lim_{E,\U}\|x_E^*|_F\|_{F^*}=0.
+\]
+For \(E\) in an ultrafilter-large set, choose \(z_E^*\in F^\perp\) with
+\[
+  \|x_E^*-z_E^*\|\le \|x_E^*|_F\|+\eps.
+\]
+This is possible because the quotient \(X^*/F^\perp\) is isometric to
+\(F^*\) by restriction.  Hence, on an ultrafilter-large set,
+\(\|x_E^*-z_E^*\|\le 2\eps\).  It follows that
+\[
+  \|T^*x_E^*\|
+  \le \|T^*z_E^*\|+2\eps\|T\|
+  \le \|T^*|_{F^\perp}\|\|z_E^*\|+2\eps\|T\|.
+\]
+Also \(\|z_E^*\|\le \|x_E^*\|+2\eps\).  Taking \(\U\)-limits and using
+\(\lim_{E,\U}\|x_E^*\|=\|\xi\|\le1\), we obtain
+\[
+  \|\widehat T\xi\|
+  \le \|T^*|_{F^\perp}\|(1+2\eps)+2\eps\|T\|
+  =\|Q_FT\|(1+2\eps)+2\eps\|T\|.
+\]
+Letting \(\eps\downarrow0\), and then taking the infimum over
+finite-dimensional \(F\subset X\), gives
+\[
+  \|\widehat T\xi\|\le \kappa_X(T).
+\]
+Since this holds for every \(\xi\in\widehat X\) with \(\|\xi\|\le1\), we have
+\(\|\widehat T\|\le\kappa_X(T)\).  This completes the proof.
+\end{proof}
+
+\begin{corollary}
+The Boedihardjo--Johnson representation is injective modulo compact operators
+for every infinite-dimensional Banach space \(X\).
+\end{corollary}
+
+\begin{proof}
+The quantity \(\kappa_X(T)\) is zero if and only if \(T\) is compact.  Indeed,
+if \(\kappa_X(T)=0\), then for every \(\eps>0\), the set \(T(B_X)\) lies within
+\(\eps\) of a finite-dimensional subspace of \(X\).  Since \(T(B_X)\) is
+bounded, this makes \(T(B_X)\) totally bounded.  Conversely compact sets are
+approximated by finite-dimensional spans of finite nets.  The theorem now
+gives \(\widehat T=0\) if and only if \(T\) is compact.
+\end{proof}
+
+\section*{Reduction of the Remaining Open Problem}
+
+The theorem identifies exactly what the ultrapower representation measures.
+Thus Theorem 2.1 without BCAP is equivalent to asking whether, for the relevant
+Banach space \(X\), there is a constant \(C_X<\infty\) such that
+\[
+  \|T\|_e\le C_X\,\kappa_X(T)
+  \qquad (T\in B(X)).
+\]
+The BCAP proof in Boedihardjo--Johnson proves precisely this estimate with
+\(C_X=\lambda+1\) when \(X\) has the \(\lambda\)-BCAP.  Without BCAP, the
+representation remains faithful, but the unresolved issue is whether the
+essential norm and the Kolmogorov noncompactness norm are uniformly comparable
+on \(B(X)/K(X)\).
+
+Remark 2 is similarly reframed: for \(X=L_p(0,1)\), \(p\ne2\), the
+representation is isometric exactly when
+\[
+  \|T\|_e=\kappa_X(T)
+  \qquad (T\in B(X)).
+\]
+
+\section*{Novelty and Literature Check}
+
+The run indexes were searched for arXiv:1301.0054, Boedihardjo--Johnson,
+Calkin, BCAP, essential norm, and measure/Kolmogorov noncompactness phrases.
+The only direct run hit was the prior lane-5 injectivity packet.  Bounded web
+searches for exact phrases around Theorem 2.1, the BCAP-free Calkin
+representation, and essential norm versus measure of noncompactness did not
+surface a later paper resolving Remark 1.  Novelty confidence is moderate: the
+norm formula is natural once one looks at the quotient norms, but it is not
+recorded in the run memory and was not visible in the bounded search.
+
+\section*{Limitations}
+
+This packet does not settle whether the estimate
+\(\|T\|_e\le C_X\kappa_X(T)\) holds for every Banach space, nor does it produce
+a space and operators for which the ratio \(\|T\|_e/\kappa_X(T)\) is
+unbounded.  It should therefore be treated as a sharp reduction and a genuine
+strengthening of the injectivity result, not as a full solution of Remark 1.
+
+\section*{Human Review Recommendation}
+
+Reviewers should check the upper-bound argument in the theorem, especially the
+use of finite-dimensionality of \(F\) to turn weak-star convergence into norm
+convergence of restrictions to \(F\), and the isometric identification
+\(X^*/F^\perp\simeq F^*\).
+
+\begin{thebibliography}{9}
+
+\bibitem{BJ}
+M. T. Boedihardjo and W. B. Johnson,
+\emph{On Mean Ergodic Convergence in the Calkin Algebras},
+arXiv:1301.0054.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\emergencystretch=2em
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\G}{\mathsf{G}_{\mathcal A}}
+
+\title{Finite-Dimensional Positive Case for the Aronszajn-Null Game}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_00}}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+The source paper is Jakub Duda and Boaz Tsaban, \emph{Games in Banach spaces},
+arXiv:math/0601556.  For a separable Banach space \(X\), and a non-zero
+direction \(x\in X\), let \(\mathcal A(x)\) be the Borel sets whose
+intersection with every line parallel to \(x\) has one-dimensional Lebesgue
+measure zero.  A Borel set \(A\subset X\) is Aronszajn-null if for every dense
+sequence \((x_n)\) in \(X\) there are \(A_n\in\mathcal A(x_n)\) such that
+\[
+A\subset \bigcup_n A_n.
+\]
+
+Duda--Tsaban define the game \(\G\): in inning \(n\), Player I plays a direction
+\(x_n\) so that the resulting sequence is dense, Player II answers with
+\(A_n\in\mathcal A(x_n)\), and Player II wins if \(A\subset\bigcup_n A_n\).
+They prove that if Player I has no winning strategy, then \(A\) is
+Aronszajn-null, and state the converse as open:
+\[
+A\in\mathcal A \quad\Longrightarrow\quad \text{Player I has no winning
+strategy in }\G.
+\]
+
+\section*{Partial Result}
+
+\begin{theorem}
+Let \(X\) be a finite-dimensional real Banach space and let \(A\subset X\) be a
+Borel Aronszajn-null set. Then Player II has a winning strategy in the
+Aronszajn-null game \(\G\) played on \(A\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+In finite dimensions, Aronszajn-null Borel sets are Lebesgue null. Suppose
+Player I has already played independent directions spanning a subspace \(S\).
+The part of \(A\) not yet covered can be over-covered by the inverse image of a
+null Borel set in the quotient \(X/S\). When Player I next plays a direction
+whose image in \(X/S\) is non-zero, Fubini splits that quotient-null set into
+the part with null sections parallel to the new direction and a smaller
+quotient-null residual. Pulling the first part back to \(X\) is a legal move
+for Player II. Since a dense sequence in a finite-dimensional space spans the
+whole space after finitely many independent moves, this process exhausts the
+residual.
+
+\section*{Proof}
+
+We use Lebesgue measure on finite-dimensional quotients of \(X\), normalized
+arbitrarily; nullness is independent of the normalization.
+
+First note that \(A\) is Lebesgue null. Indeed, since \(A\) is Aronszajn-null,
+take any dense sequence containing a basis of \(X\). Then \(A\) is covered by
+countably many sets \(B_n\in\mathcal A(x_n)\). For any non-zero \(x\), each
+Borel \(B\in\mathcal A(x)\) is Lebesgue null by Fubini over the decomposition
+of \(X\) into lines parallel to \(x\). Hence \(A\) is null.
+
+We describe a strategy for Player II. More generally, maintain the following
+state after some innings. Let \(S\subset X\) be the span of the independent
+directions already accepted, let \(\pi:X\to Q=X/S\) be the quotient map, and
+let \(R\subset Q\) be a Borel null set such that the part of \(A\) not yet
+covered by Player II's previous moves is contained in \(\pi^{-1}(R)\). Initially
+\(S=\{0\}\), \(Q=X\), \(R=A\), and \(\pi\) is the identity.
+
+Suppose Player I plays \(v\). If the image \(w=\pi(v)\) is zero, Player II plays
+\(\emptyset\) and leaves the state unchanged. Otherwise let
+\(q:Q\to Q/\R w\) be the quotient map. By the standard Fubini theorem for Borel
+sets, the section-measure function
+\[
+z\mapsto m_1\bigl(R\cap q^{-1}(z)\bigr)
+\]
+is measurable and
+\[
+N=\{z\in Q/\R w: m_1(R\cap q^{-1}(z))>0\}
+\]
+is a null Borel set in \(Q/\R w\), because \(R\) is null in \(Q\). Set
+\[
+G=R\setminus q^{-1}(N).
+\]
+Then every line in \(Q\) parallel to \(w\) meets \(G\) in a one-dimensional null
+set. Player II plays
+\[
+B=\pi^{-1}(G).
+\]
+This is a legal move: if \(L\) is any line in \(X\) parallel to \(v\), then
+\(\pi(L)\) is a line in \(Q\) parallel to \(w\), and \(L\cap B\) is identified
+with a subset of \(\pi(L)\cap G\), hence has one-dimensional measure zero.
+Thus \(B\in\mathcal A(v)\).
+
+The uncovered part of \(A\) is now contained in
+\[
+\pi^{-1}(R\setminus G)\subset \pi^{-1}(q^{-1}(N)).
+\]
+Replace \(S\) by \(S+\R v\), replace \(Q\) by \(Q/\R w\), replace \(\pi\) by
+\(q\circ\pi\), and replace \(R\) by \(N\). The invariant is preserved and the
+dimension of the quotient has dropped by one.
+
+A legal play by Player I must be dense in \(X\), so its played directions span
+\(X\). Therefore Player I eventually plays \(\dim X\) linearly independent
+directions. After the last such move the quotient has dimension zero. In the
+one-dimensional final quotient step, the null set \(R\) has zero
+one-dimensional measure, so the positive-section set \(N\) is empty. Hence the
+remaining residual is empty. Thus \(A\) is covered by Player II's moves, and
+the described strategy wins.
+\qed
+
+\section*{Verification Notes}
+
+The proof uses only standard finite-dimensional Fubini disintegration for
+Borel sets under a linear quotient map. The moves played by Player II need not
+be subsets of \(A\); they only need to be Borel members of the corresponding
+\(\mathcal A(v)\), as in the source game definition.
+
+If one permits Player I to play the zero vector despite \(\mathcal A(0)\) not
+being defined in the source paper, the strategy treats that inning as
+irrelevant and plays \(\emptyset\). Equivalently, one may read the game as
+requiring non-zero directions, which is the only interpretation under which
+Player II's legal response is defined.
+
+\section*{Limitations and Novelty Check}
+
+This packet proves only the finite-dimensional case. It does not address the
+source conjecture for infinite-dimensional separable Banach spaces, nor the
+other diagram-reversal questions in the paper.
+
+Cheap run indexes had no previous packet for arXiv:0601556. Local corpus
+searches for ``Aronszajn-null game'' and exact phrases from the source
+conjecture found only the source paper. A bounded web search for the same
+phrases likewise found the source arXiv page and no later answer. Novelty
+confidence is moderate: the finite-dimensional argument is elementary and may
+be folklore, but it is not recorded in the run memory.
+
+\section*{References}
+
+\begin{itemize}
+\item J. Duda and B. Tsaban, \emph{Games in Banach spaces},
+arXiv:math/0601556.
+\item Y. Benyamini and J. Lindenstrauss, \emph{Geometric Nonlinear Functional
+Analysis, Volume 1}, AMS Colloquium Publications 48, 2000.
+\end{itemize}
+
+\end{document}

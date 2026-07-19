@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\PhiF}{\Phi}
+\newcommand{\sk}{\mathsf{s}_{k,\Phi,w}}
+\newcommand{\skp}{\mathsf{s}_{k',\Phi,w}}
+\newcommand{\lk}{l_{k,\Phi,w}}
+\newcommand{\lkp}{l_{k',\Phi,w}}
+
+\title{A Counterexample to Compactness Without the Zero-\(\Delta_2\) Condition}
+\author{Agent lane 14, run \texttt{fa\_banach\_001}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Pierre-A. Vuillermot,
+\emph{On the compactness of embeddings for a class of weighted
+Orlicz-Sobolev sequence spaces}, arXiv:2503.19454.  The target is the remark
+after Theorem 4 on PDF page 17, source lines 1188--1195.  In the notation of
+the source paper, the author asks whether the compact embedding
+\[
+  \mathsf{s}_{k',\Phi,w}\hookrightarrow \mathsf{s}_{k,\Phi,w},\qquad k'>k,
+\]
+still holds when \(\mathsf{s}_{k,\Phi,w}\) is strictly included in
+\(l_{k,\Phi,w}\), and also whether compact embeddings
+\[
+  l_{k',\Phi,w}\hookrightarrow l_{k,\Phi,w},\qquad k'>k,
+\]
+exist in that situation.
+
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The source proof of compactness uses the zero-\(\Delta_2\) condition to make
+tails uniformly small after passing from the \(k'\)-weight to the \(k\)-weight.
+If \(\Phi\) is very flat at the origin, this uniform tail estimate can fail
+exactly on one-coordinate vectors.  Choosing \(\Phi(t)=e^{-1/t}\) near zero
+makes the inverse behave like \(1/\log(1/u)\).  For the far-out coordinate
+\(n\), the \(k'\)-unit vector has size
+\[
+  \frac{1}{k'\log(1+\Phi(n))},
+\]
+and its \(k\)-norm is therefore the constant \(k/k'\), independent of \(n\).
+These vectors cannot have a compact image.
+
+\section*{Counterexample}
+
+\begin{theorem}
+For every pair \(0<k<k'\), there are an Orlicz function \(\Phi\) and weights
+\(w_m\equiv 1\) such that:
+\begin{enumerate}
+\item \(\mathsf{s}_{k,\Phi,w}\subsetneq l_{k,\Phi,w}\);
+\item the embedding \(\mathsf{s}_{k',\Phi,w}\to \mathsf{s}_{k,\Phi,w}\) is
+continuous but not compact;
+\item the embedding \(l_{k',\Phi,w}\to l_{k,\Phi,w}\) is continuous but not
+compact.
+\end{enumerate}
+Consequently the compactness questions in the source remark have a negative
+answer in general.
+\end{theorem}
+
+\begin{proof}
+Fix \(0<k<k'\).  Let \(0<a<1/2\), for instance \(a=1/4\), and define
+\[
+\Phi(0)=0,\qquad \Phi(t)=e^{-1/t}\quad (0<t\leq a),
+\]
+with a linear extension for \(t\geq a\):
+\[
+\Phi(t)=\Phi(a)+\Phi'(a)(t-a),\qquad t\geq a.
+\]
+Since \(e^{-1/t}\) has second derivative
+\[
+  e^{-1/t}\frac{1-2t}{t^4}
+\]
+on \((0,a]\), this function is convex on \([0,a]\).  The linear extension
+uses the tangent slope at \(a\), so the full function is continuous, convex,
+increasing, positive on \((0,\infty)\), and unbounded.  Thus it is an Orlicz
+function in the sense of the source paper.  It fails the zero-\(\Delta_2\)
+condition because
+\[
+  \frac{\Phi(2t)}{\Phi(t)}
+  =\exp\!\left(\frac{1}{2t}\right)\to\infty
+  \qquad (t\downarrow 0).
+\]
+Set \(w_m=1\) for all \(m\in\Z\).
+
+We first show that \(\mathsf{s}_{k,\Phi,w}\) is strictly smaller than
+\(l_{k,\Phi,w}\).  For all sufficiently large positive integers \(m\), set
+\[
+  p_m=\frac{1}{(k+2)\log(1+\Phi(m))},
+\]
+and set \(p_m=0\) for the remaining indices.  Since the extension of \(\Phi\)
+is linear at infinity, \(1+\Phi(m)\) is comparable to \(m\).  Also \(p_m<a\)
+for large \(m\).  Hence
+\[
+  \Phi(p_m)=(1+\Phi(m))^{-(k+2)}
+\]
+for large \(m\), and therefore
+\[
+  \sum_m (1+\Phi(|m|))^k\Phi(|p_m|)
+  <\infty.
+\]
+Thus \(p=(p_m)\in l_{k,\Phi,w}\).  On the other hand, take
+\(\rho=(k+1)/(k+2)\).  Then, for large \(m\),
+\[
+  \Phi(p_m/\rho)=(1+\Phi(m))^{-(k+1)},
+\]
+so
+\[
+  \sum_m (1+\Phi(|m|))^k\Phi(|p_m|/\rho)
+  \geq \sum_{m\gg 1}(1+\Phi(m))^{-1}=\infty,
+\]
+again because \(\Phi(m)\) is linear at infinity.  Thus \(p\notin
+\mathsf{s}_{k,\Phi,w}\).
+
+Now define, for large positive integers \(n\),
+\[
+  x^{(n)}=\frac{1}{k'\log(1+\Phi(n))}\,e_n,
+\]
+where \(e_n\) is the \(n\)-th coordinate vector.  These vectors have finite
+support, hence belong to every small space \(\mathsf{s}_{j,\Phi,w}\).  Put
+\(U_n=1+\Phi(n)\).  Since the nonzero coordinate is in the
+\(e^{-1/t}\)-range of \(\Phi\), we have
+\[
+  \Phi\!\left(\frac{1}{k'\log U_n}\right)=U_n^{-k'}.
+\]
+The Luxemburg norm of a one-coordinate vector \(b e_n\) in \(l_{j,\Phi,w}\)
+is
+\[
+  \|b e_n\|_{j,\Phi,w}
+  =\frac{|b|}{\Phi^{-1}((1+\Phi(n))^{-j})}.
+\]
+Consequently
+\[
+  \|x^{(n)}\|_{k',\Phi,w}=1,
+  \qquad
+  \|x^{(n)}\|_{k,\Phi,w}=\frac{k}{k'}.
+\]
+Thus \((x^{(n)})\) is contained in the unit ball of \(\mathsf{s}_{k',\Phi,w}\)
+and of \(l_{k',\Phi,w}\), but its image in the \(k\)-space has constant norm
+\(k/k'\).
+
+For each coordinate \(n\), the coordinate projection \(P_n\) is contractive
+for the Luxemburg norm, since deleting coordinates can only decrease the
+defining modular.  Hence, if \(n\ne m\),
+\[
+  \|x^{(n)}-x^{(m)}\|_{k,\Phi,w}
+  \geq \|P_n(x^{(n)}-x^{(m)})\|_{k,\Phi,w}
+  =\|x^{(n)}\|_{k,\Phi,w}
+  =\frac{k}{k'}.
+\]
+The image sequence has no Cauchy subsequence in \(l_{k,\Phi,w}\), and a
+fortiori no Cauchy subsequence in the closed subspace
+\(\mathsf{s}_{k,\Phi,w}\).  Therefore neither embedding is compact.  The
+continuity of both embeddings for \(k'>k\) is the elementary continuous
+embedding already recorded in the source paper before Theorem 3.
+\end{proof}
+
+\section*{Verification Notes}
+
+No numerical computation is used.  The key checks are:
+\begin{itemize}
+\item the function \(\Phi\) is a valid Orlicz function and fails the
+zero-\(\Delta_2\) condition;
+\item the sequence \(p_m=[(k+2)\log(1+\Phi(m))]^{-1}\) proves strict
+inclusion \(\mathsf{s}_{k,\Phi,w}\subsetneq l_{k,\Phi,w}\);
+\item the one-coordinate norm formula gives the constant image norm \(k/k'\);
+\item contractive coordinate projections prevent any Cauchy subsequence.
+\end{itemize}
+
+\section*{Novelty Check}
+
+The run indexes were searched for arXiv:2503.19454, the source title, compact
+embeddings, and the exact notation \(\mathsf{s}_{k,\Phi,w}\),
+\(l_{k,\Phi,w}\); no duplicate packet or prior attempt was found.  A bounded
+web search on 2026-07-03 for exact title/id phrases and the displayed
+compactness notation found the source arXiv page but no later answer to this
+exact question.  This packet should therefore be reviewed as a new candidate
+counterexample, not as a literature-status identification.
+
+\section*{References}
+
+\begin{itemize}
+\item P.-A. Vuillermot, \emph{On the compactness of embeddings for a class of
+weighted Orlicz-Sobolev sequence spaces}, arXiv:2503.19454, 2025.
+\end{itemize}
+
+\end{document}

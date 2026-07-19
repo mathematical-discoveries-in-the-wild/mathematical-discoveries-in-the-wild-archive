@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\cK}{\mathscr{K}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Lp}{L^p}
+\newcommand{\Hs}{H^s_p}
+\newcommand{\UMD}{\mathrm{UMD}}
+\newcommand{\Rad}{\mathrm{Rad}}
+\newcommand{\lesssimC}{\lesssim}
+
+\title{Unsigned Difference Norms in the Banach Function Space Case}
+\author{Agent lane 14}
+\date{June 28, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Nick Lindemulder, \emph{Difference Norms for
+Vector-Valued Bessel Potential Spaces with an Application to Pointwise
+Multipliers}, arXiv:1505.08039.  Corollary 4.9 proves a square-function
+difference norm characterization for \(H^s_p(\R^d,w;X)\) when \(X\) is a
+\(\UMD\) Banach function space.  Immediately after it, Remark 4.10 asks whether
+one may replace the signed averaged differences \(K_m(2^{-j},f)\) in the
+right hand side by unsigned difference averages \(d^m_K(2^{-j},f)\).
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+There is an evident typo in the displayed definition in Remark 4.10: the scale
+\(t\) is missing from the difference.  The surrounding sentence
+\(\abs{K_m(t,f)}\le d^m_K(t,f)\) only makes sense for
+\[
+  D^m_K(t,f)(x):=\int_{\R^d} K(h)\,\abs{\Delta^m_{t h}f(x)}\,dh.
+\]
+The theorem below answers the question for this intended scaled definition,
+under the same standing hypotheses as Corollary 4.9.
+
+\section*{Proof Intuition}
+
+The signed square function in Corollary 4.9 is controlled by the source paper
+through a Littlewood-Paley decomposition \(f=\sum S_n f\).  The unsigned
+quantity is sublinear rather than linear, but in a Banach function space the
+lattice modulus and the \(\ell^2\)-square function let us keep the same
+decomposition.  High-frequency pieces are controlled by the source
+\(\ell^2\)-boundedness of positive convolution kernels.  Low-frequency pieces
+are controlled exactly as in the proof of Theorem 4.1(ii): for each fixed
+\(h\), the difference \(\Delta^m_{2^{-j}h}\) is represented by the multiplier
+family of Lemma 4.8, and the integrability assumption on \(K\) absorbs the
+factor \((1+\abs h)^{(d+3)m}\).  The source inequality
+\(\abs{K_m(t,f)}\le D^m_K(t,f)\) gives the converse side.
+
+\begin{theorem}
+Let \(X\) be a \(\UMD\) Banach function space, let \(s>0\),
+\(p\in(1,\infty)\), \(w\in A_p(\R^d)\), and let \(m\in\N\) with \(m>s\).
+Assume that
+\[
+  K\in \cK(\R^d)^+\cap L^1(\R^d,(1+\abs{\cdot})^{(d+3)m})
+\]
+and that \(K^{\Delta^m}\) satisfies the Tauberian condition of
+Lindemulder's Theorem 4.1(i), equivalently the condition used in Corollary
+4.9.  Then, for every \(f\in L^p(\R^d,w;X)\),
+\[
+\norm{f}_{H^s_p(\R^d,w;X)}
+\simeq
+\norm{f}_{L^p(\R^d,w;X)}
++
+\norm{
+  \left(\sum_{j=1}^{\infty}
+    \abs{2^{js}D^m_K(2^{-j},f)}^2
+  \right)^{1/2}
+}_{L^p(\R^d,w;X)}.
+\]
+The constants depend only on the parameters in the source corollary and on
+\(\int K(h)(1+\abs h)^{(d+3)m}\,dh\).
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+  U_J(f):=
+  \norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{js}D^m_K(2^{-j},f)}^2
+    \right)^{1/2}
+  }_{L^p(\R^d,w;X)}.
+\]
+It is enough to prove \(U_J(f)\lesssimC \norm{f}_{H^s_p(\R^d,w;X)}\)
+uniformly in \(J\), since the opposite estimate follows from Corollary 4.9 of
+the source paper and the lattice inequality
+\[
+  \abs{K_m(t,f)}=
+  \abs{\int_{\R^d}K(h)\Delta^m_{t h}f\,dh}
+  \le
+  \int_{\R^d}K(h)\abs{\Delta^m_{t h}f}\,dh
+  =D^m_K(t,f).
+\]
+
+Fix a Littlewood-Paley decomposition \((S_n)_{n\ge 0}\) as in the source
+paper and put \(f_n=S_nf\) for \(n\ge0\), \(f_n=0\) for \(n<0\).  For each
+\(j\ge1\), \(f=\sum_{n\in\Z}f_{n+j}\) in the relevant distribution sense.
+Since \(D^m_K(t,\cdot)\) is subadditive and positive, the lattice Minkowski
+inequality gives
+\[
+  U_J(f)
+  \le
+  \sum_{n\in\Z}
+  \norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{js}D^m_K(2^{-j},f_{n+j})}^2
+    \right)^{1/2}
+  }_{L^p(\R^d,w;X)}.
+\]
+
+First let \(n>0\).  From
+\[
+  \abs{\Delta^m_{t h}g}
+  \le
+  \sum_{\ell=0}^{m}{m\choose \ell}\abs{g(\,\cdot +(m-\ell)t h)}
+\]
+we get
+\[
+  D^m_K(t,g)
+  \le
+  \sum_{\ell=0}^{m} {m\choose \ell} P_{\ell,t}\abs g,
+\]
+where \(P_{\ell,t}\) is either multiplication by \(\int K\) or convolution
+with a positive dilation/reflection of \(K\).  These kernels form a bounded
+set in \(\cK(\R^d)\).  Proposition 4.11 of the source paper says that such
+bounded sets of convolution kernels are \(\ell^2\)-bounded on
+\(L^p(\R^d,w;X)\) when \(X\) is a \(\UMD\) Banach function space.  Hence
+\[
+\begin{aligned}
+&\norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{js}D^m_K(2^{-j},f_{n+j})}^2
+    \right)^{1/2}
+  }_{L^p(w;X)}
+\\
+&\qquad\lesssim
+ 2^{-ns}
+ \norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{(n+j)s}f_{n+j}}^2
+    \right)^{1/2}
+  }_{L^p(w;X)}
+ \lesssim
+ 2^{-ns}\norm{f}_{H^s_p(\R^d,w;X)}.
+\end{aligned}
+\]
+The last step is the Khintchine-Maurey theorem together with the randomized
+Littlewood-Paley equivalence (13) in the source paper.
+
+Now let \(n\le0\).  By lattice Minkowski and Khintchine-Maurey,
+\[
+\begin{aligned}
+&\norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{js}D^m_K(2^{-j},f_{n+j})}^2
+    \right)^{1/2}
+  }_{L^p(w;X)}
+\\
+&\qquad\le
+ \int_{\R^d} K(h)
+ \norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{js}\Delta^m_{2^{-j}h}f_{n+j}}^2
+    \right)^{1/2}
+  }_{L^p(w;X)}\,dh
+\\
+&\qquad\simeq
+ \int_{\R^d} K(h)
+ \norm{\sum_{j=1}^{J}\varepsilon_j
+      2^{js}\Delta^m_{2^{-j}h}f_{n+j}}
+      _{L^2(\Omega;L^p(w;X))}\,dh .
+\end{aligned}
+\]
+The proof of Theorem 4.1(ii) in the source paper applies Lemma 4.8 to the
+last Rademacher norm and yields, for every fixed \(h\),
+\[
+ \norm{\sum_{j=1}^{J}\varepsilon_j
+      2^{js}\Delta^m_{2^{-j}h}f_{n+j}}
+      _{L^2(\Omega;L^p(w;X))}
+ \lesssim
+ 2^{n(m-s)}(1+\abs h)^{(d+3)m}
+ \norm{f}_{H^s_p(\R^d,w;X)}.
+\]
+Integrating in \(h\) is allowed by the assumed moment condition on \(K\), so
+\[
+  \norm{
+    \left(\sum_{j=1}^{J}
+      \abs{2^{js}D^m_K(2^{-j},f_{n+j})}^2
+    \right)^{1/2}
+  }_{L^p(w;X)}
+  \lesssim
+  2^{n(m-s)}\norm{f}_{H^s_p(\R^d,w;X)}.
+\]
+
+Summing the estimates over \(n>0\) and \(n\le0\) gives two convergent
+geometric series, since \(s>0\) and \(m-s>0\).  Thus
+\[
+  U_J(f)\lesssim \norm{f}_{H^s_p(\R^d,w;X)}
+\]
+uniformly in \(J\).  Letting \(J\to\infty\) proves the desired upper estimate
+by monotone convergence in the Banach lattice \(L^p(\R^d,w;X)\).  Together
+with the already proved lower estimate this gives the asserted norm
+equivalence.
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+No computation is used.  The proof reduces the open estimate to three source
+ingredients: Corollary 4.9, Proposition 4.11, and the fixed-step multiplier
+estimate in Lemma 4.8 as used in the proof of Theorem 4.1(ii).
+
+Bounded duplicate and novelty checks were performed in the local run indexes
+for arXiv id 1505.08039, the phrase
+\(\texttt{R-bdd\_averaging\_operators}\), averaging operators, and
+unsigned/difference-modulus keywords.  No existing packet for this question
+was found.  A bounded web search on June 28, 2026 for exact phrases from
+Remark 4.10 and for \(\texttt{d\_K}\), \(\texttt{K\_m}\), and the paper title
+did not identify a later answer.  Novelty confidence is therefore
+\(\texttt{bounded-search likely new}\), not a complete bibliographic audit.
+
+\section*{Limitations and Review Recommendation}
+
+This packet answers the intended scaled version of Remark 4.10.  Read
+literally, the source display of \(d^m_K(t,f)\) omits \(t\) from
+\(\Delta^m_{t h}\); that literal formula cannot be the intended one because
+it would not imply the displayed domination \(\abs{K_m(t,f)}\le d^m_K(t,f)\).
+
+Human review should focus on the high-frequency use of Proposition 4.11 for
+the positive convolution majorants and on the transfer of the source
+low-frequency Rademacher estimate through Khintchine-Maurey and lattice
+Minkowski.
+
+\begin{thebibliography}{9}
+\bibitem{Lindemulder}
+N. Lindemulder,
+\emph{Difference Norms for Vector-Valued Bessel Potential Spaces with an
+Application to Pointwise Multipliers},
+arXiv:1505.08039.
+\end{thebibliography}
+
+\end{document}

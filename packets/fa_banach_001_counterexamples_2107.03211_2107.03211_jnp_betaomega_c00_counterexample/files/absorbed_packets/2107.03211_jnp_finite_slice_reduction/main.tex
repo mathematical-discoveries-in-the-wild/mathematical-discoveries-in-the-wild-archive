@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\K}{\mathbb K}
+\newcommand{\JNP}{\mathrm{JNP}}
+\newcommand{\Cp}{C_p}
+\newcommand{\bbeta}{\beta^{\!*}}
+
+\title{A finite-slice reduction for Josefson--Nissenzweig witnesses in $C_p(X,E)$}
+\author{Candidate partial result for arXiv:2107.03211, Problem 4.8}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Unconditional partial result, likely valid, pending human review.  The
+unrestricted problem remains open after the bounded literature check recorded
+below.
+
+\section{Source problem}
+
+Bargetz, K\k{a}kol, and Sobota ask the following in Problem 4.8 on page 7 of
+arXiv:2107.03211v3 \cite{BKS}.
+
+\begin{quote}
+Let $X$ be a Tychonoff space and $E$ a locally convex space.  Assume that
+$C_p(X,E)$ has the Josefson--Nissenzweig property.  Does it follow that
+$C_p(X)$ has the Josefson--Nissenzweig property or $E$ has the
+Josefson--Nissenzweig property?
+\end{quote}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+  \caption{Problem 4.8 and its immediate context in the source paper.}
+\end{figure}
+
+\section{Definitions and canonical form}
+
+For a locally convex space $G$, a set $B\subseteq G$ is
+\emph{barrel-bounded} if every barrel in $G$ absorbs $B$.  The topology
+$\beta^*(G',G)$ is uniform convergence on barrel-bounded subsets of $G$.
+The space $G$ has the JNP when there is a sequence in $G'$ which is null for
+$\sigma(G',G)$ but not null for $\beta^*(G',G)$; see
+\cite{BG,BKS}.
+
+Set $H=C_p(X,E)$.  The source paper recalls the algebraic identification
+\[
+  H'=L_p(X)\otimes E'.
+\]
+After grouping equal evaluation points, every $\Phi\in H'$ has the form
+\begin{equation}\label{eq:grouped}
+  \Phi(g)=\sum_{x\in A}\eta_x(g(x)),
+  \qquad A\subseteq X\text{ finite},\quad \eta_x\in E'.
+\end{equation}
+The nonzero coefficients in this form are unique.  Indeed, a Tychonoff space
+admits continuous interpolation on each finite subset: for distinct
+$x_1,\dots,x_m$ there are $h_j\in C(X)$ with
+$h_j(x_k)=\delta_{jk}$.
+
+\section{Proof intuition}
+
+A finite slice lets us separate the tensor variables.  If only finitely many
+points of $X$ occur, finite interpolation extracts a weak-star null sequence
+in $E'$ at each point.  If only finitely many coefficient directions in $E'$
+occur, a biorthogonal family in $E$ extracts finitely many weak-star null
+sequences in $L_p(X)$.  Evaluation and scalarization are continuous linear
+maps, so they carry a barrel-bounded witnessing set to barrel-bounded sets.
+If every extracted component converged uniformly there, their finite sum
+would also converge uniformly, contradicting the original JNP witness.
+
+Thus neither kind of one-sided finite confinement can produce a genuinely
+mixed counterexample to Problem 4.8.  The remaining case is precisely the
+two-sided escape regime: infinitely many evaluation points and an
+infinite-dimensional coefficient span.
+
+\section{Finite-slice theorem}
+
+\begin{lemma}[barrel-bounded images]\label{lem:image}
+If $T:G\to F$ is continuous linear and $B\subseteq G$ is barrel-bounded,
+then $T(B)$ is barrel-bounded in $F$.
+\end{lemma}
+
+\begin{proof}
+For every barrel $V\subseteq F$, the inverse image $T^{-1}(V)$ is closed,
+absolutely convex, and absorbing in $G$, hence is a barrel.  It absorbs $B$,
+so $V$ absorbs $T(B)$.
+\end{proof}
+
+\begin{theorem}[finite-slice reduction]\label{thm:main}
+Let $X$ be Tychonoff, let $E$ be locally convex, and put $H=C_p(X,E)$.
+Suppose $(\Phi_n)\subseteq H'$ is weak-star null but not
+$\beta^*(H',H)$-null.  Write
+\[
+  \Phi_n(g)=\sum_{x\in A_n}\eta_{n,x}(g(x))
+\]
+in grouped form.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item if $\bigcup_n A_n$ is finite, then $E$ has the JNP;
+  \item if
+  $\operatorname{span}\{\eta_{n,x}:n\in\mathbb N,\ x\in A_n\}$ is
+  finite-dimensional, then $C_p(X)$ has the JNP.
+\end{enumerate}
+Consequently, if neither $C_p(X)$ nor $E$ has the JNP, every JNP witness in
+$C_p(X,E)'$ must escape every finite evaluation slice and every
+finite-dimensional coefficient slice.
+\end{theorem}
+
+\begin{proof}
+Because $(\Phi_n)$ is not $\beta^*$-null, there is a barrel-bounded set
+$B\subseteq H$ on which uniform convergence fails.
+
+For (i), let $A=\bigcup_n A_n$ and put $\eta_{n,x}=0$ when
+$x\notin A_n$.  Fix $x\in A$.  Choose $h_x\in C(X)$ which is $1$ at $x$
+and $0$ on $A\setminus\{x\}$.  For $e\in E$, the function
+$g_{x,e}(t)=h_x(t)e$ belongs to $H$, and
+\[
+  \eta_{n,x}(e)=\Phi_n(g_{x,e})\longrightarrow 0.
+\]
+Thus $(\eta_{n,x})_n$ is weak-star null in $E'$ for every $x\in A$.
+By Lemma \ref{lem:image}, the set
+$B_x=\{g(x):g\in B\}$ is barrel-bounded in $E$.  If every
+$(\eta_{n,x})_n$ were $\beta^*(E',E)$-null, then
+\[
+  \sup_{g\in B}|\Phi_n(g)|
+  \leq \sum_{x\in A}\sup_{e\in B_x}|\eta_{n,x}(e)|
+  \longrightarrow 0,
+\]
+contrary to the choice of $B$.  Hence one component witnesses the JNP of
+$E$.
+
+For (ii), let $F\subseteq E'$ be the finite-dimensional span of all
+coefficients and choose a basis $e'_1,\dots,e'_m$ of $F$.  There are
+$e_1,\dots,e_m\in E$ with $e'_j(e_k)=\delta_{jk}$.  To see this, the map
+$E\to\K^m$, $e\mapsto(e'_1(e),\dots,e'_m(e))$, is onto; otherwise a
+nonzero functional on $\K^m$ annihilating its range would give a linear
+dependence among the $e'_j$.
+
+Write
+\[
+  \eta_{n,x}=\sum_{j=1}^m a_{n,x,j}e'_j,
+  \qquad
+  \mu_{n,j}=\sum_{x\in A_n}a_{n,x,j}\delta_x\in L_p(X).
+\]
+For $f\in C(X)$, apply $\Phi_n$ to $t\mapsto f(t)e_j$ to obtain
+$\mu_{n,j}(f)\to0$.  Hence $(\mu_{n,j})_n$ is weak-star null in
+$C_p(X)'$.
+
+The scalarization map $S_j:H\to C_p(X)$,
+$S_j(g)=e'_j\circ g$, is continuous linear.  Thus
+$D_j=S_j(B)$ is barrel-bounded by Lemma \ref{lem:image}.  If every
+$(\mu_{n,j})_n$ were $\beta^*(C_p(X)',C_p(X))$-null, then
+\[
+  \sup_{g\in B}|\Phi_n(g)|
+  \leq \sum_{j=1}^m\sup_{f\in D_j}|\mu_{n,j}(f)|
+  \longrightarrow0,
+\]
+again a contradiction.  One component therefore witnesses the JNP of
+$C_p(X)$.
+\end{proof}
+
+\section{Scope, novelty, and verification}
+
+Theorem \ref{thm:main} does not settle Problem 4.8: a weak-star null tensor
+sequence can have both unbounded evaluation support and
+infinite-dimensional coefficient span.  It shows that any counterexample must
+use both phenomena essentially, rather than merely embedding a witness from
+one factor in a disguised finite slice.
+
+The proof is algebraic-topological and uses no computation.  The main audit
+points are Lemma \ref{lem:image}, finite interpolation on $X$, and the finite
+sum estimate.  All are explicit above.
+
+A bounded novelty search covered the run's lightweight indexes and exact
+arXiv queries using the source title, Problem 4.8, $C_p(X,E)$, JNP,
+JN-sequences, $L_p(X)\otimes E'$, finite support, and finite-dimensional
+coefficient span.  The background paper arXiv:2003.06764 \cite{BG} and the
+latest source version were checked.  No exact finite-slice result or later
+solution of Problem 4.8 was found.  Novelty is plausible but not certified.
+
+\paragraph{Human-review recommendation.}
+Review as a likely valid partial reduction.  The priority is to verify the
+barrel-bounded image step and then decide whether known tensor-sequence
+compactness principles can force one of the two finite-slice alternatives.
+
+\begin{thebibliography}{9}
+\bibitem{BKS}
+C. Bargetz, J. K\k{a}kol, and D. Sobota,
+\emph{On complemented copies of the space $c_0$ in spaces $C_p(X,E)$},
+arXiv:2107.03211v3, 2023.
+
+\bibitem{BG}
+T. Banakh and S. Gabriyelyan,
+\emph{The Josefson--Nissenzweig property for locally convex spaces},
+arXiv:2003.06764, 2020.
+\end{thebibliography}
+
+\end{document}

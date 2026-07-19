@@ -1,0 +1,487 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{corollary}{Corollary}
+
+\title{A Characterization Toolkit for Kurka's \(c_0\oplus X\) Borel Question}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{partial\_result.} The packet gives a Sobczyk--Kurka characterization,
+a quotient-persistence obstruction, an unconditional-embedding exclusion, a
+CDDK route dichotomy, a unique nonmeager class theorem, a paving-entry
+criterion, and a collapse-set obstruction.
+
+This packet records a small toolkit for a question raised in Kurka's paper \cite{Kurka}: whether there exists a separable Banach space \(X\) such that the isomorphism class of \(c_0\oplus X\) is Borel.  The first reduction uses Sobczyk's theorem to characterize the positive-example search: for separable \(X\), the class \([c_0\oplus X]\) is Borel if and only if \(X\) contains \(c_0\) and \([X]\) is Borel.  A quotient-persistence corollary then says that a positive example cannot split off \(c_0\) with a quotient that is small in Kurka's sense; in particular, no positive example can embed into a space with an unconditional basis.  The next reduction combines this with work of Cuth, Dolezal, Doucha, and Kurka to show that the Gurarii space is the unique nonmeager isomorphism class in their Polish norm codings, and hence to give a route dichotomy: a positive answer must either be the Gurarii Borel problem or a meager non-\(F_\sigma\) Borel class.  Another corollary turns CDDK's theorem on spaces determined by pavings into a concrete positive-example entry point, while the unconditional-embedding exclusion rules out the naive \(c_0\)-sum paving shortcut.  The final reduction is the earlier collapse-set obstruction: any positive example must absorb a nonanalytic family of Kurka's finite-only Bourgain--Delbaen obstruction spaces.
+
+\section*{Source Question}
+
+The source paper is Ondrej Kurka, \emph{The isomorphism class of \(c_0\) is not Borel}, arXiv:1711.03328 \cite{Kurka}.  In the introduction, after Theorem 1.1, Kurka writes that his method proves non-Borelness of the isomorphism class of \(c_0\oplus X\) when \(X\) is not big in a sense, and then says that it is not known whether there is a space \(X\) for which the isomorphism class of \(c_0\oplus X\) is Borel.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Sobczyk--Kurka Characterization}
+
+The following reformulation is often the cleanest way to view Kurka's question.
+It is not a full negative solution, because it transfers the remaining case to
+the general problem of finding Borel isomorphism classes among separable spaces
+which contain \(c_0\).
+
+\begin{theorem}[Sobczyk--Kurka characterization]
+Let \(X\) be a separable Banach space.  Then the isomorphism class of
+\(c_0\oplus X\) is Borel if and only if \(X\) contains a copy of \(c_0\) and the
+isomorphism class of \(X\) is Borel.
+\end{theorem}
+
+\begin{proof}
+If \(X\) contains no copy of \(c_0\), Kurka's Theorem 1.2(i) says directly that
+the isomorphism class of \(c_0\oplus X\) is not Borel \cite[Theorem 1.2]{Kurka}.
+Thus the equivalence is true in this case, since the right-hand side is false.
+
+Assume now that \(X\) contains a subspace \(E\simeq c_0\).  By Sobczyk's
+theorem \cite{Sobczyk}, every isomorphic copy of \(c_0\) in a separable Banach
+space is complemented.  Hence \(X=E\oplus Z\) for \(Z=\ker P\), where
+\(P:X\to E\) is a bounded projection.  Therefore
+\[
+  c_0\oplus X\simeq c_0\oplus E\oplus Z
+  \simeq c_0\oplus c_0\oplus Z
+  \simeq c_0\oplus Z
+  \simeq X.
+\]
+So, when \(X\) contains \(c_0\), the isomorphism classes \([c_0\oplus X]\) and
+\([X]\) are the same subset of the standard Borel space of separable Banach
+spaces.  Their Borelness is therefore equivalent.
+\end{proof}
+
+\begin{corollary}[Equivalent positive-example problem]
+Kurka's question is equivalent to asking whether there exists a separable Banach
+space containing \(c_0\) whose isomorphism class is Borel.
+\end{corollary}
+
+\begin{proof}
+If such a space \(Y\) exists, the theorem applied to \(X=Y\) gives
+\([c_0\oplus Y]=[Y]\), so Kurka's question has a positive answer.  Conversely,
+if \(c_0\oplus X\) has Borel isomorphism class for some separable \(X\), the
+theorem implies that \(X\) contains \(c_0\) and has Borel isomorphism class.
+\end{proof}
+
+\begin{corollary}[Absorption form]
+For a separable Banach space \(X\), the following are equivalent:
+\[
+  X\text{ contains }c_0,\qquad
+  X\text{ contains a complemented copy of }c_0,\qquad
+  X\simeq c_0\oplus X.
+\]
+Consequently, adding a \(c_0\)-summand has only two descriptive-set-theoretic
+regimes: if \(X\) contains \(c_0\), then \([c_0\oplus X]=[X]\); if \(X\)
+contains no \(c_0\), then \([c_0\oplus X]\) is non-Borel by Kurka's theorem.
+\end{corollary}
+
+\begin{proof}
+The only nontrivial implication is that containing \(c_0\) gives a complemented
+copy, which is Sobczyk's theorem in the separable setting.  The decomposition
+\(X\simeq c_0\oplus Z\) then gives
+\[
+  c_0\oplus X\simeq c_0\oplus c_0\oplus Z\simeq c_0\oplus Z\simeq X.
+\]
+The final sentence combines this absorption with Kurka's Theorem 1.2(i).
+\end{proof}
+
+\begin{corollary}[Quotient-persistence obstruction]
+Let \(Y\) be a separable Banach space containing \(c_0\).  Suppose there is a
+subspace \(E\simeq c_0\) such that the quotient \(Y/E\) satisfies at least one
+of the following conditions:
+\begin{enumerate}
+\item \(Y/E\) contains no copy of \(c_0\);
+\item \(Y/E\) contains no infinite-dimensional reflexive subspace;
+\item \(Y/E\) embeds into a Banach space with an unconditional basis.
+\end{enumerate}
+Then the isomorphism class of \(Y\) is not Borel.
+
+Consequently, if \(Y\) is a Borel positive example, then for every copy
+\(E\simeq c_0\) in \(Y\), the quotient \(Y/E\) must contain \(c_0\), must
+contain an infinite-dimensional reflexive subspace, and must fail to embed into
+any space with an unconditional basis.
+\end{corollary}
+
+\begin{proof}
+By Sobczyk's theorem, the copy \(E\simeq c_0\) is complemented in \(Y\).  Thus
+\(Y\simeq E\oplus Z\), where \(Z\) is isomorphic to \(Y/E\).  Applying Kurka's
+Theorem 1.2 to \(X=Z\) gives that the isomorphism class of
+\(c_0\oplus Z\simeq Y\) is not Borel whenever \(Z\) satisfies any of the three
+listed hypotheses.  The final assertion is the contrapositive.
+\end{proof}
+
+\begin{corollary}[Unconditional-embedding exclusion]
+Let \(Y\) be a separable Banach space containing \(c_0\).  If \(Y\) embeds into
+a Banach space with an unconditional basis, then the isomorphism class of \(Y\)
+is not Borel.
+
+In particular, a Borel positive example for Kurka's question cannot have an
+unconditional basis and cannot be isomorphic to a subspace of \(c_0\).  Moreover
+no space of the form \((\bigoplus_n E_n)_{c_0}\), with \(E_n\) finite
+dimensional, can be a positive example.
+\end{corollary}
+
+\begin{proof}
+Choose a copy \(E\simeq c_0\) in \(Y\).  By Sobczyk's theorem, \(E\) is
+complemented, so \(Y\simeq E\oplus Z\simeq c_0\oplus Z\).  If \(Y\) embeds into
+a Banach space with an unconditional basis, then the complemented subspace
+\(Z\subseteq Y\) also embeds into such a space.  Kurka's Theorem 1.2(iii)
+applied to \(X=Z\) therefore gives that the isomorphism class of
+\(c_0\oplus Z\simeq Y\) is not Borel.
+
+The first particular case follows by taking the ambient space to be \(Y\)
+itself when \(Y\) has an unconditional basis, or \(c_0\) when \(Y\) is a subspace
+of \(c_0\).  Finally, if each \(E_n\) is finite dimensional, then for each \(n\)
+one may choose a finite-dimensional almost-isometric embedding of \(E_n\) into
+some \(\ell_\infty^{k_n}\), with distortion bounded uniformly, say by \(2\).
+Taking the \(c_0\)-sum of these embeddings gives an isomorphic embedding
+\[
+  \left(\bigoplus_n E_n\right)_{c_0}
+  \hookrightarrow
+  \left(\bigoplus_n \ell_\infty^{k_n}\right)_{c_0}
+  \simeq c_0.
+\]
+Thus such a \(c_0\)-sum is covered by the subspace-of-\(c_0\) case.
+\end{proof}
+
+\section*{CDDK Low-Complexity and Category Barrier}
+
+The next consequence is not a topology-free non-Borelness theorem.  It is a
+statement in the Polish norm codings \(\mathcal B\) and \(\mathcal P_\infty\)
+used by Cuth, Dolezal, Doucha, and Kurka \cite{CDDK}.  It nevertheless says
+that the easiest possible positive examples are ruled out.
+
+\begin{theorem}[No simple positive example in the CDDK codings]
+Let \(X\) be a separable Banach space and put \(Y=c_0\oplus X\).  In the
+Polish spaces \(\mathcal B\) and \(\mathcal P_\infty\) of \cite{CDDK}, the
+isomorphism class of \(Y\) is not an \(F_\sigma\)-set.  Moreover, if the
+isomorphism class of \(Y\) is a \(G_\delta\)-set, then \(Y\) is isomorphic to
+the Gurarii space \(\mathbb G\).
+
+Consequently, a \(G_\delta\) positive answer to Kurka's question is possible
+if and only if the isomorphism class of \(\mathbb G\) is \(G_\delta\) in these
+codings.
+\end{theorem}
+
+\begin{proof}
+The space \(Y=c_0\oplus X\) contains \(c_0\), and hence is not reflexive.
+Therefore \(Y\) is not isomorphic to \(\ell_2\).  Cuth, Dolezal, Doucha, and
+Kurka prove that \(\ell_2\) is the unique separable infinite-dimensional Banach
+space whose isomorphism class is \(F_\sigma\) in \(\mathcal B\) or
+\(\mathcal P_\infty\) \cite[Theorem 2.10]{CDDK}.  Thus the isomorphism class
+of \(Y\) is not \(F_\sigma\).
+
+They also prove that, with the possible exception of spaces isomorphic to the
+Gurarii space, no isomorphism class is \(G_\delta\)
+\cite[Proposition 2.11]{CDDK}.  Hence if the isomorphism class of \(Y\) is
+\(G_\delta\), then \(Y\simeq\mathbb G\).
+
+Finally, the Gurarii space is universal for separable Banach spaces; in
+particular it contains a copy of \(c_0\) \cite{BKK}.  By Sobczyk's theorem,
+\(\mathbb G\simeq c_0\oplus Z\) for some \(Z\), and therefore
+\[
+  c_0\oplus \mathbb G\simeq c_0\oplus c_0\oplus Z\simeq c_0\oplus Z\simeq
+  \mathbb G.
+\]
+Thus, if the isomorphism class of \(\mathbb G\) is \(G_\delta\), taking
+\(X=\mathbb G\) gives a \(G_\delta\) positive example.  The converse is the
+previous paragraph.
+\end{proof}
+
+\begin{corollary}[The unique nonmeager isomorphism class]
+In the CDDK Polish norm codings, the Gurarii space is the unique separable
+infinite-dimensional Banach space whose isomorphism class is nonmeager.
+Equivalently, every isomorphism class other than \([\mathbb G]\) is meager,
+while \([\mathbb G]\) is comeager.
+\end{corollary}
+
+\begin{proof}
+The isomorphism class of any fixed separable Banach space is analytic, hence
+has the Baire property.  Suppose \([Y]\) is nonmeager.  Then there is a
+nonempty open set \(U\) such that \([Y]\) is comeager in \(U\).  Cuth, Dolezal,
+Doucha, and Kurka prove that the isometry class of the Gurarii space is dense
+\(G_\delta\) \cite[Theorem 1.4(4)]{CDDK}.  Therefore \([Y]\cap U\) and the
+isometry class of \(\mathbb G\) are two comeager subsets of \(U\), so they
+intersect.  Thus \(Y\) is isomorphic to \(\mathbb G\).
+
+Conversely, \([\mathbb G]\) contains the dense \(G_\delta\) isometry class of
+\(\mathbb G\), so its complement is contained in a meager set.  Hence
+\([\mathbb G]\) is comeager.
+\end{proof}
+
+\begin{corollary}[Route dichotomy in the CDDK codings]
+In the CDDK Polish norm codings, Kurka's question has a positive answer if and
+only if at least one of the following alternatives holds:
+\begin{enumerate}
+\item the isomorphism class of the Gurarii space \(\mathbb G\) is Borel;
+\item there is a separable Banach space \(Y\) containing \(c_0\) such that
+\([Y]\) is Borel, meager, and not \(F_\sigma\).
+\end{enumerate}
+Moreover, there is a nonmeager Borel positive example if and only if
+\([\mathbb G]\) is Borel.
+\end{corollary}
+
+\begin{proof}
+If \([\mathbb G]\) is Borel, then \(\mathbb G\) contains \(c_0\), so the
+Sobczyk--Kurka characterization gives a positive answer by taking
+\(X=\mathbb G\).  If the second alternative holds, the same characterization
+applied to \(X=Y\) gives a positive answer.
+
+Conversely, suppose Kurka's question has a positive answer.  By the
+Sobczyk--Kurka characterization, there is a separable \(Y\) containing \(c_0\)
+with \([Y]\) Borel.  If \(Y\simeq\mathbb G\), then \([\mathbb G]\) is Borel.
+If \(Y\not\simeq\mathbb G\), the unique nonmeager class theorem gives that
+\([Y]\) is meager.  Also \(Y\not\simeq\ell_2\) because \(Y\) contains \(c_0\),
+and the no-\(F_\sigma\) part of the preceding theorem gives that \([Y]\) is not
+\(F_\sigma\).  This proves the dichotomy.  The final assertion follows from
+the unique nonmeager class theorem.
+\end{proof}
+
+\begin{corollary}[Paving entry point]
+Let \(Y\) be a separable infinite-dimensional Banach space that contains
+\(c_0\).  If \(Y\) is determined by its pavings, in the sense of
+Johnson--Lindenstrauss--Schechtman \cite{JLS} as used by CDDK, then Kurka's
+question has a positive answer.  The same conclusion holds if \(Y\) is
+determined by its finite-dimensional subspaces.
+
+If such a \(Y\) is not isomorphic to the Gurarii space, then its isomorphism
+class is meager and not \(F_\sigma\) in the CDDK codings.
+\end{corollary}
+
+\begin{proof}
+Cuth, Dolezal, Doucha, and Kurka prove that a separable infinite-dimensional
+Banach space determined by its pavings has \(G_{\delta\sigma}\), hence Borel,
+isomorphism class in \(\mathcal P_\infty\) and in any admissible topology
+\cite[the theorem on spaces determined by pavings]{CDDK}; intersecting with
+\(\mathcal B\) gives the corresponding Borel statement there.  Since \(Y\)
+contains \(c_0\), the Sobczyk--Kurka characterization gives a positive answer.
+A space determined by its finite-dimensional subspaces is determined by its
+pavings, as noted in CDDK, so the same proof applies.  The last sentence is
+the route dichotomy and no-\(F_\sigma\) theorem above.
+\end{proof}
+
+\section*{Candidate Audit from the Full-Result Push}
+
+The full-result push checked the most obvious positive examples against the
+literature.  Kurka's introduction already records that the isomorphism classes
+of Pe\l czy\'nski's universal space, \(C(2^{\mathbb N})\), and
+\(L_p[0,1]\) for \(1<p<\infty\), \(p\ne2\), are not Borel \cite{Kurka}.  By
+Milutin's theorem, \(C[0,1]\) is isomorphic to \(C(2^{\mathbb N})\)
+\cite{Milutin}, so the classical separable universal \(C(K)\)-candidate is
+also ruled out.
+
+On the positive side, Godefroy proved that the isomorphism classes of
+\(\ell_p\), \(1<p<\infty\), are Borel \cite{GodefroyLp}.  These spaces are
+reflexive and hence do not contain \(c_0\), so they cannot answer the reduced
+question.  Kurka records that the Borel status of \(\ell_1\) was not known at
+the time \cite{Kurka}; in any case \(\ell_1\) has the Schur property and does
+not contain \(c_0\).  Finally, the Gurarii space remains the main nonmeager
+candidate: it contains \(c_0\) by universality \cite{BKK}, but CDDK explicitly
+state that they do not know whether its isomorphism class is Borel
+\cite[Question 6.2]{CDDK}.
+
+Thus the standard shortcuts do not produce a full answer.  In the CDDK codings,
+the remaining positive routes are exactly those in the route dichotomy:
+Gurarii Borelness, or a meager Borel non-\(F_\sigma\) \(c_0\)-containing
+isomorphism class.  The unconditional-embedding exclusion also rules out
+subspaces of \(c_0\), spaces with unconditional bases, and the natural
+\(c_0\)-sums of finite-dimensional spaces as possible positive examples.
+
+\section*{Notation from Kurka's Construction}
+
+Let \(K(\mathcal P(\mathbb N))\) be the standard Borel space of compact families of subsets of \(\mathbb N\), and let
+\[
+  \mathfrak H=\{\mathcal M\in K(\mathcal P(\mathbb N)):\mathcal M
+  \text{ contains an infinite set}\}.
+\]
+By Hurewicz's theorem, as recalled in \cite[Theorem 4.3]{Kurka}, \(\mathfrak H\) is complete analytic and in particular is not Borel.
+
+Kurka constructs a Borel map
+\[
+  \mathfrak S:K(\mathcal P(\mathbb N))\to \mathcal{SE}(C[0,1])
+\]
+such that \(\mathfrak S(\mathcal M)\) is isometric to a Bourgain--Delbaen \(\mathcal L_\infty\)-space denoted here by \(\mathfrak X_{\mathcal M}\).  The construction has the following properties \cite[Propositions 3.6 and 3.8, Lemma 4.1, and Theorem 4.3]{Kurka}.
+
+\begin{itemize}
+\item If \(\mathcal M\in\mathfrak H\), then \(\mathfrak X_{\mathcal M}\simeq c_0\).
+\item If \(\mathcal M\notin\mathfrak H\), equivalently if \(\mathcal M\) consists only of finite sets, then \(\mathfrak X_{\mathcal M}\) contains no copy of \(c_0\).
+\item There is a Borel set \(\mathfrak B\subset K(\mathcal P(\mathbb N))\) such that \(\mathfrak H\subset\mathfrak B\) and \(\mathfrak X_{\mathcal M}^*\) is separable for every \(\mathcal M\in\mathfrak B\).
+\item If \(\mathcal M\notin\mathfrak H\) and \(\mathfrak X_{\mathcal M}^*\) is separable, then every infinite-dimensional subspace of \(\mathfrak X_{\mathcal M}\) contains an infinite-dimensional reflexive subspace.
+\end{itemize}
+
+For a fixed separable Banach space \(X\), Kurka's proof of Theorem 1.2 also uses a Borel map \(\mathfrak T_X\) such that
+\[
+  \mathfrak T_X(\mathcal M)\simeq \mathfrak X_{\mathcal M}\oplus X.
+\]
+Define the \emph{collapse set}
+\[
+  \mathfrak C_X
+  =
+  \{\mathcal M\in\mathfrak B:
+  \mathfrak X_{\mathcal M}\oplus X\simeq c_0\oplus X\}.
+\]
+
+\section*{Proof Intuition}
+
+Sobczyk's theorem first removes a misleading feature of the direct sum: once
+\(X\) already contains \(c_0\), adding another \(c_0\)-summand does not change
+the isomorphism class.  Hence a positive example is exactly a Borel
+isomorphism class represented by a separable \(c_0\)-containing space.
+
+The CDDK input then separates the possible positive examples by topological
+size.  A Borel positive example that is nonmeager is forced to be the Gurarii
+space.  Therefore every non-Gurarii positive example has to be both meager and
+above the \(F_\sigma\) level.  Conversely, a local finite-dimensional
+characterization such as being determined by pavings would automatically give
+Borelness; if one could find such a space containing \(c_0\), the
+Sobczyk--Kurka reduction would turn it into a positive answer.  However, the
+unconditional-embedding exclusion shows that this cannot be the naive
+coordinate construction: no \(c_0\)-sum of finite-dimensional blocks, and more
+generally no \(c_0\)-containing subspace of an unconditional-basis space, can
+work.
+
+The collapse-set argument gives a complementary obstruction.  Kurka's reduction
+always puts \(\mathfrak H\) inside the collapse set, because
+\(\mathfrak X_{\mathcal M}\simeq c_0\) for \(\mathcal M\in\mathfrak H\).  If
+the target isomorphism class \([c_0\oplus X]\) were Borel, then
+\(\mathfrak C_X\) would be Borel.  A Borel set containing a complete analytic
+non-Borel set cannot have an analytic excess over it: if both \(\mathfrak H\)
+and \(\mathfrak C_X\setminus \mathfrak H\) were analytic, Lusin separation would
+make \(\mathfrak H\) Borel.  Thus Borelness of \([c_0\oplus X]\) forces the
+finite-only collapse set to be nonanalytic.
+
+\section*{Partial Theorem}
+
+\begin{theorem}[Collapse-set obstruction]
+Let \(X\) be a separable Banach space and let \(\mathfrak C_X\) be the collapse set above.  If \(\mathfrak C_X\setminus\mathfrak H\) is analytic, then the isomorphism class of \(c_0\oplus X\) is not Borel.
+
+Equivalently, if the isomorphism class of \(c_0\oplus X\) is Borel, then \(\mathfrak C_X\setminus\mathfrak H\) is nonanalytic.  In that case, for every \(\mathcal M\in \mathfrak C_X\setminus\mathfrak H\), the space \(c_0\oplus X\) contains a complemented copy of \(\mathfrak X_{\mathcal M}\); these \(\mathfrak X_{\mathcal M}\)'s contain no \(c_0\), have separable dual, and are reflexively saturated.
+\end{theorem}
+
+\begin{proof}
+First note that \(\mathfrak H\subset \mathfrak C_X\).  Indeed, if \(\mathcal M\in\mathfrak H\), then \(\mathfrak X_{\mathcal M}\simeq c_0\), and therefore
+\[
+  \mathfrak X_{\mathcal M}\oplus X\simeq c_0\oplus X.
+\]
+
+Assume, toward the contrapositive, that the isomorphism class of \(c_0\oplus X\) is Borel.  Since \(\mathfrak T_X\) is Borel and \(\mathfrak B\) is Borel, the set
+\[
+  \mathfrak C_X
+  =
+  \mathfrak B\cap
+  \mathfrak T_X^{-1}\bigl(\{Y:Y\simeq c_0\oplus X\}\bigr)
+\]
+is Borel in \(K(\mathcal P(\mathbb N))\).
+
+Suppose also that \(\mathfrak C_X\setminus\mathfrak H\) is analytic.  The two sets \(\mathfrak H\) and \(\mathfrak C_X\setminus\mathfrak H\) are disjoint analytic subsets of the standard Borel space \(K(\mathcal P(\mathbb N))\).  By Lusin's separation theorem, there is a Borel set \(D\) such that
+\[
+  \mathfrak H\subset D
+  \quad\text{and}\quad
+  D\cap(\mathfrak C_X\setminus\mathfrak H)=\varnothing.
+\]
+Since \(\mathfrak H\subset\mathfrak C_X\), we have
+\[
+  \mathfrak C_X=\mathfrak H\cup(\mathfrak C_X\setminus\mathfrak H),
+\]
+and hence
+\[
+  \mathfrak H=D\cap\mathfrak C_X.
+\]
+This makes \(\mathfrak H\) Borel, contradicting Hurewicz's theorem.  Therefore, if \(\mathfrak C_X\setminus\mathfrak H\) is analytic, the isomorphism class of \(c_0\oplus X\) cannot be Borel.
+
+The final assertion follows from the definition of the collapse set.  If \(\mathcal M\in\mathfrak C_X\setminus\mathfrak H\), then \(\mathfrak X_{\mathcal M}\oplus X\simeq c_0\oplus X\).  The first summand \(\mathfrak X_{\mathcal M}\) is complemented in \(\mathfrak X_{\mathcal M}\oplus X\), so transporting the coordinate projection through an isomorphism gives a complemented copy of \(\mathfrak X_{\mathcal M}\) inside \(c_0\oplus X\).  Since \(\mathcal M\in\mathfrak B\setminus\mathfrak H\), Kurka's properties listed above give that \(\mathfrak X_{\mathcal M}\) contains no \(c_0\), has separable dual, and is reflexively saturated.
+\end{proof}
+
+\begin{corollary}[Recovery of Kurka's obstruction pattern]
+To prove that the isomorphism class of \(c_0\oplus X\) is not Borel, it is enough to prove that the finite-only collapse set \(\mathfrak C_X\setminus\mathfrak H\) is analytic.  In particular, Kurka's Theorem 1.2 proves non-Borelness by showing that this set is empty under each of the following hypotheses: \(X\) contains no \(c_0\), \(X\) contains no infinite-dimensional reflexive subspace, or \(X\) embeds into a space with an unconditional basis.
+\end{corollary}
+
+\begin{proof}
+The first sentence is exactly the theorem.  Under each of Kurka's three hypotheses, the proof of \cite[Theorem 1.2]{Kurka} shows that no finite-only parameter \(\mathcal M\in\mathfrak B\setminus\mathfrak H\) can satisfy \(\mathfrak X_{\mathcal M}\oplus X\simeq c_0\oplus X\).  Thus \(\mathfrak C_X\setminus\mathfrak H=\varnothing\), which is analytic.
+\end{proof}
+
+\section*{Limitations and Novelty Check}
+
+This is not a full solution of Kurka's question.  The Sobczyk--Kurka characterization shows that a positive example is the same thing as a separable \(c_0\)-containing Banach space with Borel isomorphism class, but it does not decide whether such a space exists.  The CDDK barriers rule out \(F_\sigma\) examples, reduce the \(G_\delta\) and nonmeager Borel cases to the Gurarii space, and leave only two possible positive routes in those codings: the Gurarii class is Borel, or there is a meager Borel non-\(F_\sigma\) \(c_0\)-containing isomorphism class.  The paving corollary is an entry criterion, not an existence theorem: the standard examples of paving-determined spaces mentioned by CDDK, such as certain \(\ell_2\)-sums of finite-dimensional spaces, are reflexive and therefore do not contain \(c_0\), while the tempting \(c_0\)-sums of finite-dimensional spaces embed into \(c_0\) and are excluded by the unconditional-embedding corollary.  The collapse-set theorem does not rule out a space \(X\) for which the finite-only collapse set is nonanalytic.  Instead, it gives a necessary condition for any Borel positive example: \(c_0\oplus X\) must complementably absorb a nonanalytic parameter family of \(c_0\)-free, separable-dual, reflexively saturated Bourgain--Delbaen spaces from Kurka's construction.
+
+A bounded local-index search found no previous packet for arXiv:1711.03328 or for the \(c_0\oplus X\) Borel question in this run before the present packet.  A bounded web search for exact phrases such as ``\(c_0\oplus X\) Borel isomorphism class'', ``isomorphism class of \(c_0\oplus X\)'', and ``Gurarii space isomorphism class Borel'' did not reveal an explicit later solution.  The 2022 paper of Cuth, Dolezal, Doucha, and Kurka records that even the Borel status of the Gurarii space's isomorphism class is unknown \cite[Question 6.2]{CDDK}.  This supports the view that a complete negative solution to Kurka's question would be a substantial result: by the characterization above, it would rule out every separable \(c_0\)-containing space as a Borel-class example and, in particular, answer the Gurarii Borel question negatively.  The results here are best viewed as derived characterizations and obstructions, not as a claimed complete answer.
+
+\section*{Human Review Recommendation}
+
+Review should first check the Sobczyk absorption step: in the separable setting,
+if \(X\) contains \(c_0\), then \(X\simeq c_0\oplus Z\) and consequently
+\(c_0\oplus X\simeq X\).  Review should also check the descriptive-set-theoretic
+step: if \(\mathfrak C_X\) is Borel, \(\mathfrak H\subset\mathfrak C_X\), and
+\(\mathfrak C_X\setminus\mathfrak H\) is analytic, then Lusin separation indeed
+implies \(\mathfrak H\) is Borel.  Finally, review should check that Kurka's
+Borel selector \(\mathfrak T_X\) is sufficient to make \(\mathfrak C_X\) Borel
+when the target isomorphism class is Borel.  For the CDDK barriers,
+review should check that the \(F_\sigma\), \(G_\delta\), and meagerness assertions are
+understood in the CDDK Polish norm codings rather than as topology-free
+statements about the Effros Borel structure.  The final polish corollaries
+should be checked as reusable characterizations: the route dichotomy should be
+equivalent to the Baire-category dichotomy plus Sobczyk--Kurka, and the paving
+entry point should use only CDDK's \(G_{\delta\sigma}\) theorem for spaces
+determined by pavings together with \(c_0\)-absorption.  The
+unconditional-embedding exclusion should be checked as an immediate application
+of Kurka's Theorem 1.2(iii) to the Sobczyk complement.
+
+\begin{thebibliography}{9}
+
+\bibitem{Kurka}
+O. Kurka,
+\emph{The isomorphism class of \(c_0\) is not Borel},
+arXiv:1711.03328, 2017.
+
+\bibitem{Kechris}
+A. S. Kechris,
+\emph{Classical Descriptive Set Theory},
+Graduate Texts in Mathematics 156, Springer, 1995.
+
+\bibitem{JLS}
+W. B. Johnson, J. Lindenstrauss, and G. Schechtman,
+\emph{Banach spaces determined by their uniform structures},
+Geom. Funct. Anal. 6 (1996), 430--470.
+
+\bibitem{GodefroyLp}
+G. Godefroy,
+\emph{The isomorphism classes of \(\ell_p\) are Borel},
+Houston J. Math. 43 (2017), no. 3, 947--951.
+
+\bibitem{Milutin}
+A. A. Milutin,
+\emph{Isomorphism of the spaces of continuous functions over compact sets of
+the cardinality of the continuum},
+Teor. Funkcii Funkcional. Anal. i Prilozen. Vyp. 2 (1966), 150--156.
+
+\bibitem{Sobczyk}
+A. Sobczyk,
+\emph{Projection of the space \((m)\) on its subspace \((c_0)\)},
+Bull. Amer. Math. Soc. 47 (1941), 938--947.
+
+\bibitem{CDDK}
+M. Cuth, M. Dolezal, M. Doucha, and O. Kurka,
+\emph{Polish spaces of Banach spaces. Complexity of isometry and isomorphism classes},
+arXiv:2204.06834, 2022.
+
+\bibitem{BKK}
+C. Bargetz, J. Kakol, and W. Kubis,
+\emph{A separable Frechet space of almost universal disposition},
+arXiv:1603.06361, 2016.
+
+\end{thebibliography}
+
+\end{document}

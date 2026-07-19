@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\Tr}{Tr}
+
+\title{A finite Toeplitz counterexample to the operator-norm upgrade in arXiv:2506.01610}
+\author{Agent lane 19}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is:
+\[
+\text{S. Finski, \emph{Bernstein-Markov measures and Toeplitz theory}, arXiv:2506.01610.}
+\]
+The relevant passage is Theorem 1.5 and Remark 1.6. Theorem 1.5 proves that, in the
+Bernstein--Markov setting of the paper, Toeplitz operators form an algebra under
+composition in normalized Schatten norms:
+\[
+   \lim_{k\to\infty}
+   \|T_k(f)\circ T_k(g)-T_k(fg)\|_p=0,\qquad 1\leq p<\infty .
+\]
+Remark 1.6 then recalls that in the classical smooth positive volume-form
+setting the analogous statement holds with the operator norm in place of the
+normalized Schatten norm, and says that it remains open whether analogous
+results hold in the paper's more general setting.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+The operator-norm analogue of Theorem 1.5 is false in the general
+Bernstein--Markov setting of arXiv:2506.01610.
+
+More precisely, in the circle model from Section 4 of the source paper, where
+Definition 1.3 recovers finite Toeplitz matrices, there is a real continuous
+symbol \(h\) such that
+\[
+   \|T_N[h]T_N[h]-T_N[h^2]\|=1
+\]
+for every \(N\geq 2\). Hence this error does not converge to zero in operator
+norm, although it converges to zero in every normalized Schatten \(p\)-norm,
+\(1\leq p<\infty\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The source theorem is normalized by the dimension. A fixed-rank boundary error
+therefore disappears in every normalized Schatten norm. The operator norm does
+not see dimension averaging, so the same boundary error remains of size one.
+
+Classical finite Toeplitz matrices give exactly such a boundary error. The
+symbol \(2\cos\theta\) quantizes to a truncated shift plus its adjoint. Squaring
+that finite matrix almost gives the Toeplitz matrix of \(4\cos^2\theta\), but
+the two endpoints of the finite basis have no predecessor or successor. The
+missing neighbors are precisely two rank-one endpoint projections.
+
+\section*{Proof}
+
+We use the finite Toeplitz-matrix realization explicitly described in Section 4
+of the source paper. Let \(N\geq 2\), and identify the relevant section space
+with \(\mathbb C^N\) with orthonormal basis \(e_0,\ldots,e_{N-1}\). If
+\[
+   a(e^{i\theta})=\sum_{m\in\mathbb Z} a_m e^{im\theta}
+\]
+is a trigonometric polynomial, the associated Toeplitz matrix is
+\[
+   T_N[a]=(a_{i-j})_{0\leq i,j\leq N-1}.
+\]
+This is the matrix displayed in Section 4 of the source paper.
+
+Let \(S_N\) be the truncated unilateral shift
+\[
+   S_Ne_j=
+   \begin{cases}
+      e_{j+1}, & 0\leq j\leq N-2,\\
+      0, & j=N-1.
+   \end{cases}
+\]
+For the real continuous symbol
+\[
+   h(e^{i\theta})=e^{i\theta}+e^{-i\theta}=2\cos\theta,
+\]
+the only nonzero Fourier coefficients are \(h_1=h_{-1}=1\). Hence
+\[
+   T_N[h]=S_N+S_N^*.
+\]
+Also,
+\[
+   h^2(e^{i\theta})
+   =e^{2i\theta}+2+e^{-2i\theta},
+\]
+so
+\[
+   T_N[h^2]=S_N^2+(S_N^*)^2+2I_N.
+\]
+On the other hand,
+\[
+   T_N[h]^2
+   =(S_N+S_N^*)^2
+   =S_N^2+S_NS_N^*+S_N^*S_N+(S_N^*)^2.
+\]
+Therefore
+\[
+\begin{aligned}
+   T_N[h]^2-T_N[h^2]
+   &=S_NS_N^*+S_N^*S_N-2I_N .
+\end{aligned}
+\]
+Writing \(P_0\) and \(P_{N-1}\) for the rank-one projections onto
+\(\mathbb C e_0\) and \(\mathbb C e_{N-1}\), respectively, we have
+\[
+   S_NS_N^*=I_N-P_0,\qquad S_N^*S_N=I_N-P_{N-1}.
+\]
+Thus
+\[
+   T_N[h]^2-T_N[h^2]=-(P_0+P_{N-1}).
+\]
+Since \(P_0\) and \(P_{N-1}\) are nonzero orthogonal projections,
+\[
+   \|T_N[h]^2-T_N[h^2]\|=1
+\]
+for every \(N\geq 2\).
+
+By contrast, for the normalized Schatten \(p\)-norm used in Definition 1.3 of
+the source paper,
+\[
+   \|A\|_p=\left(\frac1N\Tr |A|^p\right)^{1/p},
+\]
+the same defect has only two nonzero singular values, both equal to \(1\).
+Therefore
+\[
+   \|T_N[h]^2-T_N[h^2]\|_p=\left(\frac{2}{N}\right)^{1/p}\to 0.
+\]
+This is exactly the phenomenon allowed by Theorem 1.5 and exactly the
+phenomenon excluded by the proposed operator-norm analogue. The general
+operator-norm upgrade is therefore false.
+
+\section*{Verification Notes}
+
+The example is inside the source paper's general Bernstein--Markov framework:
+Section 4 states that for \(X=\mathbb P^1\), \(L=\mathcal O(1)\), and Lebesgue
+measure on a great circle, Definition 1.3 recovers the classical Toeplitz
+matrices. The chosen symbol \(h=2\cos\theta\) is real and continuous, so it is
+admissible even under a self-adjoint real-symbol reading.
+
+The proof uses only the displayed finite Toeplitz matrix convention and the
+elementary algebra of the truncated shift. No asymptotic estimate or external
+operator theory theorem is needed.
+
+\section*{Novelty Check and Limitations}
+
+Local index searches for \texttt{2506.01610}, \texttt{Bernstein-Markov},
+\texttt{Toeplitz theory}, \texttt{operator norm}, and \texttt{Toeplitz matrices}
+found no prior packet for this source question. A bounded web search for the
+exact source arXiv id, the paper title, and phrases around the operator-norm
+Toeplitz product did not find a later paper explicitly answering Remark 1.6.
+
+This packet disproves the operator-norm analogue in the full
+Bernstein--Markov setting. It does not rule out operator-norm product formulas
+under additional regularity assumptions on \(\mu\), and it does not settle the
+separate \(L^\infty\)-symbol analogue mentioned in the same remark.
+
+\section*{Human Review Recommendation}
+
+Check that the intended reading of Remark 1.6 includes the full
+Bernstein--Markov setting of Theorem 1.5 rather than only an unspecified
+future subclass of measures. Under that natural reading, the counterexample is
+complete and the computation is exact.
+
+\begin{thebibliography}{9}
+\bibitem{FinskiBMToeplitz}
+S. Finski,
+\emph{Bernstein-Markov measures and Toeplitz theory},
+arXiv:2506.01610, 2025.
+
+\bibitem{GrenanderSzego}
+U. Grenander and G. Szego,
+\emph{Toeplitz Forms and Their Applications},
+2nd ed., Chelsea, 1984.
+\end{thebibliography}
+
+\end{document}

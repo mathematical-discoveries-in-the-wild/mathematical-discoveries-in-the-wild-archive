@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\title{A Direct-Union Reduction for the Finite Complexity Rate Question}
+\author{Agent lane 02}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Question}
+
+The source is Geng Tian and Guoliang Yu, \emph{Embedding complexity into Banach spaces and the strong Novikov conjecture}, arXiv:2605.12930. After proving that the strong Novikov conjecture holds for groups with finite complexity rate, the paper asks the following question on page 6:
+
+\begin{quote}
+``It is natural to ask whether every countable discrete group is an inductive limit of groups with finite complexity rates.''
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet records a partial result clarifying the injective/direct-union interpretation of this question.
+
+\section*{Definitions Used}
+
+Write $\mathrm{CR}(\Gamma)<\infty$ to mean that $\Gamma$ has finite complexity rate in the sense of Definition 1.3 of the source paper. The source paper notes that Property A groups have arbitrarily small complexity rate, hence finite complexity rate, and proves that finite complexity rate implies the finite-complexity coarse embedding hypothesis used in its main theorem.
+
+In this packet, an \emph{injective inductive limit} means a directed union of subgroups: $\Gamma=\bigcup_{i\in I}\Gamma_i$ with $\Gamma_i\subseteq \Gamma_j$ for $i\leq j$ and $I$ directed.
+
+\section*{Proof Intuition}
+
+For a directed union, every finite amount of algebraic data appears at one finite stage. Thus if a countable group is a directed union of finite-complexity-rate subgroups, then any finitely generated subgroup is already contained in one such stage. Since the complexity-rate definition is inherited by subgroups by restriction of the maps in Definition 1.3, the finitely generated subgroup must also have finite complexity rate. Conversely, if every finitely generated subgroup has finite complexity rate, then the directed system of all finitely generated subgroups gives the required direct union.
+
+\begin{lemma}[Subgroup heredity]\label{lem:heredity}
+If a countable discrete group $\Gamma$ has finite complexity rate, then every subgroup $\Lambda\leq \Gamma$ has finite complexity rate.
+\end{lemma}
+
+\begin{proof}
+Choose a left-invariant proper metric $d$ on $\Gamma$. Its restriction to $\Lambda$ is a left-invariant proper metric on $\Lambda$. If $\mathrm{CR}(\Gamma)\leq 1/(\mathfrak a-1)$ is witnessed by maps
+\[
+  \phi_p:\Gamma\to S(\ell^{2p}(\mathbb N))
+\]
+with the variation and separation estimates of Definition 1.3 in the source paper, then the restricted maps $\phi_p|_\Lambda$ satisfy the same estimates for the restricted metric. Since the source paper states that the definition is independent of the chosen left-invariant proper metric, $\Lambda$ has the same finite upper bound on complexity rate.
+\end{proof}
+
+\begin{theorem}[Direct-union reduction]\label{thm:reduction}
+Let $\Gamma$ be a countable discrete group. Then $\Gamma$ is a directed union of groups with finite complexity rates if and only if every finitely generated subgroup of $\Gamma$ has finite complexity rate.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $\Gamma=\bigcup_{i\in I}\Gamma_i$, where $I$ is directed and each $\Gamma_i$ has finite complexity rate. Let $H\leq \Gamma$ be finitely generated, say by $F=\{h_1,\ldots,h_n\}$. Each $h_k$ lies in some $\Gamma_{i_k}$. Since $I$ is directed, there is $j\in I$ with $i_k\leq j$ for all $k$, hence $F\subseteq \Gamma_j$. Therefore $H\leq \Gamma_j$. By Lemma~\ref{lem:heredity}, $H$ has finite complexity rate.
+
+Conversely, assume every finitely generated subgroup of $\Gamma$ has finite complexity rate. Let $I$ be the set of finitely generated subgroups of $\Gamma$, ordered by inclusion. This is directed because two finitely generated subgroups $H_1,H_2$ are both contained in the finitely generated subgroup $\langle H_1\cup H_2\rangle$. Since every element of $\Gamma$ generates a cyclic, hence finitely generated, subgroup, the union of the directed system $I$ is all of $\Gamma$. Thus $\Gamma$ is the injective inductive limit of groups with finite complexity rates.
+\end{proof}
+
+\begin{corollary}
+Under the injective/direct-union reading, an affirmative answer to the source question for all countable groups is equivalent to proving that every finitely generated group has finite complexity rate.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:reduction}. If all countable groups have such a directed-union representation, then a finitely generated group $\Gamma$ must itself have finite complexity rate, because its finite generating set is contained in one stage of the directed union. The converse follows because every countable group is the directed union of its finitely generated subgroups.
+\end{proof}
+
+\section*{A Naive Non-injective Shortcut Does Not Work}
+
+One tempting approach is to interpret ``inductive limit'' in the category of groups with arbitrary bonding homomorphisms and try to write every countable group as a filtered colimit of finitely generated free groups. This cannot be correct.
+
+\begin{lemma}
+A filtered colimit of torsion-free groups is torsion-free.
+\end{lemma}
+
+\begin{proof}
+Let $G=\varinjlim G_i$ with every $G_i$ torsion-free. Suppose $x\in G$ and $x^n=1$. Represent $x$ by some $g_i\in G_i$. The equality $x^n=1$ in the filtered colimit means that for some $j\geq i$, the image of $g_i^n$ in $G_j$ is the identity. Equivalently, the image of $g_i$ in $G_j$ has $n$th power equal to the identity. Since $G_j$ is torsion-free, that image is the identity, so $x=1$ in the colimit.
+\end{proof}
+
+Thus even the finite cyclic group $C_2$ is not a filtered colimit of free groups. Any non-injective interpretation of the source question would require a genuinely broader class of finite-complexity-rate approximants; the free-group approximation shortcut is unavailable.
+
+\section*{Verification and Limitations}
+
+The proof is purely formal once two standard facts are fixed: finite complexity rate is inherited by subgroups, and a countable group is the directed union of its finitely generated subgroups. No numerical computation is used.
+
+This packet is not a full solution of the source question. It proves that the injective/direct-union version is exactly the finitely generated case in disguise. It also records why the most obvious non-injective free-group direct-limit shortcut fails. A full answer would still need either to prove finite complexity rate for all finitely generated groups, find a finitely generated counterexample, or identify another intended non-injective class of approximants.
+
+Novelty check performed on 2026-06-16: web searches for \texttt{2605.12930 finite complexity rates}, \texttt{Embedding complexity into Banach spaces inductive limit}, and \texttt{finite complexity rates inductive limit countable discrete group} found no later answer to the exact question beyond the source paper.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{TY2026}
+Geng Tian and Guoliang Yu.
+\newblock \emph{Embedding complexity into Banach spaces and the strong Novikov conjecture}.
+\newblock arXiv:2605.12930, 2026.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,687 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newcommand{\BL}{\mathcal{BL}}
+\newcommand{\C}{\mathcal C}
+\newcommand{\U}{\mathcal U}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\Id}{\operatorname{Id}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{The real Hilbert endpoint in Raynaud's\\
+$\mathcal{BL}_1L_q$ axiomatizability problem}
+\author{Proof draft for independent verification}
+\date{June 18, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Raynaud asked whether the Banach-space reduct of the mixed-norm Banach-lattice
+class $\BL_1L_q$ is axiomatizable for $1<q\leq2$.  This note proves the
+remaining real Hilbert endpoint $q=2$.
+
+The main new device is a canonical radial truncation operation $\beta$ on
+$L_1$-direct integrals of real Hilbert spaces.  Although the lattice
+structure is not determined by the Banach norm at $q=2$, the operation
+$\beta$ is: it admits an intrinsic description using the Boolean algebra of
+$L$-projections and is therefore preserved by every surjective linear
+isometry.  It also commutes with ultraproducts.  A Keisler--Shelah common-ultrapower/equalizer argument then reduces
+ultraroot closure to a geometric statement about closed
+$\beta$-invariant subspaces.  Such a subspace is shown to be an
+$\ell_1$-sum of Hilbert-valued $L_1$-spaces by extracting a scalar
+sub-$\sigma$-algebra and applying Raynaud's module representation lemma.
+Consequently the real Banach-space class underlying $\BL_1L_2$ is closed
+under ultraproducts and ultraroots, hence is axiomatizable.
+
+A targeted literature search through June 18, 2026 did not locate this
+endpoint argument in print.  The note is therefore presented as a complete
+proof draft for independent expert verification before citation as an
+established result.
+\end{abstract}
+
+\section*{Packet status}
+
+This packet is a candidate full solution of the real endpoint \(q=2\) of
+Raynaud's Question~6.17.  It should be read as a proof draft for independent
+expert verification, not as a human-verified result.  The active claim is
+positive: the Banach-space reduct of \(\BL_1L_2\) is axiomatizable.
+
+An older packet in this run attempted a negative result for
+fiber-dimension-restricted variants using a stable-variable ultrapower route.
+That older route is not used here and is stored only as history: mutual finite
+representability gives ultrapower embeddings, not the surjective ultrapower
+identification that the old argument needed.
+
+\clearpage
+\noindent\textbf{Source problem statement.}
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/question_6_17_crop.png}
+\end{center}
+
+\section{Statement of the result}
+
+For $1\leq p,q<\infty$, let $\BL_pL_q$ denote the class of Banach lattices
+lattice-isometric to bands in mixed-norm lattices $L_p(\Omega;L_q(S))$.
+If $\mathcal A$ is a class of Banach lattices, write $\mathcal A^B$ for the
+class of their underlying Banach spaces, up to surjective linear isometry.
+Raynaud proved many Banach-space axiomatizability results for these classes
+and left the following range open \cite[Question~6.17]{Raynaud2018}:
+\[
+       (\BL_1L_q)^B,\qquad 1<q\leq2.
+\]
+The purpose of this note is to settle the real endpoint.
+
+\begin{theorem}[Main theorem]
+\label{thm:main}
+The class of real Banach spaces linearly isometric to members of
+$\BL_1L_2$ is axiomatizable in the language of real Banach spaces.
+Equivalently,
+\[
+             \boxed{(\BL_1L_2)^B\text{ is closed under ultraroots}.}
+\]
+\end{theorem}
+
+Closure under ultraproducts was already known from the Banach-lattice theory
+of $\BL_pL_q$ \cite{HensonRaynaud2007,Raynaud2018}.  Thus only ultraroot
+closure needs proof.
+
+The argument does not reconstruct the coordinate lattice in a Hilbert
+fibre.  That would be impossible: arbitrary orthogonal operators preserve
+the norm and need not preserve lattice disjointness.  Instead, it recovers a
+weaker radial operation which is exactly strong enough to recognize the
+underlying Banach-space class.
+
+\section{The endpoint class and random norms}
+
+Let $H$ be a real Hilbert space and let $(\Omega,\Sigma,\mu)$ be a localizable
+measure space.  For $x\in L_1(\Omega;H)$ write
+\[
+             N(x)(\omega)=\|x(\omega)\|_H
+\]
+for its random norm.  We use the same notation in bands and direct
+integrals.
+
+Define $\C_1^{\R}$ to be the class of real Banach spaces isometric to spaces
+of the form
+\begin{equation}
+\label{eq:C1}
+       \left(\bigoplus_{\gamma\in\Gamma}
+       L_1(\Omega_\gamma,\mu_\gamma;H_\gamma)\right)_1,
+\end{equation}
+where the $H_\gamma$ are real Hilbert spaces and the bases are localizable.
+
+\begin{proposition}
+\label{prop:C1=BL}
+One has
+\[
+                   \C_1^{\R}=(\BL_1L_2)^B.
+\]
+Moreover every member of $\C_1^{\R}$ can be represented as a band, hence as
+a closed $L_\infty(\Sigma)$-submodule, of some $L_1(\Omega;H)$ with a fixed
+real Hilbert space $H$.
+\end{proposition}
+
+\begin{proof}
+Using the standard localizable realization of the base, a band in
+$L_1(\Omega;L_2(S))$ is a closed $L_\infty(\Sigma)$-submodule of
+$L_1(\Omega;H)$, where $H=L_2(S)$, and its random norms are
+$\Sigma$-measurable.  Raynaud's module representation lemma
+\cite[Lemma~4.4]{Raynaud2004} (with $p=1$ and $\mathcal F=\Sigma$) gives a
+random-norm-preserving isometry onto an $\ell_1$-sum of spaces
+$L_1(\Omega_\gamma;H_\gamma)$.
+
+Conversely, choose an orthonormal basis in every $H_\gamma$, identify it
+with a coordinate band of one sufficiently large Hilbert lattice
+$\ell_2(I)$, and take the disjoint union of the base spaces.  The space in
+\eqref{eq:C1} is then a band in $L_1(\Omega;\ell_2(I))$.
+\end{proof}
+
+We shall also use the mixed-norm ultraproduct theorem of L\'evy--Raynaud and
+Henson--Raynaud \cite{LevyRaynaud1984,HensonRaynaud2007,HensonRaynaud2011}.
+In the form needed here it says the following.
+
+\begin{proposition}[Random norms in ultraproducts]
+\label{prop:random-ultra}
+Let $(Z_i)_{i\in I}$ be members of $\C_1^{\R}$, each equipped with one of its
+$\BL_1L_2$ lattice representations and random norm $N_i$.  For an
+ultrafilter $\U$ on $I$, the Banach ultraproduct
+$Z=\prod_{i,\U}Z_i$ admits a $\BL_1L_2$ representation with random norm $N$
+satisfying
+\[
+             N([x_i]_{\U})=[N_i(x_i)]_{\U}.
+\]
+In particular, $\C_1^{\R}$ is closed under Banach ultraproducts.
+\end{proposition}
+
+\section{A canonical radial operation}
+
+For a direct-integral representation $Z=L_1(\Omega;H_\omega)$, define
+\begin{equation}
+\label{eq:beta-def}
+ \beta_Z(x,y)(\omega)=
+ \begin{cases}
+ \displaystyle
+ \frac{\min\{N(x)(\omega),N(y)(\omega)\}}{N(y)(\omega)}\,y(\omega),
+      &N(y)(\omega)>0,\\[1.2ex]
+ 0,   &N(y)(\omega)=0.
+ \end{cases}
+\end{equation}
+Thus $\beta_Z(x,y)(\omega)$ is the radial projection of $y(\omega)$ onto the
+Hilbert ball of radius $N(x)(\omega)$.  We next prove that this operation is
+intrinsic to the Banach norm.
+
+Recall that an \emph{$L$-projection} on a Banach space $Z$ is a bounded
+projection $P$ such that
+\[
+          \|z\|=\|Pz\|+\|(I-P)z\|\qquad(z\in Z).
+\]
+
+\begin{lemma}[The base is intrinsic]
+\label{lem:L-projections}
+Let $Z=L_1(\Omega;H_\omega)$ be an $L_1$-direct integral of nonzero real
+Hilbert spaces.  Its $L$-projections are exactly the base multipliers
+\[
+                     P_Az=\1_Az\qquad(A\in\Sigma),
+\]
+modulo null sets.
+\end{lemma}
+
+\begin{proof}
+Every $P_A$ is plainly an $L$-projection.  Conversely, let $P$ be an
+$L$-projection, $R=\Ran P$, and $K=\ker P$.  For $r\in R$ and $k\in K$,
+\[
+ \|r+k\|=\|r\|+\|k\|,
+ \qquad
+ \|r-k\|=\|r\|+\|k\|.
+\]
+Both pointwise triangle defects are nonnegative and have integral zero.
+Hence both triangle equalities hold almost everywhere in every Hilbert
+fibre.  Simultaneous equality for $r(\omega)+k(\omega)$ and
+$r(\omega)-k(\omega)$ forces $r(\omega)=0$ or $k(\omega)=0$.
+
+In the complete measure algebra, let $A$ be the supremum of the supports of
+all elements of $R$.  Every element of $R$ is supported in $A$, and the
+preceding base-disjointness forces every element of $K$ to be supported in
+$A^c$.  If $z=Pz+(I-P)z$, it follows that $Pz=\1_Az$.
+\end{proof}
+
+For $L$-projections $Q,P$, write $Q\leq P$ when $\Ran Q\subseteq\Ran P$.
+For $x,y\in Z$ and an $L$-projection $P$, put
+\begin{equation}
+\label{eq:meet-functional}
+ m_{x,y}(P)=
+ \inf_{Q\leq P}\bigl(\|Qx\|+\|(P-Q)y\|\bigr).
+\end{equation}
+By Lemma~\ref{lem:L-projections}, if $P=P_A$, then
+\begin{equation}
+\label{eq:meet-density}
+       m_{x,y}(P_A)=\int_A\min\{N(x),N(y)\}\,d\mu.
+\end{equation}
+Indeed one minimizes pointwise by taking
+$Q=P_{A\cap\{N(x)\leq N(y)\}}$.
+
+\begin{lemma}[Intrinsic characterization]
+\label{lem:beta-intrinsic}
+For $x,y\in Z$, the vector $z=\beta_Z(x,y)$ is the unique vector satisfying
+\begin{align}
+ \|Pz\|&=m_{x,y}(P)
+          &&\text{for every $L$-projection $P$,}
+ \label{eq:char1}\\
+ \|y\|&=\|z\|+\|y-z\|.
+ \label{eq:char2}
+\end{align}
+Consequently every surjective linear isometry $T:Z\to Z'$ between members
+of $\C_1^{\R}$ satisfies
+\[
+                  T\beta_Z(x,y)=\beta_{Z'}(Tx,Ty).
+\]
+In particular, $\beta_Z$ is independent of the chosen direct-integral or
+band representation of $Z$.
+\end{lemma}
+
+\begin{proof}
+Formula \eqref{eq:beta-def} gives
+$N(z)=\min\{N(x),N(y)\}$, so \eqref{eq:char1} follows from
+\eqref{eq:meet-density}.  Also $z(\omega)$ is a scalar multiple of
+$y(\omega)$ with coefficient in $[0,1]$, and hence \eqref{eq:char2} holds.
+
+Conversely, \eqref{eq:char1} and \eqref{eq:meet-density}, applied to every
+base set, imply
+\[
+                       N(z)=\min\{N(x),N(y)\}
+                       \quad\text{a.e.}
+\]
+The pointwise inequality
+$N(y)\leq N(z)+N(y-z)$ has equal integrals by \eqref{eq:char2}; it is
+therefore an equality almost everywhere.  Equality in the triangle
+inequality of a strictly convex Hilbert space implies
+$z(\omega)=t(\omega)y(\omega)$ with $0\leq t(\omega)\leq1$.  The random-norm
+identity forces
+\[
+       t(\omega)=\frac{\min\{N(x)(\omega),N(y)(\omega)\}}{N(y)(\omega)}
+\]
+on $\{N(y)>0\}$, proving uniqueness.
+
+A surjective isometry conjugates the Boolean algebras of $L$-projections,
+preserves their order, and preserves every norm occurring in
+\eqref{eq:meet-functional}--\eqref{eq:char2}.  It therefore sends the unique
+solution for $(x,y)$ to the unique solution for $(Tx,Ty)$.
+\end{proof}
+
+\begin{lemma}[Uniform continuity]
+\label{lem:beta-Lipschitz}
+For every $Z\in\C_1^{\R}$,
+\[
+ \|\beta_Z(x,y)-\beta_Z(x',y')\|
+       \leq \|x-x'\|+\|y-y'\|.
+\]
+\end{lemma}
+
+\begin{proof}
+For a Hilbert space, let $Q_r$ be the metric projection onto the closed ball
+of radius $r$.  Metric projections onto closed convex sets are
+nonexpansive, and directly
+$\|Q_rv-Q_sv\|\leq|r-s|$.  Hence pointwise
+\[
+ \|Q_{\|u\|}v-Q_{\|u'\|}v'\|
+ \leq \|u-u'\|+\|v-v'\|.
+\]
+Integrating gives the assertion.
+\end{proof}
+
+\begin{lemma}[Ultraproduct compatibility]
+\label{lem:beta-ultra}
+If $Z=\prod_{i,\U}Z_i$ is a Banach ultraproduct of members of
+$\C_1^{\R}$, then
+\[
+ \beta_Z([x_i]_{\U},[y_i]_{\U})
+       =[\beta_{Z_i}(x_i,y_i)]_{\U}.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose $\BL_1L_2$ lattice representations and use
+Proposition~\ref{prop:random-ultra}.  Put
+$x=[x_i]_{\U}$, $y=[y_i]_{\U}$, and
+$z=[\beta_{Z_i}(x_i,y_i)]_{\U}$.  The coordinate identities give
+\begin{align*}
+ N(z)&=N(x)\wedge N(y),\\
+ N(y)&=N(z)+N(y-z).
+\end{align*}
+In the resulting $L_1(L_2)$ representation, the second equality says that
+$z$ and $y-z$ have equality in the Hilbert triangle inequality in almost
+every fibre.  Thus $z=t y$ for a scalar $0\leq t\leq1$, and the first
+equality identifies $t$ with the radial coefficient in
+\eqref{eq:beta-def}.  Therefore $z=\beta_Z(x,y)$.  Representation
+independence follows from Lemma~\ref{lem:beta-intrinsic}.
+\end{proof}
+
+\section{A common-ultrapower/equalizer transfer lemma}
+
+We isolate the model-theoretic mechanism.  No new operation is added to the
+Banach-space language; the operation below is used only as an external
+canonical invariant.
+
+\begin{theorem}[Canonical-operation transfer]
+\label{thm:transfer}
+Let $\C$ be an isometry-invariant class of Banach spaces closed under
+ultraproducts.  Suppose that every $Z\in\C$ carries a binary operation
+$\beta_Z$ such that:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item the operations are uniformly continuous with a common modulus;
+\item every surjective linear isometry between members of $\C$ preserves
+      $\beta$;
+\item $\beta$ commutes with Banach ultraproducts and diagonal embeddings;
+\item every closed linear subspace $E\subseteq Z\in\C$ satisfying
+      $\beta_Z(E,E)\subseteq E$ belongs to $\C$.
+\end{enumerate}
+Then $\C$ is closed under ultraroots.
+\end{theorem}
+
+\begin{proof}
+Suppose that $X^{\U}$ is linearly isometric to a member of $\C$.  Transport
+that structure and write
+\[
+                         Z=X^{\U}\in\C.
+\]
+Let $i=D_X:X\to Z$ be the diagonal embedding and put
+\[
+ e_0=D_Z:Z\longrightarrow Z^{\U},
+ \qquad
+ e_1=S:=i^{\U}:Z=X^{\U}\longrightarrow Z^{\U}.
+\]
+Both $e_0$ and $e_1$ are elementary embeddings in the pure Banach-space
+language.
+
+Expand that language by a constant symbol $c_z$ for every $z\in Z$, and
+consider the two expanded structures
+\[
+ \mathfrak A=(Z^{\U},(e_0z)_{z\in Z}),
+ \qquad
+ \mathfrak B=(Z^{\U},(e_1z)_{z\in Z}).
+\]
+They are elementarily equivalent: the value of any formula involving
+finitely many named elements is pulled back by either elementary embedding
+to the same value in $Z$.  By the metric Keisler--Shelah theorem
+\cite[Theorem~5.7]{BBHU2008}, there are an ultrafilter $\mathcal V$ and an
+isomorphism
+\[
+       T:\mathfrak A^{\mathcal V}
+          \longrightarrow \mathfrak B^{\mathcal V}.
+\]
+Write
+\[
+ M=(Z^{\U})^{\mathcal V},
+ \qquad
+ j=D_{Z^{\U}}^{\mathcal V}:Z^{\U}\longrightarrow M.
+\]
+The underlying space $M$ belongs to $\C$, and $T:M\to M$ is a surjective
+linear isometry.  It therefore preserves $\beta$.  Moreover, because the
+constants are part of the expanded language,
+\[
+                         Tje_0z=je_1z
+                         \qquad(z\in Z).
+\]
+Using this identity, preservation of $\beta$ by $T$, and compatibility with
+diagonal embeddings, we obtain for $a,b\in Z$
+\begin{align*}
+ je_1\beta_Z(a,b)
+   &=Tje_0\beta_Z(a,b)\\
+   &=T\beta_M(je_0a,je_0b)\\
+   &=\beta_M(Tje_0a,Tje_0b)\\
+   &=\beta_M(je_1a,je_1b)\\
+   &=j\beta_{Z^{\U}}(e_1a,e_1b).
+\end{align*}
+Since $j$ is injective,
+\begin{equation}
+\label{eq:Sbeta}
+       S\beta_Z(a,b)=\beta_{Z^{\U}}(Sa,Sb)
+       \qquad(a,b\in Z).
+\end{equation}
+
+The diagonal copy of $X$ in $Z$ is the equalizer
+\begin{equation}
+\label{eq:equalizer}
+       i(X)=\{z\in Z:D_Zz=Sz\}.
+\end{equation}
+Indeed, for $z=[x_k]_{\U}$ the equality $D_Zz=Sz$ is exactly
+\[
+       \lim_{k,\U}\|z-i(x_k)\|=0.
+\]
+Thus the distance from $z$ to the closed range $i(X)$ is zero, so
+$z\in i(X)$; the converse is immediate.
+
+Equations \eqref{eq:Sbeta} and \eqref{eq:equalizer}, together with the fact
+that $D_Z$ preserves $\beta$, show that $i(X)$ is $\beta_Z$-closed.  By (d),
+$i(X)\in\C$, and hence $X\in\C$.
+\end{proof}
+
+\begin{remark}
+The common-ultrapower step is the only model-theoretic ingredient beyond
+{\L}o\'s theorem.  It avoids any need to choose a specially saturated or
+homogeneous ultrapower inside the class $\C$.
+\end{remark}
+
+\section{Radially closed subspaces}
+
+This section proves condition (d) of Theorem~\ref{thm:transfer} for
+$\C_1^{\R}$.
+
+\begin{theorem}[Radial-closure representation]
+\label{thm:radial-closed}
+Let $Z\in\C_1^{\R}$ and let $E\subseteq Z$ be a closed real linear subspace.
+If
+\[
+                       \beta_Z(E,E)\subseteq E,
+\]
+then $E\in\C_1^{\R}$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:C1=BL}, represent $Z$ as a band in
+$L_1(\Omega,\Sigma,\mu;H)$ for a fixed real Hilbert space $H$.  The radial
+operation agrees with the ambient one.
+
+\medskip
+\noindent\textbf{Step 1: support decomposition.}\par
+Call $x,y$ \emph{base-disjoint} when $N(x)N(y)=0$ almost everywhere.  Choose
+a maximal pairwise base-disjoint family $(e_\alpha)_{\alpha\in A}$ of
+nonzero elements of $E$, and put
+$S_\alpha=\supp N(e_\alpha)$.  If $x\in E$, then
+\[
+       \beta_Z(me_\alpha,x)\longrightarrow \1_{S_\alpha}x
+       \qquad(m\to\infty)
+\]
+in $L_1$, by dominated convergence.  Hence every restriction
+$\1_{S_\alpha}x$ belongs to $E$.
+
+For a fixed $x$, the set
+\[
+ A_x=\{\alpha:\|\1_{S_\alpha}x\|>0\}
+\]
+is countable, and the corresponding disjoint sum converges in norm.  If
+$S=\bigvee_\alpha S_\alpha$ in the complete measure algebra, then for
+$\alpha\notin A_x$ one has
+$S_\alpha\wedge\supp N(x)=0$.  Since finite meets distribute over arbitrary
+joins in a complete Boolean algebra,
+$N(x)=0$ on $S\setminus\bigvee_{\alpha\in A_x}S_\alpha$.  Hence
+\[
+              \1_Sx=\sum_{\alpha\in A_x}\1_{S_\alpha}x\in E.
+\]
+The residual part $\1_{S^c}x$ belongs to $E$ and, if nonzero, would be
+base-disjoint from every $e_\alpha$, contradicting maximality.  Therefore
+\begin{equation}
+\label{eq:E-decomp}
+       E=\left(\bigoplus_{\alpha\in A}E_\alpha\right)_1,
+       \qquad E_\alpha=\1_{S_\alpha}E.
+\end{equation}
+It is enough to treat one summand.  We may thus assume that $E$ contains an
+element $e$ with
+\[
+       h=N(e)>0\quad\text{almost everywhere on the common support of }E.
+\]
+
+\medskip
+\noindent\textbf{Step 2: normalization.}
+Restrict to that support and set $d\nu=h\,d\mu$.  Notice that
+$\nu(\Omega)=\|e\|<\infty$.  Define
+\[
+        T:E\longrightarrow L_1(\Omega,\Sigma,\nu;H),
+        \qquad Tx=h^{-1}x.
+\]
+This is a linear isometry and it intertwines radial truncation.  Put
+$Y=T(E)$ and $u=T(e)$.  Then $N(u)=1$ almost everywhere and
+$\beta(Y,Y)\subseteq Y$.
+
+\medskip
+\noindent\textbf{Step 3: extraction of a scalar sub-$\sigma$-algebra.}
+Define
+\[
+       A_0=\{f\in L_1(\Omega,\Sigma,\nu):fu\in Y\}.
+\]
+The map $f\mapsto fu$ is an isometry, so $A_0$ is a closed real linear
+subspace of scalar $L_1$ and $1\in A_0$.  For $f\in A_0$,
+\[
+       \beta(fu,mu)=\min\{|f|,m\}u\longrightarrow |f|u.
+\]
+Thus $A_0$ is closed under modulus and hence is a closed vector sublattice.
+For $y\in Y$,
+\[
+       \beta(y,mu)=\min\{N(y),m\}u\longrightarrow N(y)u,
+\]
+so
+\begin{equation}
+\label{eq:Ny-in-A}
+                       N(y)\in A_0\qquad(y\in Y).
+\end{equation}
+
+Let
+\[
+       \mathcal F=\{B\in\Sigma:\1_B\in A_0\},
+\]
+modulo null sets.  Because $A_0$ is a closed sublattice containing $1$,
+$\mathcal F$ is a $\sigma$-algebra: complements and finite intersections
+follow from the lattice operations, and countable unions follow by monotone
+$L_1$ convergence.  If $f\in A_0$ and $t\in\mathbb Q$, then
+\[
+       1\wedge n(f-t)^+\longrightarrow \1_{\{f>t\}}
+       \quad\text{in }L_1,
+\]
+so $f$ is $\mathcal F$-measurable.  Conversely, $\mathcal F$-simple
+functions belong to $A_0$ and are dense in $L_1(\mathcal F)$.  Hence
+\begin{equation}
+\label{eq:A=L1F}
+                       A_0=L_1(\Omega,\mathcal F,\nu).
+\end{equation}
+
+\medskip
+\noindent\textbf{Step 4: module structure.}
+If $B\in\mathcal F$, then $\1_Bu\in Y$, and for every $y\in Y$,
+\[
+       \beta(m\1_Bu,y)\longrightarrow \1_By
+       \qquad(m\to\infty).
+\]
+Therefore $Y$ is closed under multiplication by indicators in $\mathcal F$,
+and then, by uniform approximation, under all multipliers in
+$L_\infty(\mathcal F)$.  By \eqref{eq:Ny-in-A} and
+\eqref{eq:A=L1F}, every random norm $N(y)$ is $\mathcal F$-measurable.
+
+After completing both $(\Omega,\Sigma,\nu)$ and
+$(\Omega,\mathcal F,\nu)$, they are finite and therefore localizable.
+Raynaud's module representation lemma
+\cite[Lemma~4.4]{Raynaud2004} now applies and gives pairwise almost disjoint
+sets $(\Omega_j)_{j\in J}$ in $\mathcal F$, real Hilbert spaces $H_j$, and a
+random-norm-preserving linear isometry
+\[
+       Y\cong
+       \left(\bigoplus_{j\in J}
+       L_1(\Omega_j,\mathcal F|_{\Omega_j},\nu|_{\Omega_j};H_j)
+       \right)_1.
+\]
+Thus the normalized component belongs to $\C_1^{\R}$.  Undoing $T$ and
+using the $\ell_1$-decomposition \eqref{eq:E-decomp} proves
+$E\in\C_1^{\R}$.
+\end{proof}
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+By Proposition~\ref{prop:C1=BL}, it is enough to prove that
+$\C_1^{\R}$ is axiomatizable.  This class is invariant under surjective
+linear isometries and is closed under ultraproducts by
+Proposition~\ref{prop:random-ultra}.  Lemmas
+\ref{lem:beta-intrinsic}, \ref{lem:beta-Lipschitz}, and
+\ref{lem:beta-ultra} show that its radial operation is canonical, uniformly
+continuous, and compatible with ultraproducts.  Theorem
+\ref{thm:radial-closed} says that every closed radial-invariant subspace of a
+member is again in the class.  The canonical-operation transfer theorem
+therefore implies closure under ultraroots.
+
+A class of Banach structures is axiomatizable exactly when it is closed under
+isometries, ultraproducts, and ultraroots
+\cite[Proposition~5.14]{BBHU2008}.  Hence $(\BL_1L_2)^B$ is axiomatizable.
+\end{proof}
+
+\begin{corollary}
+Raynaud's Question~6.17 has a positive answer at the real endpoint $q=2$.
+\end{corollary}
+
+
+\section{Why the stable-variable counterargument does not apply}
+
+A proposed negative argument uses the isometric stable-variable embedding
+$\ell_q^n\hookrightarrow L_1$ for $1<q\leq2$ and concludes that
+$L_1$ and $L_1(\ell_q^n)$ have isometric ultrapowers.  The first step is
+correct, but the conclusion is not.  Heinrich's theorem characterizes finite
+representability by an isometric \emph{embedding} into an ultrapower
+\cite{Heinrich1980}; mutual finite representability yields embeddings in both
+directions, not a surjective isometry between ultrapowers.  Hence that
+argument does not contradict Theorem~\ref{thm:main}.
+
+\section*{Verification notes}
+
+The proof has three external inputs:
+\begin{enumerate}[leftmargin=2.2em]
+\item the mixed-norm random-norm representation of ultraproducts
+      (Proposition~\ref{prop:random-ultra});
+\item the metric Keisler--Shelah theorem for the two constant expansions
+      in the proof of Theorem~\ref{thm:transfer};
+\item Raynaud's module representation lemma
+      \cite[Lemma~4.4]{Raynaud2004}, used with $p=1$.
+\end{enumerate}
+All other ingredients, including the intrinsic characterization of $\beta$,
+the equalizer argument, and the extraction of $\mathcal F$, are proved in
+the note.  Since the endpoint conclusion appears to be new, these three interfaces---and
+in particular the passage from the intrinsic radial operation to the
+common-ultrapower equalizer---are the natural points for independent expert
+verification.
+
+\begin{thebibliography}{99}
+
+\bibitem{BBHU2008}
+I.~Ben Yaacov, A.~Berenstein, C.~W.~Henson, and A.~Usvyatsov,
+\emph{Model theory for metric structures},
+in Model Theory with Applications to Algebra and Analysis, Vol.~2,
+London Math. Soc. Lecture Note Ser. 350, Cambridge Univ. Press, 2008,
+315--427.
+
+\bibitem{Heinrich1980}
+S.~Heinrich,
+\emph{Ultraproducts in Banach space theory},
+J. Reine Angew. Math. \textbf{313} (1980), 72--104.
+
+
+\bibitem{HensonRaynaud2007}
+C.~W.~Henson and Y.~Raynaud,
+\emph{On the theory of $L_p(L_q)$-Banach lattices},
+Positivity \textbf{11} (2007), 201--230.
+
+
+\bibitem{HensonRaynaud2011}
+C.~W.~Henson and Y.~Raynaud,
+\emph{Quantifier elimination in the theory of $L_p(L_q)$-Banach lattices},
+J. Log. Anal. \textbf{3} (2011), Paper 11, 1--29.
+
+\bibitem{LevyRaynaud1984}
+M.~L\'evy and Y.~Raynaud,
+\emph{Ultrapuissances des espaces $L^p(L^q)$},
+C. R. Acad. Sci. Paris S\'er. I Math. \textbf{299} (1984), 81--84;
+see also S\'eminaire d'analyse fonctionnelle 1983/84, 69--79.
+
+\bibitem{Raynaud2004}
+Y.~Raynaud,
+\emph{The range of a contractive projection in $L_p(H)$},
+Rev. Mat. Complut. \textbf{17} (2004), no.~2, 485--512.
+
+\bibitem{Raynaud2018}
+Y.~Raynaud,
+\emph{New axiomatizable classes of Banach spaces via
+disjointness-preserving isometries},
+Positivity \textbf{22} (2018), 301--339.
+
+\end{thebibliography}
+
+\end{document}

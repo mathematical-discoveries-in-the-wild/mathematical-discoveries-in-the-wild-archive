@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newcommand{\PP}{\mathcal P}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Rat}{\mathbb Q}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\closedSpan}{\overline{\operatorname{span}}}
+\newcommand{\K}{\mathcal K}
+
+\begin{document}
+
+\begin{center}
+{\Large A \(\boldsymbol{\Sigma}^0_2\) reduction from \(\mathcal P_\infty\) to admissible \(SB(X)\)}
+
+\medskip
+{\small Run \texttt{fa\_banach\_001}; source arXiv:1912.03994}
+\end{center}
+
+\section*{Status}
+
+\textbf{candidate full solution to Question 2 of arXiv:1912.03994.}
+
+Cuth--Dolezal--Doucha--Kurka ask whether, for every isometrically universal
+separable Banach space \(X\) and every admissible topology \(\tau\) on
+\(SB(X)\), there is a \(\boldsymbol{\Sigma}^0_2\)-measurable map
+\[
+\Phi:\PP_\infty\to (SB(X),\tau)
+\]
+such that \(X_\mu\) is linearly isometric to \(\Phi(\mu)\) for every
+\(\mu\in\PP_\infty\). This packet proves that the answer is yes.
+
+The argument does \emph{not} answer Question 1, which asks for a continuous
+map \(\PP_\infty\to\BB\). Instead it proves the sufficient condition for
+Question 2 highlighted in the source paper, using the continuous dual-ball
+coding from the later paper arXiv:2204.06834.
+
+\section*{Source Questions}
+
+The source questions appear on pages 20--21 of arXiv:1912.03994.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop_page20.png}
+
+\medskip
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop_page21.png}
+\end{center}
+
+Question 1 asks for a continuous reduction \(\PP_\infty\to\BB\). Question 2
+asks for the corresponding \(\boldsymbol{\Sigma}^0_2\)-measurable reduction
+from \(\PP_\infty\) to \(SB(X)\) with an admissible topology.
+
+\section*{Idea of the Proof}
+
+The source paper proves that Question 2 would follow if every pseudonorm code
+could be realized by continuous vectors \(\chi_k(\mu)\) in one separable
+Banach space:
+\[
+\left\|\sum_{k=1}^n a_k\chi_k(\mu)\right\|
+  =\mu\left(\sum_{k=1}^n a_ke_k\right).
+\]
+The authors prove this for actual norms after normalizing all coordinates, but
+state that they do not know it for pseudonorms.
+
+The missing ingredient is to work on the dual side. The sequel
+arXiv:2204.06834 constructs, continuously in \(\mu\), the weak-star compact
+dual unit ball \(\Omega(\mu)\) as a compact convex subset of the Hilbert cube.
+For compact convex subsets of a Hilbert space, projecting a fixed dense
+sequence onto the moving compact convex set gives continuous dense selections.
+Evaluating the corresponding dense sequence of dual functionals on the
+coordinates produces the desired vectors \(\chi_k(\mu)\) in a separable
+subspace of \(\ell_\infty\).
+
+\section*{A projection parametrization lemma}
+
+Let \(Q=\prod_{m=1}^\infty[-1,1]\), and embed \(Q\) linearly and
+homeomorphically into the Hilbert space \(\ell_2\) by
+\[
+J((a_m)_{m=1}^\infty)=(2^{-m}a_m)_{m=1}^\infty.
+\]
+Write \(Q_H=J(Q)\).
+
+\begin{lemma}
+\label{lem:projection-selectors}
+There are continuous maps
+\[
+p_r:\K_c(Q_H)\to Q_H,\qquad r\in\Nat,
+\]
+where \(\K_c(Q_H)\) denotes the hyperspace of nonempty compact convex subsets
+of \(Q_H\), such that \(\{p_r(F):r\in\Nat\}\) is dense in \(F\) for every
+\(F\in\K_c(Q_H)\).
+\end{lemma}
+
+\begin{proof}
+Fix a countable dense set \((d_r)\) in \(Q_H\). For \(F\in\K_c(Q_H)\), let
+\(p_r(F)\) be the Hilbert-space metric projection of \(d_r\) onto \(F\). This
+projection exists and is unique because \(F\) is nonempty, compact, and convex.
+
+We first check continuity. Suppose \(F_n\to F\) in the Hausdorff metric and
+\(z_n\to z\) in \(Q_H\). Put \(y_n=P_{F_n}(z_n)\). Passing to a subsequence if
+necessary, compactness gives \(y_n\to y\in F\). For every \(x\in F\), choose
+\(x_n\in F_n\) with \(x_n\to x\). Since \(y_n\) is the metric projection,
+\[
+\|z_n-y_n\|\leq \|z_n-x_n\|.
+\]
+Passing to the limit gives \(\|z-y\|\leq \|z-x\|\) for every \(x\in F\).
+Thus \(y=P_F(z)\), by uniqueness of the projection. Hence
+\((F,z)\mapsto P_F(z)\) is continuous on \(\K_c(Q_H)\times Q_H\). In
+particular, each \(p_r\) is continuous.
+
+Finally let \(x\in F\) and \(\varepsilon>0\). Pick \(r\) with
+\(\|d_r-x\|<\varepsilon\). Since \(P_F(d_r)\) is at least as close to \(d_r\)
+as \(x\) is,
+\[
+\|p_r(F)-d_r\|\leq \|x-d_r\|<\varepsilon.
+\]
+Therefore \(\|p_r(F)-x\|<2\varepsilon\), proving density.
+\end{proof}
+
+\section*{Continuous realization of all pseudonorms}
+
+Let \(V\) be the countable rational vector space with basis
+\((e_k)_{k\in\Nat}\). Fix an enumeration \((v_m)_{m\in\Nat}\) of \(V\) such
+that every \(e_k\) occurs, and let \(m(k)\) be an index with \(v_{m(k)}=e_k\).
+Let \(g:[0,\infty)\to[1,\infty)\) be \(g(t)=1\) for \(t\leq 1\) and \(g(t)=t\)
+for \(t>1\).
+
+We use the following result from arXiv:2204.06834, the lemma labelled
+\(\Omega\) in the subsection ``Dual unit balls and the Szlenk derivative.'' For
+\(\mu\in\PP\), define \(x_m^\mu=v_m/g(\mu(v_m))\in B_{X_\mu}\). The set
+\(\Omega(\mu)\subseteq Q\) of all sequences
+\[
+\bigl(x^*(x_m^\mu)\bigr)_{m=1}^\infty,\qquad x^*\in B_{X_\mu^*},
+\]
+is a weak-star compact convex subset of \(Q\), and the map
+\[
+\Omega:\PP\to \K(Q)
+\]
+is continuous. Moreover \(\Omega(\mu)\) is exactly the dual unit ball of
+\(X_\mu\) written in the coordinates \(x_m^\mu\).
+
+\begin{theorem}
+\label{thm:continuous-realization}
+There are a separable Banach space \(U\) and continuous maps
+\[
+\chi_k:\PP\to U,\qquad k\in\Nat,
+\]
+such that for every \(\mu\in\PP\) and every finite scalar family
+\((a_k)_{k=1}^n\),
+\[
+\left\|\sum_{k=1}^n a_k\chi_k(\mu)\right\|_U
+ =
+\mu\left(\sum_{k=1}^n a_ke_k\right).
+\]
+\end{theorem}
+
+\begin{proof}
+For \(\mu\in\PP\), put \(F_\mu=J(\Omega(\mu))\in\K_c(Q_H)\). Let \(p_r\) be
+the maps from Lemma~\ref{lem:projection-selectors}, and put
+\[
+q_r(\mu)=J^{-1}(p_r(F_\mu))\in \Omega(\mu).
+\]
+For each \(k\in\Nat\), define a bounded scalar sequence
+\[
+\chi_k(\mu)
+ =
+\left(g(\mu(e_k))\, q_r(\mu)_{m(k)}\right)_{r=1}^\infty
+\in \ell_\infty.
+\]
+
+The map \(\mu\mapsto\chi_k(\mu)\) is continuous as a map into \(\ell_\infty\).
+Indeed, \(\mu\mapsto F_\mu\) is continuous; the projection map
+\((F,z)\mapsto P_F(z)\) is continuous on the compact space
+\(\K_c(Q_H)\times Q_H\), hence uniformly continuous there; and the fixed
+coordinate \(J^{-1}(\cdot)_{m(k)}\) is continuous on \(Q_H\). The scalar factor
+\(g(\mu(e_k))\) is also continuous.
+
+Let \(U\) be the closed linear span in \(\ell_\infty\) of
+\[
+\bigcup_{k\in\Nat}\chi_k(\PP).
+\]
+Since \(\PP\) is separable and every \(\chi_k\) is continuous into the metric
+space \(\ell_\infty\), each \(\chi_k(\PP)\) is separable. Therefore \(U\) is
+separable.
+
+It remains to compute the norm. Fix \(\mu\in\PP\) and
+\(u=\sum_{k=1}^n a_ke_k\). Since \(\{q_r(\mu):r\in\Nat\}\) is dense in
+\(\Omega(\mu)\),
+\begin{align*}
+\left\|\sum_{k=1}^n a_k\chi_k(\mu)\right\|_{\ell_\infty}
+&=
+\sup_{r\in\Nat}
+\left|
+\sum_{k=1}^n a_k\,g(\mu(e_k))\,q_r(\mu)_{m(k)}
+\right|\\
+&=
+\sup_{b\in\Omega(\mu)}
+\left|
+\sum_{k=1}^n a_k\,g(\mu(e_k))\,b_{m(k)}
+\right|.
+\end{align*}
+If \(b\in\Omega(\mu)\), then \(b_{m(k)}=x^*(e_k/g(\mu(e_k)))\) for some
+\(x^*\in B_{X_\mu^*}\). Hence the last supremum is
+\[
+\sup_{x^*\in B_{X_\mu^*}} |x^*(u)|=\|u\|_{X_\mu}=\mu(u),
+\]
+by the Hahn--Banach theorem. This proves the theorem.
+\end{proof}
+
+\section*{Answer to Question 2}
+
+\begin{corollary}
+\label{cor:q2}
+Let \(X\) be an isometrically universal separable Banach space and let
+\(\tau\) be an admissible topology on \(SB(X)\). There exists a
+\(\boldsymbol{\Sigma}^0_2\)-measurable map
+\[
+\Phi:\PP_\infty\to (SB(X),\tau)
+\]
+such that \(X_\mu\) is linearly isometric to \(\Phi(\mu)\) for every
+\(\mu\in\PP_\infty\).
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:continuous-realization}, choose \(U\) and
+\(\chi_k:\PP\to U\). Since \(X\) is isometrically universal, regard \(U\) as a
+subspace of \(X\). Define
+\[
+\Phi(\mu)=\closedSpan\{\chi_k(\mu):k\in\Nat\}\subseteq X.
+\]
+The norm identity from Theorem~\ref{thm:continuous-realization} says that the
+linear map \(e_k\mapsto\chi_k(\mu)\) extends to an onto linear isometry from
+\(X_\mu\) to \(\Phi(\mu)\).
+
+It remains only to record the descriptive complexity. The source paper,
+Lemma 2.10, proves that whenever the realizing maps \(\chi_k\) are
+\(\boldsymbol{\Sigma}^0_n\)-measurable, the map
+\(\mu\mapsto\closedSpan\{\chi_k(\mu)\}\) into any admissible \(SB(X)\)
+topology is \(\boldsymbol{\Sigma}^0_{n+1}\)-measurable. Here the maps
+\(\chi_k\) are continuous, i.e. \(\boldsymbol{\Sigma}^0_1\)-measurable, so
+\(\Phi\) is \(\boldsymbol{\Sigma}^0_2\)-measurable. Restricting the domain to
+\(\PP_\infty\) gives the desired map.
+\end{proof}
+
+\section*{Verification and limitations}
+
+The proof is non-computational. The key continuity point is the uniform
+continuity of Hilbert-space projection on the compact set
+\(\K_c(Q_H)\times Q_H\); this gives continuity of the coordinate maps into
+\(\ell_\infty\), not merely pointwise continuity of each scalar coordinate.
+
+This answers Question 2 as stated. It does not answer Question 1: the
+construction realizes \(X_\mu\) as a closed subspace of a fixed universal
+Banach space, but it does not produce a continuous norm code
+\(\PP_\infty\to\BB\) with an independent coordinate sequence.
+
+\section*{Novelty check}
+
+Local index searches for arXiv:1912.03994, \(\PP_\infty\), \(\BB\),
+\(\boldsymbol{\Sigma}^0_2\), admissible \(SB(X)\), and the source questions
+found only the prior fixed-representative partial packet for Question 1.
+Web searches on 2026-06-16 for the exact question and author/title phrases
+found arXiv:1912.03994 and the sequel arXiv:2204.06834, but no statement that
+Question 2 had been answered. The present proof uses the continuous
+dual-ball lemma from arXiv:2204.06834 as an input and adds the
+projection-parametrization argument.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{CDDK}
+M. Cuth, M. Dolezal, M. Doucha, and O. Kurka,
+\emph{Polish spaces of Banach spaces},
+arXiv:1912.03994.
+
+\bibitem{CDDK2}
+M. Cuth, M. Dolezal, M. Doucha, and O. Kurka,
+\emph{Polish spaces of Banach spaces. Complexity of isometry and isomorphism classes},
+arXiv:2204.06834.
+
+\end{thebibliography}
+
+\end{document}

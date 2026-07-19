@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathcal C}
+\newcommand{\OmegaX}{\Omega}
+
+\title{Non-Nested Sampling Encoders: A Literal Counterexample and a Repair}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_17}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and question}
+
+The source is Janek Goedeke and Pascal Fernsel,
+\emph{New universal operator approximation theorem for encoder-decoder architectures
+(Preprint)}, arXiv:2503.24092.
+
+After Theorem 3.20, the authors ask whether the conclusion remains true when
+the sampling points are not nested:
+\[
+  \{y_1^{(n)},\ldots,y_{k(n)}^{(n)}\}\quad\textrm{chosen separately for each } n.
+\]
+The relevant source passage is shown in Figure~\ref{fig:open}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+  \caption{The open-question sentence after Theorem 3.20 in arXiv:2503.24092.}
+  \label{fig:open}
+\end{figure}
+
+Theorem 3.20 assumes that $\OmegaX$ is a compact metric space without isolated
+points, that $\C(\OmegaX,\K)$ has a Schauder basis $(b_j)_{j\ge 1}$ with
+coefficient functionals $(c_j)_{j\ge 1}$, and that $k(n)$ is unbounded.  In the
+nested case, the conclusion is that there are $f\in \C(\OmegaX,\K)$ and
+$N\in\N$ such that for every $n\ge N$,
+\[
+  \bigl(f(y_1),\ldots,f(y_{k(n)})\bigr)
+  \ne
+  \bigl(c_1(f),\ldots,c_{k(n)}(f)\bigr).
+\]
+
+\section*{Result}
+
+The literal non-nested analogue is false if the only size hypothesis is that
+$k(n)$ is unbounded.  The natural repaired statement is true if
+$k(n)\to\infty$.
+
+\begin{proposition}[Counterexample to the literal unbounded formulation]
+\label{prop:counterexample}
+There are a compact metric space $\OmegaX$ without isolated points, a Schauder
+basis of $\C(\OmegaX,\K)$, an unbounded sequence $k(n)$, and non-nested sampling
+sets $\{y_1^{(n)},\ldots,y_{k(n)}^{(n)}\}$ such that for every $N$ and every
+$f\in\C(\OmegaX,\K)$ there is some $n\ge N$ for which
+\[
+  \bigl(f(y_1^{(n)}),\ldots,f(y_{k(n)}^{(n)})\bigr)
+  =
+  \bigl(c_1(f),\ldots,c_{k(n)}(f)\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+Take $\OmegaX=[0,1]$.  Use the classical Faber--Schauder basis of
+$\C([0,1],\K)$, ordered so that its first coefficient functional is evaluation
+at the left endpoint:
+\[
+  c_1(f)=f(0).
+\]
+This is the standard ordering of the Faber--Schauder system: the first basis
+vector is the constant function and the remaining basis vectors vanish at the
+left endpoint, so the first coordinate is $f(0)$.
+
+Define
+\[
+  k(n)=
+  \begin{cases}
+    1, & n\ \textrm{odd},\\
+    n, & n\ \textrm{even}.
+  \end{cases}
+\]
+This sequence is unbounded.  For every odd $n$, choose the one sampling point
+$y_1^{(n)}=0$.  The remaining, even-indexed sampling sets may be chosen
+arbitrarily.
+
+For every odd $n$ and every $f\in\C([0,1],\K)$,
+\[
+  \bigl(f(y_1^{(n)})\bigr)=(f(0))=(c_1(f)).
+\]
+Thus the sampling encoder and the first basis encoder agree at infinitely many
+arbitrarily large indices.  Consequently no single function $f$ can make the
+two encoders differ for all sufficiently large $n$.
+\end{proof}
+
+\begin{theorem}[Repaired non-nested theorem]
+\label{thm:repair}
+Let $\OmegaX$ be a compact metric space without isolated points and let
+$(b_j)_{j\ge 1}$ be a Schauder basis of $\C(\OmegaX,\K)$ with coefficient
+functionals $(c_j)_{j\ge 1}$.  Suppose $k(n)\to\infty$ and for each $n$ choose
+arbitrary sampling points
+\[
+  y_1^{(n)},\ldots,y_{k(n)}^{(n)}\in \OmegaX .
+\]
+Then there are $f\in\C(\OmegaX,\K)$ and $N\in\N$ such that for every $n\ge N$,
+\[
+  \bigl(f(y_1^{(n)}),\ldots,f(y_{k(n)}^{(n)})\bigr)
+  \ne
+  \bigl(c_1(f),\ldots,c_{k(n)}(f)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+For every $n$, define the continuous linear map
+\[
+  L_n:\C(\OmegaX,\K)\to \K^{k(n)},\qquad
+  L_n(f)=
+  \bigl(f(y_1^{(n)}),\ldots,f(y_{k(n)}^{(n)})\bigr)
+  -
+  \bigl(c_1(f),\ldots,c_{k(n)}(f)\bigr).
+\]
+We first show that $L_n$ is nonzero for all sufficiently large $n$.
+Suppose otherwise.  Then there is an infinite set $M\subseteq\N$ such that
+$L_n=0$ for every $n\in M$.  Since $k(n)\to\infty$, for every fixed $j$ there
+is $n\in M$ with $k(n)\ge j$, and hence
+\[
+  c_j(f)=f(y_j^{(n)})\qquad \forall f\in\C(\OmegaX,\K).
+\]
+If $m,n\in M$ both satisfy $k(m),k(n)\ge j$, then evaluation at
+$y_j^{(m)}$ and evaluation at $y_j^{(n)}$ are the same functional.  Continuous
+functions on the compact metric space $\OmegaX$ separate points, so
+$y_j^{(m)}=y_j^{(n)}$.  Therefore for each $j$ there is a well-defined point
+$y_j\in\OmegaX$ such that
+\[
+  c_j(f)=f(y_j)\qquad \forall f\in\C(\OmegaX,\K).
+\]
+It follows that every $f\in\C(\OmegaX,\K)$ has the Schauder expansion
+\[
+  f=\sum_{j=1}^\infty c_j(f)b_j
+   =\sum_{j=1}^\infty f(y_j)b_j .
+\]
+This contradicts Theorem B.2 of the source paper, which says that for a metric
+space without isolated points no Schauder basis of $\C_b(\OmegaX,\K)$ can have
+all coefficients given by sampling at a sequence of points.  Since $\OmegaX$
+is compact, $\C_b(\OmegaX,\K)=\C(\OmegaX,\K)$.
+
+Thus there is $N_0$ such that $L_n\ne 0$ for all $n\ge N_0$.  For such $n$,
+$\ker L_n$ is a proper closed linear subspace of the Banach space
+$\C(\OmegaX,\K)$, and therefore it has empty interior.  By the Baire category
+theorem,
+\[
+  \C(\OmegaX,\K)\ne \bigcup_{n\ge N_0}\ker L_n .
+\]
+Choose $f$ outside this union.  Then $L_n(f)\ne 0$ for every $n\ge N_0$, which
+is exactly the asserted eventual separation.
+\end{proof}
+
+\section*{Limitations and interpretation}
+
+Proposition~\ref{prop:counterexample} refutes the literal replacement of
+nested sampling points by arbitrary non-nested sampling points under only the
+``unbounded $k(n)$'' hypothesis of Theorem 3.20.
+
+Theorem~\ref{thm:repair} shows that the intended conclusion is recovered under
+the natural strengthening $k(n)\to\infty$.  In particular, it applies to the
+usual sampling-encoder regime in which the sampling sets are $1/n$-coverings
+of an infinite compact metric space, since such covering cardinalities tend to
+infinity.
+
+\section*{Novelty check}
+
+The run indexes were searched for arXiv:2503.24092, the paper title, sampling
+encoders, basis encoders, universal operator approximation, and encoder-decoder
+keywords.  No prior packet for this question was found.  Bounded web searches
+for exact phrases from the open question, including ``individual sampling
+points'', ``sampling encoders'', and ``basis encoders'', found the source
+arXiv page but no later answer.
+
+\begin{thebibliography}{9}
+
+\bibitem{GF25}
+J. Goedeke and P. Fernsel,
+\emph{New universal operator approximation theorem for encoder-decoder
+architectures (Preprint)}, arXiv:2503.24092, 2025.
+
+\bibitem{Semadeni}
+Z. Semadeni,
+\emph{Schauder Bases in Banach Spaces of Continuous Functions},
+Springer, 1982.
+
+\end{thebibliography}
+
+\end{document}

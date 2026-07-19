@@ -1,0 +1,243 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+
+\title{Pure $\ell_1$-SVM under Independent Random Label Flips}
+\author{FA/Banach run candidate partial result}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+This is a candidate partial result, not a full answer to every noise model in
+the source question. It proves directional consistency for the original pure
+$\ell_1$ constraint under independent symmetric label flips.
+
+\section{Source question}
+
+Kolleck and Vyb\'iral study hinge-risk minimization over an $\ell_1$ ball
+\cite{KV}. In Section VI (Discussion), page 15 of the arXiv PDF, they ask for
+the behavior of $\ell_1$-SVM when a small probability of label
+misclassification is present. They also ask whether their dependence of the
+sample count on the accuracy and Gaussian scale is optimal.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below treats the independent random-flip subcase of the first
+question. It keeps the source estimator unchanged: there is no added
+$\ell_2$ constraint.
+
+\section{Model and theorem}
+
+Fix $d\geq2$, $r,R>0$, and $a\in\R^d$ with
+$\|a\|_2=1$ and $\|a\|_1\leq R$. Let $g_i$ be independent standard Gaussian
+vectors, set $x_i=rg_i$, and let $\xi_i\in\{-1,1\}$ be independent of the
+$g_i$ with
+\[
+ \Pp(\xi_i=1)=p\in(1/2,1).
+\]
+The observed labels and empirical risk are
+\[
+ y_i=\xi_i\,\operatorname{sign}\langle g_i,a\rangle,
+ \qquad
+ L_m(w)=\frac1m\sum_{i=1}^m[1-y_i\langle x_i,w\rangle]_+.
+\]
+The ordinary $\ell_1$-SVM minimizes $L_m$ over
+$K=\{w:\|w\|_1\leq R\}$.
+
+Put
+\[
+ c_p=\sqrt{2\log\frac{p}{2p-1}},
+ \qquad
+ \mu=\frac{1}{r c_p},
+\]
+and assume the feasibility condition $\mu\|a\|_1\leq R$.
+Define
+\[
+ \phi_p(t)=p[1-t]_+ +(1-p)[1+t]_+.
+\]
+If $X=|G|$ and $Z$ are independent, with $G,Z\sim N(0,1)$, set
+\[
+ H(u,s)=\E\,\phi_p\bigl(r(uX+sZ)\bigr),
+ \qquad u\in\R,\quad s\geq0.
+\]
+For $0<\delta<\mu/2$, define the explicit separation modulus
+\begin{align*}
+ \Delta_\delta=\min\{&H(u,s)-H(\mu,0): |u|\leq R,\ 0\leq s\leq R,\\
+                    &(u-\mu)^2+s^2\geq\delta^2\}.
+\end{align*}
+
+\begin{theorem}[Random-flip consistency for pure $\ell_1$-SVM]
+The population risk $L(w)=\E L_m(w)$ has the unique global minimizer
+$w_\star=\mu a$ on all of $\R^d$. In particular, $w_\star$ is the unique
+minimizer on $K$, and $\Delta_\delta>0$.
+
+Let
+\[
+ A_{d,r,R}=8\sqrt{8\pi}+18rR\sqrt{2\log(2d)}.
+\]
+If
+\[
+ m\geq \frac{64A_{d,r,R}^2}{\Delta_\delta^2},
+\]
+then, with probability at least
+\[
+ 1-8\left(
+ e^{-m\Delta_\delta^2/2048}
+ +e^{-m\Delta_\delta^2/(2048r^2R^2)}
+ \right),
+\]
+every empirical minimizer $\widehat a\in\arg\min_K L_m$ satisfies
+\[
+ \|\widehat a-\mu a\|_2<\delta,
+ \qquad
+ \left\|\frac{\widehat a}{\|\widehat a\|_2}-a\right\|_2
+ <\frac{2\delta}{\mu}.
+\]
+\end{theorem}
+
+\section{Proof intuition}
+
+Write a candidate as $w=ua+v$ with $v\perp a$. Gaussian rotation invariance
+reduces the signed margin to $r(u|G|+\|v\|_2Z)$. The noisy hinge profile
+$\phi_p$ is convex. Adding the independent centered Gaussian term caused by
+$v$ therefore raises population risk, strictly if $v\neq0$. The problem
+collapses to a one-dimensional profile $J(u)=H(u,0)$, whose derivative has a
+single zero at the displayed value $\mu$. Uniform empirical concentration,
+already proved for the source $\ell_1$-SVM, then lifts the unique population
+minimizer to a finite-sample directional statement.
+
+\section{Proof}
+
+Decompose $w=ua+v$, where $u=\langle w,a\rangle$ and $v\perp a$, and put
+$s=\|v\|_2$. Write a standard Gaussian $g$ as
+\[
+ g=G_0a+g_\perp.
+\]
+The random variables $|G_0|$ and
+$\operatorname{sign}(G_0)\langle g_\perp,v/s\rangle$ are independent; the
+second is standard Gaussian when $s>0$. Consequently,
+\[
+ \operatorname{sign}\langle g,a\rangle\,\langle rg,w\rangle
+ \stackrel{d}{=}r(uX+sZ),
+\]
+and hence $L(w)=H(u,s)$.
+
+The function $\phi_p$ is convex and is not affine on $\R$: its slopes change
+at $-1$ and $1$. Conditional on $X$, Jensen's inequality gives
+\[
+ H(u,s)\geq H(u,0)=:J(u).
+\]
+If $s>0$, the conditional Gaussian variable $r(uX+sZ)$ has full support, so
+equality in Jensen is impossible. Thus the inequality is strict for $s>0$.
+
+It remains to minimize $J$. For $u<0$, the argument $ruX$ is nonpositive and
+all slopes of $\phi_p$ there are negative because $p>1/2$. Hence $J$ is
+strictly decreasing on $(-\infty,0]$. For $u>0$, differentiation under the
+expectation is legitimate because $X$ has no atoms at the kink, and
+\begin{align*}
+ J'(u)
+ &=r\E X\left((1-p)-p\mathbf1_{\{X<1/(ru)\}}\right)\\
+ &=r\sqrt{\frac2\pi}\left(
+ 1-2p+p\exp\left(-\frac{1}{2r^2u^2}\right)
+ \right).
+\end{align*}
+This expression is strictly increasing in $u$, has a negative limit at
+$0+$ and a positive limit at infinity, and vanishes precisely when
+\[
+ \exp\left(-\frac{1}{2r^2u^2}\right)=\frac{2p-1}{p},
+\]
+that is, precisely at $u=\mu$. Therefore $J$ has the unique global minimizer
+$\mu$. Combining this with the strict Jensen step shows that $H$, and hence
+$L$, has the unique global minimizer $(u,s)=(\mu,0)$, corresponding to
+$w_\star=\mu a$. The feasibility hypothesis places $w_\star$ in $K$.
+
+Since $\|w\|_2\leq\|w\|_1\leq R$ for $w\in K$, every such $w$ has
+$|u|\leq R$ and $0\leq s\leq R$. The parameter set defining
+$\Delta_\delta$ is compact, nonempty, and excludes the unique minimizer.
+Continuity of $H$ therefore implies $\Delta_\delta>0$.
+
+We now use the source's uniform concentration theorem. Its proof remains valid
+under the extra independent flips: in the symmetrized process, every factor
+$\varepsilon_i y_i$ is again an independent Rademacher sign conditional on
+the data, so the Gaussian and dual-$\ell_1$ estimates are unchanged. Thus for
+every $q>0$,
+\begin{align*}
+ \sup_{w\in K}|L_m(w)-L(w)|
+ \leq \frac{A_{d,r,R}}{\sqrt m}+q
+\end{align*}
+with probability at least
+\[
+ 1-8\left(e^{-mq^2/32}+e^{-mq^2/(32r^2R^2)}\right).
+\]
+Choose $q=\Delta_\delta/8$. The sample hypothesis makes the right-hand side
+of the uniform bound at most $\Delta_\delta/4$. If $\widehat a$ minimizes
+$L_m$ on $K$, empirical optimality gives
+\[
+ L(\widehat a)-L(w_\star)
+ \leq 2\sup_{w\in K}|L_m(w)-L(w)|
+ \leq\frac{\Delta_\delta}{2}.
+\]
+By the definition of $\Delta_\delta$, this forces
+$\|\widehat a-w_\star\|_2<\delta$. Since $\delta<\mu/2$, the vector
+$\widehat a$ is nonzero, and the standard normalization inequality yields
+\[
+ \left\|\frac{\widehat a}{\|\widehat a\|_2}-a\right\|_2
+ \leq\frac{2\|\widehat a-\mu a\|_2}{\mu}
+ <\frac{2\delta}{\mu}.
+\]
+The probability formula follows by substituting
+$q=\Delta_\delta/8$ into the preceding concentration estimate.
+\qed
+
+\section{Relation to later literature and limitations}
+
+Genzel and Stollenwerk \cite{GS} prove sharper noisy hinge-loss recovery
+estimates with the optimal $m^{-1/2}$ oversampling rate when the convex signal
+set is contained in the Euclidean unit ball. Their Example 3.4(2) and
+Proposition 3.5 cover the same independent random-flip law and compute the
+correlation parameter $(2p-1)\sqrt{2/\pi}$. They explicitly identify
+Kolleck--Vyb\'iral as a special case and improvement.
+
+The supporting paper also says that extending the noisy argument to arbitrary
+convex signal sets is not straightforward. The theorem here covers the pure
+$RB_1^d$ constraint even when it is not contained in $B_2^d$, but its rate is
+implicit through $\Delta_\delta$. It does not cover adversarial,
+feature-dependent, or asymmetric flips, non-Gaussian measurements, or prove
+optimal dependence on $p,r$, and the target accuracy.
+
+\section{Novelty check}
+
+The run indexes contained no row for arXiv:1509.08083. Bounded primary-source
+searches for combinations of random bit flips, $\ell_1$-SVM, Gaussian hinge
+loss, and symmetric label noise found \cite{GS} and the broader
+symmetric-label-noise literature, but no exact theorem for a pure $RB_1^d$
+constraint with the scale formula above. Novelty is plausible and should be
+checked by a human against papers citing \cite{GS}.
+
+\begin{thebibliography}{9}
+
+\bibitem{KV}
+A. Kolleck and J. Vyb\'iral,
+\emph{Non-asymptotic Analysis of $\ell_1$-norm Support Vector Machines},
+arXiv:1509.08083.
+
+\bibitem{GS}
+M. Genzel and A. Stollenwerk,
+\emph{Robust 1-Bit Compressed Sensing via Hinge Loss Minimization},
+arXiv:1804.04846; Information and Inference 9 (2020), 361--422.
+
+\end{thebibliography}
+
+\end{document}

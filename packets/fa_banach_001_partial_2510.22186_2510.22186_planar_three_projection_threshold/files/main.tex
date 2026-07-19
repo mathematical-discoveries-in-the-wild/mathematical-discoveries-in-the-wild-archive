@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\betaA}{\beta_{\mathbf A}}
+\newcommand{\sort}{\operatorname{sort}}
+
+\begin{document}
+
+\begin{center}
+{\Large A \(2d-1\) projection obstruction for three-point sorting embeddings}\\[4pt]
+{\normalsize Strengthened partial packet for arXiv:2510.22186}
+\end{center}
+
+\section*{Source and target}
+
+The source is Nadav Dym, Matthias Wellershoff, Efstratios Tsoukanis, Daniel
+Levy, and Radu Balan, \emph{Quantitative Bounds for Sorting-Based
+Permutation-Invariant Embeddings}, arXiv:2510.22186 \cite{DymEtAl}.  For
+\(\mathbf A\in\R^{d\times D}\), the source studies
+\[
+  \beta_{\mathbf A}(\mathbf X)
+  = \bigl(\sort(\mathbf Xa_1),\ldots,\sort(\mathbf Xa_D)\bigr),
+  \qquad \mathbf X\in\R^{n\times d},
+\]
+where sorting is columnwise and the rows of \(\mathbf X\) are identified up
+to permutation.  Orbit separation means that
+\(\beta_{\mathbf A}(\mathbf X)=\beta_{\mathbf A}(\mathbf Y)\) implies
+\(\mathbf X\) and \(\mathbf Y\) differ by a common row permutation.
+
+The source proves an upper bound \(D\ge n(d-1)+1\) for full-spark
+\(\mathbf A\), and a logarithmic lower nonseparation bound.  It then leaves
+open the sharpness of the bounds for \(n>2\).
+
+\begin{center}
+\includegraphics[width=.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+For \(d=2\), the source phase diagram marks unresolved gray-dot parameter
+pairs between the lower nonseparation curve and the upper full-spark line.
+
+\begin{center}
+\includegraphics[width=.95\linewidth]{figures/phase_diagram_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+Let \(d\ge 2\).  If \(D\le 2d-1\), then no matrix
+\(\mathbf A\in\R^{d\times D}\) makes
+\[
+  \beta_{\mathbf A}:\R^{3\times d}/S_3\longrightarrow \R^{3\times D}
+\]
+orbit separating.  Equivalently, any sorting key that separates all
+three-point multisets in \(\R^d\) must use at least \(2d\) projections.
+\end{theorem}
+
+\noindent
+For \(d=2\), the source theorem gives orbit separation for every full-spark
+\(\mathbf A\in\R^{2\times D}\) once \(D\ge 4\).  Hence the exact planar
+threshold for three points is \(D=4\).  For general \(d\), the theorem
+strengthens the source lower bound in the \(n=3\) row from \(D\le 2d-2\) to
+\(D\le 2d-1\).  In particular, it proves that the source's numerically
+negative cases \((n,d,D)=(3,3,5)\) and \((3,4,7)\) fail for every choice of
+\(\mathbf A\).
+
+\section*{Proof intuition}
+
+After choosing \(d\) independent projection directions as coordinates, a
+\(D=2d-1\) key has the form \([I_d\mid B]\), where \(B\) has \(d-1\)
+columns.  Thus \(B^T\) has a nonzero kernel vector \(c\).  The construction
+uses this one missing linear constraint: choose different row permutations
+for different coordinate columns, but choose the coordinate vectors so that
+the change in every extra projection is the same kernel-weighted sum
+\(\sum_i b_{ij}c_iw=0\).  Sorting cannot see the separate coordinate
+permutations.  A single row permutation would have to realize two different
+3-cycles at once, or fix one distinct coordinate while cycling another, which
+is impossible.
+
+\section*{Proof}
+
+It suffices to prove the theorem for \(D=2d-1\).  If \(D<2d-1\), append zero
+columns to \(\mathbf A\); these add only zero output columns, so they cannot
+repair nonseparation.
+
+First suppose \(\operatorname{rank}\mathbf A<d\).  Choose a nonzero
+\(z\in\R^d\) with \(\mathbf A^Tz=0\).  Let \(\mathbf X\) have all rows equal
+to \(0\), and let \(\mathbf Y\) have rows \(z,0,0\).  Then
+\(\beta_{\mathbf A}(\mathbf X)=\beta_{\mathbf A}(\mathbf Y)\), but
+\(\mathbf X\) and \(\mathbf Y\) are not in the same \(S_3\)-orbit.
+
+Now assume \(\operatorname{rank}\mathbf A=d\).  Permuting the columns of
+\(\mathbf A\) only permutes output columns of \(\beta_{\mathbf A}\).  Also,
+if \(S\in GL(d,\R)\), then
+\(\beta_{S\mathbf A}(\mathbf X)=\beta_{\mathbf A}(\mathbf XS)\), and
+\(\mathbf X\mapsto \mathbf XS\) is a bijection commuting with row
+permutations.  Thus orbit separation is unchanged by these operations.  We
+may therefore assume
+\[
+  \mathbf A=\begin{pmatrix} I_d & B \end{pmatrix},
+  \qquad B\in\R^{d\times(d-1)}.
+\]
+Choose a nonzero \(c=(c_1,\ldots,c_d)^T\in\ker B^T\), and let
+\(J=\{i:c_i\ne0\}\).  Let \(C\) denote the 3-cycle
+\[
+  C(v_1,v_2,v_3)^T=(v_2,v_3,v_1)^T.
+\]
+
+Assume first that \(|J|\ge2\).  Pick distinct \(p,q\in J\).  Put
+\[
+  P_q=C^{-1},\qquad P_i=C\quad(i\in J,\ i\ne q),\qquad P_i=I\quad(i\notin J).
+\]
+Let \(W=\{u\in\R^3:u_1+u_2+u_3=0\}\).  The maps \(C-I\) and \(C^{-1}-I\)
+restrict to invertible maps on \(W\).  Choose \(w\in W\) outside the finite
+union of lines for which one of the vectors below has repeated coordinates,
+and for each \(i\in J\) choose \(x_i\in W\) satisfying
+\[
+  (P_i-I)x_i=c_iw.
+\]
+For \(i\notin J\), set \(x_i=0\).  Let \(\mathbf X\in\R^{3\times d}\) have
+columns \(x_i\), and let \(\mathbf Y\) have columns \(P_ix_i\).
+
+For the first \(d\) coordinate projection columns of \(\mathbf A\), the
+projected vectors are merely permuted, so their sorted values agree.  For an
+extra column \(b_j\) of \(B\),
+\[
+  \mathbf Y b_j-\mathbf X b_j
+  =\sum_{i=1}^d b_{ij}(P_i-I)x_i
+  =\sum_{i\in J} b_{ij}c_iw
+  =0,
+\]
+because \(B^Tc=0\).  Hence \(\beta_{\mathbf A}(\mathbf X)=
+\beta_{\mathbf A}(\mathbf Y)\).
+
+The two matrices are not in the same row-permutation orbit.  The entries of
+\(x_p\) and \(x_q\) are distinct by the choice of \(w\).  Any common row
+permutation \(R\) with \(R\mathbf X=\mathbf Y\) would have to satisfy
+\(Rx_p=P_px_p\) and \(Rx_q=P_qx_q\).  Distinct entries force
+\(R=P_p\) and \(R=P_q\), but \(P_p=C\) and \(P_q=C^{-1}\).
+
+It remains to handle \(|J|=1\), say \(J=\{p\}\).  Then the \(p\)-th row of
+\(B\) is zero.  Choose \(q\ne p\), set \(P_p=C\) and \(P_i=I\) for
+\(i\ne p\), and choose \(x_p,x_q\in\R^3\) with three distinct entries while
+setting all other \(x_i=0\).  Define \(\mathbf X\) and \(\mathbf Y\) as
+before.  The coordinate projections still agree after sorting.  The extra
+columns of \(B\) do not see coordinate \(p\), and all other coordinates are
+unchanged, so the extra projections agree as well.  A common row permutation
+would have to be \(C\) from coordinate \(p\), but would have to be \(I\) from
+coordinate \(q\).  This is impossible.  The proof is complete.
+
+\section*{Verification and limitations}
+
+The local run indexes were searched for the exact arXiv id, for
+sorting-based permutation-invariant embeddings, and for orbit-separation
+keywords; no existing packet for this strengthened \(n=3\) obstruction was
+found before this packet was written.  A bounded literature check on
+2026-07-18 searched exact phrases around \(D=2d-1\), \(n=3\),
+\(\beta_{\mathbf A}\), and sorting-based permutation-invariant embeddings.
+It found the source paper, the Balan-Haghani-Singh predecessor, and
+Matousek-Pri\-vetivy-Skovron's projection paper \cite{MatousekEtAl}, but no
+later exact answer to this \(n=3,D=2d-1\) obstruction.
+
+The script
+\texttt{code/verify\_three\_projection\_counterexample.py} checks the
+construction against the actual sorted-projection map for sampled normalized
+keys \([I_d\mid B]\) with \(2\le d\le8\), including full-support and
+singleton-support kernel cases.  The script is not a substitute for the
+proof; it is a sanity check that the displayed construction is implemented
+consistently.
+
+This packet does not settle the source paper's general dimension gap or any
+distortion question.  It proves the sharp lower obstruction \(D\ge2d\) for
+three-point multisets.  Existence at \(D=2d\) for every \(d\) is not proved
+here, although the source paper gives explicit positive examples for
+\((n,d,D)=(3,3,6)\) and \((3,4,8)\), and the \(d=2\) case follows from the
+source's full-spark upper theorem.
+
+\section*{Human-review recommendation}
+
+Likely valid strengthened partial result.  Review should check the
+normalization \(\mathbf A\mapsto S\mathbf A\), the linear-algebra kernel
+construction for \([I_d\mid B]\), and the row-permutation obstruction in the
+two support cases.
+
+\begin{thebibliography}{9}
+
+\bibitem{DymEtAl}
+N. Dym, M. Wellershoff, E. Tsoukanis, D. Levy, and R. Balan,
+\emph{Quantitative Bounds for Sorting-Based Permutation-Invariant
+Embeddings}, arXiv:2510.22186; IEEE Trans. Inf. Theory 72 (2026), no. 6,
+4297--4311.
+
+\bibitem{MatousekEtAl}
+J. Matousek, A. Privetivy, and P. Skovron,
+\emph{How many points can be reconstructed from \(k\) projections?},
+SIAM J. Discrete Math. 22 (2008), no. 4, 1605--1623.
+
+\end{thebibliography}
+
+\end{document}

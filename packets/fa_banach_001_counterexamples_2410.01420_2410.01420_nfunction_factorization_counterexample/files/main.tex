@@ -1,0 +1,231 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathcal N}
+\newcommand{\om}{\ominus}
+
+\title{A counterexample to the N-function factorization question}
+\author{Agent lane 8}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample to Problem 6.a.1 in Kiwerski and
+Tomaszewski, \emph{A few last words on pointwise multipliers of
+Calderon-Lozanovskii spaces} \cite{KT}. The verdict is likely valid, subject to
+human review of the piecewise-linear inverse construction.
+
+\section*{Source problem}
+
+The source paper asks whether the usual inverse relation for factorization is
+automatic once all three Orlicz functions involved are N-functions.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In the notation of the source, the generalized Young conjugate is
+\[
+  (G\om F)(t)=\sup_{s\geq 0}\{G(st)-F(s)\}.
+\]
+Problem 6.a.1 asks whether
+\[
+  F^{-1}(G\om F)^{-1}\approx G^{-1}
+\]
+must hold whenever $F$, $G$, and $G\om F$ are N-functions.
+
+\section*{Proof intuition}
+
+Take $G(t)=t^2$. If $H=G\om F$, then $H(t)\leq u$ forces
+\[
+  t\leq \inf_{s>0}\frac{\sqrt{F(s)+u}}{s}.
+\]
+Thus $H^{-1}(u)$ can be made small by finding a large $s$ for which $F(s)$ is
+much larger than $u$ but $s$ is even larger relative to $F^{-1}(u)$.
+
+The construction builds $F$ through its inverse $A=F^{-1}$. Convexity of $F$ is
+equivalent to concavity of $A$. We choose $A$ concave, increasing, unbounded,
+and with $A(u)/\sqrt u\to0$, so $F$ grows faster than $t^2$ and $H=G\om F$ is
+finite and again an N-function. But $A$ is arranged to have arbitrarily long
+almost-linear stretches:
+\[
+  A(u_n y_n)\geq c\,y_n A(u_n),\qquad y_n\to\infty.
+\]
+Evaluating the above estimate at $s=A(u_ny_n)$ gives
+\[
+  \frac{F^{-1}(u_n)H^{-1}(u_n)}{G^{-1}(u_n)}
+  \lesssim \frac{\sqrt{y_n}}{y_n}\to0.
+\]
+This destroys the lower half of the desired equivalence.
+
+\begin{lemma}[A concave inverse with long linear stretches]\label{lem:A}
+There is a continuous, strictly increasing, concave, unbounded function
+$A:[0,\infty)\to[0,\infty)$ such that $A(0)=0$,
+\[
+  \frac{A(u)}{u}\to\infty\quad(u\downarrow0),\qquad
+  \frac{A(u)}{u}\to0,\quad
+  \frac{A(u)}{\sqrt u}\to0\quad(u\to\infty),
+\]
+and there are numbers $u_n\to\infty$ and $y_n\to\infty$ with
+\[
+  A(u_ny_n)\geq \frac{y_n}{4}A(u_n).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $A(u)=u^{1/4}$ on $[0,1]$. We extend $A$ piecewise linearly on
+$[1,\infty)$ with strictly decreasing positive slopes. Let $v_0=1$ and let
+$\alpha_0=1/4$ be the left derivative at $1$.
+
+Assume that $A$ has been defined up to $v_{n-1}$, with terminal slope
+$\alpha_{n-1}>0$, and put $c_{n-1}=A(v_{n-1})$. Choose
+$y_n=\max\{2,n^4\}$. Pick $u_n>v_{n-1}$ so large that, with
+\[
+  m_n=\frac{1}{n\sqrt{u_ny_n}},
+\]
+we have
+\[
+  m_n<\alpha_{n-1}/2,\qquad
+  c_{n-1}\leq m_nu_n,\qquad
+  m_nu_n(y_n-1)>n.
+\]
+This is possible because $m_n\to0$ while
+$m_nu_n=\sqrt{u_n}/(n\sqrt{y_n})\to\infty$ as $u_n\to\infty$. Define
+$v_n=u_ny_n$ and extend $A$ linearly with slope $m_n$ on $[v_{n-1},v_n]$.
+Let $\alpha_n=m_n$.
+
+The slopes decrease, so the resulting function is concave and strictly
+increasing. It is unbounded because
+$A(v_n)\geq A(u_n)+m_nu_n(y_n-1)>n$. Also,
+\[
+  A(v_n)=c_{n-1}+m_n(v_n-v_{n-1})
+  \leq m_nu_n+m_nv_n\leq 2m_nv_n,
+\]
+and hence
+\[
+  \frac{A(v_n)}{\sqrt{v_n}}\leq 2m_n\sqrt{v_n}=\frac{2}{n}.
+\]
+On the whole interval $[v_{n-1},v_n]$,
+\[
+  \frac{A(u)}{\sqrt u}
+  \leq \frac{A(v_{n-1})}{\sqrt{v_{n-1}}}+m_n\sqrt{v_n}.
+\]
+The first term is at most $2/(n-1)$ for $n\geq2$, while the second term is
+$1/n$. Therefore $A(u)/\sqrt u\to0$. This implies $A(u)/u\to0$ at infinity.
+At zero, $A(u)/u=u^{-3/4}\to\infty$.
+
+Finally,
+\[
+  A(u_n)\leq c_{n-1}+m_nu_n\leq 2m_nu_n,\qquad
+  A(u_ny_n)\geq m_n(u_ny_n-u_n).
+\]
+Since $y_n\geq2$,
+\[
+  \frac{A(u_ny_n)}{A(u_n)}
+  \geq \frac{m_nu_n(y_n-1)}{2m_nu_n}
+  \geq \frac{y_n}{4}.
+\]
+\end{proof}
+
+\begin{theorem}
+There exist N-functions $F$ and $G$ such that $H=G\om F$ is also an N-function
+but
+\[
+  F^{-1}H^{-1}\not\approx G^{-1}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $A$ be the function from Lemma \ref{lem:A}, and define $F=A^{-1}$. Since
+$A$ is increasing and concave, $F$ is increasing and convex. The limiting
+relations in Lemma \ref{lem:A} give
+\[
+  \frac{F(t)}{t}\to0\quad(t\downarrow0),\qquad
+  \frac{F(t)}{t}\to\infty\quad(t\to\infty),
+\]
+so $F$ is an N-function. Set
+\[
+  G(t)=t^2.
+\]
+Then $G$ is an N-function. Let
+\[
+  H(t)=(G\om F)(t)=\sup_{s\geq0}\{s^2t^2-F(s)\}.
+\]
+
+We first check that $H$ is an N-function. Since $A(u)/\sqrt u\to0$, writing
+$s=A(u)$ gives
+\[
+  \frac{F(s)}{s^2}=\frac{u}{A(u)^2}\to\infty\qquad(s\to\infty).
+\]
+Hence for each fixed $t$, the quantity $s^2t^2-F(s)$ tends to $-\infty$ as
+$s\to\infty$, so $H(t)<\infty$. As a supremum of convex increasing functions of
+$t\geq0$, $H$ is a Young function.
+
+Moreover, $H(t)/t\to\infty$ as $t\to\infty$, because fixing any $s_0>0$ gives
+$H(t)\geq s_0^2t^2-F(s_0)$. For the behavior at zero, let $\varepsilon>0$.
+Choose $R$ so large that $F(s)\geq s^2$ for $s\geq R$. If $0<t<1$, then for
+$s\geq R$ we have $s^2t^2-F(s)\leq0$, while for $0\leq s\leq R$ we have
+$s^2t^2-F(s)\leq R^2t^2$. Thus for sufficiently small $t$,
+$H(t)\leq R^2t^2\leq\varepsilon t$. Therefore $H(t)/t\to0$ as $t\downarrow0$.
+So $H$ is an N-function.
+
+It remains to show failure of the inverse equivalence. Let $u_n,y_n$ be as in
+Lemma \ref{lem:A}. Since $F(A(u_ny_n))=u_ny_n$, the definition of $H$ gives
+for every $t>0$
+\[
+  H(t)\geq A(u_ny_n)^2t^2-u_ny_n.
+\]
+Consequently,
+\[
+  H^{-1}(u_n)\leq
+  \frac{\sqrt{u_n+u_ny_n}}{A(u_ny_n)}.
+\]
+With the right-continuous inverse convention used for Orlicz functions, one may
+first replace the numerator by $\sqrt{(1+\varepsilon)u_n+u_ny_n}$ and then let
+$\varepsilon\downarrow0$; the displayed estimate is the resulting bound.
+Using $G^{-1}(u_n)=\sqrt{u_n}$ and $F^{-1}=A$, we obtain
+\[
+  \frac{F^{-1}(u_n)H^{-1}(u_n)}{G^{-1}(u_n)}
+  \leq
+  \frac{A(u_n)}{A(u_ny_n)}\sqrt{1+y_n}
+  \leq
+  \frac{4\sqrt{1+y_n}}{y_n}\to0.
+\]
+Thus no constant $c>0$ can satisfy
+$cG^{-1}\leq F^{-1}H^{-1}$, even along large arguments. Hence
+$F^{-1}(G\om F)^{-1}\not\approx G^{-1}$.
+\end{proof}
+
+\section*{Verification and novelty notes}
+
+The construction is deterministic and the proof is analytic. No computational
+verification is needed. The only delicate point is the inverse construction in
+Lemma \ref{lem:A}; it is included explicitly so that reviewers can check
+convexity and the N-function limits directly.
+
+Local indexes for the run were searched for arXiv:2410.01420, pointwise
+multipliers, Calderon-Lozanovskii spaces, factorization, and related multiplier
+packets. No exact prior packet was found. Web searches for the exact inverse
+relation, for ``$G\om F$'' with N-functions, and for the source paper title
+found the source arXiv page but no later answer to Problem 6.a.1.
+
+\begin{thebibliography}{9}
+
+\bibitem{KT}
+T. Kiwerski and J. Tomaszewski,
+\emph{A few last words on pointwise multipliers of Calderon-Lozanovskii spaces},
+arXiv:2410.01420, 2024.
+
+\end{thebibliography}
+
+\end{document}

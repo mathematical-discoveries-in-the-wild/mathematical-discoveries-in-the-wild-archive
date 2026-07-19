@@ -1,0 +1,367 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\PhiA}{\Phi_{\Acal}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\Id}{I}
+
+\title{\textbf{Full Solution Packet}\\[3pt]
+Alternating operator scaling has the spectral-gap rate}
+\author{Run \texttt{fa\_banach\_001}, lane 1}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+\begin{center}
+\textbf{Status: candidate full solution, likely valid}\\
+\textbf{Target: the open question after Corollary 1.6 of arXiv:1904.03213}
+\end{center}
+
+\section{Source and exact question}
+
+The source is Kwok--Lau--Ramachandran, \emph{Spectral Analysis of Matrix
+Scaling and Operator Scaling}~\cite{KLR}.  For a tuple
+$\Acal=(A_1,\ldots,A_k)$, $A_i\in\R^{m\times n}$, put
+\[
+ s(\Acal)=\sum_i\|A_i\|_F^2,\qquad
+ M_{\Acal}=\sum_i A_i\otimes A_i.
+\]
+It is $\epsilon$-nearly doubly balanced when its two marginals lie between
+$1\pm\epsilon$ times their scalar targets, and it has a $\lambda$-spectral
+gap when
+\[
+ \sigma_2(M_{\Acal})\le (1-\lambda)
+ \frac{s(\Acal)}{\sqrt{mn}}.
+\]
+The source proves linear convergence of a gradient flow under
+$\lambda^2\ge C\epsilon\log m$ and then asks whether exact alternating left
+and right normalization has the same rate.
+
+\begin{center}
+\includegraphics[width=.94\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+The question is transcribed as follows: ``It is an interesting open question
+whether the alternating algorithm also has the same convergence rate as the
+gradient flow under the same assumptions.''
+
+\section{Result}
+
+The alternating algorithm replaces $A_i$ successively by
+\[
+ \left(\sum_j A_jA_j^*\right)^{-1/2}A_i
+ \quad\hbox{and}\quad
+ A_i\left(\sum_jA_j^*A_j\right)^{-1/2},
+\]
+with the harmless scalar factors that keep the size normalized.  A full cycle
+means one left and one right normalization.
+
+\begin{theorem}[Alternating spectral-gap convergence]\label{thm:main}
+There are universal constants $C,c>0$ with the following property.  Let
+$m\le n$, $0<\lambda\le1$, and let $\Acal$ be $\epsilon$-nearly doubly
+balanced with a $\lambda$-spectral gap.  If
+\[
+ \lambda^2\ge C\epsilon\log(2m),
+\]
+then exact alternating normalization is well-defined and, after $t$ full
+cycles, has a right-balanced iterate whose other normalized marginal error
+$H_t$ satisfies
+\[
+ \frac{\|H_t\|_F}{\sqrt m}
+ \le C\epsilon e^{-c\lambda t}.
+\]
+Consequently it returns an $\eta$-nearly doubly balanced scaling in
+\[
+ O\!\left(\frac1\lambda
+ \log\frac{m+n}{\eta}\right)
+\]
+alternating iterations.  Thus the answer to the source question is positive.
+\end{theorem}
+
+\section{Proof intuition}
+
+Stop after every right normalization.  Then the right marginal is exactly the
+identity and the left marginal is $P=I+H$.  Normalize the completely positive
+map to an operator $T$ between Hilbert--Schmidt matrix spaces.  On the scalar
+identity directions, $T$ is approximately the identity.  The source's
+spectral gap therefore forces the compression of $T$ between the two
+traceless subspaces to have norm at most $1-c\lambda$.
+
+Left normalization changes the new right error, to first order, from $H$ to
+$-T^*H$; right normalization changes the next left error, to first order, to
+$TT^*H$.  Hence one full cycle contracts normalized Frobenius error by
+$1-c\lambda$.  The inverse-square-root remainders cost only $O(\epsilon)$.
+
+The remaining issue is global rather than local: could the marginal operator
+norm or the spectral gap deteriorate before contraction becomes effective?
+For the first $O(\lambda^{-1}\log m)$ cycles, the operator error grows by at
+most $1+O(\epsilon)$ per cycle.  The assumed inequality
+$\epsilon\log m\ll\lambda^2$ makes the accumulated scaling $O(\lambda)$, so
+at least half the gap survives.  By then Frobenius contraction controls the
+operator norm directly, and the argument continues to arbitrary accuracy.
+
+\section{One-cycle estimates}
+
+All matrix spaces below carry the Hilbert--Schmidt inner product.  Write
+\[
+ e_m=I_m/\sqrt m,\qquad e_n=I_n/\sqrt n,
+\]
+and let $\Pi_m,\Pi_n$ denote orthogonal projection onto the corresponding
+traceless subspaces.
+
+Globally rescale so that $s(\Acal)=n$, and suppose first that the right
+marginal is exactly balanced:
+\[
+ \PhiA^*(I_m)=I_n,\qquad
+ P:=\frac mn\PhiA(I_n)=I_m+H.
+\]
+Then $H$ is traceless.  Define
+\[
+ T=\sqrt{\frac mn}\,\PhiA.
+\]
+Thus
+\[
+ T^*e_m=e_n,\qquad Te_n=e_m+\frac{H}{\sqrt m}.
+\]
+
+\begin{lemma}[Traceless spectral contraction]\label{lem:trace}
+Assume $\|H\|_{\op}\le\delta$, $\sigma_2(T)\le1-\gamma$, and
+$\delta\le c_0\gamma$ for a sufficiently small universal $c_0$.  Then
+\[
+ \|\Pi_mT\Pi_n\|_{\HS\to\HS},\quad
+ \|\Pi_nT^*\Pi_m\|_{\HS\to\HS}
+ \le 1-c_1\gamma
+\]
+for a universal $c_1>0$.
+\end{lemma}
+
+\begin{proof}
+The largest-singular-value estimate from the source~\cite[Lemma 3.6]{KLR}
+gives $\sigma_1(T)\le1+\delta$.  Moreover
+$\langle e_m,Te_n\rangle=1$.  Apply the elementary spectral lemma
+\cite[Lemma 3.7]{KLR}: if unit vectors $p,q$ satisfy
+$p^*Tq=1$, $\sigma_1(T)^2\le1+d_1$, and
+$\sigma_2(T)^2\le1-d_2$, then
+\[
+ |x^*Ty|\le1+d_1-d_2
+ \quad(x\perp p,\ y\perp q).
+\]
+Here $d_1\le3\delta$ and $d_2=2\gamma-\gamma^2$.  Reducing $c_0$ if
+necessary makes the last bound at most $1-c_1\gamma$.  Taking the supremum
+over traceless unit vectors proves both displayed estimates.
+\end{proof}
+
+\begin{lemma}[One full normalization cycle]\label{lem:cycle}
+In the setting of Lemma~\ref{lem:trace}, put
+\[
+ \rho=\frac{\|H\|_F}{\sqrt m}.
+\]
+After exact left normalization followed by exact right normalization, let
+$I_m+H_+$ be the new normalized left marginal, and put
+$\delta_+=\|H_+\|_{\op}$ and
+$\rho_+=\|H_+\|_F/\sqrt m$.  If $\delta\le c_2\gamma$, then
+\[
+ \rho_+\le(1-c_3\gamma)\rho,
+ \qquad
+ \delta_+\le(1+C_2\delta)\delta,
+\]
+for universal constants $c_2,c_3,C_2>0$.
+\end{lemma}
+
+\begin{proof}
+Left normalization uses $L=P^{-1/2}$.  Its right marginal is $I_n+K$, where
+\[
+ K=\PhiA^*(P^{-1})-I_n.
+\]
+It is traceless: using $\PhiA(I_n)=(n/m)P$,
+\[
+ \tr\PhiA^*(P^{-1})
+ =\tr(P^{-1}\PhiA(I_n))=n.
+\]
+The expansion
+\[
+ P^{-1}-I_m=-H+H^2P^{-1}
+\]
+and Lemma~\ref{lem:trace} give
+\begin{equation}\label{eq:K}
+ \frac{\|K\|_F}{\sqrt n}
+ \le (1-c_1\gamma+C_3\delta)\rho.
+\end{equation}
+Indeed, the traceless part of $T^*H$ contracts by Lemma~\ref{lem:trace}; its
+scalar part has norm $\rho\|H\|_F$, because
+$\langle e_n,T^*H\rangle=\langle Te_n,H\rangle=\|H\|_F^2/\sqrt m$.
+This and the term $H^2P^{-1}$ are both absorbed by $C_3\delta\rho$.
+
+Since $\PhiA^*$ is positive and unital, it is an operator-norm contraction.
+Consequently
+\begin{equation}\label{eq:Kop}
+ \|K\|_{\op}\le\|P^{-1}-I_m\|_{\op}
+ \le\frac{\delta}{1-\delta}.
+\end{equation}
+
+Now right normalize by $R=(I_n+K)^{-1/2}$.  The next left error is exactly
+\[
+ H_+=P^{-1/2}\sqrt{\frac mn}\,
+ T\big((I_n+K)^{-1}-I_n\big)P^{-1/2}.
+\]
+Use $(I+K)^{-1}-I=-K+K^2(I+K)^{-1}$.  Because $K$ is traceless,
+Lemma~\ref{lem:trace} contracts the linear term.  Equations
+\eqref{eq:K}--\eqref{eq:Kop}, together with
+$\|P^{-1/2}\|_{\op}^2\le(1-\delta)^{-1}$, therefore yield
+\[
+ \rho_+\le
+ (1+C_4\delta)(1-c_1\gamma+C_4\delta)^2\rho
+ \le(1-c_3\gamma)\rho.
+\]
+
+For the operator norm, positivity gives
+\[
+ \left\|\sqrt{\frac mn}T(X)\right\|_{\op}
+ \le\|P\|_{\op}\|X\|_{\op}.
+\]
+Using this with the exact formula for $H_+$ and~\eqref{eq:Kop} gives
+\[
+ \delta_+
+ \le \frac{1+\delta}{1-\delta}
+       \frac{\delta}{1-2\delta}
+ \le(1+C_2\delta)\delta,
+\]
+as claimed.
+\end{proof}
+
+\section{Gap persistence and proof of Theorem~\ref{thm:main}}
+
+First rescale to size $n$ and perform one right normalization.  Standard
+inverse-square-root estimates applied to the initial two marginals give a
+right-balanced tuple with
+\begin{equation}\label{eq:init}
+ \delta_0,\rho_0\le C_5\epsilon,\qquad
+ \sigma_2(T_0)\le1-\tfrac34\lambda.
+\end{equation}
+The last inequality follows because right normalization multiplies
+$M_{\Acal}$ on the right by $R\otimes R$ with
+$\|R-I\|_{\op}=O(\epsilon)$.  These estimates also show directly that every
+normalization used below is invertible.
+
+Let $\delta_j,\rho_j$ be the errors after the $j$th right normalization.
+As long as $\delta_j\le2C_5\epsilon$ and the current gap is at least
+$\lambda/2$, Lemma~\ref{lem:cycle} gives
+\begin{equation}\label{eq:decay}
+ \rho_j\le C_5\epsilon e^{-c_3\lambda j},\qquad
+ \delta_{j+1}\le(1+C_2\delta_j)\delta_j.
+\end{equation}
+
+We record how the gap changes.  A full cycle replaces the natural matrix by
+\[
+ M\longmapsto(L\otimes L)M(R\otimes R),
+\]
+where $\|L\|_{\op}^2,\|R\|_{\op}^2\le1+C_6\delta_j$.  Since the size returns
+to $n$ after every full cycle,
+\begin{equation}\label{eq:gapchange}
+ \sigma_2(T_j)\le \sigma_2(T_0)
+ \exp\!\left(C_7\sum_{i<j}\delta_i\right).
+\end{equation}
+
+Choose
+$j_0=C_8\lambda^{-1}\log(2m)$, with $C_8$ large enough that
+\eqref{eq:decay} implies $\rho_{j_0}\le C_5\epsilon/\sqrt m$.
+On $0\le j\le j_0$, the second inequality in~\eqref{eq:decay} and a bootstrap
+give
+\[
+ \delta_j\le2C_5\epsilon,\qquad
+ \sum_{j<j_0}\delta_j
+ \le C_9\frac{\epsilon\log(2m)}{\lambda}.
+\]
+The hypothesis $\lambda^2\ge C\epsilon\log(2m)$, with $C$ sufficiently
+large, makes the last quantity at most $c\lambda$.  Equation
+\eqref{eq:gapchange} then preserves a gap of at least $\lambda/2$, closing the
+bootstrap.
+
+After $j_0$, operator norm is controlled directly by Frobenius norm:
+\[
+ \delta_j\le\|H_j\|_F=\sqrt m\,\rho_j.
+\]
+The remaining sum is geometric,
+\[
+ \sum_{j\ge j_0}\delta_j
+ \le \frac{\sqrt m\,\rho_{j_0}}{c_3\lambda}
+ \le C_{10}\frac{\epsilon}{\lambda}le c\lambda.
+\]
+Thus the gap never falls below $\lambda/2$, and Lemma~\ref{lem:cycle} proves
+\eqref{eq:decay} for all $j$.
+
+At a right-balanced iterate, the other marginal has operator error at most
+$\sqrt m\rho_j$.  Therefore $\sqrt m\rho_j\le\eta$ after
+\[
+ j=O\!\left(\frac1\lambda
+ \log\frac{C\epsilon\sqrt m}{\eta}\right)
+ =O\!\left(\frac1\lambda\log\frac{m+n}{\eta}\right)
+\]
+cycles.  One cycle has two alternating normalizations, so the same asymptotic
+bound holds for alternating iterations.  This proves Theorem~\ref{thm:main}.
+
+\section{Verification report}
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Exact target.}  The conclusion is the rate asked for after the
+source's Corollary 1.6, under the same near-balance and spectral-gap scale.
+\item \textbf{Dimension factors.}  The normalizations
+$T=\sqrt{m/n}\,\PhiA$, $P=(m/n)\PhiA(I_n)$, and
+$e_d=I_d/\sqrt d$ make the scalar singular directions unit length; all
+$\sqrt m,\sqrt n$ factors in the two half-steps cancel.
+\item \textbf{Nonlinear terms.}  Both inverse expansions are exact identities,
+not first-order approximations.  Their remainders are controlled by the
+operator error $\delta$.
+\item \textbf{Global bootstrap.}  The only logarithmic dimension loss occurs
+before Frobenius error controls operator error.  This is why the source's
+$\epsilon\log m\ll\lambda^2$ hypothesis is sufficient.
+\item \textbf{Numerical sanity check.}  The included script constructs a
+perturbed random balanced quantum expander.  In one fixed run the marginal
+error decreased from $6.55\cdot10^{-2}$ to $1.25\cdot10^{-15}$ in 23 cycles;
+the spectral gap stayed above $0.4898$, and the median cycle ratio was $0.202$.
+The computation is not used in the proof.
+\end{itemize}
+
+\section{Novelty and human review recommendation}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched for
+arXiv:1904.03213, operator scaling, Sinkhorn, alternating normalization,
+spectral gap, and quantum expander; no prior packet was found.  A bounded
+external search used the exact question sentence and the phrases ``operator
+Sinkhorn spectral gap convergence'' and ``quantum expander alternating
+normalization.''  It found the source and the 2024 preprint of
+Soma--Uschmajew~\cite{SU}, which proves local asymptotic rates near a fixed
+point and studies overrelaxation, but does not state the global theorem above
+from a nearly balanced spectral-gap input.  Novelty confidence is therefore
+moderate, not absolute.
+
+Send for specialist review.  The highest-value checks are: (i) the use of the
+source's spectral lemma as a two-sided traceless compression bound, (ii) the
+scalar component of $T^*H$ in~\eqref{eq:K}, and (iii) the cumulative singular-
+gap estimate~\eqref{eq:gapchange} for noncommuting successive scalings.
+
+\begin{thebibliography}{9}
+\bibitem{KLR}
+T. C. Kwok, L. C. Lau, and A. Ramachandran,
+\emph{Spectral Analysis of Matrix Scaling and Operator Scaling},
+SIAM J. Comput. 50 (2021), no. 3, 1039--1102;
+arXiv:1904.03213.
+
+\bibitem{SU}
+T. Soma and A. Uschmajew,
+\emph{Accelerating Operator Sinkhorn Iteration with Overrelaxation},
+arXiv:2410.14104; Math. Program. (2026).
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage{graphicx,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Kop}{\mathcal K}
+
+\title{Compact-Operator Algebras Determine the Underlying Banach Space}
+\author{Candidate full solution to an explicit subquestion in arXiv:2505.02338\\Model: GPT5.6}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full solution, likely valid.}
+The compact-operator-algebra subquestion on page~40 of Guo--Wang is answered
+completely under the standard meaning of Banach-algebra isomorphism.  The
+surrounding maximal Roe-algebra and $K$-theory questions are not claimed.}}
+\end{center}
+
+\section{Source and exact target}
+
+Guo and Wang's paper \cite{GW} asks several questions about two maximal
+$L^p$-Roe completions.  In the discussion following Question~8.1, on source
+PDF page~40, the authors write that it is unknown to them whether
+\[
+  \Kop(L^p(\mu)) \quad\hbox{is isomorphic to}\quad \Kop(\ell^p),
+\]
+after noting the non-isomorphism of $L^p(0,1)$ and $\ell^p$.  We answer the
+concrete case $L^p(0,1)$, interpreting ``isomorphic'' in the standard
+Banach-algebra sense: a bounded linear bijective algebra homomorphism.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The source paragraph on PDF page~40.  The relevant compact-operator
+algebra sentence is the first complete sentence in the second paragraph.}
+\end{figure}
+
+\section{Proof intuition}
+
+The algebra $\Kop(X)$ already contains a canonical copy of $X$, up to
+isomorphism.  Choose a rank-one idempotent $P=x_0\otimes x_0^*$.  The left
+ideal $\Kop(X)P$ consists exactly of the rank-one operators
+$x\otimes x_0^*$ and is therefore isomorphic to $X$.  It is algebraically a
+minimal nonzero left ideal.  An algebra isomorphism sends it to a minimal
+left ideal $\Kop(Y)Q$.  Since $Q$ is a compact idempotent, it has finite rank;
+minimality forces that rank to be one.  Thus the image ideal is isomorphic to
+$Y$, recovering $X\cong Y$.
+
+For the $L^p$ application, $L^p(0,1)\not\cong\ell^p$ when $p\ne2$.  At
+$p=1$ the Schur property separates them.  For $1<p<\infty$, the Rademacher
+functions span a complemented copy of $\ell^2$ in $L^p(0,1)$, while Pitt's
+compactness theorem prevents the corresponding embedding or complementation
+inside $\ell^p$ unless $p=2$.
+
+\section{The algebraic rigidity theorem}
+
+For Banach spaces $X,Y$, write $\Kop(X)$ for the Banach algebra of compact
+operators on $X$ with the operator norm.
+
+\begin{theorem}[compact-operator algebra rigidity]\label{thm:rigidity}
+Let $X$ and $Y$ be nonzero Banach spaces over the same scalar field.  Then
+\[
+  \Kop(X)\cong\Kop(Y)\quad\text{as Banach algebras}
+  \qquad\Longleftrightarrow\qquad
+  X\cong Y\quad\text{as Banach spaces}.
+\]
+No approximation-property assumption is required.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $S:X\to Y$ is a Banach-space isomorphism.  Conjugation,
+\[
+  T\longmapsto STS^{-1},
+\]
+is a bounded Banach-algebra isomorphism from $\Kop(X)$ onto $\Kop(Y)$.
+
+Conversely, let $\Phi:\Kop(X)\to\Kop(Y)$ be a bounded Banach-algebra
+isomorphism.  Choose $x_0\in X$ and $x_0^*\in X^*$ with
+$x_0^*(x_0)=1$, and put
+\[
+  P=x_0\otimes x_0^*,\qquad P(x)=x_0^*(x)x_0.
+\]
+Then $P$ is a rank-one idempotent.  Its generated left ideal is
+\[
+  \Kop(X)P=\{x\otimes x_0^*:x\in X\}.
+\]
+Indeed, $TP=(Tx_0)\otimes x_0^*$; conversely, every $x$ occurs as $Tx_0$
+for a rank-one operator $T$.  The map
+\[
+  X\longrightarrow\Kop(X)P,\qquad x\longmapsto x\otimes x_0^*,
+\]
+is a Banach-space isomorphism, since
+$\|x\otimes x_0^*\|=\|x\|\,\|x_0^*\|$.
+
+The left ideal $\Kop(X)P$ is algebraically minimal.  To see this, take a
+nonzero $x\otimes x_0^*$ in a left subideal.  Given any $z\in X$, a rank-one
+operator $A$ can be chosen with $Ax=z$, so
+$A(x\otimes x_0^*)=z\otimes x_0^*$ also lies in that subideal.
+
+Set $Q=\Phi(P)$.  Then $Q$ is a nonzero compact idempotent and
+\[
+  \Phi(\Kop(X)P)=\Kop(Y)Q.
+\]
+Thus $\Kop(Y)Q$ is a minimal nonzero left ideal.  The range of a compact
+idempotent is finite-dimensional: the idempotent restricts to the identity on
+its range, and a compact identity can occur only in finite dimension.  If
+$\operatorname{rank}Q>1$, choose a rank-one idempotent $R$ whose range lies
+in $\operatorname{ran}Q$ and such that $RQ=R$.  Then
+\[
+  0\ne\Kop(Y)R\subsetneq\Kop(Y)Q,
+\]
+where properness follows because equality would express $Q=AR$ for some
+$A$, forcing $\operatorname{rank}Q\le1$.  This contradicts minimality.
+Therefore $Q$ has rank one.
+
+Writing $Q=y_0\otimes y_0^*$ with $y_0^*(y_0)=1$, the same argument as above
+identifies $\Kop(Y)Q$ with $Y$.  The bounded restriction of $\Phi$, with its
+bounded inverse, now gives
+\[
+  X\cong\Kop(X)P\cong\Kop(Y)Q\cong Y.
+\]
+\end{proof}
+
+\section{Application to \texorpdfstring{$L^p(0,1)$}{Lp(0,1)} and
+\texorpdfstring{$\ell^p$}{ell-p}}
+
+\begin{lemma}\label{lem:lp}
+For $1\le p<\infty$,
+\[
+  L^p(0,1)\cong\ell^p \qquad\Longleftrightarrow\qquad p=2.
+\]
+\end{lemma}
+
+\begin{proof}
+For $p=2$, both spaces are separable infinite-dimensional Hilbert spaces and
+are isometrically isomorphic.
+
+For $p=1$, $\ell^1$ has the Schur property, whereas $L^1(0,1)$ does not.  In
+fact, the Rademacher functions $r_n$ satisfy $\|r_n\|_1=1$ and converge weakly
+to zero: for $g\in L^\infty(0,1)\subset L^2(0,1)$, the coefficients
+$\int g r_n$ tend to zero by Bessel's inequality.
+
+Let $1<p<\infty$.  Khintchine's inequality \cite{Khintchine} shows that the
+closed Rademacher span
+\[
+  R_p=\overline{\operatorname{span}}\{r_n:n\ge1\}\subset L^p(0,1)
+\]
+is isomorphic to $\ell^2$.  It is complemented.  Indeed, for finite scalar
+sequences $(b_n)$, H\"older's and Khintchine's inequalities give
+\[
+ \left|\sum_n b_n\int f r_n\right|
+ \le \|f\|_p\left\|\sum_n b_nr_n\right\|_{p'}
+ \le C_{p'}\|f\|_p\|(b_n)\|_2.
+\]
+Thus $(\int fr_n)_n\in\ell^2$ with norm controlled by $\|f\|_p$, and another
+application of Khintchine's inequality makes
+\[
+  f\longmapsto\sum_{n=1}^\infty\left(\int_0^1 f r_n\right)r_n
+\]
+a bounded projection onto $R_p$.
+
+Pitt's theorem \cite{Pitt} says that every bounded operator
+$\ell^s\to\ell^r$ is compact when $1\le r<s<\infty$.  If $1<p<2$, an
+embedding $\ell^2\hookrightarrow\ell^p$ would itself be compact by Pitt, which
+is impossible for an isomorphic embedding of an infinite-dimensional Banach
+space.  If $2<p<\infty$ and $\ell^p$ contained a complemented copy of
+$\ell^2$, an embedding $J:\ell^2\to\ell^p$ and projection onto $J\ell^2$
+would yield a bounded operator $S:\ell^p\to\ell^2$ with $SJ=I_{\ell^2}$.
+Pitt makes $S$ compact, hence makes the identity compact, again impossible.
+Therefore $\ell^p$ cannot be isomorphic to $L^p(0,1)$ for $p\ne2$.
+\end{proof}
+
+\begin{corollary}[answer to the source subquestion]\label{cor:answer}
+For $1\le p<\infty$,
+\[
+  \boxed{\quad
+  \Kop(L^p(0,1))\cong\Kop(\ell^p)\text{ as Banach algebras}
+  \quad\Longleftrightarrow\quad p=2.
+  \quad}
+\]
+In particular, the answer is negative for every $p\ne2$ and affirmative for
+$p=2$.
+\end{corollary}
+
+\begin{proof}
+Combine Theorem~\ref{thm:rigidity} with Lemma~\ref{lem:lp}.
+\end{proof}
+
+\section{Verification, limitations, and novelty check}
+
+\paragraph{Verification.}
+The proof was checked directly at each algebraic step.  The only external
+inputs in Lemma~\ref{lem:lp} are Khintchine's inequality and Pitt's theorem;
+the complemented Rademacher projection is derived explicitly.  The theorem
+uses neither a basis nor an approximation property.  The rank argument also
+checks that a minimal left ideal generated by a compact idempotent must come
+from a rank-one idempotent.
+
+\paragraph{Scope.}
+The conclusion concerns bounded Banach-algebra isomorphisms.  It does not
+decide whether the two compact-operator spaces are isomorphic merely as Banach
+spaces.  It also does not decide whether the two maximal $L^p$-Roe
+completions in the source coincide or have the same $K$-theory.  Finally, for
+a general measure $\mu$, the answer depends on the Banach-space isomorphism
+type of $L^p(\mu)$; the displayed corollary is for the nonatomic model
+$L^p(0,1)$ explicitly named by the source.
+
+\paragraph{Novelty search.}
+On 19 July 2026, bounded searches covered the run's registry, solution,
+attempt, and proof-gap indexes; exact arXiv-id/title searches; and web/arXiv
+queries for variants of ``$\Kop(X)$ isomorphic to $\Kop(Y)$'', compact-operator
+algebras and minimal left ideals, and
+``$\Kop(L^p)$ isomorphic to $\Kop(\ell^p)$''.  No source stating this exact
+answer was located.  The minimal-left-ideal mechanism is elementary and may
+well be standard ring-theoretic folklore, so originality confidence is
+conservative.  The mathematical claim does not depend on novelty.
+
+\paragraph{Human review recommendation.}
+Check that ``isomorphic'' in the source paragraph was intended as
+Banach-algebra isomorphism rather than Banach-space isomorphism.  Under that
+standard algebraic interpretation, the proof is short and the result should
+be promoted after review.
+
+\begin{thebibliography}{9}
+\bibitem{GW}
+L. Guo and Q. Wang,
+\emph{Geometric Banach property (T) for metric spaces via Banach
+representations of Roe algebras}, arXiv:2505.02338v2 (2025).
+
+\bibitem{Khintchine}
+A. Khintchine,
+\emph{\"Uber dyadische Br\"uche},
+Math. Z. \textbf{18} (1923), 109--116.
+
+\bibitem{Pitt}
+H. R. Pitt,
+\emph{A note on bilinear forms},
+J. London Math. Soc. \textbf{s1-11} (1936), 174--180.
+\end{thebibliography}
+
+\end{document}

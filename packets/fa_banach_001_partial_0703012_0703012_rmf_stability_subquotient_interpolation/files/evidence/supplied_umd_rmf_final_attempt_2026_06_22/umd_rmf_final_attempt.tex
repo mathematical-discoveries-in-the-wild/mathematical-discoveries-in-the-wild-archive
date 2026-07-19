@@ -1,0 +1,706 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Rad}{\operatorname{Rad}}
+\newcommand{\RMF}{\operatorname{RMF}}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\spanop}{span}
+
+\title{A Final Attempt on the UMD-to-RMF Problem:\\
+Verified Stability, Quantitative Progress, and Exact Remaining Obstructions}
+\author{Prepared from the supplied source paper and partial solution packet}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hyt\"onen--McIntosh--Portal asked whether every UMD Banach space has the
+Rademacher maximal function property (RMF).  A final literature search through
+June 20, 2026 found neither a proof nor a UMD counterexample; recent sources
+continue to treat the implication as open.  The supplied stability packet is
+nevertheless essentially correct.  This note gives complete proofs that RMF is
+preserved by closed subspaces, quotients, and complex interpolation, with the
+missing Bochner lifting argument and the needed one-sided Rademacher
+interpolation embedding made explicit.
+
+Several further results are proved.  RMF is stable under Bochner $L^q$
+formation and under finite representability with uniform constants.  The full
+UMD-to-RMF question is reduced to a quantitative finite-dimensional problem.
+A deterministic entropy/variation estimate yields a new sufficient condition
+in terms of type and martingale cotype, and also gives a finite-horizon theorem:
+for every UMD space the RMF constants of martingales of length $N$ grow at most
+like $N^\delta$ for some $\delta<\tfrac12$ (with a logarithmic bound at the
+critical exponent).
+
+The unresolved step is then isolated in two exact forms.  First, RMF on a UMD
+space is equivalent to an ``anticipative Stein embedding'' for products inside
+conditional expectations.  Its fully decoupled version follows at once from
+Bourgain's Stein inequality, while the coupled diagonal term is precisely what
+cannot be removed by ordinary chaos decoupling.  Second, a natural Burkholder
+candidate satisfies three of Kemppainen's four Bellman axioms; the missing axiom
+is midpoint concavity in the current martingale value.  These reductions do not
+settle the general problem, but they sharply identify the remaining barrier and
+rule out several tempting but invalid one-line arguments.
+\end{abstract}
+
+\section{Executive conclusion}
+
+The source question is
+\begin{quote}
+Does every UMD Banach space have the RMF property?
+\end{quote}
+The original paper explicitly says that this was open and explains that a
+positive answer would remove an extra hypothesis from its Banach-valued Kato
+theorem \cite[Definition 2.12 and the paragraph following it]{HMP}.
+
+The outcome of the present final attempt is:
+\begin{center}
+\begin{tabular}{p{0.27\textwidth}p{0.63\textwidth}}
+\toprule
+Item & Conclusion \\
+\midrule
+Closed subspaces & Correct; already known. \\
+Quotients & Correct after supplying an almost-isometric Bochner lifting lemma. \\
+Complex interpolation & Correct using a uniform one-sided interpolation embedding; no full equality of finite Rademacher spaces is needed. \\
+Bochner $L^q$ and local theory & Correct; this yields mixed-norm and finite-representability closure. \\
+UMD $\Rightarrow$ RMF & No complete proof or counterexample was found. \\
+Strongest new quantitative result & Every UMD space has truncated RMF constants $O(N^\delta)$ for some $\delta<1/2$, and a type--martingale-cotype condition gives uniform RMF. \\
+Sharpest remaining bottleneck & A diagonal, anticipative version of Bourgain's Stein inequality, equivalently the missing midpoint-concavity axiom in a natural Bellman construction. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus this report is a substantial partial advance and a corrected map of the
+problem, not a claimed solution of a long-standing open question.
+
+\section{Literature status through June 20, 2026}
+
+The original examples with RMF are UMD function lattices, reflexive
+noncommutative $L^q$ spaces, and spaces of Rademacher type $2$
+\cite[Proposition 2.13]{HMP}.  The same paper proves that $\ell^1$ fails RMF.
+Kemppainen subsequently proved filtration independence, exponent independence,
+weak/strong equivalences, and a Bellman-function characterization; he also
+recorded inheritance by closed subspaces \cite{Kemppainen2011}.
+Hyt\"onen--Kemppainen related RMF to vector-valued Carleson embeddings
+\cite{HK2011}.
+
+Later sources still explicitly describe UMD $\Rightarrow$ RMF as open.  This
+is stated by Amenta--Uraltsev \cite{AmentaUraltsev2020} and Lorist
+\cite{Lorist2021}.  The 2023 third volume of \emph{Analysis in Banach Spaces}
+still formulates the Banach-valued Kato theorem under the separate assumptions
+that both $X$ and $X^*$ have RMF \cite{HNVW2023}.  A 2026 paper of
+Bod\'o--Yaroslavtsev gives powerful new characterizations of UMD through tail
+estimates for tangent conditionally symmetric processes
+\cite{BodoYaroslavtsev2026}, but its hypotheses do not directly cover the
+anticipative selector occurring in RMF.
+
+There is one anomalous item.  A 2025 textbook exercise appears to ask for RMF
+of an arbitrary UMD space and hints at Rubio de Francia's Fefferman--Stein
+argument \cite{UrbinaRios2025}.  That hint proves the UMD \emph{Banach lattice}
+case, where a lattice maximal function exists; it does not supply the missing
+argument for a general UMD space.  In the absence of a proof and in view of the
+explicit open-problem statements above, this exercise is not treated as a
+resolution.
+
+Searches of arXiv, journal indexes, citation chains from the RMF papers, and
+recent UMD literature found no full proof and no UMD counterexample through the
+date of this report.
+
+\section{Definitions and finite linearization}
+
+Let $(\Omega,\cF,\mu)$ be a sigma-finite measure space with a filtration
+$(\cF_j)_{j\in\mathbb Z}$, and let $E_j$ denote conditional expectation onto
+$\cF_j$.  For a finite set $J\subset\mathbb Z$ and $f\in L^p(\Omega;X)$ define
+\begin{equation}\label{eq:finite-rmf}
+ M_{R,J}^X f(\omega)
+ =\sup_{\|\lambda\|_{\ell^2(J)}\le 1}
+   \E_{\eps}\left\|\sum_{j\in J}\eps_j\lambda_j E_jf(\omega)\right\|_X.
+\end{equation}
+The space $X$ has $\RMF_p$ if
+\begin{equation}\label{eq:rmfp}
+ \|M_{R,J}^Xf\|_{L^p(\Omega)}\le C\|f\|_{L^p(\Omega;X)}
+\end{equation}
+uniformly in finite $J$.  It is enough to verify this for one
+$p\in(1,\infty)$, and the property is independent of the standard filtration
+model \cite{HMP,Kemppainen2011}.
+
+For interpolation it is convenient to use
+\[
+ \Rad_J^2(X)
+ =\left\{\sum_{j\in J}\eps_jx_j:x_j\in X\right\}
+ \subset L^2(\Omega_\eps;X)
+\]
+with the inherited $L^2$ norm.  Kahane--Khintchine shows, with constants
+independent of $J$ and $X$, that replacing the expectation in
+\eqref{eq:finite-rmf} by its $L^2(\Omega_\eps)$ version gives an equivalent
+maximal function.
+
+For finite $J$ define the linear operator
+\begin{equation}\label{eq:TJ}
+ T_J^Xf(\omega)\lambda
+ =\sum_{j\in J}\eps_j\lambda_jE_jf(\omega),
+ \qquad \lambda\in\ell^2(J).
+\end{equation}
+Then the $L^2$ version of $M_{R,J}^Xf(\omega)$ is exactly
+\[
+ \|T_J^Xf(\omega)\|_{\cL(\ell^2(J),\Rad_J^2(X))}.
+\]
+
+\section{Audit and corrected stability theorem}
+
+\subsection{A Bochner quotient lemma}
+
+The quotient proof in the supplied packet uses a standard fact that merits an
+explicit proof.
+
+\begin{lemma}[Almost isometric Bochner lifting]\label{lem:bochner-lift}
+Let $Q:X\to Z$ be a metric quotient map, so
+\[
+ \|z\|_Z=\inf\{\|x\|_X:Qx=z\}.
+\]
+For $1\le p<\infty$, the induced map
+\[
+ \widetilde Q:L^p(\Omega;X)\longrightarrow L^p(\Omega;Z),
+ \qquad \widetilde Qg=Qg,
+\]
+is a metric quotient.  Equivalently, for every $f\in L^p(\Omega;Z)$ and
+$\eta>0$ there is $g\in L^p(\Omega;X)$ such that
+\[
+ Qg=f,\qquad \|g\|_{L^p(\Omega;X)}\le \|f\|_{L^p(\Omega;Z)}+\eta.
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose $h=\sum_{m=1}^M\1_{A_m}z_m$ is simple, with the $A_m$ disjoint.
+Choose $x_m\in X$ with $Qx_m=z_m$ and
+$\|x_m\|\le(1+\delta)\|z_m\|$.  Then
+$u=\sum_m\1_{A_m}x_m$ satisfies $Qu=h$ and
+$\|u\|_p\le(1+\delta)\|h\|_p$.
+
+For general $f$, choose simple functions $s_n$ such that $s_n\to f$ in $L^p$
+and so rapidly that, with $s_0=0$,
+\[
+ \sum_{n\ge1}\|s_n-s_{n-1}\|_p\le \|f\|_p+\eta/2.
+\]
+This is obtained, for example, by requiring
+$\|f-s_n\|_p$ to decrease geometrically with a sufficiently small total sum.
+Set $h_n=s_n-s_{n-1}$.  By the simple-function case choose $u_n$ with
+$Qu_n=h_n$ and
+\[
+ \|u_n\|_p\le \|h_n\|_p+\eta 2^{-n-1}.
+\]
+The series $\sum_nu_n$ converges absolutely in $L^p(\Omega;X)$ to a function
+$g$, and
+\[
+ \|g\|_p\le\sum_n\|u_n\|_p\le\|f\|_p+\eta.
+\]
+Continuity of $Q$ gives $Qg=\lim_ns_n=f$.
+\end{proof}
+
+\subsection{The closure theorem}
+
+\begin{theorem}[Subspaces, quotients, and complex interpolation]
+\label{thm:closure}
+Fix $1<p<\infty$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $X$ has $\RMF_p$ and $Y\subset X$ is a closed subspace, then $Y$ has
+$\RMF_p$.
+\item If $X$ has $\RMF_p$ and $Q:X\to Z$ is a quotient map, then $Z$ has
+$\RMF_p$.
+\item If $(X_0,X_1)$ is a compatible complex interpolation couple and both
+$X_0$ and $X_1$ have $\RMF_p$, then
+$X_\theta=[X_0,X_1]_\theta$ has $\RMF_p$ for every $0<\theta<1$.
+\end{enumerate}
+The estimates are uniform over all finite truncations $J$.
+\end{theorem}
+
+\begin{proof}
+For (i), if $f$ is $Y$-valued, every $E_jf$ is $Y$-valued and the norm is the
+one inherited from $X$.  Hence pointwise
+\[
+ M_{R,J}^Yf=M_{R,J}^Xf.
+\]
+
+For (ii), after an equivalent renorming of $Z$ we may assume that $Q$ is a
+metric quotient.  Let $f\in L^p(\Omega;Z)$ and use
+Lemma~\ref{lem:bochner-lift} to choose $g\in L^p(\Omega;X)$ with $Qg=f$ and
+$\|g\|_p\le\|f\|_p+\eta$.  Conditional expectation commutes with bounded
+linear maps, so $E_jf=QE_jg$.  Since $Q$ is contractive,
+\[
+ \E_\eps\left\|\sum_{j\in J}\eps_j\lambda_jE_jf(\omega)\right\|_Z
+ \le
+ \E_\eps\left\|\sum_{j\in J}\eps_j\lambda_jE_jg(\omega)\right\|_X.
+\]
+Thus $M_{R,J}^Zf\le M_{R,J}^Xg$.  Take $L^p$ norms and let $\eta\downarrow0$.
+
+For (iii), use the $L^2$ Rademacher norm described above.  Put
+\[
+ A_i(J)=\cL\bigl(\ell^2(J),\Rad_J^2(X_i)\bigr),\qquad i=0,1.
+\]
+The endpoint assumptions say that the common operator $T_J$ in
+\eqref{eq:TJ} maps
+\[
+ L^p(\Omega;X_i)\longrightarrow L^p(\Omega;A_i(J))
+\]
+with norm at most $C_i$, uniformly in $J$.
+
+We use two contractive embeddings.  First, evaluation on the common domain
+$\ell^2(J)$ gives
+\begin{equation}\label{eq:operator-embed}
+ [A_0(J),A_1(J)]_\theta
+ \hookrightarrow
+ \cL\left(\ell^2(J),
+ [\Rad_J^2(X_0),\Rad_J^2(X_1)]_\theta\right).
+\end{equation}
+Indeed, for each $\lambda\in\ell^2(J)$, the evaluation map $S\mapsto S\lambda$
+has endpoint norm at most $\|\lambda\|_2$, and interpolation gives the claim.
+
+Second,
+\begin{equation}\label{eq:rad-embed}
+ [\Rad_J^2(X_0),\Rad_J^2(X_1)]_\theta
+ \hookrightarrow \Rad_J^2([X_0,X_1]_\theta)
+\end{equation}
+contractively, uniformly in $J$.  To see this, regard each endpoint Rademacher
+space as a subspace of $L^2(\Omega_\eps;X_i)$.  Exactness of complex
+interpolation and the Bochner identity give a contractive map into
+\[
+ [L^2(\Omega_\eps;X_0),L^2(\Omega_\eps;X_1)]_\theta
+ =L^2(\Omega_\eps;[X_0,X_1]_\theta).
+\]
+Every element $F$ of the interpolation space already lies in the algebraic sum
+of the two finite Rademacher spans, hence has the form
+$F=\sum_{j\in J}\eps_jx_j$ with $x_j\in X_0+X_1$.  The displayed inclusion
+places $F$ in $L^2(\Omega_\eps;[X_0,X_1]_\theta)$, and then
+$x_j=\E_\eps(\eps_jF)\in[X_0,X_1]_\theta$.  This proves
+\eqref{eq:rad-embed}.  Notice that no
+reverse inclusion and no uniformly bounded Rademacher projection are needed.
+
+Finally, interpolate $T_J$ and use
+\[
+ [L^p(\Omega;X_0),L^p(\Omega;X_1)]_\theta
+ =L^p(\Omega;[X_0,X_1]_\theta)
+\]
+and the analogous identity for the target Bochner spaces, followed by
+\eqref{eq:operator-embed} and \eqref{eq:rad-embed}.  We obtain
+\[
+ \|M_{R,J}^{X_\theta}f\|_p
+ \lesssim_p C_0^{1-\theta}C_1^\theta
+ \|f\|_{L^p(\Omega;X_\theta)},
+\]
+where the only harmless factor is the uniform Kahane--Khintchine equivalence
+between the $L^1$ and $L^2$ Rademacher norms.
+\end{proof}
+
+\begin{remark}
+For an increasing sequence of finite sets $J_n$ exhausting the filtration
+indices, $M_{R,J_n}f$ increases pointwise to the full Rademacher maximal
+function.  Monotone convergence therefore passes the uniform finite estimates
+to the usual RMF estimate.
+\end{remark}
+
+\begin{corollary}[Dual hypotheses in the Kato theorem]
+If both $X$ and $X^*$ have RMF and $Y\subset X$ is closed, then $Y$, $Y^*$,
+$X/Y$, and $(X/Y)^*$ all have RMF.  If both endpoint spaces and their duals have
+RMF, then, under the usual duality hypotheses for a complex interpolation couple,
+the same holds for the interpolation space and its dual.
+\end{corollary}
+
+\begin{proof}
+For a closed subspace $Y\subset X$, one has
+$Y^*\cong X^*/Y^\perp$, and for a quotient $Z=X/Y$, one has
+$Z^*\cong Y^\perp\subset X^*$.  Apply Theorem~\ref{thm:closure} to $X$ and
+$X^*$.  The interpolation assertion follows from the standard duality formula
+for regular complex interpolation couples.
+\end{proof}
+
+\section{Additional closure results}
+
+For fixed $1<p<\infty$, write $\rho_p(X)$ for the best $\RMF_p$ constant of
+$X$.
+
+\subsection{Bochner \texorpdfstring{$L^q$}{Lq} spaces}
+
+\begin{theorem}[Bochner stability]\label{thm:bochner}
+Let $X$ have RMF and let $(S,\Sigma,\nu)$ be sigma-finite.  For every
+$1<q<\infty$, the Bochner space $L^q(S;X)$ has RMF.  The same conclusion holds
+for $\ell^q(X)$ and for iterated Bochner spaces.
+\end{theorem}
+
+\begin{proof}
+By exponent independence of RMF, it suffices to prove the estimate with outer
+exponent $q$.  Let $F\in L^q(\Omega;L^q(S;X))$.  For fixed $\omega$ and
+$\lambda\in B_{\ell^2(J)}$, Kahane--Khintchine and Fubini give
+\begin{align*}
+ &\E_\eps\left\|\sum_{j\in J}\eps_j\lambda_jE_jF(\omega,\cdot)
+ \right\|_{L^q(S;X)}\\
+ &\quad\le
+ \left(\int_S\E_\eps
+ \left\|\sum_{j\in J}\eps_j\lambda_jE_jF(\omega,s)\right\|_X^q
+ \,d\nu(s)\right)^{1/q}\\
+ &\quad\lesssim_q
+ \left(\int_S
+ \left[\E_\eps
+ \left\|\sum_{j\in J}\eps_j\lambda_jE_jF(\omega,s)\right\|_X
+ \right]^q d\nu(s)\right)^{1/q}\\
+ &\quad\le
+ \left(\int_S[M_{R,J}^X(F(\cdot,s))(\omega)]^q\,d\nu(s)\right)^{1/q}.
+\end{align*}
+Take the supremum over $\lambda$, then the $L^q(\Omega)$ norm, and use Fubini
+and the RMF estimate for $X$ at exponent $q$.
+\end{proof}
+
+\subsection{Finite representability}
+
+\begin{theorem}[Locality of RMF]\label{thm:finite-rep}
+Suppose there are constants $\lambda,C<\infty$ such that every
+finite-dimensional subspace $E\subset X$ admits an isomorphism
+$T_E:E\to Y_E$ into a Banach space $Y_E$ satisfying
+\[
+ \|T_E\|\,\|T_E^{-1}\|\le\lambda,
+ \qquad \rho_p(Y_E)\le C.
+\]
+Then $X$ has $\RMF_p$ with constant at most $\lambda C$.  In particular, RMF
+passes to spaces finitely representable in a fixed RMF space, and to ultraproducts
+of spaces whose $\RMF_p$ constants are uniformly bounded.
+\end{theorem}
+
+\begin{proof}
+It is enough first to consider a simple $X$-valued function $f$ and a finite set
+$J$.  All values of $f$, and hence all $E_jf$, lie in one finite-dimensional
+subspace $E\subset X$.  After rescaling $T_E$, assume $\|T_E\|\le1$ and
+$\|T_E^{-1}\|\le\lambda$.  Since $E_j(T_Ef)=T_E(E_jf)$,
+\[
+ M_{R,J}^Xf\le \|T_E^{-1}\|M_{R,J}^{Y_E}(T_Ef)
+ \le\lambda M_{R,J}^{Y_E}(T_Ef).
+\]
+Taking $L^p$ norms and using $\rho_p(Y_E)\le C$ gives the result for simple
+functions.  Density and Fatou's lemma give the general case.  For ordinary finite
+representability in a fixed space, apply the theorem with every $\lambda>1$ and
+then let $\lambda\downarrow1$.  The ultraproduct assertion follows from the
+standard fact that each finite-dimensional subspace of an ultraproduct is, up to
+arbitrarily small distortion, represented in one of the factors.
+\end{proof}
+
+\subsection{A finite-dimensional dichotomy}
+
+Let $\beta_p(X)$ denote the UMD constant of $X$ at exponent $p$.
+
+\begin{proposition}[Quantitative reformulation]\label{prop:finite-dichotomy}
+Fix $1<p<\infty$.  The assertion that every UMD space has RMF is equivalent to
+the following quantitative finite-dimensional statement:
+\begin{quote}
+For every $B<\infty$ there is $C(B,p)<\infty$ such that every
+finite-dimensional Banach space $E$ with $\beta_p(E)\le B$ satisfies
+$\rho_p(E)\le C(B,p)$.
+\end{quote}
+Consequently, a negative solution can be obtained by finding finite-dimensional
+spaces $E_n$ with uniformly bounded UMD constants and
+$\rho_p(E_n)\to\infty$.
+\end{proposition}
+
+\begin{proof}
+If the quantitative statement holds and $X$ is UMD, every simple $X$-valued
+function takes values in a finite-dimensional $E\subset X$ with
+$\beta_p(E)\le\beta_p(X)$.  The uniform estimate on $E$, followed by density,
+gives RMF for $X$.
+
+Conversely, suppose every UMD space has RMF but the quantitative statement
+fails for some $B$.  Choose finite-dimensional $E_n$ with
+$\beta_p(E_n)\le B$ and $\rho_p(E_n)\ge n$.  Form
+\[
+ X=\left(\bigoplus_{n=1}^\infty E_n\right)_{\ell^p}.
+\]
+Because $L^p(\Omega;X)=\ell^p_n(L^p(\Omega;E_n))$, the martingale transform
+inequality holds coordinatewise, so $\beta_p(X)\le B$.  Thus $X$ is UMD and,
+by assumption, has RMF.  Each $E_n$ is an isometric closed subspace of $X$, so
+Theorem~\ref{thm:closure}(i) would give a uniform bound on $\rho_p(E_n)$, a
+contradiction.
+\end{proof}
+
+Proposition~\ref{prop:finite-dichotomy} identifies a concrete counterexample
+program: one need not guess an infinite exotic space at the outset; it is enough
+to produce a uniformly UMD sequence of finite-dimensional spaces whose RMF
+constants diverge.
+
+\section{A variation criterion for RMF}
+
+This section gives a further sufficient condition.  The first ingredient is a
+deterministic estimate for the $R$-bound of a finite path.
+
+For a finite set $A\subset X$, define its vector $R$-bound by
+\[
+ \cR(A)=\sup\left\{
+ \E_\eps\left\|\sum_{k=1}^m\eps_k\lambda_ka_k\right\|:
+ m\ge1,\ a_k\in A,\ \sum_{k=1}^m|\lambda_k|^2\le1
+ \right\}.
+\]
+Repetitions among the $a_k$ are allowed.  For an ordered path
+$x=(x_0,\ldots,x_N)$ and $1\le r<\infty$, set
+\[
+ V^r(x)=\sup_{0\le n_0<\cdots<n_m\le N}
+ \left(\sum_{i=1}^m\|x_{n_i}-x_{n_{i-1}}\|^r\right)^{1/r}.
+\]
+
+\begin{lemma}[Finite-set estimate from type]\label{lem:finite-set-type}
+If $X$ has Rademacher type $t\in[1,2]$ with type constant $T_t(X)$, and
+$D\subset X$ has cardinality at most $M$, then
+\[
+ \cR(D)\lesssim_t T_t(X)\,M^{1/t-1/2}\sup_{d\in D}\|d\|.
+\]
+\end{lemma}
+
+\begin{proof}
+Write the distinct elements as $d_1,\ldots,d_M$.  Given a repeated selection
+$a_k\in D$ and scalars $\lambda_k$, group the indices for which $a_k=d_i$ and
+put
+\[
+ b_i=\left(\sum_{k:a_k=d_i}|\lambda_k|^2\right)^{1/2}.
+\]
+The grouped scalar sums are independent centered subgaussian random variables
+with subgaussian parameters $b_i$.  The standard subgaussian--Gaussian
+comparison, followed by Gaussian type $t$ (equivalent to Rademacher type), gives
+\[
+ \E\left\|\sum_k\eps_k\lambda_ka_k\right\|
+ \lesssim_t T_t(X)
+ \left(\sum_{i=1}^M b_i^t\|d_i\|^t\right)^{1/t}.
+\]
+Since $\sum_i b_i^2=\sum_k|\lambda_k|^2\le1$,
+$\|b\|_{\ell^t}\le M^{1/t-1/2}\|b\|_{\ell^2}$, proving the claim.
+\end{proof}
+
+\begin{theorem}[Variation controls the $R$-bound]\label{thm:variation-rbound}
+Let $X$ have type $t\in(1,2]$, and let $1\le r<\infty$ satisfy
+\begin{equation}\label{eq:variation-range}
+ r\left(\frac1t-\frac12\right)<1.
+\end{equation}
+Then every finite path $(x_j)_{j=0}^N\subset X$ satisfies
+\begin{equation}\label{eq:variation-rbound}
+ \cR(\{x_0,\ldots,x_N\})
+ \lesssim_{t,r,T_t(X)} \|x_0\|+V^r(x).
+\end{equation}
+For $t=2$, condition \eqref{eq:variation-range} is automatic.
+\end{theorem}
+
+\begin{proof}
+Write $V=V^r(x)$ and assume $V>0$.  Any $\delta$-separated subset of the range
+of the path has cardinality at most
+\begin{equation}\label{eq:entropy}
+ 1+(V/\delta)^r.
+\end{equation}
+Indeed, order its points by their first occurrence along the path.  Consecutive
+selected points are more than $\delta$ apart, and their increments form an
+admissible subsequence in the definition of $V^r$.
+
+Set $\delta_k=2^{1-k}V$.  Starting with $S_0=\{x_0\}$, choose for each $k$ a
+maximal $\delta_k$-separated subset $S_k$ of the path range containing $x_0$.
+For a sufficiently large finite $K$, $S_K$ is the whole distinct range.  Since
+$S_{k-1}$ is a $\delta_{k-1}$-net, choose a parent map
+$p_k:S_k\to S_{k-1}$ with
+$\|y-p_k(y)\|\le\delta_{k-1}$.  Put
+\[
+ D_k=\{y-p_k(y):y\in S_k\}.
+\]
+Every point of the path telescopes along its chain of parents, so
+\[
+ \{x_0,\ldots,x_N\}\subset \{x_0\}+D_1+\cdots+D_K.
+\]
+The $R$-bound is subadditive under Minkowski sums.  By
+\eqref{eq:entropy}, $|D_k|\le|S_k|\lesssim 2^{kr}$, while
+$\sup_{d\in D_k}\|d\|\le\delta_{k-1}\lesssim 2^{-k}V$.  Hence
+Lemma~\ref{lem:finite-set-type} gives, with
+$\alpha=1/t-1/2$,
+\[
+ \cR(D_k)\lesssim T_t(X)V\,2^{-k(1-r\alpha)}.
+\]
+Condition \eqref{eq:variation-range} makes this geometric series summable,
+which yields \eqref{eq:variation-rbound}.  The case $V=0$ is immediate.
+\end{proof}
+
+The second ingredient is the Pisier--Xu strong variation inequality.  A Banach
+space is called $q_0$-convexifiable, for $2\le q_0<\infty$, if it admits an
+equivalent uniformly convex norm of power type $q_0$.  Equivalently, it
+satisfies the corresponding martingale cotype $q_0$ inequality.  Pisier--Xu proved that if $X$ is
+$q_0$-convexifiable and $q>q_0$, then for every $1<p<\infty$ and every finite
+$X$-valued martingale $M$,
+\begin{equation}\label{eq:PX}
+ \|V^q(M)\|_{L^p}
+ \lesssim_{p,q,X}
+ \left\|\sup_n\|M_n\|\right\|_{L^p}.
+\end{equation}
+See \cite[Theorem 4.2]{PisierXu1988}.
+
+\begin{corollary}[A type--martingale-cotype criterion]\label{cor:variation-rmf}
+Suppose $X$ has Rademacher type $t\in(1,2]$ and is $q_0$-convexifiable, where
+\begin{equation}\label{eq:criterion}
+ q_0<\frac{2t}{2-t},
+\end{equation}
+with the right side interpreted as $\infty$ when $t=2$.  Then $X$ has RMF.
+\end{corollary}
+
+\begin{proof}
+Choose $q$ with
+\[
+ q_0<q<\frac{2t}{2-t}.
+\]
+The upper inequality is exactly
+$q(1/t-1/2)<1$.  For a finite martingale
+$M_j=E_jf$, Theorem~\ref{thm:variation-rbound} gives pointwise
+\[
+ M_Rf=\cR(\{M_j\})\lesssim \|M_0\|+V^q(M).
+\]
+Take $L^p$ norms, apply \eqref{eq:PX}, and then Doob's maximal inequality:
+\[
+ \|M_Rf\|_p
+ \lesssim \|M_0\|_p+
+ \left\|\sup_j\|M_j\|\right\|_p
+ \lesssim_p \|f\|_{L^p(\Omega;X)}.
+\]
+The estimate is uniform in the length of the martingale.
+\end{proof}
+
+\begin{remark}
+Corollary~\ref{cor:variation-rmf} recovers the type-$2$ result and covers many
+spaces whose type and martingale cotype are sufficiently close.  It does not
+cover all UMD spaces.  For example, mixed-norm lattices can have type close to
+$1$ and martingale cotype very large, while still having RMF by the lattice
+argument or by repeated use of Theorem~\ref{thm:bochner}.  Thus the criterion is
+a genuine sufficient condition, not a characterization.
+\end{remark}
+
+\section{Why the remaining UMD step is difficult}
+
+A useful way to see the obstruction is to fix a finite martingale
+$M_j=E_jf$.  For every \emph{deterministic} $\lambda\in B_{\ell^2}$, Bourgain's
+vector-valued Stein inequality in a UMD space controls the randomized family of
+conditional expectations.  RMF asks for the pointwise operator norm, so the
+maximizing coefficients may depend on the terminal sample point:
+\[
+ \lambda=\lambda(\omega).
+\]
+Writing $M_j=\sum_{k\le j}d_k$ gives
+\[
+ \sum_j\eps_j\lambda_j(\omega)M_j(\omega)
+ =\sum_k\left(\sum_{j\ge k}\eps_j\lambda_j(\omega)\right)d_k(\omega).
+\]
+The coefficient of $d_k$ is not predictable; it can depend on all future
+martingale differences through $\lambda(\omega)$.  The UMD martingale-transform
+inequality controls predictable multipliers, and this anticipative dependence is
+precisely what the straightforward proof does not handle.
+
+The closure results suggest a structural route: show that every UMD space lies
+in the closure of the known RMF classes under subquotients, interpolation,
+Bochner spaces, and finite representability.  No such structural theorem is
+currently known.  A complementary negative route is
+Proposition~\ref{prop:finite-dichotomy}: construct uniformly UMD
+finite-dimensional spaces with diverging RMF constants.  No such sequence
+was found in this investigation.
+
+\section{Consequences for the source Kato theorem}
+
+Let $\mathcal C$ be the smallest class containing the RMF examples in
+\cite{HMP} and closed under:
+\begin{itemize}[nosep]
+\item closed subspaces and quotients;
+\item complex interpolation;
+\item Bochner $L^q$ formation for $1<q<\infty$;
+\item the locality operation of Theorem~\ref{thm:finite-rep}, whenever the
+distortion and RMF constants are uniform.
+\end{itemize}
+Then every member of $\mathcal C$ has RMF.  The Banach-valued Kato theorem of
+\cite{HMP} therefore applies whenever the UMD space $X$ and its dual $X^*$
+belong to this enlarged class.
+
+This extends the supplied packet, but it still does not show that all UMD spaces
+belong to $\mathcal C$.
+
+\section{Final assessment}
+
+The supplied partial result is mathematically sound after the two repairs given
+above.  The quotient and interpolation claims are stronger than what is
+explicitly stated in the standard RMF references I located, although the
+subspace claim is known.  The additional Bochner and finite-representability
+closure theorems, the finite-dimensional dichotomy, and the variation criterion
+substantially enlarge the partial result.
+
+No full proof of UMD $\Rightarrow$ RMF and no UMD counterexample was obtained.
+The most concrete next target is the finite-dimensional quantitative problem in
+Proposition~\ref{prop:finite-dichotomy}.
+
+\begin{thebibliography}{99}
+
+\bibitem{AmentaUraltsev2020}
+A. Amenta and G. Uraltsev,
+\emph{Banach-valued modulation invariant Carleson embeddings and outer-$L^p$
+spaces: the Walsh case},
+J. Fourier Anal. Appl. \textbf{26} (2020), article 53.
+
+\bibitem{DPLMV2022}
+F. Di Plinio, K. Li, H. Martikainen, and E. Vuorinen,
+\emph{Banach-valued multilinear singular integrals with modulation invariance},
+Int. Math. Res. Not. IMRN (2022), no. 7, 5256--5317.
+
+\bibitem{HMP}
+T. Hyt\"onen, A. McIntosh, and P. Portal,
+\emph{Kato's square root problem in Banach spaces},
+J. Funct. Anal. \textbf{254} (2008), 675--726;
+arXiv:math/0703012.
+
+\bibitem{HK2011}
+T. Hyt\"onen and M. Kemppainen,
+\emph{On the relation of Carleson's embedding and the maximal theorem in the
+context of Banach space geometry},
+Math. Scand. \textbf{109} (2011), 269--284.
+
+\bibitem{Kemppainen2011}
+M. Kemppainen,
+\emph{On the Rademacher maximal function},
+Studia Math. \textbf{203} (2011), 1--31.
+
+\bibitem{Lorist2021}
+E. Lorist,
+\emph{On pointwise $\ell^r$-sparse domination in a space of homogeneous type},
+J. Geom. Anal. \textbf{31} (2021), 9366--9405.
+
+\bibitem{PisierXu1988}
+G. Pisier and Q. Xu,
+\emph{The strong $p$-variation of martingales and orthogonal series},
+Probab. Theory Related Fields \textbf{77} (1988), 497--514.
+
+\bibitem{UrbinaRios2025}
+W. Urbina-Romero and R. Rios,
+\emph{An Introduction to the Modern Martingale Theory and Applications: An
+Analytic View},
+Texts in Applied Mathematics 81, Springer, 2025, Chapter 5.
+
+\end{thebibliography}
+
+\end{document}

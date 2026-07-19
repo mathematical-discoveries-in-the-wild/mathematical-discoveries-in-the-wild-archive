@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\cnull}{c_0}
+\newcommand{\Sch}{\mathcal S}
+\newcommand{\Range}{\mathcal R}
+
+\title{Counterexample to the \(c_0\) Vector-Measure Range Problem}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Jose Rodriguez, \emph{Open problems in Banach spaces and
+measure theory}. The arXiv identifier is 1607.07787.
+
+Problem 4.2 appears on PDF page 12 and is attributed there to Anantharaman
+and Diestel:
+\begin{quote}
+Let \(K\) be a weakly compact subset of \(c_0\). Is \(K\) contained in the
+range of a \(c_0\)-valued vector measure?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Counterexample}
+
+Let
+\[
+\Sch=\{\varnothing\}\cup\{F\subseteq\N: 0<|F|\le \min F\}.
+\]
+For \(F\in\Sch\), write \(1_F\in c_0\) for its characteristic vector. Define
+\[
+K_{\Sch}=\{1_F:F\in\Sch\}\subseteq c_0.
+\]
+
+\begin{theorem}
+The set \(K_{\Sch}\) is weakly compact in \(c_0\), but it is not contained in
+the range of any countably additive \(c_0\)-valued vector measure.
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+The Schreier family is compact as a family of finite subsets of \(\N\), so
+\(K_{\Sch}\) is weakly compact in \(c_0\). Suppose nevertheless that
+\(K_{\Sch}\subseteq\Range(\nu)\) for a \(c_0\)-valued vector measure \(\nu\).
+The coordinate scalar measures \(\mu_n=e_n^*\nu\) satisfy
+\(\mu_n(A)\to0\) for every measurable set \(A\). Nikodym boundedness and a
+control-measure construction turn them into a bounded weakly null sequence
+\((g_n)\) in some \(L_1(\lambda)\).
+
+The range containment of all Schreier vectors forces the \(L_1\)-norms of
+Schreier averages of \((g_n)\) to stay at least \(1/2\). This contradicts
+Szlenk's theorem that \(L_1(\lambda)\) has the weak Banach-Saks property.
+
+\section*{Proof}
+
+\begin{lemma}
+\(K_{\Sch}\) is weakly compact in \(c_0\).
+\end{lemma}
+
+\begin{proof}
+Identify subsets of \(\N\) with points of \(\{0,1\}^{\N}\). The family
+\(\Sch\) is closed in \(\{0,1\}^{\N}\). Indeed, if a net from \(\Sch\)
+converged pointwise to an infinite set \(M\), and \(m=\min M\), then eventually
+the first \(m+1\) elements of \(M\) would all belong to the approximating
+finite set, contradicting \(|F|\le \min F=m\). Thus \(\Sch\) is compact.
+
+On bounded subsets of \(c_0\), the weak topology agrees with coordinatewise
+convergence. One implication is immediate. Conversely, if a bounded net
+converges coordinatewise, then it converges against every \(\ell_1\) functional
+by dominated convergence. Hence the compact set \(K_{\Sch}\), equipped with
+coordinatewise convergence, is weakly compact in \(c_0\).
+\end{proof}
+
+\begin{lemma}[necessary \(L_1\) domination]
+Let \(\nu:\Sigma\to c_0\) be a countably additive vector measure and put
+\(\mu_n=e_n^*\nu\). If \(K_{\Sch}\subseteq\Range(\nu)\), then there is a
+finite positive measure \(\lambda\) and a bounded weakly null sequence
+\((g_n)\subseteq L_1(\lambda)\) such that, for every finitely supported
+non-negative scalar sequence \((a_n)\),
+\[
+\sup_{F\in\Sch}\sum_{n\in F} a_n
+\le
+\left\|\sum_n a_n g_n\right\|_{L_1(\lambda)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(\nu(A)\in c_0\) for every \(A\in\Sigma\), we have
+\[
+\mu_n(A)\to0\quad\text{for every }A\in\Sigma.
+\]
+By the Nikodym boundedness theorem,
+\[
+M:=\sup_n |\mu_n|(\Omega)<\infty.
+\]
+Define a finite positive measure
+\[
+\lambda=\sum_{n=1}^{\infty}2^{-n}\frac{|\mu_n|}{1+|\mu_n|(\Omega)}.
+\]
+Then each \(\mu_n\) is absolutely continuous with respect to \(\lambda\).
+Let \(g_n=d\mu_n/d\lambda\). We have
+\(\|g_n\|_{L_1(\lambda)}=|\mu_n|(\Omega)\le M\).
+
+For every \(A\in\Sigma\),
+\[
+\int_A g_n\,d\lambda=\mu_n(A)\to0.
+\]
+Therefore \(\int s g_n\,d\lambda\to0\) for every simple function \(s\). Since
+simple functions are uniformly dense in \(L_\infty(\lambda)\) and the
+\(g_n\)'s are \(L_1\)-bounded, it follows that \(g_n\to0\) weakly in
+\(L_1(\lambda)\).
+
+Now fix \(F\in\Sch\). By the range-containment assumption, choose
+\(A_F\in\Sigma\) such that \(\nu(A_F)=1_F\). Thus
+\[
+\mu_n(A_F)=
+\begin{cases}
+1,& n\in F,\\
+0,& n\notin F.
+\end{cases}
+\]
+For any finitely supported non-negative scalar sequence \((a_n)\),
+\[
+\sum_{n\in F}a_n
+=\int_{A_F}\sum_n a_n g_n\,d\lambda
+\le
+\left\|\sum_n a_n g_n\right\|_{L_1(\lambda)}.
+\]
+Taking the supremum over \(F\in\Sch\) proves the domination estimate.
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+The weak compactness has already been proved. Suppose, toward a contradiction,
+that \(K_{\Sch}\subseteq\Range(\nu)\) for some \(c_0\)-valued vector measure
+\(\nu\). Let \((g_n)\subseteq L_1(\lambda)\) be the bounded weakly null
+sequence supplied by the previous lemma.
+
+By Szlenk's weak Banach-Saks theorem for \(L_1\), there is a subsequence
+\((g_{n_j})\) such that
+\[
+\left\|\frac1m\sum_{j=1}^m g_{n_j}\right\|_{L_1(\lambda)}\longrightarrow0.
+\]
+We show that this is impossible. Fix \(m\ge2\), set
+\(\ell=\lfloor m/2\rfloor+1\), and let
+\[
+F_m=\{n_{\ell},n_{\ell+1},\dots,n_m\}.
+\]
+Then
+\[
+|F_m|=m-\ell+1\le \ell\le n_\ell=\min F_m,
+\]
+so \(F_m\in\Sch\). Applying the domination lemma to the coefficients
+\[
+a_n=
+\begin{cases}
+1/m,& n\in\{n_1,\dots,n_m\},\\
+0,&\text{otherwise},
+\end{cases}
+\]
+gives
+\[
+\left\|\frac1m\sum_{j=1}^m g_{n_j}\right\|_{L_1(\lambda)}
+\ge
+\sum_{n\in F_m}a_n
+=\frac{|F_m|}{m}\ge\frac12.
+\]
+This contradicts the norm convergence of the Cesaro means to \(0\). Hence no
+such vector measure \(\nu\) exists.
+\end{proof}
+
+\section*{Consequences for Problem 4.2}
+
+The set \(K_{\Sch}\) is a weakly compact subset of \(c_0\) which is not
+contained in the range of any \(c_0\)-valued vector measure. Thus the
+Anantharaman-Diestel problem quoted as Problem 4.2 in the source paper has a
+negative answer.
+
+This also explains why the simpler positive examples are misleading. The set
+\(\{0,e_1,e_2,\ldots\}\) can be put in a range using Rademacher functions, and
+norm-compact subsets can be put in a range by coordinate boxes. The Schreier
+compactum forces uniformly large finite Schreier averages at arbitrarily far
+coordinates; this is exactly what the weak Banach-Saks theorem in \(L_1\)
+rules out for coordinate measures of a hypothetical range.
+
+\section*{Novelty and Search Notes}
+
+Before promoting this packet, the run indexes were searched for
+arXiv:1607.07787, ``Anantharaman-Diestel'', ``weakly compact subset of c0'',
+``range of a c0-valued vector measure'', ``Schreier'', and vector-measure
+range keywords. The only exact local hit was the earlier partial packet for
+norm-compact sets and \(\{0,e_n\}\).
+
+External searches on June 15, 2026 for exact phrases from Problem 4.2 and for
+Anantharaman-Diestel/vector-measure range variants did not reveal a later
+published answer. A related 2024 paper of Rodriguez on vector measures with
+values in \(c_0(\kappa)\) was inspected; it records useful coordinate
+criteria for \(c_0(\kappa)\)-valued vector measures, but it does not answer
+Problem 4.2. The present proof uses only classical tools: Nikodym boundedness,
+Radon-Nikodym densities with respect to a common finite control measure, and
+Szlenk's weak Banach-Saks theorem for \(L_1\).
+
+\section*{Human Review Recommendation}
+
+The critical line to check is the necessary \(L_1\)-domination lemma. In
+particular, verify that pointwise null coordinate measures of a
+\(c_0\)-valued vector measure become a bounded weakly null sequence in a
+single \(L_1(\lambda)\), and that range containment of every Schreier vector
+gives the stated lower estimate. The final contradiction with Szlenk's theorem
+is then immediate.
+
+\begin{thebibliography}{9}
+\bibitem{Rodriguez}
+J. Rodriguez,
+\emph{Open problems in Banach spaces and measure theory},
+arXiv:1607.07787.
+
+\bibitem{DiestelUhl}
+J. Diestel and J. J. Uhl, Jr.,
+\emph{Vector Measures},
+Mathematical Surveys, No. 15, American Mathematical Society, 1977.
+
+\bibitem{Schreier}
+J. Schreier,
+\emph{Ein Gegenbeispiel zur Theorie der schwachen Konvergenz},
+Studia Math. \textbf{2} (1930), 58--62.
+
+\bibitem{Szlenk}
+W. Szlenk,
+\emph{Sur les suites faiblement convergentes dans l'espace \(L\)},
+Studia Math. \textbf{25} (1965), 337--341.
+
+\bibitem{RodriguezC0Kappa}
+J. Rodriguez,
+\emph{On vector measures with values in \(c_0(\kappa)\)},
+arXiv:2404.05407.
+\end{thebibliography}
+
+\end{document}

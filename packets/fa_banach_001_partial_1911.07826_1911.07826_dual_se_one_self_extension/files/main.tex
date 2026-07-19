@@ -1,0 +1,212 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\se}{se}
+
+\title{Bidual-Complemented Spaces With \texorpdfstring{$\se(X)=1$}{se(X)=1} Have the Self-Extension Property}
+\author{FA Banach automatic math run}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Partial result, likely valid. This proves a bidual-complemented subcase of an
+open question from Garcia-Gutierrez, Garcia Pacheco, Piniella, and Rambla-Barreno
+\cite{GGPPR}.
+
+\paragraph{Source question.}
+The source paper defines a Banach space $X$ to be $k$-self-extensible if, for
+every subspace $Y\subseteq X$ and every bounded linear operator $T:Y\to Y$, one
+can extend $T$ to an operator $S:X\to X$ satisfying
+\[
+  \|S\|\leq k\|T\|.
+\]
+It then sets
+\[
+  \se(X)=\inf\{k\geq 1: X\text{ is }k\text{-self-extensible}\}.
+\]
+After Corollary 5.4, the paper asks whether $X$ has the self-extension property
+whenever $\se(X)=1$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The finite-dimensional proof in the source passes from almost isometric
+extensions to an exact extension by compactness of bounded sets in
+$\mathcal L(X,X)$. Infinite-dimensional operator balls are not norm compact, so
+that argument does not directly survive.
+
+For an arbitrary Banach space $X$, the canonical embedding $J_X:X\to X^{**}$
+puts the values of almost optimal extensions inside weak-star compact balls of
+$X^{**}$. For a fixed subspace $Y$ and operator $T:Y\to Y$, choose extensions
+$S_n:X\to X$ with
+\[
+  \|S_n\|\leq (1+1/n)\|T\|.
+\]
+The family $(J_XS_nx)_{x\in X}$ has a pointwise weak-star cluster subnet in
+$X^{**}$. The cluster point is a norm-preserving extension $R:X\to X^{**}$.
+If there is a norm-one projection $P:X^{**}\to J_X(X)$, then $P\circ R$ lands
+back in $X$ without increasing the norm. Thus the true obstruction to the
+arbitrary case is not the compactness step, which always gives an $X^{**}$-valued
+operator, but the lack of an exact contractive projection back to $X$.
+
+\section*{Theorem}
+
+\begin{theorem}
+Let $X$ be a Banach space that is 1-complemented in its bidual; namely, suppose
+there is a norm-one projection $P:X^{**}\to J_X(X)$, where
+$J_X:X\to X^{**}$ is the canonical embedding. If $\se(X)=1$, then $X$ has the
+self-extension property. Equivalently, for every subspace $Y\subseteq X$ and
+every bounded linear operator $T:Y\to Y$, there is a bounded linear operator
+$S:X\to X$ such that $S|_Y=T$ and $\|S\|=\|T\|$.
+\end{theorem}
+
+\begin{proof}
+It is enough to consider closed subspaces. Indeed, if $Y$ is not closed and
+$T:Y\to Y$ is bounded, then $T$ extends uniquely to a bounded operator
+$\overline T:\overline Y\to \overline Y$ with the same norm, and any extension
+of $\overline T$ restricts to an extension of $T$.
+
+Fix a closed subspace $Y\subseteq X$ and $T\in\mathcal L(Y,Y)$. The case
+$T=0$ is immediate, so assume $T\neq 0$. Since $\se(X)=1$, for each positive
+integer $n$ there is an extension $S_n\in\mathcal L(X,X)$ of $T$ with
+\[
+  \|S_n\|\leq (1+1/n)\|T\|.
+\]
+Put $C=2\|T\|$. For each $x\in X$, the set
+\[
+  K_x=C\|x\| B_{X^{**}}
+\]
+is compact for the weak-star topology $\sigma(X^{**},X^*)$ by
+Banach--Alaoglu. Hence the product
+\[
+  K=\prod_{x\in X} K_x
+\]
+is compact by Tychonoff's theorem. The points
+\[
+  \Phi_n=(J_XS_nx)_{x\in X}\in K
+\]
+therefore have a convergent subnet, say $\Phi_{n_\alpha}\to \Phi=(u_x)_{x\in X}$
+in the product weak-star topology. Along such a subnet, $n_\alpha\to\infty$ in
+the usual cofinal sense.
+
+Define $R:X\to X^{**}$ by $Rx=u_x$. We first check linearity. Let $a,b$ be scalars
+and $x,z\in X$. For every $x^*\in X^*$,
+\[
+\begin{aligned}
+  u_{ax+bz}(x^*)
+  &=\lim_\alpha x^*(S_{n_\alpha}(ax+bz)) \\
+  &=a\lim_\alpha x^*(S_{n_\alpha}x)
+    +b\lim_\alpha x^*(S_{n_\alpha}z) \\
+  &=(aRx+bRz)(x^*).
+\end{aligned}
+\]
+Since $X^*$ separates points of $X^{**}$, this gives
+$R(ax+bz)=aRx+bRz$.
+
+Next, $R$ extends $J_XT$. If $y\in Y$, then $S_ny=Ty$ for every $n$, hence
+$Ry=J_XTy$.
+
+Finally we prove the norm estimate. Fix $x\in X$ and $\varepsilon>0$. Since
+$n_\alpha\to\infty$, eventually
+\[
+  \|J_XS_{n_\alpha}x\|\leq (1+\varepsilon)\|T\|\,\|x\|.
+\]
+The ball $(1+\varepsilon)\|T\|\,\|x\|B_{X^{**}}$ is weak-star closed, so the
+weak-star limit $Rx$ belongs to it. Therefore
+\[
+  \|Rx\|\leq (1+\varepsilon)\|T\|\,\|x\|.
+\]
+Letting $\varepsilon\downarrow 0$ yields $\|Rx\|\leq \|T\|\,\|x\|$ for every
+$x\in X$, so $\|R\|\leq\|T\|$.
+
+Let $Q=J_X^{-1}P:X^{**}\to X$, where $J_X^{-1}$ is the inverse isometry from
+$J_X(X)$ onto $X$. Define $S=Q\circ R$. Then
+\[
+  \|S\|\leq \|Q\|\|R\|\leq \|T\|.
+\]
+If $y\in Y$, then $Ry=J_XTy$ and $QJ_XTy=Ty$, so $S|_Y=T$. Hence also
+$\|S\|\geq \|T\|$, and therefore $\|S\|=\|T\|$.
+\end{proof}
+
+\begin{corollary}
+If $X$ is a dual Banach space and $\se(X)=1$, then $X$ has the self-extension
+property.
+\end{corollary}
+
+\begin{proof}
+Write $X=E^*$. Then $X^{**}=E^{***}$. The restriction map
+\[
+  E^{***}\longrightarrow E^*,\qquad \Phi\mapsto \Phi|_E,
+\]
+has norm one and restricts to the identity on the canonical copy of $E^*$ in
+$E^{***}$. Thus $X$ is 1-complemented in $X^{**}$, and the theorem applies.
+\end{proof}
+
+\section*{Verification Notes and Limitations}
+
+The proof uses only Banach--Alaoglu, Tychonoff compactness, weak-star
+closedness of norm balls in $X^{**}$, and the assumed norm-one projection from
+$X^{**}$ onto $X$. It does not require the extensions $S_n$ to be weak-star
+continuous; it only takes weak-star limits of their point values after applying
+the canonical embedding into $X^{**}$.
+
+This is a partial answer to the source question. It covers all dual Banach
+spaces, all reflexive spaces, and more generally every Banach space that is
+contractively complemented in its bidual. It does not settle the same question
+for arbitrary Banach spaces. It also does not address the two other source
+questions about hyperplanes or spaces satisfying $\se(X)=\infty$.
+
+\section*{Novelty Check}
+
+The lightweight run indexes contained no exact entry for arXiv:1911.07826.
+Local searches for the source title, self-extension property, self-extension
+coefficient, $k$-self-extensible spaces, and $\se(X)=1$ found only the source
+paper and unrelated occurrences. Web searches for the same terms, with
+``dual'', ``bidual'', and ``reflexive'' variants, found the source paper
+\cite{GGPPR} and the earlier Lyapunov/self-extension paper \cite{LPR}, but no
+exact later answer to the bidual-complemented subcase. Novelty confidence is
+therefore bounded rather than absolute.
+
+\section*{Human Review Recommendation}
+
+Check that the definition of subspace intended in the source permits the
+initial closure reduction. If the source convention silently restricts to
+closed subspaces, the reduction is unnecessary and the proof begins after it.
+The main compactness step should be reviewed by verifying that the chosen
+subnet has indices tending to infinity, so that the final norm of the
+$X^{**}$-valued extension is exactly $\|T\|$, not merely $2\|T\|$. The final
+projection step is exactly where the arbitrary Banach-space case remains open.
+
+\begin{thebibliography}{9}
+
+\bibitem{GGPPR}
+J. B. Garcia-Gutierrez, F. J. Garcia Pacheco, P. Piniella, and
+F. Rambla-Barreno,
+\emph{Non-Hilbert Banach spaces with the self-extension property},
+arXiv:1911.07826, 2019/2021.
+
+\bibitem{LPR}
+K. Loskot, A. Polanski, and R. Rudnicki,
+\emph{Further comments on: Vector norms as Lyapunov functions for linear systems},
+IEEE Transactions on Automatic Control 43 (1998), no. 2, 289--291.
+
+\bibitem{Rudin}
+W. Rudin,
+\emph{Functional Analysis}, 2nd ed.,
+McGraw--Hill, 1991.
+
+\end{thebibliography}
+
+\end{document}

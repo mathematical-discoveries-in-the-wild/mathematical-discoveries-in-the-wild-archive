@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\calG}{\mathcal G}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\fp}{f_p}
+
+\title{A logarithmic-democracy obstruction for the power-profile greedy question}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{2026-06-21}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+The source paper is Pablo M. Berna and Hung Viet Chu,
+\emph{On Some Characterizations of Greedy-type Bases}, arXiv:2201.12029.
+For a function \(f:\N\to\mathbb R\), and a finite set
+\(A=\{n_1<\cdots<n_m\}\), write
+\[
+        1_{f,A}=\sum_{j=1}^m f(j)e_{n_j},
+\]
+and
+\[
+        \calD_m^f(x)=
+        \inf\{ d(x,[1_{f,A}]): A\subset\N,\ |A|=m\}.
+\]
+A basis is \(f\)-greedy if there is \(C_f\) such that
+\[
+        \|x-\calG_m(x)\|\le C_f \calD_m^f(x)
+        \qquad (x\in X,\ m\in\N).
+        \tag{1}
+\]
+The first future-research question in the source asks for a characterization
+of those functions \(f\) for which (1) implies ordinary greediness.  The source
+proves this for regular \(f\), constructs non-greedy examples for sparse
+\(f\), and explicitly points to
+\[
+        f(n)=n^{-p},\qquad p>0,
+\]
+as a class lying outside both results.
+
+\section*{Result}
+
+We do not settle the full power-profile problem.  The following partial result
+shows, however, that the power profiles already force a strong quantitative
+form of democracy.
+
+\begin{theorem}\label{thm:main}
+Let \(\mathcal B=(e_n)\) be a semi-normalized Schauder basis of a Banach
+space \(X\).  Fix \(p>0\) and put \(\fp(n)=n^{-p}\).  If \(\mathcal B\) is
+\(\fp\)-greedy with constant \(C_p\), then \(\mathcal B\) is suppression
+unconditional and there is a constant \(L\), depending only on \(p\), \(C_p\),
+and the semi-normalization constants of \(\mathcal B\), such that
+\[
+        \|1_A\|\le L\,\lceil \log_2(|A|+1)\rceil\, \|1_B\|
+        \tag{2}
+\]
+whenever \(A,B\subset\N\) are finite and \(|A|=|B|\ge 1\).
+\end{theorem}
+
+Thus any counterexample to the full question for \(f(n)=n^{-p}\) must be
+unconditional and can fail democracy by at most a logarithmic factor.
+
+\section*{Proof intuition}
+
+The source already observes that \(f\)-greediness implies unconditionality
+when \(f\) has no zero values.  The new point is that the power profile cannot
+hide large dyadic tail pieces.  If a block \(A\) has at least as many earlier
+coordinates \(C\) before it, then
+\[
+        x=1_{\fp,C\cup A}+\eta 1_B,
+        \qquad \fp(|C|+1)<\eta<\fp(|C|)
+\]
+has greedy set \(C\cup B\).  The greedy error is the power-weighted copy of
+\(A\), while \(1_{\fp,C\cup A}\) itself is an admissible one-dimensional
+competitor for \(\calD_m^{\fp}(x)\).  Since a dyadic tail of \(n^{-p}\) has
+first/last ratio at most \(2^p\), every dyadic tail piece of \(A\) is
+controlled by \(B\).  Summing the dyadic pieces costs only \(\log |A|\).
+
+\section*{Proof}
+
+Let
+\[
+        a=\inf_n \|e_n\|>0,\qquad b=\sup_n\|e_n\|<\infty.
+\]
+By Proposition 3.1 of the source paper, applied to the non-vanishing function
+\(\fp\), the basis is suppression unconditional.  Let \(K\) be a suppression
+unconditional constant.  We shall only use the two standard consequences
+\[
+        \|P_E x\|\le K\|x\|,
+        \qquad
+        \Big\|\sum_{n\in E} u_n e_n\Big\|
+        \le K\Big\|\sum_{n\in E} v_n e_n\Big\|
+        \quad\text{if } |u_n|\le |v_n|.
+        \tag{3}
+\]
+
+\begin{lemma}[tail-block estimate]\label{lem:tail}
+Let \(C,A,B\subset\N\) be pairwise disjoint finite sets with
+\[
+        |A|=|B|=r,\qquad |C|=s\ge r,\qquad \max C<\min A .
+\]
+Then
+\[
+        \|1_A\|\le C_p K\,2^p\,\|1_B\|.
+        \tag{4}
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(C\cup A=\{d_1<\cdots<d_{s+r}\}\).  Because \(\max C<\min A\), the
+points of \(C\) are \(d_1,\ldots,d_s\), and the points of \(A\) are
+\(d_{s+1},\ldots,d_{s+r}\).
+
+Choose \(\eta\) with
+\[
+        \fp(s+1)<\eta<\fp(s).
+\]
+For
+\[
+        x=1_{\fp,C\cup A}+\eta 1_B,
+\]
+the natural greedy set of order \(s+r\) is \(C\cup B\): the \(C\)-coefficients
+are at least \(\fp(s)\), the \(B\)-coefficients are \(\eta\), and the
+\(A\)-coefficients are at most \(\fp(s+1)\).  Hence
+\[
+        x-\calG_{s+r}(x)
+        =\sum_{j=1}^r \fp(s+j)e_{a_j},
+\]
+where \(A=\{a_1<\cdots<a_r\}\).  By (3),
+\[
+        \fp(s+r)\|1_A\|
+        \le
+        K\Big\|\sum_{j=1}^r \fp(s+j)e_{a_j}\Big\|
+        =
+        K\|x-\calG_{s+r}(x)\|.
+        \tag{5}
+\]
+On the other hand, \(1_{\fp,C\cup A}\) is an allowed competitor in
+\(\calD_{s+r}^{\fp}(x)\), so
+\[
+        \calD_{s+r}^{\fp}(x)
+        \le \|x-1_{\fp,C\cup A}\|
+        = \eta\|1_B\|.
+        \tag{6}
+\]
+Combining (1), (5), and (6), and then letting
+\(\eta\downarrow \fp(s+1)\), gives
+\[
+        \|1_A\|
+        \le C_pK\,\frac{\fp(s+1)}{\fp(s+r)}\,\|1_B\|.
+\]
+Since \(s\ge r\),
+\[
+        \frac{\fp(s+1)}{\fp(s+r)}
+        =
+        \left(\frac{s+r}{s+1}\right)^p
+        \le 2^p,
+\]
+which proves the lemma.
+\end{proof}
+
+\begin{lemma}[disjoint logarithmic democracy]\label{lem:disjoint}
+There is a constant \(L_0\) such that
+\[
+        \|1_A\|\le L_0\,\lceil\log_2(|A|+1)\rceil\,\|1_B\|
+        \tag{7}
+\]
+whenever \(A\cap B=\varnothing\) and \(|A|=|B|\ge 1\).
+\end{lemma}
+
+\begin{proof}
+Let \(m=|A|=|B|\), and write \(A=\{a_1<\cdots<a_m\}\).  The singleton term is
+controlled by
+\[
+        \|e_{a_1}\|\le b\le \frac{bK}{a}\|1_B\|.
+        \tag{8}
+\]
+For \(j\ge1\), define the dyadic tail pieces
+\[
+        A_j=\{a_{2^{j-1}+1},\ldots,a_{\min(2^j,m)}\},
+\]
+omitting empty sets.  Let \(r_j=|A_j|\).  The set
+\[
+        C_j=\{a_1,\ldots,a_{2^{j-1}}\}
+\]
+has cardinal \(2^{j-1}\ge r_j\) and lies before \(A_j\).  Choose any
+\(B_j\subset B\) with \(|B_j|=r_j\).  By Lemma \ref{lem:tail},
+\[
+        \|1_{A_j}\|\le C_pK2^p\|1_{B_j}\|
+        \le C_pK^2 2^p\|1_B\|.
+        \tag{9}
+\]
+There are at most \(\lceil\log_2(m+1)\rceil\) nonempty dyadic pieces, including
+the singleton piece accounted for in (8).  Summing (8) and (9) gives (7), for
+example with
+\[
+        L_0=\frac{bK}{a}+C_pK^2 2^p .
+\]
+\end{proof}
+
+We now pass from disjoint sets to arbitrary sets.  Let \(A,B\subset\N\) have
+\(|A|=|B|=m\).  Put \(I=A\cap B\), \(A_0=A\setminus B\), and
+\(B_0=B\setminus A\).  Then \(|A_0|=|B_0|\), and the latter two sets are
+disjoint.  If \(A_0=\varnothing\), there is nothing to prove.  Otherwise, by
+suppression unconditionality and Lemma \ref{lem:disjoint},
+\[
+\begin{aligned}
+        \|1_A\|
+        &\le \|1_I\|+\|1_{A_0}\|  \\
+        &\le K\|1_B\|
+          + L_0\lceil\log_2(|A_0|+1)\rceil\,\|1_{B_0}\| \\
+        &\le \bigl(K+K L_0\lceil\log_2(m+1)\rceil\bigr)\|1_B\|.
+\end{aligned}
+\]
+Increasing the constant gives (2).  This proves Theorem \ref{thm:main}.
+
+\section*{Verification notes and limitations}
+
+The proof uses only the source paper's Proposition 3.1, the definition of
+\(f\)-greediness, and elementary consequences of suppression unconditionality.
+No computational check is involved.
+
+The result is not a full solution of the source question for \(f(n)=n^{-p}\).
+It proves that power-profile \(f\)-greedy bases have at most logarithmic
+democracy distortion.  The remaining frontier is whether the logarithmic loss
+can be removed, or whether there exists an \(\fp\)-greedy basis whose democracy
+constants grow logarithmically.
+
+\section*{Novelty check}
+
+The run indexes were searched for arXiv:2201.12029, \(f\)-greedy,
+\(\calD_m^f\), power-profile terminology, and \(1/n^p\).  Only an earlier
+failed attempt for this same target was found.  Web searches on 2026-06-21 for
+exact phrases around ``2201.12029'', ``f-greedy'', ``D\_m\^f'', and
+``1/n\^p'' did not find a later resolution or a matching logarithmic-democracy
+statement.
+
+\section*{References}
+
+\begin{enumerate}[label={[\arabic*]}]
+\item P. M. Berna and H. V. Chu,
+      \emph{On Some Characterizations of Greedy-type Bases},
+      arXiv:2201.12029.
+\item S. V. Konyagin and V. N. Temlyakov,
+      A remark on greedy approximation in Banach spaces,
+      East J. Approx. 5 (1999), 365--379.
+\end{enumerate}
+
+\end{document}

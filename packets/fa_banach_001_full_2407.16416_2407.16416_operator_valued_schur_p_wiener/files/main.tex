@@ -1,0 +1,353 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{leftmargin=1.5em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\BH}{\mathcal B(\mathcal H)}
+\newcommand{\BB}{\mathfrak B}
+\newcommand{\Spw}{\mathcal S^p_w}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\snorm}[2]{\left\lVert #1\right\rVert_{#2}}
+\newcommand{\rad}{r}
+
+\begin{document}
+
+\begin{center}
+{\Large Full Solution Packet}\\[0.3em]
+{\large Operator-valued Schur classes satisfy Sun's Wiener lemma}\\[0.45em]
+\textbf{Status:} candidate full result, likely valid\\
+\textbf{Target:} Remark 3.11(2) of arXiv:2407.16416
+\end{center}
+
+\section*{Source and exact future-work problem}
+
+The source is K\"ohldorfer--Balazs,
+\emph{Wiener pairs of Banach algebras of operator-valued matrices},
+arXiv:2407.16416, published in the \emph{Journal of Mathematical Analysis
+and Applications} 549 (2025), 129525 \cite{KB}.  On page 18, Remark
+3.11(2) says:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In text: Sun proved inverse-closedness of the scalar-valued versions of
+$\mathcal S^p_\nu(X)$ in $\mathcal B(\ell^2(X;\mathbb C))$.  The authors
+expect analogous results for $\BH$-valued matrices and leave the detailed
+investigation to future research.
+
+We prove the operator-valued analogue of Sun's theorem under his original
+admissibility hypothesis: the weight is $(p,2)$-admissible.  The local
+dimension of $\mathcal H$ is arbitrary, including infinite.
+
+\section*{Definitions and hypotheses}
+
+Let $(X,\rho)$ be a discrete pseudometric space whose counting measure has
+polynomial growth, and let $\mathcal H$ be a Hilbert space.  For
+$1\le p\le\infty$ and a symmetric weight $w$ on $X\times X$, define
+$\Spw(X;\BH)$ to consist of block matrices $A=(A_{xy})_{x,y\in X}$ with
+$A_{xy}\in\BH$ and
+\[
+ \snorm{A}{p,w}:=
+ \max\left\{
+   \sup_x\norm{\bigl(\norm{A_{xy}}w(x,y)\bigr)_y}_{\ell^p},
+   \sup_y\norm{\bigl(\norm{A_{xy}}w(x,y)\bigr)_x}_{\ell^p}
+ \right\}<\infty.
+\]
+For $p=\infty$ this has the usual supremum interpretation.  This is the
+operator-valued space $\mathcal S^p_\nu(X)$ in \cite{KB} when
+$w(x,y)=\nu(x-y)$.
+
+We use Sun's definition of a $(p,r)$-admissible weight
+\cite[Definition in Section 2.2]{Sun}.  Thus there are a companion weight
+$v$, constants $D>0$ and $0<\theta<1$, and, writing $p'$ and $r'$ for
+conjugate exponents, the following properties:
+\begin{align}
+ w(x,y)&\le D\bigl(w(x,z)v(z,y)+v(x,z)w(z,y)\bigr),
+                                                        \label{eq:weight-product}\\
+ \sup_x\norm{(v/w)(x,\cdot)}_{p'}
+ +\sup_y\norm{(v/w)(\cdot,y)}_{p'}&<\infty,             \label{eq:embedding-weight}\\
+ \inf_{\tau>0}\bigl(a_{r'}(\tau)+b_{p'}(\tau)t\bigr)
+ &\le D t^\theta\qquad(t\ge1).                         \label{eq:interpolation-weight}
+\end{align}
+Here $a_{r'}(\tau)$ is the uniform $\ell^{r'}$ size of $v$ on the
+$\rho$-ball of radius $\tau$, in rows and columns, while $b_{p'}(\tau)$ is
+the uniform $\ell^{p'}$ size of $v/w$ outside that ball, again in rows and
+columns.  These are exactly Sun's formulas (2.8)--(2.12); we have recalled
+their content to make clear where the proof uses the hypothesis.
+
+Sun notes immediately after the definition that $(p,r)$-admissibility
+implies $(p,\widetilde r)$-admissibility whenever $r\le\widetilde r$.  The
+single crucial move below is therefore legitimate:
+\begin{equation}
+        (p,2)\text{-admissible}\quad\Longrightarrow\quad
+        (p,\infty)\text{-admissible}.
+                                                        \label{eq:move-r}
+\end{equation}
+
+\section*{Proof intuition}
+
+Sun's scalar proof controls a local row/column norm of a matrix power by an
+ambient operator norm.  At exponent $r=2$, its delta-vector argument is false
+for operator blocks: many norm-one blocks in one row may act on mutually
+orthogonal directions, so their scalar $\ell^2$ norm can be large although
+the block-row operator has norm one.
+
+The admissibility hypothesis contains the repair.  Run the same interpolation
+with auxiliary exponent $r=\infty$.  Every individual block is a coordinate
+compression of the global operator, hence
+\[
+        \sup_{x,y}\norm{T_{xy}}
+        \le \norm{T}_{\mathcal B(\ell^2(X;\mathcal H))}.
+\]
+This estimate is valid for arbitrary block size.  The resulting
+interpolation inequality makes $\Spw$ a differential subalgebra of the
+ambient operator algebra.  A dyadic spectral-radius argument and Hulanicki's
+lemma then give inverse-closedness.
+
+\section*{The differential estimate}
+
+Set
+\[
+        \BB=\mathcal B(\ell^2(X;\mathcal H)).
+\]
+
+\begin{lemma}[Operator-valued Sun estimate]\label{lem:differential}
+Assume that $w$ is $(p,2)$-admissible.  Then $\Spw(X;\BH)$ is a unital
+Banach $*$-algebra continuously embedded in $\BB$.  Moreover, for some
+constants $C>0$ and $0<\theta<1$ depending only on the admissibility data,
+\begin{equation}
+ \snorm{T^2}{p,w}
+ \le C\,\snorm{T}{p,w}^{,1+\theta}
+          \norm{T}_{\BB}^{,1-\theta}
+ \qquad(T\in\Spw).
+                                                        \label{eq:differential}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Completeness of the operator-valued space is Proposition 3.2 of \cite{KB}.
+We prove the algebra, embedding, and differential estimates.
+
+Matrix multiplication and \eqref{eq:weight-product}, followed by the standard
+weighted Jensen--Schur estimate for composing an $\ell^p$ row/column matrix
+with an $\ell^1$ row/column matrix, give the compensated product estimate
+\begin{equation}
+ \snorm{RS}{p,w}
+ \le C_0\bigl(
+       \snorm{R}{p,w}\snorm{S}{1,v}
+       +\snorm{R}{1,v}\snorm{S}{p,w}
+       \bigr).                                          \label{eq:product}
+\end{equation}
+This is Sun's estimate (3.3).  It remains valid for operator blocks because
+the only entrywise input is
+\[
+ \norm{(RS)_{xy}}
+ \le\sum_z\norm{R_{xz}}\norm{S_{zy}}.
+\]
+No commutativity is used.
+
+By H\"older's inequality and \eqref{eq:embedding-weight},
+\begin{equation}
+        \snorm{T}{1,v}\le C_1\snorm{T}{p,w}.             \label{eq:embedding}
+\end{equation}
+Since $v\ge1$, the operator-valued Schur test then yields
+\begin{equation}
+        \norm{T}_{\BB}\le C_1\snorm{T}{p,w}.            \label{eq:ambient-embedding}
+\end{equation}
+Equations \eqref{eq:product} and \eqref{eq:embedding} prove the Banach
+algebra property.  Symmetry of $w$ gives
+$\snorm{T^*}{p,w}=\snorm{T}{p,w}$, and the diagonal identity belongs to the
+algebra because $X$ has counting measure and $w(x,x)$ is uniformly bounded.
+
+We now use $(p,\infty)$-admissibility from \eqref{eq:move-r}.  Split each
+row and column of $T$ into $\rho\le\tau$ and $\rho>\tau$.  On the near part,
+use the block-compression estimate
+\begin{equation}
+ \norm{T_{xy}}
+ =\norm{P_xTP_y}\le\norm{T}_{\BB},                      \label{eq:block-compression}
+\end{equation}
+where $P_x$ is the coordinate projection onto the $x$-copy of $\mathcal H$.
+On the far part, use H\"older's inequality with $w$ and $v/w$.  Taking the
+row and column suprema gives
+\begin{equation}
+ \snorm{T}{1,v}
+ \le a_1(\tau)\norm{T}_{\BB}
+       +b_{p'}(\tau)\snorm{T}{p,w}.                     \label{eq:split}
+\end{equation}
+
+Let $K=\max\{1,C_1\}$ in \eqref{eq:ambient-embedding} and put
+$t=K\snorm{T}{p,w}/\norm{T}_{\BB}$ when $T\ne0$.  Then $t\ge1$.
+Take the infimum in \eqref{eq:split} and apply
+\eqref{eq:interpolation-weight}; enlarging constants to absorb $K$ gives
+\begin{equation}
+ \snorm{T}{1,v}
+ \le C_2\norm{T}_{\BB}^{,1-\theta}
+             \snorm{T}{p,w}^{\,\theta}.                 \label{eq:interpolation}
+\end{equation}
+The zero operator is trivial.  Finally apply \eqref{eq:product} with
+$R=S=T$ and then \eqref{eq:interpolation}.  This yields
+\eqref{eq:differential}.
+\end{proof}
+
+\section*{Main result}
+
+\begin{theorem}[Operator-valued Wiener lemma]\label{thm:main}
+Let $1\le p\le\infty$, let $(X,\rho)$ be a discrete pseudometric space with
+counting measure of polynomial growth, and let $w$ be a $(p,2)$-admissible
+weight in the sense of Sun.  For every Hilbert space $\mathcal H$,
+\[
+ \mathcal S^p_w(X;\BH)
+ \subseteq \mathcal B(\ell^2(X;\mathcal H))
+\]
+is inverse-closed.  Equivalently, if $A\in\mathcal S^p_w(X;\BH)$ is
+invertible on $\ell^2(X;\mathcal H)$, then
+\[
+        A^{-1}\in\mathcal S^p_w(X;\BH).
+\]
+The algebra $\mathcal S^p_w(X;\BH)$ is also symmetric.
+\end{theorem}
+
+\begin{proof}
+Write $\mathcal A=\Spw(X;\BH)$.  The continuous unital inclusion
+$\mathcal A\hookrightarrow\BB$ always gives
+\begin{equation}
+        \rad_{\BB}(T)\le\rad_{\mathcal A}(T).            \label{eq:easy-radius}
+\end{equation}
+We prove the reverse inequality.
+
+Apply Lemma \ref{lem:differential} to $T^{2^n}$.  With
+\[
+ A_n=\snorm{T^{2^n}}{p,w}^{1/2^n},
+ \qquad
+ B_n=\norm{T^{2^n}}_{\BB}^{1/2^n},
+ \qquad
+ \alpha=\frac{1+\theta}{2}<1,
+\]
+we obtain
+\begin{equation}
+ A_{n+1}
+ \le C^{1/2^{n+1}} A_n^\alpha B_n^{1-\alpha}.           \label{eq:dyadic}
+\end{equation}
+The sequence $(A_n)$ is bounded (equivalently, replace the algebra norm by
+an equivalent submultiplicative norm), and Gelfand's formula gives
+$B_n\to\rad_{\BB}(T)$.  If $\lambda>\rad_{\BB}(T)$, then $B_n\le\lambda$
+for all large $n$.  Taking the limsup in \eqref{eq:dyadic} yields
+\[
+ L\le L^\alpha\lambda^{1-\alpha},
+ \qquad L:=\limsup_n A_n.
+\]
+Thus either $L=0$ or $L\le\lambda$.  Letting
+$\lambda\downarrow\rad_{\BB}(T)$ gives
+\[
+        \rad_{\mathcal A}(T)\le\rad_{\BB}(T).
+\]
+Together with \eqref{eq:easy-radius}, the spectral radii agree (in
+particular, they agree for every self-adjoint $T\in\mathcal A$).
+
+Hulanicki's lemma for a unital Banach $*$-subalgebra of a $C^*$-algebra now
+implies that $\mathcal A$ is inverse-closed in $\BB$ and is symmetric; see
+\cite[Proposition 2.1]{KB}.  This proves the theorem.
+\end{proof}
+
+\begin{corollary}[Polynomial off-diagonal weights]\label{cor:polynomial}
+Let
+\[
+ d_X=\inf\{d:\ \#B_\rho(x,R)\le C R^d
+                    \text{ uniformly in }x,\ R\ge1\}.
+\]
+For $s>d_X(1-1/p)$, put $w_s(x,y)=(1+\rho(x,y))^s$.  Then
+$\mathcal S^p_{w_s}(X;\BH)$ is inverse-closed in
+$\mathcal B(\ell^2(X;\mathcal H))$.
+In particular, for a relatively separated $X\subset\mathbb R^d$, the
+sufficient condition $s>d(1-1/p)$ gives the operator-valued extension
+requested in Remark 3.11(2) of \cite{KB}.
+\end{corollary}
+
+\begin{proof}
+Sun's Example A.2 proves that $w_s$ is $(p,r)$-admissible under the displayed
+condition, hence in particular $(p,2)$-admissible.  Apply Theorem
+\ref{thm:main}.
+\end{proof}
+
+The same argument applies to the subexponential weights in Sun's Example
+A.3 (under its metric-space hypothesis).
+
+\section*{Verification notes}
+
+The proof was audited at the four places where scalar-to-block extensions
+can fail.
+
+\begin{itemize}
+\item The entrywise product estimate uses only
+      $\norm{RS}\le\norm R\norm S$ in $\BH$, so noncommutativity is harmless.
+\item The scalar $r=2$ delta-vector estimate was \emph{not} imported.  It is
+      replaced by $r=\infty$ and the exact compression inequality
+      \eqref{eq:block-compression}.
+\item Sun explicitly records the monotonic implication
+      $(p,2)$-admissible $\Rightarrow(p,\infty)$-admissible, so the changed
+      auxiliary exponent does not strengthen the theorem's hypothesis.
+\item The passage from the differential estimate to inverse-closedness is
+      the dyadic spectral-radius argument above followed by the same
+      Hulanicki lemma used in the source paper.
+\end{itemize}
+
+No computational or finite-dimensional test is used as evidence.  The proof
+is uniform in $\dim\mathcal H$.
+
+\section*{Novelty check and limitations}
+
+Before promotion, the run indexes were searched for arXiv:2407.16416,
+``Wiener pairs'', ``operator-valued Schur'', ``inverse-closed'', and
+``$\mathcal S^p_\nu$''.  No duplicate solution or attempt was found.
+
+A bounded web search on 2026-07-19 used the exact source title and phrases
+combining ``operator-valued'', ``Schur class'', ``Wiener lemma'', and
+``inverse-closed''.  It found the 2025 journal version of the source and the
+authors' arXiv:2501.09603 follow-up on the operator-valued Jaffard algebra,
+but no paper stating the $\mathcal S^p_w$ extension proved here.  The search
+also checked Sun's original 2007 paper and author-hosted PDF.  Novelty is
+therefore plausible, not certified.
+
+The theorem uses exactly the $(p,2)$-admissibility hypothesis of Sun's scalar
+result.  It does not claim inverse-closedness for arbitrary weights for which
+$\mathcal S^p_w$ is merely defined.  This matches the natural precise reading
+of the source's requested ``analogous results.''
+
+\section*{Human review recommendation}
+
+Send the packet to an expert in inverse-closed matrix algebras.  The most
+important review point is the interpolation step
+\eqref{eq:split}--\eqref{eq:interpolation}: verify the convention for Sun's
+$a_{r'}$ and $b_{p'}$ and the monotonic passage from $r=2$ to $r=\infty$.
+After that, the block-compression and spectral-radius arguments are
+dimension-free and elementary.
+
+\begin{thebibliography}{9}
+
+\bibitem{KB}
+Lukas K\"ohldorfer and Peter Balazs,
+\emph{Wiener pairs of Banach algebras of operator-valued matrices},
+J. Math. Anal. Appl. 549 (2025), 129525;
+arXiv:2407.16416.
+
+\bibitem{Sun}
+Qiyu Sun,
+\emph{Wiener's lemma for infinite matrices},
+Trans. Amer. Math. Soc. 359 (2007), 3099--3123.
+
+\end{thebibliography}
+
+\end{document}

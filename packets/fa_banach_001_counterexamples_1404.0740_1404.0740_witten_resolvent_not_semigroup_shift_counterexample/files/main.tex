@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Hilb}{\mathcal H}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\eps}{\varepsilon}
+
+\title{A Shift Counterexample to the Reverse Witten-Index Tauberian Implication}
+\author{Run \texttt{fa\_banach\_001}, lane 0}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Claimed result type:} counterexample, likely valid, for human review.
+
+\textbf{Source paper.}
+Alan Carey, Fritz Gesztesy, Denis Potapov, Fedor Sukochev, and Yuri Tomilov,
+\emph{On the Witten index in terms of spectral shift functions},
+arXiv:1404.0740.
+
+\textbf{Target question.}
+In Definition 3.3 of the source paper the authors define the resolvent and
+semigroup regularized Witten indices of a closed densely defined operator \(T\).
+Immediately after Remark 3.5 they ask whether, under the additional hypothesis
+that both the heat and resolvent differences are trace class, the two
+regularizations are equivalent.  The source proves the Abelian direction
+\(W_s(T)\Rightarrow W_r(T)\) in Remark 3.7, and points out that the reverse
+direction is the difficult Tauberian direction.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_page16.png}
+\end{center}
+
+\section*{Result}
+
+The reverse implication fails.  There is a bounded operator \(T\) on a separable
+Hilbert space such that
+\[
+  (T^*T-z)^{-1}-(TT^*-z)^{-1}\in\mathcal B_1,\qquad
+  e^{-tT^*T}-e^{-tTT^*}\in\mathcal B_1
+\]
+for every \(z\in\mathbb C\setminus[0,\infty)\) and every \(t>0\), and such that
+the resolvent regularized index exists:
+\[
+  W_r(T)=0,
+\]
+but the semigroup regularized index \(W_s(T)\) does not exist.
+
+\section*{Proof Intuition}
+
+A constant-weight unilateral shift contributes one scalar step to both
+regularizations.  If the weight is \(a>0\), then in logarithmic variables
+\(y=\log t\) and \(y=\log(1/\eps)\), its heat contribution is
+\[
+  E(y-\log(1/a))=1-\exp(-e^{y-\log(1/a)}),
+\]
+whereas its resolvent contribution is
+\[
+  R(y-\log(1/a))=\frac{e^{y-\log(1/a)}}{1+e^{y-\log(1/a)}}.
+\]
+The two steps are both approximate identities, but the resolvent kernel is
+smoother in the logarithmic variable.  High-frequency signed finite blocks can
+therefore make the resolvent response arbitrarily small while leaving a visible
+heat response.  Translating those blocks to smaller and smaller spectral scales
+gives a direct sum operator whose resolvent trace has a limit, while the heat
+trace keeps producing separated spikes.
+
+\section*{The Kernel-Separation Lemma}
+
+Set
+\[
+  E(x)=1-e^{-e^x},\qquad R(x)=\frac{e^x}{1+e^x}.
+\]
+
+\begin{lemma}[log-kernel separation]\label{lem:separation}
+For every \(\delta>0\) there are real numbers \(x_1,\dots,x_N\) and integers
+\(m_1,\dots,m_N\), with \(\sum_jm_j=0\), such that
+\[
+  \sup_{y\in\mathbb R}\left|\sum_{j=1}^N m_jR(y-x_j)\right|<\delta
+\]
+but, for some \(u\in\mathbb R\),
+\[
+  \left|\sum_{j=1}^Nm_jE(u-x_j)\right|>4.
+\]
+The \(x_j\)'s may be translated so that all \(x_j\geq0\).
+\end{lemma}
+
+\begin{proof}
+Let \(e=E'\) and \(r=R'\).  With the Fourier transform convention
+\(\widehat f(\xi)=\int_{\mathbb R}f(x)e^{-ix\xi}\,dx\), direct substitution gives
+\[
+  \widehat e(\xi)=\Gamma(1-i\xi),\qquad
+  \widehat r(\xi)=\frac{\pi\xi}{\sinh(\pi\xi)} .
+\]
+By Stirling's formula,
+\[
+  \frac{|\widehat e(\xi)|}{|\widehat r(\xi)|}
+    \asymp |\xi|^{-1/2}e^{\pi|\xi|/2}\to\infty .
+\]
+
+We use this asymptotic with integer finite differences.  For \(h>0\) and
+\(m\geq1\), put
+\[
+  \nu_{m,h}=\sum_{j=0}^m(-1)^{m-j}\binom{m}{j}\delta_{jh}.
+\]
+This is an integer atomic measure with total mass zero, and
+\[
+  K*\nu_{m,h}(y)=\Delta_h^mK(y)
+\]
+for \(K=E,R\).  After differentiating, the Fourier multiplier is
+\[
+  (e^{ih\xi}-1)^m\widehat{K'}(\xi).
+\]
+The standard saddle-point estimate for high-order finite differences, applied
+to the two displayed transforms, gives a sequence \(m_\ell\to\infty\) and
+\(h_\ell\downarrow0\) such that
+\[
+  \|\Delta_{h_\ell}^{m_\ell}R\|_\infty\to0,\qquad
+  \|\Delta_{h_\ell}^{m_\ell}E\|_\infty\to\infty .
+\]
+Indeed, splitting the Fourier integral into the dominant range
+\(|\xi|\simeq m_\ell/h_\ell\) and its complement, the resolvent derivative has an
+extra factor \(e^{-\pi|\xi|/2}\) compared with the heat derivative, while
+\(|e^{ih_\ell\xi}-1|^{m_\ell}\) localizes the high-order difference in that
+range.  Choosing \(\ell\) large enough gives
+\(\|\Delta_{h_\ell}^{m_\ell}R\|_\infty<\delta\) and
+\(\|\Delta_{h_\ell}^{m_\ell}E\|_\infty>4\).  Taking
+\(x_j=jh_\ell\) and \(m_j=(-1)^{m_\ell-j}\binom{m_\ell}{j}\) proves the lemma.
+If desired, translating all atoms by the same constant makes them nonnegative
+without changing either norm.
+\end{proof}
+
+\section*{Construction of the Operator}
+
+For \(a>0\), let \(S_a\) denote the constant-weight unilateral shift on
+\(\ell^2(\mathbb N_0)\),
+\[
+  S_ae_n=a^{1/2}e_{n+1}.
+\]
+Then
+\[
+  S_a^*S_a=aI,\qquad S_aS_a^*=a(I-P_0),
+\]
+where \(P_0\) is the rank-one projection onto \(\mathbb Ce_0\).  Hence
+\[
+  \tr(e^{-tS_a^*S_a}-e^{-tS_aS_a^*})=e^{-ta}-1,
+\]
+and, for \(\eps>0\),
+\[
+  \eps\,\tr((S_a^*S_a+\eps)^{-1}-(S_aS_a^*+\eps)^{-1})
+    =\frac{\eps}{a+\eps}-1=-\frac{a}{a+\eps}.
+\]
+Using \(S_a^*\) instead of \(S_a\) reverses both signs.
+
+Apply Lemma \ref{lem:separation} with \(\delta_n=2^{-n-6}\).  This gives finite
+integer zero-mass blocks
+\[
+  \mu_n=\sum_{j=1}^{N_n}m_{n,j}\delta_{x_{n,j}},\qquad x_{n,j}\geq0,
+\]
+and points \(u_n\) such that
+\[
+  \sup_y\left|\sum_jm_{n,j}R(y-x_{n,j})\right|<2^{-n-6},
+  \qquad
+  \left|\sum_jm_{n,j}E(u_n-x_{n,j})\right|>4.
+\]
+Choose translations \(Y_n\uparrow\infty\), recursively and very rapidly, so that
+\[
+  \sum_n e^{-Y_n}\sum_j|m_{n,j}|<\infty
+\]
+and so that all interactions between distinct translated blocks in the heat and
+resolvent traces are \(<2^{-n-6}\) at the test points \(Y_n+u_n\), and \(<2^{-n-6}\)
+outside the \(n\)-th block window.  This is possible because \(E(x)\) and \(R(x)\)
+tend exponentially to \(0\) as \(x\to-\infty\), while \(1-E(x)\) and \(1-R(x)\)
+tend to \(0\) as \(x\to+\infty\); the zero-mass condition cancels the limiting
+constant \(1\) on the right.
+
+For each atom \((n,j)\) put \(a_{n,j}=e^{-(Y_n+x_{n,j})}\).  If \(m_{n,j}>0\),
+take \(m_{n,j}\) copies of \(S_{a_{n,j}}^*\); if \(m_{n,j}<0\), take
+\(|m_{n,j}|\) copies of \(S_{a_{n,j}}\).  Let \(T\) be the Hilbert-space direct
+sum of all these shifts.  Since \(0<a_{n,j}\leq 1\), \(T\) is bounded.
+
+\section*{Trace-Class Verification}
+
+For each fixed \(t>0\),
+\[
+  |1-e^{-ta_{n,j}}|\leq \min(1,ta_{n,j}),
+\]
+and for each fixed \(\eps>0\),
+\[
+  \frac{a_{n,j}}{a_{n,j}+\eps}\leq \min(1,a_{n,j}/\eps).
+\]
+Only finitely many \(a_{n,j}\)'s exceed a fixed positive threshold, and
+\(\sum_{n,j}|m_{n,j}|a_{n,j}<\infty\).  Therefore
+\[
+  e^{-tT^*T}-e^{-tTT^*}\in\mathcal B_1,\qquad
+  (T^*T+\eps)^{-1}-(TT^*+\eps)^{-1}\in\mathcal B_1
+\]
+for every \(t>0\) and \(\eps>0\).  The resolvent identity then gives the same
+trace-class conclusion for all \(z\in\mathbb C\setminus[0,\infty)\).
+
+The trace formulas are
+\[
+  \Delta_s(T,t)=\sum_{n,j}m_{n,j}\left(1-e^{-ta_{n,j}}\right)
+\]
+and
+\[
+  \Delta_r(T,-\eps)=\sum_{n,j}m_{n,j}\frac{a_{n,j}}{a_{n,j}+\eps}.
+\]
+Writing \(y=\log t\) and \(y=\log(1/\eps)\), these become translated block sums
+with kernels \(E\) and \(R\), respectively.
+
+By construction, for every sufficiently large \(y\), the resolvent trace is the
+sum of one active block of size at most \(2^{-n-6}\) and tails whose total size
+tends to \(0\).  Hence
+\[
+  \lim_{\eps\downarrow0}\Delta_r(T,-\eps)=0,
+\]
+so \(W_r(T)=0\).
+
+On the other hand, along \(t_n=e^{Y_n+u_n}\), the \(n\)-th heat block contributes
+more than \(4\), while all other blocks contribute less than \(1\) in total for
+large \(n\).  Thus \(\limsup_{t\to\infty}|\Delta_s(T,t)|\geq3\).  Between two
+successive translated blocks, the recursive choice of \(Y_{n+1}\) gives points
+\(s_n\to\infty\) at which the heat trace is arbitrarily small.  Consequently
+\[
+  \lim_{t\to\infty}\Delta_s(T,t)
+\]
+does not exist.  This proves the claimed counterexample.
+
+\section*{Verification Notes}
+
+The proof is analytic.  The script
+\texttt{code/finite\_difference\_probe.py} gives a numerical sanity check for
+the separation mechanism by comparing one high-order integer finite difference
+of the two log-scale kernels.  A representative run is:
+\[
+\texttt{conda run --no-capture-output -n sandbox python code/finite\_difference\_probe.py}
+\]
+which reports a heat response of order \(1\) and a resolvent response around
+\(10^{-6}\) for the default block.  This code is not used as proof; the proof
+uses Lemma \ref{lem:separation}.
+
+\section*{Novelty and Literature Check}
+
+The cheap run indexes
+\(\texttt{registry\_index.tsv}\), \(\texttt{solutions/index.tsv}\),
+\(\texttt{attempts/index.tsv}\), and \(\texttt{proof\_gaps/index.tsv}\) were
+searched for arXiv:1404.0740, ``Witten index'', ``resolvent regularized'',
+``semigroup regularized'', ``spectral shift'', and the author names Carey,
+Phillips, Sukochev, and Tomilov.  No prior run packet for this question was
+found.
+
+A bounded web search on 2026-07-19 for exact phrases including ``resolvent
+regularized Witten index'', ``semigroup regularized Witten index'', and
+``Definition 3.3 Witten index'' found the source paper and model-operator
+follow-ups, including the 2016/2017 ANU records, but did not find a later paper
+settling the unrestricted equivalence question.  The later local source
+arXiv:2101.06812 proves equality under model-specific hypotheses and higher
+resolvent regularizations; it does not settle the unrestricted Definition 3.3
+reverse implication.
+
+\section*{Limitations and Human-Review Recommendation}
+
+This packet should be reviewed as a likely valid counterexample.  The central
+review focus is Lemma \ref{lem:separation}, especially the saddle-point estimate
+for the high-order integer finite differences.  Once that lemma is accepted, the
+weighted-shift realization and trace-class verification are direct.
+
+\begin{thebibliography}{9}
+
+\bibitem{CGPST}
+A. Carey, F. Gesztesy, D. Potapov, F. Sukochev, and Y. Tomilov,
+\emph{On the Witten index in terms of spectral shift functions},
+J. Anal. Math. 132 (2017), 1--61; arXiv:1404.0740.
+
+\bibitem{ABHN}
+W. Arendt, C. J. K. Batty, M. Hieber, and F. Neubrander,
+\emph{Vector-valued Laplace Transforms and Cauchy Problems},
+Monographs in Mathematics 96, Birkhauser, 2001.
+
+\bibitem{Widder}
+D. V. Widder,
+\emph{The Laplace Transform},
+Princeton University Press, 1941.
+
+\end{thebibliography}
+
+\end{document}

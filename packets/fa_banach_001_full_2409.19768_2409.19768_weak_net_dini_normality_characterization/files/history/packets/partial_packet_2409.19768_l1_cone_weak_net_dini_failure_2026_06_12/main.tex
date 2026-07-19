@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\ellone}{\ell^1}
+\newcommand{\ellinf}{\ell^\infty}
+
+\title{A Weak-Net Dini Failure For A Non-Normal Cone On \(\ell^1\)}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 12, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target}
+
+Jochen Glueck, \emph{Increasing sequences in ordered Banach spaces -- new
+theorems and open problems}, arXiv:2409.19768.
+
+The paper gives an explicit non-normal cone on \(\ell^1\), notes that the
+Schur property only controls sequences, and says it is unclear whether every
+increasing weakly convergent net for that cone is norm convergent. It then
+poses the broader Dini-normal open problem.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+\label{thm:main}
+Let \(X=\ell^1(\mathbb N_0)\), where \(\mathbb N_0=\{0,1,2,\ldots\}\), and
+write \(x=(x_0,u)\) with \(u=(x_k)_{k\geq1}\in \ell^1(\mathbb N)\).  Endow
+\(X\) with the cone
+\[
+  X_+ =
+  \left\{x\in \ell^1(\mathbb N_0):
+    x_0\geq \sum_{k=1}^\infty \frac{|x_k|}{2^k}
+  \right\}.
+\]
+Then there is an increasing net \((y_i)\) in \(X_+\) which converges weakly
+in \(X\) but does not converge in norm.
+\end{theorem}
+
+\section*{Proof}
+
+For \(u=(u_k)_{k\geq1}\in\ell^1(\mathbb N)\), put
+\[
+  \|u\|_w=\sum_{k=1}^\infty \frac{|u_k|}{2^k}.
+\]
+Thus \((a,u)\in X_+\) if and only if \(a\geq \|u\|_w\), and
+\[
+  (a,u)\leq (b,v)
+  \quad\Longleftrightarrow\quad
+  b-a\geq \|v-u\|_w .
+\]
+
+\begin{lemma}
+\label{lem:annihilator}
+Let \(F\subset \ell^\infty(\mathbb N)\) be finite and let \(n\geq1\).  There
+is \(u=u_{n,F}\in\ell^1(\mathbb N)\) such that
+\[
+  \|u\|_1=1,\qquad
+  \operatorname{supp}u\subseteq\{k\geq n\},\qquad
+  \varphi(u)=0\quad(\varphi\in F).
+\]
+Consequently \(\|u\|_w\leq 2^{-n}\).
+\end{lemma}
+
+\begin{proof}
+Choose \(r>|F|\) distinct integers \(k_1,\ldots,k_r\geq n\).  The homogeneous
+system
+\[
+  \sum_{j=1}^r c_j\varphi(k_j)=0\qquad(\varphi\in F)
+\]
+has a nonzero real solution \(c=(c_1,\ldots,c_r)\).  Define \(u\) by
+supporting it on the \(k_j\)'s with coefficients \(c_j\), then normalize so
+that \(\|u\|_1=1\).  Since \(2^{-k_j}\leq2^{-n}\), we have
+\(\|u\|_w\leq2^{-n}\|u\|_1=2^{-n}\).
+\end{proof}
+
+Let \(D\) be the set of pairs \(i=(n,F)\), where \(n\geq1\) and
+\(F\subset\ell^\infty(\mathbb N)\) is finite.  Define \(i=(n,F)\preceq
+j=(m,G)\) if either \(i=j\), or \(m\geq n+2\) and \(F\subseteq G\).  This is a
+directed order: given two indices, take the union of the finite sets and a
+large enough integer.
+
+For each \(i=(n,F)\), choose \(u_i=u_{n,F}\) as in
+Lemma~\ref{lem:annihilator}, and set
+\[
+  a_n=4-2^{1-n},\qquad y_i=(a_n,u_i)\in X.
+\]
+Since \(a_n\geq2\) and \(\|u_i\|_w\leq2^{-n}\leq1/2\), each \(y_i\) is in
+\(X_+\).
+
+We claim that \((y_i)\) is increasing.  If \(i=(n,F)\prec j=(m,G)\), then
+\(m\geq n+2\).  Hence
+\[
+  \|u_j-u_i\|_w\leq \|u_i\|_w+\|u_j\|_w\leq 2^{-n}+2^{-m},
+\]
+while
+\[
+  a_m-a_n=2(2^{-n}-2^{-m}).
+\]
+Since \(m\geq n+2\), one has \(2^{-m}\leq 2^{-n}/4\), and therefore
+\[
+  2(2^{-n}-2^{-m})\geq 2^{-n}+2^{-m}.
+\]
+Thus \(y_j-y_i\in X_+\), proving monotonicity.
+
+We next prove weak convergence.  Let \(\psi\in X'=\ell^\infty(\mathbb N_0)\).
+Write \(\psi=(\beta,\varphi)\), where \(\beta\in\mathbb R\) acts on the
+zeroth coordinate and \(\varphi\in\ell^\infty(\mathbb N)\) acts on the tail.
+For all sufficiently large indices in the directed order, the finite set
+component contains \(\varphi\), so \(\varphi(u_i)=0\).  Also \(a_n\to4\) along
+the directed set.  Hence
+\[
+  \psi(y_i)=\beta a_n+\varphi(u_i)\longrightarrow 4\beta.
+\]
+This is exactly weak convergence to \((4,0)\in X\).
+
+Finally,
+\[
+  \|y_i-(4,0)\|_1
+  = |a_n-4|+\|u_i\|_1
+  = 2^{1-n}+1
+\]
+for every \(i=(n,F)\).  The net therefore does not converge to \((4,0)\) in
+norm.  Since the weak limit is unique, it does not converge in norm at all.
+\qed
+
+\section*{Scope And Limitations}
+
+This answers the concrete uncertainty about the explicit cone in Example 6.1
+of the source paper: the Schur property does not rescue Dini's theorem for
+weakly convergent nets in that ordered \(\ell^1\) space.
+
+It is not a full solution of Open Problem 6.2.  The construction uses the
+special tail geometry of the cone
+\[
+  x_0\geq \sum_{k\geq1}|x_k|2^{-k}
+\]
+and the ability to annihilate finitely many \(\ell^\infty\) functionals on
+arbitrarily far tails.
+
+\section*{Novelty And Duplicate Check}
+
+Local duplicate check: the run registry, solution index, and the prior
+archived attempt note for \texttt{2409.19768\_order\_sup\_normality\_probe}
+were checked.  The prior attempt did not promote a result and addressed a
+different route, namely whether supremum existence of increasing order-bounded
+sequences might force normality.
+
+No external literature search was performed for this partial packet.  Novelty
+confidence is therefore limited to the local run context and the source
+paper's own statement that this concrete net question was unclear to the
+author.
+
+\section*{Verification Notes}
+
+The proof has two points worth checking:
+\begin{enumerate}
+\item the finite-annihilation lemma, which is just a homogeneous linear system
+with more variables than equations;
+\item the scalar inequality
+\[
+  2(2^{-n}-2^{-m})\geq2^{-n}+2^{-m}\qquad(m\geq n+2),
+\]
+which is also checked in \texttt{code/verify\_scalar\_inequality.py}.
+\end{enumerate}
+
+\end{document}

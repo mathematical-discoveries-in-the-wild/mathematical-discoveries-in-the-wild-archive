@@ -1,0 +1,229 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1.04in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Sph}{\mathbb S}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\dd}{\,d}
+\newcommand{\grad}{\nabla_{\Sph^n}}
+
+\title{No constant in the spherical logarithmic Sobolev question}
+\author{Agent lane 14}
+\date{Run \texttt{fa\_banach\_001}, 2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample to an open question in the source
+paper \cite{FGSZ}.  The authors ask whether there is a constant $a>0$ such
+that a logarithmic Sobolev inequality of the form
+\[
+ H(e^{-V}\sigma\mid \sigma)
+ \leq
+ \frac a2 \int_{\Sph^n}
+        \log\left(1+\frac{|\grad V|^2}{a^2}\right)e^{-V}\,d\sigma
+\]
+holds on the sphere for all regular enough normalized potentials
+$V$, where $\int e^{-V}\,d\sigma=1$.  The answer is negative in every
+dimension $n\geq1$.
+
+\section*{Source target}
+
+The source asks the question in the introduction, after deriving conditional
+and unconditional log-Sobolev type inequalities from reverse
+Blaschke--Santal\'o and log-Minkowski inputs:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+There is almost no room for the constant.  If the inequality is linearized at
+the uniform measure in the first spherical harmonic direction, the ordinary
+spectral gap of $\Sph^n$ forces $a\leq n$.  On the other hand, highly
+concentrated von Mises--Fisher densities
+\[
+        d\eta_t(\theta)=Z_t^{-1}e^{t\theta_1}\,d\sigma(\theta)
+\]
+have entropy asymptotic to $(n/2)\log t$.  The right-hand side has leading
+term $(a/2)\log t$, so all $a<n$ fail.  The critical value $a=n$ still fails:
+the leading logarithms cancel, but the next constant term is positive.  Thus
+no $a>0$ can work.
+
+\section*{Counterexample}
+
+\begin{theorem}
+\label{thm:no-constant}
+Let $n\geq1$ and let $\sigma$ be the normalized surface measure on $\Sph^n$.
+There is no constant $a>0$ such that, for every smooth $V$ with
+$\int_{\Sph^n}e^{-V}\,d\sigma=1$,
+\begin{equation}
+\label{eq:source-lsi}
+ H(e^{-V}\sigma\mid \sigma)
+ \leq
+ \frac a2 \int_{\Sph^n}
+        \log\left(1+\frac{|\grad V|^2}{a^2}\right)e^{-V}\,d\sigma .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose first that \eqref{eq:source-lsi} holds for some $a>0$.  Let
+$u(\theta)=\theta_1$ be the first coordinate on $\Sph^n$, and put
+\[
+        d\eta_\varepsilon
+        =Z_\varepsilon^{-1}e^{\varepsilon u}\,d\sigma
+        =e^{-V_\varepsilon}\,d\sigma .
+\]
+As $\varepsilon\to0$,
+\[
+ H(\eta_\varepsilon\mid\sigma)
+ =\frac{\varepsilon^2}{2}\int u^2\,d\sigma+o(\varepsilon^2),
+\]
+while
+\[
+ \frac a2\int
+ \log\left(1+\frac{|\grad V_\varepsilon|^2}{a^2}\right)d\eta_\varepsilon
+ =
+ \frac{\varepsilon^2}{2a}\int|\grad u|^2\,d\sigma+o(\varepsilon^2).
+\]
+Since $u$ is a first spherical harmonic,
+\[
+        \int_{\Sph^n}|\grad u|^2\,d\sigma
+        =n\int_{\Sph^n}u^2\,d\sigma .
+\]
+Therefore \eqref{eq:source-lsi} can hold only if $a\leq n$.
+
+It remains to rule out $a\leq n$.  For $t>0$, set
+\[
+        d\eta_t(\theta)=Z_t^{-1}e^{t\theta_1}\,d\sigma(\theta),
+        \qquad
+        V_t(\theta)=-t\theta_1+\log Z_t .
+\]
+Let $U=\theta_1$ under $\eta_t$.  Then
+\[
+        H(\eta_t\mid\sigma)=t\,\E_t U-\log Z_t
+\]
+and
+\[
+        |\grad V_t|^2=t^2(1-U^2).
+\]
+The coordinate $U$ under $\sigma$ has density
+\[
+        q_n(u)=c_n(1-u^2)^{n/2-1},\qquad
+        c_n=\frac{\Gamma((n+1)/2)}{\sqrt{\pi}\,\Gamma(n/2)} .
+\]
+Laplace's method at the endpoint $u=1$ gives, with
+\[
+        C_n=2^{(n-2)/2}\frac{\Gamma((n+1)/2)}{\sqrt{\pi}},
+\]
+the asymptotics
+\[
+        Z_t=C_n e^t t^{-n/2}(1+o(1)),
+        \qquad
+        \E_t(1-U)=\frac{n}{2t}+o(t^{-1}),
+\]
+and
+\[
+        \E_t\log(1-U^2)
+        =
+        -\log t+\log2+\psi(n/2)+o(1),
+\]
+where $\psi=\Gamma'/\Gamma$.  Consequently
+\begin{equation}
+\label{eq:entropy-asymptotic}
+        H(\eta_t\mid\sigma)
+        =
+        \frac n2\log t-\frac n2-\log C_n+o(1).
+\end{equation}
+For the right-hand side of \eqref{eq:source-lsi},
+\begin{align}
+\label{eq:rhs-asymptotic}
+ \frac a2\E_t\log\left(1+\frac{t^2(1-U^2)}{a^2}\right)
+ =
+ \frac a2\log t
+ +\frac a2\left(\log\frac{2}{a^2}+\psi(n/2)\right)+o(1).
+\end{align}
+If $a<n$, \eqref{eq:entropy-asymptotic} and \eqref{eq:rhs-asymptotic} imply
+that the difference between the left and right sides of \eqref{eq:source-lsi}
+tends to $+\infty$ along $\eta_t$.
+
+The only remaining possible value is $a=n$.  In that case the difference tends
+to
+\[
+ D_n=
+ -\frac n2-\log C_n
+ -\frac n2\left(\log\frac{2}{n^2}+\psi(n/2)\right).
+\]
+Writing $x=n/2$, this is
+\[
+ D_n=
+ \log2+\frac12\log\pi-x-\log\Gamma(x+1/2)+2x\log x-x\psi(x).
+\]
+For $x\geq1/2$, the standard digamma and Stirling bounds
+\[
+        \psi(x)\leq \log x-\frac{1}{2x},
+        \qquad
+        \Gamma(x+1/2)\leq \sqrt{2\pi}\,x^x e^{-x}
+\]
+give
+\[
+        D_n\geq \frac12(1+\log2)>0 .
+\]
+Thus the inequality also fails for $a=n$ and all possible constants have been
+excluded.
+\end{proof}
+
+\section*{Verification and scope}
+
+The counterexample uses smooth potentials $V_t=-t\theta_1+\log Z_t$, so it
+falls within any reasonable interpretation of ``regular enough potentials'' in
+the source question.  The proof is symbolic.  The script
+\texttt{code/verify\_critical\_constant.py} prints the critical constants
+$D_n$ for $1\leq n\leq20$ as a sanity check; these numerical values are not
+used in the proof.
+
+This packet answers only the standalone open question about the existence of a
+universal constant $a$ in the underlying spherical log-Sobolev inequality.  It
+does not affect the source's proved conditional or unconditional
+Blaschke--Santal\'o consequences.
+
+\section*{Novelty check}
+
+The local lightweight indexes were searched for \texttt{2307.04393}, the paper
+title, \texttt{Blaschke-Santalo}, \texttt{spherical log-Sobolev},
+\texttt{transport entropy}, and \texttt{von Mises-Fisher}.  Web searches on
+2026-07-18 for the exact open-question phrases and close variants found the
+source arXiv page, the published paper listing, and unrelated spherical
+sampling/log-Sobolev material, but no later answer to this exact question.
+
+\section*{Human-review recommendation}
+
+Review the endpoint Laplace asymptotics and the final gamma/digamma lower
+bound for $D_n$.  These are the only non-formal ingredients.  If those checks
+pass, the answer to the source's question is a full negative answer.
+
+\begin{thebibliography}{9}
+
+\bibitem{FGSZ}
+M. Fradelizi, N. Gozlan, S. Sadovsky, and S. Zugmeyer,
+\emph{Transport-entropy forms of direct and converse Blaschke-Santal\'o
+inequalities},
+arXiv:2307.04393, 2023.
+
+\end{thebibliography}
+
+\end{document}

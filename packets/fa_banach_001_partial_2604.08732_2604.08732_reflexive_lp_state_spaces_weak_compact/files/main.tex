@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+
+\title{A Reflexive Case of the \texorpdfstring{$L^p$}{Lp} State-Space Problem}
+\author{Automatic Math Discovery Smoke Test}
+\date{June 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper asks for an analogue, for $1<p<\infty$, of its
+characterization of weakly compact state spaces in $L^1(\mu,X)$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+This packet gives the full reflexive-domain answer and shows that the
+$L^1$ singleton phenomenon cannot extend to $p>1$.
+
+\begin{theorem}
+Let $(\Omega,\Sigma,\mu)$ be a finite measure space, let $1<p<\infty$, and let
+$q$ be conjugate to $p$. If $X$ is reflexive, then for every
+$f\in S_{L^p(\mu,X)}$ the state space
+\[
+S_f=\left\{g\in B_{L^q(\mu,X^*)}:
+  \int_\Omega g(\omega)(f(\omega))\,d\mu(\omega)=1\right\}
+\]
+is weakly compact in $L^q(\mu,X^*)$.
+\end{theorem}
+
+\begin{proof}
+Since $X$ is reflexive, $X^*$ is reflexive. Because $1<q<\infty$ and
+$\mu$ is finite, the Bochner space $L^q(\mu,X^*)$ is reflexive. Define
+\[
+\Phi_f(g)=\int_\Omega g(\omega)(f(\omega))\,d\mu(\omega),
+        \qquad g\in L^q(\mu,X^*).
+\]
+Holder's inequality gives $\|\Phi_f\|\leq \|f\|_p=1$, and the usual duality
+formula gives $\|\Phi_f\|=1$. Hence
+\[
+S_f=B_{L^q(\mu,X^*)}\cap \Phi_f^{-1}(\{1\}).
+\]
+This is a norm-closed convex bounded subset of the reflexive space
+$L^q(\mu,X^*)$. Closed convex subsets are weakly closed, so $S_f$ is weakly
+closed and bounded in a reflexive space. Therefore $S_f$ is weakly compact.
+\end{proof}
+
+\begin{proposition}
+For $p>1$, weak compactness of $S_f$ does not imply that $S_f$ is a singleton,
+even when $X$ is two-dimensional.
+\end{proposition}
+
+\begin{proof}
+Take $\Omega=[0,1]$ with Lebesgue measure and
+$X=(\mathbb R^2,\|\cdot\|_1)$, so $X^*=(\mathbb R^2,\|\cdot\|_\infty)$.
+Let $f(\omega)=e_1=(1,0)$ for all $\omega$. Then $\|f\|_p=1$.
+
+If $h\in L^\infty[0,1]$ satisfies $|h|\leq 1$ almost everywhere, set
+\[
+g_h(\omega)=(1,h(\omega))\in X^*.
+\]
+Then
+\[
+\|g_h\|_{L^q(\mu,X^*)}
+=\left(\int_0^1 \max\{1,|h(\omega)|\}^q\,d\omega\right)^{1/q}=1
+\]
+and
+\[
+\int_0^1 g_h(\omega)(f(\omega))\,d\omega
+=\int_0^1 1\,d\omega=1.
+\]
+Thus every such $g_h$ belongs to $S_f$. In particular, $g_0$ and $g_1$ are
+distinct elements of $S_f$. By the theorem, $S_f$ is nevertheless weakly
+compact.
+\end{proof}
+
+\section*{Verification code}
+
+The script \texttt{code/check\_lp\_state\_space\_example.py} checks the
+finite-partition version of the last calculation for three choices of $h$.
+It verifies that the $L^q$ norm and the pairing with the constant $e_1$
+function are both equal to $1$.
+
+\section*{Scope}
+
+This is a partial answer to Problem 3.18. The non-reflexive case remains open
+in this packet. The main conclusion is that, for $1<p<\infty$, reflexivity of
+$X$ makes weak compactness automatic, and the correct $L^p$ theory cannot be
+a direct copy of the source paper's $L^1$ singleton theorem.
+
+\end{document}

@@ -1,0 +1,588 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Om}{\Omega}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Lp}{L^p}
+\newcommand{\Wp}{W^{1,p}}
+\newcommand{\ellinf}{\ell_\infty}
+\newcommand{\cnull}{c_0}
+\newcommand{\rhoMin}[1]{\rho_{#1}}
+\newcommand{\restr}[2]{#1\vert_{#2}}
+\newcommand{\Wgraph}{\mathcal{W}^{1,p}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Banach-Valued Sobolev Extension Sets:\\
+Verification, Current Status, and Further Partial Results}
+\author{Research note prepared from the supplied partial solution}
+\date{June 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The supplied finite-dimensional argument is correct.  This note gives a
+fully quantitative version: if a scalar Newton--Sobolev extension map has
+bound $C_E$, then an $n$-dimensional target $V$ has an extension map with
+bound at most
+\[
+  2^{1-1/p} n^{1/p} C_E\,\|A\|\,\|A^{-1}\|,
+  \qquad A:V\longrightarrow \ell_\infty^n.
+\]
+The proof requires no Poincare inequality and works for $1\le p<\infty$.
+A literature search did not locate a complete positive solution or a
+counterexample to Question 1.1 of Garcia-Bravo--Ikonen--Zhu.  In fact, a
+May 2026 paper by the same authors explicitly states that even the Euclidean
+case $1\le p<n$ remains open.
+
+Two further infinite-dimensional positive results are established here in
+the Euclidean setting.  If a scalar extension domain has a bounded linear
+scalar extension operator, then it is an extension domain for targets
+isomorphic to complemented subspaces of an $L^p$-space.  In particular this
+covers $L^p$-targets, $\ell^p$, and arbitrary Hilbert spaces.  Finally, an
+explicit $c_0$-valued Lipschitz map on an interval shows why finite-rank
+approximation does not by itself pass the finite-dimensional argument to
+$c_0$: canonical truncations converge uniformly but not in Newton--Sobolev
+norm, and no finite-dimensional-range maps can converge to this example in
+that norm.
+\end{abstract}
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Bottom line.}
+The partial theorem is valid after minor technical cleanup.  No full answer
+or counterexample was found.  The general problem remains open as of the
+search date, including the Euclidean range $1<p<n$.}}
+\end{center}
+
+\section{The question and its current status}
+
+Let $1<p<\infty$, let $Z$ be a $p$-PI metric measure space, and let
+$\Om\subset Z$.  Question 1.1 of Garcia-Bravo--Ikonen--Zhu asks whether every
+real-valued $\Wp$-extension set is automatically a $V$-valued
+$\Wp$-extension set for every Banach space $V$ \cite{GBIZ23}.
+Their definition does not require an extension map to be linear.
+
+The 2023 paper proves several substantial positive cases.  Among them:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item a $c_0$-valued extension set is an extension set for every Banach
+  target;
+  \item measure density together with a weak $(1,p)$-Poincare inequality up
+  to some scale gives extension for every Banach target;
+  \item Euclidean $\Wp$-extension domains have the desired target-independent
+  extension property when $p\ge n$;
+  \item planar Jordan extension domains have it for all $1<p<\infty$.
+\end{itemize}
+
+The most informative later source found in the search is the May 29, 2026
+revision of \emph{On infinity thick quasiconvexity and applications}, by the
+same three authors.  It says explicitly that for domains in $\R^n$ the
+equivalence has been verified for $p\in[n,\infty)$, while
+$p\in[1,n)$ remains open \cite{GBIZ26}.  Consequently, a complete answer to
+the original general $p$-PI question would in particular settle an open
+Euclidean subcase.  No later full theorem or counterexample was located in
+searches by title, authors, citations, and the phrases ``Banach-valued
+Sobolev extension set/domain'' through June 19, 2026.
+
+\section{Conventions}
+
+We use the Newton--Sobolev convention of \cite{GBIZ23}.  For a Banach-valued
+map $u$ on a metric measure space $X$, write $\rhoMin{u}$ for its minimal
+$p$-weak upper gradient and set
+\[
+  \|u\|_{\Wp(X;V)}
+  :=\|u\|_{\Lp(X;V)}+\|\rhoMin{u}\|_{\Lp(X)}.
+\]
+If $T:V\to W$ is bounded and linear, then
+\[
+  \|T\circ u\|_{\Lp(X;W)}\le \|T\|\,\|u\|_{\Lp(X;V)},
+  \qquad
+  \rhoMin{T\circ u}\le \|T\|\rhoMin{u}
+  \quad\text{a.e.}
+\]
+The same upper-gradient conclusion holds for Lipschitz postcomposition.
+
+An ``extension map of bound $C_E$'' means a map $E$ satisfying
+$\restr{Eu}{\Om}=u$ and $\|Eu\|\le C_E\|u\|$.  If $E$ is nonlinear, the
+phrase ``operator norm'' should be understood only as this Lipschitz-type
+bound at the origin.
+
+\section{Verification of the finite-dimensional result}
+
+\begin{theorem}[Quantitative finite-dimensional extension]
+\label{thm:finite}
+Let $1\le p<\infty$, let $Z$ be a metric measure space, and let
+$\Om\subset Z$ be measurable.  Suppose there is a scalar extension map
+\[
+  E_{\R}:\Wp(\Om)\longrightarrow \Wp(Z)
+\]
+with bound $C_E$.  Let $V$ be $n$-dimensional and let
+$A:V\to\ell_\infty^n$ be a linear isomorphism.  Then there is a $V$-valued
+extension map $E_V$ satisfying
+\begin{equation}
+\label{eq:finiteconstant}
+  \|E_Vu\|_{\Wp(Z;V)}
+  \le 2^{1-1/p} n^{1/p} C_E
+       \|A\|\,\|A^{-1}\|\,
+       \|u\|_{\Wp(\Om;V)}.
+\end{equation}
+If $E_{\R}$ is linear, then $E_V$ is linear.
+\end{theorem}
+
+\begin{proof}
+We first take $V=\ell_\infty^n$.  Write
+$u=(u_1,\dots,u_n)$ and put
+\[
+  h_i=E_{\R}u_i,
+  \qquad
+  H=(h_1,\dots,h_n).
+\]
+Each coordinate projection is $1$-Lipschitz, hence
+$u_i\in\Wp(\Om)$ and $\rhoMin{u_i}\le\rhoMin{u}$ almost everywhere.  In
+particular,
+\begin{equation}
+\label{eq:coordinput}
+  \|u_i\|_{\Wp(\Om)}
+  \le \|u\|_{\Wp(\Om;\ell_\infty^n)}.
+\end{equation}
+
+Let $g_i=\rhoMin{h_i}$ and set $g=\max_{1\le i\le n}g_i$.  Outside the finite
+union of the exceptional $p$-negligible curve families for the $g_i$, every
+rectifiable curve $\gamma$ satisfies
+\[
+ \begin{split}
+  \|H(\gamma(a))-H(\gamma(b))\|_{\ell_\infty^n}
+  &=\max_i |h_i(\gamma(a))-h_i(\gamma(b))|\\
+  &\le \int_\gamma g\,ds.
+ \end{split}
+\]
+Thus $g$ is a $p$-weak upper gradient of $H$.  Strong measurability is
+automatic because the target is finite-dimensional, and the coordinate
+restriction identities imply $\restr{H}{\Om}=u$ almost everywhere.
+
+Put
+\[
+  a_i=\|h_i\|_{\Lp(Z)},
+  \qquad b_i=\|g_i\|_{\Lp(Z)}.
+\]
+Then
+\[
+ \begin{split}
+  \|H\|_{\Wp(Z;\ell_\infty^n)}
+  &\le \Big(\sum_i a_i^p\Big)^{1/p}
+       +\Big(\sum_i b_i^p\Big)^{1/p}\\
+  &\le 2^{1-1/p}
+       \Big(\sum_i(a_i^p+b_i^p)\Big)^{1/p}\\
+  &\le 2^{1-1/p}
+       \Big(\sum_i(a_i+b_i)^p\Big)^{1/p}\\
+  &\le 2^{1-1/p}C_E
+       \Big(\sum_i\|u_i\|_{\Wp(\Om)}^p\Big)^{1/p}\\
+  &\le 2^{1-1/p}n^{1/p}C_E
+       \|u\|_{\Wp(\Om;\ell_\infty^n)},
+ \end{split}
+\]
+where the last inequality uses \eqref{eq:coordinput}.
+
+For general $V$, define
+\[
+  E_Vu=A^{-1}E_{\ell_\infty^n}(Au).
+\]
+The bounded-linear postcomposition property gives
+\[
+  \|Au\|_{\Wp(\Om;\ell_\infty^n)}
+  \le \|A\|\,\|u\|_{\Wp(\Om;V)}
+\]
+and the analogous estimate for $A^{-1}$ on $Z$.  This proves
+\eqref{eq:finiteconstant}.  Linearity is inherited coordinatewise when the
+scalar extension map is linear.
+\end{proof}
+
+\begin{corollary}[A dimension-only bound]
+Every $n$-dimensional Banach space admits a linear isomorphism
+$A:V\to\ell_\infty^n$ with
+$\|A\|\,\|A^{-1}\|\le n$.  Hence Theorem \ref{thm:finite} always gives the
+bound
+\[
+  2^{1-1/p}n^{1+1/p}C_E.
+\]
+\end{corollary}
+
+\begin{proof}
+Choose an Auerbach basis $(v_i,v_i^*)_{i=1}^n$, so that
+$\|v_i\|=\|v_i^*\|=1$ and $v_i^*(v_j)=\delta_{ij}$.  The coordinate map
+$A(v)=(v_i^*(v))_{i=1}^n$ has norm at most one, while
+$\|v\|\le\sum_i|v_i^*(v)|\le n\|Av\|_\infty$.
+\end{proof}
+
+\subsection*{What was right, and what needed tightening}
+
+The supplied packet had the correct central idea.  The following are the
+only substantive cleanups.
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+  \item No PI, doubling, completeness, or measure-density hypothesis is
+  needed for the finite-dimensional statement.
+  \item The coordinate estimate is exact for the stated Newton--Sobolev
+  norm; it is not merely true ``up to an equivalent norm.''
+  \item One should explicitly take the finite union of the exceptional
+  curve families.
+  \item The extension is linear exactly when the original scalar extension
+  is linear.
+  \item Formula \eqref{eq:finiteconstant} records the quantitative loss.
+\end{enumerate}
+The same finite-coordinate mechanism also appears in Lemma 4.5 of
+\cite{GBIZ23}, there in a density argument rather than as an extension
+theorem.
+
+\section{A further infinite-dimensional positive result in Euclidean space}
+
+The next result does not solve the open problem, but it goes beyond finite
+dimension.  Its key point is that the Sobolev graph norm tensorizes exactly
+with an $L^p$ target when the target exponent matches the Sobolev exponent.
+
+For an open $D\subset\R^n$ and a Banach space $V$ with the Radon--Nikodym
+property, use the equivalent classical graph norm
+\begin{equation}
+\label{eq:graphnorm}
+  \|u\|_{\Wgraph(D;V)}
+  :=\left(
+       \|u\|_{\Lp(D;V)}^p+
+       \sum_{j=1}^n\|\partial_j u\|_{\Lp(D;V)}^p
+     \right)^{1/p}.
+\end{equation}
+On Euclidean open sets, the Newton--Sobolev and Reshetnyak spaces agree for
+all Banach targets, and the classical Bochner--Sobolev space agrees with
+them precisely for targets having the Radon--Nikodym property
+\cite{CaamanoEtAl}.
+
+\begin{lemma}[Sobolev--Fubini identification]
+\label{lem:fubini}
+Let $(S,\nu)$ be a $\sigma$-finite measure space and $D\subset\R^n$ be open.
+Under the identification $U(s)(x)=u(x)(s)$,
+\[
+  \Wgraph(D;L^p(S,\nu))
+  \cong L^p\bigl(S,\nu;\Wgraph(D)\bigr)
+\]
+isometrically for the norm \eqref{eq:graphnorm}.
+\end{lemma}
+
+\begin{proof}
+For a Bochner--Sobolev map $u$, Fubini's theorem and the distributional
+definition of the weak partial derivatives show that for almost every
+$s$, the slice $U(s)$ lies in $\Wgraph(D)$ and
+$\partial_j U(s)=(\partial_j u)(\cdot)(s)$.  Conversely, the same
+calculation against tensor-product test functions gives the weak derivatives
+of $u$ from those of the slices.  Finally,
+\[
+ \begin{split}
+  \|u\|_{\Wgraph(D;L^p(S))}^p
+  &=\int_S\left(
+       \|U(s)\|_{L^p(D)}^p+
+       \sum_{j=1}^n\|\partial_jU(s)\|_{L^p(D)}^p
+     \right)d\nu(s),
+ \end{split}
+\]
+which is the asserted isometry.
+\end{proof}
+
+\begin{theorem}[$L^p$-target tensorization]
+\label{thm:Lptarget}
+Let $1<p<\infty$, let $\Om\subset\R^n$ be open, and suppose there is a
+bounded linear scalar extension operator
+\[
+  E:\Wgraph(\Om)\longrightarrow \Wgraph(\R^n).
+\]
+Then, for every $\sigma$-finite $(S,\nu)$, there is a bounded linear extension
+operator
+\[
+  E_{L^p(S)}:\Wgraph(\Om;L^p(S,\nu))
+  \longrightarrow \Wgraph(\R^n;L^p(S,\nu))
+\]
+with the same operator bound when both spaces use the graph norm
+\eqref{eq:graphnorm}.
+\end{theorem}
+
+\begin{proof}
+By Lemma \ref{lem:fubini}, an $L^p(S)$-valued Sobolev map corresponds to a
+Bochner map
+\[
+  U\in L^p\bigl(S;\Wgraph(\Om)\bigr).
+\]
+Every bounded linear map between Banach spaces acts pointwise, with the same
+norm, on the corresponding Bochner $L^p$ spaces.  Define
+\[
+  \widetilde E U(s):=E(U(s)).
+\]
+Then
+\[
+  \|\widetilde E U\|_{L^p(S;\Wgraph(\R^n))}
+  \le \|E\|\,
+      \|U\|_{L^p(S;\Wgraph(\Om))}.
+\]
+Transporting $\widetilde E U$ back through Lemma \ref{lem:fubini} gives the
+desired extension.  The scalar restriction identity holds for almost every
+$s$, hence the resulting $L^p(S)$-valued map restricts to the original map.
+\end{proof}
+
+\begin{corollary}[Complemented subspaces of $L^p$]
+\label{cor:complemented}
+Under the hypotheses of Theorem \ref{thm:Lptarget}, let $V$ be isomorphic to
+a complemented subspace of some $L^p(S,\nu)$.  Then $\Om$ is a
+$V$-valued extension domain.  Quantitatively, if
+$J:V\to L^p(S,\nu)$ is an isomorphic embedding and
+$Q:L^p(S,\nu)\to J(V)$ is a bounded projection, the extension bound is at
+most
+\[
+  \|J^{-1}\|\,\|Q\|\,\|E\|\,\|J\|.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Theorem \ref{thm:Lptarget} to $J\circ u$, then postcompose the extension
+with $J^{-1}Q$.
+\end{proof}
+
+\begin{corollary}[Concrete targets]
+\label{cor:concrete}
+Let $1<p<\infty$ and let $\Om\subset\R^n$ be a scalar $\Wp$-extension domain.
+Then $\Om$ is a Newton--Sobolev extension domain for each of the following
+infinite-dimensional targets:
+\[
+  L^p(S,\nu),\qquad \ell^p,\qquad\text{and every Hilbert space }H.
+\]
+More generally, it works for every Banach space isomorphic to a complemented
+subspace of an $L^p$-space.
+\end{corollary}
+
+\begin{proof}
+A Euclidean scalar extension domain satisfies the measure-density condition
+\cite{HKT08b}.  The linearization theorem in \cite{GBIZ23} therefore provides
+a bounded linear scalar extension operator, so Theorem
+\ref{thm:Lptarget} and Corollary \ref{cor:complemented} apply.
+
+It remains only to recall why Hilbert spaces are covered.  Let
+$H=\ell^2(I)$ and let $(r_i)_{i\in I}$ be independent Rademacher functions on
+$\{-1,1\}^I$ with product probability measure.  Khintchine's inequality
+gives an isomorphic embedding
+\[
+  J:\ell^2(I)\longrightarrow L^p(\{-1,1\}^I),
+  \qquad Ja=\sum_{i\in I}a_i r_i.
+\]
+For $f\in L^p$, set $c_i=\int f r_i$.  By duality and Khintchine's inequality
+for $p'=p/(p-1)$,
+\[
+  \|(c_i)\|_{\ell^2(I)}\le C_{p'}\|f\|_{L^p}.
+\]
+Thus
+\[
+  Qf:=\sum_{i\in I}c_i r_i
+\]
+defines a bounded projection onto the Rademacher span.  Hence $H$ is
+isomorphic to a complemented subspace of an $L^p$-space.  Such targets are
+reflexive, hence have the Radon--Nikodym property, so the classical and
+Newton--Sobolev formulations agree by \cite{CaamanoEtAl}.
+\end{proof}
+
+\begin{remark}
+Corollary \ref{cor:concrete} is not a solution for arbitrary Banach targets.
+The tensor extension of a general bounded scalar operator need not be bounded
+on $L^p(\cdot;V)$ for an arbitrary $V$; complemented $L^p$ structure is the
+precise mechanism used above.
+\end{remark}
+
+\section{Why finite-rank approximation does not finish the problem}
+
+The source paper proves energy-density for targets with the metric
+approximation property but deliberately does not claim norm-density.  The
+following elementary example shows a sharp obstruction.
+
+\begin{proposition}[$c_0$ truncations can fail completely]
+\label{prop:c0}
+Let $I=(0,1)$ and define
+\[
+  u(t)=\left(\frac{\sin(kt)}{k}\right)_{k=1}^{\infty}\in c_0.
+\]
+For every $1\le p<\infty$:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em]
+  \item $u$ is $1$-Lipschitz, hence belongs to the Newton--Sobolev space
+  $\Wp(I;c_0)$;
+  \item if $P_N$ is the first-$N$ coordinate projection, then
+  $P_Nu\to u$ uniformly (and hence in $L^p$), but
+  \[
+    \rhoMin{u-P_Nu}=1\quad\text{a.e. on }I;
+  \]
+  in particular $P_Nu$ does not converge to $u$ in $\Wp(I;c_0)$;
+  \item $u$ is not in the classical Bochner--Sobolev space
+  $\Wp_{\mathrm{Bochner}}(I;c_0)$;
+  \item no sequence of Newton--Sobolev maps whose essential ranges lie in
+  finite-dimensional subspaces of $c_0$ can converge to $u$ in Newton--Sobolev
+  norm.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Every coordinate $t\mapsto \sin(kt)/k$ is $1$-Lipschitz, so the supremum
+norm gives
+$\|u(t)-u(s)\|_{c_0}\le |t-s|$.  Also
+$|\sin(kt)|/k\to0$, so the image lies in $c_0$.
+
+For $v_N=u-P_Nu$,
+\[
+  \|v_N\|_{L^\infty(I;c_0)}\le\frac1{N+1}.
+\]
+On the other hand, for every $t$,
+\[
+  \sup_{k>N}|\cos(kt)|=1.
+\]
+Indeed, this is immediate when $t/(2\pi)$ is rational by taking multiples of
+a denominator, and follows from density of the irrational rotation when
+$t/(2\pi)$ is irrational.  The metric derivative therefore satisfies
+\[
+ \begin{split}
+  \operatorname{md}v_N(t)
+  &=\lim_{h\to0}
+    \frac{\|v_N(t+h)-v_N(t)\|_{c_0}}{|h|}=1.
+ \end{split}
+\]
+The upper bound follows from $1$-Lipschitz continuity, while the lower bound
+is obtained by fixing a coordinate with $|\cos(kt)|$ arbitrarily close to
+one.  On an interval, the minimal weak upper gradient of a Lipschitz
+metric-valued map equals its metric derivative almost everywhere, proving
+(ii).
+
+If a Bochner derivative $u'(t)\in c_0$ existed, every coordinate projection
+would give
+\[
+  u'(t)=(\cos(kt))_{k=1}^{\infty}.
+\]
+This sequence is not in $c_0$ for any $t$, so $u$ is nowhere Bochner
+differentiable.  This proves (iii); it is the standard example recorded in
+\cite{CaamanoEtAl}.
+
+Finally, on Euclidean open sets the Newton--Sobolev and Reshetnyak spaces
+coincide, while the classical Bochner--Sobolev space is a closed subspace of
+the Reshetnyak space \cite{CaamanoEtAl}.  Every finite-dimensional-range
+Newton--Sobolev map is Bochner--Sobolev, because finite-dimensional targets
+have the Radon--Nikodym property.  Norm convergence of such maps to $u$ would
+therefore force $u$ into that closed classical subspace, contradicting (iii).
+\end{proof}
+
+\begin{remark}
+The proposition does not produce a counterexample to the extension question:
+$I$ itself is already a PI space and $u$ needs no extension.  It rules out a
+natural proof strategy.  One cannot pass from the finite-dimensional theorem
+to $c_0$ merely by truncating the target and taking a Newton--Sobolev norm
+limit.
+\end{remark}
+
+\section{Strategies tested against the remaining problem}
+
+The following approaches were examined; each isolates a genuine obstruction.
+
+\paragraph{Coordinatewise extension to $c_0$ or $\ell^\infty$.}
+Finite coordinates give Theorem \ref{thm:finite}, but the bound grows with
+the number of coordinates.  For infinitely many coordinates, scalar bounds
+do not ensure that the assembled map is Bochner measurable, $L^p$-bounded,
+or controlled by one common upper gradient.  Proposition \ref{prop:c0}
+shows that finite-coordinate limits need not converge in Sobolev norm.
+
+\paragraph{Metric approximation property.}
+Finite-rank operators approximate compact subsets of the target and yield
+the energy-density theorem in \cite{GBIZ23}.  Energy convergence is weaker
+than Newton--Sobolev norm convergence; Proposition \ref{prop:c0} shows that
+the gap is not a technicality.
+
+\paragraph{Scalarization by the dual unit ball.}
+For every $v^*\in B_{V^*}$, the scalar function $v^*\circ u$ extends.  The
+problem is to choose these scalar extensions compatibly.  Uniform scalar
+norm bounds do not produce a single pointwise $L^p$ upper gradient valid for
+all $v^*$, nor do they guarantee that the values come from one element of
+$V$ rather than merely from $V^{**}$ or a product space.
+
+\paragraph{Linear tensor extension.}
+This succeeds for complemented subspaces of $L^p$ by Section 4, and for
+Hilbert targets through the Rademacher complement.  For arbitrary $V$, a
+bounded scalar operator on an $L^p$-type graph subspace need not have a
+bounded amplification by $\operatorname{Id}_V$.  Thus ordinary boundedness of
+the scalar extension operator is not enough for abstract tensorization.
+
+\paragraph{A nonlinear-Poincare or expander counterexample.}
+One might try to encode a family with good scalar Poincare inequalities but
+bad $c_0$-valued inequalities.  Classical expanders provide that functional-
+analytic contrast, but an unbounded expander family is not uniformly
+doubling.  Since every subset of a doubling metric space is metrically
+doubling, this mechanism cannot be inserted at uniform scale into a fixed
+PI ambient space without losing the hypotheses.  No valid PI realization
+was found.
+
+\paragraph{Removable sets and zero-capacity bottlenecks.}
+If the removed set has zero $p$-capacity, the family of curves meeting it is
+$p$-negligible, a target-independent fact.  Such examples therefore tend to
+extend all metric or Banach targets, rather than separate scalar and vector
+extension.  Positive-capacity bottlenecks usually already obstruct scalar
+extension.
+
+These failures are consistent with the formulation in \cite{GBIZ23}: in the
+measure-dense, path-almost-open setting, the open issue can be reduced to a
+closed-image/completeness question for the $c_0$-valued local
+Hajlasz--Sobolev space.  None of the arguments above establishes or refutes
+that completeness.
+
+\section{Conclusion}
+
+The supplied partial result is mathematically sound and can be strengthened
+to the quantitative Theorem \ref{thm:finite}.  The literature does not
+currently supply a full answer or counterexample; the same authors still
+identify the Euclidean range $1<p<n$ as open in May 2026.  The tensorization
+argument above adds a genuine infinite-dimensional class in Euclidean
+space---all targets complemented in an $L^p$-space, including $L^p$,
+$\ell^p$, and Hilbert spaces---but arbitrary Banach targets remain beyond
+it.  The $c_0$ example explains why the most direct finite-rank limiting
+argument cannot bridge the remaining gap.
+
+\begin{thebibliography}{99}
+
+\bibitem{GBIZ23}
+M. Garcia-Bravo, T. Ikonen, and Z. Zhu,
+\emph{Extensions and approximations of Banach-valued Sobolev functions},
+Math. Z. \textbf{305} (2023), no. 4, Paper No. 67, 50 pp.;
+arXiv:2208.12594.
+
+\bibitem{GBIZ26}
+M. Garcia-Bravo, T. Ikonen, and Z. Zhu,
+\emph{On infinity thick quasiconvexity and applications},
+arXiv:2509.01194v2, May 29, 2026.
+
+\bibitem{CaamanoEtAl}
+I. Caamano, J. A. Jaramillo, A. Prieto, and A. Ruiz de Alarcon,
+\emph{Sobolev spaces of vector-valued functions},
+arXiv:2008.03040; see in particular Theorems 4.3 and 4.6.
+
+\bibitem{HKT08b}
+P. Hajlasz, P. Koskela, and H. Tuominen,
+\emph{Sobolev embeddings, extensions and measure density condition},
+J. Funct. Anal. \textbf{254} (2008), 1217--1234.
+
+\bibitem{HKST15}
+J. Heinonen, P. Koskela, N. Shanmugalingam, and J. T. Tyson,
+\emph{Sobolev Spaces on Metric Measure Spaces: An Approach Based on Upper
+Gradients}, Cambridge University Press, 2015.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,289 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Pcal}{\mathcal P}
+
+\title{Pure-State Pi-Bases Obstruct the Negative Von Neumann Cases}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  It proves that a von Neumann algebra
+has BCP, equivalently UBCP, if and only if it is atomic and separably
+represented.  The same paper asks for a broader noncommutative
+\(C^*\)-algebra characterization:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+For a \(C^*\)-algebra \(A\), let \(\Pcal(A)\) denote its pure state space,
+with the relative weak-star topology inherited from \(A^*\).
+
+\begin{theorem}
+\label{thm:main}
+Let \(M\) be a von Neumann algebra.  If \(\Pcal(M)\) has a countable
+\(\pi\)-base, then \(M\) is atomic and separably represented.  Consequently
+\(M\) has BCP and UBCP by the source paper's von Neumann classification.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:negative}
+If a von Neumann algebra \(M\) fails BCP, then \(\Pcal(M)\) has no countable
+\(\pi\)-base.
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+The proof is by contrapositive and splits exactly along the source
+classification.
+
+If \(M\) has an atomless direct summand, all pure states on that summand are
+singular.  Given countably many proposed pure-state open sets, choose one
+pure state from each.  A common-projection lemma for countably many singular
+states gives a nonzero projection \(p\) annihilating all of them.  But the
+set of pure states satisfying \(\psi(p)>1/2\) is a nonempty open set, and
+none of the proposed open sets is contained in it.
+
+If \(M\) is atomic but not separably represented, then either it has
+uncountably many atomic summands, or one summand is \(\Bcal(H)\) for a
+nonseparable Hilbert space \(H\).  In both cases one obtains uncountably many
+pairwise disjoint nonempty open subsets of the pure state space, which rules
+out a countable \(\pi\)-base.
+
+\section*{Atomless Summands}
+
+\begin{lemma}[common projection for singular pure states]
+\label{lem:common}
+Let \(N\) be a nonzero von Neumann algebra and let
+\((\varphi_n)\) be countably many singular states on \(N\).  Then there is a
+nonzero projection \(p\in N\) such that
+\[
+        \varphi_n(p)=0\qquad(n\ge1).
+\]
+\end{lemma}
+
+\begin{proof}
+Fix a normal state \(\omega\) on \(N\).  A singular positive functional
+\(\varphi\) admits an increasing net of projections \(e_i\uparrow1\) such
+that \(\varphi(e_i)=0\).  Since \(\omega\) is normal, for every
+\(\varepsilon>0\) there is a projection \(e\) with
+\[
+        \varphi(e)=0,\qquad \omega(1-e)<\varepsilon.
+\]
+Apply this to \(\varphi_n\) with \(\varepsilon_n=2^{-n-2}\), obtaining
+projections \(e_n\) with
+\[
+        \varphi_n(e_n)=0,\qquad \omega(1-e_n)<2^{-n-2}.
+\]
+Let
+\[
+        p=\bigwedge_{n=1}^{\infty} e_n.
+\]
+Then
+\[
+        \omega(1-p)
+        =
+        \omega\Big(\bigvee_n(1-e_n)\Big)
+        \le
+        \sum_n\omega(1-e_n)
+        <
+        \frac12.
+\]
+Thus \(p\ne0\).  Since \(p\le e_n\), positivity gives
+\(\varphi_n(p)=0\) for every \(n\).
+\end{proof}
+
+\begin{lemma}
+\label{lem:atomless}
+If \(N\) is a nonzero atomless von Neumann algebra, then \(\Pcal(N)\) has no
+countable \(\pi\)-base.
+\end{lemma}
+
+\begin{proof}
+In an atomless von Neumann algebra there are no normal pure states, because
+normal pure states are exactly vector states supported on minimal
+projections.  Thus every pure state on \(N\) is singular.
+
+Let \((U_n)\) be any countable family of nonempty open subsets of
+\(\Pcal(N)\).  Choose \(\varphi_n\in U_n\).  By Lemma~\ref{lem:common}, there
+is a nonzero projection \(p\in N\) with \(\varphi_n(p)=0\) for every \(n\).
+
+Choose a pure state \(\psi_0\) on the nonzero unital \(C^*\)-algebra
+\(pNp\).  Its canonical extension
+\[
+        \psi(x)=\psi_0(pxp)\qquad(x\in N)
+\]
+is a pure state of \(N\), since pure states of hereditary subalgebras extend
+purely to the ambient algebra.  Moreover \(\psi(p)=1\).
+
+Therefore
+\[
+        W=\{\psi\in\Pcal(N):\psi(p)>1/2\}
+\]
+is a nonempty open subset of \(\Pcal(N)\).  But \(\varphi_n\in U_n\setminus W\)
+for every \(n\).  Hence no \(U_n\) is contained in \(W\), so \((U_n)\) cannot
+be a \(\pi\)-base.  Since the countable family was arbitrary, \(\Pcal(N)\)
+has no countable \(\pi\)-base.
+\end{proof}
+
+\section*{Atomic Nonseparable Summands}
+
+\begin{lemma}
+\label{lem:disjoint}
+If a topological space has uncountably many pairwise disjoint nonempty open
+sets, then it has no countable \(\pi\)-base.
+\end{lemma}
+
+\begin{proof}
+If \((V_n)\) were a countable \(\pi\)-base and \((O_i)_{i\in I}\) were
+pairwise disjoint nonempty open sets, then for each \(i\) some \(V_{n(i)}\)
+would satisfy \(V_{n(i)}\subset O_i\).  Distinct \(i\)'s require distinct
+\(n(i)\)'s, because the \(O_i\)'s are disjoint and \(V_{n(i)}\ne\emptyset\).
+Thus \(I\) would be countable.
+\end{proof}
+
+\begin{lemma}
+\label{lem:atomic}
+Let \(M\) be an atomic von Neumann algebra which is not separably represented.
+Then \(\Pcal(M)\) has no countable \(\pi\)-base.
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+        M\cong \prod_{i\in I}\Bcal(H_i).
+\]
+If \(I\) is uncountable, let \(z_i\) be the central projection onto the
+\(i\)-th summand.  The sets
+\[
+        O_i=\{\varphi\in\Pcal(M):\varphi(z_i)>1/2\}
+\]
+are pairwise disjoint nonempty open subsets of \(\Pcal(M)\).  By
+Lemma~\ref{lem:disjoint}, \(\Pcal(M)\) has no countable \(\pi\)-base.
+
+If \(I\) is countable but \(M\) is not separably represented, then some
+summand is \(\Bcal(H)\) with \(H\) nonseparable.  It is enough to show that
+\(\Pcal(\Bcal(H))\) has no countable \(\pi\)-base, since this pure-state
+space is a clopen subspace of \(\Pcal(M)\).
+
+Choose an uncountable orthonormal family \((\xi_\alpha)_{\alpha\in\Gamma}\)
+in \(H\), and let \(p_\alpha\) be the rank-one projection onto
+\(\C\xi_\alpha\).  The sets
+\[
+        W_\alpha
+        =
+        \{\varphi\in\Pcal(\Bcal(H)):\varphi(p_\alpha)>1/2\}
+\]
+are nonempty because they contain the vector states \(\omega_{\xi_\alpha}\).
+They are open.  They are pairwise disjoint: if \(\alpha\ne\beta\), then
+\(p_\alpha+p_\beta\le1\), so no state can take value \(>1/2\) on both
+\(p_\alpha\) and \(p_\beta\).  Lemma~\ref{lem:disjoint} applies again.
+\end{proof}
+
+\section*{Proof of the Main Result}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+We prove the contrapositive.  Suppose \(M\) is not atomic and separably
+represented.
+
+If \(M\) has a nonzero atomless central summand \(N=zM\), then
+\[
+        \Pcal(N)=\{\varphi\in\Pcal(M):\varphi(z)=1\}
+\]
+is a clopen subspace of \(\Pcal(M)\).  By Lemma~\ref{lem:atomless},
+\(\Pcal(N)\) has no countable \(\pi\)-base.  Therefore \(\Pcal(M)\) has no
+countable \(\pi\)-base, because every open subspace of a space with a
+countable \(\pi\)-base inherits one.
+
+If \(M\) is atomic but not separably represented, then
+Lemma~\ref{lem:atomic} gives the same conclusion.
+
+Thus \(\Pcal(M)\) having a countable \(\pi\)-base forces \(M\) to be atomic
+and separably represented.  The source paper's von Neumann theorem then gives
+BCP and UBCP.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:negative}]
+The source paper proves that a von Neumann algebra fails BCP exactly when it
+is not atomic and separably represented.  Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+\section*{Scope and Limitations}
+
+This packet proves a one-way compatibility theorem for the pure-state
+\(\pi\)-base route in the von Neumann class:
+\[
+        \Pcal(M)\text{ has a countable }\pi\text{-base}
+        \quad\Longrightarrow\quad
+        M\text{ has UBCP}.
+\]
+It does not prove the converse for all atomic separably represented von
+Neumann algebras, and it does not settle arbitrary \(C^*\)-algebras.  Its
+role is to show that the source's von Neumann negative cases are already
+detected at the level of pure-state \(\pi\)-bases.
+
+\section*{Novelty and Search Bounds}
+
+Local indexes were searched for arXiv:2311.14257, von Neumann BCP, pure
+state space, \(\pi\)-base, singular pure state, atomless von Neumann algebra,
+and atomic nonseparable representation.  The source paper contains the von
+Neumann BCP/UBCP classification, and previous lane-19 packets contain the
+countable-capture refinement.  No prior local packet recorded this
+pure-state \(\pi\)-base obstruction for the negative von Neumann cases.
+
+\section*{Human Review Focus}
+
+Reviewers should check:
+\begin{enumerate}
+    \item the common-projection lemma for countably many singular states;
+    \item the assertion that atomless von Neumann algebras have no normal pure
+          states;
+    \item the pure extension from \(pNp\) to \(N\);
+    \item the inheritance of countable \(\pi\)-bases by open subspaces;
+    \item the uncountable disjoint-open-family arguments in the atomic
+          nonseparable cases.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{Blackadar}
+Bruce Blackadar,
+\emph{Operator Algebras: Theory of \(C^*\)-Algebras and Von Neumann
+Algebras},
+Encyclopaedia of Mathematical Sciences 122, Springer, 2006.
+
+\bibitem{lane19vna}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{Countable Capture for Von Neumann Algebras},
+solution packet
+\texttt{2311.14257\_von\_neumann\_capture\_classification}, 2026.
+
+\end{thebibliography}
+
+\end{document}

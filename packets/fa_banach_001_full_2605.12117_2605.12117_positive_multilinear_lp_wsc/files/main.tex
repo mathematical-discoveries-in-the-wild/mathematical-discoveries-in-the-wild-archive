@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\weak}{\xrightarrow{w}}
+
+\title{Positive Multilinear Forms on Non-Atomic \texorpdfstring{$L_p$}{Lp}}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Question 3 from:
+
+\begin{quote}
+Luis A. Garcia, Jose Lucas P. Luiz, Vinicius C. C. Miranda,
+\emph{Norm attainment for multilinear operators and polynomials on
+Banach Spaces}\\
+\emph{and Banach lattices}, arXiv:2605.12117.
+\end{quote}
+
+The source location is \texttt{arxiv.tex:1007--1071}, final section
+``Open Questions'', Question 3. The question appears on page 28 of the
+source paper:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The paper defines an $n$-linear operator $A:X_1\times\cdots\times X_n\to Y$
+to be weakly sequentially continuous when
+\[
+  A(x_{1,k},\ldots,x_{n,k})\to A(x_1,\ldots,x_n)
+\]
+whenever $x_{j,k}\weak x_j$ in $X_j$ for every $j=1,\ldots,n$.
+
+\begin{remark}[Exponent convention]
+The rendered question writes $L_{p_i}[0,1]$ and assumes
+$\sum_i 1/p_i<1$. We read this in the surrounding finite-exponent
+convention of the paper, namely $1<p_i<\infty$. The inequality already
+excludes $p_i=1$. A human reviewer should confirm whether the authors
+intended to include the endpoint $p_i=\infty$; the proof below resolves
+the finite-exponent formulation.
+\end{remark}
+
+\section*{Claim}
+
+\begin{theorem}
+Let $n\ge 2$ and let $1<p_1,\ldots,p_n<\infty$ satisfy
+\[
+  \sum_{i=1}^n \frac{1}{p_i}<1.
+\]
+Then there is a positive continuous $n$-linear form on
+\[
+  L_{p_1}[0,1]\times\cdots\times L_{p_n}[0,1]
+\]
+which is not weakly sequentially continuous. In particular, Question 3 has
+a negative answer under the finite-exponent interpretation.
+\end{theorem}
+
+\begin{proof}
+Define
+\[
+  A(f_1,\ldots,f_n)=\int_0^1 f_1(t)\cdots f_n(t)\,dt.
+\]
+Since $\sum_i 1/p_i<1$, choose $s\in(1,\infty]$ such that
+\[
+  \frac1s=1-\sum_{i=1}^n \frac1{p_i}.
+\]
+Holder's inequality, with the remaining factor filled by the constant
+function $1\in L_s[0,1]$, gives
+\[
+  |A(f_1,\ldots,f_n)|
+  \le \prod_{i=1}^n \norm{f_i}_{p_i}.
+\]
+Thus $A$ is a continuous $n$-linear form. It is positive in the real
+Banach-lattice sense, because $f_i\ge 0$ for all $i$ implies
+$f_1\cdots f_n\ge 0$ almost everywhere.
+
+Let $(r_k)$ be the Rademacher functions on $[0,1]$. For every
+$1<p<\infty$, one has $r_k\weak 0$ in $L_p[0,1]$. Indeed, if $q$ is the
+conjugate exponent and $h\in L_q[0,1]$, approximate $h$ in $L_q$ by a
+dyadic step function $h_m$. For all sufficiently large $k$,
+$\int_0^1 h_m r_k=0$, and Holder's inequality controls
+$\int_0^1 (h-h_m)r_k$.
+
+Now set
+\[
+  x_{1,k}=r_k,\qquad x_{2,k}=r_k,\qquad x_{j,k}=1\quad (3\le j\le n).
+\]
+Then
+\[
+  x_{1,k}\weak 0,\qquad x_{2,k}\weak 0,\qquad x_{j,k}\weak 1
+  \quad (3\le j\le n),
+\]
+but
+\[
+  A(r_k,r_k,1,\ldots,1)=\int_0^1 r_k(t)^2\,dt=1
+\]
+for every $k$, while
+\[
+  A(0,0,1,\ldots,1)=0.
+\]
+Therefore $A$ is not weakly sequentially continuous.
+\end{proof}
+
+\section*{Verification Notes}
+
+No computational verification is needed. The proof reduces to three
+standard facts: Holder's inequality, positivity of the integral form on
+real $L_p$ lattices, and weak nullity of the Rademacher sequence in finite
+$L_p[0,1]$.
+
+The only convention-sensitive point is whether Question 3 intended the
+endpoint $p_i=\infty$. The packet should be read as a full negative answer
+for the finite-exponent version used in the surrounding paper.
+
+\end{document}

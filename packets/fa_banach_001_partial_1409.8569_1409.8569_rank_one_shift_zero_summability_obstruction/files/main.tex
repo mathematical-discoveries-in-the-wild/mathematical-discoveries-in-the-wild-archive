@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\title{A Zero-Counting Obstruction for the Rank-One Shift Model in arXiv:1409.8569}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_03}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Status:} partial result, likely valid.  This does not solve the
+problem of determining $q_B(p)$, but it proves that the rank-one
+$\ell_1$ shift construction used in \cite{DHHK} cannot produce divergent
+eigenvalue-gap sums at any exponent $q>1$.
+
+\section*{Source Problem}
+
+Demuth, Hanauska, Hansmann, and Katriel study compact perturbations
+$L=L_0+K$ of bounded operators on Banach spaces.  If
+$(\alpha_j(K))\in \ell^p$, their Corollary 1 implies, for $L_0\ne 0$, the
+gap summability
+\[
+  \sum_{\lambda\in\sigma_d(L),\,|\lambda|>\|L_0\|}
+       (|\lambda|-\|L_0\|)^q<\infty
+  \qquad(q>p+1).
+\]
+They define $q_B(p)$ as the infimum of exponents for which the corresponding
+implication holds for all Banach spaces, all $L_0$, and all compact $K$ with
+$(\alpha_j(K))\in\ell^p$.  Their results give
+$\max(1,p)\le q_B(p)\le p+1$, and the final page asks whether
+$q_B(p)=p$ for $p\ge1$, whether $q_B(p)>p$, or whether the upper bound
+$p+1$ is sharp.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+\clearpage
+
+\section*{Partial Result}
+
+The source paper obtains the lower bound $q_B(p)\ge1$ from a rank-one
+perturbation of the unilateral shift on $\ell^1(\mathbb N)$.  In that model,
+a bounded scalar sequence $b=(b_k)_{k\ge1}$ defines
+\[
+  h(w)=1-\sum_{k=1}^{\infty} b_k w^k,\qquad |w|<1,
+\]
+and the eigenvalues $\lambda$ of the perturbed shift outside the unit disk
+correspond to zeros $w=\lambda^{-1}$ of $h$ in the unit disk.  Formula (5.6)
+in \cite{DHHK} identifies the gap sum with
+\[
+  \sum_{\lambda\in\sigma_d(L),\,|\lambda|>1}(|\lambda|-1)
+  =
+  \sum_{w\in\mathbb D,\,h(w)=0}\frac{1-|w|}{|w|}.
+\]
+
+\begin{theorem}[rank-one shift zero summability]
+Let $(b_k)$ be bounded and let
+$h(w)=1-\sum_{k\ge1}b_k w^k$ in $\mathbb D$.  If $(z_n)$ is the zero
+sequence of $h$ in $\mathbb D$, counted with multiplicity, then
+\[
+  \sum_n (1-|z_n|)^q <\infty
+  \qquad\text{for every } q>1.
+\]
+\end{theorem}
+
+\begin{corollary}
+For every operator in the rank-one $\ell^1$ shift model of \cite[Section
+5]{DHHK}, the eigenvalues outside the unit disk satisfy
+\[
+  \sum_{\lambda\in\sigma_d(L),\,|\lambda|>1} (|\lambda|-1)^q<\infty
+  \qquad\text{for every } q>1.
+\]
+Consequently this model cannot prove $q_B(p)>1$, and hence cannot prove
+$q_B(p)>p$ for any $p\ge1$ or sharpness of the upper bound $p+1$.
+\end{corollary}
+
+\section*{Proof Intuition}
+
+The rank-one example is equivalent to prescribing zeros of an analytic
+function whose Taylor coefficients are bounded.  Such functions may have
+non-Blaschke zero sets, which is exactly what the source paper uses to force
+divergence of the first power.  But bounded coefficients impose the growth
+condition $|h(z)|=O((1-|z|)^{-1})$.  Jensen's formula converts that mild
+growth into a dyadic zero-counting estimate: near radius $1-2^{-m}$ there
+can be at most order $m2^m$ zeros.  That count is just too small to make
+any $q$-power with $q>1$ diverge.
+
+\section*{Proof}
+
+Set $M=\sup_k |b_k|$.  If $M=0$, then $h\equiv1$ and there are no zeros, so
+assume $M>0$.  For $0<r<1$,
+\[
+  |h(re^{it})|
+  \le 1+M\sum_{k=1}^{\infty}r^k
+  =1+\frac{Mr}{1-r}
+  \le \frac{1+M}{1-r}.
+\]
+Since $h(0)=1$, Jensen's formula gives, for every $0<r<1$,
+\[
+  \sum_{|z_n|<r}\log\frac{r}{|z_n|}
+  =
+  \frac1{2\pi}\int_0^{2\pi}\log|h(re^{it})|\,dt
+  \le C+\log\frac1{1-r},
+\]
+where $C=\log(1+M)$.
+
+Let $N(t)=\#\{n:|z_n|\le t\}$, counting multiplicity.  For each integer
+$m\ge1$, put $t_m=1-2^{-m}$ and $r_m=1-2^{-(m+1)}$.  Then $t_m<r_m$, and
+each zero with $|z_n|\le t_m$ contributes at least
+\[
+  \log\frac{r_m}{t_m}
+  =
+  \log\left(\frac{1-2^{-(m+1)}}{1-2^{-m}}\right)
+  \ge 2^{-(m+1)}
+\]
+to Jensen's sum at radius $r_m$.  Hence
+\[
+  N(t_m)\,2^{-(m+1)}
+  \le C+\log\frac1{1-r_m}
+  = C+(m+1)\log 2.
+\]
+Thus $N(t_m)\le C_1 m2^m$ for a constant $C_1$ independent of $m$.
+
+Now decompose the disk into dyadic annuli
+\[
+  A_m=\{z:1-2^{-m}<|z|\le 1-2^{-(m+1)}\}\qquad(m\ge1),
+\]
+together with the compact disk $|z|\le1/2$.  The compact disk contains only
+finitely many zeros because $h$ is not identically zero.  The number of zeros
+in $A_m$ is at most $N(t_{m+1})\le C_2 m2^m$, while every $z\in A_m$
+satisfies $1-|z|\le2^{-m}$.  Therefore
+\[
+  \sum_n(1-|z_n|)^q
+  \le C_3+\sum_{m=1}^{\infty} C_2 m2^m\,2^{-mq}
+  = C_3+C_2\sum_{m=1}^{\infty}m\,2^{-m(q-1)}<\infty
+\]
+whenever $q>1$.  This proves the theorem.
+
+For the corollary, the source model has $w=\lambda^{-1}$ and $h(w)=0$.
+There are only finitely many zeros with $|w|\le1/2$.  For the remaining
+zeros,
+\[
+  |\lambda|-1=\frac1{|w|}-1=\frac{1-|w|}{|w|}\le2(1-|w|),
+\]
+so the theorem implies the asserted $q$-summability of eigenvalue gaps.
+
+\section*{Limitations}
+
+This packet does not determine $q_B(p)$ and does not rule out other Banach
+spaces, other compact perturbations, or more elaborate finite-rank or
+infinite-rank constructions.  It only shows that the natural attempt to
+strengthen the source paper's own rank-one $\ell^1$ shift example cannot
+cross the exponent $1$ threshold.
+
+\section*{Novelty and Duplicate Check}
+
+The run indexes were searched on 2026-07-03 for arXiv:1409.8569, the paper
+title, $q_B(p)$, eigenvalue-gap keywords, and the authors' names; no prior
+packet or attempt for this target was found.  Local parsed arXiv sources were
+searched for exact $q_B$ and title phrases, again finding no later paper in
+the local corpus that resolves the question.  External web searches on the
+same date for exact phrases including \texttt{q\_B(p)}, the title, and the
+authors surfaced the original arXiv page but no separate later answer.  This
+is an elementary partial obstruction, not a claimed complete or novel
+resolution of the open problem.
+
+\section*{Human Review Recommendation}
+
+Review the Jensen-to-annular-counting estimate and the transfer from zeros
+$w$ to eigenvalue gaps $\lambda=w^{-1}$.  If those two steps are accepted,
+the partial obstruction is complete.
+
+\begin{thebibliography}{9}
+\bibitem{DHHK}
+M. Demuth, F. Hanauska, M. Hansmann, and G. Katriel,
+\emph{Estimating the number of eigenvalues of linear operators on Banach
+spaces}, arXiv:1409.8569, 2014.
+
+\bibitem{Conway}
+J. B. Conway,
+\emph{Functions of One Complex Variable},
+2nd ed., Graduate Texts in Mathematics 11, Springer, 1978.
+\end{thebibliography}
+
+\end{document}

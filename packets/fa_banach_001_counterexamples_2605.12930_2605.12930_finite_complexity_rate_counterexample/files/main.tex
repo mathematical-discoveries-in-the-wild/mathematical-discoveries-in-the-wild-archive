@@ -1,0 +1,374 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newcommand{\CR}{\operatorname{CR}}
+\newcommand{\DR}{\operatorname{DR}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\directlim}{\varinjlim}
+\newcommand{\Sphere}{S}
+
+\title{A Counterexample to the Finite-Complexity-Rate Inductive-Limit Question}
+\author{arXiv automatic math run \texttt{fa\_banach\_001}}
+\date{June 22, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample, likely valid, to the inductive-limit
+question in Tian--Yu \cite{TianYu2026}.  The result is stronger than the earlier
+partial packet: it gives a negative answer both for injective/direct-union
+inductive limits and for filtered colimits with arbitrary bonding
+homomorphisms.
+
+The supplied report
+\[
+\texttt{finite\_complexity\_rate\_counterexample.tex/pdf}
+\]
+has been copied into the evidence folder.  The previous direct-union reduction
+packet has been absorbed into the history folder of this packet.
+
+\section*{Source Question}
+
+The source is Geng Tian and Guoliang Yu, \emph{Embedding complexity into Banach
+spaces and the strong Novikov conjecture}, arXiv:2605.12930v1.  After
+Definition 1.4 and Proposition 1.5, the paper asks on page 6:
+
+\begin{quote}
+``It is natural to ask whether every countable discrete group is an inductive
+limit of groups with finite complexity rates.''
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions Used}
+
+Let \(\Gamma\) be a countable group with a left-invariant proper metric.  In
+Definition 1.4 of \cite{TianYu2026}, finite complexity rate means
+\(\CR(\Gamma)<\boldsymbol{\infty}\), equivalently \(\DR(\Gamma)>1\).  Thus
+there is an element
+\[
+  \mathbf a=(a_0,a_1,\ldots,a_k)>1
+\]
+in the lexicographic order used in the source, a constant \(C>0\), thresholds
+\(N_p>0\), and maps
+\[
+  \phi_p:\Gamma\longrightarrow \Sphere(\ell^{2p}(\N))
+\]
+such that
+\begin{align}
+ d(x,y)\le 1
+ &\Longrightarrow
+ \|\phi_p(x)-\phi_p(y)\|_{2p}\le \eps_p, \label{eq:variation}\\
+ d(x,y)\ge N_p
+ &\Longrightarrow
+ \|\phi_p(x)-\phi_p(y)\|_{2p}\ge 1, \label{eq:separation}
+\end{align}
+where
+\[
+ \eps_p=
+ \frac{C}{p^{a_0}(\log p)^{a_1}\cdots(\log_k p)^{a_k}}.
+\]
+The source's truncated convention for small iterated logarithms is irrelevant
+for the asymptotic argument.  Since \(\mathbf a>1\), one has
+\[
+  p\eps_p\longrightarrow 0. \tag{1}
+\]
+
+\section*{Proof Intuition}
+
+Finite complexity rate would provide almost unit-scale-constant maps
+\(\phi_p\) into the unit spheres of \(\ell^{2p}\), with variations
+\(\eps_p=o(1/p)\), while still separating sufficiently far group elements.
+Expanders forbid this rate.  If an expander family coarsely embeds in a
+finitely generated group, then sufficiently many pairs in a large graph are
+sent beyond the separation threshold.  The \(L_q\) Poincare inequality for
+expanders, with \(q=2p\), forces the edge variation of the composed map to be
+at least a constant multiple of \(1/p\).  This contradicts \(p\eps_p\to 0\).
+Osajda supplies a finitely presented group with exactly this coarse expander
+containment, giving the counterexample.
+
+\section*{Direct-Union Reduction}
+
+\begin{lemma}[Subgroup heredity]\label{lem:subgroup}
+If a countable group \(\Gamma\) has finite complexity rate, then every subgroup
+\(\Lambda\leq\Gamma\) has finite complexity rate.
+\end{lemma}
+
+\begin{proof}
+Restrict a left-invariant proper metric on \(\Gamma\) to \(\Lambda\).  It is
+again left-invariant and proper.  Restricting the maps \(\phi_p\) preserves the
+variation and separation estimates, and \cite{TianYu2026} states that the
+definition is independent of the chosen left-invariant proper metric.
+\end{proof}
+
+\begin{proposition}[Directed-union reduction]\label{prop:directunion}
+For a countable group \(\Gamma\), the following are equivalent:
+\[
+\Gamma \text{ is a directed union of finite-complexity-rate subgroups}
+\]
+and
+\[
+\text{every finitely generated subgroup of } \Gamma
+\text{ has finite complexity rate.}
+\]
+\end{proposition}
+
+\begin{proof}
+If \(\Gamma=\bigcup_{i\in I}\Gamma_i\), with \(I\) directed and all
+\(\Gamma_i\) of finite complexity rate, then any finitely generated subgroup
+\(H\leq\Gamma\) has a finite generating set contained in one stage
+\(\Gamma_i\).  Lemma~\ref{lem:subgroup} gives finite complexity rate for
+\(H\).
+
+Conversely, the finitely generated subgroups of \(\Gamma\), ordered by
+inclusion, form a directed system whose union is \(\Gamma\).  If each of them
+has finite complexity rate, this is the required directed union.
+\end{proof}
+
+\section*{The Expander Obstruction}
+
+Let \(X=(V,E)\) be a finite connected \(d\)-regular graph, and let \(A_X\) be
+the normalized adjacency operator.  A sequence \((X_n)\) is a spectral expander
+sequence with gap \(\sigma>0\) if \(|V(X_n)|\to\infty\) and
+\[
+  1-\lambda_2(A_{X_n})\ge \sigma
+\]
+for every \(n\).
+
+We say that \((X_n)\) coarsely embeds into a finitely generated group
+\(\Gamma\) if there are maps \(\iota_n:V(X_n)\to\Gamma\) and nondecreasing
+functions \(\rho_-,\rho_+:[0,\infty)\to[0,\infty)\), independent of \(n\), with
+\(\rho_-(t)\to\infty\), such that
+\[
+ \rho_-\bigl(d_{X_n}(u,v)\bigr)
+ \le d_\Gamma\bigl(\iota_n(u),\iota_n(v)\bigr)
+ \le \rho_+\bigl(d_{X_n}(u,v)\bigr).
+\]
+
+\begin{lemma}[\(L_q\) Poincare inequality]\label{lem:poincare}
+Let \(X=(V,E)\) be a finite \(d\)-regular graph whose normalized adjacency
+operator has spectral gap at least \(\sigma>0\).  For every \(q\ge 2\) and
+every map \(f:V\to\ell^q\),
+\[
+ \left(
+   \frac{1}{|V|^2}\sum_{u,v\in V}\|f(u)-f(v)\|_q^q
+ \right)^{1/q}
+ \le
+ \frac{2q}{\sqrt\sigma}
+ \left(
+   \frac{1}{d|V|}\sum_{u\in V}\sum_{v\sim u}
+        \|f(u)-f(v)\|_q^q
+ \right)^{1/q}.
+\]
+\end{lemma}
+
+\begin{proof}
+This is the \(L_q\) expander Poincare inequality of Matousek, in the form
+quoted as Corollary 4.5 in Naor--Silberman \cite{NaorSilberman2011}.
+\end{proof}
+
+\begin{theorem}[Expanders force the critical \(1/p\) rate]\label{thm:obstruction}
+Let \(\Gamma\) be finitely generated.  Suppose a bounded-degree spectral
+expander sequence with gap \(\sigma>0\) coarsely embeds into \(\Gamma\).  If
+maps \(\phi_p:\Gamma\to \Sphere(\ell^{2p}(\N))\) satisfy
+\eqref{eq:variation} and \eqref{eq:separation}, then there is a constant
+\(c>0\), independent of \(p\), such that
+\[
+  p\eps_p\ge c \qquad (p\in\N).
+\]
+Consequently \(\Gamma\) has infinite complexity rate.
+\end{theorem}
+
+\begin{proof}
+Use a word metric on \(\Gamma\), and set
+\[
+  L=\max\{1,\lceil \rho_+(1)\rceil\}.
+\]
+Since the word metric is geodesic, \eqref{eq:variation} implies
+\[
+ d_\Gamma(x,y)\le L
+ \Longrightarrow
+ \|\phi_p(x)-\phi_p(y)\|_{2p}\le L\eps_p. \tag{2}
+\]
+
+Fix \(p\), set \(q=2p\), and choose \(R_p\) with
+\(\rho_-(R_p)\ge N_p\).  Since the degrees are bounded, every radius
+\((R_p-1)\)-ball in the graphs has size at most a number \(B_p\) independent
+of \(n\).  Choose \(n\) with \(|V(X_n)|\ge 2B_p\).  Then at least half of the
+ordered pairs \((u,v)\in V(X_n)^2\) satisfy \(d_{X_n}(u,v)\ge R_p\).
+
+Let \(f=\phi_p\circ \iota_n\).  For those far pairs, the coarse lower control
+and \eqref{eq:separation} give \(\|f(u)-f(v)\|_q\ge 1\).  Hence
+\[
+ \left(
+   \frac{1}{|V(X_n)|^2}
+   \sum_{u,v\in V(X_n)}\|f(u)-f(v)\|_q^q
+ \right)^{1/q}
+ \ge 2^{-1/q}. \tag{3}
+\]
+For adjacent vertices \(u\sim v\), coarse upper control gives
+\(d_\Gamma(\iota_n(u),\iota_n(v))\le \rho_+(1)\le L\), so by (2)
+\[
+  \|f(u)-f(v)\|_q\le L\eps_p.
+\]
+Applying Lemma~\ref{lem:poincare} and (3),
+\[
+  2^{-1/q}\le \frac{2q}{\sqrt\sigma}L\eps_p.
+\]
+With \(q=2p\), this gives
+\[
+  p\eps_p\ge
+  \frac{\sqrt\sigma}{4L}2^{-1/(2p)}
+  \ge \frac{\sqrt\sigma}{4\sqrt2\,L}.
+\]
+This lower bound contradicts \(p\eps_p\to 0\) whenever \(\Gamma\) has finite
+complexity rate.
+\end{proof}
+
+\section*{The Counterexample}
+
+Osajda constructed finitely generated groups whose Cayley graphs contain
+isometrically embedded expander sequences \cite[Theorem 3.2 and Corollary
+3.3]{Osajda2020}.  More strongly for the present purpose, he obtained closed
+aspherical manifolds of dimension at least four whose fundamental groups
+contain coarsely embedded expanders \cite[Corollary 3.5]{Osajda2020}.  Such a
+fundamental group is finitely presented.
+
+\begin{corollary}\label{cor:fpbad}
+There exists a countable finitely presented group \(G\) with
+\(\CR(G)=\infty\).
+\end{corollary}
+
+\begin{proof}
+Take \(G\) to be one of Osajda's finitely presented fundamental groups
+coarsely containing a bounded-degree expander family.  Cheeger's inequality
+turns the uniform combinatorial expansion in the construction into a uniform
+spectral gap after passing to a fixed-degree regular expander family.  Theorem
+\ref{thm:obstruction} gives \(\CR(G)=\infty\).
+\end{proof}
+
+\begin{lemma}[Finitely presented colimits retract from a stage]\label{lem:retract}
+Let \(G\cong\directlim_i G_i\) be a filtered colimit of groups.  If \(G\) is
+finitely presented, then for some \(i\) there is a homomorphism
+\(s:G\to G_i\) such that the canonical map \(\lambda_i:G_i\to G\) satisfies
+\(\lambda_i\circ s=\operatorname{id}_G\).  In particular, \(G\) is isomorphic
+to a subgroup of \(G_i\).
+\end{lemma}
+
+\begin{proof}
+Write \(G=\langle x_1,\ldots,x_m\mid r_1,\ldots,r_k\rangle\).  Choose
+representatives of the finitely many generators in stages of the filtered
+system and pass to one common later stage.  Each relator maps to the identity
+in the colimit, so after passing to a further common later stage, all relators
+are already trivial.  The chosen representatives therefore define a
+homomorphism \(s:G\to G_i\), and \(\lambda_i\circ s\) fixes the generators of
+the presented group \(G\).  Thus \(\lambda_i\circ s=\operatorname{id}_G\), so
+\(s\) is injective.
+\end{proof}
+
+\begin{theorem}[Negative answer]\label{thm:negative}
+The inductive-limit question in \cite{TianYu2026} has a negative answer:
+\begin{enumerate}
+  \item there is a countable finitely presented group that is not a directed
+  union of groups with finite complexity rates;
+  \item the same group is not a filtered colimit of groups with finite
+  complexity rates, even when the bonding homomorphisms are arbitrary and need
+  not be injective.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let \(G\) be the finitely presented group from Corollary~\ref{cor:fpbad}.
+
+If \(G\) were a directed union of finite-complexity-rate subgroups, its finite
+generating set would lie in one stage.  That stage would contain all of \(G\),
+so \(G\) itself would have finite complexity rate, contradicting
+\(\CR(G)=\infty\).
+
+Now suppose \(G\cong\directlim_i G_i\), with all \(G_i\) of finite complexity
+rate.  By Lemma~\ref{lem:retract}, \(G\) embeds in one \(G_i\).  Lemma
+\ref{lem:subgroup} then implies finite complexity rate for \(G\), again a
+contradiction.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is noncomputational.  The quantitative point to check is the
+dependence on \(q\) in Lemma~\ref{lem:poincare}; the needed bound is linear in
+\(q\), so with \(q=2p\) it gives the lower bound \(p\eps_p\ge c\).  The group
+theoretic steps are formal once finite presentability and coarse expander
+containment are available.
+
+\section*{Novelty and Literature Status}
+
+The exact notion of finite complexity rate was introduced in arXiv:2605.12930v1,
+submitted May 13, 2026.  The previous run packet searched on June 16, 2026 for
+the arXiv id, the paper title together with ``inductive limit'', and the phrase
+``finite complexity rates inductive limit countable discrete group''; no later
+answer to the exact question was found.  The supplied report records another
+bounded search by title, arXiv id, the phrase ``finite complexity rate'', and the
+inductive-limit question as of June 21, 2026, again without locating a later
+explicit answer.  During this upgrade, the run indexes and web searches for the
+arXiv id, finite complexity rate, and the supplied report title found no
+duplicate packet or published answer.
+
+This packet therefore records the result as a candidate counterexample produced
+by synthesis of known ingredients: Matousek/Naor--Silberman expander Poincare
+inequalities and Osajda's groups containing expanders.  It makes no priority
+claim beyond that synthesis.
+
+\section*{Human Review Recommendation}
+
+Review as a candidate full negative answer to the source question.  The main
+checks are:
+\begin{enumerate}
+  \item the source Definition 1.4 really implies \(p\eps_p\to 0\) for finite
+  complexity rate;
+  \item the cited Poincare inequality has the required linear \(q\)-dependence
+  for \(\ell^q\);
+  \item Osajda's Corollary 3.5 supplies a finitely presented group coarsely
+  containing a bounded-degree expander sequence in the sense used above.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{Matousek1997}
+Jiri Matousek,
+\emph{On embedding expanders into \(\ell_p\) spaces},
+Israel Journal of Mathematics \textbf{102} (1997), 189--197.
+
+\bibitem{NaorSilberman2011}
+Assaf Naor and Lior Silberman,
+\emph{Poincare inequalities, embeddings, and wild groups},
+Compositio Mathematica \textbf{147} (2011), no. 5, 1546--1572,
+arXiv:1005.4084.
+
+\bibitem{Osajda2020}
+Damian Osajda,
+\emph{Small cancellation labellings of some infinite graphs and applications},
+Acta Mathematica \textbf{225} (2020), no. 1, 159--191,
+arXiv:1406.5015.
+
+\bibitem{TianYu2026}
+Geng Tian and Guoliang Yu,
+\emph{Embedding complexity into Banach spaces and the strong Novikov
+conjecture},
+arXiv:2605.12930v1, 2026.
+
+\end{thebibliography}
+
+\end{document}

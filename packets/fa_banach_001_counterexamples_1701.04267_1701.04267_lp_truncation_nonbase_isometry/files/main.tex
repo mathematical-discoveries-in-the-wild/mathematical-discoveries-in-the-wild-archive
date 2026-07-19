@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\PX}{\mathcal P_X}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A Finite-Metric Counterexample for Levy--Prokhorov Isometries}
+\author{Run fa\_banach\_001, lane 7}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a likely valid counterexample to the naive extension of the
+Banach-space conclusion of Geh\'er--Titkos~\cite{GT} to arbitrary complete
+separable metric spaces.  In separable real Banach spaces, every surjective
+Levy--Prokhorov isometry of \(\PX\) is induced by an affine isometry of \(X\).
+For a three-point complete separable metric space, we construct a surjective
+\(\pi\)-isometry of \(\PX\) which sends Dirac masses according to a bijection
+that is not an isometry of the underlying metric space.
+
+The result should be read with the following scope caveat.  The paper's
+Banach-space question is answered in the source paper itself.  The target here
+is the later problem prompt asking for characterisations in other complete
+separable metric settings.  The packet does not classify all such spaces; it
+records a sharp finite obstruction and a complete proof of the resulting
+counterexample to the Banach-style conclusion.
+
+\section*{Source Problem Evidence}
+
+The motivating prompt appears in the final remarks of~\cite{GT}, page 18 of
+the arXiv PDF:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Transcription}
+
+After noting that parts of the proof used general complete separable metric
+spaces but later techniques required a linear structure, the authors write
+that it would be interesting to find a characterisation of all surjective
+\(\pi\)-isometries in other special, still general enough, complete separable
+metric spaces.
+
+\section*{Definitions}
+
+For a metric space \((X,d)\), let \(\PX\) denote the Borel probability
+measures on \(X\).  Geh\'er--Titkos use Prokhorov's metric
+\[
+  \pi_d(\mu,\nu)=
+  \inf\left\{\varepsilon>0:
+  \mu(A)\le \nu(A^\varepsilon)+\varepsilon
+  \ \hbox{for every Borel }A\subseteq X\right\},
+\]
+where
+\[
+  A^\varepsilon=\bigcup_{x\in A}B_\varepsilon(x),\qquad
+  B_\varepsilon(x)=\{z\in X:d(x,z)<\varepsilon\}.
+\]
+A map \(\Phi:\PX\to\PX\) is a surjective \(\pi\)-isometry if it is onto and
+\(\pi_d(\Phi\mu,\Phi\nu)=\pi_d(\mu,\nu)\) for all \(\mu,\nu\in\PX\).
+
+For a finite set \(X\), total variation will mean
+\[
+  \TV(\mu,\nu)=\sup_{A\subseteq X}|\mu(A)-\nu(A)|.
+\]
+
+\section*{Proof Intuition}
+
+The Levy--Prokhorov metric only uses open \(\varepsilon\)-neighborhoods for
+the scale \(\varepsilon\) appearing in the inequality.  Since every
+Levy--Prokhorov distance is at most \(1\), the metric cannot distinguish
+base-space distances once they have all been pushed past the threshold \(1\).
+On a finite metric space whose nonzero distances are all at least \(1\), every
+open ball of radius \(0<\varepsilon<1\) is a singleton.  Thus \(A^\varepsilon=A\)
+for every set \(A\), and the Levy--Prokhorov metric collapses to total
+variation.  Total variation is invariant under every permutation of the
+underlying finite set, including permutations that do not preserve the original
+metric.
+
+\begin{lemma}[Truncation invariance]\label{lem:trunc}
+Let \(X\) be a finite metric space and let \(\tau:X\to X\) be a bijection such
+that
+\[
+  \tau[A^\varepsilon]=(\tau A)^\varepsilon
+  \qquad(0<\varepsilon<1,\ A\subseteq X).
+\]
+Then the push-forward map \(\tau_\#:\PX\to\PX\) is a surjective
+\(\pi_d\)-isometry.
+\end{lemma}
+
+\begin{proof}
+For every \(\varepsilon\ge 1\), the defining Prokhorov inequality is automatic:
+\(\mu(A)\le 1\le \nu(A^\varepsilon)+\varepsilon\).  Hence only
+\(0<\varepsilon<1\) can affect the infimum below the universal upper bound
+\(\pi_d\le 1\).
+
+Fix \(0<\varepsilon<1\).  Since \(\tau\) is a bijection, every subset of \(X\)
+has the form \(\tau A\) for a unique subset \(A\).  Using the assumed
+neighborhood identity,
+\[
+  (\tau_\#\mu)(\tau A)
+  =\mu(A)
+  \le \nu(A^\varepsilon)+\varepsilon
+  =(\tau_\#\nu)((\tau A)^\varepsilon)+\varepsilon .
+\]
+Thus \(\varepsilon\) is admissible for \((\mu,\nu)\) if and only if it is
+admissible for \((\tau_\#\mu,\tau_\#\nu)\).  The admissible sets have the same
+intersection with \((0,1)\), and both contain every \(\varepsilon\ge1\);
+therefore their infima are equal.
+\end{proof}
+
+\begin{lemma}[Large discrete scale]\label{lem:tv}
+Let \(X\) be a finite metric space such that \(d(x,y)\ge 1\) whenever
+\(x\ne y\).  Then
+\[
+  \pi_d(\mu,\nu)=\TV(\mu,\nu)\qquad(\mu,\nu\in\PX).
+\]
+Consequently every bijection \(\tau:X\to X\) induces a surjective
+\(\pi_d\)-isometry \(\tau_\#\) of \(\PX\).
+\end{lemma}
+
+\begin{proof}
+If \(0<\varepsilon<1\), then \(A^\varepsilon=A\) for every subset \(A\subseteq
+X\).  Hence such an \(\varepsilon\) is admissible precisely when
+\[
+  \mu(A)-\nu(A)\le \varepsilon\qquad(A\subseteq X).
+\]
+It follows that
+\[
+  \pi_d(\mu,\nu)=\sup_{A\subseteq X}\bigl(\mu(A)-\nu(A)\bigr).
+\]
+The right-hand side equals \(\TV(\mu,\nu)\), because taking complements gives
+\(\nu(A)-\mu(A)=\mu(X\setminus A)-\nu(X\setminus A)\).  Finally, every
+bijection of \(X\) preserves the collection of subsets and hence preserves
+total variation.
+\end{proof}
+
+\begin{theorem}[Concrete counterexample]\label{thm:counterexample}
+There is a complete separable metric space \(X\) and a surjective
+\(\pi\)-isometry \(\Phi:\PX\to\PX\) such that \(\Phi\) is not induced by any
+isometry of \(X\).
+\end{theorem}
+
+\begin{proof}
+Let \(X=\{a,b,c\}\) and define
+\[
+  d(a,b)=2,\qquad d(a,c)=\frac52,\qquad d(b,c)=3,
+\]
+with \(d(x,x)=0\) and \(d\) symmetric.  The triangle inequalities hold since
+\[
+  2+\frac52>3,\qquad 2+3>\frac52,\qquad \frac52+3>2.
+\]
+Thus \(X\) is a finite, hence complete and separable, metric space.
+
+Let \(\tau\) be the transposition swapping \(a\) and \(b\) and fixing \(c\).
+This bijection is not an isometry of \(X\), since
+\[
+  d(a,c)=\frac52\ne 3=d(\tau a,\tau c).
+\]
+However, all nonzero distances in \(X\) are at least \(1\).  By
+Lemma~\ref{lem:tv}, the push-forward \(\Phi=\tau_\#\) is a surjective
+\(\pi_d\)-isometry of \(\PX\).
+
+It remains only to check that this \(\Phi\) is not secretly induced by some
+other isometry of \(X\).  If an isometry \(\psi:X\to X\) induced \(\Phi\), then
+for every \(x\in X\),
+\[
+  \delta_{\psi(x)}
+  =\psi_\#\delta_x
+  =\Phi(\delta_x)
+  =\tau_\#\delta_x
+  =\delta_{\tau(x)}.
+\]
+Dirac masses are injective in their base point, so \(\psi(x)=\tau(x)\) for
+all \(x\).  This forces \(\psi=\tau\), contradicting the fact that \(\tau\) is
+not an isometry.
+\end{proof}
+
+\begin{corollary}
+The conclusion of the Geh\'er--Titkos Banach-space theorem, with ``affine
+isometry'' replaced by ``isometry of the underlying metric space'', is false
+for general complete separable metric spaces.
+\end{corollary}
+
+\section*{Verification Notes}
+
+The proof is purely finite and requires no computation.  The script
+\texttt{code/check\_finite\_example.py} checks the triangle inequalities in
+the displayed three-point metric, verifies that the transposition is not a
+base-space isometry, and tests total-variation preservation on a small rational
+grid of probability measures.  This script is only a sanity check; the proof
+above is exact.
+
+\section*{Limitations}
+
+This is not a complete classification of all complete separable metric spaces
+whose probability-measure spaces have prescribed \(\pi\)-isometries.  It also
+does not contradict the source paper, whose main Banach-space theorem remains
+untouched.  Rather, it identifies a basic obstruction any broader
+characterisation must address: the Levy--Prokhorov metric is insensitive to
+the part of the base metric lying above the truncation scale \(1\).
+
+A natural next refinement would be to classify finite metric spaces up to the
+neighborhood data \(\{(x,y):d(x,y)<\varepsilon\}\) for \(0<\varepsilon<1\),
+since Lemma~\ref{lem:trunc} shows that this truncated data already creates
+\(\pi\)-isometries.
+
+\section*{Novelty and Literature Check}
+
+Before promotion, I searched the run indexes for arXiv:1701.04267,
+``Levy--Prokhorov'', ``Prokhorov metric'', ``finite metric space'', and
+``surjective isometries''.  The run indexes showed no prior packet, attempt,
+or proof-gap entry for this finite-truncation obstruction.
+
+I also ran bounded web searches for combinations of ``Levy--Prokhorov finite
+metric space isometries'', ``Prokhorov metric finite metric space total
+variation'', and ``surjective Prokhorov metric isometries metric spaces''.
+Those searches found the source paper and unrelated uses of total variation on
+simplices, but no exact prior statement of the counterexample above.  Novelty
+confidence should nevertheless be treated as moderate rather than absolute,
+because the construction is elementary once the scale-\(1\) truncation is
+noticed.
+
+\section*{Human Review Recommendation}
+
+Verify the two scale claims: first, that the Prokhorov defining inequality is
+automatic for \(\varepsilon\ge1\); second, that if all nonzero base distances
+are at least \(1\), then \(A^\varepsilon=A\) for \(0<\varepsilon<1\).  After
+those checks, the reduction to total variation and the non-base-isometry
+witness are immediate.
+
+\begin{thebibliography}{9}
+
+\bibitem{GT}
+G. P. Geh\'er and T. Titkos,
+\emph{A characterisation of isometries with respect to the Levy--Prokhorov metric},
+arXiv:1701.04267, 2017.
+\url{https://arxiv.org/abs/1701.04267}
+
+\end{thebibliography}
+
+\end{document}

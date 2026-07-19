@@ -1,0 +1,377 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\title{General Finite-Exponent Matrix Hypercontractivity over Large Alphabets}
+\author{Run fa\_banach\_001, lane 19}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Arunachalam and Doriguello ask in Future work item 4 of
+arXiv:2109.02600 whether their matrix-valued $(2,p)$ hypercontractive theorem
+can be upgraded to a general $(q,p)$ hypercontractive statement, first over the
+Boolean cube and then over $\Z_r^n$. The source passage is shown in
+Figure~\ref{fig:open}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Future work item 4 in arXiv:2109.02600, PDF page 9.}
+\label{fig:open}
+\end{figure}
+
+This packet proves such a physical-space theorem for all finite exponents
+$1\leq p\leq q<\infty$, with explicit dimension-free constants. No optimality
+claim is made for the constants outside the endpoints inherited from known
+theorems.
+
+\section*{Notation}
+
+Let $G=\Z_r^n$ with normalized counting measure. Put
+$\omega_r=e^{2\pi i/r}$ and write
+\[
+  \chi_S(x)=\omega_r^{S\cdot x},\qquad
+  S\cdot x=\sum_{j=1}^n S_jx_j \pmod r .
+\]
+For $f:G\to\C^{m\times m}$ define
+\[
+  \widehat f(S)=\E_{x\in G} f(x)\overline{\chi_S(x)}, \qquad
+  T_\rho f=\sum_{S\in G}\rho^{|S|}\widehat f(S)\chi_S ,
+\]
+where $|S|=|\{j:S_j\neq0\}|$. For $1\leq s<\infty$ let
+\[
+  \|f\|_{L_s(S_s)}
+  =
+  \left(\E_{x\in G}\|f(x)\|_s^s\right)^{1/s},
+\]
+where $\|\cdot\|_s$ denotes the unnormalized Schatten $s$-norm.
+
+For $1\leq s\leq2$ set
+\[
+  \zeta_r(s)=
+  \frac{(s-1)\bigl(1-(s-1)^{r-1}\bigr)}{(r-1)(2-s)}
+\]
+with the continuous values $\zeta_r(1)=0$ and $\zeta_r(2)=1$, and put
+\[
+  \beta_r(s)=\sqrt{\zeta_r(s)}.
+\]
+Equivalently, for $t=s-1\in[0,1]$,
+\[
+  \zeta_r(s)=\frac{t(1+t+\cdots+t^{r-2})}{r-1},
+\]
+so $0\leq\beta_r(s)\leq1$.
+
+\section*{Admissible Constants}
+
+For $1\leq p\leq q<\infty$ define $c_r(p,q)$ as follows.
+
+If $p=q$, let $c_r(p,q)=1$.
+
+If $1\leq p<q\leq2$, set
+\[
+  \theta_q=2\left(1-\frac1q\right), \qquad
+  \frac1{a(p,q)}
+  =
+  \frac{\frac1p+1-\frac2q}{2-\frac2q},
+\]
+and let
+\[
+  c_r(p,q)=\beta_r(a(p,q)).
+\]
+Here $a(p,q)\in[1,2]$; indeed $a(1,q)=1$ and $a(q,q)=2$.
+
+If $1\leq p\leq2\leq q<\infty$, the preceding definitions agree on the
+boundary and we set
+\[
+  c_r(p,q)=\beta_r(p)\beta_r(q'),
+  \qquad q'=\frac{q}{q-1}.
+\]
+
+If $2\leq p<q<\infty$, set
+\[
+  c_r(p,q)=c_r(q',p'), \qquad
+  p'=\frac{p}{p-1},\quad q'=\frac{q}{q-1}.
+\]
+
+\section*{Proof Intuition}
+
+The source theorem is stated in a Fourier-coefficient form for
+$1\leq s\leq2$. Parseval converts its target side into a physical
+$L_2(S_2)$ estimate: the Hilbert-Schmidt norm is the coefficient norm for
+which Parseval is exact, and $\|A\|_2\leq\|A\|_s$ for $s\leq2$.
+Thus the source theorem already gives $L_s(S_s)\to L_2(S_2)$
+hypercontractivity with noise $\beta_r(s)$.
+
+The noise operator is also an $L_t(S_t)$ contraction for every $t\geq1$,
+because it is convolution by a probability kernel. Interpolating between
+$L_1(S_1)\to L_1(S_1)$ contraction and $L_a(S_a)\to L_2(S_2)$ gives the whole
+range $1\leq p\leq q\leq2$. Duality gives $2\leq p\leq q<\infty$. Finally,
+when $p\leq2\leq q$, compose the $p\to2$ estimate with the dual $2\to q$
+estimate, using $T_{\rho_1}T_{\rho_2}=T_{\rho_1\rho_2}$.
+
+\section*{Endpoint Tools}
+
+\begin{lemma}[Source coefficient theorem]
+\label{lem:source}
+Let $1\leq s\leq2$. If $0\leq\rho\leq\beta_r(s)$, then every
+$f:\Z_r^n\to\C^{m\times m}$ satisfies
+\[
+  \left(\sum_{S\in\Z_r^n}
+  \rho^{2|S|}\|\widehat f(S)\|_s^2\right)^{1/2}
+  \leq
+  \|f\|_{L_s(S_s)}.
+\]
+\end{lemma}
+
+\begin{proof}
+This is Result 1, equivalently Theorem 3.3, of Arunachalam and Doriguello
+with the notation above. The endpoint $s=2$ is Parseval, and $s=1$ follows
+from the displayed inequality by continuity or directly from convexity of the
+trace norm applied to the constant Fourier coefficient.
+\end{proof}
+
+\begin{lemma}[Physical $s\to2$ endpoint]
+\label{lem:s-to-two}
+Let $1\leq s\leq2$. If $0\leq\rho\leq\beta_r(s)$, then
+\[
+  \|T_\rho f\|_{L_2(S_2)}\leq \|f\|_{L_s(S_s)}
+\]
+for every $f:\Z_r^n\to\C^{m\times m}$.
+\end{lemma}
+
+\begin{proof}
+By Parseval in the Hilbert-Schmidt norm,
+\[
+  \|T_\rho f\|_{L_2(S_2)}^2
+  =
+  \sum_{S\in\Z_r^n}\rho^{2|S|}\|\widehat f(S)\|_2^2 .
+\]
+Since $s\leq2$, Schatten norm monotonicity gives
+$\|A\|_2\leq\|A\|_s$ for every matrix $A$. Hence
+\[
+  \|T_\rho f\|_{L_2(S_2)}^2
+  \leq
+  \sum_{S\in\Z_r^n}\rho^{2|S|}\|\widehat f(S)\|_s^2
+  \leq
+  \|f\|_{L_s(S_s)}^2
+\]
+by Lemma~\ref{lem:source}.
+\end{proof}
+
+\begin{lemma}[Noise contractions]
+\label{lem:contraction}
+For every $1\leq t<\infty$ and $0\leq\rho\leq1$,
+\[
+  \|T_\rho f\|_{L_t(S_t)}\leq\|f\|_{L_t(S_t)} .
+\]
+\end{lemma}
+
+\begin{proof}
+On one copy of $\Z_r$, the multiplier that is $1$ on the trivial character
+and $\rho$ on all nontrivial characters is convolution by the probability
+measure
+\[
+  \mu_\rho(0)=\frac{1+(r-1)\rho}{r},\qquad
+  \mu_\rho(y)=\frac{1-\rho}{r}\quad(y\neq0).
+\]
+On $\Z_r^n$ the kernel is the product measure $\mu_\rho^{\otimes n}$. Thus
+\[
+  T_\rho f(x)=\E_y f(x+y).
+\]
+By convexity of $A\mapsto\|A\|_t^t$,
+\[
+  \|T_\rho f\|_{L_t(S_t)}^t
+  =
+  \E_x\left\|\E_y f(x+y)\right\|_t^t
+  \leq
+  \E_{x,y}\|f(x+y)\|_t^t
+  =
+  \|f\|_{L_t(S_t)}^t .
+\]
+\end{proof}
+
+\begin{lemma}[Interpolation framework]
+\label{lem:interp}
+Suppose a linear map $T$ is a contraction
+\[
+  L_{u_0}(S_{u_0})\to L_{v_0}(S_{v_0})
+  \quad\text{and}\quad
+  L_{u_1}(S_{u_1})\to L_{v_1}(S_{v_1})
+\]
+for exponents in $[1,\infty)$. If $0\leq\theta\leq1$ and
+\[
+  \frac1u=\frac{1-\theta}{u_0}+\frac{\theta}{u_1},
+  \qquad
+  \frac1v=\frac{1-\theta}{v_0}+\frac{\theta}{v_1},
+\]
+then $T:L_u(S_u)\to L_v(S_v)$ is also a contraction.
+\end{lemma}
+
+\begin{proof}
+Identify functions $f:G\to\C^{m\times m}$ with the finite von Neumann algebra
+$\ell_\infty(G)\otimes M_m(\C)$ equipped with the trace
+\[
+  \tau(f)=\E_{x\in G}\Tr f(x).
+\]
+Then $\|f\|_{L_s(S_s)}=\tau(|f|^s)^{1/s}$. The finite-dimensional
+noncommutative $L_s$ spaces form the exact complex interpolation scale, so the
+claim is the usual Riesz-Thorin/complex interpolation theorem for these
+finite-dimensional noncommutative $L_s$ spaces.
+\end{proof}
+
+\section*{Main Theorem}
+
+\begin{theorem}[Finite-exponent matrix $(q,p)$ hypercontractivity]
+\label{thm:main}
+Let $r\geq2$, $n,m\geq1$, and $1\leq p\leq q<\infty$. If
+$0\leq\rho\leq c_r(p,q)$, then every $f:\Z_r^n\to\C^{m\times m}$ satisfies
+\[
+  \|T_\rho f\|_{L_q(S_q)}\leq \|f\|_{L_p(S_p)}.
+\]
+\end{theorem}
+
+\begin{proof}
+We split the proof into three ranges.
+
+\smallskip
+\noindent\textbf{The range $1\leq p\leq q\leq2$.}
+If $p=q$, this is Lemma~\ref{lem:contraction}. Assume $p<q$. Put
+\[
+  \theta=\theta_q=2\left(1-\frac1q\right),\qquad
+  a=a(p,q).
+\]
+By definition,
+\[
+  \frac1q=(1-\theta)\cdot1+\theta\cdot\frac12,
+  \qquad
+  \frac1p=(1-\theta)\cdot1+\theta\cdot\frac1a.
+\]
+If $\rho\leq c_r(p,q)=\beta_r(a)$, then $T_\rho$ is an
+$L_1(S_1)\to L_1(S_1)$ contraction by Lemma~\ref{lem:contraction}, and an
+$L_a(S_a)\to L_2(S_2)$ contraction by Lemma~\ref{lem:s-to-two}. Interpolating
+with Lemma~\ref{lem:interp} gives the desired
+$L_p(S_p)\to L_q(S_q)$ contraction.
+
+\smallskip
+\noindent\textbf{The range $2\leq p\leq q<\infty$.}
+Again $p=q$ is Lemma~\ref{lem:contraction}, so assume $p<q$. Then
+$1<q'\leq p'\leq2$. By the first part, if
+$\rho\leq c_r(q',p')=c_r(p,q)$, then
+\[
+  \|T_\rho g\|_{L_{p'}(S_{p'})}
+  \leq
+  \|g\|_{L_{q'}(S_{q'})}.
+\]
+The operator $T_\rho$ is self-adjoint for the trace pairing
+\[
+  \ip{f}{g}=\E_{x\in G}\Tr(f(x)^*g(x)),
+\]
+because it is a real Fourier multiplier. Therefore finite-dimensional
+duality yields
+\[
+\begin{aligned}
+  \|T_\rho f\|_{L_q(S_q)}
+  &=
+  \sup_{\|g\|_{L_{q'}(S_{q'})}\leq1}
+  |\ip{T_\rho f}{g}|  \\
+  &=
+  \sup_{\|g\|_{L_{q'}(S_{q'})}\leq1}
+  |\ip{f}{T_\rho g}|
+  \leq
+  \|f\|_{L_p(S_p)} .
+\end{aligned}
+\]
+
+\smallskip
+\noindent\textbf{The crossing range $1\leq p\leq2\leq q<\infty$.}
+If $p=q=2$, this has already been covered. If $p=1<q$, then
+$c_r(1,q)=0$, and for $\rho=0$ the operator $T_0$ is projection onto the
+constant function $\E f$. Jensen's inequality and
+$\|A\|_q\leq\|A\|_1$ give
+\[
+  \|T_0f\|_{L_q(S_q)}=\|\E f\|_q\leq\E\|f\|_q\leq\E\|f\|_1
+  =\|f\|_{L_1(S_1)}.
+\]
+Now assume $p>1$. Let
+\[
+  b_p=\beta_r(p),\qquad b_q=\beta_r(q').
+\]
+If $\rho\leq b_pb_q$, choose $\rho_1=b_p$ and $\rho_2=\rho/b_p$; then
+$0\leq\rho_2\leq b_q$ and
+\[
+  T_\rho=T_{\rho_2}T_{\rho_1}.
+\]
+By Lemma~\ref{lem:s-to-two}, $T_{\rho_1}$ is a contraction
+$L_p(S_p)\to L_2(S_2)$. By the already proved dual estimate applied to the
+endpoint $q'\to2$, $T_{\rho_2}$ is a contraction
+$L_2(S_2)\to L_q(S_q)$. Hence
+\[
+  \|T_\rho f\|_{L_q(S_q)}
+  \leq
+  \|T_{\rho_1}f\|_{L_2(S_2)}
+  \leq
+  \|f\|_{L_p(S_p)} .
+\]
+This proves all cases.
+\end{proof}
+
+\begin{remark}[Boolean constants]
+For $r=2$ one has $\beta_2(s)=\sqrt{s-1}$. Thus in the crossing range
+$p\leq2\leq q$,
+\[
+  c_2(p,q)=\sqrt{p-1}\sqrt{q'-1}
+  =
+  \sqrt{\frac{p-1}{q-1}},
+\]
+the classical Nelson threshold. The interpolation and duality constants below
+and above $2$ are dimension-free but are not claimed to be optimal.
+\end{remark}
+
+\section*{Novelty Check and Limitations}
+
+The packet proves the finite-exponent physical-space version of the generalized
+matrix hypercontractivity question over $\Z_r^n$, and therefore also over the
+Boolean cube by taking $r=2$. It does not assert an $L_\infty$ endpoint, nor
+does it assert sharp constants for all finite pairs $(p,q)$.
+
+The cheap run indexes were searched for arXiv:2109.02600, the title, matrix
+hypercontractivity, generalized $(q,p)$ hypercontractivity, Schatten norms, and
+$\Z_r$. The only relevant hits were the two earlier lane 19 partial packets.
+A bounded web check on July 18, 2026 searched exact combinations of these same
+terms. I found the source paper and standard background, but no exact later
+finite-exponent physical-space theorem matching Theorem~\ref{thm:main}.
+
+\section*{References}
+
+\begin{enumerate}
+\item S. Arunachalam and J. F. Doriguello,
+\emph{Matrix hypercontractivity, streaming algorithms and LDCs: the large
+alphabet case}, arXiv:2109.02600; ACM Transactions on Computation Theory
+16(4), Article 21, 2024.
+\item K. Ball, E. A. Carlen, and E. H. Lieb,
+\emph{Sharp uniform convexity and smoothness inequalities for trace norms},
+Inventiones Mathematicae 115 (1994), 463--482.
+\item F. Ben-Aroya, O. Regev, and R. de Wolf,
+\emph{A hypercontractive inequality for matrix-valued functions with
+applications to quantum computing and LDCs}, FOCS 2008.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,297 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\cI}{\mathcal I}
+
+\title{Ideal Reduced Products and a Diagonal Obstruction to BCP}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+An ideal \(\cI\) on \(\N\) is called proper if \(\N\notin\cI\).  A set
+\(S\subseteq\N\) is \(\cI\)-positive if \(S\notin\cI\).
+
+\begin{definition}
+A proper ideal \(\cI\) on \(\N\) has the countable disjoint-refinement
+property if, for every sequence \((S_k)\) of \(\cI\)-positive subsets of
+\(\N\), there are pairwise disjoint \(\cI\)-positive sets \(T_k\subseteq S_k\).
+\end{definition}
+
+Let \((E_n)\) be a sequence of normed spaces.  Define
+\[
+        c_\cI(E_n)
+        =
+        \{x=(x_n)\in \ell_\infty(E_n):
+        \{n:\|x_n\|\ge \varepsilon\}\in\cI
+        \text{ for every }\varepsilon>0\}.
+\]
+This is the usual \(c_0\)-sum when \(\cI\) is the ideal of finite subsets of
+\(\N\).  It is closed in \(\ell_\infty(E_n)\): if \(x^{(m)}\to x\) in
+\(\ell_\infty\) and \(x^{(m)}\in c_\cI(E_n)\), then for fixed
+\(\varepsilon>0\) and large \(m\),
+\[
+        \{n:\|x_n\|\ge\varepsilon\}
+        \subseteq
+        \{n:\|x^{(m)}_n\|\ge\varepsilon/2\}\in\cI.
+\]
+
+\section*{Main Result}
+
+\begin{theorem}
+\label{thm:ideal-reduced-products}
+Let \(\cI\) be a proper ideal on \(\N\) containing all finite sets and having
+the countable disjoint-refinement property.  If \((E_n)\) is any sequence of
+nonzero normed spaces, then
+\[
+        \ell_\infty(E_n)/c_\cI(E_n)
+\]
+fails BCP.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:cstar-reduced-products}
+Let \(\cI\) be as in Theorem~\ref{thm:ideal-reduced-products}.  If
+\((A_n)\) is any sequence of nonzero \(C^*\)-algebras, then the
+\(C^*\)-reduced product
+\[
+        \prod_{n=1}^\infty A_n \Big/ \bigoplus\nolimits_{\cI} A_n
+\]
+fails BCP.
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+The ordinary product quotient \(\ell_\infty(E_n)/c_0(E_n)\) has a
+Fréchet-limsup norm.  The previous diagonal proof attacks different proposed
+centers along different infinite coordinate sets.  For a general ideal
+\(\cI\), the same proof works exactly when the ideal lets us refine countably
+many \(\cI\)-positive near-norm sets into pairwise disjoint \(\cI\)-positive
+attack sets.
+
+On the attack set assigned to a center, choose unit vectors in the fibers
+pointing far enough away from that center coordinate.  The assembled bounded
+sequence has reduced-product norm one, while each proposed center sees a
+positive set of coordinates on which the distance is at least its own norm.
+
+\section*{Proof}
+
+We use the standard equivalent form of BCP: if a normed space \(Y\) has BCP,
+then its unit sphere is covered by countably many open balls
+\[
+        B(y_j,\|y_j\|).
+\]
+Thus, to prove failure of BCP, it is enough to show that every countable family
+of centers misses some point of the unit sphere.
+
+\begin{lemma}[reduced-product norm]
+\label{lem:reduced-norm}
+For \(x=(x_n)\in\ell_\infty(E_n)\),
+\[
+        \|x+c_\cI(E_n)\|
+        =
+        \inf_{A\in\cI}\ \sup_{n\notin A}\|x_n\|.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(L\) denote the right-hand side.  If \(y\in c_\cI(E_n)\) and
+\(\varepsilon>0\), then \(A_\varepsilon=\{n:\|y_n\|\ge\varepsilon\}\in\cI\).
+Hence
+\[
+        \|x-y\|_\infty
+        \ge
+        \sup_{n\notin A_\varepsilon}\|x_n-y_n\|
+        \ge
+        \sup_{n\notin A_\varepsilon}\|x_n\|-\varepsilon
+        \ge L-\varepsilon.
+\]
+Taking the infimum over \(y\) and then letting \(\varepsilon\downarrow0\)
+gives the lower bound.
+
+Conversely, for \(A\in\cI\), define \(y_n=x_n\) on \(A\) and \(y_n=0\) off
+\(A\).  Since the support of \(y\) belongs to \(\cI\), we have
+\(y\in c_\cI(E_n)\), and
+\[
+        \|x-y\|_\infty=\sup_{n\notin A}\|x_n\|.
+\]
+Taking the infimum over \(A\in\cI\) gives the reverse inequality.
+\end{proof}
+
+\begin{lemma}[one-coordinate escape]
+\label{lem:coordinate-escape}
+Let \(E\ne\{0\}\) be a normed space and \(y\in E\).  There is
+\(u\in S_E\) such that
+\[
+        \|u-y\|\ge \|y\|.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(y=0\), take any \(u\in S_E\).  If \(y\ne0\), choose \(f\in S_{E^*}\) with
+\(f(y)=\|y\|\).  Since \(\|f\|=1\), after changing phase if necessary choose
+\(u\in S_E\) with \(\operatorname{Re}f(u)<-1/2\).  Then
+\[
+        \|u-y\|\ge \operatorname{Re}f(y-u)>\|y\|+\frac12\ge\|y\|.
+\]
+\end{proof}
+
+\begin{lemma}
+\label{lem:fin-has-refinement}
+The ideal of finite subsets of \(\N\) has the countable disjoint-refinement
+property.
+\end{lemma}
+
+\begin{proof}
+Let \((S_k)\) be a sequence of infinite subsets of \(\N\).  Inductively, at
+stage \(m\), choose distinct fresh points \(t_{k,m}\in S_k\) for
+\(1\le k\le m\), avoiding all points chosen in previous stages and earlier in
+the same stage.  This is possible because only finitely many points are
+forbidden when each choice is made.  Then
+\[
+        T_k=\{t_{k,m}:m\ge k\}
+\]
+are pairwise disjoint infinite subsets with \(T_k\subseteq S_k\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:ideal-reduced-products}]
+Let
+\[
+        \xi_i=a^i+c_\cI(E_n),\qquad i\ge1,
+\]
+be an arbitrary countable family of centers in the reduced product, where
+\(a^i=(a^i_n)\in\ell_\infty(E_n)\).  Write \(r_i=\|\xi_i\|\).
+
+Choose a map \(\pi:\N\to\N\) such that every fiber \(\pi^{-1}(\{i\})\) is
+infinite.  For each \(k\), set \(i=\pi(k)\) and define
+\[
+        \delta_k=
+        \begin{cases}
+        \min\{r_i/2,1/k\},& r_i>0,\\
+        1,& r_i=0,
+        \end{cases}
+        \qquad
+        S_k=\{n:\|a^i_n\|>r_i-\delta_k\}.
+\]
+The set \(S_k\) is \(\cI\)-positive.  Indeed, if \(S_k\in\cI\), then
+Lemma~\ref{lem:reduced-norm} would give
+\[
+        r_i\le \sup_{n\notin S_k}\|a^i_n\|\le r_i-\delta_k
+\]
+when \(r_i>0\), a contradiction.  If \(r_i=0\), then \(S_k=\N\), which is
+\(\cI\)-positive because \(\cI\) is proper.
+
+By the countable disjoint-refinement property, choose pairwise disjoint
+\(\cI\)-positive sets \(T_k\subseteq S_k\).  Define \(b=(b_n)\) as follows.
+If \(n\in T_k\), use Lemma~\ref{lem:coordinate-escape} in the nonzero space
+\(E_n\) to choose \(b_n\in S_{E_n}\) satisfying
+\[
+        \|b_n-a^{\pi(k)}_n\|\ge \|a^{\pi(k)}_n\|.
+\]
+This is unambiguous because the sets \(T_k\) are pairwise disjoint.  For
+\(n\notin\bigcup_k T_k\), put \(b_n=0\).
+
+Then \(\|b\|_{\ell_\infty}\le1\), and
+\(\|b+c_\cI(E_n)\|=1\): the norm is at most one, while each \(T_k\) is
+\(\cI\)-positive and \(\|b_n\|=1\) on \(T_k\).
+
+Fix \(i\).  If \(r_i=0\), then
+\[
+        \|b+c_\cI(E_n)-\xi_i\|\ge0=r_i
+\]
+is automatic.  Assume \(r_i>0\).  There are infinitely many \(k\) with
+\(\pi(k)=i\).  For such \(k\), on the \(\cI\)-positive set \(T_k\) we have
+\[
+        \|b_n-a^i_n\|\ge \|a^i_n\|>r_i-\delta_k.
+\]
+Lemma~\ref{lem:reduced-norm} applied to \(b-a^i\) gives
+\[
+        \|b+c_\cI(E_n)-\xi_i\|\ge r_i-\delta_k.
+\]
+Letting \(k\to\infty\) along the infinite set \(\{k:\pi(k)=i\}\), we obtain
+\[
+        \|b+c_\cI(E_n)-\xi_i\|\ge r_i=\|\xi_i\|.
+\]
+Thus the unit vector \(b+c_\cI(E_n)\) lies in none of the open balls
+\(B(\xi_i,\|\xi_i\|)\).  The countable family of centers was arbitrary, so the
+reduced product fails BCP.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:cstar-reduced-products}]
+For \(C^*\)-algebras \(A_n\), the space
+\[
+        \bigoplus\nolimits_{\cI} A_n
+        =
+        c_\cI(A_n)
+\]
+is a closed two-sided \(C^*\)-ideal of \(\prod_n A_n\).  Apply
+Theorem~\ref{thm:ideal-reduced-products} to the underlying normed spaces
+\(E_n=A_n\).
+\end{proof}
+
+\section*{Scope}
+
+For the finite ideal, Lemma~\ref{lem:fin-has-refinement} recovers the product
+quotient obstruction
+\(\ell_\infty(E_n)/c_0(E_n)\).  The present formulation isolates the exact
+combinatorial feature used by the diagonal argument: different centers must be
+attackable on disjoint positive index sets.
+
+The theorem does not cover ultraproducts over a free ultrafilter.  In that
+case the dual maximal ideal has no two disjoint positive sets.  Thus the
+ultraproduct case, if negative, requires a genuinely different simultaneous
+escape argument rather than this center-by-center diagonal splitting.
+
+\section*{Verification and Search Bounds}
+
+The proof is elementary and uses only the reduced-product norm formula, the
+Hahn--Banach one-coordinate escape lemma, and the stated disjoint-refinement
+property.  The run indexes were searched for arXiv:2311.14257 together with
+``reduced product'', ``ideal'', ``disjoint refinement'', and ``ultraproduct'';
+no existing packet for this ideal-reduced-product BCP obstruction was found.
+
+\section*{Human Review Focus}
+
+Review Lemma~\ref{lem:reduced-norm} and the positivity of the sets
+\[
+        S_k=\{n:\|a^{\pi(k)}_n\|>r_{\pi(k)}-\delta_k\}.
+\]
+Once those are correct, the rest of the argument is the same diagonal escape
+mechanism as in the ordinary product quotient.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\end{thebibliography}
+
+\end{document}

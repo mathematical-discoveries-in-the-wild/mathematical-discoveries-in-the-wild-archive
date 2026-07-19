@@ -1,0 +1,200 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cnull}{c_0}
+\newcommand{\Range}{\mathcal R}
+
+\title{Partial Result: Two \(c_0\) Vector-Measure Range Subcases}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Jose Rodriguez, \emph{Open problems in Banach spaces and
+measure theory}. The arXiv identifier is 1607.07787.
+
+Problem 4.2 appears on PDF page 12 and is attributed there to Anantharaman
+and Diestel:
+\begin{quote}
+Let \(K\) be a weakly compact subset of \(c_0\). Is \(K\) contained in the
+range of a \(c_0\)-valued vector measure?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+For a countably additive vector measure \(\nu:\Sigma\to X\), its range is
+\[
+\Range(\nu)=\{\nu(A): A\in\Sigma\}.
+\]
+Here countable additivity is meant in the norm of the target Banach space.
+The problem asks whether every weakly compact \(K\subseteq c_0\) is contained
+in \(\Range(\nu)\) for some \(c_0\)-valued vector measure \(\nu\).
+
+For \(a=(a_n)\in c_0\) with \(a_n\ge 0\), write
+\[
+Q(a)=\{x\in c_0: |x_n|\le a_n\text{ for every }n\}.
+\]
+
+\section*{Idea of the Proof}
+
+The coordinate-box case is realized one coordinate at a time. Put two
+atomless probability intervals behind each coordinate and let the \(n\)-th
+coordinate of the vector measure record a signed amount of mass from those
+two intervals, scaled by \(a_n\). The tail condition \(a_n\to0\) supplies the
+uniform \(c_0\)-control needed for countable additivity.
+
+The second construction shows that the first theorem is not merely a compact
+set observation. The set \(\{0,e_1,e_2,\ldots\}\) is weakly compact in
+\(c_0\) but not norm compact. Rademacher functions give a vector measure
+whose value on the half-space \(\{r_n=1\}\) is exactly \(e_n\).
+
+\begin{theorem}[coordinate boxes]
+Let \(a=(a_n)\in c_0\) with \(a_n\ge0\). Then \(Q(a)\) is contained in the
+range of a countably additive \(c_0\)-valued vector measure. Consequently,
+every norm-compact subset of \(c_0\) is contained in such a range.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+\Omega=\bigsqcup_{n\ge1}(I_n^+\sqcup I_n^-),
+\]
+where each \(I_n^+\) and \(I_n^-\) is a copy of \([0,1]\) with Lebesgue
+measure. Let \(\Sigma\) be the sigma algebra obtained from the disjoint union.
+For \(A\in\Sigma\), define
+\[
+\nu(A)_n=a_n\bigl(\lambda(A\cap I_n^+)-\lambda(A\cap I_n^-)\bigr).
+\]
+Then \(|\nu(A)_n|\le a_n\), so \(\nu(A)\in c_0\).
+
+We check countable additivity in \(c_0\). Let \(A_1,A_2,\ldots\) be pairwise
+disjoint and put \(B_m=\bigcup_{j>m}A_j\). Since each coordinate is a finite
+scalar signed measure, for every fixed \(n\) we have \(\nu(B_m)_n\to0\). Given
+\(\varepsilon>0\), choose \(N\) such that \(\sup_{n>N}a_n<\varepsilon\). For
+the finitely many coordinates \(n\le N\), choose \(m\) so large that
+\(|\nu(B_m)_n|<\varepsilon\) for all \(n\le N\). Then
+\(\|\nu(B_m)\|_\infty\le\varepsilon\). Hence the finite partial sums converge
+in \(c_0\) to \(\nu(\bigcup_jA_j)\).
+
+Now fix \(x\in Q(a)\). For each \(n\) with \(a_n>0\), choose a measurable
+set \(B_n\subseteq I_n^+\) of measure \(x_n/a_n\) if \(x_n\ge0\), and choose
+\(B_n\subseteq I_n^-\) of measure \(-x_n/a_n\) if \(x_n<0\). If \(a_n=0\),
+then necessarily \(x_n=0\), and we take \(B_n=\varnothing\). With
+\(B=\bigcup_nB_n\), the definition gives \(\nu(B)=x\). Thus
+\(Q(a)\subseteq\Range(\nu)\).
+
+Finally, if \(K\subseteq c_0\) is norm compact, set
+\[
+a_n=\sup_{x\in K}|x_n|.
+\]
+Compactness of \(K\) implies \(a_n\to0\): otherwise a finite epsilon-net in
+\(c_0\) would give uniformly small tails for all points of \(K\), a
+contradiction. Therefore \(K\subseteq Q(a)\), and the first part applies.
+\end{proof}
+
+\begin{theorem}[the canonical weakly compact sequence]
+The set \(\{0\}\cup\{e_n:n\in\N\}\subseteq c_0\) is contained in the range of
+a countably additive \(c_0\)-valued vector measure.
+\end{theorem}
+
+\begin{proof}
+Let \((r_n)_{n\ge1}\) be the standard Rademacher functions on \([0,1]\). For
+Lebesgue measurable \(A\subseteq[0,1]\), define
+\[
+\nu(A)=\bigl(2\int_A r_n(t)\,dt\bigr)_{n\ge1}.
+\]
+We first show that \(\nu(A)\in c_0\). Approximate \(1_A\) in \(L^1[0,1]\) by
+a dyadic step function \(s\) with mesh \(2^{-m}\). For every \(n>m\),
+\(\int_0^1 s(t)r_n(t)\,dt=0\). Hence
+\[
+\left|\int_A r_n(t)\,dt\right|
+=\left|\int_0^1(1_A(t)-s(t))r_n(t)\,dt\right|
+\le \|1_A-s\|_1
+\]
+for all \(n>m\). Since the approximation error can be arbitrarily small,
+\(\int_A r_n\to0\), so \(\nu(A)\in c_0\).
+
+Countable additivity is also in the norm of \(c_0\). If
+\((A_j)_{j\ge1}\) are pairwise disjoint and \(C_m=\bigcup_{j>m}A_j\), then
+\(\lambda(C_m)\to0\). Thus
+\[
+\|\nu(C_m)\|_\infty
+\le 2\lambda(C_m)\to0,
+\]
+which is exactly the norm convergence of the tails of the countable sum.
+
+Let \(E_n=\{t:r_n(t)=1\}\). Orthogonality and independence of the Rademacher
+functions give
+\[
+2\int_{E_n}r_j(t)\,dt=\delta_{jn}.
+\]
+Therefore \(\nu(E_n)=e_n\), while \(\nu(\varnothing)=0\). This proves that
+\(\{0\}\cup\{e_n:n\in\N\}\subseteq\Range(\nu)\).
+\end{proof}
+
+\begin{remark}
+The set \(\{0\}\cup\{e_n:n\in\N\}\) is weakly compact in \(c_0\), since
+\(e_n\to0\) weakly against the dual space \(\ell_1\). It is not norm compact,
+because \(\|e_n-e_m\|_\infty=1\) for \(n\ne m\). Thus the Rademacher theorem
+is a genuine non-norm-compact positive instance of the source problem.
+\end{remark}
+
+\section*{Scope and Limitations}
+
+This packet is a partial result only. It proves the Anantharaman-Diestel
+question for norm-compact subsets of \(c_0\), and it gives one basic weakly
+compact non-norm-compact example. It does not settle arbitrary weakly compact
+subsets of \(c_0\), where no coordinatewise null majorant need exist and where
+the weak compactness may encode substantially more complicated geometry than
+the single weakly null basis sequence.
+
+\section*{Novelty and Search Notes}
+
+The run indexes were searched for arXiv:1607.07787, for the phrases
+``Anantharaman-Diestel'', ``weakly compact subset of c0'', ``vector measure'',
+``range of a c0-valued vector measure'', and for nearby Banach-space measure
+theory keywords. No existing run packet for Problem 4.2 or for these two
+subcases was found. The source paper itself presents Problem 4.2 as open.
+
+This result is constructive and elementary. No later-paper identification is
+being claimed; the packet should be reviewed as a newly generated partial
+answer to the extracted problem.
+
+\section*{Human Review Recommendation}
+
+Review the two norm-convergence arguments for countable additivity. In the
+coordinate-box construction, the only uniformity input is \(a_n\to0\). In the
+Rademacher construction, the only uniformity input for additivity is
+\(\lambda(C_m)\to0\) for residual unions in a finite measure space. The
+containment computations are coordinatewise.
+
+\begin{thebibliography}{9}
+\bibitem{Rodriguez}
+J. Rodriguez,
+\emph{Open problems in Banach spaces and measure theory},
+arXiv:1607.07787.
+
+\bibitem{AnantharamanDiestel}
+R. Anantharaman and J. Diestel,
+The problem cited as the source of Problem 4.2 in Rodriguez,
+\emph{Open problems in Banach spaces and measure theory}.
+\end{thebibliography}
+
+\end{document}

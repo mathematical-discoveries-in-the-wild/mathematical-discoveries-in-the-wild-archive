@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\MIN}{\mathrm{MIN}}
+\newcommand{\MAX}{\mathrm{MAX}}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\M}{\mathrm M}
+
+\title{A compact quotient-coordinate reduction for the original\\
+Kalton operator-space pair of arXiv:2106.15022}
+\author{Automated mathematics run \texttt{fa\_banach\_001}}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Partial result, likely valid; the exact source
+question remains open after the reduction below.
+
+\section{Source question and setup}
+
+Braga's Theorem 1.8 constructs operator spaces $X$ and $Y$ such that $X$
+embeds isomorphically but not completely isomorphically into $Y$, while their
+bounded subsets are almost completely coarsely equivalent
+\cite{Braga2021}.  The paragraph following the theorem asks whether the
+specific examples also satisfy that $X$ does not \emph{almost} completely
+isomorphically embed into $Y$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Theorem 1.8 and the source question on PDF page 4 of
+  \cite{Braga2021}.}
+\end{figure}
+
+For the explicit construction, put $H=R\cap C$ and let
+$Q:L_\infty[0,1]\to H$ be the complete quotient dual to the standard complete
+embedding $R+C\to L_1[0,1]$.  On the vector space $L_\infty[0,1]$, define
+\[
+ \|y\|_{Y_j}=\max\{2^{-j}\|y\|_\infty,\|Qy\|_H\},
+ \qquad
+ \cZ(Q)=\Big(\bigoplus_{j\geq1}Y_j\Big)_{\ell_1}.
+\]
+The source pair is $Y=\cZ(Q)$ and $X=H\oplus\ker\widetilde Q$.  Thus it is
+enough to obstruct an almost complete embedding $H\to\cZ(Q)$.
+
+Let
+\[
+ W=\Big(\bigoplus_{j\geq1}\MIN(L_\infty[0,1])\Big)_{\ell_1},
+ \qquad
+ U=\Big(\bigoplus_{j\geq1}H\Big)_{\ell_1}.
+\]
+The canonical coordinate maps are
+\[
+ P_1((y_j)_j)=(2^{-j}y_j)_j\in W,
+ \qquad
+ P_2((y_j)_j)=(Qy_j)_j\in U.
+\]
+The map $(P_1,P_2)$ is a complete isomorphic embedding of $\cZ(Q)$ into
+$W\oplus_\infty U$ with distortion at most $2$.  This follows directly from
+the coordinate maximum defining $Y_j$ and the universal construction of the
+operator-space $\ell_1$ sum.
+
+\section{Proof intuition}
+
+The quotient part of any linear map $H\to\cZ(Q)$ is compact.  Indeed, a
+noncompact coordinate $H\to H$ is bounded below on an infinite-dimensional
+Hilbert subspace.  Its lift to $L_\infty$ would then yield, using the quotient
+$Q$ and an orthogonal projection in $H$, a bounded projection of $L_\infty$
+onto a copy of $\ell_2$, which is impossible.
+
+Compactness lets us make all quotient coordinates simultaneously as small as
+needed on an infinite-dimensional subspace.  At matrix level $n$ we make the
+scalar norm $O(1/n)$; the standard estimate $\|S_n\|\leq n\|S\|$ then makes
+the $n$th amplification negligible.  Hence the minimal $L_\infty$
+coordinates alone must preserve the lower matrix estimate.
+
+\section{Compact quotient-coordinate theorem}
+
+\begin{lemma}\label{lem:coordinate}
+Let $T:H\to L_\infty[0,1]$ be bounded.  Then $QT:H\to H$ is compact.
+\end{lemma}
+
+\begin{proof}
+Suppose $A=QT$ is not compact.  Since both its domain and range are Hilbert
+spaces, there is an infinite-dimensional closed subspace $E\subset H$ and
+$c>0$ such that $\|Ax\|\geq c\|x\|$ on $E$.  Thus $A(E)$ is closed.  Let
+$P_{A(E)}$ be the orthogonal projection of $H$ onto $A(E)$.  Then
+\[
+ \Pi=T|_E\,(A|_E)^{-1}P_{A(E)}Q:L_\infty[0,1]\longrightarrow T(E)
+\]
+is bounded and satisfies $\Pi(Tx)=Tx$ for $x\in E$.  Hence $T(E)$ is a
+complemented copy of $\ell_2$ in $L_\infty[0,1]$, contradicting the standard
+complemented-subspace theorem for $L_\infty$ spaces used in the proof of
+Proposition 4.6 of \cite{Braga2021}.  Therefore $A$ is compact.
+\end{proof}
+
+\begin{theorem}\label{thm:compact}
+Let $u:H\to\cZ(Q)$ be bounded and write $u_j$ for its $j$th coordinate.
+Then
+\[
+ V_u:H\longrightarrow\ell_1(H),\qquad
+ V_ux=(Qu_jx)_{j\geq1},
+\]
+is compact.
+\end{theorem}
+
+\begin{proof}
+The definition of the $\cZ(Q)$ norm gives
+\[
+ \sum_j\|Qu_jx\|\leq\|ux\|_{\cZ(Q)},
+\]
+so $V_u$ is bounded.  By Lemma \ref{lem:coordinate}, every coordinate
+$Qu_j:H\to H$ is compact.
+
+Since $H$ is reflexive, $V_u$ is weakly compact.  The standard weak
+compactness criterion in the vector-valued sum $\ell_1(H)$ says that a
+relatively weakly compact set has uniformly small coordinate tails (the
+coordinate sets are weakly compact because $H$ is reflexive).  Consequently,
+if $p_N$ is the projection onto the first $N$ coordinates, then
+$\|(I-p_N)V_u\|\to0$.  Each $p_NV_u$ is compact, being a finite tuple of
+compact operators.  Hence $V_u$ is a norm limit of compact operators and is
+compact.
+\end{proof}
+
+\section{Reduction of the source question}
+
+\begin{theorem}\label{thm:reduction}
+If $H=R\cap C$ almost completely isomorphically embeds into $\cZ(Q)$, then
+$H$ almost completely isomorphically embeds into
+$W=(\bigoplus_j\MIN(L_\infty[0,1]))_{\ell_1}$.
+\end{theorem}
+
+\begin{proof}
+Assume there are linear maps $u^{(n)}:H\to\cZ(Q)$ and $D\geq1$ such that
+\[
+ D^{-1}\|a\|_{\M_n(H)}\leq
+ \|u^{(n)}_n(a)\|_{\M_n(\cZ(Q))}\leq
+ D\|a\|_{\M_n(H)}
+\]
+for every $n$ and $a\in\M_n(H)$.
+
+Fix $n$.  The operator $S_n=P_2u^{(n)}:H\to U$ is compact by Theorem
+\ref{thm:compact}.  Approximate it in norm by a finite-rank operator and take
+an infinite-dimensional subspace $F_n\subset H$ in the kernel of that
+approximant.  We may arrange
+\[
+ \|S_n|_{F_n}\|\leq (8Dn)^{-1}.
+\]
+Because $H=R\cap C$ is unitarily homogeneous, there is a complete isometry
+$J_n:H\to F_n$.  Set $T_n=P_1u^{(n)}J_n:H\to W$.
+
+For any bounded linear map between operator spaces,
+$\|S_n^{(n)}\|\leq n\|S_n\|$.  Hence the $n$th amplification of
+$P_2u^{(n)}J_n$ has norm at most $(8D)^{-1}$.  On the other hand, the complete
+distortion-$2$ coordinate embedding $(P_1,P_2)$ and the lower estimate for
+$u^{(n)}_n$ force
+\[
+ \|(T_n)_n(a)\|\geq (2D)^{-1}\|a\|
+\]
+after harmlessly weakening constants.  The upper estimate is
+$\|(T_n)_n(a)\|\leq D\|a\|$.  Thus $((T_n)_n)_n$ is an equi-isomorphic family,
+which is precisely an almost complete isomorphic embedding of $H$ into $W$.
+\end{proof}
+
+\section{Verification and limitations}
+
+The compactness argument is independent of the later construction in
+\cite{BragaOikhberg2022}.  That paper proves the desired existential
+strengthening using the different quotient
+$\MAX(L_1)\to\MIN(\ell_2)$; it does not establish nonembedding for the exact
+$L_\infty\to R\cap C$ pair above.
+
+Theorem \ref{thm:reduction} is only a necessary reduction.  This packet does
+not prove that $R\cap C$ fails to almost completely embed into $W$.  That
+uniform minimal-sum obstruction is the remaining problem.  The main point for
+human verification is the complete distortion bound for $(P_1,P_2)$ under the
+standard operator-space $\ell_1$-sum convention.
+
+Local lightweight indexes, the source of arXiv:2211.11854, and bounded web
+searches for the exact phrase and close variants were checked on 19 July 2026.
+No explicit resolution of the exact original pair or this reduction was
+found.
+
+\begin{thebibliography}{9}
+\bibitem{Braga2021}
+B. M. Braga,
+\emph{Towards a theory of coarse geometry of operator spaces},
+arXiv:2106.15022; Israel J. Math. 259 (2024), 527--558.
+
+\bibitem{BragaOikhberg2022}
+B. M. Braga and T. Oikhberg,
+\emph{Coarse geometry of operator spaces and complete isomorphic embeddings
+into $\ell_1$ and $c_0$-sums of operator spaces},
+arXiv:2211.11854; Math. Z. 304 (2023), Article 52.
+
+\bibitem{AlbiacKalton}
+F. Albiac and N. J. Kalton,
+\emph{Topics in Banach Space Theory}, 2nd ed., Springer, 2016.
+\end{thebibliography}
+
+\end{document}

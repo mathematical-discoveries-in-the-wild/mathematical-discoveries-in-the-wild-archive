@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\dd}{\,d}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+
+\title{A Step-Two Carnot Subcase of Ryoo's Endpoint \(L^1\) Question}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_16}}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a likely valid partial solution to Question 38 / Question 42 in Ryoo's paper
+\emph{Quantitative nonembeddability of groups of polynomial growth into uniformly convex spaces}
+\cite{Ryoo2025}. The result proves that every nonabelian step-two Carnot group has a finite endpoint
+\(L^1\) exponent, namely \(q=4\). It does not claim optimality in every step-two group.
+
+\section*{Source question}
+
+Ryoo asks for which exponents \(q\geq 1\) every compactly supported smooth
+\(f:G\to \R\) satisfies
+\begin{equation}\label{eq:source-question}
+\left(\int_0^\infty
+\left(\int_G \abs{f(h\exp(tv))-f(h)}\dd\mu(h)\right)^q
+\frac{\dd t}{t^{1+q/s}}\right)^{1/q}
+\lesssim_{G,q}
+\int_G \norm{\nabla f(h)}_{\ell_2^k}\dd\mu(h),
+\end{equation}
+where \(G\) is a nonabelian simply connected nilpotent Lie group of step \(s\) and \(v\) is in the
+last nonzero lower-central term. The source notes that this is equivalent, by coarea, to a vertical
+perimeter versus horizontal perimeter inequality.
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Claim proved}
+
+Let \(G\) be a step-two Carnot group with Lie algebra
+\(\mathfrak g=V_1\oplus V_2\), where \(V_2=[V_1,V_1]\) is central. Equip \(V_1\) with the fixed
+Carnot inner product and write \(\nabla_H f\) for the horizontal gradient. For \(z\in V_2\), define
+\[
+A_zf(t)=\int_G \abs{f(g\exp(tz))-f(g)}\dd g,\qquad t>0.
+\]
+
+\begin{theorem}\label{thm:main}
+For every \(v\in V_2\) there is a constant \(C_{G,v}<\infty\) such that every
+\(f\in C_c^\infty(G)\) satisfies
+\begin{equation}\label{eq:q4}
+\left(\int_0^\infty \frac{A_vf(t)^4}{t^3}\dd t\right)^{1/4}
+\leq C_{G,v}\int_G \abs{\nabla_H f(g)}\dd g .
+\end{equation}
+Consequently, after normalizing \(d_G(\exp v,e)=1\), Question \eqref{eq:source-question} has an
+affirmative answer with \(q=4\) for every step-two Carnot group.
+\end{theorem}
+
+\section*{Proof intuition}
+
+Every central direction in a step-two Carnot group is a finite sum of elementary commutators
+\([a,b]\) with \(a,b\in V_1\). Each nonzero elementary commutator generates a three-dimensional
+Heisenberg subgroup. Naor and Young proved the exact \(L^4\) endpoint vertical-horizontal
+inequality in \(\HH^3\) \cite{NaorYoung2022}. Applying that theorem on each left coset of the
+Heisenberg subgroup controls translation in the direction \([a,b]\) by the ambient horizontal
+gradient. Since all \(V_2\)-directions are central in a step-two group, translating by a sum of
+commutators can be telescoped into translations by the individual commutators.
+
+\section*{Supporting theorem used}
+
+Naor and Young's Theorem 1.1 says, in functional form, that in the three-dimensional Heisenberg
+group
+\[
+\left(\int_0^\infty
+\left(\int_{\HH^3}\frac{\abs{F(h\exp(tZ))-F(h)}}{\sqrt t}\dd h\right)^4
+\frac{\dd t}{t}\right)^{1/4}
+\lesssim
+\int_{\HH^3} \bigl(\abs{XF(h)}+\abs{YF(h)}\bigr)\dd h .
+\]
+Equivalently,
+\[
+\left(\int_0^\infty
+\frac{\left(\int_{\HH^3}\abs{F(h\exp(tZ))-F(h)}\dd h\right)^4}{t^3}\dd t
+\right)^{1/4}
+\lesssim
+\int_{\HH^3} \bigl(\abs{XF(h)}+\abs{YF(h)}\bigr)\dd h .
+\]
+The relevant theorem statement is reproduced below for context.
+
+\begin{center}
+\includegraphics[width=0.90\linewidth]{figures/supporting_h3_theorem_crop.png}
+\end{center}
+
+\section*{Proof}
+
+We first transfer the \(\HH^3\) theorem to elementary bracket directions in \(G\).
+
+\begin{lemma}\label{lem:elementary}
+Let \(a,b\in V_1\) and \(z=[a,b]\neq 0\). Then there is a constant \(C_{a,b,G}\) such that
+\[
+\left(\int_0^\infty \frac{A_zf(t)^4}{t^3}\dd t\right)^{1/4}
+\leq
+C_{a,b,G}\int_G \bigl(\abs{a f(g)}+\abs{b f(g)}\bigr)\dd g
+\leq
+C_{a,b,G}'\int_G \abs{\nabla_H f(g)}\dd g
+\]
+for every \(f\in C_c^\infty(G)\). Here \(a f\) and \(b f\) denote the left-invariant derivatives
+in the horizontal directions \(a\) and \(b\).
+\end{lemma}
+
+\begin{proof}
+Let \(H\leq G\) be the connected subgroup with Lie algebra
+\(\mathfrak h=\operatorname{span}\{a,b,z\}\). Since \(z=[a,b]\neq 0\) and \(G\) has step two,
+\(\mathfrak h\) is a three-dimensional Heisenberg Lie algebra, up to a linear rescaling of the
+horizontal basis and central coordinate.
+
+Because \(G\) and \(H\) are unimodular nilpotent Lie groups, Weil integration gives a quotient
+measure on \(G/H\) such that
+\[
+\int_G \Phi(g)\dd g=\int_{G/H}\int_H \Phi(xu)\dd u\,\dd \bar x
+\]
+for compactly supported measurable \(\Phi\). For each coset representative \(x\), apply the
+Naor--Young \(\HH^3\) inequality to \(F_x(u)=f(xu)\) on \(H\). The constants change only by the
+fixed linear equivalence between \((a,b,z)\) and the standard Heisenberg basis. Thus
+\[
+\left(\int_0^\infty
+\frac{\left(\int_H \abs{f(xu\exp(tz))-f(xu)}\dd u\right)^4}{t^3}\dd t\right)^{1/4}
+\leq
+C_{a,b}\int_H \bigl(\abs{a f(xu)}+\abs{b f(xu)}\bigr)\dd u .
+\]
+Integrating over \(G/H\) and using Minkowski's integral inequality yields
+\[
+\left(\int_0^\infty \frac{A_zf(t)^4}{t^3}\dd t\right)^{1/4}
+\leq
+C_{a,b}\int_G \bigl(\abs{a f(g)}+\abs{b f(g)}\bigr)\dd g .
+\]
+The final inequality follows because \(a,b\in V_1\) are fixed horizontal vectors, so their
+directional derivatives are bounded by constants times \(\abs{\nabla_H f}\).
+\end{proof}
+
+We now prove Theorem \ref{thm:main}. Since the bracket map
+\(\Lambda^2 V_1\to V_2\) spans \(V_2\), choose \(a_j,b_j\in V_1\), \(1\leq j\leq m\), such that
+\[
+v=\sum_{j=1}^m z_j,\qquad z_j=[a_j,b_j].
+\]
+Terms with \(z_j=0\) may be omitted. Since \(V_2\) is central,
+\[
+\exp(tv)=\prod_{j=1}^m \exp(tz_j).
+\]
+Let \(w_0=0\) and \(w_j=z_1+\cdots+z_j\). For each \(t>0\),
+\begin{align*}
+A_vf(t)
+&=\int_G \abs{f(g\exp(tw_m))-f(g)}\dd g\\
+&\leq \sum_{j=1}^m
+\int_G
+\abs{f(g\exp(tw_j))-f(g\exp(tw_{j-1}))}\dd g\\
+&=\sum_{j=1}^m A_{z_j}f(t),
+\end{align*}
+where the last equality uses right-translation invariance of Haar measure by the central element
+\(\exp(tw_{j-1})\). Applying Minkowski in \(L^4((0,\infty),t^{-3}\dd t)\) and then
+Lemma \ref{lem:elementary},
+\[
+\left(\int_0^\infty \frac{A_vf(t)^4}{t^3}\dd t\right)^{1/4}
+\leq
+\sum_{j=1}^m
+\left(\int_0^\infty \frac{A_{z_j}f(t)^4}{t^3}\dd t\right)^{1/4}
+\leq C_{G,v}\int_G \abs{\nabla_H f}\dd g .
+\]
+This proves \eqref{eq:q4}.
+
+For every \(q\geq 4\), the \(q=\infty\) deterministic path bound gives
+\(\sup_{t>0} A_vf(t)/\sqrt t\lesssim_{G,v}\int_G\abs{\nabla_H f}\). Combining this with
+\eqref{eq:q4},
+\[
+\int_0^\infty \left(\frac{A_vf(t)}{\sqrt t}\right)^q\frac{\dd t}{t}
+\leq
+\left(\sup_{t>0}\frac{A_vf(t)}{\sqrt t}\right)^{q-4}
+\int_0^\infty \left(\frac{A_vf(t)}{\sqrt t}\right)^4\frac{\dd t}{t},
+\]
+so the endpoint inequality also holds for all \(q\geq 4\).
+
+\section*{Verification notes and limitations}
+
+The proof is exact for the continuous step-two Carnot subcase of Question 38 / Question 42.
+It is not an optimal-exponent theorem: for \(\HH^{2k+1}\), \(k\geq 2\), Ryoo records the sharper
+known value \(q=2\), while the argument here gives only the weaker admissible exponent \(q=4\).
+No claim is made for higher-step Carnot groups or for arbitrary non-Carnot nilpotent Lie groups.
+
+The main transfer point for review is Lemma \ref{lem:elementary}: one should check the use of
+Weil disintegration over left cosets of the elementary Heisenberg subgroup and the harmless
+linear rescaling of Naor--Young's standard \(\HH^3\) theorem.
+
+The novelty check was bounded. I searched the run indexes for arXiv:2207.11305 and for
+``step-two Carnot'', ``vertical perimeter'', ``L1'', ``Naor'', ``Young'', and Heisenberg variants.
+External web search for close phrases found the Naor--Young Heisenberg endpoint results but no
+explicit general step-two Carnot extension. The result should therefore be treated as a likely new
+partial observation, pending expert literature review.
+
+\begin{thebibliography}{9}
+
+\bibitem{Ryoo2025}
+S.-Y. Ryoo.
+\newblock Quantitative nonembeddability of groups of polynomial growth into uniformly convex spaces.
+\newblock arXiv:2207.11305, version 2, 2025.
+
+\bibitem{NaorYoung2022}
+A. Naor and R. Young.
+\newblock Foliated corona decompositions.
+\newblock arXiv:2004.12522; Acta Mathematica, 229, 55--200, 2022.
+
+\end{thebibliography}
+
+\end{document}

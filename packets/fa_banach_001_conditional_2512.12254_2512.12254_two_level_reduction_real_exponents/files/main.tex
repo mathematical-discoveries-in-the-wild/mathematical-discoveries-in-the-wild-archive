@@ -1,0 +1,251 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\DeclareMathOperator{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,d}
+
+\title{A conditional two-level reduction for the real-exponent Hunter moment conjecture}
+\author{fa\_banach\_001 lane 5}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a conditional reduction, not a full solution.  It proves that for
+real exponents \(q>2\), every positive-support constrained extremizer has at
+most two positive coefficient levels.  Therefore Conjecture 4.8 of
+Brazitikos--Pandis is reduced, for \(q>5\), to a two-level Gamma inequality
+stated below.  The earlier lane-5 packet already proves the conjecture for
+\(0<q\le 5\).
+
+\section*{Source Problem}
+
+The source paper is Silouanos Brazitikos and Christos Pandis, \emph{Sharp
+inequalities for symmetric polynomials, Hunter's conjecture, and moments of
+exponential random variables}, arXiv:2512.12254.  Its Conjecture 4.8 asks:
+if \(q>0\), \(a_i\ge0\), \(\sum_i a_i^2=1\), and \(X_i\) are independent
+standard exponential random variables, must
+\[
+  \E(a_1X_1+\cdots+a_nX_n)^q
+  \ge
+  \min_{1\le m\le n}\rho(m,q),
+  \qquad
+  \rho(m,q)=
+  \E\left(\frac{X_1+\cdots+X_m}{\sqrt m}\right)^q ?
+\]
+
+\begin{center}
+\includegraphics[width=.88\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+For non-integer \(q\), the moment is no longer a complete homogeneous
+symmetric polynomial, but it is still a divided difference.  More precisely,
+after dividing by \(\Gamma(q+1)\), the moment equals the divided difference of
+\(x^{q+n-1}\) at the coefficient nodes.  The Lagrange multiplier equations
+therefore have the same structural consequence as in the integer proof:
+three distinct positive coefficient values would force two adjacent secant
+slopes of a divided-difference gradient to be equal.  That is impossible
+because divided differences of \(x^{q+n-1}\) of the relevant order are
+strictly increasing in each node when \(q>2\).
+
+Thus any remaining minimizer has only two coefficient levels.  The full
+conjecture is then equivalent to checking a one-variable family
+\[
+  \frac{\E(xG_r+G_s)^q}{(rx^2+s)^{q/2}},
+\]
+where \(G_r,G_s\) are independent Gamma variables of integer shapes.  The
+packet isolates this as the exact remaining dependency.
+
+\section*{Divided-Difference Preliminaries}
+
+For positive nodes \(b_1,\ldots,b_N\), including repeated nodes by the usual
+Hermite convention, write
+\[
+  [b_1,\ldots,b_N]f
+\]
+for the divided difference of order \(N-1\).  We use two standard facts:
+
+\begin{enumerate}
+\item If \(f\in C^{N-1}\) and the nodes are positive, then repeated-node
+divided differences are continuous limits of ordinary divided differences.
+\item If \(f^{(N)}>0\) on \((0,\infty)\), then the divided difference
+\([b_1,\ldots,b_N]f\) is strictly increasing in each node, unless the
+corresponding variation is trivial.  This follows, for example, from the
+Hermite--Genocchi formula.
+\end{enumerate}
+
+For \(q>0\) and \(a_i>0\), set
+\[
+  H_{n,q}(a_1,\ldots,a_n)
+  =\frac{1}{\Gamma(q+1)}
+    \E(a_1X_1+\cdots+a_nX_n)^q .
+\]
+The hypoexponential moment formula gives
+\[
+  H_{n,q}(a_1,\ldots,a_n)
+  =[a_1,\ldots,a_n]\, f_{n,q},
+  \qquad
+  f_{n,q}(x)=x^{q+n-1}.
+\]
+Equivalently, this follows first for distinct \(a_i\) by partial fractions
+and then for repeated nodes by continuity.
+
+\section*{Extremizers Have At Most Two Levels}
+
+\begin{lemma}
+Let \(q>2\).  Fix a positive coordinate support of size \(n\).  Every
+relative-interior local extremum of \(H_{n,q}\) under
+\(\sum_{i=1}^n a_i^2=1\) has at most two distinct coefficient values.
+\end{lemma}
+
+\begin{proof}
+Let \(f=f_{n,q}\).  The derivative of a divided difference with respect to a
+node is the divided difference with that node repeated:
+\[
+  \partial_i H_{n,q}(a)
+  =[a_1,\ldots,a_i,a_i,\ldots,a_n]f .
+\]
+For \(i\ne j\), subtracting these two repeated-node divided differences gives
+\[
+  \frac{\partial_i H_{n,q}(a)-\partial_j H_{n,q}(a)}{a_i-a_j}
+  =[a_1,\ldots,a_n,a_i,a_j]f . \tag{1}
+\]
+This identity is first checked for distinct nodes from the Newton divided
+difference recursion and then extended to repeated nodes by continuity.
+
+At a relative-interior constrained extremum there is a Lagrange multiplier
+\(\lambda\) such that
+\[
+  \partial_i H_{n,q}(a)=2\lambda a_i,\qquad i=1,\ldots,n.
+\]
+Hence the quotient in (1) is equal to \(2\lambda\) for every pair of distinct
+coefficient values.
+
+Suppose, toward a contradiction, that three positive coefficient values
+\(x<y<z\) occur.  Let \(Q_{uv}=[a_1,\ldots,a_n,u,v]f\).  The multiset defining
+\(Q_{yz}\) is obtained from the multiset defining \(Q_{xy}\) by replacing one
+extra copy of \(x\) with one extra copy of \(z\), leaving all other nodes the
+same after sorting.  Since
+\[
+  f^{(n+2)}(t)
+  =(q+n-1)(q+n-2)\cdots(q-2)t^{q-3}>0
+\]
+for \(t>0\), divided-difference monotonicity gives \(Q_{yz}>Q_{xy}\).
+But the Lagrange equations give \(Q_{yz}=2\lambda=Q_{xy}\), a contradiction.
+Thus at most two positive coefficient values can occur.
+\end{proof}
+
+\section*{Conditional Dependencies}
+
+The remaining dependency is the following scalar two-level inequality.
+
+\begin{lemma}[Two-level Gamma inequality, unproved]\label{lem:two-level}
+Let \(q>5\), let \(r,s\ge1\) be integers, and let \(G_r,G_s\) be independent
+Gamma random variables with shapes \(r,s\) and unit scale.  Then for every
+\(x\ge0\),
+\[
+  \frac{\E(xG_r+G_s)^q}{(rx^2+s)^{q/2}}
+  \ge
+  \min_{1\le m\le r+s}\rho(m,q).
+\]
+\end{lemma}
+
+This packet does not prove Lemma~\ref{lem:two-level}.  The numerical checks in
+the code folder found no violation, but those checks are not proof.
+
+\begin{theorem}[Conditional completion of Conjecture 4.8 for \(q>5\)]
+Assume Lemma~\ref{lem:two-level}.  Then Conjecture 4.8 of arXiv:2512.12254
+holds for every real \(q>5\).  Together with the earlier lane-5
+\(0<q\le5\) packet, this would prove the conjecture for all \(q>0\).
+\end{theorem}
+
+\begin{proof}
+Fix \(q>5\), \(n\), and \(a_i\ge0\) with \(\sum_i a_i^2=1\).  By compactness,
+the moment has a global minimizer on the positive orthant of the sphere.
+Remove zero coordinates and work on its positive support, of size \(d\le n\).
+By the preceding lemma, the positive coefficients of the minimizer have at
+most two distinct values.  If there is only one value, the minimizer is an
+equal-support vector and gives exactly \(\rho(d,q)\), which is at least
+\(\min_{1\le m\le n}\rho(m,q)\).
+
+If there are two values, write them as \(\alpha\) repeated \(r\) times and
+\(\beta\) repeated \(s\) times, with \(r+s=d\).  If \(\beta>0\), set
+\(x=\alpha/\beta\).  Since \(r\alpha^2+s\beta^2=1\),
+\[
+  \E(\alpha G_r+\beta G_s)^q
+  =
+  \frac{\E(xG_r+G_s)^q}{(rx^2+s)^{q/2}} .
+\]
+Lemma~\ref{lem:two-level} gives this quantity at least
+\(\min_{1\le m\le d}\rho(m,q)\), and this is at least the weaker ambient
+lower bound \(\min_{1\le m\le n}\rho(m,q)\).  The cases \(x=0\) or
+\(\beta=0\) are boundary equal-support cases and are included by continuity.
+This proves the conditional claim.
+\end{proof}
+
+\section*{Verification Notes}
+
+The code folder contains two non-proof checks.
+
+\begin{itemize}
+\item \texttt{pair\_splitting\_scan.py} checks exact Gamma--Dirichlet quadrature slices
+with one or two background coefficient blocks plus a split pair.  In the
+recorded runs, no off-center pair-splitting minima were found.
+\item \texttt{exact\_vector\_search.py} screens arbitrary vectors using the exact
+hypoexponential divided-difference formula and validates the best candidates
+with high-precision arithmetic.  The validated candidates found in the run
+collapsed back to equal supports or stayed above the conjectured threshold.
+\end{itemize}
+
+These checks support the two-level dependency but do not establish it.
+
+\section*{Novelty and Limitations}
+
+Local run indexes on 2026-07-18 showed the previous lane-5 \(0<q\le5\)
+partial packet and a serious full-push attempt for arXiv:2512.12254, but no
+packet recording this divided-difference two-level reduction.  The adjacent
+later paper arXiv:2602.03058, already recorded in the earlier packet, covers
+the related Schur-concavity range \(0\le q\le4\), not this conditional
+reduction.
+
+No fresh external web search was performed for this conditional packet.  The
+novelty confidence is therefore local-run confidence, not a literature-wide
+claim.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{BP}
+S. Brazitikos and C. Pandis,
+\emph{Sharp inequalities for symmetric polynomials, Hunter's conjecture, and
+moments of exponential random variables},
+arXiv:2512.12254.
+
+\bibitem{BGVV}
+S. Brazitikos, A. Giannopoulos, P. Valettas and B.-H. Vritsiou,
+\emph{Geometry of isotropic convex bodies},
+Mathematical Surveys and Monographs, vol. 196, American Mathematical Society,
+2014.
+
+\end{thebibliography}
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid conditional reduction.  The main proof check is the
+divided-difference monotonicity step in the extremizer lemma.  The main open
+task is to prove Lemma~\ref{lem:two-level}, or to find a counterexample to it.
+
+\end{document}

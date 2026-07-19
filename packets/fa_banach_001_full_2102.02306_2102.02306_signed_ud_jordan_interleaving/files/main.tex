@@ -1,0 +1,213 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Pmeas}{\mathcal P}
+
+\title{Signed uniformly distributed sequences from ordinary ones}
+\author{Run fa\_banach\_001, agent\_super\_00}
+\date{2026-06-30}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is Mercourakis and Vassiliadis,
+\emph{Uniform Distribution of Sequences and its interplay with Functional
+Analysis}, arXiv:2102.02306.  Definition 1 of that paper says that, for a
+compact Hausdorff space \(K\) and a real signed regular Borel measure
+\(\mu\in M(K)\) with \(\|\mu\|=|\mu|(K)=1\), a sequence
+\((x_n)\subseteq K\) is \(\mu\)-u.d. if
+\begin{enumerate}
+\item \((x_n)\) is \(|\mu|\)-uniformly distributed in the classical sense, and
+\item there are signs \(\varepsilon_n\in\{\pm1\}\) such that
+\[
+  \frac{1}{N}\sum_{n=1}^N \varepsilon_n\delta_{x_n}
+       \overset{w^*}{\longrightarrow}\mu .
+\]
+\end{enumerate}
+The source proves this property for compact metric \(K\).  In concluding
+future-work item 2(b), it asks about compact non-metrizable spaces \(K\) for
+which every probability measure \(\nu\in P(K)\) admits an ordinary u.d.
+sequence:
+\begin{quote}
+For such spaces it would be interesting to know if every signed measure
+\(\mu\) with \(\|\mu\|=1\) admits a u.d. sequence in the sense of Definition 1.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Answer}
+
+\begin{theorem}\label{thm:main}
+Let \(K\) be a compact Hausdorff space with the following property:
+every probability measure \(\nu\in P(K)\) admits a uniformly distributed
+sequence in the classical sense.  Then every real signed regular Borel measure
+\(\mu\in M(K)\) with \(\|\mu\|=1\) admits a \(\mu\)-u.d. sequence in the sense
+of Definition 1 of the source paper.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The only obstruction in the signed setting is that the same points must
+simultaneously realize the total variation \(|\mu|\) and, after signs are
+attached, realize \(\mu\).  The Jordan decomposition separates these two
+tasks.  Choose an ordinary uniformly distributed sequence for the normalized
+positive variation and another for the normalized negative variation.  Then
+merge the two lists so that their asymptotic proportions are exactly the two
+Jordan masses.  Testing against any \(f\in C(K)\), the unsigned Cesaro
+averages converge to the weighted sum \(\mu^++\mu^-=|\mu|\), while the signed
+averages converge to \(\mu^+-\mu^-=\mu\).
+
+\section*{Proof}
+
+Let \(\mu=\mu^+-\mu^-\) be the Jordan decomposition of \(\mu\), and set
+\[
+   \alpha=\mu^+(K),\qquad \beta=\mu^-(K).
+\]
+Since \(\|\mu\|=|\mu|(K)=\mu^+(K)+\mu^-(K)\), we have
+\[
+   \alpha+\beta=1.
+\]
+
+If \(\alpha=1\), then \(\mu=|\mu|\) is a probability measure.  By the
+hypothesis on \(K\), choose a \(\mu\)-u.d. sequence in the ordinary sense and
+take all signs equal to \(+1\).  This is a \(\mu\)-u.d. sequence in the
+source's signed sense.  If \(\beta=1\), choose an ordinary \(|\mu|\)-u.d.
+sequence and take all signs equal to \(-1\).  Thus assume from now on that
+\(\alpha,\beta>0\).
+
+By the hypothesis on \(K\), choose sequences \((a_i)\subseteq K\) and
+\((b_j)\subseteq K\) such that
+\[
+ \frac{1}{m}\sum_{i=1}^m \delta_{a_i}\overset{w^*}{\longrightarrow}
+       \frac{\mu^+}{\alpha},
+ \qquad
+ \frac{1}{m}\sum_{j=1}^m \delta_{b_j}\overset{w^*}{\longrightarrow}
+       \frac{\mu^-}{\beta}.
+\]
+Choose a subset \(A\subseteq\N\) with asymptotic density \(\alpha\).  For
+example,
+\[
+   A=\{n\in\N:\lfloor n\alpha\rfloor>\lfloor(n-1)\alpha\rfloor\}.
+\]
+Then, with \(A_N=A\cap\{1,\ldots,N\}\), one has
+\[
+   |A_N|=\lfloor N\alpha\rfloor,\qquad
+   \frac{|A_N|}{N}\to\alpha.
+\]
+Let \(B=\N\setminus A\); then \(|B\cap\{1,\ldots,N\}|/N\to\beta\).
+
+Define a sequence \((x_n)\subseteq K\) and signs \((\varepsilon_n)\) as
+follows.  If \(n\) is the \(i\)-th element of \(A\), put
+\[
+   x_n=a_i,\qquad \varepsilon_n=+1.
+\]
+If \(n\) is the \(j\)-th element of \(B\), put
+\[
+   x_n=b_j,\qquad \varepsilon_n=-1.
+\]
+
+Fix \(f\in C(K)\).  Write \(p_N=|A_N|\) and \(q_N=N-p_N\).  Since
+\(\alpha,\beta>0\), both \(p_N\) and \(q_N\) tend to infinity.  Therefore
+\[
+\begin{aligned}
+ \frac{1}{N}\sum_{n=1}^N f(x_n)
+ &= \frac{p_N}{N}\left(\frac{1}{p_N}\sum_{i=1}^{p_N}f(a_i)\right)
+    +\frac{q_N}{N}\left(\frac{1}{q_N}\sum_{j=1}^{q_N}f(b_j)\right)\\
+ &\longrightarrow
+   \alpha\int_K f\,d\frac{\mu^+}{\alpha}
+  +\beta\int_K f\,d\frac{\mu^-}{\beta}
+  =\int_K f\,d|\mu|.
+\end{aligned}
+\]
+Thus \((x_n)\) is \(|\mu|\)-u.d. in the classical sense.
+
+Similarly,
+\[
+\begin{aligned}
+ \frac{1}{N}\sum_{n=1}^N \varepsilon_n f(x_n)
+ &= \frac{p_N}{N}\left(\frac{1}{p_N}\sum_{i=1}^{p_N}f(a_i)\right)
+    -\frac{q_N}{N}\left(\frac{1}{q_N}\sum_{j=1}^{q_N}f(b_j)\right)\\
+ &\longrightarrow
+   \alpha\int_K f\,d\frac{\mu^+}{\alpha}
+  -\beta\int_K f\,d\frac{\mu^-}{\beta}
+  =\int_K f\,d\mu.
+\end{aligned}
+\]
+Equivalently,
+\[
+   \frac{1}{N}\sum_{n=1}^N \varepsilon_n\delta_{x_n}
+      \overset{w^*}{\longrightarrow}\mu .
+\]
+The two defining conditions from Definition 1 are satisfied, so
+\((x_n)\) is \(\mu\)-u.d.  This proves the theorem. \(\square\)
+
+\section*{Consequences for the Source Question}
+
+Theorem~\ref{thm:main} answers future-work item 2(b) affirmatively for every
+compact Hausdorff space \(K\) satisfying the probability-measure hypothesis
+stated in that item.  In particular, whenever an external theorem gives that
+all probability measures on one of the non-metrizable compact spaces mentioned
+there admit ordinary u.d. sequences, the signed-measure conclusion follows
+immediately by the theorem above.
+
+The argument does not address the separate future-work item 2(a), concerning
+functions of bounded variation of several variables, nor the locally compact
+noncompact direction in item 2(c).
+
+\section*{Verification Notes}
+
+No numerical or computer-assisted verification is involved.  The proof reduces
+the signed problem to two ordinary probability-measure u.d. sequences and a
+deterministic density partition of \(\N\).  The weak-star convergence is
+checked directly on arbitrary \(f\in C(K)\).
+
+\section*{Novelty Check}
+
+Before promotion, the run's cheap indexes were searched for arXiv:2102.02306,
+the title, the authors, and core phrases including ``signed measure u.d.
+sequence'', ``signed measure uniformly distributed'', and ``compact
+non-metrizable signed measure''.  No prior packet, attempt, or proof-gap entry
+for this target was found.
+
+Local corpus searches found the source paper and unrelated signed-sum/vector
+sequence material, but no later solution of the future-work item.  Web/arXiv
+spot checks on 2026-06-30 for exact phrases around ``2102.02306 signed measure
+uniformly distributed'', ``every signed measure admits a u.d. sequence'',
+``compact non-metrizable signed measure u.d. sequence'', and ``Mercourakis
+Vassiliadis Uniform Distribution of Sequences'' found the source paper but no
+exact later resolution.
+
+\section*{Human Review Recommendation}
+
+The main review point is whether the source future-work item 2(b) is intended
+exactly under the hypothesis that every probability measure on \(K\) admits an
+ordinary u.d. sequence.  Under that reading, the proof is a complete
+affirmative answer.  The density interleaving calculation is the only
+substantive step to check.
+
+\begin{thebibliography}{9}
+
+\bibitem{MercourakisVassiliadis}
+S. K. Mercourakis and G. Vassiliadis,
+\emph{Uniform Distribution of Sequences and its interplay with Functional
+Analysis}, arXiv:2102.02306.
+
+\end{thebibliography}
+
+\end{document}

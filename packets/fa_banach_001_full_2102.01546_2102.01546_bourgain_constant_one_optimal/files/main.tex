@@ -1,0 +1,287 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\sub}{\subseteq}
+\newcommand{\clust}{\operatorname{clust}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\aco}{\operatorname{aco}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\title{The Optimal Bourgain Constant in Quantitative Bochner Weak Precompactness}
+\author{FA/Banach discovery run \texttt{fa\_banach\_001}}
+\date{Candidate packet, 2026-06-13}
+
+\begin{document}
+\maketitle
+
+\section*{Source and open question}
+
+The source paper is Jose Rodriguez,
+``$\eps$-weakly precompact sets in Banach spaces'',
+arXiv:2102.01546, submitted 2021-02-02.
+The open problem addressed here is Question 2.21.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question asks whether the constant $2$ in Rodriguez's Theorem 2.11 is optimal.
+In the notation of that theorem, $(\Omega,\Sigma,\mu)$ is a probability space,
+$X$ is a Banach space, $F:\Omega\to\mathcal P(X)$ has $F(\omega)$
+$\eps$-weakly precompact for almost every $\omega$, and
+\[
+S_1(F)=\{f\in L_1(\mu,X): f(\omega)\in F(\omega)\hbox{ for a.e. }\omega\}.
+\]
+The source theorem proves that every uniformly integrable subset of $S_1(F)$ is
+$2\eps$-weakly precompact.
+
+\section*{Result}
+
+\begin{theorem}\label{thm:main}
+In Theorem 2.11 of the source paper the constant $2$ can be replaced by $1$.
+More precisely, if $F(\omega)$ is $\eps$-weakly precompact for almost every
+$\omega$, then:
+\begin{enumerate}[label=(\roman*)]
+\item no uniformly integrable sequence in $S_1(F)$ is an $\ell_1$-sequence with
+constant $C>\eps/2$;
+\item every uniformly integrable subset of $S_1(F)$ is $\eps$-weakly precompact
+in $L_1(\mu,X)$.
+\end{enumerate}
+Consequently, for every $\eps$-weakly precompact set $M\sub X$, the set
+$L(M)$ is $\eps$-weakly precompact in $L_1(\mu,X)$.
+\end{theorem}
+
+\begin{theorem}\label{thm:optimal}
+The constant $1$ in Theorem \ref{thm:main} is optimal. In particular,
+Question 2.21 has a negative answer: the constant $2$ is not optimal, and the
+best universal constant is $1$.
+\end{theorem}
+
+\section*{Definitions used}
+
+For a bounded sequence $(x_n)$ in a Banach space $X$, let
+\[
+\delta(x_n)=\diam\clust_{X^{**}}(x_n)
+ = \sup_{x^*\in B_{X^*}}
+ \left(\limsup_n x^*(x_n)-\liminf_n x^*(x_n)\right).
+\]
+A bounded set $M\sub X$ is $\eps$-weakly precompact if every sequence in $M$
+has a subsequence $(x_{n_k})$ with $\delta(x_{n_k})\leq\eps$.
+An $\ell_1$-sequence with constant $C$ is a bounded sequence $(x_n)$ satisfying
+\[
+\left\|\sum_{j=1}^m a_j x_j\right\|\geq C\sum_{j=1}^m |a_j|
+\]
+for all finite scalar families.
+
+\section*{The midpoint lemma}
+
+The source proof of Lemma 2.17 uses Rodriguez's Lemma 2.14 with the centre
+$\liminf h_n$. The factor $2$ is lost exactly there. The following variant
+centres at the midpoint of the scalar cluster interval.
+
+\begin{lemma}\label{lem:midpoint}
+Let $(\Omega,\Sigma,\mu)$ be a probability space, let $(h_n)$ be a bounded
+sequence in $L_\infty(\mu)$, and suppose
+\[
+\limsup_n h_n-\liminf_n h_n\leq \eps\quad\hbox{a.e.}
+\]
+Put
+\[
+m=\frac12\left(\limsup_n h_n+\liminf_n h_n\right)\in L_\infty(\mu).
+\]
+Then
+\[
+\limsup_n\int_\Omega |h_n-m|\,d\mu\leq \frac{\eps}{2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $g_n=|h_n-m|$. The sequence $(g_n)$ is bounded in $L_\infty(\mu)$. Pointwise,
+\[
+\limsup_n g_n
+\leq
+\frac12\left(\limsup_n h_n-\liminf_n h_n\right)
+\leq \frac{\eps}{2}.
+\]
+Rodriguez's Lemma 2.13, the reverse Fatou inequality for bounded
+$L_\infty$-sequences on a probability space, gives
+\[
+\limsup_n\int_\Omega g_n\,d\mu
+\leq \int_\Omega\limsup_n g_n\,d\mu
+\leq \frac{\eps}{2}.
+\]
+\end{proof}
+
+\section*{Improved Rademacher lemma}
+
+Let $(r_n)$ be the Rademacher functions on $[0,1]$.
+
+\begin{lemma}\label{lem:improved-bh}
+Let $Z$ be a Banach space, let $M\sub Z$ be $\eps$-weakly precompact, and let
+$(z_n)$ be a sequence in $M$. Then
+\[
+\clust_{L_1([0,1],Z)^{**}}(r_n\otimes z_n)
+\sub \frac{\eps}{2}B_{L_1([0,1],Z)^{**}}.
+\]
+\end{lemma}
+
+\begin{proof}
+The proof is Rodriguez's Lemma 2.17 with Lemma \ref{lem:midpoint} substituted
+for Lemma 2.14. Let $F$ be a weak-star cluster point of $(r_n\otimes z_n)$ and
+fix $\varphi\in B_{L_1([0,1],Z)^*}$. Represent $\varphi$ by a weak-star
+scalarly measurable function $[0,1]\to Z^*$ with $\|\varphi(t)\|\leq 1$ a.e.
+Choose a subsequence $(n_k)$ such that
+\[
+\langle r_{n_k}\otimes z_{n_k},\varphi\rangle\to \langle F,\varphi\rangle.
+\]
+Passing to a further subsequence, using $\eps$-weak precompactness of $M$, we
+may suppose $\delta(z_{n_k})\leq\eps$.
+
+Set
+\[
+a_k(t)=\langle z_{n_k},\varphi(t)\rangle .
+\]
+Then $(a_k)$ is bounded in $L_\infty[0,1]$, and for almost every $t$,
+\[
+\limsup_k a_k(t)-\liminf_k a_k(t)\leq \delta(z_{n_k})\leq\eps.
+\]
+Let
+\[
+m(t)=\frac12\left(\limsup_k a_k(t)+\liminf_k a_k(t)\right).
+\]
+By Lemma \ref{lem:midpoint},
+\[
+\limsup_k\int_0^1 |a_k(t)-m(t)|\,dt\leq \frac{\eps}{2}.
+\]
+Since $(r_{n_k})$ is weakly null in $L_1[0,1]$ and $m\in L_\infty[0,1]$,
+\[
+\int_0^1 r_{n_k}(t)m(t)\,dt\to 0.
+\]
+Thus
+\[
+\begin{aligned}
+|\langle r_{n_k}\otimes z_{n_k},\varphi\rangle|
+&\leq
+\left|\int_0^1 r_{n_k}(t)m(t)\,dt\right|
+ +\int_0^1 |a_k(t)-m(t)|\,dt,
+\end{aligned}
+\]
+and taking $\limsup_k$ yields
+$|\langle F,\varphi\rangle|\leq \eps/2$. Since $\varphi$ was arbitrary in the
+dual unit ball, $\|F\|\leq\eps/2$.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:main}}
+
+First assume the particular bounded case used in Rodriguez's proof: each
+$f_n\in L_\infty(\mu,X)$ and $\sup_n\|f_n\|_{L_\infty(\mu,X)}<\infty$.
+Let $Y=L_1([0,1],X)$ and define
+\[
+h_n(\omega)=r_n\otimes f_n(\omega)\in Y.
+\]
+For almost every $\omega$, Lemma \ref{lem:improved-bh} applied to the sequence
+$(f_n(\omega))$ in $F(\omega)$ gives
+\[
+\clust_{Y^{**}}(h_n(\omega))\sub \frac{\eps}{2}B_{Y^{**}}.
+\]
+Rodriguez's Lemma 2.18 then gives
+\[
+\clust_{L_1(\mu,Y)^{**}}(h_n)\sub \frac{\eps}{2}B_{L_1(\mu,Y)^{**}}.
+\]
+Under the natural isometric isomorphism
+$L_1(\mu,L_1([0,1],X))\cong L_1([0,1],L_1(\mu,X))$, this says
+\[
+\clust_{L_1([0,1],L_1(\mu,X))^{**}}(r_n\otimes f_n)
+\sub \frac{\eps}{2}B.
+\]
+Rodriguez's Lemma 2.16 states that if $(f_n)$ is an $\ell_1$-sequence with
+constant $C$, then $(r_n\otimes f_n)$ is an $\ell_1$-sequence with the same
+constant $C$, and in particular its bidual cluster set is not contained in
+$\eta B$ for any $\eta<C$. Therefore the bounded particular case cannot contain
+an $\ell_1$-sequence with constant $C>\eps/2$.
+
+Now let $(f_n)$ be any uniformly integrable sequence in $S_1(F)$ and suppose,
+for contradiction, that it is an $\ell_1$-sequence with constant $C>\eps/2$.
+Choose $0<\eta<C-\eps/2$. Rodriguez's truncation Lemma 2.19 gives measurable
+sets $A_n$ such that $g_n=f_n\chi_{A_n}$ is uniformly $L_\infty$-bounded and
+\[
+\|f_n-g_n\|_{L_1(\mu,X)}\leq\eta\quad(n\in\N).
+\]
+The sequence $(g_n)$ belongs to $S_1(\widetilde F)$ for
+$\widetilde F(\omega)=F(\omega)\cup\{0\}$, whose values are still
+$\eps$-weakly precompact. Moreover $(g_n)$ is an $\ell_1$-sequence with
+constant at least $C-\eta>\eps/2$. This contradicts the bounded case. Hence
+part (i) follows.
+
+For part (ii), let $W\sub S_1(F)$ be uniformly integrable. Fix
+$\eps'>\eps$. If $W$ were not $\eps'$-weakly precompact, Theorem 2.1(i) of the
+source paper would give an $\ell_1$-sequence in $W$ with constant
+$\eps'/2>\eps/2$, contradicting part (i). Thus $W$ is $\eps'$-weakly precompact
+for every $\eps'>\eps$, and Rodriguez's Lemma 2.5 implies that $W$ is
+$\eps$-weakly precompact.
+
+\section*{Proof of optimality}
+
+Let $X=\ell_1$ and let $M=\{\alpha e_n:n\in\N\}$ for some $\alpha>0$. In the
+one-point probability space, $L_1(\mu,X)$ identifies with $X$ and
+$L(M)=M$.
+
+The set $M$ is $2\alpha$-weakly precompact. Indeed, every sequence in $M$ has
+either a constant subsequence, with $\delta=0$, or a subsequence of distinct
+basis vectors. For a distinct basis subsequence, the diameter is exactly
+$2\alpha$: it is at most $2\alpha$ by norm diameter, and it is at least
+$2\alpha$ by evaluating against a bounded scalar sequence in $\ell_\infty$
+which alternates between $1$ and $-1$ along the chosen indices.
+
+Thus $M$ is not $\eta$-weakly precompact for any $\eta<2\alpha$. If a universal
+constant $K<1$ replaced the constant $1$ in Theorem \ref{thm:main}, applying it
+with $\eps=2\alpha$ would force $L(M)=M$ to be $2K\alpha$-weakly precompact,
+contradicting $2K\alpha<2\alpha$. Hence no constant smaller than $1$ is
+possible. The same example shows the threshold $C>\eps/2$ in part (i) is sharp.
+
+\section*{Novelty and literature check}
+
+Before promotion, bounded searches were run on 2026-06-13 for exact and close
+phrases involving:
+\begin{itemize}
+\item \texttt{Question 2.21}, \texttt{2102.01546}, and
+\texttt{epsilon-weakly precompact};
+\item \texttt{Theorem 2.11}, \texttt{constant 2}, and \texttt{Bourgain};
+\item \texttt{Bourgain-Maurey-Pisier}, weakly conditionally compact sets in
+\texttt{L1\_X}, and Bourgain's averaging result for \texttt{l1}-sequences.
+\end{itemize}
+The searches found Rodriguez's arXiv paper and background around Bourgain,
+Maurey--Pisier, Behrends, Gasparis, and Kalenda--Pfitzner--Spurny, but no
+separate later source explicitly resolving Question 2.21 or advertising the
+constant-one improvement. This is a bounded novelty check, not a claim of
+exhaustive bibliographic certainty.
+
+\section*{Verification notes and human-review focus}
+
+The proof is short and the review focus should be correspondingly narrow:
+\begin{enumerate}
+\item Check Lemma \ref{lem:midpoint}: it uses only the source paper's reverse
+Fatou Lemma 2.13 for bounded $L_\infty$ sequences.
+\item Check that the midpoint function $m$ in Lemma \ref{lem:improved-bh} is
+measurable and in $L_\infty$; this follows because it is built from limsup and
+liminf of bounded measurable scalar functions.
+\item Check that the passage from the pointwise improved Rademacher lemma to
+the global Bochner statement is exactly the source proof of Theorem 2.11, with
+$\eps$ replaced by $\eps/2$ up to the final Behrends endpoint argument.
+\item Check the one-point $\ell_1$ example for optimality.
+\end{enumerate}
+
+Current verdict: likely valid candidate full solution, pending human review.
+
+\end{document}

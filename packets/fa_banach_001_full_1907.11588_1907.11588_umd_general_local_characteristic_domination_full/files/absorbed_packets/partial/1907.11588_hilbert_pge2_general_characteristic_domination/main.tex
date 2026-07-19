@@ -1,0 +1,282 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Hilbert-Valued Characteristic Domination for \(p\geq 2\)}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial result, likely valid, for Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of vector-valued
+martingales} \cite{Yaroslavtsev2019}.  It strengthens the earlier Hilbert
+\(p=2\) packet to every exponent \(p\geq2\).  The result is still partial
+relative to the source problem, because it does not cover non-Hilbert UMD
+spaces or \(1\leq p<2\).
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source crop
+below states the open general-local-martingale issue and its discrete
+independent-increment reduction.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The next page adds that, by symmetrization, one can assume the variables are
+symmetric, and that even this case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+In discrete form, the source asks whether independent mean-zero \(X\)-valued
+variables \((\xi_n)\), \((\eta_n)\) satisfying
+\[
+   \sum_n \Pp(\xi_n\in B)
+   \leq
+   \sum_n \Pp(\eta_n\in B)
+   \qquad
+   (B\subset X\setminus\{0\}\text{ Borel})
+\]
+must satisfy
+\[
+   \E\norm{\sum_n \xi_n}^p
+   \leq
+   C_{p,X}\E\norm{\sum_n \eta_n}^p .
+\]
+
+\section*{Idea of the Proof}
+
+The \(c_0\) counterexample works because the norm sees the largest occupancy
+after the same aggregate jump mass is regrouped.  Hilbert spaces do not have
+that freedom at exponents \(p\geq2\).  A Hilbert-valued Rosenthal inequality
+says that the \(p\)-th moment of an independent mean-zero sum is equivalent to
+only two aggregate quantities:
+\[
+  \left(\sum_n \E\norm{Z_n}^2\right)^{p/2}
+  +
+  \sum_n \E\norm{Z_n}^p .
+\]
+Both are monotone under the aggregate measure domination, by integrating
+\(\norm{x}^2\) and \(\norm{x}^p\).  This proves the discrete comparison in
+Hilbert space for \(p\geq2\).  The source paper already reduces the missing
+accessible-jump part of the general local martingale problem to precisely this
+discrete comparison; the continuous and quasi-left-continuous parts are already
+handled there.
+
+\section*{Discrete Hilbert Comparison}
+
+\begin{lemma}[Hilbert Rosenthal estimate]\label{lem:hilbert-rosenthal}
+Let \(H\) be a Hilbert space, \(p\geq2\), and let
+\(Z_1,\ldots,Z_N\) be independent mean-zero \(H\)-valued random variables.
+Then
+\[
+ \E\norm{\sum_{n=1}^N Z_n}^p
+ \eqsim_p
+ \left(\sum_{n=1}^N \E\norm{Z_n}^2\right)^{p/2}
+ +
+ \sum_{n=1}^N \E\norm{Z_n}^p .
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(S_k=\sum_{n=1}^k Z_n\).  The Hilbert-valued discrete
+Burkholder-Davis-Gundy inequality gives
+\[
+  \E\sup_{1\leq k\leq N}\norm{S_k}^p
+  \eqsim_p
+  \E\left(\sum_{n=1}^N\norm{Z_n}^2\right)^{p/2};
+\]
+this is the Hilbert case of the discrete estimate recalled in
+\cite{Yaroslavtsev2018}.  Since \((\norm{S_k})_k\) is a submartingale, Doob's
+\(L^p\) inequality also gives
+\[
+  \E\sup_{1\leq k\leq N}\norm{S_k}^p
+  \lesssim_p
+  \E\norm{S_N}^p,
+\]
+while the reverse inequality is immediate.  Therefore
+\[
+  \E\norm{S_N}^p
+  \eqsim_p
+  \E\left(\sum_{n=1}^N\norm{Z_n}^2\right)^{p/2}.
+\]
+Finally apply the scalar Rosenthal inequality to the independent nonnegative
+variables \(Y_n=\norm{Z_n}^2\) with exponent \(p/2\geq1\):
+\[
+ \E\left(\sum_{n=1}^N Y_n\right)^{p/2}
+ \eqsim_p
+ \left(\sum_{n=1}^N \E Y_n\right)^{p/2}
+ +
+ \sum_{n=1}^N \E Y_n^{p/2}.
+\]
+This is the displayed estimate.
+\end{proof}
+
+\begin{proposition}[Aggregate domination in Hilbert spaces for \(p\geq2\)]
+\label{prop:discrete-hilbert}
+Let \(H\) be a Hilbert space and \(p\geq2\).  Let
+\((\xi_n)_{n=1}^N\) and \((\eta_n)_{n=1}^N\) be independent mean-zero
+\(H\)-valued random variables.  If
+\[
+   \sum_{n=1}^N \Pp(\xi_n\in B)
+   \leq
+   \sum_{n=1}^N \Pp(\eta_n\in B)
+   \qquad
+   (B\subset H\setminus\{0\}\text{ Borel}),
+\]
+then
+\[
+   \E\norm{\sum_{n=1}^N \xi_n}^p
+   \leq
+   C_p\,\E\norm{\sum_{n=1}^N \eta_n}^p .
+\]
+\end{proposition}
+
+\begin{proof}
+For \(q=2\) and \(q=p\), integrate \(\norm{x}^q\) against the two aggregate
+measures.  The atom at \(0\) is irrelevant.  We obtain
+\[
+  \sum_{n=1}^N\E\norm{\xi_n}^q
+  \leq
+  \sum_{n=1}^N\E\norm{\eta_n}^q,
+  \qquad q\in\{2,p\}.
+\]
+Applying Lemma \ref{lem:hilbert-rosenthal} to \((\xi_n)\), using these two
+inequalities, and applying Lemma \ref{lem:hilbert-rosenthal} again to
+\((\eta_n)\), gives the result.
+\end{proof}
+
+\section*{General Local Martingales}
+
+\begin{theorem}
+Let \(H\) be a separable Hilbert space and let \(p\geq2\).  Let \(M\) and \(N\)
+be \(H\)-valued local martingales such that \(N\) is characteristically
+dominated by \(M\) in the sense of \cite{Yaroslavtsev2019}.  Then
+\[
+  \E\sup_{t\geq0}\norm{N_t}^p
+  \leq
+  C_p\,\E\sup_{t\geq0}\norm{M_t}^p ,
+\]
+whenever the right hand side is finite.
+\end{theorem}
+
+\begin{proof}
+We use the reduction developed in the source paper.  The continuous part is
+handled by the characteristic-subordination/continuous domination estimate
+used in the proof of Theorem 12.8 of \cite{Yaroslavtsev2019}.  The
+quasi-left-continuous purely discontinuous part is exactly Theorem 12.8 of
+\cite{Yaroslavtsev2019}.  Thus, after the canonical decomposition, the only
+missing piece is the accessible-jump part.
+
+For accessible jumps, use the accessible-jump decoupled tangent construction
+and the accessible-jump approximation proposition cited explicitly in Remark
+12.10 of \cite{Yaroslavtsev2019}.  These approximate by martingales with
+finitely many predictable jumps and represent the corresponding decoupled
+tangent object, for almost every base point, as a sum of independent mean-zero
+increments.  In Remark 12.10 the source states that the main remaining issue
+for general characteristic domination is precisely the discrete
+independent-increment aggregate-domination problem.  Under characteristic
+domination, the total compensator of the accessible jumps of \(N\) is dominated
+by that of \(M\); for the decoupled tangent sums this is exactly the aggregate
+domination hypothesis in Proposition \ref{prop:discrete-hilbert}.  Applying
+that proposition pointwise to the decoupled accessible-jump sums gives the
+desired \(L^p\) comparison for the accessible parts.  The standard
+tangent/decoupling estimate for Hilbert spaces, recalled as Theorem 1.1 in
+\cite{Yaroslavtsev2019}, transfers the estimate back to the original
+accessible-jump martingales, and the approximation then removes the
+finite-jump truncation.
+
+Combining the continuous, quasi-left-continuous, and accessible estimates with
+the canonical-decomposition \(L^p\) bounds used in the source proof yields the
+displayed estimate.
+\end{proof}
+
+\section*{Verification Notes}
+
+The new proof step is Proposition \ref{prop:discrete-hilbert}.  It is stable
+under symmetrization but does not need symmetry: independence and the mean-zero
+assumption are enough for the Hilbert Rosenthal estimate.  The proof also
+explains why the \(c_0\) counterexample cannot be transplanted into Hilbert
+space for \(p\geq2\): after Rosenthal, regrouping the same aggregate mass can
+change neither the total second moment nor the total \(p\)-th moment enough to
+create an unbounded ratio.
+
+\section*{Novelty and Literature Check}
+
+The cheap run indexes were searched for the arXiv id and for the terms
+\texttt{characteristically dominated}, \texttt{aggregate domination},
+\texttt{Hilbert}, \texttt{p>=2}, \texttt{Rosenthal}, and
+\texttt{Bichteler-Jacod}.  The run already contained the broad \(c_0\)
+counterexample and the Hilbert \(p=2\) packet, but no Hilbert \(p\geq2\)
+packet.  Literature searches found Yaroslavtsev's BDG paper
+\cite{Yaroslavtsev2018}, Rosenthal/Pinelis moment tools
+\cite{Pinelis2012}, and Montgomery-Smith--Pruss comparison inequalities
+\cite{MontgomerySmithPruss2001}, but no exact recorded solution of the Hilbert
+\(p\geq2\) subcase of Remark 12.10.
+
+\section*{Limitations and Next Routes}
+
+This packet does not solve \(1\leq p<2\).  The Rosenthal reduction used above
+is naturally aligned with \(p\geq2\), because the \(p\)-th moment controls both
+the quadratic characteristic and the large-jump characteristic.  It also does
+not solve general non-Hilbert UMD spaces.  A plausible next step is to test
+whether the same two-characteristic reduction holds in \(2\)-smooth UMD spaces
+or in \(L^q\)-spaces with the Dirksen--Yaroslavtsev/Marinelli--Roeckner
+Burkholder-Novikov-Rosenthal estimates.
+
+\section*{Human Review Recommendation}
+
+First verify Lemma \ref{lem:hilbert-rosenthal}, especially the use of scalar
+Rosenthal for \(\sum\norm{Z_n}^2\).  Then verify that the source paper's
+accessible-jump reduction indeed needs only the discrete aggregate-domination
+comparison; this is the point explicitly isolated in Remark 12.10.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev,
+\emph{Local characteristics and tangency of vector-valued martingales},
+arXiv:1907.11588, 2019.
+
+\bibitem{Yaroslavtsev2018}
+I. S. Yaroslavtsev,
+\emph{Burkholder-Davis-Gundy inequalities in UMD Banach spaces},
+arXiv:1807.05573, 2018.
+
+\bibitem{Pinelis2012}
+I. Pinelis,
+\emph{Rosenthal-type inequalities for martingales in 2-smooth Banach spaces},
+arXiv:1212.1912, 2012.
+
+\bibitem{MontgomerySmithPruss2001}
+S. J. Montgomery-Smith and A. R. Pruss,
+\emph{A comparison inequality for sums of independent random variables},
+J. Math. Anal. Appl. 254 (2001), no. 1, 35--42;
+arXiv:math/9811124.
+
+\bibitem{Rosenthal1970}
+H. P. Rosenthal,
+\emph{On the subspaces of \(L^p\) \((p>2)\) spanned by sequences of
+independent random variables},
+Israel J. Math. 8 (1970), 273--303.
+
+\end{thebibliography}
+
+\end{document}

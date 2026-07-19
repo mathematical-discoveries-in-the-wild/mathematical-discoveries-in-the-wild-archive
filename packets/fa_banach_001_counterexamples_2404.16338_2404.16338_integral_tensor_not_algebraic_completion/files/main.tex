@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\G}{\Gamma}
+\newcommand{\bi}{\mathbin{\boxtimes_{i}}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{An integral tensor outside the algebraic completion}
+\author{Candidate counterexample for arXiv:2404.16338}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate counterexample, likely valid.}
+The integral-representation space of Definition 4.1 need not be the
+completion of the algebraic tensor product for its defining seminorms.  The
+counterexample is explicit and uses two copies of a step-function model of
+$\ell_\infty$.}}
+\end{center}
+
+\section{Source and question}
+
+The source is Eva-Maria Hekkelman, Edward McDonald, and Teun D. H. van
+Nuland, \emph{Multiple operator integrals, pseudodifferential calculus, and
+asymptotic expansions}, arXiv:2404.16338, 2024 \cite{HMN}.  In Definition 4.1
+they introduce $\G_0\bi\cdots\bi\G_n$: its elements are functions admitting
+representations
+\begin{equation}\label{eq:source-rep}
+ \phi(\lambda_0,\ldots,\lambda_n)
+ =\int_\Omega \prod_{j=0}^{n}a_j(\lambda_j,\omega)\,d\nu(\omega)
+\end{equation}
+with finite product-seminorm integral.  The corresponding seminorm is the
+infimum of that integral over all representations.  After noting the inclusion
+of the algebraic tensor product, the authors ask whether the displayed space
+is, in general, its completion for these seminorms.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Definition 4.1, its seminorm, the algebraic inclusion, and the
+completion question on page 22 of the source paper.}
+\label{fig:question}
+\end{figure}
+
+\section{Proof intuition}
+
+The integral permits a continuum of rank-one factors without requiring the
+factor-valued maps to be norm measurable.  Independent signs exploit exactly
+that freedom: their correlation is the infinite diagonal matrix.  By contrast,
+an algebraic tensor samples to a finite-rank matrix.  The seminorm in the
+definition dominates pointwise uniform norm, and the infinite diagonal stays
+at least $1/2$ away in uniform norm from every finite-rank matrix.  Thus it
+cannot lie in the algebraic completion for the very seminorm used to define
+the integral space.
+
+\section{The counterexample}
+
+For $m\geq1$, let
+\[
+ I_m=[m,m+1),\qquad t_m=m+\tfrac12.
+\]
+Let $\G$ be the space of all bounded measurable real-valued functions on
+$\R$ which vanish outside $[1,\infty)$ and are constant on each $I_m$.
+Equip $\G$ with
+\[
+ \|f\|_{\G,k}:=\|f\|_\infty\qquad(k\in\N).
+\]
+Thus $\G$ is a Banach function space isometric to $\ell_\infty$, and all its
+listed seminorms coincide.
+
+Define
+\begin{equation}\label{eq:phi}
+ \phi(x,y):=\sum_{m=1}^{\infty}\mathbf 1_{I_m}(x)\mathbf 1_{I_m}(y).
+\end{equation}
+The sum is pointwise either zero or one.
+
+\begin{theorem}\label{thm:main}
+The function $\phi$ belongs to $\G\bi\G$, but for every
+$\psi\in\G\otimes\G$ and every pair of seminorm indices $k_0,k_1$,
+\[
+ \|\phi-\psi\|_{\G\bi\G,k_0,k_1}\geq\frac12.
+\]
+Consequently, $\G\bi\G$ is not the completion of $\G\otimes\G$ under the
+given seminorms.  In particular, the general completion question after
+Definition 4.1 of the source paper has a negative answer.
+\end{theorem}
+
+\begin{proof}
+Let $\Omega=\{-1,1\}^{\N}$ with its product sigma algebra and product
+probability measure $\mathbb P$, and write $\varepsilon_m(\omega)=\omega_m$
+for its coordinate functions.  Put
+\begin{equation}\label{eq:a}
+ a(x,\omega):=\sum_{m=1}^{\infty}
+ \varepsilon_m(\omega)\mathbf 1_{I_m}(x).
+\end{equation}
+The map $(x,\omega)\mapsto a(x,\omega)$ is jointly measurable: it is defined
+on a countable measurable partition by measurable coordinate functions.  For
+every $\omega$, the function $a(\cdot,\omega)$ lies in $\G$ and has all
+seminorms equal to one.  Independence and centering of the signs give
+\[
+ \int_\Omega a(x,\omega)a(y,\omega)\,d\mathbb P(\omega)
+ =\sum_{m,l\geq1}\mathbf 1_{I_m}(x)\mathbf 1_{I_l}(y)
+   \mathbb E(\varepsilon_m\varepsilon_l)
+ =\phi(x,y).
+\]
+Only one summand in each spatial variable can be nonzero, so the displayed
+calculation is pointwise finite.  This is a representation of the form
+\eqref{eq:source-rep}, of cost one for every pair $(k_0,k_1)$.  Hence
+$\phi\in\G\bi\G$.
+
+We next record that the defining integral seminorm dominates uniform norm.
+Indeed, for every representation
+\[
+ h(x,y)=\int_\Sigma b(x,\sigma)c(y,\sigma)\,d\mu(\sigma)
+\]
+with factors in $\G$, one has
+\[
+ |h(x,y)|\leq\int_\Sigma
+ \|b(\cdot,\sigma)\|_\infty
+ \|c(\cdot,\sigma)\|_\infty\,d|\mu|(\sigma).
+\]
+Taking first the supremum over $(x,y)$ and then the infimum over
+representations yields
+\begin{equation}\label{eq:domination}
+ \|h\|_\infty\leq\|h\|_{\G\bi\G,k_0,k_1}.
+\end{equation}
+
+Now take an algebraic tensor
+\[
+ \psi(x,y)=\sum_{s=1}^{r}f_s(x)g_s(y)
+\]
+and sample it at the points $t_m$.  Let
+\[
+ A_{mn}:=\psi(t_m,t_n),\qquad
+ r_m:=(A_{mn})_{n\geq1}\in\ell_\infty.
+\]
+All rows $r_m$ lie in the finite-dimensional subspace
+\[
+ F=\operatorname{span}\{(g_s(t_n))_{n\geq1}:1\leq s\leq r\}
+ \subseteq\ell_\infty.
+\]
+Suppose, toward a contradiction, that
+\[
+ \epsilon:=\sup_{m,n}|A_{mn}-\delta_{mn}|<\frac12.
+\]
+Then $\|r_m\|_\infty\leq1+\epsilon$ for every $m$.  A bounded subset of the
+finite-dimensional normed space $F$ is totally bounded.  Thus there are
+distinct $p,q$ such that
+\[
+ \|r_p-r_q\|_\infty<1-2\epsilon.
+\]
+Writing $e_m=(\delta_{mn})_{n\geq1}$ for the $m$th identity row gives
+\[
+ 1=\|e_p-e_q\|_\infty
+ \leq\|e_p-r_p\|_\infty+\|r_p-r_q\|_\infty
+       +\|r_q-e_q\|_\infty
+ <2\epsilon+(1-2\epsilon)=1,
+\]
+a contradiction.  Therefore
+\begin{equation}\label{eq:half}
+ \sup_{m,n}|\psi(t_m,t_n)-\delta_{mn}|\geq\frac12.
+\end{equation}
+Because $\phi(t_m,t_n)=\delta_{mn}$, equations
+\eqref{eq:domination} and \eqref{eq:half} prove
+\[
+ \|\phi-\psi\|_{\G\bi\G,k_0,k_1}
+ \geq\|\phi-\psi\|_\infty\geq\frac12.
+\]
+Thus no net or sequence of algebraic tensors can converge to $\phi$ for the
+given seminorms.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The construction checks every condition in Definition 4.1 directly: the
+parameter measure is finite, the factor is jointly measurable, every section
+belongs to $\G$, the norm map is the constant one, and the product-norm
+integral equals one.  The separation uses the exact seminorm from that
+definition, not the larger Banach projective norm.  Since that seminorm
+dominates uniform norm here, it is definite and no quotient-completion issue
+arises.
+
+This fully answers the words ``in general'' in the negative.  It does not
+decide density for the special spaces $S^\beta(\R)$, $T^\beta(\R)$, or the
+spectral $L_\infty^\beta$ spaces used elsewhere in the source.
+
+Before promotion, the run indexes and ledgers were searched using the source
+arXiv id and the core phrases ``integral projective tensor'', ``algebraic
+tensor completion'', ``Rademacher'', and ``diagonal''.  A bounded web/arXiv
+search used the exact question sentence, the source title and id, and close
+integral-projective-tensor phrases.  No separate answer was found.  Moreover,
+Hekkelman's 2026 thesis repeats the question verbatim in Remark 3.2.2
+\cite{HekkelmanThesis}.  This is strong recent status evidence, not an
+exhaustive novelty guarantee.
+
+Human review is recommended.  The highest-value checks are the interpretation
+of completion in the source sentence and the total-boundedness separation of
+the sampled rows.
+
+\begin{thebibliography}{9}
+\bibitem{HMN}
+E.-M. Hekkelman, E. McDonald, and T. D. H. van Nuland,
+\emph{Multiple operator integrals, pseudodifferential calculus, and asymptotic
+expansions}, arXiv:2404.16338, 2024.
+\url{https://arxiv.org/abs/2404.16338}.
+
+\bibitem{HekkelmanThesis}
+E.-M. Hekkelman,
+\emph{Trace Formulas}, doctoral thesis, 2026, Chapter 3, Remark 3.2.2.
+\url{https://www.emhekkelman.nl/uploads/phdthesis.pdf}.
+\end{thebibliography}
+
+\end{document}
+

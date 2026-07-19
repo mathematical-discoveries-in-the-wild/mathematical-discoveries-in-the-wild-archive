@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\HH}{\mathcal H}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diam}{\operatorname{diam}}
+
+\title{A Hairpin Counterexample to the Unbounded-Interval Version of Lemma 4.2}
+\author{FA Banach run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{2026-06-23}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate counterexample, likely valid.  It gives a
+negative answer to the question in arXiv:2012.12984, page 14, asking whether
+Lemma 4.2 remains true when the parameter interval of the curve is unbounded.
+The counterexample already lives in the Hilbert plane \(X=\R^2\), hence in a
+dual of a separable Banach space.
+
+\section*{Source Passage}
+
+After proving Lemma 4.2 for compactly parametrized curves, the author explains
+that the proof may fail on unbounded domains because one must choose a large
+enough interval whose image remains inside a ball, and the known input gives
+only local bi-Lipschitz control.  The paper then asks:
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{The Question and the Relevant Condition}
+
+In the notation of the source paper, Lemma 4.2 asserts that for every ball
+\(B\) centered on \(\Gamma=\gamma([0,1])\) there is an interval \(J=[a,b]\)
+such that \(G=\gamma(J)\subset B\cap\Gamma\), \(\gamma\) is bi-Lipschitz on
+\(J\), and
+\[
+  \HH^1(G)\ge \theta\,\HH^1(B\cap \Gamma)
+\]
+for a constant \(\theta>0\) independent of \(B\).  The selected interval must
+also satisfy the source's condition (4.3):
+\[
+  \diam\bigl(J\cap \gamma^{-1}(B(y,s)\cap G)\bigr)
+  \le \frac{2s}{\inf\|\gamma'\|}
+  \qquad (y\in G,\ s>0).
+\]
+For an arc-length parametrization, this implies
+\begin{equation}
+\label{eq:lower-lip}
+  |u-v|\le 2\|\gamma(u)-\gamma(v)\| \qquad (u,v\in J).
+\end{equation}
+Indeed, apply (4.3) with \(y=\gamma(u)\), let
+\(s\downarrow \|\gamma(u)-\gamma(v)\|\), and use \(\inf\|\gamma'\|=1\).
+
+\section*{Counterexample Statement}
+
+\begin{theorem}
+There is a \(C^{1,1}\), arc-length parametrized curve
+\(\gamma:[0,\infty)\to\R^2\) such that \(\Gamma=\gamma([0,\infty))\) is
+1-Ahlfors-David regular, but no constant \(\theta>0\) can make the conclusion
+of Lemma 4.2 true for all balls centered on \(\Gamma\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The compact proof of Lemma 4.2 uses finite total length: once
+\(\HH^1(B\cap\Gamma)\) is controlled by the radius, one chooses a parameter
+interval of proportional length and keeps it shorter than the uniform local
+bi-Lipschitz scale.  On an unbounded interval the ball may contain many
+separate visits of the curve.  Ahlfors regularity controls the total amount of
+curve in the ball, but it does not force those visits to occur during one long
+bi-Lipschitz parameter interval.
+
+The construction below is a smooth infinite ladder of hairpins.  Each hairpin
+has two long nearly parallel strands separated by a tiny distance
+\(\varepsilon\).  A ball around the initial point contains the first \(N\)
+hairpins and therefore length comparable to \(N\).  However any interval
+satisfying (4.3) can cross at most one hairpin: otherwise it contains two
+points on opposite strands which are \(\varepsilon\)-close in the plane but
+order-one apart in parameter time, contradicting \eqref{eq:lower-lip}.  Hence
+the largest admissible \(G\) has uniformly bounded length while
+\(\HH^1(B\cap\Gamma)\to\infty\).
+
+\section*{Construction}
+
+Fix \(h=4\), choose \(0<\varepsilon<1/100\), and let
+\(\rho=\varepsilon/100\).  Start from the polygonal ray \(P\) through the
+successive vertices
+\[
+  A_k=(0,hk),\quad
+  B_k=(1,hk),\quad
+  C_k=(1,hk+\varepsilon),\quad
+  D_k=(0,hk+\varepsilon),\quad
+  A_{k+1}=(0,h(k+1))
+\]
+for \(k=0,1,2,\ldots\).  Thus one block travels right along a unit horizontal
+strand, moves up by \(\varepsilon\), travels left along a parallel strand, and
+then goes vertically up to the next block.
+
+Replace each corner of \(P\) by the standard tangent circular rounding of
+radius \(\rho\).  Since \(\rho\ll\varepsilon\), the rounded curve still contains
+the middle portions of the two horizontal strands
+\[
+  S_k^0=\{(x,hk): 2\rho\le x\le 1-2\rho\},\qquad
+  S_k^1=\{(x,hk+\varepsilon): 2\rho\le x\le 1-2\rho\}.
+\]
+Let \(\Gamma\) be this rounded ray and let \(\gamma:[0,\infty)\to\R^2\) be its
+arc-length parametrization, starting at \(A_0\).  Then \(\gamma\) is
+\(C^{1,1}\), \(\|\gamma'\|\equiv1\), and \(\gamma'\) is Lipschitz with constant
+at most \(1/\rho\) on each rounded arc and constant on the straight pieces.
+
+\begin{lemma}
+\label{lem:regular}
+\(\Gamma\) is 1-Ahlfors-David regular.
+\end{lemma}
+
+\begin{proof}
+The curve has a uniformly repeating geometry.  In each vertical slab
+\[
+  Q_k=[-\rho,1+\rho]\times[hk-\rho,h(k+1)+\rho]
+\]
+the length of \(\Gamma\cap Q_k\) is bounded above and below by absolute
+positive constants, and adjacent slabs overlap only a bounded number of times.
+
+For the upper bound, first consider \(0<r\le 10\).  A ball of radius \(r\)
+meets only a bounded number of straight or circular pieces, and each such
+piece contributes at most \(C r\) length; the constant is uniform because the
+rounding radius is fixed and every ball meets only boundedly many nearby
+parallel pieces.  For \(r>10\), the ball meets only \(O(r/h)\) slabs, each of
+uniformly bounded length, so \(\HH^1(\Gamma\cap B(x,r))\le C r\).
+
+For the lower bound, if \(r\le 10\), the point \(x\in\Gamma\) lies on a
+straight segment or on a circular arc of radius \(\rho\), so a subarc of length
+\(c r\) remains in \(B(x,r)\).  If \(r>10\), the strip width is bounded and the
+vertical connector in every block guarantees that \(B(x,r)\) contains the
+curve in at least \(c r/h\) consecutive slabs, each contributing a fixed
+positive amount of length.  Thus
+\[
+  C^{-1}r\le \HH^1(\Gamma\cap B(x,r))\le C r
+\]
+for all \(x\in\Gamma\) and \(r>0\), after changing \(C\) once.
+\end{proof}
+
+\begin{lemma}
+\label{lem:admissible-bounded}
+There is a constant \(L_*\), depending only on \(h,\varepsilon,\rho\), such
+that every compact interval \(J\subset[0,\infty)\) satisfying
+\eqref{eq:lower-lip} has length at most \(L_*\).
+\end{lemma}
+
+\begin{proof}
+Let \(p_k=(1/2,hk)\in S_k^0\) and \(q_k=(1/2,hk+\varepsilon)\in S_k^1\).
+These two points are traversed in the same block, with \(p_k\) appearing before
+\(q_k\).  Their Euclidean distance is \(\varepsilon\).  The arclength between
+their parameter times is at least
+\[
+  (1/2-2\rho)+\varepsilon+(1/2-2\rho)>3/4,
+\]
+where the small loss accounts for the rounded corner at the right end.  Since
+\(2\varepsilon<1/50<3/4\), no interval satisfying \eqref{eq:lower-lip} can
+contain both parameter times corresponding to \(p_k\) and \(q_k\).
+
+The blocks occur in their natural order along the parameter.  If an interval
+meets more than a uniformly bounded number of consecutive blocks, then it
+contains both \(p_k\) and \(q_k\) for at least one complete intermediate block,
+contradicting the preceding paragraph.  More explicitly, an interval avoiding
+all forbidden pairs \((p_k,q_k)\) is contained between \(p_k\) and \(q_{k+1}\)
+for some \(k\), up to the initial and terminal partial pieces of adjacent
+blocks.  The length of one block is bounded by \(h+3\), so one may take
+\[
+  L_* = 3(h+3).
+\]
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+For \(N\ge1\), set
+\[
+  B_N=B(A_0,hN+2).
+\]
+The center \(A_0\) belongs to \(\Gamma\).  The ball \(B_N\) contains the first
+\(N\) rounded hairpin blocks, and each block has length at least \(h+1\).
+Therefore
+\[
+  \HH^1(B_N\cap\Gamma)\ge (h+1)N.
+\]
+
+Let \(J\subset[0,\infty)\) be any interval for which
+\(G=\gamma(J)\subset B_N\cap\Gamma\) and condition (4.3) of Lemma 4.2 holds.
+Since \(\gamma\) is parametrized by arclength, (4.3) implies
+\eqref{eq:lower-lip}; Lemma \ref{lem:admissible-bounded} gives
+\[
+  \HH^1(G)\le |J|\le L_*.
+\]
+Consequently
+\[
+  \frac{\HH^1(G)}{\HH^1(B_N\cap\Gamma)}
+  \le \frac{L_*}{(h+1)N}\longrightarrow 0.
+\]
+No positive constant \(\theta\) can work simultaneously for all balls centered
+on \(\Gamma\).  This disproves the unbounded-interval version of Lemma 4.2.
+\end{proof}
+
+\section*{Verification Notes}
+
+The argument is geometric and does not depend on numerical computation.  The
+only code in this packet is the reproducible crop script
+\texttt{code/make\_open\_problem\_crop.py}, used to extract the source
+question from the downloaded arXiv PDF.
+
+\section*{Novelty and Literature Check}
+
+The run indexes were searched for arXiv:2012.12984, the paper title, and the
+phrases ``Singular integrals'', ``\(C_{w^*}^{1,\alpha}\)'', ``unbounded
+interval'', and ``Lemma 4.2''.  No prior solution, attempt, or proof-gap packet
+for this source question was found.
+
+A bounded external web search on 2026-06-23 for exact phrases including
+``Does Lemma 4.2 hold when gamma is defined on an unbounded interval'',
+``l-chooseG unbounded interval'', and the source title with ``unbounded''
+surfaced the source paper but no separate later answer.  Novelty confidence is
+moderate: the search was exact-phrase oriented rather than exhaustive, but the
+counterexample is elementary and addresses the mechanism highlighted by the
+source remark.
+
+\section*{Limitations}
+
+This counterexample disproves Lemma 4.2 as an interval-selection statement on
+unbounded domains under the natural regularity hypotheses.  It does not rule
+out other big-piece selection principles on unbounded regular curves, nor does
+it rule out an unbounded-domain version of the main singular-integral theorem
+under an additional global geometric hypothesis such as a chord-arc or bounded
+turning condition.
+
+\section*{Human Review Recommendation}
+
+Reviewers should first check Lemma \ref{lem:admissible-bounded}: condition
+(4.3) is the source's extra preimage-diameter condition, and it is what prevents
+an admissible interval from passing through a hairpin.  Once that is accepted,
+the failure of a uniform \(\theta\) follows immediately from the balls \(B_N\).
+
+\begin{thebibliography}{9}
+
+\bibitem{Zimmerman}
+S. Zimmerman,
+\emph{Singular integrals on \(C_{w^*}^{1,\alpha}\) regular curves in Banach duals},
+arXiv:2012.12984.
+
+\end{thebibliography}
+
+\end{document}

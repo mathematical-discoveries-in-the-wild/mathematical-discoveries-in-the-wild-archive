@@ -1,0 +1,304 @@
+\documentclass[11pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Id}{I}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\sigx}{\sigma_x}
+\newcommand{\sigy}{\sigma_y}
+\newcommand{\sigz}{\sigma_z}
+\newcommand{\bb}{\mathbf b}
+\newcommand{\ph}{\varphi}
+\newcommand{\om}{\omega}
+\newcommand{\ketket}[1]{|\!|#1\rangle\!\rangle}
+\newcommand{\brabra}[1]{\langle\!\langle #1|\!|}
+
+\title[\(d_z\)-isometries]{A classification of qubit isometries for the one-observable Wasserstein divergence}
+\author{Agent lane 15}
+\date{2026-07-19}
+
+\begin{document}
+
+\begin{abstract}
+Simon and Virosztek asked for the structure of qubit state-space isometries
+with respect to the quantum Wasserstein divergences \(d_{xz}\) and \(d_z\).
+This note settles the \(d_z\) part. A self-map of the qubit state space is a
+\(d_z\)-isometry if and only if it preserves the Euclidean length of every
+Bloch vector and globally either fixes the \(z\)-coordinate or changes its sign.
+Thus the \(d_z\)-isometries have the same Bloch-coordinate classification as
+the \(D_z\)-isometries in the source paper.
+\end{abstract}
+
+\maketitle
+
+\section{Source question}
+
+The source paper is Richard Simon and Daniel Virosztek, \emph{Isometries of the
+qubit state space with respect to quantum Wasserstein distances},
+arXiv:2408.09879.  In its final remarks the authors ask for the structure of
+qubit state-space isometries for the quantum Wasserstein divergences \(d_{xz}\)
+and \(d_z\).  The present note answers the \(d_z\) question only.
+
+\IfFileExists{figures/open_problem_crop.png}{
+\begin{center}
+\includegraphics[width=0.93\linewidth]{figures/open_problem_crop.png}
+\end{center}
+}{}
+
+\section{Notation}
+
+Write each qubit state as
+\[
+  \rho_{\bb}=\frac12(\Id+x\sigx+y\sigy+z\sigz),
+  \qquad \bb=(x,y,z)\in\R^3,\qquad |\bb|\leq 1.
+\]
+Let \(p_t=(\Id+t\sigz)/2\) for \(t=\pm1\).  The one-observable cost is
+\[
+  C_z=(\sigz\otimes \Id-\Id\otimes \sigz^T)^2=\diag(0,4,4,0),
+\]
+in the standard ordered basis.  Let \(D_z\) be the corresponding quantum
+Wasserstein distance and
+\[
+  d_z^2(\rho,\om)
+  =D_z^2(\rho,\om)-\frac12D_z^2(\rho,\rho)-\frac12D_z^2(\om,\om)
+\]
+be the associated divergence.
+
+\section{Elementary formulas}
+
+\begin{lemma}[Self-distance and pole distances]\label{lem:formulas}
+Let \(\rho=\rho_{\bb}\) with \(\bb=(x,y,z)\) and \(r=|\bb|\).  Set
+\[
+  F_z(\rho):=D_z^2(\rho,\rho).
+\]
+Then
+\[
+  F_z(\rho)=\frac{2(x^2+y^2)}{1+\sqrt{1-r^2}},
+\]
+with the value \(0\) at \(r=0\).  Moreover, for \(t=\pm1\),
+\[
+  D_z^2(\rho,p_t)=2-2tz,
+  \qquad
+  d_z^2(\rho,p_t)=2-2tz-\frac12F_z(\rho).
+\]
+\end{lemma}
+
+\begin{proof}
+If the second marginal is the pure state \(p_t\), then every coupling is the
+product coupling \(p_t\otimes \rho^T\).  Evaluating \(C_z=2\Id\otimes\Id
+-2\sigz\otimes\sigz^T\) on this coupling gives
+\[
+  D_z^2(\rho,p_t)=2-2tz.
+\]
+Since \(D_z^2(p_t,p_t)=0\), the displayed formula for \(d_z^2(\rho,p_t)\)
+follows once the self-distance formula is known.
+
+For the self-distance, use the canonical-purification formula recalled in the
+source paper:
+\[
+  D_z^2(\rho,\rho)=\brabra{\sqrt\rho}\, C_z\,\ketket{\sqrt\rho}.
+\]
+The spectral form of the cost is
+\[
+  C_z=2\,\ketket{\sigx}\brabra{\sigx}
+      +2\,\ketket{\sigy}\brabra{\sigy}.
+\]
+For \(r>0\),
+\[
+  \sqrt{\rho}
+  =a\Id+b\,\frac{x\sigx+y\sigy+z\sigz}{r},
+  \qquad
+  b^2=\frac{1-\sqrt{1-r^2}}4.
+\]
+Using \(\tr(\sigma_i\sigma_j)=2\delta_{ij}\), we obtain
+\[
+  D_z^2(\rho,\rho)
+  =2\left(\tr(\sigx\sqrt\rho)^2+\tr(\sigy\sqrt\rho)^2\right)
+  =8b^2\frac{x^2+y^2}{r^2}.
+\]
+This equals
+\[
+  2\left(1-\sqrt{1-r^2}\right)\frac{x^2+y^2}{r^2}
+  =\frac{2(x^2+y^2)}{1+\sqrt{1-r^2}}.
+\]
+The final expression extends continuously to \(r=0\), giving \(F_z(\Id/2)=0\).
+\end{proof}
+
+\begin{lemma}[Strict recovery of the Bloch radius]\label{lem:mono}
+Fix \(z\in[-1,1]\).  The function
+\[
+  r\longmapsto \frac{2(r^2-z^2)}{1+\sqrt{1-r^2}},
+  \qquad |z|\leq r\leq 1,
+\]
+is strictly increasing on its nontrivial domain.
+\end{lemma}
+
+\begin{proof}
+If \(|z|=1\) the domain is a singleton.  Otherwise put \(s=\sqrt{1-r^2}\).
+For \(|z|<r<1\),
+\[
+  \frac{d}{dr}\left(\frac{r^2-z^2}{1+s}\right)
+  =\frac{r}{s}\left(1-\frac{z^2}{(1+s)^2}\right)>0.
+\]
+Indeed \(z^2\leq r^2=1-s^2<(1+s)^2\).  Continuity gives strict increase on
+the whole interval.
+\end{proof}
+
+\begin{lemma}[The \(d_z\)-diameter pair]\label{lem:diameter}
+The \(d_z\)-diameter of \(\cS(\C^2)\) is \(2\), and the only unordered pair
+realizing it is \(\{p_+,p_-\}\).
+\end{lemma}
+
+\begin{proof}
+The trivial coupling bound used in the source proof of Theorem 2 gives
+\[
+  D_z^2(\rho_{\bb},\rho_{\bb'})
+  \leq 2-2zz'\leq 4.
+\]
+Because self-distances are nonnegative, \(d_z^2(\rho,\om)\leq D_z^2(\rho,\om)\),
+so \(d_z\leq2\).  The pole pair satisfies
+\[
+  d_z(p_+,p_-)=D_z(p_+,p_-)=2.
+\]
+If \(d_z(\rho,\om)=2\), then \(D_z(\rho,\om)=2\) as well.  The equality case in
+the same trivial-coupling bound forces \(z=1\) and \(z'=-1\), or conversely;
+hence the states are exactly \(p_+\) and \(p_-\).
+\end{proof}
+
+\section{Idea of the proof}
+
+The divergence removes self-distances, so a \(d_z\)-isometry does not visibly
+preserve \(D_z(\rho,\rho)\).  The pole states restore that missing information.
+For an arbitrary state \(\rho\), the difference of the squared distances from
+\(p_+\) and \(p_-\) recovers the \(z\)-coordinate, while the sum recovers the
+self-distance \(F_z(\rho)=D_z^2(\rho,\rho)\).  Since \(F_z\) is strictly
+monotone in the Bloch radius once \(z\) is fixed, the divergence itself forces
+the same invariants that Simon and Virosztek proved characterize the
+\(D_z\)-isometries.
+
+\section{Classification theorem}
+
+\begin{theorem}\label{thm:dz-classification}
+Let \(\Phi:\cS(\C^2)\to\cS(\C^2)\) be any map.  Then the following are
+equivalent.
+\begin{enumerate}
+\item \(\Phi\) is a \(d_z\)-isometry:
+\[
+  d_z(\Phi(\rho),\Phi(\om))=d_z(\rho,\om)
+  \qquad(\rho,\om\in\cS(\C^2)).
+\]
+\item \(\Phi\) preserves Bloch radii and globally either fixes or flips the
+\(z\)-coordinate:
+\[
+  |\bb_{\Phi(\rho)}|=|\bb_\rho|\quad(\rho\in\cS(\C^2)),
+\]
+and either
+\[
+  (\bb_{\Phi(\rho)})_3=(\bb_\rho)_3\quad(\rho\in\cS(\C^2)),
+\]
+or
+\[
+  (\bb_{\Phi(\rho)})_3=-(\bb_\rho)_3\quad(\rho\in\cS(\C^2)).
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Assume first that \(\Phi\) preserves \(d_z\).  By Lemma \ref{lem:diameter},
+\(\Phi\) maps the pole pair onto itself.  Therefore there is a sign
+\(\eps\in\{1,-1\}\) such that
+\[
+  \Phi(p_t)=p_{\eps t}\qquad(t=\pm1).
+\]
+Let \(\rho=\rho_{\bb}\), let \(\Phi(\rho)=\rho_{\bb'}\), and write
+\[
+  z=(\bb)_3,\qquad z'=(\bb')_3,\qquad
+  F=F_z(\rho),\qquad F'=F_z(\Phi(\rho)).
+\]
+For \(t=\pm1\), distance preservation and Lemma \ref{lem:formulas} give
+\[
+  2-2\eps t z'-\frac12F'
+  =d_z^2(\Phi(\rho),p_{\eps t})
+  =d_z^2(\rho,p_t)
+  =2-2tz-\frac12F.
+\]
+Subtracting the equations for \(t=1\) and \(t=-1\) yields \(z'=\eps z\).
+Adding them yields \(F'=F\).
+
+Now \(|z'|=|z|\), and
+\[
+  F_z(\rho_{\bb})
+  =\frac{2(|\bb|^2-z^2)}{1+\sqrt{1-|\bb|^2}}.
+\]
+Lemma \ref{lem:mono} therefore implies \(|\bb'|=|\bb|\).  Hence the Bloch
+radius is preserved and the \(z\)-coordinate is globally fixed if
+\(\eps=1\), globally flipped if \(\eps=-1\).
+
+Conversely, assume the Bloch-coordinate condition.  Theorem 2 of Simon and
+Virosztek states precisely that this condition is equivalent to preservation
+of the one-observable Wasserstein distance \(D_z\).  Thus
+\[
+  D_z(\Phi(\rho),\Phi(\om))=D_z(\rho,\om)
+  \qquad(\rho,\om\in\cS(\C^2)).
+\]
+By Lemma \ref{lem:formulas}, \(F_z(\rho)\) depends only on \(|\bb_\rho|\) and
+\((\bb_\rho)_3^2\).  The assumed Bloch-coordinate condition therefore also
+preserves \(F_z(\rho)=D_z^2(\rho,\rho)\).  Substituting these two invariances
+into the definition of \(d_z\) gives
+\[
+  d_z(\Phi(\rho),\Phi(\om))=d_z(\rho,\om)
+\]
+for all states \(\rho,\om\).  This proves the converse.
+\end{proof}
+
+\section{Verification and novelty notes}
+
+The numerical script \texttt{tmp/verify\_dz\_formulas.py} checks the
+self-distance identity in Lemma \ref{lem:formulas} by explicit vectorization
+against \(C_z=\diag(0,4,4,0)\), including random Bloch vectors, the pole
+states, and pure equatorial states.  It also checks the strict monotonicity
+used in Lemma \ref{lem:mono} on representative grids.
+
+Local run indexes were searched for arXiv:2408.09879 and core phrases around
+\(d_z\), \(d_{xz}\), Wasserstein divergences, and qubit isometries.  No prior
+packet for this result was found.  A bounded external search on 2026-07-19
+found the source paper and a close June 2026 paper of Szabo and Virosztek on
+single-observable quantum Wasserstein isometries; the latter concerns
+distances \(D_A\), not divergence isometries \(d_A\), and so does not appear to
+answer the \(d_z\) open question settled here.
+
+\begin{thebibliography}{9}
+
+\bibitem{SimonVirosztek2024}
+R. Simon and D. Virosztek,
+\emph{Isometries of the qubit state space with respect to quantum Wasserstein
+distances},
+arXiv:2408.09879.
+
+\bibitem{DePalmaTrevisan2021}
+G. De Palma and D. Trevisan,
+\emph{Quantum optimal transport with quantum channels},
+Ann. Henri Poincare 22 (2021), 3199--3234.
+
+\bibitem{SzaboVirosztek2026}
+E. Szabo and D. Virosztek,
+\emph{Quantum Wasserstein isometries with a single observable generating the
+transport cost},
+Acta Scientiarum Mathematicarum, published 27 June 2026.
+\href{https://doi.org/10.1007/s44146-026-00254-5}{doi:10.1007/s44146-026-00254-5}.
+
+\end{thebibliography}
+
+\end{document}

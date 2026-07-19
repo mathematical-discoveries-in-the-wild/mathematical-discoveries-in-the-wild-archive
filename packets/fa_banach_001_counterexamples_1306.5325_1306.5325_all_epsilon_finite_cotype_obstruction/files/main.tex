@@ -1,0 +1,168 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Sn}{S_n}
+\newcommand{\dist}{d}
+
+\title{A finite-cotype obstruction for the all-radius entropy version}
+\author{Run fa\_banach\_001, lane 3}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate counterexample, likely valid after human review.  The result below
+refutes the finite-cotype converse for the ``all $\eps>0$'' interpretation of
+Pisier's problem on the entropy of $\Sn(X)$.  It does not solve the
+``some $\eps>0$'' version.
+
+\paragraph{Source problem.}
+Pisier observes that if
+\[
+   \log\log N(\Sn(X),\dist,1+\eps)=o(n)
+\]
+for some $\eps>0$, then $X$ does not contain $\ell_\infty^n$ uniformly and
+hence has finite cotype.  He then asks whether the converse holds and asks to
+characterize the infinite-dimensional Banach spaces satisfying the displayed
+condition ``for some (or all) $\eps>0$'' \cite[p. 9]{Pisier}.  The exact source
+passage is also TeX lines 570--585 of the parsed source.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Source theorem used.}
+We use Pisier's local entropy theorem \cite[Theorem 2.1]{Pisier}: for all
+$1<r<R$ there is $c=c(r,R)>0$ such that, for every sufficiently large $n$ and
+every $n$-dimensional Banach space $E$, there is a set
+$T_n\subset \mathcal B_n$ with
+\[
+  |T_n|\ge \exp\exp(cn), \qquad
+  \dist(t,u)>r \ (t\ne u), \qquad
+  \dist(t,E)<R \ (t\in T_n).
+\]
+In the parsed source this is Theorem \texttt{local}, TeX lines 606--614.
+
+\begin{theorem}
+For every $s>1$ there is an infinite-dimensional Banach space $X_s$,
+isomorphic to $\ell_1$, and a constant $a_s>0$ such that
+\[
+  \liminf_{n\to\infty} \frac{1}{n}
+  \log\log N(\Sn(X_s),\dist,s) \ge a_s .
+\]
+Consequently, for every fixed $\eps_0>0$, with $s=1+\eps_0$, the space
+$X_s$ has finite cotype but fails Pisier's entropy condition at the radius
+$1+\eps_0$.
+\end{theorem}
+
+\paragraph{Proof intuition.}
+The local theorem says that every finite-dimensional space, in particular
+$\ell_1^n$, has a whole double-exponential cloud of $n$-dimensional spaces
+nearby, separated at any prescribed smaller scale.  Put all those nearby
+spaces directly into an $\ell_1$-sum.  Because every block is uniformly
+isomorphic to $\ell_1^n$, the whole sum is still just an equivalent renorming
+of $\ell_1$.  But at dimension $n$ the subspace set $\Sn(X_s)$ now contains
+the entire separated cloud.
+
+\begin{proof}
+Fix $s>1$.  Choose $R>s^2$.  Apply the local theorem with $r=s^2$ and center
+$E=\ell_1^n$.  There are constants $c>0$ and $n_0$ such that for every
+$n\ge n_0$ one can choose a finite family
+\[
+   \mathcal F_n=\{E_{n,\alpha}:\alpha\in A_n\}\subset \mathcal B_n
+\]
+satisfying
+\[
+   |A_n|\ge \exp\exp(cn),\qquad
+   \dist(E_{n,\alpha},E_{n,\beta})>s^2\quad(\alpha\ne\beta),
+\]
+and
+\[
+   \dist(E_{n,\alpha},\ell_1^n)<R\quad(\alpha\in A_n).
+\]
+After increasing $R$ slightly, choose for each $(n,\alpha)$ an isomorphism
+$U_{n,\alpha}:E_{n,\alpha}\to \ell_1^n$ with
+\[
+   \|U_{n,\alpha}\|\,\|U_{n,\alpha}^{-1}\|\le R .
+\]
+Define
+\[
+   X_s=\left(\bigoplus_{n\ge n_0}\ \bigoplus_{\alpha\in A_n}
+        E_{n,\alpha}\right)_{\ell_1}.
+\]
+The block diagonal map $\bigoplus_1 U_{n,\alpha}$ is an isomorphism from
+$X_s$ onto
+\[
+   \left(\bigoplus_{n\ge n_0}\ \bigoplus_{\alpha\in A_n}
+        \ell_1^n\right)_{\ell_1},
+\]
+with distortion at most $R$.  The latter space is isometric to $\ell_1$ on a
+countable index set.  Therefore $X_s$ is isomorphic to $\ell_1$, and in
+particular has cotype $2$.
+
+For each $n\ge n_0$, every $E_{n,\alpha}$ is a coordinate subspace of $X_s$.
+Thus $\mathcal F_n\subset \Sn(X_s)$.  If a $\dist$-ball of radius $s$ contained
+two distinct members $E_{n,\alpha}$ and $E_{n,\beta}$, the multiplicative
+triangle inequality for the Banach-Mazur distance would give
+\[
+   \dist(E_{n,\alpha},E_{n,\beta})\le s^2,
+\]
+contrary to the construction.  Hence any radius-$s$ cover of $\Sn(X_s)$ must
+use at least one ball for each member of $\mathcal F_n$, and so
+\[
+   N(\Sn(X_s),\dist,s)\ge |\mathcal F_n|\ge \exp\exp(cn)
+\]
+for all $n\ge n_0$.  Therefore
+\[
+   \liminf_{n\to\infty} \frac{1}{n}
+   \log\log N(\Sn(X_s),\dist,s) \ge c.
+\]
+This proves the theorem, with $a_s=c$.
+\end{proof}
+
+\begin{remark}[Why this is not the some-radius counterexample]
+Because $X_s$ is isomorphic to $\ell_1$, the usual
+Bourgain-Lindenstrauss-Milman embedding theorem cited by Pisier transfers
+through the global isomorphism and gives the same $o(n)$ double-logarithmic
+entropy estimate at sufficiently large covering radii.  Thus the example is
+intentionally scoped: it disproves the all-$\eps$ finite-cotype converse and
+shows that the all-radius property is not stable under equivalent renorming,
+but it does not disprove the some-$\eps$ version of the characterization
+problem.
+\end{remark}
+
+\paragraph{Verifier report.}
+No computational verifier is relevant here.  The proof has three check points:
+(1) Pisier's local theorem is applied with $r=s^2<R$ and center $\ell_1^n$;
+(2) the $\ell_1$-sum of uniformly $R$-isomorphic finite-dimensional
+$\ell_1$ blocks is $R$-isomorphic to $\ell_1$; and (3) separation $>s^2$
+forces one radius-$s$ covering ball per selected block by the multiplicative
+triangle inequality.  The scope caveat above also checks the apparent tension
+with the BLM theorem for $\ell_1$.
+
+\paragraph{Novelty check.}
+The run's lightweight indexes were searched for \texttt{1306.5325},
+\texttt{S\_n(X)}, \texttt{SQ\_n(X)}, \texttt{Banach-Mazur compactum},
+\texttt{metric entropy}, and \texttt{finite cotype}.  No duplicate packet or
+attempt was found.  External exact-phrase searches for the source problem did
+not reveal a known answer.  Novelty confidence is moderate pending human
+review.
+
+\begin{thebibliography}{9}
+\bibitem{Pisier}
+Gilles Pisier,
+\emph{On the metric entropy of the Banach-Mazur compactum},
+arXiv:1306.5325.
+\end{thebibliography}
+
+\end{document}

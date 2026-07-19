@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dens}{\operatorname{dens}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\card}{\operatorname{card}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{An Explicit ZFC Cardinal Obstruction to Laugwitz's Complete-Norm Question}
+\author{Automatic Math Discovery Smoke Test}
+\date{July 1, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Extracted Question}
+
+The source is Renan J. S. Isneri, Josias V. Baca, and Lucas M. Fernandes,
+\emph{Norms and Non-Equivalence in Infinite-Dimensional Banach Spaces},
+arXiv:2508.15686.  In the introduction the authors ask:
+
+\begin{quote}
+Does there exist some cardinal \(\kappa>\aleph_0\) for which no vector space
+with a Hamel basis of that cardinality can be endowed with a norm that turns it
+into a Banach space?
+\end{quote}
+
+They attribute the question to Laugwitz \cite{Laugwitz} and state that no
+explicit example of such a cardinal is currently known.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Answer}
+
+The cardinal
+\[
+  \kappa=\aleph_\omega
+\]
+is an explicit ZFC example.  No real or complex vector space with Hamel basis
+of cardinality \(\aleph_\omega\) admits a norm whose metric completion is
+already the given space.
+
+\section*{Idea of the Proof}
+
+There are two independent obstructions to a cardinal being a Banach-space
+Hamel dimension.
+
+First, a theorem of Halbeisen and Hungerbuehler, cited by the source paper as
+\cite[Theorem 3.5]{HalbeisenHungerbuehler}, says that every Hamel basis of an
+infinite-dimensional real or complex Banach space \(X\) has cardinality
+\(|X|\).  Thus a Banach Hamel dimension cannot be below the continuum.
+
+Second, if \(X\) has density character \(\delta\), then the metric structure
+forces
+\[
+  |X|=\delta^{\aleph_0}.
+\]
+Consequently any infinite-dimensional Banach Hamel dimension \(\kappa\) must
+satisfy \(\kappa^{\aleph_0}=\kappa\).  But by Koenig's theorem,
+\[
+  \aleph_\omega^{\aleph_0}>\aleph_\omega.
+\]
+This excludes \(\aleph_\omega\) whenever the continuum is at most
+\(\aleph_\omega\), and the first obstruction excludes it whenever the
+continuum is larger.
+
+\section*{Cardinality Lemma for Banach Spaces}
+
+\begin{lemma}
+\label{lem:banach-cardinality}
+Let \(X\) be an infinite-dimensional Banach space over \(\R\) or \(\C\), and
+let \(\delta=\dens(X)\).  Then
+\[
+  |X|=\delta^{\aleph_0}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(D\subset X\) be dense with \(|D|=\delta\).  Every \(x\in X\) is the
+limit of some sequence from \(D\), so
+\[
+  |X|\leq |D|^{\aleph_0}=\delta^{\aleph_0}.
+\]
+
+For the reverse inequality we first produce a separated family in the unit
+sphere of size \(\delta\).  By transfinite induction choose unit vectors
+\((x_\alpha)_{\alpha<\delta}\) so that
+\[
+  \operatorname{dist}\bigl(x_\alpha,
+    \overline{\spanop}\{x_\beta:\beta<\alpha\}\bigr)>1/2.
+\]
+This is possible because the closed linear span of fewer than \(\delta\)
+vectors has density \(<\delta\), hence is not all of \(X\); Riesz's lemma then
+supplies the next vector.  Thus
+\[
+  \|x_\alpha-x_\beta\|>1/2\qquad(\alpha\neq\beta).
+\]
+
+For each sequence \(s=(\alpha_n)_{n\geq 1}\in\delta^\N\), define
+\[
+  \Phi(s)=\sum_{n=1}^{\infty}6^{-n}x_{\alpha_n}\in X.
+\]
+The series converges absolutely.  If \(s\neq t\), let \(n\) be the first index
+with \(\alpha_n\neq\beta_n\).  Then
+\[
+\begin{aligned}
+  \|\Phi(s)-\Phi(t)\|
+  &\geq 6^{-n}\|x_{\alpha_n}-x_{\beta_n}\|
+      -2\sum_{m>n}6^{-m}  \\
+  &> \frac12\,6^{-n}-\frac25\,6^{-n}>0.
+\end{aligned}
+\]
+So \(\Phi\) is injective and \(|X|\geq\delta^{\aleph_0}\).
+\end{proof}
+
+\section*{The Obstruction}
+
+\begin{theorem}
+\label{thm:aleph-omega-obstruction}
+Let \(E\) be a real or complex vector space with Hamel dimension
+\(\aleph_\omega\).  No norm on \(E\) makes \(E\) into a Banach space.
+\end{theorem}
+
+\begin{proof}
+Suppose that some norm makes \(E\) a Banach space \(X\).
+
+Let \(\mathfrak c=2^{\aleph_0}\).  If \(\mathfrak c>\aleph_\omega\), then the
+underlying set of a real or complex vector space with Hamel dimension
+\(\aleph_\omega\) has cardinality \(\mathfrak c\).  But
+Halbeisen--Hungerbuehler's theorem gives
+\[
+  \dim_{\mathrm H}(X)=|X|=\mathfrak c,
+\]
+contradicting \(\dim_{\mathrm H}(X)=\aleph_\omega\).
+
+It remains to consider the case \(\mathfrak c\leq\aleph_\omega\).  Then
+\(|X|=\aleph_\omega\), and again
+Halbeisen--Hungerbuehler gives
+\[
+  \aleph_\omega=\dim_{\mathrm H}(X)=|X|.
+\]
+By Lemma \ref{lem:banach-cardinality}, for
+\(\delta=\dens(X)\) one has
+\[
+  \aleph_\omega=|X|=\delta^{\aleph_0}.
+\]
+Therefore
+\[
+  \aleph_\omega^{\aleph_0}
+  =(\delta^{\aleph_0})^{\aleph_0}
+  =\delta^{\aleph_0}
+  =\aleph_\omega.
+\]
+This contradicts Koenig's theorem, since \(\cf(\aleph_\omega)=\aleph_0\) and
+therefore
+\[
+  \aleph_\omega^{\aleph_0}>\aleph_\omega.
+\]
+The contradiction proves the claim.
+\end{proof}
+
+\begin{corollary}
+Every singular cardinal \(\kappa\) of countable cofinality gives the same
+kind of obstruction, after the identical case split for the continuum:
+if \(\kappa\geq\mathfrak c\), Koenig's theorem gives
+\(\kappa^{\aleph_0}>\kappa\), and if \(\kappa<\mathfrak c\), the
+Halbeisen--Hungerbuehler cardinality equality already rules it out.
+\end{corollary}
+
+\section*{Verification and Novelty Notes}
+
+The proof is set-theoretic and does not require numerical or symbolic
+computation.  The local run indexes were searched for the arXiv id
+\texttt{2508.15686}, the phrases \texttt{Laugwitz},
+\texttt{Hamel bases of Banach spaces}, and \texttt{aleph\_omega}, and no
+duplicate solution packet was found.  A local source search found the source
+paper's citation of Halbeisen--Hungerbuehler and an independent Banach-space
+paper using the standard consequence
+\(\aleph_\omega^{\aleph_0}>\aleph_\omega\) of Koenig's theorem, but no packet
+answering the present Laugwitz question.
+
+Bounded web searches for the arXiv id, the title, and close phrases involving
+Laugwitz, Hamel bases, Banach spaces, and \(\aleph_\omega\) found no later
+explicit answer.  Because the proof uses classical ingredients, the
+mathematical claim should be checked by a human reviewer and may be
+reclassified as a literature-implied answer if an exact prior formulation is
+located.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{ArendtNittka}
+W. Arendt and R. Nittka,
+\emph{Equivalent complete norms and positivity},
+Archiv der Mathematik \textbf{92} (2009), no. 5, 414--427.
+
+\bibitem{HalbeisenHungerbuehler}
+L. Halbeisen and N. Hungerbuehler,
+\emph{The cardinality of Hamel bases of Banach spaces},
+East-West Journal of Mathematics \textbf{2} (2000), no. 2, 153--159.
+
+\bibitem{Laugwitz}
+D. Laugwitz,
+\emph{\"Uber vollst\"andige Normtopologien in linearen R\"aumen},
+Archiv der Mathematik \textbf{6} (1955), no. 2, 128--131.
+
+\bibitem{Source}
+R. J. S. Isneri, J. V. Baca, and L. M. Fernandes,
+\emph{Norms and Non-Equivalence in Infinite-Dimensional Banach Spaces},
+arXiv:2508.15686.
+
+\end{thebibliography}
+
+\end{document}

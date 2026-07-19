@@ -1,0 +1,652 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\setlist{nosep}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\Cp}{C_p}
+\newcommand{\Lp}{L_p}
+\newcommand{\wstar}{w^*}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\spann}{\operatorname{span}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\DeltaK}{\Delta(K)}
+\newcommand{\czerop}{(c_0)_p}
+\newcommand{\linfyp}{(\ell_\infty)_p}
+
+\title{Weak-Star Basic Sequences in $\Cp(K)'$: \\
+Verification, Literature Status, and an Exact Reduction}
+\author{Research report prepared from the supplied partial proof}
+\date{June 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The supplied argument is correct: if a compact Hausdorff space $K$ contains a
+nontrivial convergent sequence, then the finitely supported measures
+$\delta_{x_n}-\delta_x$ form a weak-star basic sequence in $\Cp(K)'$.  A
+literature search did not locate a proof or counterexample for the full problem
+posed as Problem 12 in K\k{a}kol--L\'opez-Pellicer--\'Sliwa (2026).
+
+The main additional result of this report is an exact reduction.  Combining
+the known quotient characterization of the finitely supported
+Josefson--Nissenzweig property with an elementary norm-rigidity observation, we
+prove that, for every infinite compact Hausdorff space $K$, the dual
+$\Cp(K)'$ contains a weak-star basic sequence if and only if $\Cp(K)$ has an
+infinite-dimensional metrizable quotient.  Thus the 2026 weak-star
+basic-sequence question is equivalent to the older metrizable-quotient problem
+for $\Cp(K)$.  The same equivalence in fact holds for every infinite
+Tychonoff space.  In the compact setting it yields a complete positive answer
+for every non-Efimov compactum and for every compactum with the finitely supported
+Josefson--Nissenzweig property, but it does not settle the remaining Efimov
+case.  The reduction is proved here and was not located in the searched
+literature; it should therefore be regarded as an unreviewed deduction.
+\end{abstract}
+
+\section{Problem, notation, and conclusions}
+
+For a Tychonoff space $K$, $\Cp(K)$ denotes $C(K)$ with the topology of
+pointwise convergence.  Its continuous dual is
+\[
+ \Lp(K)=\Cp(K)'=\Delta(K)
+ =\left\{\sum_{j=1}^m a_j\delta_{x_j}:m<\infty,\ a_j\in\R,\ x_j\in K\right\},
+\]
+the vector space of finitely supported signed measures.  It is equipped with
+\[
+ \sigma(\Lp(K),\Cp(K))=\sigma(\Delta(K),C(K)),
+\]
+which we call the weak-star topology.
+
+A sequence is weak-star basic if it is a Schauder basis of its weak-star closed
+linear span.  In particular, its coefficient functionals must be continuous
+for the subspace weak-star topology.
+
+The source paper asks:
+\begin{quote}
+Does $\Cp(K)'$ admit a weak-star basic sequence for every infinite compact
+space $K$?
+\end{quote}
+
+The conclusions reached here are as follows.
+
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The supplied convergent-sequence proof is valid without substantive
+      correction; see \cref{sec:verification}.
+\item No later proof or counterexample was found in the literature search
+      described in \cref{sec:literature}.  The arXiv record of the source still
+      has only its January 2026 first version.
+\item The problem is positive for every non-Efimov compactum; equivalently, it
+      is positive whenever $K$ contains a nontrivial convergent sequence or a
+      copy of $\beta\N$.
+\item Most importantly, the problem is equivalent to the existence of an
+      infinite-dimensional metrizable quotient of $\Cp(K)$; see
+      \cref{thm:equivalence}.
+\item Both global problems reduce to infinite separable compacta: any infinite
+      compactum contains an infinite separable closed subcompactum, and
+      restriction transfers a positive answer upward.
+\end{enumerate}
+
+\section{Verification of the supplied theorem}\label{sec:verification}
+
+\begin{theorem}[Convergent-sequence case]\label{thm:sequence}
+Let $K$ be a compact Hausdorff space.  Suppose that $(x_n)$ is a sequence of
+pairwise distinct points converging to
+$x\in K\setminus\{x_n:n\in\N\}$.  Then
+\[
+ \mu_n=\delta_{x_n}-\delta_x\qquad(n\in\N)
+\]
+is a weak-star basic sequence in $\Lp(K)$.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ A=\{x\}\cup\{x_n:n\in\N\},\qquad
+ M=\spann\{\mu_n:n\in\N\}.
+\]
+The set $A$ is compact and hence closed in $K$.
+
+We first prove that $M$ is weak-star closed in the \emph{relative} dual
+$\Lp(K)$.  Let
+\[
+ \nu=\sum_{j=1}^m a_j\delta_{t_j}\in\overline M^{\,\wstar},
+\]
+where the points $t_j$ are distinct and all $a_j$ are nonzero.  If
+$t_j\notin A$, normality of $K$ gives $f\in C(K)$ such that
+\[
+ f(t_j)=1,\qquad
+ f\big|_{A\cup(\{t_1,\ldots,t_m\}\setminus\{t_j\})}=0.
+\]
+Every member of $M$ annihilates $f$, whereas $\nu(f)=a_j\neq0$, a
+contradiction.  Hence $\supp\nu\subseteq A$.
+
+Since $\nu$ has finite support, for some $N$ it has the form
+\[
+ \nu=a\delta_x+\sum_{n=1}^N b_n\delta_{x_n}.
+\]
+Every member of $M$ annihilates the constant function $1$, and therefore so
+does $\nu$.  Thus $a+\sum_{n=1}^N b_n=0$, whence
+\[
+ \nu=\sum_{n=1}^N b_n(\delta_{x_n}-\delta_x)
+     =\sum_{n=1}^N b_n\mu_n\in M.
+\]
+This proves that $M$ is weak-star closed.
+
+The vectors $\mu_n$ are linearly independent, so every member of $M$ has a
+unique finite expansion.  For fixed $n$, the point $x_n$ is isolated in $A$.
+Consequently, by normality there exists $f_n\in C(K)$ such that
+\[
+ f_n(x_n)=1,\qquad f_n\big|_{A\setminus\{x_n\}}=0.
+\]
+For every finite sum $\sum_k c_k\mu_k$ we then have
+\[
+ \left(\sum_k c_k\mu_k\right)(f_n)=c_n.
+\]
+Hence the $n$th coefficient functional is the restriction to $M$ of the
+weak-star continuous functional $\nu\mapsto\nu(f_n)$.  Finally, every basis
+expansion in $M$ is finite, so its sequence of partial sums is eventually
+constant.  Therefore $(\mu_n)$ is a Schauder basis of the weak-star closed
+space $M$.
+\end{proof}
+
+\begin{remark}[What was checked]
+The key point is that closure is taken inside $\Lp(K)$, whose elements are
+already finitely supported.  The proof does not claim that $M$ is weak-star
+closed in the full Banach dual $C(K)^*$, where limits may be arbitrary Radon
+measures.  With this relative-closure convention, every step of the supplied
+argument is correct.
+\end{remark}
+
+The following elementary formula gives another view of the closed-span
+argument.
+
+\begin{lemma}[Closure of point masses]\label{lem:point-closure}
+Let $X$ be compact Hausdorff and let $D\subseteq X$.  Inside $\Lp(X)$,
+\[
+ \overline{\spann\{\delta_d:d\in D\}}^{\,\wstar}
+ =\spann\{\delta_x:x\in\cl_X D\}.
+\]
+\end{lemma}
+
+\begin{proof}
+The annihilator of $\spann\{\delta_d:d\in D\}$ in $C(X)$ is the set of
+continuous functions vanishing on $D$, hence the set of functions vanishing on
+$\cl_XD$.  Taking the annihilator once more gives all finitely supported
+measures supported on $\cl_XD$.  Equivalently, one may separate each point
+outside $\cl_XD$ from $\cl_XD$ by a continuous function.
+\end{proof}
+
+In \cref{thm:sequence}, $M$ is exactly the space of finite measures supported
+on $A$ and having total mass zero.  Both conditions are weak-star closed.
+
+\section{Transfer and quotient principles}
+
+\begin{lemma}[Restriction to a closed compact subspace]\label{lem:restriction}
+Let $X$ be compact Hausdorff and $K\subseteq X$ closed.  The restriction map
+\[
+ R:\Cp(X)\longrightarrow\Cp(K),\qquad Rf=f|_K,
+\]
+is a continuous open surjection.  Its adjoint
+\[
+ R':\Lp(K)\longrightarrow\Lp(X)
+\]
+is a weak-star topological embedding with weak-star closed range.  Therefore,
+if $\Lp(K)$ has a weak-star basic sequence, then so does $\Lp(X)$.
+\end{lemma}
+
+\begin{proof}
+Surjectivity follows from the Tietze extension theorem.  To see openness, let
+$F\subseteq X$ be finite and let
+\[
+ U=\{f\in C(X): |f(t)|<\varepsilon_t\text{ for every }t\in F\}
+\]
+be a basic zero-neighborhood.  Then $R(U)$ contains the basic neighborhood of
+zero in $\Cp(K)$ imposing the same inequalities on $F\cap K$.  Indeed, if
+$g\in C(K)$ satisfies these inequalities, define a continuous function on
+$K\cup(F\setminus K)$ by taking the value $g$ on $K$ and $0$ on
+$F\setminus K$, and extend it to $X$.
+
+The assertions about the adjoint are the standard dual consequences of an
+open quotient map.  Concretely, its range consists of the finitely supported
+measures supported on $K$, which is weak-star closed by point separation.
+\end{proof}
+
+\begin{corollary}[Reduction to separable compacta]\label{cor:separable-reduction}
+Each of the following global assertions is equivalent to its restriction to
+infinite separable compact Hausdorff spaces:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\Lp(K)$ contains a weak-star basic sequence;
+\item $\Cp(K)$ has an infinite-dimensional metrizable quotient.
+\end{enumerate}
+In particular, if a counterexample to either assertion exists, then a
+separable compact counterexample exists.
+\end{corollary}
+
+\begin{proof}
+Only the upward implication requires proof.  Given an infinite compact $X$,
+choose a countably infinite set $D\subseteq X$ and put $K=\cl_XD$.  Then $K$
+is infinite, compact, closed in $X$, and separable.  For \textup{(a)}, apply
+\cref{lem:restriction}.  For \textup{(b)}, compose the open restriction map
+$\Cp(X)\to\Cp(K)$ with an open quotient of $\Cp(K)$.
+\end{proof}
+
+\begin{lemma}[Quotients of weak spaces]\label{lem:weak-quotient}
+Let $(E,\sigma(E,F))$ be a separated weak locally convex space and let
+$N\subseteq E$ be closed.  The quotient topology on $E/N$ is
+\[
+ \sigma(E/N,N^\perp),
+ \qquad
+ N^\perp=\{\varphi\in F:\varphi|_N=0\}.
+\]
+In particular, $E/N$ is metrizable if and only if $N^\perp$ has countable
+Hamel dimension.
+\end{lemma}
+
+\begin{proof}
+Every member of $N^\perp$ descends to a quotient-continuous functional, so the
+quotient topology is at least as strong as the displayed weak topology.
+Conversely, take a weak neighborhood in $E$ determined by
+$\varphi_1,\ldots,\varphi_m\in F$.  Let
+$A:E\to\R^m$ be $A(x)=(\varphi_1(x),\ldots,\varphi_m(x))$.
+The saturation of that neighborhood by $N$ is the inverse image under $A$ of
+an open set saturated by the finite-dimensional subspace $A(N)$.  Passing to
+$\R^m/A(N)$ shows that this saturation contains a neighborhood determined by
+finitely many linear combinations of the $\varphi_j$ which vanish on $N$.
+Thus the quotient topology has a base of $\sigma(E/N,N^\perp)$-neighborhoods.
+If $N^\perp$ has a countable Hamel basis, that basis gives a countable
+family of seminorms generating the quotient topology.  Conversely, suppose
+that the weak quotient is metrizable.  Choose a countable zero-neighborhood
+base and, inside each member, a basic weak neighborhood determined by finitely
+many elements of $N^\perp$.  The union $G$ of those finite sets is countable.
+The family $G$ therefore generates the quotient topology.  For any
+$\psi\in N^\perp$, continuity at zero supplies a finite set
+$H\subseteq G$ and a constant $C>0$ such that
+\[
+ |\psi(x+N)|\leq C\max_{\varphi\in H}|\varphi(x)|
+ \qquad(x\in E).
+\]
+Thus $\psi$ vanishes on $\bigcap_{\varphi\in H}\ker\varphi$ and hence, by
+finite-dimensional linear algebra, belongs to $\spann H$.  Consequently
+$N^\perp=\spann G$.
+\end{proof}
+
+\section{Literature status and the known positive region}\label{sec:literature}
+
+The exact source is K\k{a}kol--L\'opez-Pellicer--\'Sliwa,
+\emph{On weak*-basic sequences in duals and biduals of spaces $C(X)$ and
+Quojections}~\cite{KLS2026}.  Its Problem~12 is the question studied here, and
+its Theorem~17 proves that an infinite-dimensional metrizable quotient of
+$\Cp(X)$ yields a weak-star basic sequence in $\Cp(X)'$.  The arXiv record
+still lists only the version submitted on January~27, 2026.  A June~2, 2026
+seminar announcement by K\k{a}kol states both that the two-disjoint-copies
+property yields such a quotient and that the metrizable-quotient question for
+arbitrary infinite compacta remains a long-standing open problem
+\cite{KakolSeminar2026}.
+
+The older paper of Banakh--K\k{a}kol--\'Sliwa proves that if a compact $K$ is
+not Efimov, then $\Cp(K)$ has a quotient isomorphic, with the product topology,
+to $c_0$ or $\ell_\infty$~\cite[Corollary~3]{BKS2018MQ}.  Since both
+$\czerop$ and $\linfyp$ have their canonical Schauder bases in the product
+topology, Theorem~17 of~\cite{KLS2026} immediately gives the following.
+
+\begin{corollary}[Non-Efimov compacta]\label{cor:non-efimov}
+If an infinite compact Hausdorff space $K$ contains either a nontrivial
+convergent sequence or a copy of $\beta\N$, then $\Lp(K)$ has a weak-star
+basic sequence.
+\end{corollary}
+
+The first alternative is also covered constructively by \cref{thm:sequence}.
+In the second alternative, one may use finite block averages on the
+$C^*$-embedded copy of $\N$; they are the adjoints of the coordinate
+functionals of an open quotient onto $\linfyp$.
+
+A second large positive class comes from the finitely supported
+Josefson--Nissenzweig property.
+
+\begin{definition}
+A compact space $K$ has the \emph{finitely supported
+Josefson--Nissenzweig property} (fsJNP) if there is a sequence
+$(\nu_n)\subseteq\Delta(K)$ such that
+\[
+ \|\nu_n\|=1\quad(n\in\N),
+ \qquad
+ \nu_n(f)\longrightarrow0\quad(f\in C(K)).
+\]
+\end{definition}
+
+Banakh--K\k{a}kol--\'Sliwa proved that the fsJNP is equivalent to the
+existence of a quotient of $\Cp(K)$ isomorphic to $\czerop$, and also to the
+existence of a complemented copy of $\czerop$ in
+$\Cp(K)$~\cite[Theorem~1]{BKS2019JNP}.  Consequently:
+
+\begin{corollary}\label{cor:fsjnp}
+Every compact space with the fsJNP has a weak-star basic sequence in its
+$\Cp$-dual.
+\end{corollary}
+
+K\k{a}kol--Sobota--Zdomskyy proved that many classical consistent Efimov
+spaces, including inverse limits built from simple extensions, have the
+fsJNP~\cite[Corollary~6.12]{KSZ2023}.  They also note that consistently there
+are Efimov compacta with the Grothendieck property and hence without the
+fsJNP~\cite[p.~16]{KSZ2023}.  Thus neither the Efimov property nor the failure
+of the fsJNP is by itself a known obstruction.  Indeed, the June 2026 seminar
+announcement reports that the Brech and Sobota--Zdomskyy compacta of Efimov
+type have the two-disjoint-copies property and therefore have metrizable
+$\Cp$-quotients~\cite{KakolSeminar2026}.
+
+The search covered the exact problem wording, the exact paper title and its
+arXiv record, later arXiv papers using the terms ``weak-star basic sequence'',
+``$\Cp(X)$'', ``metrizable quotient'', and ``Efimov'', and the citation chains
+of the principal 2018--2026 papers.  No full proof or counterexample was found
+through June 22, 2026.  This is necessarily a search report rather than a proof
+of nonexistence of an unpublished result.
+
+\section{Sequential norm rigidity without the fsJNP}
+\label{sec:norm-rigidity}
+
+The absence of the fsJNP has a useful elementary consequence.  It is also the
+sequential core of the equivalence between the lack of the fsJNP and the
+$\Delta$- and $\ell_1$-Grothendieck properties established in
+\cite[Theorem~4.1]{KSZ2023}.
+
+\begin{lemma}[Sequential norm rigidity]\label{lem:norm-rigidity}
+Assume that a compact space $K$ does not have the fsJNP.  If
+$(\nu_n)\subseteq\Delta(K)$ and $\nu\in\Delta(K)$ satisfy
+\[
+ \nu_n\longrightarrow\nu
+ \quad\hbox{in }\sigma(\Delta(K),C(K)),
+\]
+then $\|\nu_n-\nu\|\to0$ in total variation norm.
+\end{lemma}
+
+\begin{proof}
+Otherwise, after passing to a subsequence, there is an $\varepsilon>0$ such that
+$\|\nu_n-\nu\|\geq\varepsilon$ for every $n$.  Then
+\[
+ \lambda_n=\frac{\nu_n-\nu}{\|\nu_n-\nu\|}
+\]
+is a norm-one sequence in $\Delta(K)$ and $\lambda_n(f)\to0$ for every
+$f\in C(K)$, which is precisely an fsJN-sequence.  This contradicts the
+assumption.
+\end{proof}
+
+The next proposition is the main technical observation of this report.
+
+\begin{proposition}[Basic expansions become norm convergent]\label{prop:norm}
+Let $K$ have no fsJNP, and let $(\mu_n)$ be a weak-star basic sequence in
+$\Lp(K)$.  Let
+\[
+ M=\overline{\spann\{\mu_n:n\in\N\}}^{\,\wstar}\subseteq\Lp(K),
+ \qquad
+ S=\bigcup_{n\in\N}\supp\mu_n.
+\]
+Then $S$ is countable and every $\mu\in M$ is supported on $S$.  More precisely,
+if
+\[
+ \mu=\sum_{n=1}^{\infty}a_n\mu_n
+\]
+is its basis expansion, then the partial sums converge to $\mu$ in total
+variation norm.  Consequently,
+\[
+ M\subseteq\Delta(S),
+\]
+so $M$ has countable Hamel dimension.
+\end{proposition}
+
+\begin{proof}
+The set $S$ is a countable union of finite sets.  Fix $\mu\in M$ and let
+\[
+ s_N=\sum_{n=1}^N a_n\mu_n.
+\]
+By the basis property, $s_N\to\mu$ in
+$\sigma(\Delta(K),C(K))$.  Hence \cref{lem:norm-rigidity} gives
+$\|s_N-\mu\|\to0$.
+
+Every $s_N$ is supported on $S$.  Since $S$ is countable, it is Borel, and
+\[
+ \bigl\|\mu|_{K\setminus S}\bigr\|
+ \leq \|\mu-s_N\|\longrightarrow0.
+\]
+Thus $\mu$ is supported on $S$.  Since $\mu\in\Lp(K)=\Delta(K)$ is finitely
+supported, $\mu\in\Delta(S)$.  Because $S$ is countable, $\Delta(S)$ has a
+countable Hamel basis.
+\end{proof}
+
+\begin{corollary}[Metrizable quotient in the no-fsJNP case]
+\label{cor:groth-quotient}
+If $K$ has no fsJNP and $\Lp(K)$ has a weak-star basic sequence, then
+$\Cp(K)$ has an infinite-dimensional metrizable quotient.
+\end{corollary}
+
+\begin{proof}
+Let $M$ be the weak-star closed span of the basic sequence and put
+\[
+ N=M_\perp=\{f\in C(K):\mu(f)=0\text{ for all }\mu\in M\}.
+\]
+By the bipolar theorem for the dual pair $(C(K),\Lp(K))$ and the weak-star
+closedness of $M$,
+\[
+ N^\perp=M.
+\]
+By \cref{prop:norm}, $M$ has countable Hamel dimension.  Applying
+\cref{lem:weak-quotient} to
+$\Cp(K)=\bigl(C(K),\sigma(C(K),\Lp(K))\bigr)$, the quotient
+$\Cp(K)/N$ is metrizable.  It is infinite-dimensional because its continuous
+dual $M$ is infinite-dimensional.
+\end{proof}
+
+\section{Exact equivalence with the metrizable-quotient problem}
+
+\begin{theorem}[Main reduction]\label{thm:equivalence}
+For every infinite compact Hausdorff space $K$, the following are equivalent.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $\Lp(K)=\Cp(K)'$ contains a weak-star basic sequence.
+\item $\Cp(K)$ has an infinite-dimensional metrizable quotient.
+\item $\Cp(K)$ has an infinite-dimensional metrizable quotient possessing a
+      Schauder basis.
+\item $\Lp(K)$ contains an infinite-dimensional weak-star closed linear
+      subspace of countable Hamel dimension.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+First, \textup{(2)} and \textup{(4)} are equivalent.  If
+$q:\Cp(K)\to E$ is an infinite-dimensional metrizable quotient and
+$N=\ker q$, then \cref{lem:weak-quotient} identifies $E$ with the weak space
+$\sigma(C(K)/N,N^\perp)$ and shows that $N^\perp$ has countable Hamel
+dimension.  It is infinite-dimensional and weak-star closed in $\Lp(K)$.
+
+Conversely, let $M\subseteq\Lp(K)$ be infinite-dimensional, weak-star closed,
+and of countable Hamel dimension.  Put $N=M_\perp$.  Then $N^\perp=M$, and
+\cref{lem:weak-quotient} shows that $\Cp(K)/N$ is an infinite-dimensional
+metrizable quotient.
+
+The implication \textup{(2)}$\Rightarrow$\textup{(3)} is
+Theorem~17 of~\cite{KLS2026}: every infinite-dimensional metrizable quotient
+of $\Cp(K)$ has a Schauder basis.  For
+\textup{(3)}$\Rightarrow$\textup{(1)}, let $(e_n)$ be such a basis in the
+quotient $E$, with coordinate functionals $(e_n^*)$.  If $P_N$ denotes the
+$N$th basis projection, then for every $\varphi\in E'$,
+\[
+ \sum_{n=1}^N \varphi(e_n)e_n^*=\varphi\circ P_N
+ \longrightarrow\varphi
+ \quad\text{in }\sigma(E',E).
+\]
+The coefficients are uniquely recovered by evaluation at the $e_n$, so
+$(e_n^*)$ is a weak-star Schauder basis of $E'$.  The adjoint of the open
+quotient map embeds $E'$ as a weak-star closed subspace of $\Lp(K)$.
+
+Assume \textup{(1)}.  If $K$ has the fsJNP, the theorem of
+Banakh--K\k{a}kol--\'Sliwa gives a quotient of $\Cp(K)$ isomorphic to
+$\czerop$~\cite[Theorem~1]{BKS2019JNP}, so \textup{(2)} holds.  If $K$
+does not have the fsJNP, \cref{cor:groth-quotient} again gives
+\textup{(2)}.
+\end{proof}
+
+\begin{corollary}[Equivalence of the two global problems]\label{cor:global}
+The following assertions are equivalent.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every infinite compact Hausdorff $K$, $\Cp(K)'$ has a weak-star basic
+      sequence.
+\item For every infinite compact Hausdorff $K$, $\Cp(K)$ has an
+      infinite-dimensional metrizable quotient.
+\end{enumerate}
+\end{corollary}
+
+Thus Problem 12 of the 2026 paper is not merely related to the earlier
+metrizable-quotient problem: it is exactly equivalent to it.
+
+\begin{remark}[Tychonoff extension]\label{rem:tych}
+Compactness is not used in the argument of
+\cref{lem:norm-rigidity,prop:norm,cor:groth-quotient}.  For an arbitrary
+Tychonoff space $X$, the dual of $\Cp(X)$ is still $\Delta(X)$, with
+$\|\sum a_j\delta_{x_j}\|=\sum|a_j|$.  Moreover, the JNP--$\czerop$ quotient
+characterization~\cite{BKS2019JNP} and Theorem~17 of~\cite{KLS2026} both hold
+for Tychonoff spaces.  Hence the four conditions in \cref{thm:equivalence}
+are in fact equivalent for every infinite Tychonoff space $X$.
+\end{remark}
+
+\section{What a counterexample would have to look like}
+
+Combining \cref{thm:equivalence} with the known positive results gives a sharp
+necessary profile.
+
+\begin{corollary}\label{cor:counterexample-profile}
+If $K$ is a counterexample to Problem 12, then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $K$ is an Efimov compactum: it contains neither a nontrivial convergent
+      sequence nor a copy of $\beta\N$;
+\item $K$ has the $\ell_1$-Grothendieck property, hence no fsJNP;
+\item $\Cp(K)$ has no infinite-dimensional metrizable quotient;
+\item in particular, $\Cp(K)$ has no quotient isomorphic to $\czerop$ or
+      $\linfyp$;
+\item $K$ fails the two-disjoint-copies criterion of
+      Banakh--K\k{a}kol--\'Sliwa.
+\end{enumerate}
+Conversely, any infinite compact $K$ satisfying item \textup{(iii)} is a
+counterexample.
+\end{corollary}
+
+The last converse is simply \cref{thm:equivalence}.  Moreover,
+\cref{cor:separable-reduction} shows that, if any counterexample exists, one
+can choose a separable one; in fact, the closure of every countably infinite
+subset of a counterexample is again a counterexample.  At present, no such
+compactum is known from the searched literature.
+
+\section{Why several natural approaches stop short}
+
+\subsection*{A closed copy of $\czerop$ is not enough}
+Recent work shows that every infinite compact $K$ supplies natural closed
+copies of $\czerop$ in $\Cp(K)$, obtained from pairwise disjoint open sets and
+bump functions~\cite{KMS2023}.  But inclusion of a closed subspace
+$F\hookrightarrow\Cp(K)$ gives a \emph{surjection}
+$\Cp(K)'\to F'$ by restriction, not a canonical weak-star closed embedding of
+$F'$ into $\Cp(K)'$.  Such an embedding follows from a continuous projection
+onto $F$, and complementability is precisely the extra ingredient supplied by
+the fsJNP.  Therefore the closed-subspace theorem alone does not settle the
+dual problem.
+
+\subsection*{An infinite metrizable image points in the wrong direction}
+Every infinite compact $K$ has an infinite compact metrizable continuous image:
+choose countably many continuous functions with infinite-dimensional linear
+span and take their diagonal map.  The pullback embeds the corresponding
+$\Cp$-space into $\Cp(K)$.  However, a basic sequence in the dual transfers
+from a \emph{quotient} or from a closed subspace of the compactum via
+\cref{lem:restriction}; an arbitrary continuous image gives the opposite
+variance.  A continuous section or averaging operator would repair this, but
+such an operator is not available for a general compact surjection.
+
+\subsection*{The product result does not descend}
+The complemented-copy theorem for $\Cp(X\times Y)$ gives a weak-star basic
+sequence in $\Cp(X\times Y)'$ for infinite $X$ and $Y$~\cite{KMSZ2022}.
+Restriction to the diagonal is a quotient
+$\Cp(X\times X)\to\Cp(X)$, so its adjoint embeds $\Cp(X)'$ into the product
+dual.  This transfers a solution from $X$ to $X\times X$, not from the product
+back to $X$.  A basic sequence found somewhere in the larger dual need not lie
+in the diagonal-supported range.
+
+\section{Final assessment}
+
+The supplied theorem is correct and gives a particularly transparent explicit
+basis.  It was already implicit in the metrizable-quotient machinery and in
+earlier $\Cp$-results, so it should be presented as a direct construction rather
+than as a solution of the full problem.
+
+No full proof or counterexample was located.  The strongest additional
+conclusion obtained here is \cref{thm:equivalence}: weak-star basic sequences
+in $\Cp(X)'$ are equivalent to infinite-dimensional metrizable quotients of
+$\Cp(X)$, already for arbitrary Tychonoff $X$; see \cref{rem:tych}.  By \cref{cor:separable-reduction}, it is enough to
+resolve that quotient problem for separable compacta.  The remaining task is
+therefore concentrated entirely in the unresolved separable Efimov case.
+
+\begin{thebibliography}{99}
+
+\bibitem{KLS2026}
+J. K\k{a}kol, M. L\'opez-Pellicer, and W. \'Sliwa,
+\emph{On weak*-basic sequences in duals and biduals of spaces $C(X)$ and
+Quojections}, \href{https://arxiv.org/abs/2601.19873}{arXiv:2601.19873}, 2026.
+
+\bibitem{BKS2018MQ}
+T. Banakh, J. K\k{a}kol, and W. \'Sliwa,
+\emph{Metrizable quotients of $C_p$-spaces},
+Topology Appl. \textbf{249} (2018), 95--102;
+\href{https://arxiv.org/abs/1804.02552}{arXiv:1804.02552}.
+
+\bibitem{BKS2019JNP}
+T. Banakh, J. K\k{a}kol, and W. \'Sliwa,
+\emph{Josefson--Nissenzweig property for $C_p$-spaces},
+Rev. R. Acad. Cienc. Exactas F\'is. Nat. Ser. A Mat. RACSAM
+\textbf{113} (2019), 3015--3030;
+\href{https://arxiv.org/abs/1809.07054}{arXiv:1809.07054}.
+
+\bibitem{KSZ2023}
+J. K\k{a}kol, D. Sobota, and L. Zdomskyy,
+\emph{Grothendieck $C(K)$-spaces and the Josefson--Nissenzweig theorem},
+Fund. Math. \textbf{263} (2023), no.~2, 105--131;
+\href{https://arxiv.org/abs/2207.13990}{arXiv:2207.13990}.
+
+\bibitem{KMS2023}
+J. K\k{a}kol, A. Molt\'o, and W. \'Sliwa,
+\emph{On subspaces of spaces $C_p(X)$ isomorphic to spaces $c_0$ and
+$\ell_q$ with the topology induced from $\mathbb{R}^{\mathbb{N}}$},
+Rev. Real Acad. Cienc. Exactas Fis. Nat. Ser. A-Mat.
+\textbf{117} (2023), article~154.
+
+\bibitem{KMSZ2022}
+J. K\k{a}kol, W. Marciszewski, D. Sobota, and L. Zdomskyy,
+\emph{On complemented copies of the space $c_0$ in spaces $C_p(X\times Y)$},
+Israel J. Math. \textbf{250} (2022), 139--177.
+
+\bibitem{KakolSeminar2026}
+J. K\k{a}kol,
+\emph{The two-disjoint-copies property for compact spaces, homogeneity, and
+relations with the theory of spaces $C_p$ of continuous functions, Part~II},
+seminar announcement, Adam Mickiewicz University, June~2, 2026
+(\href{https://wmi.amu.edu.pl/zycie-naukowe/wyklady-i-seminaria/seminarium-zakladow-analizy-funkcjonalnej-oraz-analizy-matematycznej/wlasnosc-dwoch-rozlacznych-kopii-dla-przestrzeni-zwartych\%2C-jednorodnosc-i-relacje-z-teoria-przestrzeni-c_p-funkcji-ciaglych-czesc-ii}{online announcement}).
+
+\end{thebibliography}
+
+\end{document}

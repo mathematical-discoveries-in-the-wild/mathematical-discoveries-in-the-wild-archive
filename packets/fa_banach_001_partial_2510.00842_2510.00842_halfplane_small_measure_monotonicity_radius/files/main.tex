@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\gauss}{\gamma}
+\newcommand{\dd}{\,d}
+\DeclareMathOperator{\dist}{dist}
+
+\title{A half-plane radius for the small-measure Banaszczyk-transform question}
+\author{agent\_lane\_16}
+\date{Run fa\_banach\_001}
+
+\begin{document}
+\maketitle
+
+\section*{Source and question}
+
+The source paper is Maud Szusterman, \emph{Monotonicity of the Gaussian measure under Banaszczyk transforms}, arXiv:2510.00842.  It defines, for a closed convex set
+$K\subset\R^n$ and a nonzero vector $u$, a modified Banaszczyk transform
+\[
+  K\circ u=(K+[-u,u])\cap (Z_K(u)+\R u),
+\]
+where, putting $r=\|u\|_2$ and $I_y=(K-y)\cap\R u$,
+\[
+  Z_K(u)=\{y\in u^\perp:\gamma_1(I_y)\geq \gamma_1([-r,r])\}.
+\]
+The paper proves monotonicity when $\gamma_n(K)\geq 1/2$ and $\|u\|_2\leq 1/7$.
+
+Question 4.1 of the paper asks whether there is an increasing function
+$r:(0,1)\to(0,\infty)$ such that
+\[
+  \gamma_n(K)\geq p,\qquad \|u\|_2\leq r(p)
+  \quad\Longrightarrow\quad
+  \gamma_n(K\circ u)\geq \gamma_n(K)
+\]
+for all dimensions and convex bodies.  The appendix explains that for
+$p<1/2$ it is not clear whether the planar hypograph statement is equivalent
+to the weaker half-plane test:
+\[
+  \gamma_2(H)\geq p,\quad \|u\|_2\leq r_0
+  \quad\Longrightarrow\quad
+  \gamma_2(H\circ u)\geq \gamma_2(H)
+\]
+for all half-planes $H\subset\R^2$.
+
+\section*{Result}
+
+Let
+\[
+  \phi(t)=\frac{e^{-t^2/2}}{\sqrt{2\pi}},\qquad
+  \Phi(t)=\int_{-\infty}^t \phi(x)\dd x,\qquad
+  T(A)=\Phi(-A).
+\]
+For $0<r<1$ define $w_r>0$ by
+\[
+  T(w_r)=\Phi(-w_r)=\gamma_1([-r,r])=2\Phi(r)-1,
+\]
+and put $W_r=w_r-r$.
+
+\begin{theorem}[Half-plane small-measure radius]
+\label{thm:halfplane-radius}
+Fix $0<p<1$ and set
+\[
+  A_p=\max\{0,-\Phi^{-1}(p)\}.
+\]
+There is $\rho_p>0$ such that for every half-plane $H\subset\R^2$ with
+$\gamma_2(H)\geq p$ and every $u\in\R^2$ with $\|u\|_2\leq \rho_p$,
+\[
+  \gamma_2(H\circ u)\geq \gamma_2(H).
+\]
+More quantitatively, the conclusion holds for every $r=\|u\|_2>0$ satisfying
+\[
+  W_r>A_p
+  \quad\hbox{and}\quad
+  \frac{T\!\left(\sqrt{W_r^2-A_p^2}\right)}{W_r}
+  \leq r e^{-A_p r}.
+  \tag{1}\label{eq:criterion}
+\]
+\end{theorem}
+
+\section*{Proof}
+
+By rotational invariance of Gaussian measure and the identity
+$K\circ u=K\circ(-u)$, it is enough to take $u=r e_2$ and to write the
+half-plane as
+\[
+  H=H(d,\alpha)=\{(x,y): c x+s y\leq d\},
+  \qquad c=\cos\alpha,\quad s=\sin\alpha,\quad
+  \alpha\in[0,\pi/2].
+\]
+Since $\gamma_2(H)=\Phi(d)\geq p$, we have
+\[
+  d\geq a_p:=\Phi^{-1}(p)\geq -A_p.
+\]
+
+The endpoint cases are immediate.  If $s=0$, then $H$ is invariant under
+vertical enlargement and $H\circ r e_2=H$.  If $c=0$, then
+$H=\{y\leq d\}$; once $W_r>A_p$ we have
+$\gamma_1([-r,r])=\Phi(-w_r)\leq p\leq \Phi(d)$, so every vertical section is
+kept and $H\circ r e_2=H+r e_2$.
+
+Assume now that $0<s,c<1$.  The vertical section of $H$ over $x$ is
+$(-\infty,(d-cx)/s]$, so the condition defining $Z_H(r e_2)$ is
+\[
+  \frac{d-cx}{s}\geq -w_r
+  \quad\Longleftrightarrow\quad
+  x\leq x_0:=\frac{d+s w_r}{c}.
+\]
+Putting $D=d+s r$, the transform is the translated half-plane
+$H+r e_2=\{cx+sy\leq D\}$ cut by $x\leq x_0$.  Hence
+\[
+  \gamma_2(H\circ r e_2)-\gamma_2(H)
+  =\bigl[\Phi(D)-\Phi(d)\bigr]-\gamma_2(C_r),
+\]
+where
+\[
+  C_r=\{(x,y):x\geq x_0,\; y\leq (D-cx)/s\}.
+\]
+
+First estimate the gain from translating the half-plane.  For
+$0\leq t\leq sr$,
+\[
+  \frac{\phi(d+t)}{\phi(D)}
+  =\exp\!\left(\frac{D^2-(d+t)^2}{2}\right)
+  =\exp\!\left(\frac{(sr-t)(D+d+t)}{2}\right)
+  \geq e^{-A_p r},
+\]
+because $sr-t\leq r$ and $D+d+t\geq 2d\geq -2A_p$.  Therefore
+\[
+  \Phi(D)-\Phi(d)
+  =\int_0^{sr}\phi(d+t)\dd t
+  \geq s r e^{-A_p r}\phi(D).
+  \tag{2}\label{eq:gain}
+\]
+
+For the cone, change variables $y=(cx-D)/s$.  Since
+$cx_0-D=s(w_r-r)=sW_r$,
+\[
+  \gamma_2(C_r)
+  =\frac{s}{c}\int_{W_r}^{\infty}
+       T(y)\,\phi\!\left(\frac{D+s y}{c}\right)\dd y .
+\]
+Using Mills' inequality $T(y)\leq \phi(y)/y$ for $y>0$, and $y\geq W_r$, gives
+\[
+  \gamma_2(C_r)
+  \leq \frac{s}{cW_r}\int_{W_r}^{\infty}
+       \phi(y)\,\phi\!\left(\frac{D+s y}{c}\right)\dd y .
+\]
+The elementary identity
+\[
+  y^2+\left(\frac{D+s y}{c}\right)^2
+  =D^2+\left(\frac{y+sD}{c}\right)^2
+\]
+then yields
+\[
+  \gamma_2(C_r)
+  \leq
+  \frac{s\phi(D)}{W_r}
+  T\!\left(\frac{W_r+sD}{c}\right).
+  \tag{3}\label{eq:cone-pre}
+\]
+Since $D\geq -A_p$,
+\[
+  \frac{W_r+sD}{c}
+  \geq
+  \frac{W_r-sA_p}{\sqrt{1-s^2}}.
+\]
+For $W_r>A_p$, the minimum of the right-hand side over $0\leq s<1$ is
+$\sqrt{W_r^2-A_p^2}$.  Thus
+\[
+  \gamma_2(C_r)
+  \leq
+  \frac{s\phi(D)}{W_r}
+  T\!\left(\sqrt{W_r^2-A_p^2}\right).
+  \tag{4}\label{eq:cone}
+\]
+Combining \eqref{eq:gain} and \eqref{eq:cone}, condition
+\eqref{eq:criterion} implies
+\[
+  \gamma_2(H\circ r e_2)-\gamma_2(H)\geq 0.
+\]
+
+It remains only to see that \eqref{eq:criterion} holds for all sufficiently
+small $r$.  As $r\downarrow0$,
+\[
+  T(w_r)=2\Phi(r)-1\sim \sqrt{\frac2\pi}\,r,\qquad w_r\to\infty,\qquad
+  r w_r\to0.
+\]
+Let $z_r=\sqrt{W_r^2-A_p^2}$.  Mills' asymptotic gives
+\[
+  \frac{T(z_r)}{T(w_r)}
+  \sim
+  \frac{w_r}{z_r}\exp\!\left(\frac{w_r^2-z_r^2}{2}\right)
+  \longrightarrow e^{A_p^2/2}.
+\]
+Consequently
+\[
+  \frac{T(z_r)}{W_r r}
+  =
+  \frac{T(z_r)}{T(w_r)}\,
+  \frac{T(w_r)}{r}\,
+  \frac1{W_r}
+  \longrightarrow 0,
+\]
+whereas $e^{-A_p r}\to1$.  Thus \eqref{eq:criterion} holds for every
+$0<r\leq\rho_p$ after reducing $\rho_p>0$ if necessary.  This proves the
+theorem.
+
+\section*{Limitations and review notes}
+
+The theorem proves only the half-plane test statement isolated in the appendix
+of the source paper.  The reduction from arbitrary convex bodies of measure
+$p<1/2$ to half-planes is explicitly identified there as unclear; this packet
+does not close that gap.  The bound supplied by \eqref{eq:criterion} is also
+only a sufficient lower-radius condition and is not asserted to match the
+almost-vertical half-plane upper bound mentioned by Szusterman.
+
+The proof is analytic and uses only the source paper's definition of
+$K\circ u$, the exact two-dimensional half-plane formula, and the standard
+Mills tail inequality/asymptotic for the Gaussian distribution.
+
+\section*{References}
+
+\begin{itemize}
+\item Maud Szusterman, \emph{Monotonicity of the Gaussian measure under Banaszczyk transforms}, arXiv:2510.00842.
+\item W. Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol. I, for the standard Mills ratio estimates for Gaussian tails.
+\end{itemize}
+
+\end{document}

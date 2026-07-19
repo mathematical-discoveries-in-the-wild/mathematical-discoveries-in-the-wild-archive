@@ -1,0 +1,229 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\cE}{\mathcal E}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\title{A purely metric parallel-sum formula\\
+for infimal convolution on geodesic products}
+\author{Candidate full answer for arXiv:2503.12939}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate full answer, likely valid.}
+Weighted product metrics on arbitrary finite products of geodesic spaces have
+an explicit metric infimal convolution, which is again a finite nondegenerate
+geodesic distance.  This gives a broad affirmative answer to the source's
+existential question, subject to human review.}}
+\end{center}
+
+\section{Source question}
+
+The source is Nicolò De Ponti, Giacomo Enrico Sodini, and Luca Tamanini,
+\emph{The infimal convolution structure of the Hellinger-Kantorovich
+distance}, arXiv:2503.12939v1 \cite{DPST}.  After showing that metric infimal
+convolution can be degenerate or fail the triangle inequality, and after
+discussing the more structured normed-space case, the authors ask in the
+Introduction (page 5):
+
+\begin{quote}
+``This raises the compelling question of whether there exist other purely
+metric examples, similar to the Hellinger--Wasserstein case, where this
+construction yields meaningful distances.''
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The source question in its full page-width context, page 5.}
+\label{fig:question}
+\end{figure}
+
+For two costs \(c_1,c_2\) on a set \(Z\), the source defines the square of
+their metric infimal convolution at \(z^0,z^1\) by
+\begin{equation}\label{eq:def}
+(c_1\nabla c_2)^2(z^0,z^1)
+=\liminf_{N\to\infty}\inf_P
+N\sum_{i=1}^N\left(c_1^2(x_{i-1},y_i)+c_2^2(y_i,x_i)\right),
+\end{equation}
+where \(P=(x_0,\ldots,x_N;y_1,\ldots,y_N)\), \(x_0=z^0\), and
+\(x_N=z^1\).
+
+\section{Proof intuition}
+
+On a product of geodesic spaces, give each factor one weight in the first
+metric and another weight in the second.  During an alternating step, each
+coordinate can place its intermediate point at its own optimal fraction along
+a geodesic.  Minimizing the two weighted squared lengths produces the familiar
+parallel-sum coefficient
+\[
+\left(a_1^{-2}+a_2^{-2}\right)^{-1/2}.
+\]
+The same elementary quadratic inequality gives a lower bound for every
+possible path.  Thus the effective product distance is not merely the limit:
+its square is the exact minimum energy at every discretization level \(N\).
+
+\section{The product theorem}
+
+\begin{theorem}[Purely metric parallel sum]\label{thm:main}
+Let \((X_k,d_k)\), \(k=1,\ldots,m\), be geodesic metric spaces and let
+\(Z=\prod_{k=1}^m X_k\).  For positive numbers \(a_{jk}\), \(j=1,2\),
+define metrics
+\begin{equation}\label{eq:inputs}
+\rho_j(z,z')^2=\sum_{k=1}^m a_{jk}^2d_k(z_k,z'_k)^2,
+\qquad j=1,2.
+\end{equation}
+Set
+\begin{equation}\label{eq:weights}
+a_{*k}:=\left(a_{1k}^{-2}+a_{2k}^{-2}\right)^{-1/2}
+=\frac{a_{1k}a_{2k}}{\sqrt{a_{1k}^2+a_{2k}^2}}
+\end{equation}
+and
+\begin{equation}\label{eq:output}
+\rho_*(z,z')^2:=\sum_{k=1}^m a_{*k}^2d_k(z_k,z'_k)^2.
+\end{equation}
+Then
+\[
+\rho_1\nabla\rho_2=\rho_*.
+\]
+More precisely, for every \(N\ge1\) and every pair of endpoints, the infimum
+of the \(N\)-path energy in \eqref{eq:def} is exactly the square of their
+\(\rho_*\)-distance.
+\end{theorem}
+
+\begin{proof}
+Each function in \eqref{eq:inputs} and \eqref{eq:output} is a metric.  This
+follows from the coordinate triangle inequalities and Minkowski's inequality.
+They are geodesic: choose constant-speed geodesics in every factor and run
+them with a common time parameter.
+
+Fix endpoints \(z^0,z^1\) and an arbitrary \(N\)-path
+\(P=(x_0,\ldots,x_N;y_1,\ldots,y_N)\) between them.  For each \(i,k\), put
+\[
+A_{ik}=d_k(x_{i-1,k},y_{i,k}),\quad
+B_{ik}=d_k(y_{i,k},x_{i,k}),\quad
+C_{ik}=d_k(x_{i-1,k},x_{i,k}).
+\]
+The triangle inequality gives \(C_{ik}\le A_{ik}+B_{ik}\).  For positive
+\(a,b\) and nonnegative \(A,B\),
+\begin{equation}\label{eq:scalar}
+a^2A^2+b^2B^2
+-\frac{a^2b^2}{a^2+b^2}(A+B)^2
+=\frac{(a^2A-b^2B)^2}{a^2+b^2}\ge0.
+\end{equation}
+Applying \eqref{eq:scalar} coordinatewise yields
+\begin{align*}
+\rho_1^2(x_{i-1},y_i)+\rho_2^2(y_i,x_i)
+&=\sum_k\left(a_{1k}^2A_{ik}^2+a_{2k}^2B_{ik}^2\right)\\
+&\ge\sum_k a_{*k}^2(A_{ik}+B_{ik})^2\\
+&\ge\sum_k a_{*k}^2C_{ik}^2
+=\rho_*^2(x_{i-1},x_i).
+\end{align*}
+Consequently, Cauchy--Schwarz and the triangle inequality for \(\rho_*\) give
+\begin{align}\label{eq:lower}
+\cE_N(P)
+&\ge N\sum_{i=1}^N\rho_*^2(x_{i-1},x_i)\\
+&\ge\left(\sum_{i=1}^N\rho_*(x_{i-1},x_i)\right)^2
+\ge\rho_*^2(z^0,z^1).\nonumber
+\end{align}
+
+It remains to attain the lower bound.  For each coordinate choose a
+constant-speed geodesic \(\gamma_k:[0,1]\to X_k\) from \(z_k^0\) to
+\(z_k^1\), and write \(D_k=d_k(z_k^0,z_k^1)\).  Define
+\begin{equation}\label{eq:path}
+x_{i,k}=\gamma_k(i/N),\qquad
+t_k=\frac{a_{2k}^2}{a_{1k}^2+a_{2k}^2},\qquad
+y_{i,k}=\gamma_k\left(\frac{i-1+t_k}{N}\right).
+\end{equation}
+Then
+\[
+A_{ik}=\frac{t_kD_k}{N},\qquad
+B_{ik}=\frac{(1-t_k)D_k}{N}.
+\]
+The choice of \(t_k\) is the equality case in \eqref{eq:scalar}, so every
+alternating step in \eqref{eq:path} has cost
+\[
+\sum_k\left(a_{1k}^2A_{ik}^2+a_{2k}^2B_{ik}^2\right)
+=\frac1{N^2}\sum_k a_{*k}^2D_k^2
+=\frac{\rho_*^2(z^0,z^1)}{N^2}.
+\]
+Multiplying the sum of the \(N\) step costs by \(N\) gives
+\(\cE_N(P)=\rho_*^2(z^0,z^1)\).  Together with \eqref{eq:lower}, this proves
+the exact minimum formula for every \(N\), and hence the asserted infimal
+convolution identity.
+\end{proof}
+
+\section{A branching, non-vector example}
+
+Let \(T\) be the metric tripod obtained by gluing three copies of \([0,1]\)
+at their zero endpoints, with path distance \(d_T\).  On
+\(Z=T\times[0,1]\), define
+\begin{align*}
+\rho_1((x,s),(y,t))^2&=d_T(x,y)^2+4|s-t|^2,\\
+\rho_2((x,s),(y,t))^2&=4d_T(x,y)^2+|s-t|^2.
+\end{align*}
+In each coordinate the effective weight is
+\[
+\left(1^{-2}+2^{-2}\right)^{-1/2}=\frac2{\sqrt5}.
+\]
+Theorem~\ref{thm:main} therefore gives
+\begin{equation}\label{eq:tripod}
+(\rho_1\nabla\rho_2)((x,s),(y,t))
+=\frac2{\sqrt5}\sqrt{d_T(x,y)^2+|s-t|^2}.
+\end{equation}
+This is a finite nondegenerate geodesic distance on a space with genuine
+branching.  The inputs are not proportional: on tripod fibers \(\rho_2=2\rho_1\),
+whereas on interval fibers \(\rho_1=2\rho_2\).  Thus both inputs contribute
+nontrivially to the output.
+
+\section{Verification, scope, and novelty}
+
+The included exact checker expands \eqref{eq:scalar}, verifies the optimizing
+fraction and effective coefficient symbolically, checks the tripod constants,
+and tests the lower bound on deterministic rational product paths.  Run
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/check_parallel_sum.py
+\end{verbatim}
+from the packet directory.  Computation is only an audit; the proof above is
+exact.
+
+The result answers the source's existential question affirmatively with a
+large nonlinear class.  It does not classify every well-behaved pair, prove
+that arbitrary geodesic metrics have a distance-valued infimal convolution,
+or address the separate question about \(p\)-Hellinger--Kantorovich distances.
+
+Before promotion, the run indexes were searched using arXiv:2503.12939, the
+source title, the exact question terms, metric infimal convolution, geodesic
+products, weighted product metrics, and parallel sums.  A bounded arXiv/web
+search used the exact source question and close product/geodesic/parallel-sum
+phrases.  It found the source paper and unrelated functional
+infimal-convolution literature, but no separate statement of
+Theorem~\ref{thm:main}.  The current arXiv record is v1, submitted 17 March
+2025, and still contains the question.  This records the search bounds and is
+not an exhaustive novelty certification.
+
+Human review is recommended.  The main scope question is whether this broad
+existential answer matches what the source authors intend by ``purely metric'';
+mathematically, the highest-value checks are the scalar equality case and the
+coordinatewise attaining path \eqref{eq:path}.
+
+\begin{thebibliography}{9}
+\bibitem{DPST}
+N. De Ponti, G. E. Sodini, and L. Tamanini,
+\emph{The infimal convolution structure of the Hellinger-Kantorovich
+distance}, arXiv:2503.12939v1, 2025.
+\url{https://arxiv.org/abs/2503.12939}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,205 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.82in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+
+\definecolor{ink}{HTML}{14213D}
+\definecolor{blue}{HTML}{1F5A94}
+\definecolor{pale}{HTML}{EFF5FA}
+\definecolor{green}{HTML}{26734D}
+\definecolor{amber}{HTML}{9A6700}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Candidate full solution --- arXiv:1902.09284}
+\rhead{agent\_lane\_04}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist[itemize]{leftmargin=1.35em,itemsep=2pt,topsep=3pt}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\N}{\mathbb N}
+
+\begin{document}
+
+\begin{tcolorbox}[enhanced,boxrule=0pt,arc=3pt,colback=ink,coltext=white,
+  left=10pt,right=10pt,top=10pt,bottom=10pt]
+{\Large\bfseries A computable asymptotically decreasing sequence\\
+with no computable full-tail rate}\par
+\vspace{5pt}
+{\large A candidate full answer to Powell's footnote conjecture}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=pale,colframe=blue,boxrule=0.6pt,arc=2pt]
+\textbf{Verdict.} \textcolor{green}{\textbf{Candidate full solution, likely valid.}}
+There is a uniformly computable sequence of nonnegative rational numbers that
+is asymptotically decreasing but admits no computable function
+$\phi(\varepsilon,N)$ returning a witness for Powell's full-tail condition~(5).
+\end{tcolorbox}
+
+\textbf{Source.}
+Thomas Powell, ``A new metastable convergence criterion and an application in
+the theory of uniformly convex Banach spaces,'' arXiv:1902.09284v2 (2019),
+Section~2, PDF pages 4--5 \cite{Powell}.
+
+\textbf{Answer in one line.}
+At the computably scheduled stage at which machine $e$ is observed to halt,
+place a spike of height $2^{-e}$; put zero at every other stage.  The spikes
+converge to zero, but a computable full-tail rate would reveal a stage after
+which the $e$th spike cannot occur and would therefore decide the halting
+problem.
+
+\section*{The exact source question}
+
+For a nonnegative sequence $(x_n)$, Powell calls
+\[
+ \forall\varepsilon>0\ \forall N\ \exists n\ \forall i\ge n
+       \bigl(x_i\le x_N+\varepsilon\bigr)\qquad\text{(AD)}
+\]
+\emph{asymptotic decreasingness}.  Theorem~2.2 of the source proves that this
+is equivalent to convergence of $(x_n)$ to its infimum.  Immediately after
+the theorem, the source gives an example with a noncomputable first term and
+asks in footnote~2 whether the sequence can instead be chosen computable.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_context.png}
+
+\vspace{3pt}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_continuation.png}
+
+\vspace{3pt}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_footnote.png}
+\end{center}
+
+The source describes a procedure $\phi(\varepsilon,N)$ that returns an $n$
+satisfying the \emph{full tail} in (AD).  We call this a \emph{tail rate} below
+to distinguish it from the finite-window functional $\Gamma(\varepsilon,g,N)$
+introduced just after the footnote.
+
+\section*{Proof intuition}
+
+A computable sequence can converge to the computable limit zero without any
+computable convergence modulus.  The standard obstruction is to reserve one
+visible spike for each Turing machine.  Machine $e$ receives height $2^{-e}$,
+so only finitely many machines can ever create spikes above a fixed tolerance.
+Consequently the sequence converges to zero.  But a tail bound below
+$2^{-(e+1)}$ certifies that the $e$th spike will never appear; this certificate
+decides whether machine $e$ halts.
+
+The extra zero term $x_0=0$ turns that convergence modulus directly into the
+source's requested witness $\phi(\varepsilon,0)$, while every term remains a
+computable rational.
+
+\section*{Formal construction and theorem}
+
+Fix an effective enumeration $(M_e)_{e\in\N}$ of Turing machines on blank
+input.  If $M_e$ halts after exactly $h_e$ computation steps, schedule its
+unique spike at
+\[
+ s_e=e+h_e+1.
+\]
+For $n\ge1$, define
+\begin{equation}\label{eq:construction}
+ x_n=\max\bigl(\{2^{-e}:s_e=n\}\cup\{0\}\bigr),
+ \qquad x_0=0.
+\end{equation}
+For fixed $n$, only $e<n$ can contribute, and whether $M_e$ halts after
+exactly $n-e-1$ steps is decidable by a finite simulation.  Thus
+\eqref{eq:construction} is a
+uniformly computable sequence of rational numbers.
+
+\begin{theorem}
+The sequence $(x_n)_{n\in\N}$ in \eqref{eq:construction} is a computable sequence in
+$[0,1]$, converges to its infimum $0$, and hence is asymptotically decreasing.
+There is no computable function $\phi$ on positive rational $\varepsilon$ and
+$N\in\N$ such that
+\begin{equation}\label{eq:tail}
+ \forall i\ge \phi(\varepsilon,N),\qquad
+ x_i\le x_N+\varepsilon.
+\end{equation}
+In particular, the sequence gives the computable strengthening conjectured in
+footnote~2 of the source.
+\end{theorem}
+
+\begin{proof}
+Computability and the bound $0\le x_n\le1$ follow from the finite simulation
+described above.  To prove convergence, fix $\varepsilon>0$ and choose $E$
+with $2^{-E}\le\varepsilon$.  Only the finitely many machines
+$M_0,\ldots,M_{E-1}$ can generate a spike larger than $\varepsilon$, and each
+generates at most one spike.  After the last such spike (among those machines
+that halt), every $x_n$ is at most $\varepsilon$.  Hence $x_n\to0$.  Since
+$x_0=0$ and all terms are nonnegative, $\inf_n x_n=0$.  Therefore $(x_n)$ is
+asymptotically decreasing, either directly from (AD) or by Powell's
+Theorem~2.2.
+
+Suppose, for contradiction, that a computable $\phi$ satisfies \eqref{eq:tail}.  Given an
+index $e$, compute
+\[
+ n_e=\phi(2^{-(e+1)},0).
+\]
+Simulate $M_e$ for $n_e$ steps.  If it halts, answer yes.  If it has not
+halted, it can never halt later: a later halt after $h_e>n_e$ steps would put
+the spike $x_{s_e}=2^{-e}$ at the stage $s_e=e+h_e+1>n_e$, contradicting
+\eqref{eq:tail}, because $x_0+2^{-(e+1)}=2^{-(e+1)}<2^{-e}$.  Thus this algorithm decides
+the halting problem, contradicting its undecidability \cite{Turing}.  No such
+computable $\phi$ exists.
+\end{proof}
+
+\section*{Verification and scope}
+
+\begin{itemize}
+\item Every $x_n$ is an exactly computable dyadic rational; the construction
+does not hide a noncomputable real in any term.
+\item The convergence argument is classical rather than effective: locating
+the last large spike would decide finitely many halting questions.  This is
+precisely why a computable tail rate cannot exist.
+\item The conclusion concerns the full-tail witness $\phi(\varepsilon,N)$
+described before footnote~2.  It does \emph{not} assert that the later
+finite-window functional $\Gamma(\varepsilon,g,N)$ in equation~(6) is
+noncomputable.  For a fixed computable $g$, finite candidate blocks for this
+particular rational sequence can in fact be searched effectively.
+\item The result answers only the computability footnote.  It does not alter
+the Banach-space fixed-point estimates developed later in the source.
+\end{itemize}
+
+\section*{Novelty check and review recommendation}
+
+On 2026-07-19 we searched the exact conjectural sentence, the phrases
+``computable metastable rate of asymptotic decreasingness'' and
+``computable asymptotically decreasing sequence,'' the source title and
+author, and close halting-problem variants.  We found the source and later
+works citing its quantitative fixed-point results, but no later answer to this
+footnote.  The spike mechanism is standard computability folklore, so novelty
+confidence is conservative even though the exact application was not found.
+
+\textbf{Human review recommendation.} Confirm that ``computable sequence'' is
+intended in the standard uniform termwise sense used here, and that the
+footnote asks about the full-tail $\phi$ rather than equation~(6)'s
+finite-window $\Gamma$.  Under those conventions, the proof is complete.
+
+\begin{thebibliography}{9}
+\bibitem{Powell}
+T. Powell,
+\emph{A new metastable convergence criterion and an application in the theory
+of uniformly convex Banach spaces},
+J. Math. Anal. Appl. 478 (2019), 790--805;
+\href{https://arxiv.org/abs/1902.09284}{arXiv:1902.09284}.
+
+\bibitem{Turing}
+A. M. Turing,
+\emph{On computable numbers, with an application to the
+Entscheidungsproblem},
+Proc. London Math. Soc. (2) 42 (1937), 230--265.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\eps}{\varepsilon}
+
+\title{The Balanced Doubling-Map Case for Random Products of Weighted Shifts}
+\author{arXiv automatic math run \texttt{fa\_banach\_001}}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a full solution candidate, likely valid pending expert
+review, for the balanced doubling-map case left open in Gillet
+\cite{Gillet}.  The conclusion is that, on \(X=\ell_p\), \(1\le p<\infty\),
+and on \(X=c_0\), the random products in the source example are
+universal/weakly mixing almost surely, but not mixing almost surely.
+
+\section*{Source Question}
+
+The source paper is Valentin Gillet, \emph{Linear dynamics of random products
+of weighted shifts}, arXiv:2511.19161.  In Section 4a, after treating the
+cases \(\mu(A_1)>\mu(A_2)\) and \(\mu(A_1)<\mu(A_2)\), the paper leaves open
+the balanced case for the doubling map:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We answer this exact balanced case.
+
+\section*{Setup and Source Criterion}
+
+Let \(\Omega=\T\) with normalized Lebesgue measure, let
+\(\tau x=2x \pmod 1\), and set
+\[
+  A_1=[0,1/2), \qquad A_2=[1/2,1).
+\]
+Let \(X=\ell_p\), \(1\le p<\infty\), or \(X=c_0\).  Define weighted shifts by
+\[
+  w_l=1+\frac{1}{l+1}, \qquad
+  v_l=1-\frac{1}{l+1}\qquad(l\ge 1),
+\]
+and
+\[
+  T(\omega)=
+  \begin{cases}
+    B_w, & \omega\in A_1,\\
+    B_v, & \omega\in A_2.
+  \end{cases}
+\]
+Write
+\[
+  T_n(\omega)=T(\tau^{n-1}\omega)\cdots T(\tau\omega)T(\omega).
+\]
+By the source paper's criterion for \(X=\ell_p\) and \(X=c_0\), the sequence
+\((T_n(\omega))\) is universal, equivalently weakly mixing, iff there is an
+increasing sequence \(n_i\) such that for every fixed \(j\ge0\),
+\[
+  \prod_{l=1}^{n_i+j}
+  \left|\varepsilon_l(\tau^{n_i+j-l}\omega)\right|
+  \longrightarrow \infty.
+\]
+It is mixing iff the same product tends to \(\infty\) along the full sequence
+\(n\).
+
+\section*{Proof Intuition}
+
+In the balanced doubling-map case the variables
+\[
+  \xi_l(\omega)=2\one_{A_1}(\tau^l\omega)-1
+\]
+are independent Rademacher variables.  The logarithm of the product controlling
+universality is
+\[
+  V_n(\omega)=d_n+\frac12\sum_{k=1}^{n} b_k \xi_{n-k}(\omega),
+  \qquad b_k=\log\left(1+\frac2k\right),
+\]
+where \(d_n\) is bounded and converges.  Since \(b_k\sim 2/k\), the coefficients
+are square summable but not summable.  Thus the associated two-sided stationary
+Rademacher series converges, is ergodic under the shift, and has unbounded
+support in both directions.  Ergodicity forces arbitrarily large positive and
+negative values with positive frequency.  A short tail estimate transfers this
+back to the one-sided finite sums \(V_n\).
+
+Consequently \(V_n\) has \(\limsup V_n=+\infty\) and
+\(\liminf V_n=-\infty\) almost surely.  The positive limsup gives the
+subsequence required for universality.  The negative liminf prevents mixing.
+
+\section*{The Result}
+
+\begin{theorem}
+\label{thm:main}
+In the balanced doubling-map setup above, for \(X=\ell_p\),
+\(1\le p<\infty\), and for \(X=c_0\), the random product sequence
+\((T_n(\omega))_{n\ge1}\) is universal and weakly mixing for Lebesgue-almost
+every \(\omega\in\T\).  It is not mixing for Lebesgue-almost every
+\(\omega\in\T\).
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  X_l(\omega)=\one_{A_1}(\tau^l\omega), \qquad
+  \xi_l(\omega)=2X_l(\omega)-1 .
+\]
+Under the binary coding of the doubling map, the \(\xi_l\)'s are independent
+Rademacher variables.  Put
+\[
+  b_k=\log\left(1+\frac2k\right), \qquad
+  V_n(\omega)=
+  \log\prod_{l=1}^{n}
+  \left|\varepsilon_l(\tau^{n-l}\omega)\right|.
+\]
+The computation in the source paper gives
+\[
+  V_n
+  =
+  -\log(n+1)+\sum_{k=1}^{n} b_k X_{n-k}
+  =
+  d_n+\frac12\sum_{k=1}^{n} b_k \xi_{n-k},
+\]
+where
+\[
+  d_n=-\log(n+1)+\frac12\sum_{k=1}^{n} b_k
+      =-\log(n+1)+\frac12\log\frac{(n+1)(n+2)}2
+      \longrightarrow -\frac12\log 2 .
+\]
+
+We first prove
+\[
+  \limsup_{n\to\infty} V_n=+\infty,
+  \qquad
+  \liminf_{n\to\infty} V_n=-\infty
+  \quad\text{almost surely.}
+\]
+Work for the moment on the two-sided Bernoulli shift
+\((\{-1,1\}^{\mathbb Z},\nu,\sigma)\), and denote the coordinates again by
+\(\xi_j\).  Since \(\sum b_k^2<\infty\), the Rademacher series
+\[
+  Y_n=d+\frac12\sum_{k=1}^{\infty} b_k \xi_{n-k},
+  \qquad d=-\frac12\log2,
+\]
+converges almost surely and in \(L^2\).  The process \(Y_n=Y_0\circ\sigma^n\)
+is stationary and ergodic.
+
+The law of \(Y_0\) has unbounded support above and below.  Indeed,
+\(\sum b_k=\infty\).  Given \(M>0\), choose \(K\) so large that
+\[
+  d+\frac12\sum_{k=1}^{K}b_k > M+L
+\]
+for some \(L\) with
+\[
+  \nu\left\{\frac12\sum_{k>K}b_k\xi_{-k}>-L\right\}>0.
+\]
+On the positive-probability event where
+\(\xi_{-1}=\cdots=\xi_{-K}=1\) and the tail is larger than \(-L\), one has
+\(Y_0>M\).  The lower tail is identical, using
+\(\xi_{-1}=\cdots=\xi_{-K}=-1\).  Hence
+\[
+  \nu(Y_0>M)>0,\qquad \nu(Y_0<-M)>0
+  \quad (M>0).
+\]
+By Birkhoff's ergodic theorem, for almost every two-sided sequence the sets
+\(\{n:Y_n>M\}\) and \(\{n:Y_n<-M\}\) have positive lower frequency.
+
+It remains to transfer this statement from \(Y_n\) to \(V_n\).  On the
+two-sided extension,
+\[
+  Y_n-V_n
+  =
+  (d-d_n)+\frac12\sum_{r=1}^{\infty}b_{n+r}\xi_{-r}.
+\]
+Therefore
+\[
+  \E |Y_n-V_n|^2
+  \le C|d-d_n|^2+C\sum_{r=1}^{\infty}b_{n+r}^2
+  \le \frac{C'}{n}.
+\]
+Consequently
+\[
+  \E\left[\frac1N\sum_{n=1}^{N}|Y_n-V_n|^2\right]
+  \le C''\frac{\log N}{N}\longrightarrow0.
+\]
+Applying this estimate along dyadic \(N\)'s and using Borel--Cantelli gives
+\[
+  \frac1N\sum_{n=1}^{N}|Y_n-V_n|^2\longrightarrow0
+  \quad\text{almost surely}.
+\]
+Thus, for every fixed \(a>0\), the set of \(n\) such that
+\(|Y_n-V_n|>a\) has zero asymptotic density.  Combining this zero-density
+exceptional set with the positive-frequency visits of \(Y_n\) above \(M+1\)
+and below \(-M-1\), we obtain
+\[
+  \limsup_{n\to\infty}V_n=+\infty,
+  \qquad
+  \liminf_{n\to\infty}V_n=-\infty
+\]
+for almost every two-sided sequence.  Since this assertion depends only on
+the nonnegative coordinates, it holds for almost every point of the original
+one-sided doubling system.
+
+Choose an increasing sequence \(n_i\) such that \(V_{n_i}\to+\infty\).  For
+each fixed \(j\ge0\), the source criterion needs \(V_{n_i+j}\to+\infty\).  This
+follows because the drop from \(V_n\) to \(V_{n+j}\) is bounded below by a
+constant depending only on \(j\).  Indeed, using the formula
+\[
+  V_n=-\log(n+1)+\sum_{k=1}^{n}b_k X_{n-k}
+\]
+and the monotonicity of \(b_k\),
+\[
+\begin{aligned}
+  V_{n+j}-V_n
+  &\ge -\log\frac{n+j+1}{n+1}
+      -\sum_{k=1}^{n}(b_k-b_{k+j})X_{n-k}  \\
+  &\ge -\log(j+1)-\sum_{k=1}^{\infty}(b_k-b_{k+j})  \\
+  &= -\log(j+1)-\sum_{k=1}^{j}b_k .
+\end{aligned}
+\]
+Therefore \(V_{n_i+j}\to+\infty\) for every fixed \(j\ge0\).  By the source
+criterion, \((T_n(\omega))\) is universal and weakly mixing almost surely.
+
+On the other hand, \(\liminf V_n=-\infty\) implies in particular that
+\(V_n\) does not tend to \(+\infty\) along the full sequence.  The source
+mixing criterion therefore shows that \((T_n(\omega))\) is not mixing almost
+surely.
+\end{proof}
+
+\section*{Verification and Novelty Check}
+
+The proof uses the source paper's exact universality/mixing criteria for
+\(\ell_p\) and \(c_0\), the binary independence of the doubling map already
+identified in the source, and standard facts about square-summable Rademacher
+series and ergodic stationary processes.
+
+Local run indexes were searched for arXiv:2511.19161, random products of
+weighted shifts, balanced doubling, Nörlund sums, and related terms; no
+duplicate packet was found.  External web searches on July 3, 2026 for the
+arXiv id, the exact title, the exact balanced-case phrase, and combinations of
+``Norlund'', ``doubling map'', ``weighted shifts'', and ``universal'' did not
+surface a separate answer.  The arXiv page for \cite{Gillet} records version 2
+from December 15, 2025 and its abstract describes criteria plus examples, not
+the balanced-case solution proved here.
+
+\section*{Human Review Recommendation}
+
+This should be reviewed as a full answer to the specific balanced
+doubling-map case for \(X=\ell_p\) and \(X=c_0\).  The main proof point to
+audit is the transfer from the two-sided stationary comparison process to the
+finite one-sided sums \(V_n\), especially the density-zero estimate for
+\(|Y_n-V_n|>a\).  The conclusion does not claim to settle balanced cases for
+arbitrary ergodic systems or arbitrary partitions.
+
+\begin{thebibliography}{9}
+
+\bibitem{Gillet}
+V. Gillet,
+\emph{Linear dynamics of random products of weighted shifts},
+arXiv:2511.19161, 2025.
+
+\end{thebibliography}
+
+\end{document}

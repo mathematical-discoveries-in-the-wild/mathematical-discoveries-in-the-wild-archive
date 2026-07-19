@@ -1,0 +1,231 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\lip}{\operatorname{lip}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathcal F}
+\newcommand{\eps}{\varepsilon}
+
+\title{A Local-Slope ACUG Transfer Theorem for the Graph Embedding Question}
+\author{Agent lane 19}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is M. Jung, C. Petitjean, A. Prochazka, A. Quilis,
+\emph{Affine Approximation in Finite Nagata Dimension and Applications to
+Lipschitz-free spaces}, arXiv:2606.11723.
+Question 1 on page 34 asks:
+\begin{quote}
+Let \(M\) be a compact metric space admitting a superreflexive ACUG structure.
+Does \(M\) admit a bi-Lipschitz embedding into a compact quasiconvex metric
+space that also carries a superreflexive ACUG structure?
+\end{quote}
+
+The same paper constructs, for every metric space \(M\) and every
+\(\eps>0\), a graph space \(G_\eps(M)\) into which \(M\) embeds isometrically
+and which is compact when \(M\) is compact and \((1+\eps)\)-quasiconvex.
+The issue is whether ACUG structure transfers to \(G_\eps(M)\).
+
+\section*{Proof Intuition}
+
+An ACUG structure controls approximants along rectifiable curves already
+present in \(M\).  The graph \(G_\eps(M)\), however, adds many new intervals
+\([x,y]\) between points of \(M\).  On a short new edge, the derivative of any
+extension must at least see the secant quotient
+\[
+   \frac{|g(x)-g(y)|}{d(x,y)}.
+\]
+Thus ordinary upper-gradient control on \(M\) is not enough by itself: it may
+say nothing about secants between nearby points not joined by curves inside
+\(M\).
+
+The following theorem proves that this is the only obstruction for the graph
+method.  If the ACUG approximants also come with a linear continuous majorant
+for small secants, then one extends approximants over the new graph edges,
+uses the secant majorant on short edges, and uses an ordinary one-dimensional
+derivative on long edges.  The resulting majorant is continuous on the graph
+and remains superreflexive because only finite Hilbert sums of the original
+superreflexive model are added.
+
+\begin{definition}[local-slope ACUG]
+Let \(M\) be compact and \(X\) a Banach space.  We say that \(M\) has a
+local-slope ACUG \(X\)-structure if there is \(C_0\geq 1\) such that for every
+\(\eta>0\) there are a linear subspace \(H_\eta\subset \Lip(M)\) and a linear
+map
+\[
+   \Lambda_\eta:H_\eta\longrightarrow C(M,X^*)
+\]
+with the following properties.
+\begin{enumerate}[label=(\roman*)]
+\item For every \(f\in \Lip(M)\) with \(\Lip(f)\leq 1\), there is
+      \(g\in H_\eta\) such that
+      \[
+        \Lip(g)\le C_0,\qquad \|f-g\|_\infty\le \eta,\qquad
+        \|\Lambda_\eta g\|_\infty\le C_0 .
+      \]
+\item For every \(g\in H_\eta\), the function
+      \(x\mapsto \|\Lambda_\eta g(x)\|\) is an upper gradient of \(g\) on
+      \(M\).
+\item For every \(g\in H_\eta\) and all \(x,y\in M\) with
+      \(0<d(x,y)\le \eta\),
+      \[
+        \frac{|g(x)-g(y)|}{d(x,y)}
+        \le
+        \max\{\|\Lambda_\eta g(x)\|,\|\Lambda_\eta g(y)\|\}.
+      \]
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+Let \(M\) be a compact metric space with a local-slope ACUG \(X\)-structure,
+where \(X\) is superreflexive.  Then for every \(\eps>0\), the graph space
+\(G_\eps(M)\) of Jung--Petitjean--Prochazka--Quilis admits an ACUG structure
+modeled on a superreflexive Banach space.  Consequently \(M\) embeds
+isometrically into a compact \((1+\eps)\)-quasiconvex metric space carrying a
+superreflexive ACUG structure.
+\end{theorem}
+
+\begin{proof}
+Fix \(\eps>0\), and let \(G=G_\eps(M)\).  By Proposition 5.1 of the source
+paper, \(G\) is compact, \((1+\eps)\)-quasiconvex, and contains an isometric
+copy of \(M\).
+
+It remains to prove that \(G\) has an ACUG structure.  Let
+\(\alpha>0\) be an approximation tolerance.  Choose
+\(\eta>0\) so small that \((2C_0+4)\eta<\alpha\), and take
+\((H,\Lambda)=(H_\eta,\Lambda_\eta)\) from the local-slope ACUG structure of
+\(M\).  We construct a subspace \(\widetilde H\subset\Lip(G)\) and a linear
+operator
+\[
+   \Psi:\widetilde H\longrightarrow C(G,Y^*)
+       \quad\text{where}\quad
+   Y^*=(X^*\oplus X^*\oplus \R)_2 .
+\]
+The predual model \(Y=(X\oplus X\oplus\R)_2\) is superreflexive because
+finite Hilbert sums preserve superreflexivity.
+
+The elements of \(\widetilde H\) are functions \(u\in\Lip(G)\) satisfying the
+following linear conditions.  First \(u|_M\in H\).  On each edge
+\([x,y]\subset G\setminus M\) with \(d(x,y)\le \eta\), \(u\) is the fixed
+linear smoothing of the endpoint data \(u(x),u(y)\): it is constant in small
+endpoint collars, is \(C^1\) on the edge interior, and
+\[
+   |u'(p)|\le 4\,\frac{|u(x)-u(y)|}{d(x,y)}
+   \quad(p\in (x,y)).
+\]
+The smoothing is chosen once and for all.  Its derivative is supported in the
+middle half of the edge.  On each edge with \(d(x,y)>\eta\), \(u\) is \(C^1\)
+on the edge interior and is constant on endpoint collars of length \(\eta/4\).
+These requirements define a linear subspace.
+
+For \(h=u|_M\), define \(\Psi u\) as follows.  On \(M\), set
+\[
+   \Psi u(x)=(4\Lambda h(x),\,4\Lambda h(x),\,0).
+\]
+On a short edge \([x,y]\), set the third coordinate to \(0\).  The first two
+coordinates are a fixed continuous interpolation which equals
+\((4\Lambda h(x),4\Lambda h(x))\) near \(x\), equals
+\((4\Lambda h(x),4\Lambda h(y))\) on the middle half of the edge, and equals
+\((4\Lambda h(y),4\Lambda h(y))\) near \(y\).  On a long edge, use the same
+endpoint interpolation in the first two coordinates and put the actual
+one-dimensional derivative \(u'\) in the third coordinate.  The endpoint
+collars make \(u'\to0\) at vertices.  Since \(\Lambda h\) is continuous on
+compact \(M\), the resulting \(\Psi u\) is continuous on \(G\).  The definition
+is linear in \(u\).
+
+We next check upper-gradient domination.  On portions of curves lying in
+\(M\), the norm of \(\Psi u\) dominates
+\(\|\Lambda h\|\), hence dominates variation by the local-slope ACUG
+hypothesis.  On a long edge, the third coordinate is \(u'\), so the norm of
+\(\Psi u\) dominates the one-dimensional metric derivative of \(u\).  On a
+short edge, \(u'\) is supported where
+\[
+   \Psi u=(4\Lambda h(x),4\Lambda h(y),0),
+\]
+and therefore
+\[
+   \|\Psi u\|
+   \ge 4\max\{\|\Lambda h(x)\|,\|\Lambda h(y)\|\}
+   \ge 4\,\frac{|h(x)-h(y)|}{d(x,y)}
+   \ge |u'|.
+\]
+Thus the pointwise local Lipschitz constant of \(u\) on \(G\) is bounded by
+\(\|\Psi u\|\).  By the standard local-Lipschitz-constant upper-gradient
+lemma used in the source paper, \(\|\Psi u\|\) is an upper gradient of \(u\).
+
+It remains to verify approximation.  Let \(F\in\Lip(G)\) with \(\Lip(F)\le1\).
+Choose \(h\in H\) such that \(\Lip(h)\le C_0\),
+\(\|F|_M-h\|_\infty\le\eta\), and
+\(\|\Lambda h\|_\infty\le C_0\).  Extend \(h\) to a function
+\(\widetilde h\in\widetilde H\) as follows.
+
+On each short edge \([x,y]\) with \(d(x,y)\le\eta\), use the fixed smoothing of
+the endpoint values \(h(x),h(y)\).  Then every point of the edge is within
+\(\eta/2\) of an endpoint, and the preceding derivative bound gives
+\[
+   |\widetilde h(p)-F(p)|\le (2C_0+2)\eta .
+\]
+On each long edge, keep \(\widetilde h=h(x)\) and \(\widetilde h=h(y)\) on
+the endpoint collars, choose a partition of the middle with mesh between
+\(\eta/4\) and \(\eta/2\), prescribe the values of \(F\) at the partition
+points, and smooth linearly between consecutive values.  Exactly as in the
+proof of Proposition 5.1's purely unrectifiable case in the source paper, this
+gives
+\[
+   \|\widetilde h-F\|_\infty\le 4\eta,\qquad
+   \Lip(\widetilde h)\le 8+2C_0 .
+\]
+Increasing the structural constant once, independent of \(\alpha\), we have
+\[
+   \Lip(\widetilde h)\le C',\qquad
+   \|\Psi\widetilde h\|_\infty\le C',\qquad
+   \|\widetilde h-F\|_\infty\le \alpha .
+\]
+This is precisely an ACUG \(Y\)-structure on \(G\).
+\end{proof}
+
+\section*{Verification and Scope}
+
+The theorem is a partial answer to the source question.  It proves the graph
+embedding conclusion under a stronger hypothesis than ordinary ACUG.  The
+strengthening is not cosmetic: it controls the small secants that become
+derivatives on the new edges of \(G_\eps(M)\).
+
+The full source question would follow if every compact superreflexive ACUG
+space admitted this local-slope upgrade, perhaps after changing the
+approximating subspaces.  No proof of that upgrade is claimed here.
+
+\section*{Novelty Check}
+
+Local repository indexes contained only one previous attempt for arXiv:2606.11723,
+which triaged the broad ACUG embedding question and did not promote a result.
+Web searches on June 20, 2026 for exact ACUG embedding phrases found the source
+paper arXiv:2606.11723 and the background paper Aliaga--Pernecka--Quero
+arXiv:2411.15107, but no later answer to Question 1.
+
+\section*{References}
+
+\begin{itemize}
+\item M. Jung, C. Petitjean, A. Prochazka, A. Quilis,
+\emph{Affine Approximation in Finite Nagata Dimension and Applications to
+Lipschitz-free spaces}, arXiv:2606.11723.
+\item R. J. Aliaga, E. Pernecka, A. Quero,
+\emph{Pelczynski's property (V*) in Lipschitz-free spaces}, arXiv:2411.15107.
+\end{itemize}
+
+\end{document}

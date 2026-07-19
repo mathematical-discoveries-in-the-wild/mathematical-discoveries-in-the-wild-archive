@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\D}{\mathsf D}
+\newcommand{\Lam}{\mathsf{La}}
+\newcommand{\WB}{\mathsf{WB}}
+\newcommand{\symdiff}{\triangle}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Diamonds Do Not Embed Uniformly into Lamplighters on Weighted Binary Trees}
+\author{Automatic math-discovery packet}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is Charlotte Melby and Beata Randrianantoanina,
+\emph{Bi-Lipschitz embedding properties of lamplighter graphs on weighted and
+unweighted trees}, arXiv:2509.25421. After proving that diamonds do not embed
+uniformly into lamplighter graphs on the subdivided trees \(W_{\theta,n}\) for
+\(\theta\geq 3\), the authors ask whether the same theorem is true for the
+weighted complete binary trees:
+
+\begin{quote}
+We do not know whether Theorem 1.8 is true for the sequence of lamplighter
+graphs on the weighted complete binary trees
+\((\Lam(\WB_{\theta,n}))_n\), for all or some \(\theta\geq 3\).
+\end{quote}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The source paper's weighted-tree follow-up question, page 5 of the
+arXiv PDF.}
+\end{figure}
+
+\section*{Definitions}
+
+Let \(\D_k\) denote the \(k\)-th diamond graph, with graph diameter \(2^k\).
+For an integer \(\theta\geq 2\), the weighted complete binary tree
+\(\WB_{\theta,n}\) is the depth-\(n\) complete binary tree in which every edge
+whose lower endpoint has level \(j\) has weight \(\theta^{n-j}\). Thus the two
+top edges have weight \(\theta^{n-1}\), and each principal subtree below a top
+edge is isometric to \(\WB_{\theta,n-1}\).
+
+For a finite weighted tree \(T\), the lamplighter metric is
+\[
+ d_{\Lam(T)}((A,x),(B,y))
+ =
+ \operatorname{TSP}_T(x,A\symdiff B,y)+|A\symdiff B|,
+\]
+where \(A,B\subseteq V(T)\), \(x,y\in V(T)\), and
+\(\operatorname{TSP}_T(x,S,y)\) is the shortest weighted walk starting at \(x\),
+ending at \(y\), and visiting every vertex of \(S\).
+
+\section*{Proof Intuition}
+
+The subdivided trees \(W_{\theta,n}\) have many vertices along a long top-scale
+edge, so the source paper needs a delicate localization argument inside a long
+path. The weighted trees have no such interior vertices. This makes the top
+edge a rigid cut.
+
+If two lamplighter states are closer than the weight of a tree edge \(e\), then
+they cannot be on different sides of \(e\), and they cannot differ by any lamp
+on the other side of \(e\). Hence a connected graph whose edges all map below
+that scale is frozen with respect to the cut \(e\). Applied to the two top
+edges of \(\WB_{\theta,n}\), a minimal-depth diamond embedding must have some
+diamond edge whose image has length at least \(\theta^{n-1}\).
+
+But when \(\theta\geq 3\), the whole lamplighter graph has diameter at most a
+constant times \(\theta^n\). The image of the two endpoints of \(\D_k\) then
+forces \(2^k\lesssim D\theta\), where \(D\) is the distortion. Thus \(k\) is
+bounded for each fixed \(D\), which rules out equi-bi-Lipschitz embeddings of
+the entire diamond sequence.
+
+\section*{Main Theorem}
+
+\begin{theorem}
+\label{thm:weighted-no-diamonds}
+For every integer \(\theta\geq 3\), the sequence of diamond graphs
+\((\D_k)_{k\geq 1}\) does not equi-bi-Lipschitzly embed into the sequence
+\((\Lam(\WB_{\theta,n}))_{n\geq 1}\).
+\end{theorem}
+
+\begin{lemma}[Diameter bound]
+\label{lem:diameter}
+For every \(\theta\geq 3\) and \(n\geq 1\),
+\[
+  \diam \Lam(\WB_{\theta,n}) \leq 6\theta^n .
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(T=\WB_{\theta,n}\). In a tree, a walk visiting any prescribed lamp
+difference set never needs more than twice the total edge weight of \(T\).
+Therefore
+\[
+  \diam\Lam(T)
+  \leq 2\sum_{j=1}^n 2^j\theta^{n-j} + (2^{n+1}-1).
+\]
+Since \(\theta\geq 3\),
+\[
+  \sum_{j=1}^n 2^j\theta^{n-j}
+  \leq \theta^n\sum_{j=1}^{\infty}\left(\frac2\theta\right)^j
+  =
+  \frac{2}{\theta-2}\theta^n
+  \leq 2\theta^n,
+\]
+and \(2^{n+1}-1\leq 2\theta^n\). Hence
+\[
+  \diam\Lam(T)\leq 4\theta^n+2\theta^n=6\theta^n .
+\]
+\end{proof}
+
+\begin{lemma}[Top-edge freezing]
+\label{lem:freezing}
+Let \(T=\WB_{\theta,n}\), \(n\geq 1\), and let \(e\) be one of the two top
+edges. Removing \(e\) separates \(T\) into the principal subtree \(T_e\) below
+\(e\) and its complement. If two lamplighter states
+\((A,x),(B,y)\in\Lam(T)\) satisfy
+\[
+  d_{\Lam(T)}((A,x),(B,y)) < \theta^{n-1},
+\]
+then \(x\) and \(y\) lie on the same side of \(e\). Moreover, if they lie
+outside \(T_e\), then \(A\cap T_e=B\cap T_e\), while if they lie inside
+\(T_e\), then \(A\setminus T_e=B\setminus T_e\).
+\end{lemma}
+
+\begin{proof}
+The edge \(e\) has weight \(\theta^{n-1}\). Any weighted walk from one side of
+\(e\) to the other must traverse \(e\), so it has length at least
+\(\theta^{n-1}\). Thus the lamplighter positions cannot be on different sides.
+If the positions are on one side but \(A\symdiff B\) contains a vertex on the
+other side, any walk that visits the changed lamp must also traverse \(e\),
+again giving length at least \(\theta^{n-1}\). This proves the claim.
+\end{proof}
+
+\begin{lemma}[Minimal-depth lower scale]
+\label{lem:minimal-depth}
+Fix \(D\geq 1\), \(k\geq 1\), and \(\theta\geq 3\). Suppose \(n\) is minimal
+among all depths for which there is a \(D\)-bi-Lipschitz embedding
+\(\phi:\D_k\to \Lam(\WB_{\theta,n})\). If \(\lambda>0\) is a scaling factor for
+\(\phi\), so that
+\[
+  \lambda d_{\D}(u,v)
+  \leq d_{\Lam(\WB_{\theta,n})}(\phi(u),\phi(v))
+  \leq D\lambda d_{\D}(u,v),
+\]
+then
+\[
+  D\lambda \geq \theta^{n-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+Assume instead that \(D\lambda<\theta^{n-1}\). Since every edge of \(\D_k\)
+has length \(1\), adjacent vertices of \(\D_k\) map to lamplighter states at
+distance \(<\theta^{n-1}\).
+
+Apply Lemma~\ref{lem:freezing} to each of the two top edges of
+\(\WB_{\theta,n}\). Because \(\D_k\) is connected, for each top edge the side
+containing the lamplighter position is constant throughout \(\phi(\D_k)\).
+
+If all lamplighter positions lie in one principal subtree \(T_e\), then
+Lemma~\ref{lem:freezing} also says that the lamp configuration outside \(T_e\)
+is constant over the image. Toggling this fixed outside set is an isometry of
+the lamplighter graph, since symmetric differences are unchanged. After this
+isometry the image lies in \(\Lam(T_e)\). But \(T_e\) is isometric to
+\(\WB_{\theta,n-1}\), contradicting the minimality of \(n\).
+
+The only remaining possibility is that all lamplighter positions lie outside
+both principal subtrees, hence at the root. Then the lamp configuration in each
+principal subtree is constant over the image. After toggling those two fixed
+lamp sets, only the root lamp can vary, so the image has at most two points.
+This is impossible for an injective bi-Lipschitz image of \(\D_k\) with
+\(k\geq 1\).
+
+Thus \(D\lambda\geq\theta^{n-1}\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:weighted-no-diamonds}]
+Suppose, toward a contradiction, that the sequence \((\D_k)\) embeds
+equi-bi-Lipschitzly into \((\Lam(\WB_{\theta,n}))\) with distortion at most
+\(D\). For each \(k\), choose \(n\) minimal among all target depths admitting
+such an embedding, and let \(\lambda\) be its scaling factor.
+
+Let \(s,t\) be the two original endpoints of \(\D_k\), so
+\(d_{\D}(s,t)=2^k\). By Lemma~\ref{lem:diameter},
+\[
+  \lambda 2^k
+  \leq d_{\Lam(\WB_{\theta,n})}(\phi(s),\phi(t))
+  \leq 6\theta^n .
+\]
+By Lemma~\ref{lem:minimal-depth}, \(\theta^{n-1}\leq D\lambda\). Combining the
+two estimates gives
+\[
+  2^k
+  \leq
+  \frac{6D\theta^n}{\theta^{n-1}}
+  =
+  6D\theta .
+\]
+For fixed \(D\) and \(\theta\), this bounds \(k\), contradicting the existence
+of uniformly distorted embeddings for all diamond levels.
+\end{proof}
+
+\section*{Verification Notes}
+
+The accompanying script \texttt{code/verify\_scale\_bounds.py} checks the elementary
+finite-sum bound
+\[
+2\sum_{j=1}^n2^j\theta^{n-j}+(2^{n+1}-1)\leq 6\theta^n
+\]
+for a finite range of \(\theta,n\), and checks the resulting threshold
+\(2^k>6D\theta\). The proof above gives the general symbolic argument.
+
+\section*{Limitations and Novelty Check}
+
+This packet answers only the second follow-up question on page 5 of the source
+paper: the no-diamonds theorem for weighted complete binary trees. It does not
+answer the separate question whether \((\Lam(W_{\theta,n}))_n\) for
+\(\theta\geq 3\) embeds into every nonsuperreflexive Banach space.
+
+The run indexes were searched for arXiv:2509.25421, lamplighter graphs,
+weighted binary trees, diamonds, and the adjacent BMSZ Problem 7.1 family. The
+only relevant prior attempt was an older stretched-tree push for arXiv:1902.07098;
+that target is answered by the present source paper and is not duplicated here.
+A bounded web search on July 18, 2026 for exact phrases involving
+``Lam(WB)'', ``weighted complete binary trees'', lamplighter graphs, and
+diamonds found the source paper but no later answer to the weighted-tree
+follow-up.
+
+\section*{References}
+
+\begin{itemize}
+\item C. Melby and B. Randrianantoanina, \emph{Bi-Lipschitz embedding
+properties of lamplighter graphs on weighted and unweighted trees},
+arXiv:2509.25421.
+\item F. Baudier, P. Motakis, T. Schlumprecht, and A. Zsak,
+\emph{On the bi-Lipschitz geometry of lamplighter graphs}, Discrete Comput.
+Geom. 66 (2021), 203--235.
+\item W. B. Johnson and G. Schechtman, \emph{Diamond graphs and
+super-reflexivity}, J. Topol. Anal. 1 (2009), 177--189.
+\end{itemize}
+
+\section*{Human Review Recommendation}
+
+Check the cut-freezing Lemma~\ref{lem:freezing} against the source paper's
+normalization of weighted lamplighter metrics. Under the stated TSP-plus-lamp
+metric, the proof is insensitive to all constants except the strict comparison
+\(D\lambda<\theta^{n-1}\), and equality is handled by the contrapositive in
+Lemma~\ref{lem:minimal-depth}.
+
+\end{document}

@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Sym}{\operatorname{Sym}}
+
+\title{A Skew-Tensor Obstruction to Removing Symmetry in a Bourgain--Brezis Estimate}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{July 18, 2026}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\section*{Source Problem}
+
+The source is Jean Van Schaftingen, \emph{Limiting Bourgain-Brezis estimates
+for systems: theme and variations}, arXiv:1311.6624 \cite{VanSchaftingen}.
+In Section 3.5, after stating the higher-order endpoint estimate on nilpotent
+homogeneous groups for symmetric horizontal \(k\)-tensors, the paper says:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+This packet answers the literal symmetry-removal question negatively: the
+displayed estimate cannot hold if \(\varphi\) is allowed to be an arbitrary
+horizontal \(k\)-tensor.  The obstruction already occurs for \(G=\R^2\), viewed
+as a step-one stratified group, and \(k=2\).
+
+\section*{Result}
+
+\begin{theorem}\label{thm:main}
+The higher-order estimate from Section 3.5 of the source paper becomes false
+if the test tensor \(\varphi\in C_c^\infty(G;\Sym^k(T_bG))\) is replaced by an
+arbitrary tensor \(\varphi\in C_c^\infty(G;\otimes^k T_bG)\).  In fact, it is
+false already for the Euclidean group \(G=\R^2\), homogeneous dimension
+\(Q=2\), and \(k=2\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The source constraint pairs \(f\) against second horizontal derivatives of
+scalar functions.  In Euclidean space these second derivatives are Hessians,
+hence symmetric bilinear forms.  Therefore a purely antisymmetric tensor field
+automatically satisfies the constraint.  If the test tensor were also allowed
+to be antisymmetric, the estimate would have to control the value of a
+critical Sobolev function at a point by its \(L^2\) gradient norm.  Logarithmic
+cutoffs show that such point control is impossible.
+
+\section*{Proof}
+
+\begin{proof}
+Work on \(G=\R^2\), whose horizontal bundle is the whole tangent bundle and
+whose homogeneous dimension is \(Q=2\).  Let
+\[
+  A=e_1\otimes e_2-e_2\otimes e_1
+\]
+be the standard nonzero antisymmetric 2-tensor.
+
+Fix a nonnegative \(\rho\in C_c^\infty(B(0,1))\) with
+\(\int_{\R^2}\rho=1\).  For \(m\ge1\), set \(r_m=e^{-2m}\) and
+\[
+  \rho_m(x)=r_m^{-2}\rho(x/r_m),\qquad f_m(x)=\rho_m(x)A .
+\]
+Then \(f_m\in C_c^\infty(\R^2;\otimes^2\R^2)\) and
+\[
+  \norm{f_m}_{L^1}=|A|\int_{\R^2}\rho_m=|A|.
+\]
+Moreover \(f_m\) satisfies the annihilation hypothesis from the higher-order
+estimate.  Indeed, for every \(\psi\in C_c^\infty(\R^2)\), the Hessian
+\(D^2\psi(x)\) is symmetric, and hence
+\[
+  \langle D^2\psi(x),A\rangle=0
+  \qquad\text{for every }x\in\R^2.
+\]
+Therefore
+\[
+  \int_{\R^2}\langle D^2\psi,f_m\rangle=0.
+\]
+
+Assume, toward a contradiction, that the source estimate remained true with
+arbitrary 2-tensor test fields.  Then there would be a constant \(C\) such
+that, for all such \(f\) satisfying the above annihilation condition and all
+\(\Phi\in C_c^\infty(\R^2;\otimes^2\R^2)\),
+\[
+  \left|\int_{\R^2}\langle \Phi,f\rangle\right|
+  \le C\norm{f}_{L^1(\R^2)}\norm{\nabla\Phi}_{L^2(\R^2)}.
+  \tag{1}
+\]
+
+Choose smooth radial cutoffs \(h_m\in C_c^\infty(B(0,2))\) with
+\[
+  h_m=1\quad\text{on }B(0,e^{-m})
+\]
+and
+\[
+  \norm{\nabla h_m}_{L^2(\R^2)}\le C_0m^{-1/2}.
+\]
+For example, smooth a standard logarithmic cutoff that equals
+\(1\) for \(r\le e^{-m}\), equals \(\log(1/r)/m\) for
+\(e^{-m}<r<1\), and equals \(0\) for \(r\ge1\).  The estimate follows from
+\[
+  \int_{e^{-m}<|x|<1}\frac{1}{m^2|x|^2}\,dx
+  =\frac{2\pi}{m}.
+\]
+
+Now set \(\Phi_m=h_mA\).  Since \(r_m=e^{-2m}<e^{-m}\), we have
+\(h_m=1\) on \(\supp\rho_m\).  Hence
+\[
+  \left|\int_{\R^2}\langle \Phi_m,f_m\rangle\right|
+  =
+  \left|\int_{\R^2} h_m(x)\rho_m(x)\langle A,A\rangle\,dx\right|
+  =
+  |A|^2.
+\]
+On the other hand,
+\[
+  \norm{\nabla\Phi_m}_{L^2}=|A|\norm{\nabla h_m}_{L^2}
+  \le |A|C_0m^{-1/2}.
+\]
+Putting \(f=f_m\) and \(\Phi=\Phi_m\) in (1) gives
+\[
+  |A|^2
+  \le C |A|^2 C_0m^{-1/2}
+\]
+for every \(m\), which is impossible as \(m\to\infty\).  Thus the estimate
+cannot hold without the symmetry restriction on \(\Phi\).
+\end{proof}
+
+\section*{Limitations}
+
+This is a counterexample to the naive or literal removal of the symmetry
+restriction on the test tensor.  It does not rule out repaired variants that
+add a separate condition annihilating or controlling antisymmetric components.
+Nor does it settle the Besov and Sobolev--Lorentz open problems stated earlier
+in the same source paper.
+
+\section*{Novelty and Verification Notes}
+
+The local registry, solution index, attempt index, and proof-gap index were
+searched for arXiv:1311.6624 and for the phrases ``symmetry assumption'',
+``symmetric tensor'', ``higher-order group estimate'', ``Chanillo Van
+Schaftingen'', and ``antisymmetric''.  No local duplicate was found; the only
+``antisymmetric'' hits were unrelated martingale and operator-space packets.
+Web searches on 2026-07-18 for the exact source sentence and close variants
+found the source paper or bibliographic mirrors, but no explicit counterexample
+to the literal symmetry-removal extension.
+
+For human review, the main interpretation issue is whether the source's
+question means precisely replacing \(\Sym^k(T_bG)\) by the full tensor bundle
+in the displayed estimate.  Under that reading, the proof above is a direct
+counterexample.
+
+\begin{thebibliography}{9}
+
+\bibitem{VanSchaftingen}
+Jean Van Schaftingen,
+\emph{Limiting Bourgain-Brezis estimates for systems: theme and variations},
+arXiv:1311.6624, 2013; J. Fixed Point Theory Appl. 15 (2014), no. 2,
+273--297.
+
+\end{thebibliography}
+
+\end{document}

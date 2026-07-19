@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ellinf}{\ell_\infty}
+\newcommand{\elltwo}{\ell_2}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\op}{\operatorname{op}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\lmax}{\lambda_{\max}}
+\newcommand{\gammatwo}{\gamma_2}
+\newcommand{\Id}{I}
+
+\title{An SDP Formula for the \texorpdfstring{$\gamma_2$}{gamma2} Norm on
+\texorpdfstring{$\ell_\infty^n\otimes \ell_2^m$}{ell-infinity tensor ell-2}}
+\author{Run \texttt{fa\_banach\_001}, lane 14}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Claimed full answer, likely valid.}
+The source paper asks, in Section 3 before introducing the mixed norm, whether
+the norm $\gamma_2$ on $\ell_\infty^n\otimes \ell_2^m$ can be computed easily as a
+standard convex optimization problem.  The answer is yes: it has a polynomial-size
+semidefinite programming formula.
+
+\section*{Source Question}
+
+The target is the following passage from Lee--Srinivasa--Junge--Romberg,
+\emph{Approximately low-rank recovery from noisy and local measurements by convex
+program}, arXiv:2110.15205, Section 3:
+\begin{quote}
+Although Lemma 3.1 also applies to $\ell_\infty^n\otimes \ell_2^m$, it has not
+been known whether the $\gamma_2$ norm on $\ell_\infty^n\otimes \ell_2^m$ can be
+computed easily as a standard convex optimization problem.
+\end{quote}
+
+The paper then uses a different tensor norm, the mixed norm, because that norm is
+shown there to have an SDP formulation.  The theorem below gives the missing SDP
+formulation for $\gamma_2$ itself.
+
+\section*{Definitions}
+
+Let $M\in\R^{m\times n}$ be viewed as an operator
+$M:\ell_1^n\to\ell_2^m$, equivalently as an element of
+$\ell_\infty^n\otimes \ell_2^m$.  Its Hilbert factorization norm is
+\[
+\gamma_2(M)=
+\inf\left\{\|A\|_{2\to2}\,\|B\|_{\ell_1^n\to\ell_2^d}:
+d\in\mathbb N,\ A:\ell_2^d\to\ell_2^m,\ B:\ell_1^n\to\ell_2^d,\ M=AB
+\right\}.
+\]
+If $B=[b_1\ \cdots\ b_n]$, then
+\[
+\|B\|_{\ell_1^n\to\ell_2^d}=\max_{1\le j\le n}\|b_j\|_2.
+\]
+
+\section*{Proof Intuition}
+
+The usual max-norm SDP for $\ell_\infty^n\otimes \ell_\infty^m$ is just a Gram
+matrix encoding of two Hilbert families.  In the present asymmetric case the
+right-hand factor is still controlled column-by-column, but the left factor is
+an operator into Euclidean space.  Thus the right Gram matrix only needs bounded
+diagonal entries, while the left Gram matrix must be bounded in Loewner order by
+$t I_m$.  Scaling the two factors balances their two bounds at the same value
+$t$, turning the product norm into a linear SDP objective.
+
+\section*{Theorem}
+
+\begin{theorem}
+For every real matrix $M\in\R^{m\times n}$,
+\[
+\gamma_2(M)=\min t
+\]
+where the minimum is taken over $t\ge0$ and symmetric matrices
+$P\in\R^{m\times m}$, $Q\in\R^{n\times n}$ satisfying
+\[
+\begin{pmatrix}
+P & M\\
+M^T & Q
+\end{pmatrix}\succeq 0,\qquad
+P\preceq t I_m,\qquad
+Q_{jj}\le t\quad(1\le j\le n).
+\]
+Equivalently,
+\[
+\gamma_2(M)=
+\inf\left\{
+\max\{\lambda_{\max}(P),\max_j Q_{jj}\}:
+\begin{pmatrix}P&M\\M^T&Q\end{pmatrix}\succeq0
+\right\}.
+\]
+In particular $\gamma_2$ on
+$\ell_\infty^n\otimes\ell_2^m$ is computable by a standard semidefinite program.
+\end{theorem}
+
+\begin{proof}
+First suppose $M=AB$, where
+$A:\ell_2^d\to\ell_2^m$ and $B:\ell_1^n\to\ell_2^d$.  Write
+$b_j=Be_j$.  Put $a=\|A\|_{2\to2}$ and
+$b=\max_j\|b_j\|_2$.  If $M\ne0$, rescale the factorization by replacing
+$A$ with $\widetilde A=(b/a)^{1/2}A$ and $B$ with
+$\widetilde B=(a/b)^{1/2}B$; if $a=0$ or $b=0$, then $M=0$ and the formula is
+trivial.  The rescaled factorization still satisfies $M=\widetilde A\widetilde
+B$, and
+\[
+\|\widetilde A\|_{2\to2}^2=ab,\qquad
+\max_j\|\widetilde B e_j\|_2^2=ab.
+\]
+Set
+\[
+P=\widetilde A\widetilde A^T,\qquad
+Q=\widetilde B^T\widetilde B .
+\]
+Then
+\[
+\begin{pmatrix}
+P&M\\M^T&Q
+\end{pmatrix}
+=
+\begin{pmatrix}
+\widetilde A\\
+\widetilde B^T
+\end{pmatrix}
+\begin{pmatrix}
+\widetilde A^T&\widetilde B
+\end{pmatrix}\succeq0,
+\]
+while $P\preceq ab\,I_m$ and $Q_{jj}\le ab$ for all $j$.  Taking the infimum
+over all factorizations gives that the SDP value is at most $\gamma_2(M)$.
+
+Conversely, suppose that $P,Q,t$ are feasible.  Since the block matrix is
+positive semidefinite, it is the Gram matrix of vectors
+$x_1,\ldots,x_m,y_1,\ldots,y_n$ in some finite-dimensional Hilbert space $H$:
+\[
+P_{ik}=\langle x_i,x_k\rangle,\qquad
+M_{ij}=\langle x_i,y_j\rangle,\qquad
+Q_{jl}=\langle y_j,y_l\rangle.
+\]
+Define $A:H\to\ell_2^m$ by
+$Ah=(\langle h,x_i\rangle)_{i=1}^m$ and define
+$B:\ell_1^n\to H$ by $Be_j=y_j$.  Then $AB=M$.  Moreover
+\[
+\|A\|_{2\to2}^2=\|AA^*\|_{2\to2}=\|P\|_{2\to2}\le t
+\]
+and
+\[
+\|B\|_{\ell_1^n\to H}=\max_j\|y_j\|=\max_j Q_{jj}^{1/2}\le t^{1/2}.
+\]
+Thus $\gamma_2(M)\le t$.  Taking the infimum over feasible triples gives the
+reverse inequality.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is finite-dimensional and uses only the standard Gram factorization
+criterion for positive semidefinite block matrices.  The SDP has variables
+$t$, $P$, and $Q$ and uses only linear matrix inequalities:
+\[
+\begin{pmatrix}P&M\\M^T&Q\end{pmatrix}\succeq0,\qquad
+tI_m-P\succeq0,\qquad Q_{jj}\le t.
+\]
+Hence it is a standard semidefinite program in the usual sense.
+
+\begin{remark}
+The formula differs from the mixed-norm SDP in the source paper exactly where
+the left Hilbert factor is measured.  The mixed norm uses a Frobenius/trace
+bound on the left Gram matrix; $\gamma_2$ uses the spectral/Loewner bound
+$P\preceq tI_m$.
+\end{remark}
+
+\section*{Limitations and Novelty Check}
+
+This packet answers only the computability question for the $\gamma_2$ norm.
+It does not claim that substituting this norm into the source paper's estimator
+automatically preserves the same statistical error analysis; that would require
+fresh entropy estimates for the corresponding SDP ball.
+
+Cheap run-index searches found no prior packet for arXiv:2110.15205 or for the
+phrases ``$\gamma_2$'', ``$\ell_\infty^n\otimes\ell_2^m$'', and semidefinite
+computability.  Web searches on 2026-06-28 for
+\texttt{gamma\_2 ell\_infty ell\_2 semidefinite programming},
+\texttt{gamma\_2 norm SDP ell\_2 ell\_infty}, and related factorization-norm
+queries found the standard max-norm/$\ell_\infty\otimes\ell_\infty$ SDP but no
+explicit formula for this asymmetric $\ell_\infty\otimes\ell_2$ case.
+
+\section*{Human Review Recommendation}
+
+Review as a short full solution to the source paper's explicit computability
+question.  The main points to check are the orientation convention for
+$\ell_\infty^n\otimes\ell_2^m$ as operators $\ell_1^n\to\ell_2^m$, and the
+balanced rescaling step converting the factorization product into one SDP
+scalar $t$.
+
+\begin{thebibliography}{9}
+\bibitem{LSJR}
+K. Lee, R. S. Srinivasa, M. Junge, and J. Romberg,
+\emph{Approximately low-rank recovery from noisy and local measurements by
+convex program}, arXiv:2110.15205.
+
+\bibitem{Srebro}
+N. Srebro, J. D. M. Rennie, and T. S. Jaakkola,
+\emph{Maximum-margin matrix factorization}, Advances in Neural Information
+Processing Systems 17, 2004.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,872 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\K}{\mathcal K}
+\newcommand{\SSing}{\mathcal S}
+\newcommand{\Iness}{\mathcal{IN}}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Cal}{\operatorname{Cal}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\Id}{I}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\sq}{\oplus}
+
+\title{Square Stability versus Hyperplane Stability in Banach Spaces\\
+\large Audit of the supplied Cuntz-pair obstruction, literature status, and new reductions}
+\author{Research report prepared from the supplied note and source paper}
+\date{22 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Albiac and Ansorena ask whether there exists a Banach space $X$ such that
+$X\cong X\oplus X$ but $X\not\cong X\oplus\F$.  The supplied note does not
+solve this problem; it proves a no-go statement for one attempted
+Gowers--Maurey spread construction.  I verify that its conclusion is correct,
+identify a small definitional gap in the displayed proof, and give a proof that
+works even under the weaker definition written in the note.  I also extend the
+obstruction from binary to every fixed finite arity and prove an address-rigidity
+result for doubly commuting Cuntz spread families.
+
+A literature search through 22 June 2026 found no published or preprint proof or
+counterexample.  In particular, the March 2026 source paper still states the
+problem as open, and a February 2026 paper still calls the hyperplane problem
+for the square-stable Kalton--Peck space $Z_2$ open.  The report develops several
+additional reductions.  The sharpest are: a $K_0$ characterization in terms of
+the rank-one idempotent; a reduction to the old Gowers--Maurey spaces $S_m$;
+a conditional even-index theorem for $Z_2$; and a realification theorem saying
+that a square-stable complex space essentially incomparable with its conjugate
+would immediately yield a real counterexample.  These observations materially
+narrow the problem, but they do not close the final gap.  New deductions in this
+report have not been peer reviewed.
+\end{abstract}
+
+\tableofcontents
+
+\section{Outcome}
+
+Let $X$ be an infinite-dimensional Banach space over $\F=\mathbb R$ or
+$\mathbb C$.  The question is
+\begin{equation}\label{eq:main-question}
+ X\cong X^2:=X\oplus X
+ \qquad\text{and}\qquad
+ X\not\cong X\oplus\F.
+\end{equation}
+The first property will be called \emph{square stability}, and the negation of
+the second is \emph{hyperplane nonstability}.
+
+The conclusions of this report are as follows.
+\begin{enumerate}[label=\textup{(\arabic*)},leftmargin=2.2em]
+\item The supplied finite-overlap obstruction is mathematically correct.  As
+written, however, its proof uses closure of the spread family under products
+and adjoints, a clause present in the standard Gowers--Maurey definition but
+omitted from the note's displayed definition.  \Cref{thm:binary-repair} repairs
+the proof without adding that clause.
+\item The obstruction extends to exact $d$-ary Cuntz spread families for every
+fixed $d\ge2$; see \Cref{thm:dary}.  It rules out an infinite reserve of fresh
+exact decompositions inside one proper family, but it does \emph{not} settle the
+original single dyadic-tree strategy proposed by Gowers and Maurey.
+\item No full answer was found in the literature.  The problem was explicitly
+open in March 2026 \cite{AlbiacAnsorena2026}; the closely related $Z_2$
+hyperplane problem was explicitly open in February 2026
+\cite{CarreraFerenczi2026}.
+\item Several rigorous routes reduce the problem to concrete operator-algebraic
+statements.  The most promising currently appear to be the dyadic
+Gowers--Maurey index-transfer problem and triangularization of Fredholm
+operators on $Z_2$.
+\end{enumerate}
+
+\clearpage
+\begin{center}
+\textbf{Source crop: definitions and Question 2.15 in arXiv:2603.07324.}
+
+\vspace{0.5em}
+\includegraphics[width=\linewidth,height=0.84\textheight,keepaspectratio,trim=0 70 0 120,clip]{figures/source_question_page_15.png}
+\end{center}
+\clearpage
+
+This packet is a \textbf{strengthened partial/audit packet}.  It supersedes the
+earlier June 14 packet, which recorded only the finite binary Cuntz-pair
+proper-set no-go.  The previous version is preserved in a dated
+\texttt{history/} subfolder, and the submitted June 23 report is preserved in a
+dated \texttt{evidence/} subfolder.  The main square-stable/hyperplane-nonstable
+question is still open.
+
+\section{Fredholm and $K$-theoretic reformulations}
+
+\subsection{The index subgroup}
+
+For a Fredholm operator $T\in\B(X)$ use the convention
+\[
+ \ind T=\dim\ker T-\codim(TX;X).
+\]
+The set of all such indices is an additive subgroup of $\Z$.
+
+\begin{proposition}\label{prop:index-subgroup}
+There is a unique $h(X)\in\N_0$ such that
+\[
+ \{\ind T:T\in\B(X)\text{ is Fredholm}\}=h(X)\Z,
+\]
+where $0\Z=\{0\}$.  Moreover, for $n\ge1$,
+\[
+ X\cong X\oplus\F^n
+ \quad\Longleftrightarrow\quad
+ n\in h(X)\N.
+\]
+In particular, $X$ is hyperplane stable if and only if a Fredholm operator on
+$X$ has index $1$ (equivalently, index $-1$).
+\end{proposition}
+
+\begin{proof}
+Fredholm indices add under composition, change sign on a parametrix, and include
+$0$, so they form a subgroup of $\Z$.  Every subgroup is $h\Z$.  If $T$ has
+index $n\ge0$, choose complements to its kernel and range.  The resulting
+finite-dimensional bookkeeping gives $X\cong X\oplus\F^n$.  Conversely, if
+$J:X\to X\oplus\F^n$ is an isomorphism and $P:X\oplus\F^n\to X$ is the
+coordinate projection, then $PJ$ is Fredholm of index $n$.
+\end{proof}
+
+Thus the problem asks for a square-stable space whose index subgroup is either
+$\{0\}$ or $d\Z$ for some $d\ge2$.
+
+\subsection{A sharp $K_0$ test}
+
+This subsection is over the complex field; an analogous statement can be made
+with real $K$-theory.  Let $q\in\B(X)$ be any rank-one idempotent.  Write
+$[q]_0,[I]_0\in K_0(\B(X))$ for their classes.
+
+\begin{theorem}[rank-one criterion]\label{thm:k0-criterion}
+Assume that $X\cong X^2$.  Then
+\[
+ X\cong X\oplus\mathbb C
+ \quad\Longleftrightarrow\quad
+ [q]_0=0\quad\text{in }K_0(\B(X)).
+\]
+Consequently, every complex solution of \eqref{eq:main-question} must satisfy
+\[
+ [I]_0=0\quad\text{but}\quad[q]_0\ne0.
+\]
+In particular, $K_0(\B(X))$ must be nontrivial even though its unit class
+vanishes.
+\end{theorem}
+
+\begin{proof}
+If $X\cong X\oplus\mathbb C$, then $I\oplus q$ and $I$ have isomorphic ranges,
+so $[q]_0=0$.
+
+Conversely, $[q]_0=0$ means that, after stabilization, there is an
+idempotent $e\in M_n(\B(X))$ for which $q\oplus e$ is equivalent to $e$.
+Equivalence of idempotents in matrix algebras over $\B(X)$ is equivalence of
+their ranges.  If $Y=\operatorname{ran}e$, this gives
+\[
+ \mathbb C\oplus Y\cong Y.
+\]
+The space $Y$ is complemented in $X^n$.  Square stability implies
+$X^n\cong X$, so, after transporting the projection, write $X\cong Y\oplus Z$.
+It follows that
+\[
+ X\oplus\mathbb C\cong (Y\oplus\mathbb C)\oplus Z
+ \cong Y\oplus Z\cong X.
+\]
+
+Finally, $X\cong X^2$ gives $[I]_0=2[I]_0$, hence $[I]_0=0$.
+\end{proof}
+
+Under square stability, the same argument gives
+\[
+ n[q]_0=0\quad\Longleftrightarrow\quad X\cong X\oplus\mathbb C^n.
+\]
+Thus $[q]_0$ has order $h(X)$ when $h(X)>0$, and infinite order when
+$h(X)=0$.  This agrees with Laustsen's Fredholm--$K$-theoretic framework
+\cite{Laustsen1999}.
+
+\begin{corollary}\label{cor:calkin-k1}
+Let $X$ be a complex Banach space with $X\cong X^2$.  If
+\[
+ K_1(\Cal(X))=0,
+ \qquad \Cal(X):=\B(X)/\K(X),
+\]
+then $X$ is not isomorphic to a hyperplane.
+\end{corollary}
+
+\begin{proof}
+The Fredholm index factors through the stable homotopy class of the invertible
+coset in $\Cal(X)$, hence through $K_1(\Cal(X))$.  If this group is zero, every
+Fredholm operator has index zero.  Apply \Cref{prop:index-subgroup}.
+\end{proof}
+
+This gives a clean construction blueprint: realize square stability by an exact
+binary Cuntz family while forcing a Calkin algebra with trivial $K_1$.  The
+known constructions achieve these two requirements separately, but no known
+construction controls both simultaneously.
+
+\subsection{Structural restrictions on a counterexample}
+
+\begin{proposition}[primary obstruction]\label{prop:primary}
+If $X$ is primary and $X\cong X^2$, then $X\cong X\oplus\F$.
+\end{proposition}
+
+\begin{proof}
+The space $X\oplus\F$ is isomorphic to a complemented subspace of $X^2$, hence
+of $X$.  Write
+\[
+ X\cong (X\oplus\F)\oplus Z.
+\]
+By primarity, either $X\oplus\F\cong X$, and there is nothing to prove, or
+$Z\cong X$.  In the latter case
+\[
+ X\cong(X\oplus\F)\oplus X\cong X^2\oplus\F\cong X\oplus\F.
+\]
+\end{proof}
+
+Kalton proved stronger results for countably primary spaces with unconditional
+bases \cite{Kalton1999}.  Thus a solution must be decidedly nonprimary.
+
+\begin{proposition}[shape of a hypothetical hyperplane]\label{prop:hyperplane-shape}
+Assume $X\cong X^2$ and let $H$ be a hyperplane of $X$.  Then
+\[
+ H\cong X\oplus H.
+\]
+Hence $X$ and $H$ complementably embed into one another.  If $X\not\cong H$,
+they form a particularly rigid failure of the Banach-space
+Schroeder--Bernstein principle.
+\end{proposition}
+
+\begin{proof}
+Pull $H$ back through an isomorphism $X\oplus X\to X$.  The inverse image is
+the kernel of a nonzero functional $(f,g)$ on $X\oplus X$.  If, say, $g\ne0$,
+splitting $X=\ker g\oplus\F$ identifies this kernel with $X\oplus\ker g$.
+All hyperplanes of $X$ are mutually isomorphic, so $\ker g\cong H$.
+\end{proof}
+
+\begin{lemma}[stable-reservoir obstruction]\label{lem:reservoir}
+If $X=Y\oplus Z$ and $Y\cong Y\oplus\F$, then $X\cong X\oplus\F$.
+\end{lemma}
+
+\begin{proof}
+$X\oplus\F\cong(Y\oplus\F)\oplus Z\cong Y\oplus Z=X$.
+\end{proof}
+
+Consequently, a counterexample contains no complemented hyperplane-stable
+space.  This eliminates the standard countable $\ell_p$- and $c_0$-sum
+stabilizations: they contain a complemented scalar $\ell_p$ or $c_0$ diagonal.
+It also explains why tensoring a hyperplane-nonstable space with a classical
+stable factor is counterproductive whenever that factor survives complementedly.
+
+\section{Audit and repair of the supplied spread argument}
+
+\subsection{The omitted clause}
+
+For infinite $A=\{a_1<a_2<\cdots\}$ and
+$B=\{b_1<b_2<\cdots\}$, the Gowers--Maurey spread $S_{A,B}$ is defined by
+$S_{A,B}e_{a_k}=e_{b_k}$ and $S_{A,B}e_n=0$ for $n\notin A$.
+
+In the standard definition \cite[Section 3]{GowersMaurey1997}, a proper family
+of spreads is
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item closed under composition and formal adjoints; and
+\item subject to the finite-overlap condition: for two distinct matrix
+positions, only finitely many family members are nonzero at both positions.
+\end{enumerate}
+The supplied note displays only (ii).  Its proof then asserts that
+$P_A=R R^*$ belongs to the family.  That is automatic from (i), but not from the
+weaker displayed definition.  Thus the proof is valid under the actual standard
+definition, while under the note's literal definition it has a small gap.
+
+The following proof removes the gap entirely.
+
+\subsection{A repaired binary theorem}
+
+Call a family \emph{weakly proper} if it satisfies only the finite-overlap
+condition.  An exact binary Cuntz spread pair is a pair $(R_0,R_1)$ of spreads
+with
+\[
+ R_i^*R_j=\delta_{ij}I,
+ \qquad R_0R_0^*+R_1R_1^*=I.
+\]
+Each $R_i$ is therefore the unique spread from all of $\N$ onto an infinite set
+$A_i$, where $\N=A_0\sqcup A_1$.
+
+\begin{theorem}[repaired supplied result]\label{thm:binary-repair}
+A weakly proper family of spreads contains only finitely many exact binary
+Cuntz pairs.
+\end{theorem}
+
+\begin{proof}
+Suppose there are infinitely many pairs.  Since a fixed unordered partition
+$\N=A_0\sqcup A_1$ gives at most two labelled pairs, there are infinitely many
+distinct unordered binary partitions.
+
+Choose three coordinates $a<b<c$.  In each partition, two of these three
+coordinates lie in one cell.  Passing to an infinite subfamily, a fixed pair,
+say $a,b$, lies in a cell $B_m$.  For binary partitions the cells $B_m$ may be
+assumed distinct: one cell determines its complement and hence the unordered
+partition.
+
+Let $R_m$ be the member of the corresponding Cuntz pair with range $B_m$.
+Define
+\[
+ r_m(t)=|B_m\cap\{1,\dots,t\}|.
+\]
+Because $R_m$ is the increasing spread from $\N$ onto $B_m$,
+\[
+ R_m e_{r_m(a)}=e_a,
+ \qquad
+ R_m e_{r_m(b)}=e_b.
+\]
+There are only $a$ possible values of $r_m(a)$ and only $b$ possible values of
+$r_m(b)$.  A second pigeonhole argument therefore gives an infinite subfamily
+on which both ranks are fixed.  Infinitely many distinct spreads are then
+nonzero at the same two distinct matrix positions
+\[
+ (a,r(a))\quad\text{and}\quad(b,r(b)),
+\]
+contradicting weak properness.
+\end{proof}
+
+This proves that the conclusion of the supplied packet is right even with its
+weaker definition.  The original projection proof is shorter if standard
+closure is restored.
+
+\subsection{Finite arity}
+
+The binary argument has a useful finite-arity extension.
+
+\begin{lemma}[partition lemma]\label{lem:partition}
+Fix $d\ge2$.  Let $\mathscr P$ be an infinite family of distinct partitions of
+$\N$ into $d$ infinite cells.  Then there exist distinct coordinates $a,b$ and
+infinitely many distinct cells, drawn from partitions in $\mathscr P$, each
+containing both $a$ and $b$.
+\end{lemma}
+
+\begin{proof}
+Induct on $d$.  The case $d=2$ is the three-coordinate argument used above.
+For general $d$, choose $d+1$ coordinates.  In every partition two lie in a
+common cell, so a fixed pair lies in a cell $C_P$ for infinitely many
+partitions.  If infinitely many $C_P$ are distinct, we are done.  Otherwise,
+pass to an infinite subfamily with one fixed cell $C$.  Removing $C$ leaves
+infinitely many distinct partitions of $\N\setminus C$ into $d-1$ infinite
+cells.  Apply the induction hypothesis.
+\end{proof}
+
+\begin{theorem}[finite-arity no-go]\label{thm:dary}
+For every fixed $d\ge2$, a weakly proper family of spreads contains only
+finitely many exact $d$-ary Cuntz spread families
+$(R_1,\dots,R_d)$ satisfying
+\[
+ R_i^*R_j=\delta_{ij}I,
+ \qquad \sum_{i=1}^dR_iR_i^*=I.
+\]
+\end{theorem}
+
+\begin{proof}
+Infinitely many such families give infinitely many distinct unordered
+$d$-cell partitions, up to the finite number $d!$ of labelings.  Apply
+\Cref{lem:partition} to obtain a fixed pair $a,b$ in infinitely many distinct
+range cells $B_m$.  Select the corresponding spread $R_m:\N\to B_m$ and fix
+the two finite-valued ranks $|B_m\cap[1,a]|$ and $|B_m\cap[1,b]|$ on an
+infinite subfamily.  This violates finite overlap exactly as in
+\Cref{thm:binary-repair}.
+\end{proof}
+
+\subsection{Address rigidity and double commutation}
+
+Under the full standard definition, properness gives an additional obstruction.
+
+\begin{proposition}[address rigidity]\label{prop:address}
+Let $\mathscr S$ be a standard proper family and let $(R_0,R_1)\subset\mathscr S$
+be an exact binary Cuntz pair.  For a word $w$ in $\{0,1\}$ put
+$R_w=R_{w_1}\cdots R_{w_n}$ and $P_w=R_wR_w^*$.  The binary address map
+\[
+ a:\N\longrightarrow\{0,1\}^{\N},
+ \qquad
+ a(x)|_n=w\ \Longleftrightarrow\ P_we_x=e_x,
+\]
+is injective.
+\end{proposition}
+
+\begin{proof}
+At every level the projections $(P_w)_{|w|=n}$ are pairwise disjoint and sum to
+$I$, so every coordinate has a unique address.  Along a branch the cylinder
+projections are distinct, since each cylinder splits into two nonzero child
+cylinders.  If distinct coordinates $x,y$ had the same address, then the
+infinitely many projections $P_{a(x)|_n}\in\mathscr S$ would all be nonzero at
+the two diagonal positions $(x,x)$ and $(y,y)$, contrary to properness.
+\end{proof}
+
+\begin{corollary}[no second doubly commuting pair]\label{cor:double-commuting}
+If a total spread $T\in\mathscr S$ commutes with every $R_i$ and $R_i^*$, then
+$T=I$.  Consequently, $\mathscr S$ cannot contain a second exact Cuntz pair
+that doubly commutes with the first one across generators.
+\end{corollary}
+
+\begin{proof}
+The commutation assumptions imply that $T$ commutes with every $P_w$.  If
+$Te_x=e_y$, then $x$ and $y$ belong to exactly the same cylinder ranges, so
+\Cref{prop:address} gives $x=y$.  Hence $T=I$.  Two members of a second exact
+pair cannot both equal $I$.
+\end{proof}
+
+Ordinary commutation without the adjoint relations is weaker and is not covered
+by this corollary.
+
+\section{What the literature currently gives}
+
+\subsection{Status as of 22 June 2026}
+
+The source paper states the question explicitly and describes it as open
+\cite[Question 2.15]{AlbiacAnsorena2026}.  Searches were made for the exact
+question, for the phrases ``isomorphic to its square'' and ``hyperplane'', for
+updates on the Gowers--Maurey $S_m$ and $H_m$ spaces, and for the hyperplane
+problem for $Z_2$.  No later proof or counterexample was found.
+
+Two independent recent checkpoints reinforce that conclusion.
+\begin{itemize}[leftmargin=1.6em]
+\item Castillo, Gonzalez and Pino state that $Z_2$ is isomorphic to its
+codimension-two subspaces while its codimension-one problem remains unknown
+\cite{CastilloGonzalezPino2025}.
+\item Carrera and Ferenczi again call the $Z_2$ hyperplane problem open in a
+February 2026 preprint \cite{CarreraFerenczi2026}.
+\end{itemize}
+Since $Z_2\cong Z_2^2$, a negative answer to its hyperplane problem would solve
+\eqref{eq:main-question} immediately.
+
+\subsection{The two original Gowers--Maurey families}
+
+Gowers and Maurey constructed two relevant families \cite{GowersMaurey1997}.
+For each $m\ge2$ there is a space $H_m$ whose finite-codimensional isomorphism
+classes are periodic modulo $m$; in particular $h(H_m)=m$.  Thus:
+\[
+ \boxed{\text{If any }H_m\text{ is square stable, the problem is solved.}}
+\]
+The square stability of these spaces is still unknown in the source paper.
+
+They also constructed spaces $S_m$ with periodic powers:
+\[
+ S_m^a\cong S_m^b\quad\Longleftrightarrow\quad a\equiv b\pmod m.
+\]
+Therefore $Y_m:=S_m^m$ is automatically square stable, since
+$S_m^{2m}\cong S_m^m$.
+
+\begin{proposition}[reduction to $S_m$]\label{prop:Sm-reduction}
+If $S_m$ is not hyperplane stable for some $m\ge2$, then $S_m^m$ solves
+\eqref{eq:main-question}.
+\end{proposition}
+
+\begin{proof}
+Only hyperplane nonstability needs proof.  Suppose $S_m^m$ were hyperplane
+stable.  Adding one copy of $S_m$ gives
+\[
+ S_m^{m+1}\oplus\F\cong S_m^{m+1}.
+\]
+But $S_m^{m+1}\cong S_m$ by periodicity, so $S_m\cong S_m\oplus\F$, a
+contradiction.
+\end{proof}
+
+Gowers and Maurey conjectured the stronger assertion $h(S_m)=0$.  Thus their
+old conjecture would answer the 2026 question at once.
+
+\section{The single-tree Gowers--Maurey route}
+
+\subsection{What the 1997 argument proves}
+
+In their ternary construction, Gowers and Maurey use right-append operators
+$S_0,S_1,S_2$ and left-prefix operators $T_0,T_1,T_2$ on the rooted ternary
+tree.  They commute, satisfy
+\[
+ S_i^*S_j=T_i^*T_j=\delta_{ij}I,
+ \qquad
+ \sum_iS_iS_i^*=\sum_iT_iT_i^*=I-P,
+\]
+where $P$ is the rank-one root projection.  Modifying the right shifts at the
+root produces an exact ternary Cuntz family and hence a space $X\cong X^3$.
+
+On an auxiliary $\ell_1$ tree space they define
+\[
+ \Phi(U)=\sum_{i=0}^2 T_iUT_i^*.
+\]
+For operators in the tree algebra, $\Phi(U)-U$ has finite rank, while
+$\Phi(U)$ is equivalent to three copies of $U$ plus a root defect.  This gives
+for a rectangular Fredholm matrix $U:Y^q\to Y^p$ the identity
+\[
+ 2\ind U=p-q.
+\]
+In particular, every scalar Fredholm operator in the auxiliary algebra has
+index zero, and no rectangular Fredholm operator exists when $p-q$ is odd.
+This is the engine behind $X\cong X^3$ but $X\not\cong X^2$.
+
+The authors then write that it is likely every Fredholm operator on the actual
+space has index zero and that a dyadic tree may yield a space isomorphic to its
+square but not to its hyperplanes \cite[Section 4.4]{GowersMaurey1997}.
+That sentence is essentially the present problem in embryonic form.
+
+\subsection{Why the supplied no-go does not stop this route}
+
+The supplied result excludes a countable reserve of fresh exact Cuntz spread
+pairs in one proper family.  The 1997 proposal does not require such a reserve:
+it asks whether one dyadic family, together with the auxiliary tree algebra,
+controls all Fredholm indices.  Thus the supplied theorem is a valid route
+obstruction, not a negative answer to the dyadic program.
+
+\subsection{The precise missing transfer}
+
+The Gowers--Maurey theorem yields a homomorphism from $\B(X)$ into a completion
+of the spread algebra modulo a seminorm-zero ideal.  A further homomorphism
+lands in an auxiliary tree quotient.  This is strong enough to detect the
+rectangular obstruction used to distinguish powers.  It is not known to retain
+the finite-dimensional kernel/cokernel defect of a Fredholm endomorphism on
+$X$.  In particular, finite-rank operators disappear in the quotient, exactly
+where the integer index is stored.
+
+A complete dyadic proof would follow from any one of the following types of
+statement.
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em]
+\item a natural morphism of extensions that sends a rank-one operator on $X$ to
+the root rank-one operator in the auxiliary tree algebra;
+\item injectivity, on the relevant $K_1$ classes, of the symbol map from the
+Calkin algebra of $X$ to the auxiliary quotient; or
+\item a direct amplification on $X$ that is simultaneously a finite-rank (or
+inessential) perturbation of the identity on the whole approximating algebra
+and doubles Fredholm index.
+\end{enumerate}
+The finite-overlap theorem explains why option (c) cannot be implemented by an
+infinite list of fresh exact spread pairs.  Options (a) and (b) remain viable.
+
+\section{The Kalton--Peck candidate $Z_2$}
+
+\subsection{Known operator structure}
+
+The Kalton--Peck space fits into a singular exact sequence
+\[
+ 0\longrightarrow\ell_2\xrightarrow{i}Z_2\xrightarrow{p}\ell_2
+ \longrightarrow0.
+\]
+It is isomorphic to its square and to its codimension-two subspaces.  Recent
+work proves, among other things, that on $Z_2$:
+\begin{itemize}[leftmargin=1.6em]
+\item strictly singular, strictly cosingular and inessential operators coincide;
+\item the product of two strictly singular operators is compact; and
+\item every semi-Fredholm operator has complemented kernel and range.
+\end{itemize}
+See \cite{CastilloGonzalezPino2025}.
+
+An operator can be represented schematically by
+\[
+ T=\begin{pmatrix}\alpha&\beta\\ \delta&\gamma\end{pmatrix}.
+\]
+If $\delta=0$, the operator is upper triangular relative to the exact sequence;
+then $\alpha,\gamma\in\B(\ell_2)$ and
+\[
+ \alpha-\gamma\in\K(\ell_2).
+\]
+This almost forces parity of the index.
+
+\subsection{A conditional parity theorem}
+
+\begin{theorem}[upper-triangular parity]\label{thm:z2-parity}
+Let $T\in\B(Z_2)$ be Fredholm.  Suppose that $T$ is an inessential (in
+particular, strictly singular) perturbation of an upper triangular operator
+\[
+ U=\begin{pmatrix}\alpha&\beta\\0&\gamma\end{pmatrix}.
+\]
+Then
+\[
+ \ind T=2\ind\alpha,
+\]
+and in particular $\ind T$ is even.
+\end{theorem}
+
+\begin{proof}
+Inessential perturbations preserve Fredholmness and index, so it suffices to
+consider $U$.  The upper triangular form gives a commutative morphism of the
+short exact sequence defining $Z_2$, with $\alpha$ on the kernel and $\gamma$
+on the quotient.  The algebraic snake sequence is
+\[
+0\to\ker\alpha\to\ker U\to\ker\gamma\to
+\operatorname{coker}\alpha\to\operatorname{coker}U\to
+\operatorname{coker}\gamma\to0.
+\]
+Since $U$ is Fredholm, $\ker\alpha$ is finite-dimensional and
+$\operatorname{coker}\gamma$ is finite-dimensional.  Hence $\gamma$ is lower
+semi-Fredholm.  The compact relation $\alpha-\gamma\in\K(\ell_2)$ implies that
+$\alpha$ is also lower semi-Fredholm; together with finite-dimensional kernel,
+$\alpha$ is Fredholm.  Compact perturbation then makes $\gamma$ Fredholm with
+$\ind\gamma=\ind\alpha$.  Taking the alternating sum of dimensions in the
+snake sequence gives
+\[
+ \ind U=\ind\alpha+\ind\gamma=2\ind\alpha.
+\]
+\end{proof}
+
+\begin{corollary}\label{cor:z2-solve}
+If every Fredholm operator on $Z_2$ is an inessential perturbation of an upper
+triangular operator, then $Z_2$ is square stable and has index subgroup $2\Z$;
+therefore it solves \eqref{eq:main-question}.
+\end{corollary}
+
+\begin{proof}
+The theorem excludes odd indices, while the known codimension-two isomorphism
+supplies an operator of index $2$.
+\end{proof}
+
+\subsection{The exact remaining corner}
+
+For every $T$, the lower-left entry can be written $\delta=pTi:\ell_2\to\ell_2$.
+The quotient map $p$ is strictly singular, so $\delta$ is strictly singular on
+$\ell_2$, hence compact.  Compactness alone is not enough for the known
+triangularization theorem.  Castillo--Gonzalez--Pino prove triangularization
+when $\delta$ has the stronger smoothing extension
+\[
+ \delta:\ell_f^*\longrightarrow\ell_f,
+\]
+in their auxiliary notation.  Proving this extra regularity for Fredholm $T$,
+or finding a weaker argument that extracts index parity directly from compact
+$\delta$, would settle the problem through $Z_2$.
+
+\section{A complex-conjugate route}
+
+A different route uses the parity forced by realification.  Recall that complex
+spaces $E$ and $F$ are \emph{essentially incomparable} when every operator in
+both cross directions is inessential.
+
+\begin{theorem}[realification parity]\label{thm:realification}
+Let $E$ be a complex Banach space such that
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $E\cong E^2$ complex-linearly; and
+\item $E$ and its complex conjugate $\overline E$ are essentially incomparable.
+\end{enumerate}
+Then the underlying real space $E_{\mathbb R}$ is square stable and every real
+Fredholm operator on it has even index.  Hence $E_{\mathbb R}$ is not
+isomorphic to a real hyperplane.
+\end{theorem}
+
+\begin{proof}
+Square stability survives restriction of scalars.  Let $T$ be a real Fredholm
+operator on $E_{\mathbb R}$.  The complexification of $E_{\mathbb R}$ is
+complex-isomorphic to $E\oplus\overline E$.  Relative to this decomposition,
+$T_{\mathbb C}$ has the form
+\[
+ T_{\mathbb C}=
+ \begin{pmatrix}A&C\\B&\overline A\end{pmatrix},
+\]
+where $B:E\to\overline E$ and $C:\overline E\to E$.  Essential
+incomparability makes the off-diagonal matrix inessential.  Therefore
+$T_{\mathbb C}$ has the same index as
+$\operatorname{diag}(A,\overline A)$.  The latter is Fredholm, so $A$ and
+$\overline A$ are Fredholm and have equal complex index.  Finally,
+\[
+ \ind_{\mathbb R}T
+ =\ind_{\mathbb C}T_{\mathbb C}
+ =\ind_{\mathbb C}A+\ind_{\mathbb C}\overline A
+ =2\ind_{\mathbb C}A.
+\]
+The equality between the real index and the complexified index follows because
+the complexification of a finite-dimensional real kernel or cokernel has the
+same dimension over $\mathbb C$.
+\end{proof}
+
+\begin{corollary}[power-periodic version]\label{cor:complex-power}
+Suppose $E^{m+1}\cong E$ for some $m\ge1$ and $E$ is essentially incomparable
+with $\overline E$.  Then the real space $(E^m)_{\mathbb R}$ solves
+\eqref{eq:main-question}.
+\end{corollary}
+
+\begin{proof}
+Finite powers preserve essential incomparability.  When $m=1$, the asserted
+square stability is exactly $E^2\cong E$.  When $m\ge2$,
+\[
+ E^{2m}=E^{m-1}\oplus E^{m+1}\cong E^{m-1}\oplus E=E^m.
+\]
+Apply \Cref{thm:realification} to $E^m$.
+\end{proof}
+
+This theorem identifies two complementary pieces already present in the
+literature but not yet in one space.
+\begin{itemize}[leftmargin=1.6em]
+\item Kalton's explicit spaces $Z_\alpha$ are not isomorphic to their complex
+conjugates for $\alpha\ne0$ \cite{Kalton1995}, and Wenzel observed that they are
+isomorphic to their squares \cite{Wenzel1997}.  What is missing is essential
+incomparability; mere nonisomorphism is not enough.
+\item Ferenczi constructed complex structures whose conjugates are totally (and
+hence essentially) incomparable \cite{Ferenczi2007}, but the underlying spaces
+are hereditarily indecomposable and therefore not square stable.
+\end{itemize}
+A construction combining the square periodicity of the first family with the
+cross-operator rigidity of the second would give a full answer by
+\Cref{thm:realification}.
+
+The theory of even real Banach spaces gives a related formulation.  An even
+space admits a complex structure while its hyperplanes do not
+\cite{FerencziGalego2007}.  Thus any square-stable even space would solve the
+problem.  Existing even examples are not known to have the required square
+stability; the real $Z_2$ is a prominent candidate
+\cite{CarreraFerenczi2026}.
+
+\section{Why several natural constructions fail}
+
+\subsection{Finite-dimensional arithmetic is not cancellative}
+
+Let $[X]$ denote the isomorphism class of $X$ in the commutative monoid of
+Banach spaces under direct sum.  The desired equations are
+\[
+ [X]=2[X],
+ \qquad [X]\ne[X]+1.
+\]
+There is no formal cancellation principle in this monoid.  The equality
+$[X]=2[X]$ by itself does not absorb the finite-dimensional class $1$; this is
+exactly why elementary Eilenberg-swindle arguments stall.
+
+\subsection{Countable sums and tensor stabilizations}
+
+An $\ell_p$-sum $(\bigoplus_nY_n)_p$ with nonzero coordinates contains a
+complemented scalar $\ell_p$ diagonal by choosing one vector and one functional
+in every coordinate.  The same holds for a $c_0$-sum.  By
+\Cref{lem:reservoir}, such a space is hyperplane stable.  Therefore taking
+countably many copies of a known hyperplane-nonstable space cannot solve the
+problem using a standard unconditional sum.
+
+Likewise, if a tensor or vector-valued construction contains a complemented
+copy of a hyperplane-stable factor, the same lemma destroys the desired
+obstruction.  A successful stabilization must be highly twisted: it must create
+$X\cong X^2$ without leaving any complemented stable reservoir.
+
+\subsection{An exact Cuntz pair is not itself an index-one operator}
+
+An exact pair gives an isomorphism $X^2\cong X$, but a single branch is an
+infinite-codimensional range in the natural tree models.  It does not supply a
+Fredholm shift with one-dimensional cokernel.  To deduce hyperplane stability
+one would need a complemented one-vector-per-level branch or another finite
+defect mechanism.  The Gowers--Maurey constructions are designed precisely to
+obstruct such complemented selections.
+
+\section{A focused research agenda}
+
+The preceding analysis leaves four concrete targets.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.2em]
+\item \textbf{Dyadic index transfer.}  Construct a morphism of extensions, or a
+$K_1$-injective symbol map, connecting the Fredholm index on the dyadic
+Gowers--Maurey space to the root-defect index in the auxiliary tree algebra.
+This would likely prove all Fredholm indices are zero.
+
+\item \textbf{$Z_2$ regularity.}  Prove that the compact corner
+$\delta=pTi$ of every Fredholm operator has enough smoothing to be removed by an
+inessential perturbation.  \Cref{thm:z2-parity} would then give index subgroup
+$2\Z$.
+
+\item \textbf{Complex-conjugate fusion.}  Produce a square- or power-periodic
+complex space essentially incomparable with its conjugate.  The realification
+in \Cref{thm:realification,cor:complex-power} would solve the problem without
+further Banach-space decomposition arguments.
+
+\item \textbf{$K$-theoretic realization.}  Construct a square-stable $X$ with
+$[I]_0=0$ and nonzero rank-one class $[q]_0$, or equivalently with trivial unit
+class but nontrivial finite-rank index obstruction.  A realization with
+$K_1(\Cal(X))=0$ and an exact lifted binary Cuntz family would be sufficient by
+\Cref{cor:calkin-k1}.
+\end{enumerate}
+
+\section{Conclusion}
+
+The supplied note contains a valid and useful no-go theorem, after either
+restoring the standard closure clause in the definition of a proper spread
+family or using the repaired rank-pigeonhole proof above.  Its method extends
+to every finite arity and yields an additional double-commutation rigidity
+phenomenon.  It does not answer Albiac--Ansorena Question 2.15, and no answer was
+found in the literature through 22 June 2026.
+
+The problem can now be phrased sharply in several equivalent or sufficient
+forms.  In the complex case, a solution must have a vanishing unit class but a
+nonvanishing rank-one class in $K_0(\B(X))$.  The old Gowers--Maurey spaces
+reduce the problem to their unresolved hyperplane conjecture.  The Kalton--Peck
+space reduces it to Fredholm triangularization and an even-index theorem.  The
+complex route reduces it to essential incomparability with the conjugate.  Each
+of these is a concrete, falsifiable target; none is presently closed.
+
+\begin{thebibliography}{99}
+
+\bibitem{AlbiacAnsorena2026}
+F.~Albiac and J.~L. Ansorena,
+\newblock \emph{Unconditional structure of Banach spaces with few operators},
+\newblock arXiv:2603.07324 (2026).
+
+\bibitem{CarreraFerenczi2026}
+W.~Cuellar Carrera and V.~Ferenczi,
+\newblock \emph{On complex structures and uniqueness of algebra norms in Banach spaces},
+\newblock arXiv:2602.05045 (2026).
+
+\bibitem{CastilloGonzalezPino2025}
+J.~M.~F. Castillo, M.~Gonzalez and R.~Pino,
+\newblock Operators on the Kalton--Peck space $Z_2$,
+\newblock \emph{Israel J. Math.} \textbf{269} (2025), 185--212.
+
+\bibitem{Ferenczi2007}
+V.~Ferenczi,
+\newblock Uniqueness of complex structure and real hereditarily indecomposable Banach spaces,
+\newblock \emph{Adv. Math.} \textbf{213} (2007), 462--488.
+
+\bibitem{FerencziGalego2007}
+V.~Ferenczi and E.~Medina Galego,
+\newblock Even infinite-dimensional real Banach spaces,
+\newblock \emph{J. Funct. Anal.} \textbf{253} (2007), 534--549.
+
+\bibitem{Gowers1994}
+W.~T. Gowers,
+\newblock A solution to Banach's hyperplane problem,
+\newblock \emph{Bull. London Math. Soc.} \textbf{26} (1994), 523--530.
+
+\bibitem{GowersMaurey1997}
+W.~T. Gowers and B.~Maurey,
+\newblock Banach spaces with small spaces of operators,
+\newblock \emph{Math. Ann.} \textbf{307} (1997), 543--568.
+
+\bibitem{Kalton1995}
+N.~J. Kalton,
+\newblock An elementary example of a Banach space not isomorphic to its complex conjugate,
+\newblock \emph{Canad. Math. Bull.} \textbf{38} (1995), 218--222.
+
+\bibitem{Kalton1999}
+N.~J. Kalton,
+\newblock A remark on Banach spaces isomorphic to their squares,
+\newblock in \emph{Function Spaces (Edwardsville, IL, 1998)}, Contemp. Math. 232,
+Amer. Math. Soc., 1999, 211--217.
+
+\bibitem{Laustsen1999}
+N.~J. Laustsen,
+\newblock $K$-theory for algebras of operators on Banach spaces,
+\newblock \emph{J. London Math. Soc.} (2) \textbf{59} (1999), 715--728.
+
+\bibitem{Wenzel1997}
+J.~Wenzel,
+\newblock A supplement to my paper on real and complex operator ideals,
+\newblock \emph{Quaest. Math.} \textbf{20} (1997), 663--665.
+
+\end{thebibliography}
+
+\end{document}

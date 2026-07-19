@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\cb}{\mathrm{cb}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{Finite Infimal Sums of \texorpdfstring{\(\lambda\)}{lambda}-Operator Space Tensor Norms}
+\author{run \texttt{fa\_banach\_001}, lane 16}
+\date{2026-06-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a partial result for Problem 1 in Chavez-Dominguez, Dimant and
+Galicer, \emph{Operator space tensor norms}, arXiv:2302.03696v1.  It gives a
+closure theorem producing new \(\lambda\)-operator-space tensor norms, but does
+not classify such norms.
+
+\section*{Source Problem}
+
+The source paper concludes with the following problem list.  Problem 1 asks for
+more examples of \(\lambda\)-o.s. tensor norms.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In the source notation, the already listed examples include the projective
+operator-space tensor norm \(\mathrm{proj}\), the Haagerup tensor norm \(h\),
+its transpose \(h^t\), and the family \(\odot^\theta\) constructed in Section
+2.6 of the source paper.
+
+\section*{Idea of the Proof}
+
+The usual Haagerup tensor norm is induced by matrix multiplication
+\((A,B)\mapsto AB\), while the transposed Haagerup tensor norm is induced by
+\((A,B)\mapsto BA\).  Instead of averaging these two products, as in the
+source's \(\odot^\theta\) family, put both products in orthogonal diagonal
+blocks:
+\[
+  (A,B)\longmapsto
+  \begin{pmatrix}
+  AB & 0\\
+  0 & BA
+  \end{pmatrix}.
+\]
+The same idea works for any finite family of \(\lambda\)-products.  Put their
+matrix products in diagonal blocks.  The \(\lambda\)-axioms are inherited by
+compressing to one block for (E1) and by permuting blocks for (E2).  On the
+dual side, the bilinear norm becomes the maximum of the original dual bilinear
+norms, which is exactly the dual norm of the operator-space infimal sum.  Thus
+finite infimal sums of \(\lambda\)-o.s. tensor norms are again
+\(\lambda\)-o.s. tensor norms.
+
+\section*{The Result}
+
+\begin{theorem}[Finite infimal-sum closure]
+Let \(N\ge 1\), and let \(\lambda^1,\ldots,\lambda^N\) be
+\(\lambda\)-o.s. tensor norms in the sense of the source paper.  Write
+\[
+  B^i_k:M_k\times M_k\longrightarrow M_{\tau_i(k)}
+\]
+for the bilinear maps defining \(\lambda^i\).  Define
+\[
+  \nu_k(A,B)=\diag
+  \big(B^1_k(A,B),\ldots,B^N_k(A,B)\big)
+  \in M_{\tau_1(k)+\cdots+\tau_N(k)} .
+\]
+Then \(\nu=(\nu_k)\) is a \(\lambda\)-o.s. tensor norm.  Moreover, for every
+pair of operator spaces \(E,F\), the induced operator-space tensor norm is the
+infimal sum
+\[
+  \lambda^1+\cdots+\lambda^N,
+\]
+meaning that at each matrix level
+\[
+  \|u\|_{\nu,n}
+  =
+  \inf\Big\{
+      \sum_{i=1}^N \|u_i\|_{\lambda^i,n}:
+      u=u_1+\cdots+u_N
+  \Big\}.
+\]
+\end{theorem}
+
+\begin{proof}
+We verify the source paper's conditions (E1), (E2), and (E3).
+
+For (E3), since each \(\lambda^i\) satisfies (E3),
+\[
+  \nu_1(1,1)=\diag(B^1_1(1,1),\ldots,B^N_1(1,1))
+\]
+is the identity matrix of the codomain, and
+\[
+  \|\nu_k(A,B)\|=\max_i\|B^i_k(A,B)\|
+  \le \Big(\max_i\|B^i_k\|\Big)\|A\|\,\|B\|.
+\]
+Hence \(\sup_k\|\nu_k\|<\infty\).
+
+For (E1), fix \(k\).  Use the (E1) witnesses for \(\lambda^1\): some \(p\),
+matrices \(S_1,T_1\), and matrices \(a_1,\ldots,a_k\in M_p\).  Let
+\[
+  S=\begin{pmatrix}S_1&0&\cdots&0\end{pmatrix},\qquad
+  T=\begin{pmatrix}T_1\\0\\\vdots\\0\end{pmatrix},
+\]
+with zeros in the remaining block columns and rows.  Then
+\[
+  S\nu_p(a_{j_1},a_{j_2})T
+  =
+  S_1B^1_p(a_{j_1},a_{j_2})T_1,
+\]
+which is the required diagonal matrix unit when \(j_1=j_2\) and zero
+otherwise.  Thus \(\nu\) satisfies (E1).
+
+For (E2), fix \(r,s\).  For each \(i\), let \(P_i\) be an (E2) matrix for
+\(\lambda^i\).  The block-diagonal matrix
+\[
+  Q=\diag(P_1,\ldots,P_N)
+\]
+has norm at most one and sends \(\nu_{r+s}\) to the block diagonal matrix
+\[
+  \diag
+  \big(B^1_r,B^1_s,B^2_r,B^2_s,\ldots,B^N_r,B^N_s\big)
+\]
+on the matrix-unit pairs appearing in (E2).  A permutation unitary reorders
+these blocks as
+\[
+  \diag
+  \big(B^1_r,\ldots,B^N_r,B^1_s,\ldots,B^N_s\big)
+  =
+  \diag(\nu_r,\nu_s).
+\]
+Multiplying \(Q\) by this unitary preserves the norm bound, giving (E2).
+
+It remains to identify the induced tensor norm.  Let
+\(\Phi:E\times F\to M_m\) be a completely bounded bilinear map.  For every
+\(k\) and \(x\in M_k(E)\), \(y\in M_k(F)\),
+\[
+  \Phi_{\nu_k}(x,y)
+  =
+  \diag
+  \big(\Phi_{B^1_k}(x,y),\ldots,\Phi_{B^N_k}(x,y)\big).
+\]
+Therefore
+\[
+  \|\Phi\|_{\cb,\nu}
+  =
+  \max_{1\le i\le N}\|\Phi\|_{\cb,\lambda^i}
+\]
+at every matrix level.  By the source paper's duality theorem for
+\(\lambda\)-tensor products, the dual of \(E\otimes_\nu F\) is the intersection
+of the duals of \(E\otimes_{\lambda^i}F\), equipped with the maximum of the
+dual norms.
+
+The dual norm of the matrix-level infimal sum
+\[
+  \inf\Big\{
+      \sum_i\|u_i\|_{\lambda^i,n}: u=\sum_i u_i
+  \Big\}
+\]
+is exactly the maximum of the corresponding dual norms.  Hence the
+matrix-level norms induced by \(\nu\) agree with the operator-space infimal
+sum of the \(\lambda^i\)'s.  Since finite infimal sums of operator-space tensor
+norms are again operator-space tensor norms, \(\nu\) is a
+\(\lambda\)-o.s. tensor norm.
+\end{proof}
+
+\begin{theorem}[Symmetrized Haagerup corollary]
+Let \(\nu=(\nu_k)_{k\ge 1}\) be the sequence of bilinear maps
+\[
+  \nu_k:M_k\times M_k\longrightarrow M_{2k},\qquad
+  \nu_k(A,B)=
+  \begin{pmatrix}
+  AB & 0\\
+  0 & BA
+  \end{pmatrix}.
+\]
+Then \(\nu\) defines a \(\lambda\)-o.s. tensor norm.  For every pair of
+operator spaces \(E,F\), the induced tensor norm on \(E\otimes F\) is
+completely isometric to the symmetrized Haagerup sum \(h+h^t\).
+\end{theorem}
+
+\begin{proof}
+Apply the finite infimal-sum closure theorem to the \(\lambda\)-products
+defined by \(AB\) and \(BA\), which induce \(h\) and \(h^t\), respectively.
+\end{proof}
+
+\section*{Verification and Limitations}
+
+The proof is purely formal from the definitions in Section 2.6 of the source
+paper and from its duality theorem for \(\lambda\)-tensor products.  No
+computation was used.
+
+The result gives a systematic finite-sum closure construction and, in
+particular, the concrete additional \(\lambda\)-o.s. tensor norm \(h+h^t\).
+It does not address the existence of spaces with W*CBAP but without CBAP, the
+accessibility questions, the full natural-norm classification, or the duality
+identity \((\backslash\min /)'=/\mathrm{proj}\backslash\).
+
+\section*{Novelty Check}
+
+I searched the run indexes for arXiv:2302.03696 and for the phrases
+\(\lambda\)-o.s. tensor norm, \(h+h^t\), symmetrized Haagerup, infimal sum,
+block diagonal, and operator space tensor norms.  I also searched the web for
+exact phrases including \texttt{"h+h\^{}t" "lambda" "operator space" tensor
+norm}, \texttt{"symmetrized Haagerup" "lambda" tensor product},
+\texttt{"lambda tensor product" "operator spaces" "direct sum"}, and
+\texttt{"operator space" "lambda tensor norm" "block diagonal"}.  No direct
+prior statement of this closure result was found in the searched material.
+
+\section*{Human Review Recommendation}
+
+Review the convention in condition (E3), where \(1\) denotes the identity of
+the codomain matrix algebra, and verify that the block-permutation argument for
+(E2) matches the source paper's indexing.  The main mathematical mechanism is
+the dual identification of the block-diagonal product with the matrix-level
+infimal sum of the original tensor norms.
+
+\begin{thebibliography}{9}
+
+\bibitem{CDDG}
+J. Alejandro Chavez-Dominguez, Veronica Dimant, and Daniel Galicer,
+\emph{Operator space tensor norms}, arXiv:2302.03696v1, 2023.
+
+\end{thebibliography}
+
+\end{document}

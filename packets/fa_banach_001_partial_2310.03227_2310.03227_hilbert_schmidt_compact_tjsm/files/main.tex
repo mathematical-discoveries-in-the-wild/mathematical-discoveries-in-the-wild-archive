@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A Compact Block-Diagonal Subcase of Tracial Joint Spectral Measures}
+\author{FA/Banach automatic math run}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target}
+
+The source is Otte Heinavaara, \emph{Tracial joint spectral measures},
+arXiv:2310.03227.  For Hermitian matrices $A,B$, the source constructs a
+positive measure $\mu_{A,B}$ on $\R^2$ satisfying
+\begin{equation}\label{eq:source}
+  \tr H(f)(xA+yB)=\int_{\R^2} f(ax+by)\,d\mu_{A,B}(a,b),
+\end{equation}
+where
+\[
+  H(f)(s)=\int_0^1 \frac{1-t}{t} f(ts)\,dt .
+\]
+Section 1.8 of the source lists as future work the ``existence and uniqueness
+of the measures $\mu_{A,B}$ for compact self-adjoint operators $A$ and $B$.''
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+We prove a compact-operator subcase: common finite-dimensional reducing blocks
+with square-summable Hilbert-Schmidt size.  This includes the important
+commuting compact Hilbert-Schmidt case, by simultaneous diagonalization.
+
+\section*{Idea Of The Proof}
+
+The finite-dimensional measure is already available on each reducing block.
+Because the blocks are square-summable in Hilbert-Schmidt norm, the block
+measures have summable second moments.  This gives local finiteness away from
+the origin, so their countable sum is a Radon measure on the punctured plane.
+The source identity then sums block by block for tests supported away from
+zero.  Uniqueness follows from the same moment-determinacy mechanism used in
+the source: after multiplying by $a^2+b^2$, one obtains a finite compactly
+supported measure whose polynomial moments are fixed.
+
+\begin{theorem}[Block compact tracial joint spectral measures]\label{thm:block}
+Let $\mathcal H=\bigoplus_{j=1}^\infty \mathcal H_j$ be an orthogonal direct
+sum of finite-dimensional Hilbert spaces.  Let
+\[
+  A=\bigoplus_{j=1}^\infty A_j,\qquad B=\bigoplus_{j=1}^\infty B_j
+\]
+be self-adjoint block-diagonal compact operators, where
+$A_j,B_j\in B(\mathcal H_j)$ are Hermitian matrices, and assume
+\begin{equation}\label{eq:hs}
+  \sum_{j=1}^\infty \bigl(\tr A_j^2+\tr B_j^2\bigr)<\infty .
+\end{equation}
+For each $j$, let $\mu_j=\mu_{A_j,B_j}$ be the finite-dimensional tracial
+joint spectral measure of the source.  Then
+\[
+  \mu_{A,B}:=\sum_{j=1}^\infty \mu_j
+\]
+defines a positive Radon measure on $\R^2\setminus\{0\}$, supported in
+$\{(a,b): |a|+|b|\le \|A\|+\|B\|\}$, with finite second moment
+\begin{equation}\label{eq:second}
+  \int_{\R^2\setminus\{0\}} (a^2+b^2)\,d\mu_{A,B}(a,b)
+  =\frac{1}{6}\sum_{j=1}^\infty \bigl(\tr A_j^2+\tr B_j^2\bigr).
+\end{equation}
+Moreover, for every bounded Borel $f:\R\to\R$ whose support is compact and
+does not contain $0$, and every $x,y\in\R$,
+\begin{equation}\label{eq:identity}
+  \tr H(f)(xA+yB)=
+  \int_{\R^2\setminus\{0\}} f(ax+by)\,d\mu_{A,B}(a,b).
+\end{equation}
+For every $p\ge 2$,
+\begin{equation}\label{eq:p}
+  \tr |xA+yB|^p
+  =p(p+1)\int_{\R^2\setminus\{0\}} |ax+by|^p\,d\mu_{A,B}(a,b).
+\end{equation}
+Finally, $\mu_{A,B}$ is unique among positive Radon measures on
+$\R^2\setminus\{0\}$ with bounded support and finite second moment satisfying
+\eqref{eq:identity} and the polynomial identities obtained from
+\eqref{eq:p} for integer $p\ge 2$.
+\end{theorem}
+
+\begin{proof}
+For a finite-dimensional Hermitian pair $(C,D)$, apply the source identity
+with $f(t)=t^2$.  Since $H(f)(t)=t^2/6$, polarization gives
+\[
+  \int_{\R^2} (ax+by)^2\,d\mu_{C,D}(a,b)
+  =\frac{1}{6}\tr(xC+yD)^2 .
+\]
+Taking $(x,y)=(1,0),(0,1)$ and adding yields
+\begin{equation}\label{eq:block-second}
+  \int_{\R^2}(a^2+b^2)\,d\mu_{C,D}(a,b)
+  =\frac{1}{6}\bigl(\tr C^2+\tr D^2\bigr).
+\end{equation}
+The source uniqueness proof also gives the support bound
+$\supp\mu_{C,D}\subseteq\{(a,b): |a|+|b|\le \|C\|+\|D\|\}$.
+
+Let $K\subset \R^2\setminus\{0\}$ be compact and put
+$\delta=\operatorname{dist}(K,0)>0$.  By \eqref{eq:block-second},
+\[
+  \sum_j \mu_j(K)
+  \le \delta^{-2}\sum_j \int_K(a^2+b^2)\,d\mu_j
+  \le \frac{1}{6\delta^2}\sum_j(\tr A_j^2+\tr B_j^2)<\infty .
+\]
+Thus $\sum_j\mu_j$ is locally finite on the punctured plane.  The same
+calculation proves the second-moment formula \eqref{eq:second}.  The support
+bound follows from $\|A_j\|\le \|A\|$ and $\|B_j\|\le \|B\|$.
+
+Now let $f$ be bounded and supported in a compact subset of
+$\R\setminus\{0\}$.  For fixed $(x,y)\ne(0,0)$, the function
+$(a,b)\mapsto f(ax+by)$ is supported in a closed subset of the bounded support
+of $\mu_{A,B}$ that stays a positive distance from the origin.  Hence the
+right side of \eqref{eq:identity} is the absolutely convergent sum of the block
+integrals.  On each block, the source identity gives
+\[
+  \tr H(f)(xA_j+yB_j)
+  =\int_{\R^2} f(ax+by)\,d\mu_j(a,b).
+\]
+Summing in $j$ proves \eqref{eq:identity}; the absolute convergence also shows
+that $H(f)(xA+yB)$ is trace class.  The case $(x,y)=(0,0)$ is immediate.
+
+For $p\ge2$, finite-dimensional source identity with $f(t)=|t|^p$ gives the
+block formula.  Since
+\[
+  \tr|xA_j+yB_j|^p\le
+  \|xA+yB\|^{p-2}\tr(xA_j+yB_j)^2
+\]
+and the right side is summable by \eqref{eq:hs}, the block traces sum
+absolutely.  Summing the block identities gives \eqref{eq:p}.
+
+It remains to justify uniqueness.  Suppose $\nu$ is another positive Radon
+measure on $\R^2\setminus\{0\}$ with bounded support and finite second moment,
+satisfying the same polynomial identities.  Define finite compactly supported
+measures
+\[
+  d\widetilde\mu=(a^2+b^2)\,d\mu_{A,B},\qquad
+  d\widetilde\nu=(a^2+b^2)\,d\nu .
+\]
+For every homogeneous polynomial $q$ of degree at least $2$, polarization of
+the identities for $(ax+by)^m$ gives
+\[
+  \int q(a,b)\,d\mu_{A,B}=\int q(a,b)\,d\nu .
+\]
+Consequently, for every polynomial $r(a,b)$,
+\[
+  \int r(a,b)\,d\widetilde\mu
+  =\int r(a,b)(a^2+b^2)\,d\mu_{A,B}
+  =\int r(a,b)(a^2+b^2)\,d\nu
+  =\int r(a,b)\,d\widetilde\nu .
+\]
+Compactly supported finite Borel measures on $\R^2$ are determined by their
+polynomial moments, so $\widetilde\mu=\widetilde\nu$.  Dividing by $a^2+b^2$
+on the punctured plane gives $\mu_{A,B}=\nu$.
+\end{proof}
+
+\begin{corollary}[Commuting compact Hilbert-Schmidt pairs]\label{cor:commuting}
+Let $A$ and $B$ be commuting compact self-adjoint Hilbert-Schmidt operators on
+a separable Hilbert space.  Then $A$ and $B$ admit a unique tracial joint
+spectral measure in the sense of Theorem~\ref{thm:block}.
+\end{corollary}
+
+\begin{proof}
+Commuting compact self-adjoint operators are simultaneously diagonalizable:
+there is an orthonormal basis in which $A=\operatorname{diag}(a_j)$ and
+$B=\operatorname{diag}(b_j)$.  The Hilbert-Schmidt assumption says
+$\sum_j(a_j^2+b_j^2)<\infty$, so Theorem~\ref{thm:block} applies with
+one-dimensional blocks.  In this case the measure is explicit:
+\[
+  \mu_{A,B}=\sum_j (t\mapsto t(a_j,b_j))_\#
+  \left(\frac{1-t}{t}\,dt\bigg|_{(0,1]}\right).
+\]
+\end{proof}
+
+\section*{Verification Notes}
+
+The script \texttt{code/verify\_commuting\_model.py} checks the normalization
+in Corollary~\ref{cor:commuting}.  For a diagonal Hilbert-Schmidt model it
+verifies
+\[
+  \int_0^1 \frac{1-t}{t}|t(xa_j+yb_j)|^p\,dt
+  =\frac{|xa_j+yb_j|^p}{p(p+1)}
+\]
+and prints the finite second-moment matrix.
+
+\section*{Limitations And Novelty Check}
+
+This is a partial result.  It does not prove existence for arbitrary compact
+self-adjoint pairs.  A natural compression proof for all Hilbert-Schmidt pairs
+would require a continuity/tightness theorem for finite-dimensional tracial
+joint spectral measures that prevents second-moment loss at the origin; that
+step is not proved here.
+
+Cheap run indexes were searched for arXiv:2310.03227 and for tracial joint
+spectral measure keywords.  The source bibliography lists the follow-up
+``Properties of Tracial Joint Spectral Measures'' as in preparation, and a
+bounded web search for that title and for compact self-adjoint tracial joint
+spectral measures did not find an available arXiv answer.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{HeinavaaraTJSM}
+O. Heinavaara, \emph{Tracial joint spectral measures}, arXiv:2310.03227,
+2023.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,467 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\UALS}{\mathrm{UALS}}
+\newcommand{\SSing}{\mathcal{SS}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\co}{\operatorname{co}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\Id}{I}
+\newcommand{\into}{\hookrightarrow}
+
+\title{Hereditary Failure of UALS:\\Audit, Literature Status, and Rigorous Reductions}
+\author{Research note prepared from the supplied solver packet}
+\date{June 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The supplied partial solution to Problem 2 of Argyros--Georgiou--Lagos--Motakis contains a decisive quantifier gap.  Ferenczi's operator theorem and Gowers' dichotomy do imply that a complex Banach space with no unconditional basic sequence contains a hereditarily indecomposable subspace all of whose subspaces are \emph{UALS-saturated}.  They do not imply that this subspace satisfies UALS, because UALS requires a finite-codimensional subspace whereas UALS-saturation only produces an arbitrary further infinite-dimensional subspace.  Thus the stated partial theorem and its corollary are not proved.
+
+I did not locate a published or preprint resolution of the original problem in a literature search through June 21, 2026.  This note records the corrected complex-scalar consequence, a sharp structural alternative for any hypothetical counterexample, a permanence lemma for complemented embeddings, a reduction through complementably minimal spaces, and a uniform complemented ``bad-pair'' criterion that would yield a full counterexample.  Candidate spaces such as Schlumprecht's space and the complementably minimal interpolation spaces $S_{p,r}$ are examined, but the available structure does not presently verify the bad-pair criterion.
+\end{abstract}
+
+\section{The problem and the two relevant notions}
+
+Throughout, a subspace is closed and infinite-dimensional.  The source paper asks the following question \cite[Problem 2]{AGLM}.
+
+\begin{problem}[Hereditary failure of UALS]\label{prob:source}
+Does there exist a Banach space none of whose subspaces satisfies the UALS property?
+\end{problem}
+
+\clearpage
+\begin{center}
+\textbf{Source crop: Problem 2 in the final remarks of arXiv:1712.07638.}
+
+\vspace{0.5em}
+\includegraphics[width=\linewidth,height=0.56\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+
+\clearpage
+This packet is a \textbf{corrected partial/audit packet}.  It replaces the
+previous active packet, preserved in \nolinkurl{history/2026_06_22_pre_audit/},
+because that packet incorrectly promoted UALS-saturation to UALS.  The
+supplied TeX and PDF audit are preserved in
+\nolinkurl{evidence/2026_06_22_uals_research_note/}.  The source problem
+remains open.
+
+The distinction between the next two definitions is the central point of the audit.
+
+\begin{definition}[UALS]\label{def:uals}
+A Banach space $X$ has the Uniform Approximation on Large Subspaces property if there is a constant $C>0$ such that the following holds.  Whenever $A\in\LL(X)$, $W\subset\LL(X)$ is convex and norm compact, and $\varepsilon>0$ satisfies
+\[
+  \forall x\in B_X\ \exists B\in W\qquad \|Ax-Bx\|\leq \varepsilon,
+\]
+there are a finite-codimensional subspace $Y\subset X$ and one $B\in W$ such that
+\[
+  \|(A-B)|_Y\|\leq C\varepsilon.
+\]
+\end{definition}
+
+\begin{definition}[UALS-saturation]\label{def:saturated}
+A Banach space $X$ is UALS-saturated if there is a constant $C>0$ such that, under the same pointwise hypothesis, for every subspace $Y\subset X$ there are a further subspace $Z\subset Y$ and one $B\in W$ such that
+\[
+  \|(A-B)|_Z\|\leq C\varepsilon.
+\]
+\end{definition}
+
+UALS implies UALS-saturation: if $F\subset X$ is finite-codimensional, then $F\cap Y$ is finite-codimensional in every subspace $Y$.  The converse is not part of the definition and cannot be inserted without a separate theorem.
+
+\section{Audit of the supplied partial result}
+
+The supplied argument uses three ingredients.
+
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em]
+\item Gowers' dichotomy: every infinite-dimensional Banach space contains either a subspace with an unconditional basis or a hereditarily indecomposable subspace \cite{Gowers,FK}.
+\item Ferenczi's theorem: if $H$ is a complex HI space and $Y\subset H$, then every operator $T:Y\to H$ has the form
+\[
+  T=\lambda I_{Y,H}+S,
+\]
+where $S$ is strictly singular \cite{Ferenczi}.
+\item Theorem 5.8 of the source paper: if every operator on $X$ is scalar-plus-strictly-singular, then $X$ is UALS-saturated \cite[Theorem 5.8]{AGLM}.
+\end{enumerate}
+
+All three inputs are being invoked in an essentially correct way.  The proof breaks only at its final sentence:
+\[
+  H\text{ is UALS-saturated}\quad\Longrightarrow\quad H\text{ has UALS}.
+\]
+No such implication was proved in the packet or in the cited source.  In fact, the two conclusions have different quantifier strength: ``a further subspace'' cannot be replaced by ``a finite-codimensional subspace.''  Consequently, the packet's partial theorem and the claimed corollary that every counterexample must be unconditionally saturated remain unproved.
+
+The following standard operator example makes the size of the gap concrete.
+
+\begin{proposition}[Strict singularity does not give cofinite smallness]\label{prop:J}
+Let $J:\ell_2\to\ell_4$ be the formal inclusion, let
+\[
+  X=\ell_2\oplus_2\ell_4,
+  \qquad
+  T(x,y)=(0,Jx).
+\]
+Then $T$ is strictly singular, but
+\[
+  \|T|_Y\|=1
+\]
+for every finite-codimensional subspace $Y\subset X$.
+\end{proposition}
+
+\begin{proof}
+The formal inclusion $J:\ell_2\to\ell_4$ is a classical strictly singular, non-compact operator; hence so is $T$.
+
+Fix a finite-codimensional $Y\subset X$ and set
+\[
+  M=Y\cap(\ell_2\oplus\{0\}),
+\]
+identified with a finite-codimensional subspace of $\ell_2$.  If $P_M$ denotes the orthogonal projection onto $M$, then
+\[
+  \|e_n-P_Me_n\|_2\longrightarrow 0,
+\]
+because $M^\perp$ is finite-dimensional and $(e_n)$ is weakly null.  After normalization, choose $u_n\in S_M$ with $\|u_n-e_n\|_2\to0$.  Since $\|J\|=1$,
+\[
+  \|Ju_n\|_4\longrightarrow \|e_n\|_4=1.
+\]
+Thus $\|T|_Y\|\geq1$, while $\|T\|=1$.
+\end{proof}
+
+A strictly singular operator does become arbitrarily small on a suitable further subspace of every given infinite-dimensional subspace.  Proposition \ref{prop:J} shows that this fact gives no control at all on finite-codimensional subspaces.  This is precisely the distinction used in the proof of Theorem 5.8 of \cite{AGLM}.
+
+\section{The corrected complex-scalar consequence}
+
+The valid conclusion of the supplied argument is stronger hereditarily but weaker at the UALS level.
+
+\begin{theorem}[Corrected reduction]\label{thm:corrected}
+Let $X$ be a complex Banach space containing no unconditional basic sequence.  Then $X$ contains a complex HI subspace $H$ such that every subspace of $H$ is UALS-saturated.
+\end{theorem}
+
+\begin{proof}
+By Gowers' dichotomy, $X$ contains an HI subspace $H$.  Every subspace $Y\subset H$ is again complex HI.  If $T\in\LL(Y)$, view $T$ as an operator from $Y$ into $H$.  Ferenczi's theorem gives
+\[
+  T=\lambda I_{Y,H}+S
+\]
+with $S:Y\to H$ strictly singular.  Since both $T$ and $\lambda I_{Y,H}$ take their values in $Y$, the range of $S$ is contained in $Y$, and $S$ is strictly singular as an operator on $Y$.  Thus every operator on $Y$ is scalar-plus-strictly-singular.  The proof of Theorem 5.8 in \cite{AGLM} works over complex scalars after replacing absolute values of scalars by moduli, and yields that $Y$ is UALS-saturated.
+\end{proof}
+
+A hypothetical complex counterexample therefore has a sharper dichotomy than the packet stated.
+
+\begin{corollary}[Two possible hereditary regimes]\label{cor:two-regimes}
+Suppose that $X$ is a complex Banach space none of whose subspaces has UALS.  Then $X$ contains a subspace $Z$ of one of the following two types.
+\begin{enumerate}[label=(\alph*),leftmargin=2.2em]
+\item $Z$ has a reflexive unconditional basis, and no subspace of $Z$ has UALS.
+\item $Z$ is HI, no subspace of $Z$ has UALS, and every subspace of $Z$ is UALS-saturated.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Apply Gowers' dichotomy to $X$.  In the HI alternative, Theorem \ref{thm:corrected} gives (b).  In the unconditional alternative, let $Z$ have an unconditional basis.  If $Z$ were non-reflexive, the classical shrinking/boundedly-complete criterion for unconditional bases would yield a copy of $\ell_1$ or $c_0$ in $Z$.  Both $\ell_1$ and $c_0$, and all of their subspaces, have UALS by \cite[Corollary 5.13]{AGLM}, contradicting the hypothesis.  Hence $Z$ is reflexive.
+\end{proof}
+
+This is the strongest conclusion obtained from the three cited inputs alone.  In particular, the HI branch is not eliminated: it becomes the problem of distinguishing UALS from UALS-saturation on spaces with very few operators.
+
+\section{Literature status}
+
+The final version of the source paper was published in 2020, with Problem \ref{prob:source} appearing in its final remarks \cite{AGLM}.  I searched the exact problem sentence, the terms ``Uniform Approximation on Large Subspaces,'' ``UALS property,'' and ``UALS-saturated,'' the DOI and citation trail of the source article, arXiv, and the publication lists of the authors.  I also checked later papers that cite the source in connection with joint spreading models and the separation of asymptotic structures, including \cite{AM,AGM,AMS,GMS}.  As of June 21, 2026, I did not locate a paper or preprint claiming either a construction answering Problem \ref{prob:source} affirmatively or a theorem answering it negatively.
+
+This is a search result rather than a proof of nonexistence in the literature.  The safe status statement is therefore:
+
+\begin{quote}
+No published or preprint resolution was located in the searches described above; the problem should still be treated as open unless a more specialized bibliographic source supplies a later answer.
+\end{quote}
+
+The later complete-separation constructions are highly relevant but do not settle UALS.  They show, for example, hereditary failure of uniqueness for certain asymptotic or joint models.  The source theorem is one-way: sufficiently uniform uniqueness implies UALS.  Its converse is false in that level of generality (spaces with very few operators can have UALS for an entirely different reason), so hereditary non-uniqueness alone does not establish hereditary failure of UALS.
+
+\section{Permanence under complemented embeddings}
+
+The following elementary observation is the main mechanism by which a single bad space can force hereditary badness.
+
+\begin{proposition}[Failure passes upward from complemented subspaces]\label{prop:complemented}
+Let $Z$ be isomorphic to a complemented subspace of a Banach space $X$.  If $Z$ fails UALS, then $X$ fails UALS.
+\end{proposition}
+
+\begin{proof}
+It is enough to treat the case $Z\subset X$ and there is a bounded projection $P:X\to Z$.  Suppose $X$ has UALS with constant $C$.  Given $A\in\LL(Z)$ and a convex compact $W\subset\LL(Z)$ satisfying the pointwise hypothesis with error $\varepsilon$, define operators on $X$ by
+\[
+  \widehat A=I_{Z,X}AP,
+  \qquad
+  \widehat B=I_{Z,X}BP\quad(B\in W).
+\]
+For $x\in B_X$ the pointwise error is at most $\varepsilon\|Px\|\leq\|P\|\varepsilon$.  UALS on $X$ gives a finite-codimensional $Y\subset X$ and $B\in W$ such that
+\[
+  \|(\widehat A-\widehat B)|_Y\|\leq C\|P\|\varepsilon.
+\]
+The intersection $Y\cap Z$ is finite-codimensional in $Z$, and on this intersection $P$ is the identity.  Hence
+\[
+  \|(A-B)|_{Y\cap Z}\|\leq C\|P\|\varepsilon.
+\]
+Thus $Z$ has UALS, a contradiction.  Isomorphic invariance follows by conjugating all operators through an isomorphism.
+\end{proof}
+
+\begin{definition}
+A Banach space $X$ is complementably minimal if every subspace $Y\subset X$ contains a further subspace $Z\subset Y$ which is isomorphic to $X$ and complemented in $X$.
+\end{definition}
+
+\begin{theorem}[Complementably minimal reduction]\label{thm:cm}
+If a complementably minimal Banach space $X$ fails UALS, then no subspace of $X$ has UALS.  Consequently, one complementably minimal non-UALS space would answer Problem \ref{prob:source} affirmatively.
+\end{theorem}
+
+\begin{proof}
+Let $Y\subset X$.  Choose $Z\subset Y$ isomorphic to $X$ and complemented in $X$.  If $P:X\to Z$ is a projection, then $P|_Y:Y\to Z$ is also a projection, so $Z$ is complemented in $Y$.  Since UALS is an isomorphic property and $X$ fails it, $Z$ fails it.  Proposition \ref{prop:complemented} now implies that $Y$ fails UALS.
+\end{proof}
+
+This reduction turns the open problem into a concrete candidate search.  Schlumprecht's space $S$ is complementably minimal, as are the superreflexive interpolation spaces $S_{p,r}$ and their duals \cite{Schlumprecht,CKKM}.  It would therefore be enough to prove UALS failure for any one of these spaces.
+
+\section{A uniform complemented bad-pair criterion}
+
+The failure examples in \cite{AGLM} are based on the incompatibility between two direct-sum norms.  The next criterion isolates exactly the amount of that structure needed inside an arbitrary ambient space.
+
+Fix $1\leq p<q\leq\infty$ and put
+\[
+  \rho=\frac1p-\frac1q>0,
+\]
+with $1/\infty=0$.  For an infinite-dimensional Banach space $U$ and $n\in\N$, set
+\[
+  E_n(U)=\Big(\bigoplus_{j=1}^{2n}U\Big)_p,
+  \qquad
+  F_n(U)=\Big(\bigoplus_{j=1}^{2n}U\Big)_q,
+  \qquad
+  V_n(U)=E_n(U)\oplus_2 F_n(U).
+\]
+
+\begin{proposition}[Canonical bad pair]\label{prop:canonical}
+For every $n$ and every infinite-dimensional $U$, there are an operator $A_n\in\LL(V_n(U))$ and a finite-dimensional compact convex set $W_n\subset\LL(V_n(U))$ such that
+\begin{align*}
+  &\forall v\in B_{V_n(U)}\ \exists B\in W_n
+       \qquad \|(A_n-B)v\|\leq n^{-\rho}, \\
+  &\forall B\in W_n\ \forall Y\subset V_n(U),\ \codim Y<\infty
+       \qquad \|(A_n-B)|_Y\|\geq \frac12.
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+Let $J_n:E_n(U)\to F_n(U)$ be the coordinate identity and define
+\[
+  A_n(x,y)=(0,J_nx).
+\]
+For $G\subset\{1,\dots,2n\}$ with $|G|=n$, let $P_G:E_n(U)\to F_n(U)$ retain only the coordinates in $G$, and put
+\[
+  B_G(x,y)=(0,P_Gx),
+  \qquad
+  W_n=\co\{B_G:|G|=n\}.
+\]
+The set $W_n$ is compact because it is the convex hull of finitely many operators.
+
+Let $x=(x_j)_{j=1}^{2n}\in E_n(U)$ with $\|x\|\leq1$, and arrange $a_j=\|x_j\|$ in decreasing order.  Choose $G$ corresponding to the $n$ largest $a_j$.  Then $a_{n+1}\leq(n+1)^{-1/p}$, and, for $q<\infty$,
+\[
+  \|(J_n-P_G)x\|_{F_n(U)}
+  \leq n^{1/q}(n+1)^{-1/p}
+  \leq n^{-\rho}.
+\]
+For $q=\infty$ the same conclusion follows from the maximum of the omitted coordinates.  This proves the pointwise estimate.
+
+Now let $B=\sum_G\lambda_GB_G\in W_n$, where $\lambda_G\geq0$ and $\sum_G\lambda_G=1$.  On the $j$th coordinate, $B$ acts with coefficient
+\[
+  \alpha_j=\sum_{G\ni j}\lambda_G.
+\]
+Since
+\[
+  \frac1{2n}\sum_{j=1}^{2n}\alpha_j=\frac12,
+\]
+there is a $j$ with $\alpha_j\leq1/2$.  Let $M_j\subset V_n(U)$ be the infinite-dimensional copy of $U$ supported in the $j$th coordinate of $E_n(U)$.  Every finite-codimensional $Y$ meets $M_j$ in an infinite-dimensional subspace.  For a unit vector $u\in Y\cap M_j$,
+\[
+  \|(A_n-B)u\|=|1-\alpha_j|\geq\frac12.
+\]
+\end{proof}
+
+\begin{theorem}[Uniform complemented bad-pair criterion]\label{thm:badpair}
+Let $X$ be a Banach space.  Assume that there is a constant $K\geq1$ such that, for every $n$, there are an infinite-dimensional space $U_n$, a $K$-complemented subspace $Z_n\subset X$, and an isomorphism
+\[
+  T_n:V_n(U_n)\longrightarrow Z_n
+\]
+with
+\[
+  \|T_n\|\leq K,
+  \qquad
+  \|T_n^{-1}\|\leq K.
+\]
+Then $X$ fails UALS.
+\end{theorem}
+
+\begin{proof}
+Let $Q_n:X\to Z_n$ be a projection with $\|Q_n\|\leq K$.  Conjugate the operators from Proposition \ref{prop:canonical} to $Z_n$ and extend them to $X$ by composing on the right with $Q_n$:
+\[
+  \widehat A_n=T_nA_nT_n^{-1}Q_n,
+  \qquad
+  \widehat W_n=
+  \{T_nBT_n^{-1}Q_n:B\in W_n\}.
+\]
+For $x\in B_X$, put $v=T_n^{-1}Q_nx$.  The homogeneous form of the pointwise estimate gives a $B\in W_n$ such that
+\[
+  \|(A_n-B)v\|\leq n^{-\rho}\|v\|.
+\]
+Hence
+\[
+  \|(\widehat A_n-\widehat B)x\|
+  \leq K^3n^{-\rho}.
+\]
+
+On the other hand, fix $\widehat B\in\widehat W_n$ and a finite-codimensional $Y\subset X$.  The proof of Proposition \ref{prop:canonical} supplies an infinite-dimensional coordinate fiber $M_j\subset V_n(U_n)$ on which $\|(A_n-B)u\|\geq\|u\|/2$.  Choose a unit vector
+\[
+  z\in Y\cap T_n(M_j).
+\]
+Since $Q_nz=z$ and $\|T_n^{-1}z\|\geq1/K$,
+\[
+  \|(\widehat A_n-\widehat B)z\|
+  \geq \frac{1}{2K^2}.
+\]
+If $X$ had UALS with constant $C$, then for every $n$ some finite-codimensional restriction would have norm at most $CK^3n^{-\rho}$, contradicting the last inequality for sufficiently large $n$.
+\end{proof}
+
+\begin{corollary}\label{cor:target}
+A complementably minimal space satisfying the hypothesis of Theorem \ref{thm:badpair} is a full counterexample to Problem \ref{prob:source}.
+\end{corollary}
+
+The criterion clarifies two requirements that finite-dimensional asymptotic information does not provide automatically: the coordinate fibers must remain infinite-dimensional after passage to a finite-codimensional subspace, and the embeddings and projections must be uniform in $n$.
+
+\section{Candidate spaces and the remaining obstruction}
+
+\subsection{Schlumprecht's space}
+
+Schlumprecht's space $S$ is complementably minimal \cite{Schlumprecht}.  Kutzarova and Lin proved that, for every sequence $(m_k)$ of positive integers,
+\[
+  S\cong \Big(\bigoplus_{k=1}^\infty \ell_\infty^{m_k}\Big)_S
+  \qquad\text{and}\qquad
+  S\cong \Big(\bigoplus_{k=1}^\infty \ell_1^{m_k}\Big)_S
+\]
+\cite{KL}.  This makes $S$ a natural candidate, but these decompositions are row-wise sums of finite-dimensional spaces; they are not the vector-valued sums $E_n(U)$ and $F_n(U)$ in Theorem \ref{thm:badpair}.
+
+There is also a concrete obstruction to the most direct selector argument.  In the model
+\[
+  E=\Big(\bigoplus_k\ell_1^{2n}\Big)_S,
+  \qquad
+  F=\Big(\bigoplus_k\ell_\infty^{2n}\Big)_S,
+\]
+consider selectors that retain the same set $G\subset\{1,\dots,2n\}$ in every row.  Put one unit mass in row $k$ and label $k$, for $1\leq k\leq2n$.  For every $|G|=n$, exactly $n$ unit rows remain in the error.  Since the fundamental function of $S$ is
+\[
+  \varphi(m)=\Big\|\sum_{k=1}^m e_k\Big\|_S=\frac{m}{\log_2(m+1)},
+\]
+the relative error is
+\[
+  \frac{\varphi(n)}{\varphi(2n)}
+  =\frac{\log_2(2n+1)}{2\log_2(n+1)},
+\]
+which tends to $1/2$, rather than to zero.  Allowing an independent selector in each row fixes pointwise approximation, but the resulting family of operators is not norm precompact: two selectors differing in one row can be separated by operator norm one.  Thus the norm-compactness requirement in UALS blocks this naive use of the Kutzarova--Lin decompositions.
+
+This does not prove that $S$ has UALS.  It only shows that the presently available row-wise decompositions do not immediately give the uniform vector-valued bad pairs required by Theorem \ref{thm:badpair}.
+
+\subsection{The spaces $S_{p,r}$}
+
+Casazza, Kalton, Kutzarova, and Mastylo constructed superreflexive complementably minimal spaces $S_{p,r}$ for $1<p<r<\infty$ \cite{CKKM}.  Their norms are $p$-convex and $r$-concave and their block subspaces contain well-controlled finite-dimensional $\ell_p$ behavior.  These two exponents resemble the pair used in Proposition \ref{prop:canonical}.
+
+The missing step is again operator-theoretic and infinite-dimensional.  Finite representability of $\ell_p^m$ and $\ell_r^m$ does not yield uniformly complemented copies of
+\[
+  \Big(\bigoplus_{j=1}^{2n}U_n\Big)_p
+  \quad\text{and}\quad
+  \Big(\bigoplus_{j=1}^{2n}U_n\Big)_r
+\]
+with a common infinite-dimensional fiber $U_n$.  Without those fibers, a finite-codimensional subspace can remove the entire finite-dimensional obstruction.  I did not find a result in the cited interpolation paper that supplies the required vector-valued decompositions.
+
+\subsection{Complete-separation spaces}
+
+The spaces constructed in \cite{AM,AGM,GMS} show that uniqueness of ordinary spreading models can coexist with hereditary failure of uniqueness for finer asymptotic structures.  They are therefore plausible sources of UALS failure.  However, the theorem in \cite{AGLM} is a sufficient condition: uniform uniqueness of joint spreading models implies UALS.  No converse is known, and an asymptotic array does not by itself produce bounded coordinate-transfer operators or complemented copies of the bad-pair models.  At present this route also stops before an operator witness satisfying the norm-compactness requirement.
+
+\section{Conclusions}
+
+The supplied packet does not establish its advertised partial theorem.  Its final implication conflates UALS-saturation with UALS.  The corrected result is Theorem \ref{thm:corrected}: the HI branch of Gowers' dichotomy yields a hereditarily UALS-saturated subspace, not a UALS subspace.
+
+No full answer to Problem \ref{prob:source} was located in the literature search.  The strongest rigorous progress obtained here is:
+\begin{enumerate}[label=(\arabic*),leftmargin=2.2em]
+\item the corrected complex-scalar theorem and the two-regime alternative in Corollary \ref{cor:two-regimes};
+\item the complementably minimal reduction, Theorem \ref{thm:cm};
+\item the uniform complemented bad-pair criterion, Theorem \ref{thm:badpair}, which gives a precise sufficient structure for a full counterexample;
+\item a concrete explanation of why the known row-wise $\ell_1^n/\ell_\infty^n$ decompositions of Schlumprecht's space do not directly verify that criterion.
+\end{enumerate}
+
+A decisive next step would be either to produce the uniform vector-valued bad pairs inside a complementably minimal space, or to prove a new theorem upgrading UALS-saturation to UALS in the HI/scalar-plus-strictly-singular regime.  Neither step follows from the currently cited results.
+
+\begin{thebibliography}{99}
+
+\bibitem{AGLM}
+S. A. Argyros, A. Georgiou, A.-R. Lagos, and P. Motakis,
+\emph{Joint spreading models and uniform approximation of bounded operators},
+Studia Math. \textbf{253} (2020), 57--107.
+DOI: \href{https://doi.org/10.4064/sm181126-26-3}{10.4064/sm181126-26-3}.
+
+\bibitem{AM}
+S. A. Argyros and P. Motakis,
+\emph{On the complete separation of asymptotic structures in Banach spaces},
+Adv. Math. \textbf{362} (2020), 106962.
+
+\bibitem{AGM}
+S. A. Argyros, A. Georgiou, and P. Motakis,
+\emph{Non-asymptotic $\ell_1$ spaces with unique $\ell_1$ asymptotic model},
+Bull. Hellenic Math. Soc. \textbf{64} (2020), 32--55.
+
+\bibitem{AMS}
+S. A. Argyros, A. Manoussakis, and P. Motakis,
+\emph{Variants of the James tree space},
+Israel J. Math. \textbf{265} (2025), 1--77.
+
+\bibitem{CKKM}
+P. G. Casazza, N. J. Kalton, D. Kutzarova, and M. Mastylo,
+\emph{Complex interpolation and complementably minimal spaces},
+in \emph{Interaction Between Functional Analysis, Harmonic Analysis, and Probability},
+Lecture Notes in Pure and Applied Mathematics 175, Dekker, 1996, 135--143.
+
+\bibitem{Ferenczi}
+V. Ferenczi,
+\emph{Operators on subspaces of hereditarily indecomposable Banach spaces},
+Bull. London Math. Soc. \textbf{29} (1997), 338--344.
+
+\bibitem{FK}
+R. Frankiewicz and S. Kusinski,
+\emph{A simple, combinatorial proof of Gowers dichotomy for Banach spaces},
+arXiv:2106.10728, version 4, 2023.
+
+\bibitem{GMS}
+H. Gaebler, P. Motakis, and B. Sari,
+\emph{On the complete separation of unique $\ell_1$ spreading models and the Lebesgue property of Banach spaces},
+Canadian J. Math., published online 2026; arXiv:2402.14687.
+
+\bibitem{Gowers}
+W. T. Gowers,
+\emph{A new dichotomy for Banach spaces},
+Geom. Funct. Anal. \textbf{6} (1996), 1083--1093.
+
+\bibitem{KL}
+D. Kutzarova and P.-K. Lin,
+\emph{Remarks about Schlumprecht space},
+Proc. Amer. Math. Soc. \textbf{128} (2000), 2059--2068.
+
+\bibitem{Schlumprecht}
+T. Schlumprecht,
+\emph{A complementably minimal Banach space not containing $c_0$ or $\ell_p$},
+Seminar Notes in Functional Analysis and Partial Differential Equations,
+Louisiana State University, 1991/1992, 169--181.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,108 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\PA}{P_{\mathcal A}}
+\newcommand{\PhiC}{\Phi}
+
+\title{A Counterexample to Conjecture 5.1 of Lai--Shi}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_02}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source}
+
+The source is Chun-Kit Lai and Ruxi Shi, \emph{When is the fractal uncertainty principle for discrete Cantor sets most uncertain?}, arXiv:2501.00864.
+
+Conjecture 5.1 of the source states that if $(\A,\B)$ is a distributed spectral pair in $\{0,1,\ldots,M-1\}$, then $(\A,\B)$ is either a spectral pair in $\Z_M$ or a spectral pair in $\Z_{M^2}$.
+
+\section*{Definitions Used}
+
+For a finite set $\A\subset \Z$ write
+\[
+  P_{\A}(x)=\sum_{a\in \A}x^a.
+\]
+The source's distributed spectral condition says that for every nonzero difference
+$d=b_1-b_1'$ with $b_1,b_1'\in\B$, either
+\[
+  P_{\A}\!\left(e^{2\pi i d/M}\right)=0
+\]
+or, for every $e=b_2-b_2'$ with $b_2,b_2'\in\B$,
+\[
+  P_{\A}\!\left(e^{2\pi i(d+Me)/M^2}\right)=0.
+\]
+The sign convention in the Fourier transform is immaterial for these zero tests.
+
+\section*{Proof Intuition}
+
+The source gives an example outside the digit range whose obstruction is carried by a second-level cyclotomic zero. The construction below keeps the same idea but folds it into the legal digit range. The set $\A$ is chosen so that $P_{\A}$ has zeros of orders $2,4,6,12$, and also the extra second-level order $36$. The difference set of $\B$ is arranged so that all but two differences are already killed modulo $24$, while the two remaining differences become order-$36$ roots after every distributed translate.
+
+\begin{theorem}
+Let
+\[
+  M=24,\qquad
+  \A=\{0,3,18,21\},\qquad
+  \B=\{0,4,16,20\}.
+\]
+Then $(\A,\B)$ is a distributed spectral pair in $\{0,1,\ldots,M-1\}$, but it is neither a spectral pair in $\Z_M$ nor a spectral pair in $\Z_{M^2}$.
+\end{theorem}
+
+\begin{proof}
+We first compute
+\[
+  \PA(x)=1+x^3+x^{18}+x^{21}=(1+x^3)(1+x^{18})
+       =\Phi_2(x)\Phi_4(x)\Phi_6(x)\Phi_{12}(x)\Phi_{36}(x).
+\]
+Consequently $\PA(\zeta)=0$ whenever $\zeta$ is a root of unity of order
+\[
+  2,\ 4,\ 6,\ 12,\ \text{or }36. \tag{1}
+\]
+
+The difference set of $\B$ is
+\[
+  \B-\B=\{0,\pm4,\pm12,\pm16,\pm20\}.
+\]
+For $d=\pm4,\pm20$, the root $e^{2\pi i d/24}$ has order $6$, and for
+$d=\pm12$ it has order $2$. Hence the first alternative in the distributed spectral condition holds for these differences by (1).
+
+It remains to check $d=\pm16$. Write any $e\in\B-\B$ as $e=4s$, where
+\[
+  s\in\{0,\pm1,\pm3,\pm4,\pm5\}.
+\]
+Then
+\[
+  d+24e=\pm16+96s=16(\pm1+6s).
+\]
+The integer $\pm1+6s$ is relatively prime to $36$, so
+\[
+  \gcd(24^2,d+24e)=16.
+\]
+Therefore $e^{2\pi i(d+24e)/24^2}$ has order $24^2/16=36$, and the second alternative in the distributed spectral condition holds for every $e\in\B-\B$ by (1). This proves that $(\A,\B)$ is distributed spectral.
+
+It is not a spectral pair in $\Z_{24}$: taking $d=16\in\B-\B$, the root $e^{2\pi i16/24}$ has order $3$, which is not among the zero orders in (1), so $\PA(e^{2\pi i16/24})\ne0$.
+
+It is not a spectral pair in $\Z_{24^2}$ either: taking $d=4\in\B-\B$, the root $e^{2\pi i4/24^2}$ has order $24^2/\gcd(24^2,4)=144$, which is not among the zero orders in (1). Hence $\PA(e^{2\pi i4/24^2})\ne0$.
+\end{proof}
+
+\section*{Verification Notes}
+
+The accompanying script \texttt{code/verify\_counterexample.py} checks the same facts using exact integer arithmetic: it computes orders as $N/\gcd(N,t)$ and tests membership in the cyclotomic zero-order set $\{2,4,6,12,36\}$.
+
+\section*{Novelty Check}
+
+Local searches in the run indexes, parsed arXiv sources, and metadata for \texttt{2501.00864}, \texttt{distributed spectral pair}, the source title, and the explicit sets found no prior packet or occurrence of this example. Web searches for the explicit sets and phrases such as \texttt{"distributed spectral pair" "counterexample" "Z\_\{M\^2\}"} found no prior answer. The counterexample was found by a bounded brute-force search: no counterexample appeared for $M\le 15$, and this one appeared in the targeted $M=24$, four-point search.
+
+\section*{Reference}
+
+C.-K. Lai and R. Shi, \emph{When is the fractal uncertainty principle for discrete Cantor sets most uncertain?}, arXiv:2501.00864, 2025.
+
+\end{document}

@@ -1,0 +1,299 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+
+\title{A Weak-\(\ell_1\) Solution of the \(B_1^n\) Linear Part 1' Step}
+\author{arXiv automatic math run \texttt{fa\_banach\_001}}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a full solution candidate, likely valid pending expert
+review, for the linear Part 1' separation-dimension-reduction challenge in
+Mendelson--Milman--Paouris \cite{MMP} in the case \(K=B_1^n\).  The target
+body after dimension reduction is a fixed multiple of the weak-\(\ell_1\)
+star body.  The result upgrades the earlier ordinary-\(\ell_1\) Cauchy packet:
+the ordinary-\(\ell_1\) body incurred an \(O(k\log k)\) separation loss, while
+the weak-\(\ell_1\) body gives a universal constant loss.
+
+The theorem below solves the linear Part 1' step, not the entire generalized
+dual Sudakov program.  To run the full program with this target family one
+would still need the corresponding Part 2 weak Sudakov estimate for
+weak-\(\ell_1\) star bodies.
+
+\section*{Source Challenge}
+
+The source paper is Shahar Mendelson, Emanuel Milman, and Grigoris Paouris,
+\emph{Generalized Dual Sudakov Minoration via Dimension Reduction - A Program},
+arXiv:1610.09287.  The paper formulates a linear version of Part 1:
+given \(e^k\) many \(K\)-separated points and a measure \(\mu\) with
+\(\mu(K)\ge 1/e\), find a linear map \(T:\R^n\to\R^m\), \(m\le A k\), and a
+massive star body \(L\subset\R^m\) such that the images remain
+\((1/R)L\)-separated.  In the conclusion, the authors identify Part 1 as the
+main remaining challenge and explicitly say that it is significant even for
+\(K=B_1^n\).
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+For \(y\in\R^m\), define the weak-\(\ell_1\) quasi-norm
+\[
+  \norm{y}_{1,\infty}
+  =
+  \sup_{s>0} s\,\#\{j:\abs{y_j}>s\}.
+\]
+Equivalently, if \(y_1^*\ge \cdots \ge y_m^*\) is the non-increasing
+rearrangement of \((\abs{y_j})\), then
+\[
+  \norm{y}_{1,\infty}=\max_{1\le r\le m} r y_r^* .
+\]
+Let
+\[
+  W_m=\{y\in\R^m:\norm{y}_{1,\infty}\le 1\}.
+\]
+This is an origin-symmetric compact star body with non-empty interior.
+
+We use the source paper's convention that \(K\)-separated points are points
+whose translates by \(K\) are mutually disjoint.  For \(K=B_1^n\), this implies
+\(\norm{x_i-x_j}_1\ge 2\) up to the immaterial boundary convention; the proof
+below only uses the weaker lower bound \(\norm{x_i-x_j}_1\ge 1\).
+
+\section*{Proof Intuition}
+
+The Cauchy law is exactly \(1\)-stable: a row of a Cauchy matrix applied to
+\(x\) has scale \(\norm{x}_1\).  In the earlier ordinary-\(\ell_1\) attempt,
+the vector of \(m\) Cauchy variables had typical \(\ell_1\)-size
+\(m\log m\), which produced the unwanted \(O(k\log k)\) loss.
+
+The right scale for Cauchy tails is weak \(\ell_1\).  If
+\(G=(G_1,\ldots,G_m)\) has independent standard Cauchy coordinates, then
+\(\norm{G}_{1,\infty}=O(m)\) with fixed probability.  After scaling the random
+map by \(1/m\), the image of every point of \(B_1^n\) falls in a fixed multiple
+of \(W_m\) with fixed probability, yielding massiveness by averaging.  At the
+same time, the event \(\norm{G}_{1,\infty}\le \eta m\) has exponentially small
+probability for small \(\eta\), because it would force far fewer than the
+typical number of coordinates to exceed \(1\).  This exponential small-ball
+bound is strong enough to union-bound over \(e^k\) point pairs in dimension
+\(m\simeq k\).
+
+\section*{The Result}
+
+\begin{theorem}[Weak-\(\ell_1\) Part 1' for \(B_1^n\)]
+\label{thm:main}
+There are universal constants \(A_0,A_1,R_0,q_0,K_0>0\) with
+\(q_0\ge 1\) such that the following holds.  Let \(k\ge K_0\), let
+\(M\le e^k\), and let \(x_1,\ldots,x_M\in\R^n\) satisfy
+\[
+  \norm{x_i-x_j}_1\ge 1 \qquad (i\ne j).
+\]
+Let \(\mu\) be a Borel probability measure on \(\R^n\) with
+\(\mu(B_1^n)\ge 1/e\).  Then there are \(m\le A_1 k\), a linear map
+\(T:\R^n\to\R^m\), and
+\[
+  L=A_0 W_m
+\]
+such that
+\[
+  T x_i - T x_j \notin \frac{1}{R_0}L
+  \qquad (i\ne j)
+\]
+and
+\[
+  T_*\mu(L)\ge e^{-q_0}.
+\]
+In particular, this verifies the linear Part 1' separation-dimension-reduction
+step for \(K=B_1^n\), with universal constants, using the reduced target
+family \(L=A_0W_m\).
+\end{theorem}
+
+\begin{lemma}[Weak-\(\ell_1\) estimates for Cauchy vectors]
+\label{lem:cauchy-weak}
+Let \(G_1,\ldots,G_m\) be independent standard Cauchy random variables and set
+\(G=(G_1,\ldots,G_m)\).  There are universal constants
+\(\eta,A,c>0\) such that, for every \(m\ge 1\),
+\[
+  \Pbb\{\norm{G}_{1,\infty}\le \eta m\}\le e^{-cm}
+\]
+and
+\[
+  \Pbb\{\norm{G}_{1,\infty}\le A m\}\ge \frac34 .
+\]
+\end{lemma}
+
+\begin{proof}
+For the lower-tail estimate, use
+\(\Pbb\{\abs{G_1}>1\}=1/2\).  If \(\norm{G}_{1,\infty}\le \eta m\), then
+\[
+  \#\{j:\abs{G_j}>1\}\le \eta m.
+\]
+Taking \(\eta>0\) sufficiently small, the Chernoff bound for a binomial
+\(\mathrm{Bin}(m,1/2)\) variable gives
+\[
+  \Pbb\{\norm{G}_{1,\infty}\le \eta m\}\le e^{-cm}.
+\]
+
+For the upper-tail estimate, write
+\[
+  N(u)=\#\{j:\abs{G_j}>u\}.
+\]
+There is a universal \(C_0\) such that
+\(\Pbb\{\abs{G_1}>u\}\le C_0/u\) for all \(u>0\).  If
+\(\norm{G}_{1,\infty}>A m\), then for some \(u>A\) one has
+\(uN(u)>A m\).  Choose \(r\ge 0\) with
+\(2^r A<u\le 2^{r+1}A\).  Then
+\[
+  N(2^r A)> \frac{m}{2^{r+1}}.
+\]
+For those \(r\) with \(m/2^{r+1}\ge 1\), the binomial tail bound gives
+\[
+\Pbb\left\{N(2^r A)> \frac{m}{2^{r+1}}\right\}
+\le
+\left(\frac{2eC_0}{A}\right)^{m/2^{r+1}},
+\]
+provided \(A\) is larger than a fixed multiple of \(C_0\).  Summing over these
+dyadic \(r\)'s yields at most
+\[
+  \sum_{s=1,2,4,\ldots}\left(\frac{2eC_0}{A}\right)^s.
+\]
+The remaining dyadic levels have \(2^rA\gtrsim Am\), and their total
+contribution is bounded by
+\[
+  \Pbb\{\max_j \abs{G_j}\gtrsim A m\}\le \frac{C_1}{A}.
+\]
+Choosing \(A\) sufficiently large makes the total probability at most \(1/4\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let \(m=\lceil C_2 k\rceil\), where \(C_2\) will be chosen as a sufficiently
+large universal constant.  Let \((g_{jr})_{1\le j\le m,1\le r\le n}\) be
+independent standard Cauchy variables and define
+\[
+  (Tx)_j=\frac1m\sum_{r=1}^n g_{jr}x_r,
+  \qquad j=1,\ldots,m.
+\]
+The standard \(1\)-stability identity for Cauchy variables gives, for each
+fixed \(x\in\R^n\),
+\[
+  Tx \stackrel{d}{=} \frac{\norm{x}_1}{m}(G_1,\ldots,G_m),
+\]
+with independent standard Cauchy \(G_j\)'s.
+
+Let \(h=x_i-x_j\).  Since \(\norm{h}_1\ge 1\), Lemma
+\ref{lem:cauchy-weak} implies
+\[
+  \Pbb\{\norm{Th}_{1,\infty}\le \eta\}
+  \le
+  \Pbb\{\norm{G}_{1,\infty}\le \eta m\}
+  \le e^{-cm}.
+\]
+Therefore
+\[
+  \Pbb\{\exists i<j:\norm{T(x_i-x_j)}_{1,\infty}\le \eta\}
+  \le M^2 e^{-cm}\le \exp(2k-cm).
+\]
+Choose \(C_2\) so large that this probability is at most \(e^{-3}\).
+
+Now set \(L=A W_m\), where \(A\) is the constant in Lemma
+\ref{lem:cauchy-weak}.  For every \(x\in B_1^n\), the same stability identity
+and the upper-tail estimate give
+\[
+  \Pbb\{Tx\in L\}\ge \frac34 .
+\]
+Consequently,
+\[
+  \E\bigl[T_*\mu(L)\bigr]
+  =
+  \int \Pbb\{Tx\in L\}\,d\mu(x)
+  \ge
+  \frac34\,\mu(B_1^n)
+  \ge
+  \frac{3}{4e}.
+\]
+Since \(0\le T_*\mu(L)\le 1\), it follows that
+\[
+  \Pbb\left\{T_*\mu(L)\ge \frac{3}{8e}\right\}\ge \frac{3}{8e}.
+\]
+After increasing \(C_2\) if needed, the separation failure probability is
+smaller than \(3/(8e)\).  Hence there exists a realization of \(T\) for which
+both events hold:
+\[
+  \norm{T(x_i-x_j)}_{1,\infty}>\eta \quad (i\ne j),
+  \qquad
+  T_*\mu(AW_m)\ge \frac{3}{8e}.
+\]
+Put \(A_0=A\), \(R_0=A/\eta\), and
+\[
+  q_0=\log\left(\frac{8e}{3}\right).
+\]
+Then \(T_*\mu(L)\ge e^{-q_0}\), and
+\[
+  \eta W_m=\frac{\eta}{A}L=\frac1{R_0}L,
+\]
+so the images are \((1/R_0)L\)-separated.  Finally, for
+\(K_0\ge 2q_0\) we have \(q_0\le k/2\), exactly as required in Part 1'.
+\end{proof}
+
+\section*{Verification and Novelty Check}
+
+The proof uses only the elementary \(1\)-stability of Cauchy variables,
+Chernoff bounds for binomial variables, and a dyadic weak-\(\ell_1\) tail
+estimate.  No computational verification is required.
+
+Local run indexes were searched for arXiv:1610.09287, ``Cauchy'',
+``weak l1'', ``weak-\(\ell_1\)'', ``Part 1'', and
+``one-sided Johnson--Lindenstrauss''.  They contained the earlier ordinary
+\(\ell_1\) partial packet but no weak-\(\ell_1\) full Part 1' packet.
+External web searches on July 3, 2026 for combinations of
+``Cauchy weak l1 dimension reduction'', ``one-sided Johnson-Lindenstrauss
+Cauchy weak l1'', and ``B1 weak l1 Sudakov dimension reduction'' did not
+surface a direct match.  The arXiv abstract for \cite{MMP} records that the
+paper establishes the separation step for ellipsoids and, with logarithmic
+losses, for cubes; it does not state the weak-\(\ell_1\) \(B_1^n\) result
+proved here.
+
+\section*{Limitations and Human Review Recommendation}
+
+This packet should be reviewed as a full solution of the linear Part 1' step
+for \(K=B_1^n\).  It should not be cited as a full proof of the generalized
+dual Sudakov conjecture, because Part 2 has not been proved for the
+weak-\(\ell_1\) target family \(A W_m\).
+
+The most important checks are:
+\begin{itemize}
+\item the dyadic proof that \(\norm{G}_{1,\infty}=O(m)\) with constant
+probability;
+\item the lower-tail estimate \(\Pbb\{\norm{G}_{1,\infty}\le\eta m\}\le
+e^{-cm}\);
+\item the translation from \(\norm{T(x_i-x_j)}_{1,\infty}>\eta\) to
+\((1/R_0)L\)-separation.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{MMP}
+S. Mendelson, E. Milman, and G. Paouris,
+\emph{Generalized Dual Sudakov Minoration via Dimension Reduction - A Program},
+arXiv:1610.09287, 2016; revised 2018.
+
+\end{thebibliography}
+
+\end{document}

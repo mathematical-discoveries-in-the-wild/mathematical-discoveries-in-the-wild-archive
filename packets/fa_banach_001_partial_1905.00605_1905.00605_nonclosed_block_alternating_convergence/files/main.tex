@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\dist}{dist}
+
+\title{A nonclosed-sum partial result for the Banach-space alternating approximation method}
+\author{FA/Banach run packet for arXiv:1905.00605}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper is C. Bargetz and E. Medjic, \emph{On the rate of convergence of iterated Bregman projections and of the alternating algorithm}, arXiv:1905.00605.  In the introduction, after recalling Deutsch's theorem for two closed subspaces with closed sum and Pinkus's finite-subspace extension, the authors write that Deutsch asked whether the closedness assumption is necessary, and that this remains open.
+
+The present packet gives a scoped negative result: closedness of \(M+N\) is not necessary for norm convergence of the alternating residual algorithm in an infinite-dimensional uniformly convex and uniformly smooth Banach space.  This is not a full characterization of all nonclosed pairs.
+
+\section*{Idea of the proof}
+
+Finite-dimensional strictly convex spaces have the Stiles convergence property for the alternating residual algorithm.  We place such finite-dimensional examples in an \(\ell_p\)-direct sum.  In each block the two subspaces span the whole block, so the block orbit converges to zero.  We then make the block angles tend to zero.  This forces the global algebraic sum \(M+N\) to be nonclosed, but the residual maps never increase the norm.  Pointwise block convergence plus this domination gives convergence in the full \(\ell_p\)-sum.
+
+\section*{The construction}
+
+Fix \(1<p<\infty\).  Let \(U=V=\mathbb R^2\), each with its usual \(\ell_p^2\)-norm, and set
+\[
+  E=U\oplus_p V.
+\]
+Choose an invertible linear map \(A:U\to V\), for instance
+\[
+  A(s,t)=(s+t,s-t),
+\]
+and choose a scalar sequence \(0<a_n\leq 1\) such that \(a_n\to0\) and \((a_n)\in\ell_p\); for example \(a_n=2^{-n}\).
+
+For each \(n\), put \(E_n=E\),
+\[
+  M_n=U\oplus\{0\}, \qquad
+  N_n=\{(u,a_nAu):u\in U\}.
+\]
+Let
+\[
+  X=\Big(\bigoplus_{n=1}^\infty E_n\Big)_p,\qquad
+  M=\Big(\bigoplus_{n=1}^\infty M_n\Big)_p,\qquad
+  N=\Big(\bigoplus_{n=1}^\infty N_n\Big)_p.
+\]
+Then \(X\) is isomorphic to \(\ell_p\), hence uniformly convex and uniformly smooth.
+
+\begin{lemma}
+The subspaces \(M\) and \(N\) are closed in \(X\), while \(M+N\) is not closed.
+\end{lemma}
+
+\begin{proof}
+The closedness of \(M\) is immediate.  For \(N\), define
+\[
+  T:\ell_p(U)\to X,\qquad T((u_n))=((u_n,a_nAu_n)).
+\]
+Since \(\sup_n a_n\|A\|<\infty\), \(T\) is bounded.  Also
+\[
+  \|T((u_n))\|_X^p
+  =\sum_n \big(\|u_n\|_U^p+a_n^p\|Au_n\|_V^p\big)
+  \geq \sum_n \|u_n\|_U^p,
+\]
+so \(T\) is bounded below.  Hence its range \(N\) is closed.
+
+For each block, \(M_n+N_n=E_n\), since \(A\) is invertible.  Nevertheless the global sum is not closed.  Let \(u_0\in U\) be nonzero and set
+\[
+  z_n=(0,a_nAu_0)\in E_n,\qquad z=(z_n)_n.
+\]
+Because \((a_n)\in\ell_p\), we have \(z\in X\).  The finite truncations of \(z\) belong to \(M+N\), so \(z\in\overline{M+N}\).
+
+Suppose \(z\in M+N\).  Then \(z=m+n\) with \(m=(m_n,0)_n\in M\) and \(n=((u_n,a_nAu_n))_n\in N\).  Comparing the \(V\)-coordinates gives
+\[
+  a_n A u_n = a_n A u_0
+\]
+for every \(n\), whence \(u_n=u_0\) for every \(n\).  But \((u_n)\notin\ell_p(U)\), a contradiction.  Thus \(z\notin M+N\), and \(M+N\) is not closed.
+\end{proof}
+
+\begin{lemma}
+For \(L=M\) or \(L=N\), the metric projection \(P_L\) is obtained block by block:
+\[
+  P_L((x_n)_n)=(P_{L_n}x_n)_n.
+\]
+\end{lemma}
+
+\begin{proof}
+We prove this for \(N\); the proof for \(M\) is the same and simpler.  For \(y=(y_n)\in N\),
+\[
+  \|x-y\|_X^p=\sum_n \|x_n-y_n\|_{E_n}^p.
+\]
+Since every \(E_n\) is finite-dimensional and strictly convex, each \(P_{N_n}x_n\) exists and is unique.  Choosing \(y_n=P_{N_n}x_n\) minimizes every summand.  Moreover \(\|x_n-y_n\|\leq \|x_n\|\), so \(\|y_n\|\leq2\|x_n\|\).  Hence \((y_n)_n\in X\), and because each \(y_n\in N_n\), the selected tuple lies in \(N\).  It is therefore the unique best approximant in the \(\ell_p\)-sum.
+\end{proof}
+
+\begin{theorem}
+For every \(x\in X\), the alternating residual sequence
+\[
+  x_0=x,\qquad x_{2k+1}=(I-P_M)x_{2k},\qquad
+  x_{2k+2}=(I-P_N)x_{2k+1}
+\]
+converges in norm to \(0\), although \(M+N\) is not closed.
+\end{theorem}
+
+\begin{proof}
+Write \(x^{(k)}=(x_n^{(k)})_n\) for the iterates.  By the preceding lemma, for each fixed \(n\) the sequence \((x_n^{(k)})_k\) is exactly the alternating residual sequence in the finite-dimensional strictly convex space \(E_n\) for the pair \(M_n,N_n\).
+
+Stiles' finite-dimensional theorem says that, in a finite-dimensional strictly convex Banach space, the alternating residual algorithm converges for every pair of subspaces.  If necessary, apply it with the two subspaces interchanged to match the ordering used here.  Since \(M_n+N_n=E_n\), the block limit is
+\[
+  (I-P_{M_n+N_n})x_n=0.
+\]
+Thus \(x_n^{(k)}\to0\) in \(E_n\) for every fixed \(n\).
+
+It remains to pass from blockwise convergence to convergence in \(X\).  For any closed subspace \(L\) of a strictly convex reflexive Banach space,
+\[
+  \|(I-P_L)y\|=\dist(y,L)\leq \|y\|
+\]
+because \(0\in L\).  Therefore the norms of the block iterates satisfy
+\[
+  \|x_n^{(k)}\|_{E_n}\leq \|x_n\|_{E_n}
+\]
+for all \(n,k\).  Since \((\|x_n\|_{E_n}^p)_n\) is summable and \(\|x_n^{(k)}\|_{E_n}^p\to0\) for each \(n\), dominated convergence yields
+\[
+  \|x^{(k)}\|_X^p=\sum_n \|x_n^{(k)}\|_{E_n}^p\longrightarrow 0.
+\]
+Hence \(x^{(k)}\to0\) in norm.
+\end{proof}
+
+\section*{Verification and limitations}
+
+The proof only uses finite-dimensional convergence inside the blocks and the norm-decreasing property of residual metric projections.  It does not provide a rate, and in fact the collapsing parameters \(a_n\to0\) should be expected to destroy any uniform linear rate.
+
+This packet does not settle whether every pair of closed subspaces in every uniformly convex and uniformly smooth Banach space has a convergent alternating residual sequence when the sum is not closed.  It only shows that nonclosedness alone is not an obstruction to convergence.
+
+\section*{Novelty check}
+
+The run indexes were checked for arXiv:1905.00605, the source title, Bregman projections, alternating algorithm, Deutsch's closed-sum question, and Pinkus's rate question.  Web searches for the exact source title and close variants of ``closedness of the sum remains open'' found the source paper but no exact later settlement.  The construction should be treated as a modest partial result for human review.
+
+\section*{References}
+
+\begin{itemize}[leftmargin=2em]
+\item C. Bargetz and E. Medjic, \emph{On the rate of convergence of iterated Bregman projections and of the alternating algorithm}, arXiv:1905.00605.
+\item W. J. Stiles, \emph{A note on the von Neumann alternating projections algorithm}, cited in the source paper as the finite-dimensional strictly convex convergence theorem.
+\item F. Deutsch, \emph{The alternating approximation method}, cited in the source paper for the closed-sum Banach-space theorem.
+\item A. Pinkus, \emph{On a problem of Hirschfeld}, cited in the source paper for the finite-subspace extension and the rate question.
+\end{itemize}
+
+\section*{Human-review recommendation}
+
+Review as a likely valid partial result.  The main checks are: (i) the direct-sum metric projection decomposition, (ii) the nonclosedness argument for \(M+N\), and (iii) the use of Stiles' finite-dimensional convergence theorem in each block.
+
+\end{document}

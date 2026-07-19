@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Bc}{\mathcal B}
+\newcommand{\Ind}{\operatorname{Ind}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dbar}{\partial_{\bar z}}
+
+\title{Exterior Winding-Zero Does Not Force Closedness for Differential Chains}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Harrison Pugh, \emph{Applications of Differential Chains to
+Complex Analysis and Dynamics}, arXiv:1012.5542 \cite{PughThesis}.  Remark
+3.7.2 follows the generalized Cauchy residue theorem and proposes that the
+closedness assumption may be unnecessary:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+The key sentence for this packet is the proposed implication that
+\[
+  \Ind_J(w)=0\quad(w\in U^c)
+  \qquad\text{should imply}\qquad
+  \partial J=0 .
+\]
+We give a compactly supported differential-chain counterexample to exactly
+that implication.
+
+\section*{Result}
+
+\begin{theorem}\label{thm:main}
+There are a bounded open set \(U\subset\C\) and a compactly supported
+differential 1-chain \(J\in\hat{\Bc}_1^1(\R^2)\), with
+\(\supp J\subset U\), such that
+\[
+  \Ind_J(w)=0\quad\text{for every }w\in U^c,
+\]
+but \(J\) is not closed:
+\[
+  \partial J\ne0.
+\]
+Consequently, the implication proposed in Remark 3.7.2 of the source paper is
+false.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The winding number only tests \(J\) against the Cauchy kernels
+\((z-w)^{-1}dz\), and for \(w\notin U\) these are holomorphic near the support
+of the chain.  A \(\dbar\)-exact density is invisible to all such holomorphic
+tests by integration by parts.  But the same chain can still have a real
+boundary, because closedness tests \(J\) against all exact real 1-forms, not
+only holomorphic differentials.
+
+\section*{Proof}
+
+\begin{proof}
+Let \(U\subset\C\) be a bounded open disk.  Choose a real-valued, nonconstant
+bump function \(\phi\in C_c^\infty(U)\).  Define the smooth compactly supported
+vector field
+\[
+  X=\frac12\left(\frac{\partial\phi}{\partial x}\partial_x
+      +\frac{\partial\phi}{\partial y}\partial_y\right).
+\]
+Let \(J\) be the differential 1-chain represented by \(X\) against planar
+Lebesgue measure \(dA\):
+\[
+  \int_J \omega=\int_U \iota_X\omega\,dA
+\]
+for every test 1-form \(\omega\).  This is the local compact-support version
+of the source's vector-field construction of chains \(\xi_{X,\mu}\), which
+places \(J\) in \(\hat{\Bc}_1^1\).
+
+Write \(z=x+iy\).  Since \(dz(X)=\frac12(\phi_x+i\phi_y)=\dbar\phi\), for every
+\(w\in U^c\) we have
+\[
+  \int_J \frac{dz}{z-w}
+  =
+  \int_U \frac{\dbar\phi(z)}{z-w}\,dA(z).
+\]
+The function \(z\mapsto (z-w)^{-1}\) is holomorphic on a neighborhood of
+\(\supp\phi\).  Therefore
+\[
+  \frac{\dbar\phi(z)}{z-w}
+  =
+  \dbar\left(\frac{\phi(z)}{z-w}\right).
+\]
+Because \(\phi\) has compact support in \(U\), the last function is compactly
+supported in the plane.  Hence
+\[
+  \int_U \dbar\left(\frac{\phi(z)}{z-w}\right)\,dA(z)=0,
+\]
+by applying Stokes' theorem, or simply by integrating the compactly supported
+first partial derivatives over \(\R^2\).  It follows that
+\[
+  \Ind_J(w)=\frac{1}{2\pi i}\int_J\frac{dz}{z-w}=0
+  \qquad(w\in U^c).
+\]
+
+Now test the boundary of \(J\) against the smooth 0-form \(\phi\).  Stokes'
+formula for differential chains gives
+\[
+  \int_{\partial J}\phi=\int_J d\phi
+  =\int_U d\phi(X)\,dA
+  =\frac12\int_U |\nabla\phi|^2\,dA.
+\]
+Since \(\phi\) is not constant and has compact support, this integral is
+strictly positive.  Therefore \(\partial J\ne0\).  This proves the claimed
+counterexample.
+\end{proof}
+
+\section*{What This Does and Does Not Settle}
+
+The counterexample disproves the specific mechanism proposed in Remark 3.7.2:
+vanishing exterior winding number does not force a differential 1-chain to be
+closed.  It does not, by itself, disprove the residue theorem after removing
+closedness.  Also note that if the theorem's current assumption
+\(\partial K=J\) is retained, then closedness follows automatically from
+\(\partial^2K=0\).  Thus the remaining meaningful issue is not this implication
+but whether the formula can be repaired or extended under a different
+hypothesis, and whether the finite-mass requirement on \(K\) can be weakened.
+
+\section*{Additional Diagnostic: Cauchy Formula Needs Closedness}
+
+The thesis also states a generalized Cauchy integral formula without an
+explicit closedness assumption on \(J\), and the later paper
+\emph{Generalizations of the Cauchy Integral Theorems} repeats the same
+formulation \cite{HarrisonPugh}.  The proof invokes the generalized Cauchy
+integral theorem, which does require \(\partial J=0\).  A classical segment
+already shows that some such assumption is necessary.
+
+Indeed, let \(J\) be the oriented line segment from \(a\) to \(b\), with
+\(a\ne b\), and let \(z\notin [a,b]\).  Put \(f(\zeta)=\zeta-z\).  Then
+\(f(z)=0\), so the left side of the stated formula is \(0\).  But
+\[
+  \frac{1}{2\pi i}\int_J \frac{f(\zeta)}{\zeta-z}\,d\zeta
+  =
+  \frac{1}{2\pi i}\int_J 1\,d\zeta
+  =
+  \frac{b-a}{2\pi i}\ne0.
+\]
+This diagnostic is separate from Theorem~\ref{thm:main}; it is recorded here
+because it points to the same missing closedness issue.
+
+\section*{Novelty and Verification Notes}
+
+The local run registry and cheap text indexes were searched for arXiv:1012.5542
+and for the phrases ``Ind\_J(w)'', ``partial J'', ``closed'', and
+``differential chains''.  The only local nearby result concerned a different
+Banach flat-chain target, arXiv:2508.08017.  Web searches on 2026-07-18 for
+the exact Remark 3.7.2 wording and close variants found the source thesis and
+the later arXiv:1101.0385 paper, but no known counterexample to the implication
+handled here.
+
+For human review, the key technical point is membership of the vector-field
+chain \(J=\xi_{X,dA}\) in the intended local differential-chain class.  The
+source develops such chains from vector fields and Radon measures; with smooth
+compact support this is the least singular case of that construction.
+
+\begin{thebibliography}{9}
+
+\bibitem{PughThesis}
+Harrison Pugh,
+\emph{Applications of Differential Chains to Complex Analysis and Dynamics},
+arXiv:1012.5542, 2010.
+
+\bibitem{HarrisonPugh}
+Jenny Harrison and Harrison Pugh,
+\emph{Generalizations of the Cauchy Integral Theorems},
+arXiv:1101.0385, 2011.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,286 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\HS}{\mathcal{HS}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\spn}{\operatorname{span}}
+
+\title{All Metaplectic Compact-Symbol Classes Are Identifiable\\
+\large Removing the diagonalizability hypothesis in arXiv:2411.01840}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 14}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status: full solution likely valid.}
+The proof removes the simultaneous-diagonalizability hypothesis from
+Theorem 5.11 of McNulty's source paper.  Human review is recommended for the
+metaplectic block conventions.}}
+\end{center}
+
+\section{Source problem and result}
+
+McNulty studies identification of Hilbert--Schmidt operators from the diagonal
+of their Gabor matrix \cite{McNulty}.  In the notation of that paper, for
+\(\mathcal A\in Sp(2d,\R)\) and compact \(K\subset\R^{2d}\), set
+\[
+ \mathcal P_{\mathcal A,K}
+ =\{T\in\HS:\supp(\sigma_T^{\mathcal A})\subset K\},
+ \qquad
+ \sigma_T^{\mathcal A}=\mu(\mathcal A)\sigma_T.
+\]
+Here \(\sigma_T\) is the Weyl symbol and \(\mu(\mathcal A)\) is the
+metaplectic operator acting on symbols.  The class is \emph{identifiable} on a
+lattice \(\Lambda\) with window \(S_0=\varphi_0\otimes\varphi_0\) when
+\[
+ T\longmapsto \{Q_{S_0}T(\lambda,\lambda):\lambda\in\Lambda\}
+\]
+is injective on \(\mathcal P_{\mathcal A,K}\).
+
+The source theorem assumes simultaneous diagonalizability of two matrices in a
+symplectic decomposition:
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/source_theorem_crop.png}
+\end{center}
+
+The final remark asks whether the hypothesis can be relaxed:
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+We remove it completely.
+
+\begin{theorem}[All-metaplectic identification]\label{thm:main}
+Let \(\mathcal A\in Sp(2d,\R)\) be arbitrary and let
+\(K\subset\R^{2d}\) be compact.  There exists \(\varepsilon>0\) such that
+\(\mathcal P_{\mathcal A,K}\) is identifiable on the real lattice
+\[
+ \Lambda=\varepsilon\Z^{2d}
+\]
+with respect to the standard Gaussian window
+\(S_0=\varphi_0\otimes\varphi_0\).
+In particular, no simultaneous-diagonalizability hypothesis is needed in
+Theorem 5.11 of \cite{McNulty}.
+\end{theorem}
+
+\section{Proof intuition}
+
+The source proof explicitly computes a transformed Gaussian and then invokes a
+multivariable M\"untz--Sz\'asz theorem.  That computation creates the
+diagonalizability restriction.  Two elementary observations avoid it.
+
+First, any invertible complex matrix \(C\) produces a complete exponential
+lattice on a compact real set, provided the lattice spacing is small enough.
+Indeed, the basic exponentials
+\(w_j(t)=e^{\varepsilon t^TCe_j}\) all lie in one logarithm chart.  Laurent
+polynomials in the \(w_j\)'s therefore recover \(\log w_j\), hence the linear
+forms \(t^TCe_j\), hence every coordinate of \(t\).  Stone--Weierstrass then
+gives uniform density.
+
+Second, a metaplectic image of a translated standard Gaussian is a fixed
+nonvanishing generalized Gaussian times exactly such a complex exponential.
+The coefficient matrix is \(ZP+iR\), where \(\Rea Z>0\) and
+\(\binom PR\) is the first block column of a symplectic matrix.  Positivity and
+the Lagrangian relation force \(ZP+iR\) to be invertible.  The measurements in
+Theorem~\ref{thm:main} are therefore inner products against a dense family on
+the compact support set.
+
+\section{The exponential-lattice lemma}
+
+\begin{lemma}[Fine complex exponential lattices]\label{lem:exponential}
+Let \(m\ge1\), let \(C\in GL_m(\C)\), and let \(K\subset\R^m\) be
+compact.  For all sufficiently small \(\varepsilon>0\),
+\[
+ \spn\{t\mapsto e^{t^TC\lambda}:\lambda\in\varepsilon\Z^m\}
+\]
+is uniformly dense in \(C(K)\).  Consequently it is dense in \(L^2(K)\).
+\end{lemma}
+
+\begin{proof}
+Choose \(\varepsilon>0\) and \(0<r<1\) so small that, for every
+\(t\in K\) and \(1\le j\le m\),
+\[
+ \left|e^{\varepsilon t^TCe_j}-1\right|\le r.
+\]
+This is possible because \(K\) is compact and there are only finitely many
+columns of \(C\).  Put
+\[
+ w_j(t)=e^{\varepsilon t^TCe_j}.
+\]
+Let \(\mathcal E\) be the uniform closure in \(C(K)\) of the span in the
+statement.  Since multiplication adds lattice indices, \(\mathcal E\) is a
+closed unital algebra, and it contains every Laurent monomial
+\(w_1^{k_1}\cdots w_m^{k_m}\), \(k\in\Z^m\).
+
+The series
+\[
+ \log w_j=\sum_{q=1}^{\infty}\frac{(-1)^{q+1}}q(w_j-1)^q
+\]
+converges uniformly on \(K\).  Each partial sum is a polynomial in \(w_j\),
+so \(\log w_j\in\mathcal E\).  By making \(\varepsilon\) smaller if
+necessary, \(\varepsilon t^TCe_j\) lies in the logarithm chart about zero,
+and hence
+\[
+ \log w_j(t)=\varepsilon t^TCe_j.
+\]
+Thus every component of the row vector \(t^TC\) belongs to
+\(\mathcal E\).  Since \(C\) is invertible,
+\[
+ t^T=(t^TC)C^{-1},
+\]
+so every real coordinate function \(t\mapsto t_j\) belongs to
+\(\mathcal E\).
+
+It follows that \(\mathcal E\) contains all complex polynomials in the real
+coordinate functions.  Those polynomials form a self-adjoint unital algebra
+that separates the points of \(K\); the Stone--Weierstrass theorem therefore
+makes them uniformly dense in \(C(K)\) \cite{Rudin}.  Hence
+\(\mathcal E=C(K)\).  Finally, continuous functions are dense in
+\(L^2(K)\), proving the last assertion.
+\end{proof}
+
+\section{Metaplectic Gaussian lattices}
+
+We use the source conventions for symmetric time--frequency shifts:
+\(T_x=\rho(x,0)\) and
+\[
+ \mu(\mathcal A)\rho(z)\mu(\mathcal A)^*=\rho(\mathcal A z).
+\]
+The standard generators of the metaplectic group show that every centered
+standard Gaussian is taken to a generalized Gaussian
+\[
+ \mu(\mathcal A)g_0(t)=c\,g_Z(t),\qquad
+ g_Z(t)=e^{-\pi t^TZt},
+\]
+where \(c\ne0\), \(Z=Z^T\in M_m(\C)\), and \(\Rea Z>0\).  For
+completeness: chirp multiplication adds a purely imaginary real-symmetric
+matrix to \(Z\); a real dilation sends \(Z\) to a real congruence; and the
+Fourier transform sends \(Z\) to \(Z^{-1}\).  All three operations preserve
+positive-definiteness of the real part, and these operators generate the
+metaplectic group \cite{McNulty}.
+
+\begin{lemma}[Every metaplectic Gaussian lattice is complete locally]
+\label{lem:gaussian}
+Let \(\mathcal A\in Sp(m,\R)\) act metaplectically on
+\(L^2(\R^m)\), and let \(K\subset\R^m\) be compact.  There is
+\(\varepsilon>0\) such that
+\[
+ \spn\{\mu(\mathcal A)T_xg_0:x\in\varepsilon\Z^m\}
+\]
+is dense in \(L^2(K)\).
+\end{lemma}
+
+\begin{proof}
+Write \(\mathcal A\) in block form
+\[
+ \mathcal A=\begin{pmatrix}P&Q\\R&S\end{pmatrix}.
+\]
+Metaplectic covariance gives
+\[
+ \mu(\mathcal A)T_xg_0
+ =\rho(Px,Rx)\mu(\mathcal A)g_0.
+\]
+Expanding the translation and modulation of \(g_Z\), and absorbing all
+nonzero factors depending only on \(x\) into \(c_x\), yields
+\begin{equation}\label{eq:orbit}
+ \mu(\mathcal A)T_xg_0(t)
+ =c_x g_Z(t)e^{2\pi t^T(ZP+iR)x}.
+\end{equation}
+
+We claim that \(C:=ZP+iR\) is invertible over \(\C\).  Suppose
+\(Cu=0\).  Write \(Z=X+iY\), where \(X,Y\) are real symmetric and
+\(X>0\).  Multiplying \(Cu=0\) on the left by \((Pu)^*\) gives
+\[
+ (Pu)^*Z(Pu)+i(Pu)^*Ru=0.
+\]
+The symplectic relations imply that \(P^TR\) is real symmetric.  Therefore
+both \((Pu)^*Y(Pu)\) and \((Pu)^*Ru=u^*P^TRu\) are real.  Taking real
+parts in the preceding display gives
+\[
+ (Pu)^*X(Pu)=0.
+\]
+Since \(X>0\), \(Pu=0\).  The equation \(Cu=0\) now gives \(Ru=0\).
+The first block column \(\binom PR\) of a symplectic matrix has full column
+rank, so \(u=0\).  This proves \(C\in GL_m(\C)\).
+
+Apply Lemma~\ref{lem:exponential} to \(2\pi C\) and \(K\).  Equation
+\eqref{eq:orbit} differs from that dense exponential family only by nonzero
+scalars \(c_x\) and multiplication by \(g_Z\).  On compact \(K\), the
+continuous function \(g_Z\) is bounded and bounded away from zero.  Its
+multiplication operator is therefore invertible on \(L^2(K)\), and the
+family in the statement is dense.
+\end{proof}
+
+\section{Proof of the identification theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Put \(m=2d\), let \(g_0=\sigma_{S_0}\), and choose the lattice
+\(\Lambda=\varepsilon\Z^m\) supplied by Lemma~\ref{lem:gaussian} for
+\(\mathcal A\) and \(K\).  Suppose \(T\in\mathcal P_{\mathcal A,K}\)
+has zero diagonal measurements on \(\Lambda\).  The Weyl-symbol identity
+used in the source proof gives, for every \(\lambda\in\Lambda\),
+\begin{align*}
+ 0
+ &=Q_{S_0}T(\lambda,\lambda)
+   =\langle T,\alpha_\lambda(S_0)\rangle_{\HS}\\
+ &=\langle\sigma_T,T_\lambda g_0\rangle_{L^2}
+   =\langle\mu(\mathcal A)\sigma_T,
+            \mu(\mathcal A)T_\lambda g_0\rangle_{L^2}.
+\end{align*}
+By definition,
+\(\mu(\mathcal A)\sigma_T=\sigma_T^{\mathcal A}\) is supported in
+\(K\).  Lemma~\ref{lem:gaussian} says that the second entries in the last
+inner products span a dense subspace of \(L^2(K)\).  Hence
+\(\sigma_T^{\mathcal A}=0\).  Metaplectic action and Weyl quantization are
+unitary on \(L^2\), so \(T=0\).  Thus the measurement map is injective on
+\(\mathcal P_{\mathcal A,K}\).
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The proof has no unproved dependency.  Its convention-sensitive point is the
+sign in \(ZP+iR\); reversing the modulation convention gives \(ZP-iR\), and
+the same real-part argument proves invertibility.  A numerical script in
+\texttt{code/sanity\_check.py} tested 250 random symplectic frames and random
+\(Z\) with positive-definite real part; no near-singular matrix occurred.  It
+also recovered coordinates from a truncated logarithm series to a maximum
+sample error of \(2.86\times10^{-14}\).  These checks are not part of the
+proof.
+
+A bounded search of the run indexes, exact-title web/arXiv results, the source
+bibliography, and queries combining ``metaplectic identification'', ``compactly
+supported symbols'', ``Gaussian lattice'', and ``simultaneously
+diagonalisable'' found no later removal of the source hypothesis.  This is not
+an exhaustive priority claim.
+
+The lattice depends on \(\mathcal A\) and \(K\).  The theorem proves
+identifiability only; it does not supply frame bounds, stability, or a
+reconstruction series.
+
+\begin{thebibliography}{9}
+\bibitem{McNulty}
+H. McNulty,
+\emph{Metaplectic Quantum Time--Frequency Analysis, Operator Reconstruction
+and Identification}, arXiv:2411.01840, 2024.
+
+\bibitem{Rudin}
+W. Rudin,
+\emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987.
+\end{thebibliography}
+
+\end{document}

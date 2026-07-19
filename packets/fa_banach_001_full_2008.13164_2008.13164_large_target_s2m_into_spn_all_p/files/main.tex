@@ -1,0 +1,126 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\vecop}{vec}
+
+\title{A Large-Target Row Embedding of \(S_2^m\) into \(S_p^n\) for All \(p\)}
+\author{Run \texttt{fa\_banach\_001}, lane 1}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Full solution, likely valid, for the large-target existence reading. This note records a simple positive embedding for the \(q=2\) case left open in the introduction of Chattopadhyay--Hong--Pal--Pradhan--Ray. It is not a minimal-dimension classification.
+
+\section{Source question}
+
+The source paper is:
+\[
+\text{A. Chattopadhyay, G. Hong, A. Pal, C. Pradhan, and S. K. Ray,}
+\]
+\emph{Isometric embeddability of \(S_q^m\) into \(S_p^n\)}, arXiv:2008.13164v4, Journal of Functional Analysis 282 (2022), article 109281, DOI \href{https://doi.org/10.1016/j.jfa.2021.109281}{10.1016/j.jfa.2021.109281}.
+
+On page 2, after Theorem 1.1, the authors state that they do not know whether \(S_2^m\) embeds isometrically into \(S_p^n\) for \(1<p<\infty\) when \(p\) is not an even integer. They compare this with the even-\(p\) case, where known results imply embeddings for sufficiently large \(n\), and they also mention the unresolved cases \(S_q^m\to S_1^n\) for \(q\in\{2,3\}\).
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions}
+
+For \(1\le p<\infty\), \(S_p^n\) denotes \(M_n(\mathbb C)\) with norm
+\[
+\|X\|_{S_p^n} = \left(\sum_j s_j(X)^p\right)^{1/p},
+\]
+where \(s_j(X)\) are the singular values of \(X\). For \(p=\infty\), \(S_\infty^n\) is \(M_n(\mathbb C)\) with the operator norm. The space \(S_2^m\) is the Hilbert space \(M_m(\mathbb C)\) with Hilbert--Schmidt norm
+\[
+\|A\|_{S_2^m} = \left(\Tr(A^*A)\right)^{1/2}.
+\]
+
+\section{Proof Intuition}
+
+The source paper already observes that \(S_2^2\) embeds into \(S_\infty^n\) for \(n\ge 4\) through a row or column Hilbert space. The same row idea works for every Schatten exponent \(p\), not only \(p=\infty\). A one-row matrix has rank at most one, so there is only one singular value to measure. Every Schatten norm, finite or infinite, therefore returns exactly that singular value. Since \(S_2^m\) is a Hilbert space of dimension \(m^2\), it can be placed in one row of \(M_n\) once \(n\ge m^2\).
+
+\begin{theorem}[large-target row embedding]
+Let \(m\ge 1\), let \(n\ge m^2\), and let \(1\le p\le\infty\). Then there exists a complex-linear isometric embedding
+\[
+\Phi:S_2^m\longrightarrow S_p^n.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(\vecop:M_m(\mathbb C)\to\mathbb C^{m^2}\) list the entries of a matrix in any fixed order. Then
+\[
+\|\vecop(A)\|_{\ell_2^{m^2}}=\|A\|_{S_2^m}.
+\]
+Since \(n\ge m^2\), define \(r(A)\in\mathbb C^n\) by padding \(\vecop(A)\) with zeros. Let \(\Phi(A)\in M_n(\mathbb C)\) be the matrix whose first row is \(r(A)\) and whose remaining rows are zero.
+
+The map \(A\mapsto\Phi(A)\) is complex-linear. Also,
+\[
+\Phi(A)\Phi(A)^*
+=
+\begin{pmatrix}
+\|r(A)\|_2^2 & 0 & \cdots & 0\\
+0&0&\cdots&0\\
+\vdots&\vdots&\ddots&\vdots\\
+0&0&\cdots&0
+\end{pmatrix}.
+\]
+Thus \(\Phi(A)\) has singular values
+\[
+\|r(A)\|_2,0,\ldots,0.
+\]
+For \(1\le p<\infty\),
+\[
+\|\Phi(A)\|_{S_p^n}
+=\left(\|r(A)\|_2^p\right)^{1/p}
+=\|r(A)\|_2
+=\|A\|_{S_2^m}.
+\]
+For \(p=\infty\), the operator norm of \(\Phi(A)\) is again its only nonzero singular value, namely \(\|r(A)\|_2=\|A\|_{S_2^m}\). Hence \(\Phi\) is an isometry. In particular it is injective.
+\end{proof}
+
+\begin{corollary}
+For every \(m\ge 2\) and every non-even \(1<p<\infty\), \(S_2^m\) embeds linearly isometrically into \(S_p^n\) for every \(n\ge m^2\).
+\end{corollary}
+
+\begin{proof}
+Apply the theorem.
+\end{proof}
+
+\begin{corollary}
+For every \(m\ge 2\), \(S_2^m\) embeds linearly isometrically into \(S_1^n\) for every \(n\ge m^2\).
+\end{corollary}
+
+\begin{proof}
+Apply the theorem with \(p=1\).
+\end{proof}
+
+\section{Scope and limitations}
+
+This result is intentionally limited to large target dimension. It does not decide the minimal \(n\), nor does it solve the \(q=3\) case for \(S_q^m\to S_1^n\). It also does not assert complete isometry, preservation of self-adjointness, trace preservation, multiplicativity, or compatibility with the matrix algebra structure. The construction is a plain Banach-space linear isometry, matching the stated convention of the source paper's finite-dimensional theorem.
+
+\section{Verification and novelty check}
+
+The proof uses only the singular-value calculation for a one-row matrix. The optional script \texttt{code/verify\_row\_embedding.py} numerically checks random examples.
+
+Before promotion, the run's cheap indexes were searched for arXiv:2008.13164 and core terms including \(\texttt{S\_2\^m}\), \(\texttt{S\_p\^n}\), Schatten, row embedding, and isometric embeddability. Nearby indexed packets concern different Schatten questions or the later \(p<1\) quasi-Banach paper arXiv:2207.09062. Web searches for the exact source title and the non-even-\(p\) phrase found the source publication and the later quasi-Banach extension, but no exact large-target row-embedding packet in this run.
+
+Novelty confidence as a global literature claim is modest, because row Hilbert subspaces of Schatten classes are standard. Mathematical validity confidence is high. Human review should decide whether the source sentence was meant literally as a large-target existence question or instead as shorthand for a small-\(n\), optimal-dimension, self-adjoint, algebraic, or complete-isometric variant. Under the large-target reading, the answer is complete: \(n=m^2\) suffices for all \(p\).
+
+\section{References}
+
+\begin{enumerate}[label={[\arabic*]}]
+\item A. Chattopadhyay, G. Hong, A. Pal, C. Pradhan, and S. K. Ray, \emph{Isometric embeddability of \(S_q^m\) into \(S_p^n\)}, J. Funct. Anal. 282 (2022), no. 1, Paper No. 109281. arXiv:2008.13164.
+\item A. Chattopadhyay, G. Hong, C. Pradhan, and S. K. Ray, \emph{On isometric embeddability of \(S_q^m\) into \(S_p^n\) as non-commutative quasi-Banach spaces}, arXiv:2207.09062; Proc. Roy. Soc. Edinburgh Sect. A, published online 2023.
+\end{enumerate}
+
+\end{document}

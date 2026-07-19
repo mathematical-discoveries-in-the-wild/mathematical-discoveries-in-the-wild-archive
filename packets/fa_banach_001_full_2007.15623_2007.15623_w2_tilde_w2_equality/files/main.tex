@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\M}{\mathcal M}
+\newcommand{\B}{\mathcal B}
+\newcommand{\W}{\mathcal W}
+\newcommand{\tW}{\widetilde{\mathcal W}}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{A domination proof that $\W^2(K)=\tW^2(K)$ for the two-hidden-layer Barron-tree question}
+\author{FA/Banach run \texttt{fa\_banach\_001}, lane 1}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source Metadata}
+
+\begin{itemize}
+\item Source paper: Weinan E and Stephan Wojtowytsch, \emph{On the Banach spaces associated with multi-layer ReLU networks: Function representation, approximation theory and gradient descent dynamics}, arXiv:2007.15623.
+\item Local source PDF: \texttt{source\_paper.pdf}.
+\item Extracted question location: Section 4.3, page 26 of the arXiv PDF.
+\item Claimed status: likely full solution of the two-hidden-layer equality question $\W^2(K)=\tW^2(K)$.
+\end{itemize}
+
+\section*{Open Problem Extract}
+
+The source paper defines the neural tree space $\W^2(K)$ and the network-like two-hidden-layer space
+\[
+  X_{(0,1),(0,1),\{0,\dots,d\};K}
+  = \bigcup_{\bar\pi} \B_{Y_{\bar\pi},K}
+  =: \tW^2(K),
+\]
+where $Y_{\bar\pi}$ denotes the Barron functions representable by an $L^1(\bar\pi)$ density in the first hidden layer. After observing that no single $\bar\pi$ can represent every Barron function when $K$ is the closure of an open set, the paper asks whether this loss of first-layer nonseparability actually reduces expressivity:
+
+\begin{quote}
+``The question whether this reduces expressivity or whether in fact $\W^2=\tW^2$ remains open.''
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The nonseparability obstruction in the paper rules out one universal first-layer distribution $\bar\pi$ that works for every Barron function.  But a single element of $\W^2(K)$ does not need every Barron function. It is represented by one finite outer Radon measure $\mu$ on the Barron unit ball.
+
+For $\mu$-almost every inner Barron function $g$, choose one first-layer representing measure $\nu_g$ of norm at most one. Average the total variations $|\nu_g|$ against the outer variation measure $|\mu|$. This produces a single probability measure $\bar\pi$ that dominates $\nu_g$ for $|\mu|$-almost every $g$. Hence almost every inner $g$ used by this particular $\W^2$ representation lies in the separable subspace $Y_{\bar\pi}$. The same outer integral is then a $\tW^2$ representation.
+
+Thus the first-layer distribution may depend on the target function, and that flexibility is enough to remove the apparent expressivity gap.
+
+\section*{Theorem}
+
+\begin{theorem}
+Let $K\subset \R^d$ be compact. With the notation of E--Wojtowytsch, for two hidden layers,
+\[
+  \W^2(K)=\tW^2(K)
+  =X_{(0,1),(0,1),\{0,\dots,d\};K}.
+\]
+In particular, the network-like $L^1$ indexed model with two hidden layers has the same function expressivity as the two-hidden-layer neural tree space.
+\end{theorem}
+
+\section*{Proof}
+
+The inclusion $\tW^2(K)\subseteq \W^2(K)$ is already established in the source paper: every two-hidden-layer indexed network gives a $\W^2$ representation whose outer measure is concentrated on some $Y_{\bar\pi}$.
+
+We prove the reverse inclusion. Let $P$ be the compact first-layer parameter space used to represent the Barron space $\W^1(K)$; equivalently, after the ReLU normalization in the source paper, one may take $P=S^d$. Let
+\[
+  T:\M(P)\longrightarrow C(K), \qquad
+  T\nu(x)=\int_P \sigma(p(x))\,d\nu(p)
+\]
+be the realization map. The closed unit ball $B$ of $\W^1(K)$ is the image under $T$ of the total-variation unit ball
+\[
+  \M_1(P):=\{\nu\in \M(P): \|\nu\|_{\TV}\le 1\}.
+\]
+Indeed, the definition gives the image inclusion, and compactness of $\M_1(P)$ in the weak-star topology gives norm-attainment for points of $B$. The map $T$ is continuous from $\M_1(P)$ with its weak-star topology into $C(K)$.
+
+Let $f\in \W^2(K)$. Choose a finite signed Radon measure $\mu$ on $B$ such that
+\[
+  f(x)=\int_B \sigma(g(x))\,d\mu(g).
+\]
+If $\mu=0$, there is nothing to prove. Otherwise write $\lambda=|\mu|$.
+
+For each $g\in B$, consider the compact nonempty fiber
+\[
+  \Gamma(g):=\{\nu\in \M_1(P):T\nu=g\}.
+\]
+The graph
+\[
+  \{(g,\nu)\in B\times \M_1(P):T\nu=g\}
+\]
+is closed between compact metrizable spaces. By the standard measurable selection theorem for compact-valued Borel multifunctions, there exists a Borel map $g\mapsto \nu_g\in \M_1(P)$ such that $T\nu_g=g$ for all $g\in B$.
+
+Define a finite positive measure $\rho$ on $P$ by
+\[
+  \rho(A)=\int_B |\nu_g|(A)\,d\lambda(g)
+\]
+for Borel $A\subseteq P$, and set $\bar\pi=\rho/\rho(P)$ if $\rho(P)>0$; if $\rho(P)=0$, choose any probability measure on $P$. Since $\|\nu_g\|_{\TV}\le 1$, the measure $\rho$ is finite.
+
+If $\bar\pi(A)=0$, then $\rho(A)=0$, so $|\nu_g|(A)=0$ for $\lambda$-almost every $g$. Hence
+\[
+  \nu_g\ll \bar\pi \qquad\text{for }\lambda\text{-almost every }g.
+\]
+For such $g$, the Radon--Nikodym theorem gives $h_g\in L^1(\bar\pi)$ with
+\[
+  d\nu_g=h_g\,d\bar\pi, \qquad
+  \|h_g\|_{L^1(\bar\pi)}=\|\nu_g\|_{\TV}\le 1.
+\]
+Therefore $g=T\nu_g$ belongs to the subspace $Y_{\bar\pi}$ of Barron functions representable by an $L^1(\bar\pi)$ density.
+
+Thus $\lambda(B\setminus Y_{\bar\pi})=0$. Since $\mu$ is absolutely continuous with respect to $\lambda$, the original outer integral is, after changing nothing on a $\mu$-null set, an admissible finite signed Radon measure concentrated on $B\cap Y_{\bar\pi}$:
+\[
+  f(x)=\int_{B\cap Y_{\bar\pi}} \sigma(g(x))\,d\mu(g).
+\]
+This is precisely a representation of $f$ as an element of $\B_{Y_{\bar\pi},K}\subseteq \tW^2(K)$.
+
+Consequently $\W^2(K)\subseteq \tW^2(K)$. Together with the known reverse inclusion, this proves
+\[
+  \W^2(K)=\tW^2(K).
+\]
+Finally, the source paper identifies $\tW^2(K)$ with $X_{(0,1),(0,1),\{0,\dots,d\};K}$ by pushing any probability $\bar\pi$ forward from Lebesgue measure on $(0,1)$, so the displayed equality follows.
+\qed
+
+\section*{Measurability Note}
+
+The source paper allows admissible outer measures for which $Y_{\bar\pi}$ is measurable. This condition is satisfied here. The set $Y_{\bar\pi}$ is the realization image of the Polish space $L^1(\bar\pi)$ under the continuous map
+\[
+  h\mapsto \left[x\mapsto \int_P h(p)\sigma(p(x))\,d\bar\pi(p)\right],
+\]
+and hence is analytic in the compact metric space $B\subset C(K)$. Analytic sets are universally measurable, so $Y_{\bar\pi}$ is measurable for the finite Radon measure $\mu$ used above.
+
+\section*{Verification Notes}
+
+\begin{itemize}
+\item The proof does not use the source paper's extra assumption that $K$ is the closure of an open set; compactness of $K$ suffices.
+\item The proof answers the equality question $\W^2=\tW^2$ for the $L^1$ indexed/two-hidden-layer space.
+\item The proof does not settle the separate question about the Hilbert-weight/RKHS subspace $\W_{\mathcal L^1,\mathcal L^1,\pi^0}(K)$ versus $\W^2(K)$.
+\item The only external tools are standard compact measurable selection and Radon--Nikodym domination.
+\end{itemize}
+
+\section*{Novelty Check}
+
+Local run indexes were searched for arXiv id \texttt{2007.15623}, the title, ``neural tree spaces'', ``Barron'', ``Hilbert weights'', and ``$\tW^2$'' variants; no duplicate solution or attempt for this problem was found.
+
+On 2026-07-03, bounded web searches were run for exact and close phrases including ``W2 equals tilde W2 Barron'', ``neural tree spaces tilde W2'', ``arbitrarily wide neural networks Hilbert weights'', and the source title with ``remains open''. The search surfaced the source arXiv page but no later explicit resolution of this equality question. Novelty confidence is therefore moderate-to-high, subject to specialist review in the neural-network approximation literature.
+
+\section*{Human Review Recommendation}
+
+Review as a likely full solution of the source paper's two-hidden-layer expressivity question. The main point to check is the measurable-selection/Radon--Nikodym step and whether the source paper's identification
+\[
+X_{(0,1),(0,1),\{0,\dots,d\};K}=\bigcup_{\bar\pi}\B_{Y_{\bar\pi},K}
+\]
+is intended with exactly the admissibility convention used here.
+
+\begin{thebibliography}{9}
+
+\bibitem{EW2020}
+Weinan E and Stephan Wojtowytsch,
+\emph{On the Banach spaces associated with multi-layer ReLU networks: Function representation, approximation theory and gradient descent dynamics},
+arXiv:2007.15623, 2020.
+
+\bibitem{Kechris}
+Alexander S. Kechris,
+\emph{Classical Descriptive Set Theory},
+Graduate Texts in Mathematics 156, Springer, 1995.
+
+\bibitem{Folland}
+Gerald B. Folland,
+\emph{Real Analysis: Modern Techniques and Their Applications},
+2nd ed., Wiley, 1999.
+
+\end{thebibliography}
+
+\end{document}

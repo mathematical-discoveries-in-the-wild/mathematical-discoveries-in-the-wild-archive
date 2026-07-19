@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\F}{\mathcal F}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\U}{\mathbb U}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+
+\title{Compact Lipschitz operators on unbounded spaces have only the periodic root spectrum}
+\author{Run fa\_banach\_001, lane 4}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is Abbar, Coine, and Petitjean,
+\emph{A note on the spectrum of Lipschitz operators and composition operators
+on Lipschitz spaces}, arXiv:2310.08965.  Its first final open question asks
+whether the bounded-space spectral corollary remains true for unbounded metric
+spaces:
+
+\begin{quote}
+If \(\widehat f:\F(M)\to\F(M)\) is compact, is the set \(A\) of periods of
+periodic points of \(f\) finite and
+\[
+\sigma(\widehat f)\setminus\{0\}=\bigcup_{n\in A}\U_n?
+\]
+\end{quote}
+Here, as in the source paper's Corollary 3.1 and Theorem 2.5 setup, \(A\)
+records periods of nonzero periodic points; the distinguished base point
+\(0\) does not yield a nonzero Dirac eigenvector.
+
+\section*{Definitions and Source Facts}
+
+All metric spaces are pointed, complete, and have base point \(0\).  If
+\(f:M\to M\) is base-point-preserving and Lipschitz, \(\widehat f\) denotes
+the induced bounded operator on the Lipschitz-free space \(\F(M)\), defined on
+Dirac masses by \(\widehat f(\delta(x))=\delta(f(x))\).  We write
+\[
+\U_n=\{z\in\C:z^n=1\}.
+\]
+
+We use four facts from the source paper and from Abbar--Coine--Petitjean,
+\emph{Compact and weakly compact Lipschitz operators}, arXiv:2110.03231.
+
+\begin{enumerate}
+\item If \(x\) is a periodic point of exact period \(n\), then
+\(\U_n\subset \sigma_p(\widehat f)\).
+\item If \(T\) is compact, then
+\(\sigma(T)\setminus\{0\}=\sigma_p(T)\setminus\{0\}\), and \(0\) is the only
+possible accumulation point of \(\sigma(T)\).
+\item If \(\widehat f\) is compact, then \(f\) satisfies the compactness
+characterization \(P_1,P_2,P_3\): images of bounded subsets are totally
+bounded, \(f\) is uniformly locally flat, and the tail condition \(P_3\) holds.
+In particular, \(f\) is radially flat:
+\[
+ \frac{d(f(x),0)}{d(x,0)}\longrightarrow 0
+ \qquad (d(x,0)\to\infty).
+\]
+\item The source paper uses cutoff operators \(W_R=\theta_R\widehat{\mathrm{Id}}\),
+where \(\theta_R\) is \(0\) on \(B(0,R)\), linear on the annulus
+\(R\le d(x,0)\le 2R\), and \(1\) outside \(B(0,2R)\).  These satisfy
+\(\sup_R\|W_R\|\le 4\), \(W_R\gamma\) is supported outside \(B(0,R)\), and
+\((I-W_R)\gamma\) is supported in \(B(0,2R)\).
+\end{enumerate}
+
+\section*{Proof Intuition}
+
+The source proof for flat-at-infinity maps cuts an alleged unbounded
+eigenvector into a far-out tail and tests the eigen-equation against a
+functional supported on that tail.  Flatness at infinity makes the Lipschitz
+constant of \(h\circ f\) on the tail arbitrarily small, forcing the nonzero
+eigenvalue to be arbitrarily small.
+
+Compactness gives less than flatness at infinity, but it gives exactly enough.
+The \(P_3\) tail condition says that escaping domain pairs with image
+separation comparable to domain separation must have image pairs with an
+accumulation point.  Therefore, once at least one image remains far out, such a
+large quotient is impossible.  This conditional tail-flatness is all the
+cutoff proof needs, because the testing function vanishes on the bounded part
+of the image.  Nonzero eigenvectors are forced into bounded supports; after
+that, a large invariant closed ball reduces the problem to the bounded
+corollary already proved in the source paper.
+
+\section*{Tail Estimate}
+
+\begin{lemma}[escaping-image tail flatness]\label{lem:tail}
+Let \(\widehat f:\F(M)\to\F(M)\) be compact.  For every \(\eps>0\) there is
+\(R_\eps>0\) such that whenever \(x,y\in M\) satisfy
+\[
+d(x,0)\ge R_\eps,\qquad d(y,0)\ge R_\eps,\qquad
+\max\{d(f(x),0),d(f(y),0)\}\ge R_\eps,
+\]
+one has
+\[
+d(f(x),f(y))\le \eps\, d(x,y).
+\]
+\end{lemma}
+
+\begin{proof}
+If not, there is \(\eps_0>0\) and, for each \(k\), points \(x_k,y_k\) with
+\(d(x_k,0),d(y_k,0)\ge k\), with at least one of \(d(f(x_k),0)\) and
+\(d(f(y_k),0)\) at least \(k\), and with
+\[
+d(f(x_k),f(y_k))>\eps_0 d(x_k,y_k).
+\]
+The domain pairs escape to infinity.  The image pairs cannot have an
+accumulation point in \(M\times M\), since one image coordinate escapes to
+infinity.  This contradicts condition \(P_3\) in the compactness
+characterization of arXiv:2110.03231, which would force a subsequence with
+\(d(f(x_k),f(y_k))/d(x_k,y_k)\to0\).
+\end{proof}
+
+\begin{lemma}\label{lem:bounded-support}
+If \(\widehat f\) is compact and
+\(\widehat f(\gamma)=\lambda\gamma\) for some \(\gamma\ne0\) and
+\(\lambda\ne0\), then \(\supp(\gamma)\) is bounded.
+\end{lemma}
+
+\begin{proof}
+Assume, toward a contradiction, that \(\supp(\gamma)\) is unbounded.  Fix
+\(\eps>0\).  By radial flatness and Lemma~\ref{lem:tail}, choose \(R\) so
+large that
+\[
+d(f(x),0)\le \eps d(x,0)\quad(d(x,0)\ge R),
+\]
+\[
+f(B(0,2R))\subset B(0,R),
+\]
+and the conclusion of Lemma~\ref{lem:tail} holds with \(R_\eps=R\).
+
+Let \(W_R=\theta_R\widehat{\mathrm{Id}}\) be the source cutoff operator.
+Since \(\supp(\gamma)\) is unbounded, \(W_R\gamma\ne0\).  Put
+\[
+C_R=M\setminus B(0,R).
+\]
+Choose \(g_R\in \Lip_0(\{0\}\cup C_R)\) with \(\|g_R\|_L=1\) and
+\[
+\langle g_R,W_R\gamma\rangle=\|W_R\gamma\|.
+\]
+Let \(h_R=W_R^*g_R=\theta_R g_R\).  Then \(h_R\in\Lip_0(M)\),
+\(\|h_R\|_L\le4\), and \(h_R\) is supported outside \(B(0,R)\).
+
+The element \((I-W_R)\gamma\) is supported in \(B(0,2R)\), hence
+\(\widehat f((I-W_R)\gamma)\) is supported in \(B(0,R)\), where \(h_R\)
+vanishes.  Therefore
+\[
+|\lambda|\,\|W_R\gamma\|
+ = |\langle h_R,\widehat f(\gamma)\rangle|
+ = |\langle h_R,\widehat f(W_R\gamma)\rangle|.
+\]
+
+It remains to estimate \(h_R\circ f\) on \(\{0\}\cup C_R\).  If
+\(x,y\in C_R\) and both \(f(x),f(y)\in B(0,R)\), then
+\(h_R(f(x))=h_R(f(y))=0\).  Otherwise at least one of \(f(x),f(y)\) lies
+outside \(B(0,R)\), and Lemma~\ref{lem:tail} gives
+\[
+|h_R(f(x))-h_R(f(y))|
+\le 4\,d(f(x),f(y))
+\le 4\eps\,d(x,y).
+\]
+For the pair \(0,x\) with \(x\in C_R\), either \(h_R(f(x))=0\), or radial
+flatness gives
+\[
+|h_R(f(x))-h_R(f(0))|
+\le 4\,d(f(x),0)
+\le 4\eps\,d(x,0).
+\]
+Thus
+\[
+\|(h_R\circ f)|_{\{0\}\cup C_R}\|_L\le 4\eps.
+\]
+Since \(W_R\gamma\in\F(\{0\}\cup C_R)\), we get
+\[
+|\lambda|\,\|W_R\gamma\|
+ \le 4\eps\,\|W_R\gamma\|.
+\]
+Dividing by \(\|W_R\gamma\|\) gives \(|\lambda|\le4\eps\).  As \(\eps>0\)
+was arbitrary, \(\lambda=0\), a contradiction.
+\end{proof}
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let \(M\) be a complete pointed metric space and let \(f:M\to M\) be a
+base-point-preserving Lipschitz map.  If
+\(\widehat f:\F(M)\to\F(M)\) is compact and \(A\) is the set of all natural
+numbers \(n\) for which \(f\) has a nonzero periodic point of exact period
+\(n\), then \(A\) is finite and
+\[
+\sigma(\widehat f)\setminus\{0\}=\bigcup_{n\in A}\U_n.
+\]
+Equivalently, since \(C_f=\widehat f^*\),
+\[
+\sigma(C_f)\setminus\{0\}=\sigma(\widehat f)\setminus\{0\}
+=\bigcup_{n\in A}\U_n.
+\]
+\end{theorem}
+
+\begin{proof}
+The inclusion \(\supset\) is exactly the periodic-point eigenvector lemma from
+the source paper.
+
+Conversely, let \(\lambda\in\sigma(\widehat f)\setminus\{0\}\).  Since
+\(\widehat f\) is compact, \(\lambda\in\sigma_p(\widehat f)\), so there is
+\(\gamma\ne0\) such that \(\widehat f(\gamma)=\lambda\gamma\).  By
+Lemma~\ref{lem:bounded-support}, \(\supp(\gamma)\) is bounded.
+
+Choose \(R\) so large that \(\supp(\gamma)\subset B(0,R)\) and
+\[
+f(\overline{B}(0,R))\subset \overline{B}(0,R).
+\]
+This is possible by radial flatness.  Let \(M_R=\overline{B}(0,R)\), a
+complete bounded pointed metric space, and consider \(f_R=f|_{M_R}:M_R\to
+M_R\).  By the compactness characterization, \(f(M_R)\) is totally bounded and
+\(f_R\) is uniformly locally flat.  Hence the source paper's bounded/totally
+bounded spectral corollary applies to \(\widehat{f_R}:\F(M_R)\to\F(M_R)\).
+
+The element \(\gamma\) belongs canonically to \(\F(M_R)\), and
+\(\widehat{f_R}\gamma=\lambda\gamma\).  Therefore the source corollary gives
+\(\lambda\in\U_n\) for some exact period \(n\) of a periodic point of \(f_R\),
+hence of \(f\).  This proves
+\[
+\sigma(\widehat f)\setminus\{0\}\subset \bigcup_{n\in A}\U_n.
+\]
+
+Finally, \(A\) must be finite.  If infinitely many periods occurred, the
+periodic-point lemma would put the infinite set \(\bigcup_{n\in A}\U_n\) into
+\(\sigma_p(\widehat f)\).  This infinite subset of the unit circle has an
+accumulation point different from \(0\), contradicting compactness of
+\(\widehat f\).  The equality for \(C_f\) follows from
+\(C_f=\widehat f^*\) and equality of spectra for an operator and its adjoint.
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+The proof uses only the source paper's support/cutoff and periodic-point
+arguments plus the compactness characterization from arXiv:2110.03231.  The
+new step is Lemma~\ref{lem:tail}, which extracts from \(P_3\) exactly the
+tail estimate needed by the source's flat-at-infinity cutoff proof.
+
+Cheap run indexes were searched for arXiv:2310.08965, the title keywords,
+``compact Lipschitz operator spectrum'', ``roots of unity'', and related
+Lipschitz-free keywords; no duplicate packet was found.  Web searches on
+2026-06-29 for exact and close phrases around the final question found the
+source arXiv record but no later answer.  Human review should check the
+cutoff support step in Lemma~\ref{lem:bounded-support}, especially the use of
+the source cutoff operator \(W_R\) and the passage to the bounded restriction.
+
+\begin{thebibliography}{9}
+
+\bibitem{ACP-spectrum}
+A. Abbar, C. Coine, and C. Petitjean,
+\emph{A note on the spectrum of Lipschitz operators and composition operators
+on Lipschitz spaces}, arXiv:2310.08965.
+
+\bibitem{ACP-compact}
+A. Abbar, C. Coine, and C. Petitjean,
+\emph{Compact and weakly compact Lipschitz operators}, arXiv:2110.03231.
+
+\end{thebibliography}
+
+\end{document}

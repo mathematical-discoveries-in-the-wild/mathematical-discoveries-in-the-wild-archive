@@ -1,0 +1,212 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{A Cauchy-Stable Partial Separation Reduction for the \(B_1^n\) Case}
+\author{arXiv automatic math run \texttt{fa\_banach\_001}}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial result, likely valid pending expert
+review, for the Part 1 separation dimension-reduction challenge in
+Mendelson--Milman--Paouris \cite{MMP}.  It does not complete the authors'
+program: the separation loss obtained below is \(O(k\log k)\), whereas the
+program needs a universal constant loss.
+
+\section*{Source Challenge}
+
+The source paper is Shahar Mendelson, Emanuel Milman, and Grigoris Paouris,
+\emph{Generalized Dual Sudakov Minoration via Dimension Reduction - A Program},
+arXiv:1610.09287.  In the conclusion, after noting that Part 2 is essentially
+settled up to the slicing problem, the authors write that the main remaining
+challenge is Part 1, and specifically mention \(K=B_1^n\).
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Part 1' asks, informally, for a linear map to dimension \(m\simeq k\) that
+keeps \(e^k\) many \(K\)-separated points separated while sending a positive
+amount of the original measure into a sufficiently massive target body.  The
+authors suggest that for bodies such as \(B_1^n\), one may need random maps
+distributed differently from Haar-random Euclidean projections.
+
+\section*{Proof Intuition}
+
+For \(K=B_1^n\), the natural non-Haar random map is a Cauchy matrix.  The
+standard Cauchy law is \(1\)-stable: every row applied to a vector \(x\) has
+scale \(\norm{x}_1\).  Thus a difference with \(\ell_1\)-norm \(>1\) has an
+exponentially small probability of landing in a fixed small \(\ell_1^m\)-ball,
+so a union bound preserves \(e^k\) separations in \(m\simeq k\) dimensions.
+On the other hand, vectors in \(B_1^n\) are mapped into an
+\(O(m\log m)B_1^m\) ball with constant probability, giving the required
+massiveness after averaging over the measure.  The \(m\log m\) radius is the
+price paid for the heavy Cauchy tails, and is exactly why this remains only a
+partial result.
+
+\section*{The Partial Result}
+
+\begin{theorem}[Cauchy one-sided reduction for \(B_1^n\)]
+\label{thm:cauchy-b1}
+There are universal constants \(a,A,c>0\) such that the following holds.  Let
+\(k\ge 1\), \(M\le e^k\), and let \(x_1,\ldots,x_M\in\R^n\) satisfy
+\[
+  \norm{x_i-x_j}_1>1 \qquad (i\ne j).
+\]
+Let \(\mu\) be a Borel probability measure on \(\R^n\) with
+\(\mu(B_1^n)\ge e^{-q}\), where \(0\le q\le k/2\).  Put
+\[
+  m=\lceil k\rceil, \qquad L=A\,m\log(e m)\,B_1^m .
+\]
+Then there is a linear map \(T:\R^n\to\R^m\) such that
+\[
+  \norm{Tx_i-Tx_j}_1>a \qquad (i\ne j)
+\]
+and
+\[
+  T_*\mu(L)\ge c e^{-q}.
+\]
+Equivalently, the images are \((1/R)L\)-separated with
+\[
+  R\le C\,m\log(e m).
+\]
+\end{theorem}
+
+\begin{lemma}[Two elementary Cauchy estimates]
+\label{lem:cauchy}
+Let \(G_1,\ldots,G_m\) be independent standard Cauchy random variables.  There
+are universal constants \(\eta,A>0\) such that, for every \(m\ge 1\),
+\[
+  \Pbb\left\{\sum_{j=1}^m |G_j|\le \eta\right\}\le e^{-6m}
+\]
+and
+\[
+  \Pbb\left\{\sum_{j=1}^m |G_j|\le A m\log(e m)\right\}\ge \frac12 .
+\]
+\end{lemma}
+
+\begin{proof}
+For \(0<u\le 1\), \(\Pbb\{|G_1|\le u\}\le C u\).  Choosing \(\eta>0\) so that
+\(C\eta\le e^{-6}\), the first estimate follows from the inclusion
+\(\{\sum |G_j|\le\eta\}\subseteq\{|G_j|\le\eta \text{ for all }j\}\).
+
+For the second estimate, use
+\[
+  \Pbb\{|G_1|>u\}\le \frac{C}{u},
+  \qquad
+  \E\bigl[|G_1|\mathbf 1_{\{|G_1|\le u\}}\bigr]\le C\log(eu).
+\]
+With \(R=A m\log(e m)\),
+\[
+\begin{aligned}
+\Pbb\left\{\sum |G_j|>R\right\}
+&\le \Pbb\left\{\max_j |G_j|>R\right\}
+   +\Pbb\left\{\sum |G_j|\mathbf 1_{\{|G_j|\le R\}}>R\right\}  \\
+&\le \frac{C m}{R}+\frac{C m\log(eR)}{R}.
+\end{aligned}
+\]
+Taking \(A\) large enough makes the last quantity at most \(1/2\), uniformly
+in \(m\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:cauchy-b1}]
+Let \(T=(g_{jr})_{1\le j\le m,1\le r\le n}\), where the \(g_{jr}\) are
+independent standard Cauchy random variables.  The characteristic function
+identity \(\E e^{itG}=e^{-|t|}\) implies the \(1\)-stability relation
+\[
+  (Tx)_j \stackrel{d}{=} \norm{x}_1 G_j ,
+\]
+with independent \(G_j\)'s as \(j\) varies.
+
+If \(h\notin B_1^n\), then \(\norm{h}_1>1\), and Lemma~\ref{lem:cauchy} gives
+\[
+  \Pbb\{\norm{Th}_1\le \eta\}
+  \le
+  \Pbb\left\{\sum_{j=1}^m |G_j|\le \eta\right\}
+  \le e^{-6m}.
+\]
+Therefore,
+\[
+  \Pbb\{\exists i<j:\norm{T(x_i-x_j)}_1\le \eta\}
+  \le M^2 e^{-6m}\le e^{2k-6m}\le e^{-4k}.
+\]
+
+For \(x\in B_1^n\), the same stability relation and the second part of
+Lemma~\ref{lem:cauchy} imply
+\[
+  \Pbb\{Tx\in A m\log(e m)B_1^m\}\ge \frac12 .
+\]
+Consequently, for \(L=A m\log(e m)B_1^m\),
+\[
+  \E\bigl[T_*\mu(L)\bigr]
+  =\int \Pbb\{Tx\in L\}\,d\mu(x)
+  \ge \frac12 \mu(B_1^n)
+  \ge \frac12 e^{-q}.
+\]
+Since \(0\le T_*\mu(L)\le 1\), this implies
+\[
+  \Pbb\{T_*\mu(L)\ge \tfrac14 e^{-q}\}\ge \tfrac14 e^{-q}.
+\]
+Because \(q\le k/2\), the latter probability is larger than \(e^{-4k}\) after
+adjusting constants.  Hence there is a realization of \(T\) for which both the
+separation event and the massiveness event occur.  Taking \(a=\eta\) and
+\(c=1/4\) proves the theorem.  Finally,
+\[
+  \eta B_1^m=\frac{\eta}{A m\log(e m)}L,
+\]
+so the separation may be written as \((1/R)L\)-separation with
+\(R\le C m\log(e m)\).
+\end{proof}
+
+\section*{Limitations and Novelty Check}
+
+The result is not the desired Part 1' for \(B_1^n\), because \(R\) grows like
+\(k\log k\).  The source program needs \(R\) independent of \(k,n\) (or at
+least a substantially milder loss that can be absorbed in the bootstrap).  The
+packet should therefore be read as evidence that \(1\)-stable, non-Haar random
+maps are relevant to the \(B_1^n\) challenge, not as a completion of the
+program.
+
+Novelty check performed on July 3, 2026: local run indexes were searched for
+arXiv:1610.09287, ``Massive Separation Dimension Reduction'', \(B_1^n\), Cauchy,
+and one-sided Johnson--Lindenstrauss terms; no duplicate packet was found.
+Web searches for ``one-sided Johnson-Lindenstrauss Cauchy l1'', ``Cauchy
+dimension reduction l1 separation'', and related stable-projection phrases did
+not surface a direct match.  The result uses only elementary Cauchy stability
+and is not claimed to be absent from the broader algorithmic dimension
+reduction literature.
+
+\section*{Human Review Recommendation}
+
+Reviewers should check whether the \(O(k\log k)\) loss can be reduced by using
+a different target body, truncating the Cauchy map, or replacing the \(\ell_1^m\)
+massiveness body by a Lorentz or weak-\(\ell_1\) body compatible with Part 2.
+As written, the proof is self-contained and the main risk is relevance rather
+than correctness.
+
+\begin{thebibliography}{9}
+
+\bibitem{MMP}
+S. Mendelson, E. Milman, and G. Paouris,
+\emph{Generalized Dual Sudakov Minoration via Dimension Reduction - A Program},
+arXiv:1610.09287, 2016.
+
+\end{thebibliography}
+
+\end{document}

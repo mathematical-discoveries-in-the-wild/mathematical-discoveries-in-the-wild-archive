@@ -1,0 +1,286 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sp}{\mathfrak L}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Order-Zero Super Symbols Need Not Be Bounded on Any Schatten Class Other Than $\Sp^2$}
+\author{Automated Math Discovery -- lane 9}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+\noindent\textbf{Status.} Candidate counterexample, likely valid pending human review.
+
+This packet concerns the $p$-Schatten boundedness question in G.~Lee and
+M.~Lein, \emph{A proof of $\Sp^2$-boundedness for magnetic
+pseudodifferential super operators via matrix representations with respect to
+Parseval frames}, arXiv:2405.19964, published in \emph{Monatshefte f\"ur
+Mathematik} \textbf{206} (2025), 597--627 \cite{LeeLein}.
+
+On page 3 the source asks for conditions under which a magnetic
+pseudodifferential super operator is bounded on the trace class and, more
+generally, on $\Sp^p$ for $1\leq p\leq\infty$:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Theorem 5.3 proves that every order-zero symbol in $S^0_{\rho,0}$ gives a
+bounded operator on $\Sp^2$.  Remark 5.4 (pages 29--30) singles out the hoped
+endpoint extensions under the same hypotheses, which would yield all other
+exponents by interpolation:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/same_hypotheses_remark_crop.png}
+\end{center}
+
+The result below gives a sharp negative answer to that same-hypotheses
+extension.  It does not attempt to classify the additional symbol conditions
+that do imply $\Sp^p$ boundedness.
+
+\section*{Idea of the proof}
+
+When the magnetic field is zero and a super symbol depends only on the two
+position variables, its super Weyl quantization multiplies operator kernels:
+\[
+   K(x,y)\longmapsto F(x,y)K(x,y).
+\]
+Thus a smooth function of the difference $x-y$ produces a continuous Toeplitz
+Schur multiplier.  We construct a sign sequence $m:\Z\to\{-1,1\}$ whose
+Fourier multiplier is unbounded on every $L^p(\T)$ except $L^2(\T)$, and
+smoothly interpolate the values $m(n)$ by a function $\phi\in C^\infty(\R)$
+with every derivative bounded.  The symbol
+\[
+   F(x_L,\xi_L,x_R,\xi_R)=\phi(x_L-x_R)
+\]
+then belongs to every order-zero class $S^0_{\rho,0}$.
+
+Small, disjoint translates of one test function embed matrices into operators
+on $L^2(\R)$.  On this embedded copy, multiplication by $\phi(x-y)$ is exactly
+the Toeplitz Schur multiplier $(a_{ij})\mapsto(m(i-j)a_{ij})$.  Fourier--Schur
+transference now transfers the bad $L^p(\T)$ multiplier behavior to every
+Schatten class.  The one exceptional exponent is $p=2$, where any bounded
+entrywise multiplier is automatically bounded.
+
+\section*{Construction of one multiplier bad at every $p\ne2$}
+
+We normalize Haar measure on $\T$ and write
+\[
+   D_N(t)=\sum_{k=1}^N e^{ikt}.
+\]
+
+\begin{lemma}\label{lem:universal-sign}
+There is a real sequence $m:\Z\to\{-1,1\}$ such that the Fourier multiplier
+\[
+  T_m\!\left(\sum_k \widehat f(k)e^{ikt}\right)
+   =\sum_k m(k)\widehat f(k)e^{ikt}
+\]
+does not extend boundedly to $L^p(\T)$ for any
+$p\in[1,\infty]$, $p\ne2$.
+\end{lemma}
+
+\begin{proof}
+Fix $q>2$.  Khintchine's inequality, applied pointwise in $t$ and then
+integrated, shows that for every $N$ there are signs
+$\varepsilon_1,\ldots,\varepsilon_N$ such that
+\begin{equation}\label{eq:random-sign}
+  \norm{\sum_{k=1}^N\varepsilon_k e^{ikt}}_{L^q(\T)}
+  \leq C_q N^{1/2}.
+\end{equation}
+On the other hand, $|D_N(t)|\geq cN$ when $|t|\leq c/N$, and hence
+\begin{equation}\label{eq:dirichlet}
+  \norm{D_N}_{L^q(\T)}\geq c_q N^{1-1/q}.
+\end{equation}
+
+Enumerate the rational numbers in $(2,\infty)$, repeating every rational
+infinitely many times.  For the $j$th term $q_j$, choose a fresh finite
+interval $I_j\subset\Z$, with length $N_j$ tending to infinity sufficiently
+fast, and choose signs on $I_j$ satisfying \eqref{eq:random-sign} for $q_j$.
+Define $m$ to be those signs on the pairwise disjoint intervals $I_j$, and put
+$m(k)=1$ elsewhere.
+
+For a block $I_j$ define
+\[
+  f_j(t)=\sum_{k\in I_j}m(k)e^{ikt}.
+\]
+Up to multiplication by a character, \eqref{eq:random-sign} gives
+$\norm{f_j}_{q_j}\leq C_{q_j}N_j^{1/2}$, whereas $m(k)^2=1$ and
+\eqref{eq:dirichlet} give
+\[
+  \norm{T_m f_j}_{q_j}\geq c_{q_j}N_j^{1-1/q_j}.
+\]
+The norm ratio is at least a constant times
+$N_j^{1/2-1/q_j}$.  The lengths can be chosen so that, along the infinitely
+many blocks assigned to each rational $q>2$, this ratio tends to infinity.
+Thus $T_m$ is unbounded on every rational $L^q(\T)$ with $q>2$.
+
+Since $|m|=1$, $T_m$ is an isometry on $L^2$.  If it were bounded on some
+$L^p$ with $p>2$, interpolation with $L^2$ would make it bounded on every
+$L^q$ with $2<q<p$, contradicting a rational exponent in this interval.
+For $1<p<2$, boundedness would imply boundedness of the adjoint multiplier
+on $L^{p'}$; because $m$ is real, the adjoint has the same symbol, contradicting
+the case $p'>2$.  Boundedness on $L^1$ or $L^\infty$, together with duality or
+interpolation with $L^2$, likewise implies boundedness at some finite exponent
+different from $2$.  Therefore no such bounded extension exists.
+\end{proof}
+
+\section*{The counterexample}
+
+Choose $\eta\in C_c^\infty((-1/4,1/4))$, real-valued, with
+$0\leq\eta\leq1$ and $\eta=1$ on $[-1/8,1/8]$, and let
+\begin{equation}\label{eq:phi}
+  \phi(t)=\sum_{n\in\Z}m(n)\eta(t-n).
+\end{equation}
+The supports in this sum are disjoint.  Consequently $\phi$ is real-valued,
+bounded, smooth, and every derivative of $\phi$ is bounded.
+
+\begin{theorem}\label{thm:counterexample}
+Let $d=1$, $B=0$, and $A=0$.  The real super symbol
+\begin{equation}\label{eq:F}
+  F(x_L,\xi_L,x_R,\xi_R)=\phi(x_L-x_R)
+\end{equation}
+belongs to $S^0_{\rho,0}(\R^4)$ and to the double class
+$S^{0,0}_{\rho,0}(\R^4)$ for every $0\leq\rho\leq1$.  Its non-magnetic super
+Weyl quantization $\operatorname{Op}^0(F)$ is bounded on
+$\Sp^2(L^2(\R))$, but it has no bounded extension on
+$\Sp^p(L^2(\R))$ for any $p\in[1,\infty]$, $p\ne2$.
+\end{theorem}
+
+\begin{proof}
+All position derivatives of $F$ are bounded because all derivatives of
+$\phi$ are bounded, while every derivative in $\xi_L$ or $\xi_R$ vanishes.
+This is precisely the required order-zero estimate for both stated
+H\"ormander classes, for every $\rho\in[0,1]$.
+
+For a symbol independent of the two momentum variables, the non-magnetic
+super Weyl quantization is joint position functional calculus.  Hence, on
+smooth finite-rank operators $X$ with integral kernel $K_X$,
+\begin{equation}\label{eq:kernel-action}
+  K_{\operatorname{Op}^0(F)X}(x,y)=\phi(x-y)K_X(x,y).
+\end{equation}
+This also follows first for tensor symbols from the identity
+\[
+  F(x_L,x_R)=f_L(x_L)f_R(x_R)
+  \quad\Longrightarrow\quad
+  \operatorname{Op}^0(F)X=f_L(Q)Xf_R(Q),
+\]
+and then from the distributional super Weyl formula.
+
+Choose a real unit vector $h\in C_c^\infty((-1/32,1/32))$ and set
+$h_j(x)=h(x-j)$ for $j\in\Z$.  These vectors have pairwise disjoint supports,
+so the map $U:\ell^2(\Z)\to L^2(\R)$, $Ue_j=h_j$, is an isometry.  If
+$a=(a_{ij})$ is a finite matrix, then $UaU^*$ has kernel
+\[
+  K_a(x,y)=\sum_{i,j}a_{ij}h_i(x)\overline{h_j(y)}.
+\]
+For $(x,y)\in\operatorname{supp}(h_i)\times\operatorname{supp}(h_j)$ we have
+$|(x-y)-(i-j)|<1/16$.  The plateau and disjoint-support properties of
+$\eta$ in \eqref{eq:phi} therefore imply
+\[
+   \phi(x-y)=m(i-j).
+\]
+Combining this identity with \eqref{eq:kernel-action} gives the exact
+intertwining relation
+\begin{equation}\label{eq:intertwine}
+  \operatorname{Op}^0(F)(UaU^*)
+    =U\bigl(m(i-j)a_{ij}\bigr)_{i,j\in\Z}U^*.
+\end{equation}
+
+For finite $p$, $a\mapsto UaU^*$ preserves the Schatten $p$-norm.  If
+$\operatorname{Op}^0(F)$ were bounded on $\Sp^p(L^2(\R))$, relation
+\eqref{eq:intertwine} would give a uniformly bounded Toeplitz Schur
+multiplier
+\[
+   S_m:(a_{ij})\longmapsto(m(i-j)a_{ij})
+\]
+on $\Sp^p(\ell^2(\Z))$.  The Fourier-to-Schur transference inequality of
+Neuwirth and Ricard \cite[Theorem~2.1]{NeuwirthRicard} says, for the amenable
+group $\Z$, that the $L^p(\T)$ Fourier multiplier norm of $m$ is no larger
+than this Toeplitz Schur multiplier norm.  Lemma~\ref{lem:universal-sign}
+therefore rules out boundedness for every finite $p\ne2$.
+
+At $p=\infty$, boundedness together with the automatic $\Sp^2$ bound would,
+by interpolation of Schatten classes, give boundedness on every
+$\Sp^q$, $2<q<\infty$, which has just been ruled out.  Finally,
+$\operatorname{Op}^0(F)$ is bounded on $\Sp^2$ directly from
+\eqref{eq:kernel-action}: under the Hilbert--Schmidt kernel identification it
+is multiplication by the bounded function $\phi(x-y)$.
+\end{proof}
+
+\section*{Verification, failed route, and scope}
+
+The first attempted positive route decomposed the source paper's rapidly
+off-diagonal four-index frame matrix into shifts.  For fixed shifts, however,
+the remaining coefficient array is an arbitrary Schur multiplier; a bounded
+array need not be bounded on $\Sp^p$ when $p\ne2$.  This obstruction led to
+the construction above.  An intermediate endpoint-only construction used the
+triangular projection.  The final sign-block construction upgrades that route
+to one symbol failing simultaneously at every exponent $p\ne2$.
+
+The finite script \texttt{code/check\_block\_multiplier.py} samples the block
+mechanism.  With $q=4$, 128 trials, and a $16384$-point quadrature grid, the
+observed Dirichlet-to-random-sign norm ratio increased from $1.70$ at $N=16$
+to $3.14$ at $N=256$.  This is only a sanity check; the proof is the
+Khintchine and Dirichlet-kernel estimate above.
+
+The theorem disproves a universal $S^0_{\rho,0}\Rightarrow\Sp^p$ boundedness
+statement for every $p\ne2$, already in the zero-field case.  It does not
+exclude positive results for smaller symbol classes.  Indeed, Cornean and
+Thorn \cite{CorneanThorn} prove later sufficient conditions involving
+integrable weights (Proposition 5.2) and a completed projective tensor-product
+symbol class (Proposition 5.5).  Those stronger subclasses do not contain the
+general order-zero conclusion refuted here.
+
+\section*{Novelty check and human-review recommendation}
+
+The four lightweight run indexes were searched for arXiv:2405.19964, its title,
+``magnetic pseudodifferential super operator'', ``Schatten'', ``trace class'',
+``Schur multiplier'', and close variants; no duplicate was found.  Bounded web
+searches used the exact source title and combinations of ``order zero'',
+``Schatten $p$'', ``Schur multiplier'', and the authors' names.  They found the
+2025 published source and the March 2026 follow-up arXiv:2603.26455, but no
+paper stating this counterexample or the sharp failure for all $p\ne2$.
+
+The recommended human review is to check two convention-sensitive points:
+(i) equation \eqref{eq:kernel-action} under Lee--Lein's right-action convention,
+and (ii) the application of Neuwirth--Ricard Theorem 2.1 to the full Toeplitz
+set for $\Gamma=\Z$.  The remainder is elementary harmonic analysis and an
+isometric finite-matrix compression.
+
+\begin{thebibliography}{9}
+
+\bibitem{LeeLein}
+G. Lee and M. Lein,
+\emph{A proof of $\mathfrak L^2$-boundedness for magnetic pseudodifferential
+super operators via matrix representations with respect to Parseval frames},
+Monatshefte f\"ur Mathematik \textbf{206} (2025), 597--627;
+arXiv:2405.19964.
+
+\bibitem{NeuwirthRicard}
+S. Neuwirth and \`E. Ricard,
+\emph{Transfer of Fourier multipliers into Schur multipliers and sumsets in a
+discrete group}, Canadian Journal of Mathematics \textbf{63} (2011),
+1161--1187; arXiv:1001.5332.
+
+\bibitem{CorneanThorn}
+H. D. Cornean and M. H. Thorn,
+\emph{Magnetic Weyl super calculus: Schatten-class properties, commutator
+criterion, and complete positivity}, arXiv:2603.26455, 2026.
+
+\end{thebibliography}
+
+\end{document}

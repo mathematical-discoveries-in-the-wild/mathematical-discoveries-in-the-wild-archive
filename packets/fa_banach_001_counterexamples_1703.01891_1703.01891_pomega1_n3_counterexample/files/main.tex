@@ -1,0 +1,134 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\omegaone}{\omega_1}
+\newcommand{\cC}{\mathcal C}
+
+\title{A Three-Dimensional Counterexample to Swift's \(P(\omega_1)\)}
+\author{agent\_lane\_06}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Andrew Swift, \emph{Coarse embeddings into \(c_0(\Gamma)\)}, arXiv:1703.01891.  In Section 3 Swift defines \(P(\alpha)\): for every \(n\in\mathbb N\) and every coloring
+\[
+  \sigma:[\alpha]^n\to\cC,
+\]
+at least one of the following alternatives holds:
+\begin{enumerate}
+\item there is a sequence \((F_j)_{j=1}^\infty\) of pairwise disjoint members of \([\alpha]^n\) such that \(\sigma(F_i)=\sigma(F_j)\) for all \(i,j\);
+\item there is \(F\in[\alpha]^{n-1}\) such that
+\[
+  \sigma\bigl(\{F\cup\{\gamma\}:\gamma\in\alpha\setminus F\}\bigr)
+\]
+is infinite.
+\end{enumerate}
+Problem 2 in Section 5 asks whether Theorem B is true for \(\omega_1\), equivalently whether \(P(\omega_1)\) holds.
+
+\begin{center}
+\includegraphics[width=0.88\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+The answer to Problem 2 is negative.  The counterexample already appears in arity \(n=3\).
+
+\begin{theorem}
+There is a coloring \(\sigma:[\omega_1]^3\to\omega_1\) such that:
+\begin{enumerate}
+\item for every \(F\in[\omega_1]^2\), the set
+\[
+  \{\sigma(F\cup\{\gamma\}):\gamma\in\omega_1\setminus F\}
+\]
+is finite;
+\item no two disjoint triples have the same color.
+\end{enumerate}
+Consequently \(P(\omega_1)\), and hence Theorem B with \(\lambda=\omega_1\), is false.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The point is to exploit the fact that every proper initial segment of \(\omega_1\) is countable.  For each top vertex \(\gamma\), enumerate the smaller ordinals below \(\gamma\) in type \(\omega\).  Given a triple \(\alpha<\beta<\gamma\), look only at the two smaller vertices and color the triple by the one that occurs earlier in the enumeration of \(\gamma\).
+
+This makes every color class a star: if a triple has color \(\xi\), then \(\xi\) is one of its vertices.  Hence two same-colored triples always meet.  On the other hand, for a fixed pair \(\{\xi,\eta\}\), the only possible colors outside the pair arise from ordinals which occur before \(\xi\) in the fixed enumeration of \(\eta\), and there are only finitely many of those.
+
+\section*{Construction and Proof}
+
+For each nonzero \(\gamma<\omega_1\), choose a bijection
+\[
+  e_\gamma:\mathbb N\to\gamma.
+\]
+Let \(r_\gamma:\gamma\to\mathbb N\) be its inverse, so \(r_\gamma(\xi)\) is the position of \(\xi\) in the enumeration \(e_\gamma\).  Define a coloring \(\sigma:[\omega_1]^3\to\omega_1\) as follows.  If
+\[
+  \alpha<\beta<\gamma<\omega_1,
+\]
+put
+\[
+  \sigma(\{\alpha,\beta,\gamma\})=
+  \begin{cases}
+  \alpha, & r_\gamma(\alpha)<r_\gamma(\beta),\\
+  \beta, & r_\gamma(\beta)<r_\gamma(\alpha).
+  \end{cases}
+\]
+The two cases exhaust all possibilities because \(r_\gamma\) is injective.
+
+\subsection*{Pair-local finiteness}
+
+Fix a pair \(\{\xi,\eta\}\in[\omega_1]^2\) with \(\xi<\eta\).  Let
+\[
+  E_{\xi,\eta}=\{\delta<\eta:r_\eta(\delta)<r_\eta(\xi)\}.
+\]
+This set is finite, since only finitely many natural numbers are smaller than \(r_\eta(\xi)\).
+
+We claim that every triple extending \(\{\xi,\eta\}\) has color in the finite set
+\[
+  \{\xi,\eta\}\cup E_{\xi,\eta}.
+\]
+Let \(\delta\in\omega_1\setminus\{\xi,\eta\}\).
+
+If \(\delta>\eta\), then the triple is \(\xi<\eta<\delta\), and by definition its color is either \(\xi\) or \(\eta\).
+
+If \(\xi<\delta<\eta\), then the triple is \(\xi<\delta<\eta\).  Its color is either \(\xi\) or \(\delta\).  In the latter case \(r_\eta(\delta)<r_\eta(\xi)\), so \(\delta\in E_{\xi,\eta}\).
+
+If \(\delta<\xi\), then the triple is \(\delta<\xi<\eta\).  Its color is either \(\delta\) or \(\xi\).  Again, if the color is \(\delta\), then \(r_\eta(\delta)<r_\eta(\xi)\), so \(\delta\in E_{\xi,\eta}\).
+
+Thus the color set on all extensions of the fixed pair \(\{\xi,\eta\}\) is finite.  Therefore the second alternative in \(P(\omega_1)\) fails for this coloring and \(n=3\).
+
+\subsection*{No disjoint monochromatic triples}
+
+For every triple \(T\in[\omega_1]^3\), the color \(\sigma(T)\) is one of the elements of \(T\).  Therefore, if two triples \(T\) and \(T'\) have the same color \(\zeta\), then
+\[
+  \zeta\in T\cap T'.
+\]
+In particular, no two same-colored triples are disjoint.  Hence there cannot be an infinite sequence of pairwise disjoint triples of one color.  The first alternative in \(P(\omega_1)\) also fails.
+
+Both alternatives fail for \(n=3\), so \(P(\omega_1)\) is false.
+\qed
+
+\section*{Verification Notes}
+
+The only choice used is a countable enumeration of each countable ordinal \(\gamma<\omega_1\), which is available in ZFC.  The proof does not use CH or any additional set-theoretic hypothesis.
+
+This counterexample is compatible with the separate partial packet showing that the \(n=2\) case of \(P(\omega_1)\) is true.  Thus the first possible failure occurs at arity \(3\).
+
+\section*{Novelty and Search Bounds}
+
+Before packaging, the run indexes were searched for arXiv id 1703.01891, Swift's title, \(P(\omega_1)\), Theorem B for \(\omega_1\), and Delta-system terminology.  The only run hit was the preceding \(n=2\) partial packet.  Local corpus searches found Swift's source paper and later references to related coarse-embedding and \(Q^{\omega_1}\) material, but no local solution packet or later paper resolving Problem 2.  A bounded web search for combinations of ``Coarse embeddings into \(c_0\)'', ``Problem 2'', ``Theorem B'', ``\(P(\omega_1)\)'', and ``counterexample'' did not surface an exact answer.
+
+\section*{Human-Review Recommendation}
+
+Review as a likely valid full negative answer to Problem 2.  The key checks are: (i) the arity \(n=3\) really suffices to refute \(P(\omega_1)\), (ii) the fixed-pair extension color set is finite in all three relative-order cases, and (iii) same-colored triples all contain their color ordinal.
+
+\begin{thebibliography}{9}
+\bibitem{Swift}
+A. Swift, \emph{Coarse embeddings into \(c_0(\Gamma)\)}, arXiv:1703.01891.
+\end{thebibliography}
+
+\end{document}

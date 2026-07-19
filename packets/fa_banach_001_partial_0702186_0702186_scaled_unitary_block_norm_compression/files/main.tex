@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.02in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Cp}{\mathcal C_p}
+\newcommand{\Sp}{\mathsf S_p}
+
+\definecolor{statusblue}{RGB}{31,78,121}
+
+\title{Norm Compression for Scaled-Unitary Blocks}
+\author{fa\_banach\_001 / agent\_lane\_00}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\fcolorbox{statusblue}{statusblue!6}{%
+  \begin{minipage}{0.92\textwidth}
+  \textbf{Status: candidate partial result, likely valid.}
+  Audenaert's general norm-compression conjecture remains open in this packet.
+  The theorem below proves all finite Schatten exponents for arbitrary
+  collections of common-size blocks that are scalar multiples of unitaries.
+  \end{minipage}}
+
+\section{Source conjecture}
+
+Koenraad M. R. Audenaert's paper \emph{On a Norm Compression Inequality for
+$2\times N$ Partitioned Block Matrices}, arXiv:math/0702186, formulates
+Conjecture~1 on PDF page~2 \cite{Audenaert}.  For
+\[
+ T=\begin{pmatrix}A_1&A_2&\cdots&A_N\\ B_1&B_2&\cdots&B_N\end{pmatrix},
+ \qquad
+ \Cp(T)=\begin{pmatrix}
+ \lVert A_1\rVert_p&\cdots&\lVert A_N\rVert_p\\
+ \lVert B_1\rVert_p&\cdots&\lVert B_N\rVert_p
+ \end{pmatrix},
+\]
+it asks whether
+\begin{align}
+ \lVert T\rVert_p&\geq \lVert\Cp(T)\rVert_p,
+    &&1\leq p\leq2, \label{eq:lower}\\
+ \lVert T\rVert_p&\leq \lVert\Cp(T)\rVert_p,
+    &&p\geq2. \label{eq:upper}
+\end{align}
+Here every norm is the Schatten norm at the displayed exponent.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The definition and Conjecture~1 as rendered from page~2 of the
+  source paper.}
+\end{figure}
+
+\clearpage
+\section{Definitions and scope}
+
+For a finite matrix $X$, its Schatten $p$-norm is
+\[
+ \lVert X\rVert_p=\bigl(\Tr |X|^p\bigr)^{1/p},\qquad 1\leq p<\infty.
+\]
+We treat the subcase in which all blocks are $d\times d$ and
+\[
+ A_i=a_iU_i,\qquad B_i=b_iV_i,
+ \qquad a_i,b_i\geq0,\quad U_i,V_i\in\mathrm U(d).
+\]
+The unitaries may depend arbitrarily on $i$.  Thus the blocks may be full
+rank, non-proportional, and noncommuting.  This differs from the rank-one and
+proportional-block families handled in the source.
+
+\section{Proof intuition}
+
+Scaled unitaries make the two diagonal blocks of $TT^*$ scalar.  All remaining
+geometry is contained in one cross term
+\[
+ Z=\sum_i a_ib_iU_iV_i^*.
+\]
+After taking a singular-value decomposition of $Z$, the $2d\times2d$ matrix
+$TT^*$ splits into $d$ scalar $2\times2$ problems.  If $s_j$ is a singular
+value of $Z$, the triangle inequality gives
+$s_j\leq c:=\sum_i a_ib_i$.  The scalar compression is exactly the perfectly
+aligned endpoint $s=c$, repeated $d$ times.
+
+The sum of the $q$th powers of the two eigenvalues of
+$\bigl(\begin{smallmatrix}\alpha&s\\s&\beta\end{smallmatrix}\bigr)$ is
+decreasing in $s$ for $q\leq1$ and increasing for $q\geq1$.  Substituting
+$q=p/2$ produces the desired reversal at $p=2$.  The unrestricted conjecture
+remains open because general blocks do not make the diagonal blocks of $TT^*$
+scalar, so this singular-value decoupling is unavailable.
+
+\section{The partial theorem}
+
+\begin{theorem}[Scaled-unitary norm compression]
+\label{thm:main}
+Let $N,d\geq1$, let $a_i,b_i\geq0$, and let $U_i,V_i\in\mathrm U(d)$ for
+$1\leq i\leq N$.  Form
+\[
+ T=\begin{pmatrix}
+ a_1U_1&\cdots&a_NU_N\\
+ b_1V_1&\cdots&b_NV_N
+ \end{pmatrix}.
+\]
+Then Audenaert's norm-compression inequalities \eqref{eq:lower} and
+\eqref{eq:upper} hold for every $1\leq p<\infty$.
+\end{theorem}
+
+\begin{proof}
+Fix $p$ and write $q=p/2$.  Set
+\[
+ \alpha=\sum_{i=1}^N a_i^2,\qquad
+ \beta=\sum_{i=1}^N b_i^2,\qquad
+ c=\sum_{i=1}^N a_ib_i,
+ \qquad
+ Z=\sum_{i=1}^N a_ib_iU_iV_i^*.
+\]
+The unitary hypotheses give
+\begin{equation}
+ TT^*=\begin{pmatrix}
+ \alpha I_d&Z\\ Z^*&\beta I_d
+ \end{pmatrix}.                                      \label{eq:gram}
+\end{equation}
+Let $s_1,\ldots,s_d$ be the singular values of $Z$.  If
+$Z=L\diag(s_1,\ldots,s_d)R^*$ is a singular-value decomposition, conjugating
+\eqref{eq:gram} by $\diag(L,R)$ and permuting coordinates shows that $TT^*$
+is unitarily equivalent to the direct sum
+\[
+ \bigoplus_{j=1}^d
+ \begin{pmatrix}\alpha&s_j\\s_j&\beta\end{pmatrix}.
+\]
+Moreover,
+\begin{equation}
+ 0\leq s_j\leq\lVert Z\rVert_\infty
+ \leq\sum_{i=1}^N a_ib_i\lVert U_iV_i^*\rVert_\infty=c.       \label{eq:sbound}
+\end{equation}
+
+For $0\leq s\leq c$, define
+\[
+ \lambda_\pm(s)=\frac{\alpha+\beta
+ \pm\sqrt{(\alpha-\beta)^2+4s^2}}{2},
+ \qquad
+ F_q(s)=\lambda_+(s)^q+\lambda_-(s)^q.
+\]
+Cauchy--Schwarz gives $c^2\leq\alpha\beta$, so these are the two
+nonnegative eigenvalues throughout the required interval.  The preceding
+unitary equivalence yields
+\begin{equation}
+ \lVert T\rVert_p^p=\Tr((TT^*)^q)=\sum_{j=1}^dF_q(s_j).       \label{eq:full}
+\end{equation}
+
+For $s>0$ at points where both eigenvalues are positive, direct
+differentiation gives
+\begin{equation}
+ F_q'(s)=
+ \frac{2qs}{\sqrt{(\alpha-\beta)^2+4s^2}}
+ \left(\lambda_+(s)^{q-1}-\lambda_-(s)^{q-1}\right).        \label{eq:derivative}
+\end{equation}
+Thus $F_q$ is nonincreasing when $0<q\leq1$ and nondecreasing when $q\geq1$.
+The same conclusion at $s=0$ and when $\lambda_-(s)=0$ follows by continuity.
+At $q=1$, $F_1(s)=\alpha+\beta$ is constant.
+
+It remains to identify the endpoint $s=c$ with the norm compression.  Since
+the singular values of each unitary equal one,
+\[
+ \lVert a_iU_i\rVert_p=d^{1/p}a_i,
+ \qquad
+ \lVert b_iV_i\rVert_p=d^{1/p}b_i.
+\]
+Consequently
+\[
+ \Cp(T)\Cp(T)^*=d^{2/p}
+ \begin{pmatrix}\alpha&c\\c&\beta\end{pmatrix},
+\]
+and, because $2q/p=1$,
+\begin{equation}
+ \lVert\Cp(T)\rVert_p^p
+ =\Tr\bigl((\Cp(T)\Cp(T)^*)^q\bigr)
+ =dF_q(c).                                                \label{eq:compressed}
+\end{equation}
+
+If $1\leq p\leq2$, then $q\leq1$; equations
+\eqref{eq:sbound}--\eqref{eq:compressed} give
+\[
+ \lVert T\rVert_p^p=\sum_jF_q(s_j)\geq dF_q(c)
+ =\lVert\Cp(T)\rVert_p^p.
+\]
+If $p\geq2$, the monotonicity reverses and gives the opposite inequality.
+Taking $p$th roots proves the theorem.
+\end{proof}
+
+\begin{remark}
+At $p=2$ there is equality for every choice of blocks.  Away from $p=2$, the
+proof also shows equality whenever every singular value of $Z$ equals $c$;
+for example, this occurs when all relative unitaries $U_iV_i^*$ agree.
+\end{remark}
+
+\section{Computational verification}
+
+The reusable script \texttt{code/verify\_scaled\_unitary.py} generates seeded
+complex Haar unitaries and compares direct Schatten norms with both formulas
+\eqref{eq:full} and \eqref{eq:compressed}.  It also checks the inequality
+direction for $p\in\{1,1.2,1.5,1.9,2,2.2,2.8,3.5,5,8\}$ across 5,000 random
+instances with $1\leq d\leq6$ and $2\leq N\leq7$.  The exact command and
+numerical residuals appear in \texttt{verification.md}.  These tests are not
+used as proof.
+
+\section{Limitations and bounded novelty check}
+
+The theorem does not handle arbitrary blocks, blocks with non-flat singular
+values, or the full matrix Hanner conjecture.  It is therefore promoted only
+as a partial result.
+
+The run's cheap indexes were searched by arXiv id, title, and the phrases
+``norm compression'', ``Schatten'', and ``Hanner''.  A bounded web/arXiv
+search combined the source title and author with ``unitary blocks'', ``scaled
+unitaries'', and ``norm compression unitary''.  It recovered the source and
+nearby PSD/diagonal results, but no exact statement of Theorem~\ref{thm:main}.
+This is not an exhaustive novelty claim.
+
+\section{Human-review recommendation}
+
+The candidate is suitable for mathematical review.  The most useful checks
+are: (i) the unitary equivalence following \eqref{eq:gram}; (ii) the
+monotonicity sign in \eqref{eq:derivative}; and (iii) the factor $d$ in
+\eqref{eq:compressed}.  Until review, retain the status
+\emph{candidate partial result, likely valid}.
+
+\section{Reference}
+
+\begin{thebibliography}{9}
+\bibitem{Audenaert}
+K. M. R. Audenaert,
+\emph{On a Norm Compression Inequality for $2\times N$ Partitioned Block
+Matrices}, Linear Algebra Appl. 428 (2008), 781--795;
+arXiv:math/0702186.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\B}{\mathcal B}
+\newcommand{\E}{\mathbb E}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cN}{\mathcal N}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\LSI}{\operatorname{LSI}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Gammaop}{\Gamma_{\sigma_{\rm tr}}}
+
+\title{The strong DF-\(p\)-log-Sobolev range for nontrivially decohering QMS}
+\author{Run \texttt{fa\_banach\_001}, lane 2}
+\date{2026-06-23}
+
+\begin{document}
+\maketitle
+
+\paragraph{Source.}
+This packet concerns the open-question paragraph in Bardet--Rouze, arXiv:1803.05379, page 37. The source asks for the range of exponents \(p\) for which a non-primitive quantum Markov semigroup can satisfy a strong decoherence-free logarithmic Sobolev inequality
+\[
+  \LSI_{p,\cN}(c,0)
+\]
+for some finite \(c>0\). The paper proves a no-go theorem at \(p=2\), while the modified \(p=1\) endpoint is known to behave differently in examples.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Status.}
+This packet gives a claimed full answer, subject to human review, for finite-dimensional nontrivially decohering QMS. It proves that no finite \(p>1\) admits a strong inequality. The \(p=1\) endpoint is the modified logarithmic Sobolev inequality considered in Bardet's earlier work, where positive examples are known under standard regularity hypotheses. Thus the existence range is exactly the endpoint \(p=1\).
+
+\section*{Definitions}
+
+Let \(\cH\) be finite dimensional and let \(\cN\subset \B(\cH)\) be a nontrivial decoherence-free algebra, meaning
+\[
+  \cN\ne \mathbb C I,\qquad \cN\ne \B(\cH).
+\]
+Let \(E_\cN:\B(\cH)\to\cN\) be the \(\sigma_{\rm tr}\)-preserving conditional expectation used in arXiv:1803.05379. For \(p>1\) and \(q=p/(p-1)\), the \(p\)-Dirichlet form of a generator \(\cL\) is
+\[
+  \cE_{p,\cL}(X)
+  =
+  -\frac{p}{2(p-1)}
+  \langle I_{q,p}(X),\cL(X)\rangle_{\sigma_{\rm tr}},
+\]
+where
+\[
+  I_{q,p}(X)=\Gammaop^{-1/q}\left(
+       \left|\Gammaop^{1/p}(X)\right|^{p/q}
+     \right).
+\]
+The strong decoherence-free \(p\)-LSI is
+\[
+  \Ent_{p,\cN}(X)\le c\,\cE_{p,\cL}(X)\qquad(X>0).
+\]
+
+We use the following identity from Bardet--Rouze, Lemma 3.5: for any density matrix \(\rho\),
+\[
+  \Ent_{p,\cN}\left(\Gammaop^{-1/p}(\rho^{1/p})\right)
+  =
+  \frac{1}{p}D(\rho\|E_{\cN *}\rho).
+\]
+
+\section*{Proof Intuition}
+
+The \(p=2\) no-go in the source paper is driven by a two-level perturbation. One eigenvalue inside the projected state \(E_{\cN *}\rho\) is made very small, while a tiny off-diagonal coherence is inserted between that small eigenspace and a fixed positive eigenspace. The relative entropy of the perturbation has a second variation containing
+\[
+  \frac{\log x-\log y}{x-y},
+\]
+which diverges as \(x\downarrow0\). The Dirichlet energy, however, only sees divided differences of power functions. For every finite \(p>1\), the relevant powers \(t^{1/p}\) and \(t^{1/q}\) have bounded off-diagonal divided differences between \(x\downarrow0\) and \(y>0\). Thus entropy grows like \(\log(1/x)\), while energy stays bounded.
+
+\section*{Main Result}
+
+\begin{theorem}[Strong \(p\)-LSI obstruction for nontrivial decoherence]
+Let \(1<p<\infty\). Let \((P_t)_{t\ge0}\) be a finite-dimensional decohering quantum Markov semigroup with generator \(\cL\), decoherence-free algebra \(\cN\), and reference state \(\sigma_{\rm tr}\). Assume the decoherence is nontrivial:
+\[
+  \cN\ne \mathbb C I,\qquad \cN\ne \B(\cH).
+\]
+Then no finite constant \(c\) satisfies
+\[
+  \Ent_{p,\cN}(X)\le c\,\cE_{p,\cL}(X)\qquad(X>0).
+\]
+Consequently, among finite-dimensional nontrivially decohering QMS, the only possible strong endpoint in the family \(\LSI_{p,\cN}(c,0)\) is \(p=1\).
+\end{theorem}
+
+\begin{proof}
+We use the same two-level construction as the proof of Theorem 5.1 in Bardet--Rouze. Since \(\cN\) is nontrivial, there are density matrices \(\rho_{\cN,k}\in E_{\cN *}(\mathcal D(\cH))\), unit vectors \(e_1,e_2\), constants \(\lambda_1,\lambda_2>0\), and a self-adjoint perturbation
+\[
+  \Delta=|e_1\rangle\langle e_2|+|e_2\rangle\langle e_1|
+\]
+such that \(E_{\cN *}\Delta=0\),
+\[
+  \rho_{k,\epsilon}:=\rho_{\cN,k}+\epsilon\Delta
+\]
+is a density matrix for sufficiently small \(\epsilon>0\), and \(e_1,e_2\) are eigenvectors of \(\rho_{\cN,k}\) with eigenvalues
+\[
+  x_k=\lambda_1/k,\qquad y_k=(1-1/k)\lambda_2.
+\]
+Consequently \(E_{\cN *}\rho_{k,\epsilon}=\rho_{\cN,k}\).
+
+Set
+\[
+  X_{k,\epsilon}:=\Gammaop^{-1/p}(\rho_{k,\epsilon}^{1/p}).
+\]
+The entropy identity recalled above and the standard second variation of relative entropy give, for fixed \(k\) and \(\epsilon\downarrow0\),
+\[
+  \Ent_{p,\cN}(X_{k,\epsilon})
+  =
+  \frac{\epsilon^2}{p}\,
+  g(x_k,y_k)\,|\langle e_1,\Delta e_2\rangle|^2
+  +O_k(\epsilon^3),
+\]
+where
+\[
+  g(x,y)=
+  \begin{cases}
+    \dfrac{\log x-\log y}{x-y},&x\ne y,\\[0.8em]
+    x^{-1},&x=y.
+  \end{cases}
+\]
+Since \(x_k\downarrow0\) and \(y_k\to\lambda_2>0\), we have
+\[
+  g(x_k,y_k)\longrightarrow+\infty.
+\]
+
+It remains to show that the corresponding Dirichlet second variation is uniformly bounded in \(k\). Put
+\[
+  \alpha=\frac1p,\qquad \beta=\frac1q=1-\frac1p.
+\]
+Functional calculus for the two-dimensional off-diagonal perturbation gives
+\[
+  \rho_{k,\epsilon}^{\alpha}
+  =
+  \rho_{\cN,k}^{\alpha}
+  +\epsilon a_k\Delta
+  +O_k(\epsilon^2),
+  \qquad
+  \rho_{k,\epsilon}^{\beta}
+  =
+  \rho_{\cN,k}^{\beta}
+  +\epsilon b_k\Delta
+  +O_k(\epsilon^2),
+\]
+where
+\[
+  a_k=\frac{x_k^\alpha-y_k^\alpha}{x_k-y_k},
+  \qquad
+  b_k=\frac{x_k^\beta-y_k^\beta}{x_k-y_k}.
+\]
+Because \(0<\alpha,\beta<1\), both sequences \((a_k)\) and \((b_k)\) are bounded and converge to finite limits as \(k\to\infty\).
+
+The associated expansions are
+\[
+  X_{k,\epsilon}=X_{k,0}+\epsilon U_k+O_k(\epsilon^2),
+  \qquad
+  I_{q,p}(X_{k,\epsilon})=Y_{k,0}+\epsilon V_k+O_k(\epsilon^2),
+\]
+where \(X_{k,0},Y_{k,0}\in\cN\), \(U_k,V_k\in\ker E_\cN\), and \(U_k,V_k\) are uniformly bounded in \(k\). The first-order coefficient in the Dirichlet form vanishes. Indeed, contractivity of \(P_t\) on \(L_p(\sigma_{\rm tr})\) gives non-negativity of \(\cE_{p,\cL}\), and both signs of \(\epsilon\) give admissible positive perturbations; hence \(\epsilon=0\) is a local minimum of the energy along this line.
+
+For the second-order coefficient, only two kinds of terms can occur. The term
+\[
+  \langle V_k,\cL(U_k)\rangle_{\sigma_{\rm tr}}
+\]
+is uniformly bounded in \(k\), since \(\cL\) is a fixed finite-dimensional operator and \(U_k,V_k\) are uniformly bounded. The remaining terms involve second-order corrections inside \(\cN\). On \(\cN\), the semigroup acts by a unitary automorphism group, so its generator is a derivation
+\[
+  \delta(A)=i[H,A]\qquad(A\in\cN)
+\]
+for some self-adjoint \(H\in\cN\), after identifying the finite-dimensional representation. The state \(\sigma_{\rm tr}\) is tracial on \(\cN\). Moreover, the \(\cN\)-parts of the second-order corrections are obtained from the same two spectral projections of \(\rho_{\cN,k}\), hence are functions of \(X_{k,0}\) and commute with \(Y_{k,0}\). Therefore, for every such correction \(R_k\in\cN\),
+\[
+  \langle Y_{k,0},\delta(R_k)\rangle_{\sigma_{\rm tr}}
+  =
+  i\,\tr\bigl(\sigma_{\rm tr}Y_{k,0}[H,R_k]\bigr)
+  =
+  0
+\]
+by cyclicity of the tracial state on \(\cN\) and \([Y_{k,0},R_k]=0\). Hence the potentially singular fixed-algebra second-order terms do not contribute. Thus
+\[
+  \cE_{p,\cL}(X_{k,\epsilon})
+  =
+  -\frac{p}{2(p-1)}\epsilon^2
+  \langle V_k,\cL(U_k)\rangle_{\sigma_{\rm tr}}
+  +O_k(\epsilon^3).
+\]
+There exists \(C_p<\infty\), independent of \(k\), such that
+\[
+  \limsup_{\epsilon\downarrow0}
+  \frac{\cE_{p,\cL}(X_{k,\epsilon})}
+       {\Ent_{p,\cN}(X_{k,\epsilon})}
+  \le
+  \frac{C_p}{g(x_k,y_k)}.
+\]
+Letting \(k\to\infty\) makes the right side vanish.
+
+If a finite \(c\) satisfied the strong \(p\)-LSI, then the same quotient would be bounded below by \(1/c\) for every \(k\) and sufficiently small \(\epsilon\), a contradiction.
+\end{proof}
+
+\begin{remark}[Endpoint]
+Bardet's modified decoherence-free logarithmic Sobolev inequality is the \(p=1\) endpoint of this family, and positive modified-LSI constants are known in finite-dimensional examples under \(L_1\)-regularity assumptions. Thus this theorem rules out every finite \(p>1\), while the previously known modified-LSI theory supplies the endpoint cases.
+\end{remark}
+
+\section*{Verification Notes}
+
+The proof reduces exactly to the mechanism in the source paper's \(p=2\) obstruction, replacing the square-root divided difference by the pair of divided differences for \(t^{1/p}\) and \(t^{1/q}\). The first new point is that these divided differences remain bounded for every finite \(p>1\), while the relative-entropy divided difference diverges logarithmically. The second new point is the fixed-algebra cancellation, which removes the only second-order terms whose divided differences could be singular.
+
+The script \texttt{code/diagonal\_decoherence\_ratio.py} checks the same asymptotic in the two-dimensional diagonal decoherence model, where the quotient is explicit.
+
+\section*{Limitations and Novelty Check}
+
+The proof is finite dimensional and uses the standard structure theorem for decoherence-free algebras of finite-dimensional QMS. Infinite-dimensional extensions are not claimed.
+
+Bounded literature search on 2026-06-23 used the phrases \(\LSI_{p,\cN}(c,0)\), non-primitive quantum Markov semigroups, strong log-Sobolev, Bardet--Rouze, and amalgamated \(L_p\). The search found the source arXiv record, Bardet's modified-LSI preprint, and later complete modified-LSI work, but no later explicit resolution of this strong \(p\)-range question.
+
+\section*{References}
+
+Ivan Bardet and Cambyse Rouze. \emph{Hypercontractivity and logarithmic Sobolev Inequality for non-primitive quantum Markov semigroups and estimation of decoherence rates}. arXiv:1803.05379, 2018.
+
+Ivan Bardet. \emph{Estimating the decoherence time using non-commutative Functional Inequalities}. arXiv:1710.01039, 2017.
+
+\end{document}

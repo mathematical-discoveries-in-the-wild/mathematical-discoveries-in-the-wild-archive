@@ -1,0 +1,207 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\GammaX}{\Gamma_X}
+
+\title{Bounded Semivariation Forces Analyticity for Locally Convex Semigroups}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_14}}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Candidate full solution, likely valid.}  The proof answers Problem
+4.17 of Kruse--Schwenninger \cite{KS2024}, subject to checking the exact
+formulation of Dembart's analyticity criterion \cite[Theorem 1, p.154]{Dembart1974}.
+
+\section*{Source Problem}
+
+The source is Karsten Kruse and Felix L. Schwenninger, \emph{Continuous maximal
+regularity in locally convex spaces}, arXiv:2408.11437 \cite{KS2024}.
+Problem 4.17 appears on PDF page 25.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In transcription, the problem asks:
+
+\begin{quote}
+Let $r>0$, $X$ be a sequentially complete Hausdorff locally convex space over
+the field $\C$ and $(T(t))_{t\geq 0}$ a strongly continuous locally
+equicontinuous semigroup on $X$. Is $(T(t))_{t\geq 0}$ an analytic semigroup
+if $(T(t))_{t\in[0,r]}$ is of bounded semivariation?
+\end{quote}
+
+\section*{Definitions and Source Facts Used}
+
+Let $A$ be the generator of $(T(t))_{t\geq0}$ in the sense used in
+\cite{KS2024}.  A family $(T(t))_{t\in[0,r]}$ is of bounded semivariation if
+for every continuous seminorm $q$ on $X$ there is a continuous seminorm $p$ on
+$X$ such that
+\[
+  SV^{[0,r]}_{q,p}(T)
+  =
+  \sup_{d}
+  \sup_{p(x_i)\le 1}
+  q\left(\sum_i (T(d_i)-T(d_{i-1}))x_i\right)
+  <\infty,
+\]
+where $d$ ranges over finite partitions of $[0,r]$.
+
+We use three facts from the source paper.  First, bounded semivariation on one
+nontrivial interval implies bounded semivariation on every compact interval
+\cite[Remark 4.1(a)]{KS2024}.  Second, bounded semivariation implies
+$T(t)X\subset D(A)$ for every $t>0$ \cite[Corollary 4.6]{KS2024}.  Third, under
+the same hypothesis the mild solution of the homogeneous Cauchy problem is a
+classical solution on $(0,r]$ \cite[Corollary 4.16]{KS2024}; in particular, for
+each $x\in X$ the orbit $t\mapsto T(t)x$ is differentiable for $t>0$ and
+\[
+  \frac{d}{dt}T(t)x=A T(t)x .
+\]
+
+Finally, we use Dembart's analyticity criterion in the form explicitly pointed
+to by the source: for a strongly continuous locally equicontinuous semigroup
+on a sequentially complete complex Hausdorff locally convex space, analyticity
+is equivalent to positive-time domain inclusion together with local
+equicontinuity of the family
+\[
+  \{\,tAT(t):0<t\le R\,\}\subset \cL(X)
+\]
+for every $R>0$ \cite[Theorem 1, p.154]{Dembart1974}.
+
+\section*{Proof Intuition}
+
+The only missing estimate is uniform in $t$ control of $tAT(t)$.  Bounded
+semivariation controls arbitrary sums of increments
+$T(d_i)-T(d_{i-1})$ applied to vectors whose seminorm is bounded.  For a fixed
+$t$, choose the uniform partition of $[0,t]$ and feed into the semivariation
+sum the vectors $T(t-d_i)x$.  The semigroup identity makes every summand equal
+to the same backward difference $T(t)x-T(t-t/n)x$.  The whole sum is therefore
+$n(T(t)-T(t-t/n))x$, which converges to $tAT(t)x$.  Local equicontinuity of the
+original semigroup controls the auxiliary vectors $T(t-d_i)x$, so the
+semivariation bound passes to the limit.
+
+\section*{Theorem and Proof}
+
+\begin{theorem}
+Let $X$ be a sequentially complete complex Hausdorff locally convex space and
+let $(T(t))_{t\geq0}$ be a strongly continuous locally equicontinuous semigroup
+on $X$.  If $(T(t))_{t\in[0,r]}$ is of bounded semivariation for some $r>0$,
+then $(T(t))_{t\geq0}$ is analytic in Dembart's sense.
+\end{theorem}
+
+\begin{proof}
+By \cite[Remark 4.1(a)]{KS2024}, the family $(T(t))_{t\in[0,R]}$ is of bounded
+semivariation for every $R>0$.  Fix such an $R$.  We prove that
+\[
+  \mathcal{F}_R:=\{tAT(t):0<t\le R\}
+\]
+is an equicontinuous subset of $\cL(X)$.
+
+Let $q$ be a continuous seminorm on $X$.  By bounded semivariation on $[0,R]$
+there is a continuous seminorm $p$ on $X$ and a constant
+\[
+  V:=SV^{[0,R]}_{q,p}(T)<\infty
+\]
+such that, for every partition $0=d_0<\cdots<d_n\le R$ and every finite choice
+of vectors $y_i\in X$,
+\[
+  q\left(\sum_{i=1}^n (T(d_i)-T(d_{i-1}))y_i\right)
+  \le V \max_{1\le i\le n} p(y_i).
+\]
+The displayed estimate is just the homogeneous extension of the defining
+semivariation bound.
+
+Since the semigroup is locally equicontinuous, there are a continuous seminorm
+$p_0$ on $X$ and a constant $C\ge0$ such that
+\[
+  p(T(s)x)\le C p_0(x),\qquad 0\le s\le R,\ x\in X.
+\]
+Now fix $t\in(0,R]$, $x\in X$, and $n\in\N$.  Put $d_i=it/n$ and
+$y_i=T(t-d_i)x$.  Then $d$ is a partition of $[0,t]\subset[0,R]$ and
+$p(y_i)\le Cp_0(x)$.  Therefore
+\[
+\begin{aligned}
+q\left(\sum_{i=1}^n (T(d_i)-T(d_{i-1}))T(t-d_i)x\right)
+&\le VCp_0(x).
+\end{aligned}
+\]
+By the semigroup identity,
+\[
+  (T(d_i)-T(d_{i-1}))T(t-d_i)x
+  =
+  T(t)x-T(t-t/n)x
+\]
+for every $i$.  Thus
+\[
+  q\left(n(T(t)-T(t-t/n))x\right)\le VCp_0(x).
+\]
+By \cite[Corollary 4.16]{KS2024}, $s\mapsto T(s)x$ is differentiable for
+$s>0$ with derivative $AT(s)x$.  Hence
+\[
+  n(T(t)-T(t-t/n))x
+  =
+  t\,\frac{T(t)x-T(t-t/n)x}{t/n}
+  \longrightarrow tAT(t)x
+\]
+in $X$.  Since $q$ is continuous, passing to the limit gives
+\[
+  q(tAT(t)x)\le VCp_0(x),\qquad 0<t\le R,\ x\in X.
+\]
+This proves equicontinuity of $\mathcal{F}_R$.
+
+Also, $T(t)X\subset D(A)$ for every $t>0$ by \cite[Corollary 4.6]{KS2024}.
+Dembart's criterion \cite[Theorem 1, p.154]{Dembart1974} now yields that
+$(T(t))_{t\geq0}$ is analytic.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is formal and uses no computational search.  The key estimate is
+insensitive to the choice of the fundamental seminorm system.  The case
+$\max_i p(y_i)=0$ in the homogeneous semivariation extension is handled by
+scaling: the defining bound applies to $\lambda^{-1}y_i$ for every
+$\lambda>0$, and then $\lambda\downarrow0$.
+
+The main point for human review is the final invocation of Dembart.  The source
+paper explicitly proposes Dembart's Theorem 1 as the appropriate definition of
+analyticity in this setting; this packet uses the standard formulation with
+positive-time domain inclusion and local equicontinuity of $\{tAT(t)\}$.
+
+\section*{Novelty Check}
+
+The run indexes were searched for arXiv:2408.11437, continuous maximal
+regularity, locally convex spaces, bounded semivariation, analytic semigroup,
+and Dembart.  No previous run packet for Problem 4.17 was found.  A bounded web
+search on 2026-06-29 for exact phrases around ``bounded semivariation'',
+``analytic semigroup'', ``locally convex'', and ``Dembart'' did not reveal a
+separate later answer.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{Dembart1974}
+B. Dembart.
+\newblock On the theory of semigroups of operators on locally convex spaces.
+\newblock \emph{Journal of Functional Analysis}, 16(2):123--160, 1974.
+
+\bibitem{KS2024}
+K. Kruse and F. L. Schwenninger.
+\newblock Continuous maximal regularity in locally convex spaces.
+\newblock arXiv:2408.11437, 2024.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A parity-separated partial result for anti-concentration under unconditional log-concavity}
+\author{fa\_banach\_001, agent\_lane\_08}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+This is a \texttt{partial\_result\_likely\_valid} packet for arXiv:2603.22664.
+It proves a structural subcase of Conjecture 1.4 in Glazer--Mikulincer, and
+does not claim the full conjecture.
+
+\paragraph{Source question.}
+In the discussion after Theorem 1.3, Glazer--Mikulincer ask for uniform lower
+bounds on the $L^2$ norm of degree-$d$ homogeneous polynomials under isotropic
+log-concave measures invariant under signed coordinate permutations.  In their
+Conjecture 1.4, with the implicit normalization $\operatorname{coeff}_d(f)=1$,
+they predict a constant $C_d>0$ such that
+\[
+  \int_{\R^n} f^2\,d\mu \geq C_d
+\]
+for every isotropic log-concave $H_n$-invariant measure $\mu$ and every
+degree-$d$ homogeneous polynomial $f$.  Question 1.5 asks whether the sharp
+constant is governed, up to $O(1/n)$, by the isotropic cube.
+
+\paragraph{Definitions.}
+For a multi-index $I=(I_1,\ldots,I_n)$, write $x^I=\prod_j x_j^{I_j}$ and
+$|I|=\sum_j I_j$.  A set $A$ of degree-$d$ multi-indices is
+\emph{parity-separated} if for every distinct $I,J\in A$ there is a coordinate
+$k$ such that $I_k+J_k$ is odd, equivalently $I\not\equiv J \pmod 2$
+coordinatewise.
+
+\paragraph{Proof intuition.}
+The obstruction in the source conjecture is cancellation between monomials
+that transform according to the same sign character.  If this cannot happen,
+unconditionality does all the representation theory for free: after conditioning
+on the absolute values $|X_i|$, the independent random signs kill every cross
+term.  The problem reduces to proving that each fixed monomial has nontrivial
+second moment.  That is a finite-dimensional consequence of log-concavity:
+each one-dimensional isotropic log-concave marginal has uniformly bounded
+density, so a fixed set of at most $d$ coordinates is simultaneously bounded
+away from zero with probability bounded below in terms of $d$ only.
+
+\begin{lemma}[Fixed monomial lower bound]
+\label{lem:monomial}
+There is a constant $m_d>0$ depending only on $d$ such that the following holds.
+Let $X$ be an isotropic log-concave random vector in $\R^n$.  If $I$ is a
+multi-index with $|I|=d$, then
+\[
+  \E |X^I|^2 \geq m_d .
+\]
+\end{lemma}
+
+\begin{proof}
+Let $S=\{j:I_j>0\}$, so $1\leq |S|\leq d$.  A standard one-dimensional fact says
+that every isotropic log-concave real random variable has density bounded above
+by a universal constant $L$.  Hence, for every coordinate $j$,
+\[
+  \Pp(|X_j|<a)\leq 2La .
+\]
+Choose $a=(4Ld)^{-1}$.  By the union bound,
+\[
+  \Pp\bigl(|X_j|\geq a\ \text{for all }j\in S\bigr)
+  \geq 1-2L|S|a \geq \frac12 .
+\]
+On this event, $|X^I|^2=\prod_{j\in S}|X_j|^{2I_j}\geq a^{2d}$.  Therefore
+$\E |X^I|^2\geq a^{2d}/2$, and the right-hand side depends only on $d$.
+\end{proof}
+
+\begin{theorem}[Parity-separated unconditional lower bound]
+\label{thm:main}
+For every $d\in\mathbb N$ there is a constant $c_d>0$ such that the following
+holds.  Let $\mu$ be an isotropic unconditional log-concave probability measure
+on $\R^n$.  Let
+\[
+  f(x)=\sum_{I\in A} a_I x^I
+\]
+be a degree-$d$ homogeneous polynomial whose support $A\subseteq\{I:|I|=d\}$ is
+parity-separated.  Then
+\[
+  \int_{\R^n} f(x)^2\,d\mu(x)
+  \geq c_d\sum_{I\in A}a_I^2 .
+\]
+In particular, if $\operatorname{coeff}_d(f)=1$, then
+$\int f^2\,d\mu\geq c_d$.
+\end{theorem}
+
+\begin{proof}
+Let $X\sim\mu$.  Since $\mu$ is unconditional, we may write
+$X=\varepsilon\odot R$, where $R=(|X_1|,\ldots,|X_n|)$ and, conditionally on
+$R$, the signs $\varepsilon_1,\ldots,\varepsilon_n$ are independent Rademacher
+variables.  Then
+\[
+  \E\left[f(X)^2\mid R\right]
+  =
+  \sum_{I,J\in A} a_Ia_J R^{I+J}\,
+       \E\left[\varepsilon^{I+J}\right].
+\]
+The sign expectation is zero unless $I\equiv J\pmod 2$.  Since $A$ is
+parity-separated, the only surviving terms are the diagonal terms.  Thus
+\[
+  \E\left[f(X)^2\mid R\right]
+  =
+  \sum_{I\in A}a_I^2 R^{2I}.
+\]
+Taking expectations and applying Lemma \ref{lem:monomial} to each $I$ gives
+\[
+  \E f(X)^2
+  =
+  \sum_{I\in A}a_I^2\E |X^I|^2
+  \geq
+  m_d\sum_{I\in A}a_I^2 .
+\]
+Set $c_d=m_d$.
+\end{proof}
+
+\begin{corollary}[Multilinear subcase]
+\label{cor:multilinear}
+Conjecture 1.4 of Glazer--Mikulincer holds for all degree-$d$ multilinear
+homogeneous polynomials under the weaker assumption that $\mu$ is isotropic,
+unconditional, and log-concave.  If $f$ is multilinear and homogeneous with
+$\operatorname{coeff}_d(f)=1$, then
+\[
+  \int f^2\,d\mu\geq c_d .
+\]
+Moreover, since every nonconstant multilinear monomial has an odd exponent in
+some coordinate, $\E f=0$ under unconditional $\mu$.  Therefore
+$\Var_\mu(f)\geq c_d$, and the equivalence Proposition 1.1 in the source paper
+gives dimension-free small-ball and Fourier decay with exponent $1/d$.
+\end{corollary}
+
+\paragraph{Limitations.}
+The theorem deliberately avoids the same-parity blocks.  In those blocks,
+conditional sign averaging leaves cross terms
+$a_Ia_J |X|^{I+J}$, so cancellations may persist.  This is precisely where the
+source paper's higher-degree difficulty lives, especially for even symmetric
+polynomials such as functions of $x_1^2,\ldots,x_n^2$.  The result also does
+not address the cube-extremal constant in Question 1.5; the constant produced
+above is only a robust dimension-free lower bound.
+
+\paragraph{Novelty check.}
+The local run indexes had no entry for arXiv:2603.22664.  A bounded web search
+on 2026-07-18 for phrases including ``unconditional log-concave multilinear
+polynomial small ball variance lower bound'', ``isotropic unconditional
+log-concave homogeneous polynomial L2 norm coefficient lower bound'', and
+``hyperoctahedral invariant log-concave homogeneous polynomial L2 norm
+conjecture'' found the source paper and product-measure / $L^p$-ball results,
+but no exact parity-separated unconditional diagonalization statement.
+
+\paragraph{Human-review recommendation.}
+Check the standard one-dimensional density bound used in Lemma
+\ref{lem:monomial} and the conditional random-sign representation for
+unconditional log-concave measures.  The rest of the proof is a direct
+orthogonality computation.
+
+\begin{thebibliography}{9}
+\bibitem{GM}
+I. Glazer and D. Mikulincer, \emph{Anti-concentration of polynomials:
+$L^p$ balls and symmetric measures}, arXiv:2603.22664.
+
+\bibitem{LV}
+L. Lovasz and S. Vempala, \emph{The geometry of logconcave functions and
+sampling algorithms}, Random Structures Algorithms 30 (2007), 307--358.
+\end{thebibliography}
+
+\end{document}

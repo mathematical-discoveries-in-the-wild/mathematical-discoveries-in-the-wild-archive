@@ -1,0 +1,320 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\Tr}{\operatorname{tr}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\Int}{\operatorname{int}}
+
+\title{The Gradient Second-Moment Hypothesis Is Unnecessary\\
+\large Maximal intersection position for log-concave functions}
+\author{FA\_BANACH\_001, agent lane 07}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: candidate full solution, likely valid, pending human review.}
+\end{center}
+
+\section{Source question}
+Hoehner and Roysdon introduce maximal intersection position for a pair of
+integrable log-concave functions and prove a John-type isotropicity theorem
+\cite[Theorem 11]{HR}.  Their support regularity property has three clauses;
+the third is
+\[
+  \int_{K_g}|\nabla g(x)|^2\,dx<\infty.
+  \tag{SM2}
+\]
+Immediately after the theorem they ask whether this assumption is necessary
+or merely an artifact of the proof \cite[Remark 13]{HR}.  The question occurs
+on PDF page 6:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove that \textup{(SM2)} can be deleted.  The other two support regularity
+conditions in the source theorem remain unchanged.
+
+\section{Definitions and statement}
+Write $K_h=\operatorname{supp}h$.  The pair $f,g$ is in maximal intersection
+position when $(I,0)$ maximizes
+\[
+ P_{f,g}(T,z)=\int_{\R^n}f(x)g(T^{-1}(x-z))\,dx
+ \quad ((T,z)\in\SL_n(\R)\times\R^n).
+\]
+The two retained support conditions are
+\begin{enumerate}[label=\textup{(R\arabic*)}]
+\item $\cH^{n-1}(\partial K_f\cap\partial K_g)=0$;
+\item $\cH^{n-1}(\partial K_f\cap\partial(TK_g+z))=0$ for all but finitely
+many $(T,z)\in\SL_n(\R)\times\R^n$, exactly as stipulated in the source
+support-regularity hypothesis.
+\end{enumerate}
+We use the same regularity and trace conventions as the source paper.
+
+\begin{theorem}[Removal of the second-moment hypothesis]\label{thm:main}
+Let $f,g=e^{-\varphi}$ belong to the class $\mathcal L^n$ of Hoehner--Roysdon
+and satisfy \textup{(R1)}--\textup{(R2)}.  If $f$ and $g$ are in maximal
+intersection position, then every conclusion of \cite[Theorem 11]{HR} holds,
+without assuming \textup{(SM2)}.  In particular, for every matrix $T$,
+\begin{align*}
+&\int_{K_f\cap\Int K_g}fg\,\langle\nabla\varphi,Tx\rangle\,dx
+ +\int_{K_f\cap\partial K_g}fg\,\langle n_{K_g},Tx\rangle\,d\cH^{n-1}\\
+&\quad=\frac{\Tr T}{n}\left(
+ \int_{K_f\cap\Int K_g}fg\,\langle\nabla\varphi,x\rangle\,dx
+ +\int_{K_f\cap\partial K_g}fg\,\langle n_{K_g},x\rangle\,d\cH^{n-1}
+ \right),
+\end{align*}
+and the source's centering identity holds:
+\[
+ 0=\int_{K_f\cap\Int K_g}fg\,\nabla\varphi\,dx
+   +\int_{K_f\cap\partial K_g}fg\,n_{K_g}\,d\cH^{n-1}.
+\]
+\end{theorem}
+
+\section{Proof intuition}
+The $L^2$ assumption is stronger than the deformation argument needs.  The
+only bulk vector fields are bounded on compact supports and grow at most
+linearly on unbounded supports.  Every integrable log-concave function has a
+distributional gradient with an automatically finite first moment.  Indeed,
+its convex superlevel sets grow at most linearly in the logarithmic level;
+coarea therefore gives an exponentially weighted integral of at most
+polynomially growing perimeters.
+
+In the compact part of the source proof, the $L^2$ norm appears only in a
+shrinking boundary-layer error.  Absolute continuity of the automatic $L^1$
+gradient norm makes that error vanish.  For unbounded supports, the same
+weighted $L^1$ estimate supplies dominated convergence.  Nothing changes in
+the boundary-measure part of the source argument.
+
+\section{Proof}
+We first isolate the automatic estimate.
+
+\begin{lemma}[Automatic weighted BV estimate]\label{lem:bv}
+Let $0\ne g=e^{-\varphi}\in\mathcal L^n$, extended by zero off its support.
+Then
+\[
+  \int_{\R^n}(1+|x|)\,d|Dg|(x)<\infty.
+  \tag{8}
+\]
+Consequently,
+\[
+ \int_{\Int K_g}(1+|x|)|\nabla g(x)|\,dx<\infty.
+ \tag{9}
+\]
+Moreover, $\int |x|^qg(x)\,dx<\infty$ for every $q\ge0$.
+\end{lemma}
+
+\begin{proof}
+Let $m=\min\varphi$, choose $x_0$ with $\varphi(x_0)=m$, and put
+\[
+ C_s=\{x:\varphi(x)\le m+s\}\qquad(s>0).
+\]
+The coercivity in the definition of $\mathcal L^n$ makes $C_1$ a convex body.
+Convexity gives
+\[
+ C_s-x_0\subset \max\{1,s\}(C_1-x_0).
+ \tag{10}
+\]
+For $s\le1$ this is nesting.  For $s\ge1$, if $x\in C_s$, then
+\(
+ \varphi(x_0+(x-x_0)/s)
+ \le(1-s^{-1})m+s^{-1}\varphi(x)\le m+1.
+\)
+
+Let $P(C)=\cH^{n-1}(\partial C)$ and
+$R=\max_{C_1}|x-x_0|$.  Perimeter is monotone under inclusion for convex
+bodies \cite{Schneider}; hence (10) yields
+\begin{align*}
+ P(C_s)&\le P(C_1)\max\{1,s\}^{n-1},\\
+ \int_{\partial C_s}(1+|x|)\,d\cH^{n-1}(x)
+ &\le P(C_1)\max\{1,s\}^{n-1}
+       \bigl(1+|x_0|+R\max\{1,s\}\bigr).
+ \tag{11}
+\end{align*}
+The coarea characterization of BV functions \cite{EvansGariepy}, applied to
+the superlevel sets of $g$, and the change of variables
+$t=e^{-m}e^{-s}$ give
+\begin{align*}
+ \int(1+|x|)\,d|Dg|(x)
+ &=e^{-m}\int_0^\infty e^{-s}
+   \int_{\partial C_s}(1+|x|)\,d\cH^{n-1}(x)\,ds<\infty
+\end{align*}
+by (11).  This proves (8), and (9) follows from the absolutely continuous
+part of $Dg$.  Finally, (10) also gives an exponential pointwise tail outside
+a fixed ball, so all polynomial moments of $g$ are finite.
+\end{proof}
+
+We now revisit exactly where \textup{(SM2)} enters the source proof.
+
+\paragraph{Compact supports.}
+In the proof of the compact variational formula
+\cite[Theorem 17 and Proposition 19]{HR}, the $L^2$ hypothesis is used only to
+bound the term denoted $I_3(j,\varepsilon)$.  With the source notation,
+\begin{align*}
+|I_3(j,\varepsilon)|
+&\le 2\|f\|_\infty
+ \sup_{\substack{0\le\varepsilon\le\varepsilon_0\\x\in K_g}}
+ |A_\varepsilon x|
+ \int_{M_j(g)}|\nabla g(x)|\,dx.
+ \tag{12}
+\end{align*}
+Here the matrices $A_\varepsilon$ stay bounded, $K_g$ is compact, and the
+boundary layers $M_j(g)$ decrease to $\partial K_g$, which has Lebesgue
+measure zero.  Lemma~\ref{lem:bv} and absolute continuity of the integral make
+the right side of (12) tend to zero, uniformly for small $\varepsilon$.
+All other estimates in that compact proof are independent of
+\textup{(SM2)}.  The same replacement proves the compact translation formula,
+with $A_\varepsilon x$ replaced by a fixed translation vector.
+
+\paragraph{Unbounded supports.}
+Use the source truncations
+\[
+ f_\delta=f e^{-\delta|x|^2}\mathbf1_{\{f>\delta\}},\qquad
+ g_\delta=g e^{-\delta|x|^2}\mathbf1_{\{g>\delta\}}.
+\]
+They have compact supports, so the already proved $L^1$ version of the compact
+formula applies; no $L^2$ estimate on $g_\delta$ is required.
+
+It remains to pass to the limit.  For $0\le\varepsilon\le\varepsilon_0$,
+$\|A_\varepsilon\|$ and $\|T_\varepsilon\|$ are uniformly bounded.  Thus the
+first bulk error over the source's decreasing set
+$\Delta_\delta(\varepsilon)$ satisfies
+\[
+ \left|\int_{\Delta_\delta(\varepsilon)}
+ f(T_\varepsilon x)\langle\nabla g(x),A_\varepsilon x\rangle\,dx\right|
+ \le C\|f\|_\infty
+ \int_{\Delta_\delta(\varepsilon)}|x||\nabla g(x)|\,dx\longrightarrow0.
+ \tag{13}
+\]
+The remaining coefficient-difference term is dominated by
+$C\|f\|_\infty|x||\nabla g(x)|$ and tends to zero by dominated convergence.
+Finally, differentiating the Gaussian factor produces a term bounded by
+\[
+ C\delta\|f\|_\infty\int_{\R^n}|x|^2g(x)\,dx\longrightarrow0.
+ \tag{14}
+\]
+In fact the convergence in (13) is uniform in $\varepsilon$.  Up to null
+level sets, its lost domain is contained in the union of
+\(
+ \{0<g\le\delta\}
+\)
+and
+\(
+ T_\varepsilon^{-1}\{0<f\le\delta\}.
+\)
+On the first set use $f\le\|f\|_\infty$; on the second use
+$f(T_\varepsilon x)\le\delta$.  Consequently its supremum over the compact
+parameter interval is at most
+\[
+ C\|f\|_\infty\int_{\{0<g\le\delta\}}|x||\nabla g(x)|\,dx
+ +C\delta\int_{K_g}|x||\nabla g(x)|\,dx,
+ \tag{15}
+\]
+which tends to zero by Lemma~\ref{lem:bv}.  Uniformity for the
+coefficient-difference term follows from the same integrable majorant: first
+discard a tail on which
+$C\|f\|_\infty|x||\nabla g|$ has small integral, and then use uniform
+convergence of the Gaussian coefficients on the remaining ball, since the
+families $T_\varepsilon,A_\varepsilon$ are bounded.  The Gaussian bound (14)
+is already uniform.
+
+The source's estimates for the boundary terms involve $\varepsilon$ only
+through these bounded matrix families and the traces
+$f(T_\varepsilon\,\cdot)$.  Their compactness/dominated-convergence argument,
+with boundary continuity supplied by \textup{(R1)}--\textup{(R2)}, is uniform
+on the same parameter interval and contains no use of \textup{(SM2)}.  Hence
+that part of the passage to the limit is unchanged.
+The translation formula is easier: its bulk field is constant and only
+$\int|\nabla g|$ is needed.
+
+We have therefore proved both first-variation formulas used by
+Hoehner--Roysdon without \textup{(SM2)}.  Their remaining argument differentiates
+at the maximal position, sets the derivatives equal to zero, and performs
+linear algebra; it contains no further use of \textup{(SM2)}.  This proves
+Theorem~\ref{thm:main}.
+
+\section{Strictness of the improvement}
+For $0<\alpha\le\tfrac12$, define on $\R$
+\[
+ g_\alpha(x)=
+ \begin{cases}x^\alpha,&0<x\le1,\\0,&\text{otherwise}.
+ \end{cases}
+\]
+The extended-valued function $-\log g_\alpha=-\alpha\log x$ on $(0,1]$ and
+$+\infty$ elsewhere is convex, so $g_\alpha$ is log-concave.  Its interior
+gradient obeys
+\[
+ \int_0^1|g_\alpha'(x)|\,dx=1,
+ \qquad
+ \int_0^1|g_\alpha'(x)|^2\,dx
+ =\alpha^2\int_0^1x^{2\alpha-2}\,dx=\infty.
+\]
+Thus the removed condition is genuinely stronger than the automatic estimate.
+
+\section{Verifier report}
+The proof was checked along the following dependency chain.
+\begin{enumerate}
+\item The logarithmic sublevel parameter is normalized so that coarea carries
+the factor $e^{-s}$; the perimeter/radius growth is at most degree $n$, hence
+integrable.
+\item The source proof was searched for every occurrence of
+$\int|\nabla g|^2$.  In the compact argument it enters only through the
+$I_3$ Cauchy--Schwarz estimate, replaced by (12).
+\item The compact boundary layer decreases to a convex boundary of Lebesgue
+measure zero, so $L^1$ absolute continuity applies.
+\item In the unbounded argument, (13) retains the necessary factor $|x|$ and
+uses the weighted estimate, not an unweighted shortcut.
+\item Estimate (14) retains the decaying factor $g$; replacing it by
+$\|g\|_\infty$ would not give a valid limit on all of $\R^n$.
+\item Uniformity in the deformation parameter is explicit in (15).  The
+coefficient error is handled by an integrable-tail/compact-ball argument, and
+the retained boundary-transversality assumptions supply continuity for the
+unchanged surface-term limit; pointwise dominated convergence alone is not
+being used as a uniform-convergence principle.
+\item The source's surface-term convergence and both boundary transversality
+hypotheses are left untouched.  No computational experiment is used as proof.
+\end{enumerate}
+
+Recommended human-review focus: confirm the source's claim that the boundary
+term convergence is independent of \textup{(SM2)}, and check the identical
+$L^1$ substitution in its sketched translation formula.
+
+\section{Limitations and novelty status}
+This result removes only the gradient second-moment clause.  It does not remove
+the source's boundary-intersection hypotheses or alter its regularity/trace
+framework.  A bounded search on 19 July 2026 used arXiv:2401.01033, the exact
+title, authors, and the phrases ``second moment condition,'' ``bounded second
+moment,'' and ``maximal intersection position.''  No later resolution or
+duplicate of this weighted-BV removal was found.  The current arXiv v3, dated
+26 May 2025, still states Remark 13.  This is a bounded novelty check, not an
+exhaustive priority claim.
+
+\begin{thebibliography}{9}
+\bibitem{HR}
+S. Hoehner and M. Roysdon,
+\emph{On maximal intersection position for logarithmically concave functions
+and measures}, arXiv:2401.01033v3 (2025).
+
+\bibitem{EvansGariepy}
+L. C. Evans and R. F. Gariepy,
+\emph{Measure Theory and Fine Properties of Functions}, revised ed.,
+CRC Press, 2015.
+
+\bibitem{Schneider}
+R. Schneider,
+\emph{Convex Bodies: The Brunn--Minkowski Theory}, 2nd ed.,
+Cambridge University Press, 2014.
+\end{thebibliography}
+
+\end{document}

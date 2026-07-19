@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\K}{\mathsf K}
+
+\title{The Limiting Product-Measure Constants in a Question on Ramsey-Type Spheres}
+\author{Run fa\_banach\_001, agent\_lane\_13}
+\date{2026-06-14}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a partial solution packet for arXiv:2308.07668, ``On Ramsey-type properties of the distance in nonseparable spheres'' by Piotr Koszmider.  It extends the earlier packet for the Hilbertian case \(p=2\).  The packet proves the exact value of \(c=\sup_n c_n\) for every \(1<p<\infty\), proves the exact finite values of \(c_n\) for \(p\geq2\), and gives asymptotically sharp finite bounds for \(1<p<2\).
+
+\section*{Source Evidence}
+
+The following crop is from page 25 of the source PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The relevant source sentence is:
+\[
+\text{``We do not know the exact value of }c_n\text{ or of }c\text{ in the above proof or if }S_{L_p}\text{ is dichotomous.''}
+\]
+
+\section*{Source Notation}
+
+Let \(\mu\) be the product probability measure on \(\{0,1\}^{\kappa}\), where \(\kappa\leq2^\omega\) is uncountable.  In Proposition 55 of the source paper, for \(A\in[\kappa]^n\), the map \(T_A\) sends a function \(F\in L_p(\{0,1\}^n)\) to the function on \(\{0,1\}^{\kappa}\) depending on the coordinates in \(A\).  The constant \(c_n\) is the supremum of
+\[
+ \|T_A(F)-T_B(F)\|_{L_p}
+\]
+over all unit vectors \(F\in L_p(\{0,1\}^n)\) and all admissible pairs \(A,B\in[\kappa]^n\) whose common coordinates occur in the same positions.  Finally \(c=\sup_n c_n\).
+
+\section*{Proof Intuition}
+
+Once \(A\) and \(B\) are fixed, the only probabilistic structure that matters is this: after conditioning on the coordinates shared by \(A\) and \(B\), the two random variables \(T_A(F)\) and \(T_B(F)\) become iid copies of the same finite random variable.  Thus the constants are governed by the sharp ratio between \(\E|U-V|^p\) and \(\E|U|^p\) for iid real random variables \(U,V\).  For \(1<p\leq2\), the real line has \(p\)-negative type, giving the bound \(2\).  For \(p\geq2\), translating to the \(p\)-center and using the monotonicity inequality for \(t\mapsto |t|^{p-2}t\) gives the bound \(2^{p-1}\).  Rare spikes attain the first bound in the limit; Rademacher variables attain the second bound at every finite level.
+
+\begin{lemma}[iid moment bound]\label{lem:iid}
+Let \(1<p<\infty\), and let \(U,V\) be iid real random variables with finite \(p\)-th moment.  Then
+\[
+ \E|U-V|^p \leq
+ \begin{cases}
+ 2\,\E|U|^p, & 1<p\leq2,\\
+ 2^{p-1}\,\E|U|^p, & 2\leq p<\infty.
+ \end{cases}
+\]
+Both constants are sharp in the following sense: the first is approached by rare spikes, and the second is attained by a symmetric two-point Rademacher variable.
+\end{lemma}
+
+\begin{proof}
+For \(1<p\leq2\), use the standard negative-type representation
+\[
+ |t|^p=C_p\int_0^\infty (1-\cos(st))s^{-1-p}\,ds,\qquad C_p>0.
+\]
+Hence the kernel \(|x-y|^p\) is conditionally negative definite on \(\R\).  Applying this to the signed measure \(\nu=\mathcal L(U)-\delta_0\), which has total mass zero, gives
+\[
+ 0\geq\iint |x-y|^p\,d\nu(x)d\nu(y)
+   = \E|U-V|^p-2\E|U|^p.
+\]
+
+Now suppose \(p\geq2\), and write \(\phi(t)=|t|^{p-2}t\).  For all real \(x,y\),
+\[
+ |x-y|^p\leq 2^{p-2}(x-y)(\phi(x)-\phi(y)).
+\]
+Indeed, after separating the cases \(xy\geq0\) and \(xy<0\), this follows respectively from
+\[
+ |a-b|^{p-1}\leq a^{p-1}-b^{p-1}\quad(a\geq b\geq0)
+\]
+and
+\[
+ (a+b)^{p-1}\leq2^{p-2}(a^{p-1}+b^{p-1})\quad(a,b\geq0).
+\]
+Let \(a\) be a minimizer of \(t\mapsto\E|U-t|^p\), and put \(Z=U-a\).  Then \(\E\phi(Z)=0\), and \(\E|Z|^p\leq\E|U|^p\).  If \(Z'\) is an independent copy of \(Z\), then
+\[
+\begin{aligned}
+\E|U-V|^p
+&=\E|Z-Z'|^p \\
+&\leq 2^{p-2}\E\bigl[(Z-Z')(\phi(Z)-\phi(Z'))\bigr]\\
+&=2^{p-1}\bigl(\E|Z|^p-\E Z\,\E\phi(Z)\bigr)\\
+&=2^{p-1}\E|Z|^p
+\leq 2^{p-1}\E|U|^p.
+\end{aligned}
+\]
+Sharpness for \(1<p\leq2\) follows by taking \(U_N=N^{1/p}\) with probability \(1/N\) and \(U_N=0\) otherwise; then \(\E|U_N|^p=1\) and \(\E|U_N-U_N'|^p=2(1-1/N)\to2\).  Sharpness for \(p\geq2\) follows from \(U=\pm1\) with equal probabilities, for which \(\E|U-U'|^p=2^{p-1}\).
+\end{proof}
+
+\begin{proposition}\label{prop:upper}
+For the constants \(c_n\) of Proposition 55 in the source paper,
+\[
+ c_n^p \leq
+ \begin{cases}
+ 2, & 1<p\leq2,\\
+ 2^{p-1}, & 2\leq p<\infty.
+ \end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+Fix \(F\in L_p(\{0,1\}^n)\) with \(\|F\|_p=1\), and fix an admissible pair \(A,B\).  Condition on the coordinates belonging to \(A\cap B\).  Given those common coordinates, \(T_A(F)\) and \(T_B(F)\) are iid copies of the conditional distribution of \(F\) over the remaining coordinates.  Lemma \ref{lem:iid}, applied conditionally and then averaged over the common coordinates, gives the stated upper bounds.
+\end{proof}
+
+\begin{theorem}\label{thm:c}
+For Proposition 55 of the source paper,
+\[
+ c=\sup_n c_n =
+ \begin{cases}
+ 2^{1/p}, & 1<p\leq2,\\
+ 2^{1-1/p}, & 2\leq p<\infty.
+ \end{cases}
+\]
+Moreover, if \(p\geq2\), then \(c_n=2^{1-1/p}\) for every \(n\geq1\).
+\end{theorem}
+
+\begin{proof}
+The upper bounds follow immediately from Proposition \ref{prop:upper}.
+
+For \(p\geq2\), choose disjoint \(A,B\in[\kappa]^n\) and let \(F\) be a Rademacher function depending on one coordinate of \(\{0,1\}^n\).  Then \(T_A(F)\) and \(T_B(F)\) are independent Rademacher variables, so
+\[
+ \|T_A(F)-T_B(F)\|_p^p=2^{p-1}.
+\]
+Thus \(c_n^p=2^{p-1}\) for every \(n\).
+
+It remains only to prove the lower bound for \(c\) when \(1<p<2\).  Let \(N=2^n\), choose disjoint \(A,B\), and let \(F\) take the value \(a=(N/2)^{1/p}\) on one atom of \(\{0,1\}^n\), the value \(-a\) on another atom, and \(0\) on all remaining atoms.  Then \(\|F\|_p=1\).  For independent copies \(U,V\) of \(F\),
+\[
+\E|U-V|^p
+ = \frac{2(2a)^p+4(N-2)a^p}{N^2}
+ = 2-\frac{4-2^p}{N}.
+\]
+Therefore \(c_n^p\geq 2-(4-2^p)/2^n\), and letting \(n\to\infty\) gives \(c^p\geq2\).  The upper bound gives \(c^p\leq2\), so \(c=2^{1/p}\).
+\end{proof}
+
+\section*{Finite \(c_n\) for \(1<p<2\)}
+
+The proof above gives
+\[
+ 2-\frac{4-2^p}{2^n}\leq c_n^p\leq2
+\]
+for \(1<p<2\).  Numerical optimization strongly suggests that the lower bound is the exact value for every \(n\), but this packet does not claim that finite extremal inequality.  The unresolved finite statement is:
+\[
+ \frac{1}{N^2}\sum_{i,j=1}^N |x_i-x_j|^p
+ \leq
+ \left(2-\frac{4-2^p}{N}\right)\frac{1}{N}\sum_{i=1}^N |x_i|^p
+\]
+for \(N=2^n\), \(1<p<2\), and all real \(x_1,\ldots,x_N\).  Equality would be attained by two opposite nonzero entries and \(N-2\) zero entries.
+
+\section*{Verification Notes}
+
+The promoted proof is analytic.  The auxiliary script \texttt{code/check\_finite\_atom\_conjecture.py} numerically optimizes the finite \(1<p<2\) atom problem for small \(N\).  It is included only as evidence for the remaining finite extremal route; it is not used to prove Theorem \ref{thm:c}.
+
+\section*{Scope and Limitations}
+
+This packet answers the exact value of \(c\), and it answers the exact finite constants \(c_n\) for \(p\geq2\).  It does not prove the exact finite formula for \(c_n\) when \(1<p<2\), and it does not resolve whether \(S_{L_p(\mu)}\) is dichotomous for \(p\neq2\).
+
+\section*{Novelty and Search Bounds}
+
+The run indexes were searched for arXiv:2308.07668 and \(L_p/L_2\) constants before the earlier packet, and the new packet was checked against the refreshed registry.  A bounded web phrase search for the exact source sentence and nearby terms did not reveal a later paper answering this constants question.  The proof uses classical negative type of the real line for \(p\leq2\) and an elementary \(p\)-center inequality for \(p\geq2\).
+
+\section*{Human Review Recommendation}
+
+Reviewers should check Lemma \ref{lem:iid}, especially the \(p\geq2\) translation to the \(p\)-center, and then check that the source paper's admissible overlap condition really gives conditionally iid copies after conditioning on shared coordinates.  The finite \(1<p<2\) formula should be treated as a separate open extremal inequality.
+
+\begin{thebibliography}{9}
+
+\bibitem{Koszmider2024}
+P.~Koszmider,
+\emph{On Ramsey-type properties of the distance in nonseparable spheres},
+arXiv:2308.07668.
+
+\bibitem{Schoenberg1938}
+I.~J. Schoenberg,
+\emph{Metric spaces and positive definite functions},
+Transactions of the American Mathematical Society 44 (1938), 522--536.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\C}{\mathbb C}
+\newcommand{\one}{\mathbf 1}
+
+\title{A counterexample to Frobenius-normalized cut-distance spectral continuity}
+\author{Agent lane 17}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source and question}
+
+The source paper is Vladimir Nikiforov, \emph{Cut-norms and spectra of matrices}, arXiv:0912.0336.  Theorem 3 of the source proves that, for entrywise bounded matrices \(A\in\mathcal M_{m,n}\) and \(B\in\mathcal M_{p,q}\),
+\[
+  \max_i \left|
+  \frac{\sigma_i(A)}{\sqrt{mn}}-\frac{\sigma_i(B)}{\sqrt{pq}}
+  \right|
+  \le 6\,\delta_{\boxminus}(A,B)^{1/2}.
+\]
+In the concluding remarks, item 2 observes that the vector of singular values becomes a unit vector after division by the Frobenius norm and asks whether Theorem 3 can be modified accordingly.
+
+\begin{center}
+\includegraphics[width=.9\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+There is no analogue of Theorem 3 in which the right-hand side is only a modulus of the cut-distance and the singular values are normalized by Frobenius norm.  This failure occurs even for square \(0\)-\(1\) matrices of the same size and the same Frobenius norm.
+
+\section*{Proof intuition}
+
+The cut norm is normalized by the total number of entries, so it sees a single dense row as negligible: a row with \(n\) ones in an \(n\times n\) matrix has cut norm only \(1/n\).  The Frobenius-normalized spectrum sees the same row as a rank-one matrix whose entire Frobenius mass is in its first singular value.  Comparing this star row with the identity matrix gives two matrices that are cut-close to zero, and hence cut-close to each other, but whose normalized singular spectra have completely different shape.
+
+\begin{theorem}
+Let \(\omega:[0,\infty)\to[0,\infty)\) be any function with \(\omega(t)\to0\) as \(t\downarrow0\).  For all sufficiently large \(n\), there are \(n\times n\) \(0\)-\(1\) matrices \(A_n,B_n\), with \(\|A_n\|_F=\|B_n\|_F\), such that
+\[
+  \delta_{\boxminus}(A_n,B_n)\le \frac2n
+\]
+but
+\[
+  \max_{1\le i\le n}
+  \left|
+    \frac{\sigma_i(A_n)}{\|A_n\|_F}
+    -
+    \frac{\sigma_i(B_n)}{\|B_n\|_F}
+  \right|
+  \ge 1-\frac1{\sqrt n}.
+\]
+Consequently, Frobenius-normalized singular spectra are not continuous with respect to the cut-distance alone.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  A_n=e_1\one^T,\qquad B_n=I_n,
+\]
+where \(e_1=(1,0,\ldots,0)^T\) and \(\one=(1,\ldots,1)^T\).  Both matrices have exactly \(n\) nonzero entries, all equal to \(1\), hence
+\[
+  \|A_n\|_F=\|B_n\|_F=\sqrt n.
+\]
+
+We first bound the cut-distance.  Since the matrices have the same size,
+\[
+  \delta_{\boxminus}(A_n,B_n)
+  \le \widehat\delta_{\boxminus}(A_n,B_n)
+  \le \|A_n-B_n\|_\square.
+\]
+For the star row \(A_n\), every submatrix sum is at most \(n\) in absolute value, so \(\|A_n\|_\square=1/n\).  For \(B_n=I_n\), a cut can contain at most \(n\) diagonal ones, so \(\|B_n\|_\square=1/n\).  Therefore
+\[
+  \|A_n-B_n\|_\square\le \|A_n\|_\square+\|B_n\|_\square=\frac2n.
+\]
+
+It remains to compare the Frobenius-normalized singular spectra.  The matrix \(A_n=e_1\one^T\) has rank one and its only nonzero singular value is
+\[
+  \|e_1\|_2\|\one\|_2=\sqrt n.
+\]
+Thus
+\[
+  \frac{\sigma_1(A_n)}{\|A_n\|_F}=1.
+\]
+The identity matrix \(B_n\) has \(n\) singular values all equal to \(1\), and hence
+\[
+  \frac{\sigma_1(B_n)}{\|B_n\|_F}=\frac1{\sqrt n}.
+\]
+The displayed lower bound follows from the first singular value alone.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof uses only exact singular values and the elementary cut-norm estimates above.  A small script in \texttt{code/verify\_counterexample.py} checks the formulas and brute-forces the cut norm for small \(n\).
+
+\section*{Limitations and novelty check}
+
+This disproves the cut-distance-only Frobenius-normalized analogue of Theorem 3.  It does not rule out variants with extra hypotheses, for example lower bounds tying \(\|A\|_F\) and \(\|B\|_F\) to \(\sqrt{mn}\) and \(\sqrt{pq}\), or density/pseudorandomness assumptions excluding matrices supported on \(o(n^2)\) entries.
+
+The bounded novelty check searched the run indexes for arXiv:0912.0336 and phrases around cut norms, spectra, Frobenius normalization, and singular values.  Web searches for the exact paper title with ``Frobenius norm singular values'', for ``Frobenius cut-distance singular values Nikiforov'', and for the exact concluding-question phrase found the source arXiv page but no later public answer to this specific obstruction.
+
+\section*{References}
+
+V. Nikiforov, \emph{Cut-norms and spectra of matrices}, arXiv:0912.0336.
+
+\end{document}

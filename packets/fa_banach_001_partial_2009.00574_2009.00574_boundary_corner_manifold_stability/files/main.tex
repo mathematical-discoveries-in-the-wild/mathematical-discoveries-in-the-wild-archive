@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\Lip}{\operatorname{Lip}}
+
+\title{Boundary and corner charts in low-dimensional inverse problems}
+\author{Agent lane 04}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Alberti, Arroyo and Santacesaria ask about extending their low-dimensional-manifold stability theory to settings with boundary points, for instance degenerate polygonal parameter regimes.  We prove a fixed-dimensional extension: their compact-set Holder and Lipschitz stability results remain valid for manifolds whose charts take values in relatively open subsets of closed convex finite-dimensional models, such as half-spaces and orthants, provided the charted forward maps admit \(C^1\) Euclidean extensions with injective differentials.  The same replacement gives the finite-measurement \(Q_NF\) stability theorem.  This addresses the boundary/corner part of the question, but not variable-dimensional stratified degenerations.
+\end{abstract}
+
+\section{Source Question}
+
+The source paper proves abstract stability results for nonlinear inverse problems
+\[
+  F(x)=y
+\]
+when the unknown \(x\) lies in a compact subset \(K\) of a finite-dimensional differentiable manifold \(M\subset X\), with \(X,Y\) Banach spaces.  Its main theorem says, roughly, that if \(M\) is Holder in \(X\), \(F\in C^1(M,Y)\), \(F\) is injective, and \(dF_x\) is injective on every tangent space, then \(F\) is Holder stable on \(K\).  A finite-measurement theorem gives analogous stability for \(Q_NF\).
+
+In the conclusion, the authors list the following open direction:
+
+\begin{center}
+\includegraphics[width=.92\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+The result below gives a precise partial answer: fixed-dimensional boundary and corner charts are harmless for the abstract stability mechanism.
+
+\section{Definitions}
+
+Let
+\[
+  C_{n,m}=[0,\infty)^m\times \R^{n-m}\subset\R^n,
+  \qquad 0\le m\le n,
+\]
+and call any translate and linear image of such a set a closed corner model.  The proof works verbatim for any closed convex \(C\subset\R^n\) with nonempty relative interior, but the displayed models are the relevant boundary/corner cases.
+
+\begin{definition}
+Let \(X\) be a Banach space.  A set \(M\subset X\) is an \(n\)-dimensional corner manifold in \(X\) if it has an atlas \(\{(U_i,\varphi_i)\}_{i\in I}\) such that:
+\begin{itemize}
+\item \(U_i\) is relatively open in \(M\);
+\item \(\varphi_i:U_i\to A_i\) is a homeomorphism onto a relatively open subset \(A_i\) of a closed corner model \(C_i\subset\R^n\);
+\item the transition maps admit \(C^1\) extensions to open Euclidean neighbourhoods of their domains.
+\end{itemize}
+We say that \(M\) is \(\alpha\)-Holder in \(X\), with \(0<\alpha\le1\), if there is \(\ell>0\) such that
+\[
+  \|x-y\|_X\le \ell^{-1}|\varphi_i(x)-\varphi_i(y)|^\alpha,
+  \qquad x,y\in U_i.
+\]
+The case \(\alpha=1\) is called Lipschitz in \(X\).
+\end{definition}
+
+\begin{definition}
+For a corner manifold \(M\), a map \(F:M\to Y\) is \(C^1\) in the extendable chart sense if every charted map
+\[
+  F_i:=F\circ\varphi_i^{-1}:A_i\to Y
+\]
+admits a \(C^1\) extension \(\widetilde F_i\) to an open neighbourhood of \(A_i\) in \(\R^n\).  We write \(dF_x\) for \(D\widetilde F_i(\varphi_i(x))\), up to the usual change of coordinates.  Injectivity of \(dF_x\) means injectivity as a linear map \(\R^n\to Y\).
+\end{definition}
+
+\section{Idea of the Proof}
+
+The source proof is local.  Compactness first reduces the problem to pairs of nearby points lying in a single chart.  Inside a boundaryless chart, the source uses the line segment between two close coordinate points and integrates the derivative along that segment.
+
+For a boundary or corner chart, the coordinate domain is no longer open in all of \(\R^n\).  But if it is relatively open in a closed convex model, short line segments between points of a compact subset still stay in the model and, after shrinking the distance scale, stay inside the relative chart domain.  Since the charted forward map has a \(C^1\) extension to an ordinary open Euclidean neighbourhood, the same fundamental theorem of calculus argument applies.  This is the whole mechanism.
+
+\section{Finite-Dimensional Relative Lemma}
+
+\begin{lemma}\label{lem:relative}
+Let \(C\subset\R^n\) be closed and convex, let \(A\subset C\) be relatively open, let \(K\subset A\) be compact, and let \(Y\) be a Banach space.  Suppose \(G:A\to Y\) is injective and admits a \(C^1\) extension \(\widetilde G\) to an open neighbourhood \(O\subset\R^n\) of \(A\).  If \(D\widetilde G(a):\R^n\to Y\) is injective for every \(a\in A\), then there is \(L>0\) such that
+\[
+  |u-v|\le L\|G(u)-G(v)\|_Y,\qquad u,v\in K.
+\]
+\end{lemma}
+
+\begin{proof}
+Large distances are controlled by compactness and injectivity.  Namely, for every \(\rho>0\),
+\[
+  \min\{\|G(u)-G(v)\|_Y:u,v\in K,\ |u-v|\ge\rho\}>0
+\]
+unless the set is empty.
+
+It remains to handle nearby points.  Because \(K\) is compact in the relatively open set \(A\subset C\), there is \(\rho_0>0\) such that
+\[
+  \widehat K:=\{z\in C:\dist(z,K)\le \rho_0\}
+\]
+is a compact subset of \(A\cap O\).  If \(u,v\in K\) and \(|u-v|\le\rho_0\), then the segment \([u,v]\) is contained in \(\widehat K\), since \(C\) is convex.
+
+By compactness of \(K\times S^{n-1}\) and injectivity of the derivative,
+\[
+  c:=\frac12\inf_{u\in K,\ |e|=1}\|D\widetilde G(u)e\|_Y>0.
+\]
+Since \(D\widetilde G\) is uniformly continuous on the compact set \(\widehat K\), choose \(0<\rho\le\rho_0\) so that
+\[
+  \|D\widetilde G(z)-D\widetilde G(u)\|_{\mathcal L(\R^n,Y)}\le c
+\]
+whenever \(u\in K\), \(z\in\widehat K\), and \(|z-u|\le\rho\).
+
+For \(u,v\in K\) with \(0<|u-v|\le\rho\), write \(\gamma(t)=u+t(v-u)\).  Then
+\[
+\begin{aligned}
+  \|G(v)-G(u)\|_Y
+  &\ge \|D\widetilde G(u)(v-u)\|_Y
+     -\int_0^1\|(D\widetilde G(\gamma(t))-D\widetilde G(u))(v-u)\|_Y\,dt  \\
+  &\ge (2c-c)|u-v|=c|u-v|.
+\end{aligned}
+\]
+Combining this with the large-distance estimate gives the claimed Lipschitz inverse bound on all of \(K\).
+\end{proof}
+
+\section{Boundary/Corner Stability}
+
+\begin{theorem}\label{thm:corner-infinite}
+Let \(X,Y\) be Banach spaces, \(0<\alpha\le1\), let \(M\subset X\) be an \(n\)-dimensional corner manifold which is \(\alpha\)-Holder in \(X\), and let \(K\subset M\) be compact.  Let \(F:M\to Y\) be \(C^1\) in the extendable chart sense.  Assume:
+\begin{itemize}
+\item \(F\) is injective on \(M\);
+\item \(dF_x:\R^n\to Y\) is injective for every \(x\in M\).
+\end{itemize}
+Then there is \(C_K>0\) such that
+\[
+  \|x-y\|_X\le C_K\|F(x)-F(y)\|_Y^\alpha,
+  \qquad x,y\in K.
+\]
+\end{theorem}
+
+\begin{proof}
+The one-chart compactness lemma from the source uses only that the \(U_i\)'s are relatively open in \(M\) and cover the compact set \(K\).  Therefore there are \(\delta>0\) and compact sets \(K_1,\dots,K_N\subset K\) covering \(K\) such that, for each \(j\), some chart \(U_{i(j)}\) contains
+\[
+  \overline{B_X(K_j,\delta)}\cap M.
+\]
+
+If \(\|x-y\|_X\ge\delta\), compactness of \(K\) and injectivity of \(F\) give the desired estimate after enlarging the constant.  Suppose now that \(\|x-y\|_X<\delta\).  Choose \(j\) with \(x\in K_j\); then \(y\in U_{i(j)}\).  Set \(\varphi=\varphi_{i(j)}\), \(A=\varphi(U_{i(j)})\), and \(G=F\circ\varphi^{-1}\).  The compact coordinate set
+\[
+  H_j=\varphi\bigl(K\cap \overline{B_X(K_j,\delta)}\bigr)\subset A
+\]
+is contained in a relatively open subset of a closed convex model.  By Lemma \ref{lem:relative}, there is \(L_j>0\) such that
+\[
+  |\varphi(x)-\varphi(y)|\le L_j\|F(x)-F(y)\|_Y
+\]
+for all such \(x,y\).  The \(\alpha\)-Holder chart condition gives
+\[
+  \|x-y\|_X\le \ell^{-1}|\varphi(x)-\varphi(y)|^\alpha
+  \le \ell^{-1}L_j^\alpha\|F(x)-F(y)\|_Y^\alpha.
+\]
+Taking the maximum over finitely many charts, and combining with the large-distance constant, proves the theorem.
+\end{proof}
+
+\begin{theorem}\label{thm:corner-finite}
+Let \(M,K,F\) be as in Theorem \ref{thm:corner-infinite} with \(\alpha=1\).  Let \(Q_N:Y\to Y\) satisfy the source Hypothesis \(Q_N\): there is a subspace \(\widetilde Y\subset Y\) and \(D>0\) such that \(Q_N|_{\widetilde Y}\) are uniformly bounded and converge strongly to the identity on \(\widetilde Y\).  Assume additionally that
+\[
+  F(x)-F(y)\in\widetilde Y\quad(x,y\in K),
+  \qquad
+  \ran(dF_x)\subset\widetilde Y\quad(x\in M).
+\]
+Then there are \(C>0\) and \(N_0\in\N\) such that
+\[
+  \|x-y\|_X\le C\|Q_NF(x)-Q_NF(y)\|_Y,
+  \qquad x,y\in K,\quad N\ge N_0.
+\]
+\end{theorem}
+
+\begin{proof}
+The proof is the source proof of Theorem \(QNF\)-stability with Lemma \ref{lem:relative} replacing the open-domain finite-dimensional lemma.  We spell out the only point where the boundary matters.
+
+After the same finite chart reduction used in Theorem \ref{thm:corner-infinite}, nearby \(x,y\in K\) are represented by \(u=\varphi(x)\) and \(v=\varphi(y)\) in a compact set \(H_j\subset A\), where \(A\) is relatively open in a closed convex model.  As in Lemma \ref{lem:relative}, short coordinate segments \([u,v]\) remain in a compact \(\widehat H_j\subset A\).  Along those segments,
+\[
+  Q_NG(v)-Q_NG(u)
+  =
+  \int_0^1 Q_ND\widetilde G(u+t(v-u))(v-u)\,dt.
+\]
+The source argument estimates this integral by comparing it with the already stable \(G(v)-G(u)\).  The two required uniform convergence statements are on compact sets:
+\[
+  \sup_{a,b\in H_j}\|(I-Q_N)(G(a)-G(b))\|_Y\to0
+\]
+and
+\[
+  \sup_{z\in\widehat H_j}\|(I-Q_N)D\widetilde G(z)\|_{\mathcal L(\R^n,Y)}\to0.
+\]
+They follow from compactness of \(G(H_j)-G(H_j)\subset\widetilde Y\), compactness of \(D\widetilde G(\widehat H_j)(B_{\R^n})\subset\widetilde Y\), and the strong convergence of the uniformly bounded maps \(Q_N|_{\widetilde Y}\).  Thus the finite-dimensional estimate for \(Q_NG\) holds in every chart for all sufficiently large \(N\).  The source's large-distance compactness argument handles pairs with \(\|x-y\|_X\ge\delta\), and the finitely many chart constants can be maximized.  This gives the displayed estimate.
+\end{proof}
+
+\section{Scope and Limitations}
+
+Theorems \ref{thm:corner-infinite} and \ref{thm:corner-finite} cover fixed-dimensional manifolds with boundary and corners, including parameter domains locally modelled on orthants.  This is enough for many constrained parameter families in which, for example, a radius or contrast parameter may reach an endpoint while the number of parameters stays fixed.
+
+The result does not cover genuinely variable-dimensional degeneracies.  If a triangle is allowed to collapse to an edge and then to a point, the natural parameter space is stratified rather than a single \(n\)-dimensional corner manifold with injective \(n\)-dimensional differential on every stratum.  Handling that case would require either the source's finite-union theorem applied to a controlled finite stratification, when available, or new compatibility estimates between strata.
+
+\section{Novelty Check}
+
+The run indexes were searched for arXiv:2009.00574, the title, ``manifold with boundary'', ``manifold with corners'', ``degenerate polygons'', and ``M-RIP''.  No prior packet or attempt for this target or route was found.  Web searches for exact phrases around the source title plus ``manifolds with boundary'', ``degenerate polygons'', and ``M-RIP manifold with boundary'' did not locate a separate later answer.
+
+\section{References}
+
+\begin{itemize}
+\item G. S. Alberti, A. Arroyo, and M. Santacesaria, \emph{Inverse problems on low-dimensional manifolds}, arXiv:2009.00574.
+\end{itemize}
+
+\end{document}
+

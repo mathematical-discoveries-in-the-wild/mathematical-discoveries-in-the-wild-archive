@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{Zero Thickness Does Not Force a Hilbert Bi-Lipschitz Embedding}
+\author{FA/Banach run fa\_banach\_001}
+\date{June 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a counterexample to the second open question of
+Margaris--Robinson \cite{MR2018}. Thickness exponent zero does not force the
+existence of a nonlinear bi-Lipschitz embedding into a Hilbert space. Since
+Euclidean spaces are Hilbert spaces, it also rules out the Euclidean target.
+
+\section*{Source Question}
+
+After proving an embedding theorem for compact subsets of Banach spaces with
+thickness exponent less than \(1\), the source paper asks:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Source evidence from arXiv:1811.03872, PDF page 20.}
+\end{figure}
+
+The construction below addresses the second question.
+
+\section*{The Counterexample}
+
+Let \(Q_m=\{0,1\}^m\) be the \(m\)-dimensional Hamming cube, equipped with the
+Hamming metric \(d_m\). Let \(0_m\) denote its zero vertex. Put
+\[
+  E_m=\ell_\infty(Q_m)
+\]
+and embed \(Q_m\) into \(E_m\) by the pointed Kuratowski map
+\[
+  \iota_m(x)=\big(d_m(x,y)-d_m(0_m,y)\big)_{y\in Q_m}.
+\]
+This map is isometric: for every \(x,x'\in Q_m\),
+\[
+  \|\iota_m(x)-\iota_m(x')\|_\infty
+  =\sup_{y\in Q_m}|d_m(x,y)-d_m(x',y)|
+  =d_m(x,x'),
+\]
+where the reverse inequality is the triangle inequality and equality follows
+by taking \(y=x\).
+
+Let
+\[
+  B=\left(\bigoplus_{m=1}^\infty E_m\right)_{c_0}
+\]
+with norm \(\|(u_m)\|=\sup_m\|u_m\|_{E_m}\). Choose
+\[
+  R_m=2^{-m^3}, \qquad s_m=\frac{R_m}{m}.
+\]
+For \(x\in Q_m\), let \(u_{m,x}\in B\) be the vector whose \(m\)-th coordinate
+is \(s_m\iota_m(x)\) and whose other coordinates are zero. Define
+\[
+  X=\{0\}\cup \{u_{m,x}:m\in\N,\ x\in Q_m\}.
+\]
+
+\begin{theorem}
+The compact set \(X\subset B\) has thickness exponent \(0\), but \(X\) does
+not admit a bi-Lipschitz embedding into any Hilbert space.
+\end{theorem}
+
+\begin{proof}
+First, \(X\) is compact. Each level \(\{u_{m,x}:x\in Q_m\}\) is finite, and
+\[
+  \|u_{m,x}\|\le s_m\diam(Q_m)=s_m m=R_m\to 0.
+\]
+Thus all levels eventually lie in an arbitrarily small ball around \(0\).
+
+We next compute a box-counting bound. If
+\[
+  R_{M+1}<\varepsilon\le R_M,
+\]
+then all levels \(m>M\) are contained in the \(\varepsilon\)-ball around \(0\).
+The first \(M\) levels can be covered point by point. Hence
+\[
+  N(X,\varepsilon)\le 1+\sum_{m=1}^M |Q_m|
+  =1+\sum_{m=1}^M 2^m
+  \le 2^{M+1}.
+\]
+Since \(-\log R_M=M^3\log 2\), it follows that
+\[
+  \overline{\dim}_B(X)
+  =\limsup_{\varepsilon\downarrow 0}
+      \frac{\log N(X,\varepsilon)}{-\log\varepsilon}
+  \le
+  \limsup_{M\to\infty}\frac{(M+1)\log 2}{M^3\log 2}=0.
+\]
+The thickness exponent is always bounded above by the upper box-counting
+dimension: an \(\varepsilon\)-cover by \(N(X,\varepsilon)\) balls gives an
+\(\varepsilon\)-approximating subspace spanned by the \(N(X,\varepsilon)\)
+centres. Therefore \(\tau(X,B)=0\).
+
+It remains to exclude Hilbert embeddings. Suppose, towards a contradiction,
+that \(F:X\to H\) is bi-Lipschitz into a Hilbert space \(H\). Then there are
+constants \(0<a\le b<\infty\) such that
+\[
+  a\|u-v\|_B\le \|F(u)-F(v)\|_H\le b\|u-v\|_B
+  \qquad (u,v\in X).
+\]
+Restrict \(F\) to the \(m\)-th level. Since \(\iota_m\) is isometric, for
+all \(x,x'\in Q_m\),
+\[
+  a s_m d_m(x,x')
+  \le \|F(u_{m,x})-F(u_{m,x'})\|_H
+  \le b s_m d_m(x,x').
+\]
+After dividing by \(s_m\), this gives a Hilbert embedding of \(Q_m\) with
+distortion at most \(b/a\), uniformly in \(m\).
+
+The following standard Enflo cube estimate contradicts this. If
+\(G:Q_m\to H\) has Lipschitz constant at most \(\beta\) and inverse
+Lipschitz constant at least \(\alpha\), then \(\beta/\alpha\ge \sqrt m\).
+Indeed, identify \(Q_m\) with \(\{-1,1\}^m\). For \(\varepsilon\in Q_m\), let
+\(-\varepsilon\) be the antipodal vertex and \(\varepsilon^{(j)}\) the vertex
+obtained by flipping the \(j\)-th coordinate. Hilbert-valued Walsh expansion
+gives
+\[
+  \mathbb E_\varepsilon \|G(\varepsilon)-G(-\varepsilon)\|^2
+  \le
+  \sum_{j=1}^m
+  \mathbb E_\varepsilon \|G(\varepsilon)-G(\varepsilon^{(j)})\|^2 .
+\]
+The right side is at most \(m\beta^2\), since each edge has Hamming length
+\(1\). Therefore some antipodal pair satisfies
+\[
+  \|G(\varepsilon)-G(-\varepsilon)\|\le \beta\sqrt m.
+\]
+But the lower Lipschitz bound gives
+\[
+  \|G(\varepsilon)-G(-\varepsilon)\|\ge \alpha m.
+\]
+Thus \(\beta/\alpha\ge \sqrt m\).
+
+Applying this to the uniformly distorted embeddings of the cubes \(Q_m\)
+forces \(b/a\ge \sqrt m\) for all \(m\), impossible. Hence no such Hilbert
+embedding \(F\) exists.
+\end{proof}
+
+\section*{Verification Notes}
+
+The construction deliberately separates global and local geometry. The levels
+shrink quickly enough that the global upper box-counting dimension is zero,
+but each level retains the full Hamming-cube metric after rescaling. Thickness
+sees the global covering rate; Hilbert bi-Lipschitz embeddability would have
+to handle all finite cube levels with one distortion constant.
+
+\section*{Novelty and Search Bounds}
+
+Before packaging, the run's cheap indexes were searched for arXiv:1811.03872,
+``zero thickness'', ``bi-Lipschitz'', ``Euclidean'', ``Hilbert'', and
+``Assouad''. No prior packet or attempt for this target was found. The proof
+uses the standard Enflo lower bound for Hamming cubes in Hilbert space and is
+packaged as an original counterexample to the source question.
+
+\section*{Human Review Recommendation}
+
+Review as a counterexample packet. The essential checks are the
+box-counting/thickness computation and the uniform-distortion obstruction from
+the Hamming cube levels.
+
+\begin{thebibliography}{9}
+
+\bibitem{MR2018}
+A. Margaris and J. C. Robinson,
+\emph{Embedding properties of sets with finite box-counting dimension},
+arXiv:1811.03872.
+
+\end{thebibliography}
+
+\end{document}

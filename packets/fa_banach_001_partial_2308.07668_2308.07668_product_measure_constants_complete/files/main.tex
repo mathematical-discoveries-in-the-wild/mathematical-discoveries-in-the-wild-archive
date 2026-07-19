@@ -1,0 +1,294 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\K}{\mathsf K}
+
+\title{Exact Product-Measure Constants in a Question on Ramsey-Type Spheres}
+\author{Run fa\_banach\_001, agent\_lane\_13}
+\date{2026-06-14}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a partial solution packet for arXiv:2308.07668, ``On Ramsey-type
+properties of the distance in nonseparable spheres'' by Piotr Koszmider.  It
+settles the exact values of the constants \(c_n\) and \(c\) appearing in
+Proposition 55 of the source paper.  The endpoint dichotomy question for
+\(S_{L_p(\{0,1\}^{\kappa})}\) remains separate.
+
+The last finite case, \(1<p<2\), is obtained by identifying the relevant finite
+atom inequality with the largest Rayleigh quotient of the complete graph
+\(p\)-Laplacian.  The complete graph spectrum is due to Amghibech, and is used
+here in the form quoted in Zhang's Section 4.3 \cite{Zhang2023}.
+
+\section*{Source Evidence}
+
+The following crop is from page 25 of the source PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The relevant source sentence is:
+\[
+\text{``We do not know the exact value of }c_n\text{ or of }c\text{ in the above proof or if }S_{L_p}\text{ is dichotomous.''}
+\]
+
+\section*{Source Notation}
+
+Let \(\mu\) be the product probability measure on \(\{0,1\}^{\kappa}\), where
+\(\kappa\leq2^\omega\) is uncountable.  In Proposition 55 of the source paper,
+for \(A\in[\kappa]^n\), the map \(T_A\) sends a function
+\(F\in L_p(\{0,1\}^n)\) to the function on \(\{0,1\}^{\kappa}\) depending on
+the coordinates in \(A\).  The constant \(c_n\) is the supremum of
+\[
+ \|T_A(F)-T_B(F)\|_{L_p}
+\]
+over all unit vectors \(F\in L_p(\{0,1\}^n)\) and all admissible pairs
+\(A,B\in[\kappa]^n\) whose common coordinates occur in the same positions.
+Finally \(c=\sup_n c_n\).
+
+\section*{Proof Intuition}
+
+After the common coordinates of \(A\) and \(B\) are fixed, the two random
+variables \(T_A(F)\) and \(T_B(F)\) are independent copies of the same smaller
+finite random variable.  Thus the problem is controlled by finite complete
+graph quotients
+\[
+ \sup_{x\neq0}\frac{\sum_{i,j}|x_i-x_j|^p}{\sum_i |x_i|^p}.
+\]
+For \(1<p<2\), the largest quotient is not the limiting negative-type value:
+the finite atom mass forces a strict gap.  Amghibech's spectrum for the
+complete graph \(p\)-Laplacian gives exactly this gap, and the largest
+eigenvalue is the one corresponding to one positive atom, one negative atom,
+and all other atoms zero.  For \(p>2\), the same spectrum is maximized by a
+balanced positive/negative split; because \(2^n\) is even, this gives the
+Rademacher value at every finite level.
+
+\begin{lemma}[complete graph quotient]\label{lem:complete}
+Let \(N\geq2\), and for \(1<p<\infty\) define
+\[
+ M_{N,p}:=\sup_{x\in\R^N\setminus\{0\}}
+ \frac{\sum_{i,j=1}^N |x_i-x_j|^p}{\sum_{i=1}^N |x_i|^p}.
+\]
+Then
+\[
+M_{N,p}=2N-4+2^p,\qquad 1<p\leq2.
+\]
+If \(2\leq p<\infty\) and \(N\) is even, then
+\[
+M_{N,p}=N2^{p-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+For \(p=2\), the identity
+\[
+\sum_{i,j}|x_i-x_j|^2=2N\sum_i|x_i-\bar x|^2\leq 2N\sum_i|x_i|^2
+\]
+gives \(M_{N,2}=2N\), and both displayed formulas agree with this value.
+
+Assume first that \(p\neq2\).  Let \(K_N\) be the complete graph on \(N\)
+vertices.  Zhang quotes Amghibech's Theorem 6 as follows: for \(N\geq3\), the
+nonzero normalized \(p\)-Laplacian eigenvalues of \(K_N\) are
+\[
+ \lambda_{i,j}=
+ \frac{1}{N-1}\left(
+ N-i-j+\left(i^{1/(p-1)}+j^{1/(p-1)}\right)^{p-1}
+ \right),
+ \qquad i,j\in\mathbb Z_+,\quad i+j\leq N.
+\]
+Here the normalized Rayleigh quotient is
+\[
+ F_p(x)=
+ \frac{\sum_{\{i,j\}\in E(K_N)}|x_i-x_j|^p}
+ {(N-1)\sum_i |x_i|^p}.
+\]
+Since \(F_p\) attains its maximum on the compact \(\ell_p\)-sphere and a
+maximizer is a critical point, \(\sup F_p\) is the largest value among the
+\(\lambda_{i,j}\).  Also
+\[
+ M_{N,p}=2(N-1)\sup F_p,
+\]
+because \(M_{N,p}\) uses ordered pairs while \(F_p\) uses unordered edges.
+
+Put \(q=1/(p-1)\).  If \(1<p<2\), then \(q>1\).  The expression to maximize is
+\[
+ H(i,j)=N-i-j+\|(i,j)\|_q.
+\]
+For \(i,j\geq1\), the quantity \(i+j-\|(i,j)\|_q\) is strictly increasing in
+each variable, since
+\[
+ \frac{\partial}{\partial i}\left(i+j-(i^q+j^q)^{1/q}\right)
+ =1-\left(\frac{i^q}{i^q+j^q}\right)^{(q-1)/q}>0.
+\]
+Thus the maximum is attained at \(i=j=1\), and
+\[
+\sup F_p=\frac{N-2+2^{p-1}}{N-1}.
+\]
+Hence \(M_{N,p}=2N-4+2^p\).
+
+If \(p>2\), then \(0<q<1\).  For a fixed \(s=i+j\), concavity of \(t^q\)
+implies that \((i^q+j^q)^{1/q}\) is maximized when \(i\) and \(j\) are as
+balanced as possible.  When \(N\) is even, taking \(s=N\) and \(i=j=N/2\)
+gives
+\[
+ H(i,j)=\left(2(N/2)^q\right)^{1/q}=N2^{p-2}.
+\]
+For any \(s\leq N\), the same balanced estimate gives
+\[
+ H(i,j)\leq N-s+2^{p-2}s,
+\]
+which is maximized at \(s=N\) because \(2^{p-2}>1\).  Therefore
+\(\sup F_p=N2^{p-2}/(N-1)\), and \(M_{N,p}=N2^{p-1}\).
+
+For \(N=2\), the same values follow directly from the two-point quotient, so
+the proof is complete.
+\end{proof}
+
+\begin{lemma}[conditioning reduction]\label{lem:conditioning}
+Let \(N=2^n\).  For the source constants \(c_n\),
+\[
+ c_n^p\leq \frac{M_{N,p}}{N}.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix \(F\in L_p(\{0,1\}^n)\) and an admissible pair \(A,B\).  Suppose that
+\(r=|A\cap B|\), with common coordinates in the same positions, and condition
+on these \(r\) common coordinates.  Given the common coordinates,
+\(T_A(F)\) and \(T_B(F)\) are iid copies of the same function on a cube with
+\(2^{n-r}\) atoms.  Lemma \ref{lem:complete} applied to this smaller finite
+cube gives
+\[
+ \E\left(|T_A(F)-T_B(F)|^p\mid A\cap B\right)
+ \leq d_{n-r,p}\,
+ \E\left(|T_A(F)|^p\mid A\cap B\right),
+\]
+where
+\[
+d_{m,p}=
+\begin{cases}
+2-(4-2^p)/2^m, & 1<p\leq2,\ m\geq1,\\
+2^{p-1}, & 2\leq p<\infty,\ m\geq1,\\
+0, & m=0.
+\end{cases}
+\]
+For \(1<p\leq2\), the numbers \(d_{m,p}\) increase with \(m\); for
+\(p\geq2\), they are constant for \(m\geq1\).  Therefore
+\(d_{n-r,p}\leq M_{2^n,p}/2^n\).  Averaging over the common coordinates and
+normalizing \(\|F\|_p=1\) proves the claim.
+\end{proof}
+
+\begin{theorem}[exact constants]\label{thm:constants}
+For Proposition 55 of the source paper, for every \(n\geq1\),
+\[
+ c_n^p =
+ \begin{cases}
+ 2-\dfrac{4-2^p}{2^n}, & 1<p\leq2,\\[6pt]
+ 2^{p-1}, & 2\leq p<\infty.
+ \end{cases}
+\]
+Consequently,
+\[
+ c=\sup_n c_n =
+ \begin{cases}
+ 2^{1/p}, & 1<p\leq2,\\
+ 2^{1-1/p}, & 2\leq p<\infty.
+ \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+The upper bounds follow from Lemmas \ref{lem:complete} and
+\ref{lem:conditioning}, with \(N=2^n\).
+
+For the lower bounds, choose disjoint \(A,B\).  If \(1<p\leq2\), let \(F\) take
+the value \(a=(2^{n-1})^{1/p}\) on one atom of \(\{0,1\}^n\), the value \(-a\)
+on another atom, and \(0\) on all remaining atoms.  Then \(\|F\|_p=1\), and
+for independent copies \(U,V\) of \(F\),
+\[
+\E|U-V|^p
+ =\frac{2(2a)^p+4(2^n-2)a^p}{2^{2n}}
+ =2-\frac{4-2^p}{2^n}.
+\]
+Thus \(c_n^p\) is at least the stated value.
+
+If \(p\geq2\), let \(F\) be a Rademacher function depending on one coordinate.
+Then independent copies \(U,V\) satisfy \(\E|U-V|^p=2^{p-1}\).  Hence
+\(c_n^p\geq2^{p-1}\), and the upper bound gives equality.
+
+Taking the supremum over \(n\) gives the displayed value of \(c\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The auxiliary script \texttt{code/check\_finite\_atom\_conjecture.py} was used
+before the graph-spectrum identification to test the finite \(1<p<2\) formula
+for small \(N\).  It is not part of the proof.  The proof now rests on the
+conditioning reduction and on Amghibech's complete-graph \(p\)-Laplacian
+spectrum as quoted in \cite[Section 4.3]{Zhang2023}.
+
+\section*{Scope and Limitations}
+
+The exact constants \(c_n\) and \(c\) are settled.  The remaining source
+question is whether the unit sphere \(S_{L_p(\{0,1\}^{\kappa})}\) is
+dichotomous.  For \(p=2\), the earlier Hilbertian packet records the negative
+answer via the Erdos--Preiss and Preiss--Rodl theorem.  For \(p\neq2\), the
+endpoint dichotomy problem is not resolved here.
+
+\section*{Literature and Novelty Notes}
+
+The finite \(1<p<2\) formula was first found here numerically, but the proof
+uses an existing graph \(p\)-Laplacian theorem of Amghibech.  A web search for
+``complete graph p-Laplacian eigenvalues'', ``largest eigenvalue graph
+p-Laplacian complete graph'', and exact pairwise-sum phrases led to Zhang's
+arXiv:2110.06054 paper, whose Section 4.3 quotes the decisive Amghibech
+formula.  I did not locate a freely downloadable copy of Amghibech's original
+2003 paper during the bounded search, so Zhang's arXiv PDF is included as the
+supporting source for the quoted formula.
+
+\section*{Human Review Recommendation}
+
+Reviewers should first check the factor \(M_{N,p}=2(N-1)\sup F_p\), since this
+is the only normalization-sensitive step.  Then check that the integer
+maximization of Amghibech's formula is correct in the two regimes \(1<p<2\)
+and \(p>2\), and that the conditioning argument covers every admissible
+overlap pattern from Proposition 55.
+
+\begin{thebibliography}{9}
+
+\bibitem{Koszmider2024}
+P.~Koszmider,
+\emph{On Ramsey-type properties of the distance in nonseparable spheres},
+arXiv:2308.07668.
+
+\bibitem{Amghibech2003}
+S.~Amghibech,
+\emph{Eigenvalues of the discrete \(p\)-Laplacian for graphs},
+Ars Combinatoria 67 (2003), 283--302.
+
+\bibitem{Zhang2023}
+D.~Zhang,
+\emph{Homological eigenvalues of graph \(p\)-Laplacians},
+Journal of Topology and Analysis (2023), arXiv:2110.06054.
+
+\bibitem{Schoenberg1938}
+I.~J. Schoenberg,
+\emph{Metric spaces and positive definite functions},
+Transactions of the American Mathematical Society 44 (1938), 522--536.
+
+\end{thebibliography}
+
+\end{document}

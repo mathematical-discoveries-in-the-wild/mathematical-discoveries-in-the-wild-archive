@@ -1,0 +1,296 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Dom}{\operatorname{Dom}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+
+\title{A sharp one-sided real-axis bound for the fast exponential Schrodinger example}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_00}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a partial-result packet.  It proves the lower-bound, or quasimode,
+side of the real-axis asymptotic predicted for the fast exponential example in
+Arnal--Siegl.  It does not prove the matching upper bound, and therefore does
+not close the source open question.
+
+\section*{Source and Open Question}
+
+The source is Antonio Arnal and Petr Siegl, ``Resolvent estimates for
+one-dimensional Schrodinger operators with complex potentials'', arXiv:2203.15938,
+published in \emph{Journal of Functional Analysis} 284 (2023), Article 109856
+\cite{ArnalSiegl2023}.  Section 7.3 considers
+\[
+    H=-\partial_x^2+i\e^{x^2},\qquad
+    \Dom(H)=W^{2,2}(\R)\cap \Dom(\e^{x^2}),
+\]
+and gives the imaginary-axis asymptotic.  It then states that the real-axis
+Theorem 4.2 is not applicable and leaves the critical region next to the real
+axis open.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Transcription of the Relevant Source Point}
+
+The relevant paragraph in Section 7.3 states that for
+\(H=-\partial_x^2+i\e^{x^2}\) the real-axis theorem from the paper is not
+applicable, so the critical region next to the positive real axis remains open.
+This packet addresses one direction of that missing real-axis analysis.
+
+\section*{Proof Intuition}
+
+Near the positive turning frequency \(\xi=\sqrt a\), a wave packet of the form
+\[
+    u(x)=t_a^{-1/2}\e^{i\sqrt a\,x}v(x/t_a),
+    \qquad t_a\e^{t_a^2}=2\sqrt a,
+\]
+turns the second-order operator \(H-a\) into a first-order transport operator:
+\[
+    (H-a)u
+    =i\e^{t_a^2}t_a^{-1/2}\e^{i\sqrt a\,x}
+      \left(-v'+\e^{t_a^2(y^2-1)}v\right)_{y=x/t_a}
+      +\hbox{a smaller second-derivative term}.
+\]
+The normalized first-order model
+\[
+    B_t=-\partial_y+\e^{t^2(y^2-1)}
+\]
+converges to Volterra integration on \((-1,1)\), whose norm is \(4/\pi\).
+Thus choosing \(v\) from a near-extremizer of \(B_t^{-1}\) produces physical
+quasimodes for \(H-a\) with residual at most
+\((\pi/4+o(1))\e^{t_a^2}\).  This proves the sharp predicted lower bound for
+the resolvent norm.  What remains open is the converse inequality for arbitrary
+test functions.
+
+\section*{Definitions}
+
+For \(t>0\), define
+\[
+    W_t(y):=\e^{t^2(y^2-1)},\qquad
+    B_t=-\partial_y+W_t
+\]
+on \(L^2(\R)\) with maximal domain
+\[
+    \Dom(B_t)=\{v\in L^2(\R): -v'+W_tv\in L^2(\R)\}.
+\]
+Let \(T_0\) be the limiting Volterra operator
+\[
+    (T_0 f)(x)=\int_x^1 f(y)\,\dd y,\qquad -1<x<1,
+\]
+viewed as an operator on \(L^2(-1,1)\).  Its norm is \(4/\pi\).
+
+\section*{Theorem}
+
+\begin{theorem}[sharp one-sided real-axis bound]\label{thm:lower}
+Let
+\[
+    H=-\partial_x^2+i\e^{x^2},
+    \qquad \Dom(H)=W^{2,2}(\R)\cap\Dom(\e^{x^2}),
+\]
+and let \(t_a>0\) be determined by
+\[
+    t_a\e^{t_a^2}=2\sqrt a.
+\]
+Then
+\[
+    \liminf_{a\to+\infty} \e^{t_a^2}\|(H-a)^{-1}\|\ge \frac4\pi.
+\]
+Equivalently, if
+\[
+    m(a):=\inf_{0\ne u\in\Dom(H)}
+      \frac{\|(H-a)u\|}{\|u\|},
+\]
+then
+\[
+    \limsup_{a\to+\infty} \e^{-t_a^2}m(a)\le\frac\pi4.
+\]
+\end{theorem}
+
+\section*{Proof}
+
+\begin{lemma}[model inverse convergence]\label{lem:model}
+Let \(T_t=B_t^{-1}\).  For every \(f\in C_c^\infty((-1,1))\),
+\[
+    T_t f \longrightarrow T_0 f
+    \quad\hbox{in }L^2(\R),\qquad t\to+\infty,
+\]
+where \(T_0f\) is extended by zero outside \((-1,1)\) on the right and by its
+Volterra value on \((-1,1)\).
+\end{lemma}
+
+\begin{proof}
+Solving the first-order equation with the \(L^2\) condition at \(+\infty\)
+gives
+\[
+    (T_t f)(x)=\int_x^\infty
+       \exp\!\left(-\int_x^y W_t(s)\,\dd s\right) f(y)\,\dd y.
+\]
+For \(-1<x<1\), \(W_t\to0\) locally uniformly, and for intervals outside
+\([-1,1]\), \(W_t\to+\infty\) locally uniformly.  Hence the kernel converges
+pointwise to \(\mathbf 1_{\{-1<x<y<1\}}\).  The same tail estimates as in the
+standard proof of the fast-model packet give convergence in Hilbert--Schmidt
+norm on the support of \(f\), and therefore \(T_tf\to T_0f\) in \(L^2\).
+\end{proof}
+
+\begin{lemma}[smooth near-extremizers]\label{lem:near-ext}
+For every \(\varepsilon>0\), there is \(f\in C_c^\infty((-1,1))\) such that
+\[
+    \frac{\|f\|_{L^2(-1,1)}}{\|T_0f\|_{L^2(-1,1)}}\le \frac\pi4+\varepsilon.
+\]
+\end{lemma}
+
+\begin{proof}
+The Volterra operator on an interval of length \(2\) has norm \(4/\pi\).
+Choose an \(L^2\) near-extremizer for \(T_0\), then approximate it in \(L^2\)
+by a smooth compactly supported function.  Since \(T_0\) is bounded, the ratio
+is preserved up to an arbitrarily small error.
+\end{proof}
+
+\begin{lemma}[second derivative of the first-order quasimode]\label{lem:vpp}
+Fix \(f\in C_c^\infty((-1,1))\), and put \(v_t:=T_tf\).  Then there is a
+constant \(C_f\) such that, as \(t\to+\infty\),
+\[
+    \|v_t''\|_{L^2(\R)}\le C_f t^5.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(\supp f\subset[\alpha,\beta]\), with \(-1<\alpha<\beta<1\).  The
+identity \(B_tv_t=f\) gives
+\[
+    v_t'=W_tv_t-f,\qquad
+    v_t''=(W_t'+W_t^2)v_t-W_tf-f'.
+\]
+On \([\alpha,\beta]\), the functions \(W_t\) and \(W_t'\) are uniformly
+bounded, and outside \((-\infty,\beta]\) we have \(v_t=0\).  On
+\([-1,\alpha]\), \(f=0\), \(0\le W_t\le1\), and \(|W_t'|\le 2t^2W_t\), while
+\(\|v_t\|_\infty\le \|f\|_1\).  These pieces contribute \(O_f(t^2)\) to the
+\(L^2\)-norm of \(v_t''\).
+
+It remains to consider \(x<-1\).  There \(f=0\), so
+\[
+    v_t(x)=C_t\exp\!\left(-\int_x^\alpha W_t(s)\,\dd s\right),
+    \qquad |C_t|\le \|f\|_1.
+\]
+Write \(x=-1-r\), \(r>0\).  On \(0<r<1\), set \(z=\e^{2t^2r}\).  Since
+\[
+    W_t(-1-r)\le z^{3/2},\qquad
+    \int_{-1-r}^{-1}W_t(s)\,\dd s
+       \ge \frac{z-1}{2t^2},
+\]
+we get
+\[
+    \int_{-2}^{-1}|v_t''(x)|^2\,\dd x
+       \le C_f\int_1^\infty
+          (t^4z^3+z^6)\exp\!\left(-\frac{z-1}{t^2}\right)
+          \frac{\dd z}{t^2z}
+       \le C_f t^{10}.
+\]
+For \(x<-2\), the integral \(\int_x^{-1}W_t(s)\,\dd s\) grows faster than any
+fixed exponential in \(|x|\), while \(W_t\) and \(W_t'\) grow only like
+exponentials in \(x^2\); the same estimate on unit intervals gives a bounded
+contribution.  Hence \(\|v_t''\|_2=O_f(t^5)\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:lower}]
+Fix \(\varepsilon>0\), and choose \(f\in C_c^\infty((-1,1))\) as in
+Lemma \ref{lem:near-ext}.  Let \(v_t=T_tf\).  For \(a>0\), put
+\[
+    t=t_a,\qquad \xi=\sqrt a,\qquad
+    u_a(x)=t^{-1/2}\e^{i\xi x}v_t(x/t).
+\]
+Then \(\|u_a\|_{L^2(\R)}=\|v_t\|_{L^2(\R)}\), and a direct calculation gives,
+with \(y=x/t\),
+\[
+    (H-a)u_a(x)
+    =t^{-1/2}\e^{i\xi x}
+      \left(-t^{-2}v_t''(y)-2i\xi t^{-1}v_t'(y)
+            +i\e^{t^2y^2}v_t(y)\right).
+\]
+Since \(t\e^{t^2}=2\xi\), this becomes
+\[
+    (H-a)u_a
+    =i\e^{t^2}t^{-1/2}\e^{i\xi x}(B_tv_t)(x/t)
+      -t^{-5/2}\e^{i\xi x}v_t''(x/t).
+\]
+Taking norms and using \(B_tv_t=f\), Lemma \ref{lem:vpp}, and
+Lemma \ref{lem:model},
+\[
+    \e^{-t^2}\frac{\|(H-a)u_a\|}{\|u_a\|}
+       \le
+       \frac{\|f\|+t^{-2}\e^{-t^2}\|v_t''\|}{\|v_t\|}
+       \longrightarrow
+       \frac{\|f\|}{\|T_0f\|}
+       \le \frac\pi4+\varepsilon.
+\]
+Therefore
+\[
+    \limsup_{a\to+\infty}\e^{-t_a^2}m(a)\le \frac\pi4+\varepsilon.
+\]
+Letting \(\varepsilon\downarrow0\) proves the singular-value statement, and
+inverting it gives
+\[
+    \liminf_{a\to+\infty}\e^{t_a^2}\|(H-a)^{-1}\|\ge\frac4\pi.
+\]
+\end{proof}
+
+\section*{Verification Notes}
+
+No computation is used in the proof.  The optional script
+\texttt{code/quasimode\_residual\_check.py} evaluates the scaling identity on
+a grid for moderate \(t\), using a compactly supported smooth input \(f\).  It
+is only a sanity check for the algebraic rescaling and the decay of the
+second-derivative correction.
+
+\section*{Limitations and Novelty Check}
+
+This result does not prove the matching upper bound
+\[
+    \|(H-a)^{-1}\|\le \left(\frac4\pi+o(1)\right)\e^{-t_a^2}.
+\]
+That upper bound would require a global estimate for arbitrary \(u\), replacing
+the Fourier partition and commutator estimates used in Arnal--Siegl Theorem
+4.2.  Those estimates rely on regular variation and symbol-class derivative
+bounds, while \(V_2(x)=\e^{x^2}\) has \(V_2^{(n)}(x)=P_n(x)\e^{x^2}\) and is
+not regularly varying.
+
+The run's cheap indexes were checked on 2026-07-18 for arXiv:2203.15938 and
+the fast-exponential real-axis keywords.  They contained the earlier
+conditional model packet but no full or partial packet proving this one-sided
+source-operator bound.  The companion generalized Airy paper was also checked;
+it records applications to the regularly varying real-axis theorem and does
+not supply the missing fast-exponential real-axis transfer.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid partial result.  The most important proof checkpoint
+is Lemma \ref{lem:vpp}: it must be enough that \(\|v_t''\|\) grows only
+polynomially, because the rescaling multiplies this term by
+\(t^{-2}\e^{-t^2}\).  The packet should not be treated as closing the open
+critical-region question until the converse, all-functions upper bound is
+proved.
+
+\begin{thebibliography}{9}
+\bibitem{ArnalSiegl2023}
+Antonio Arnal and Petr Siegl,
+\emph{Resolvent estimates for one-dimensional Schrodinger operators with
+complex potentials},
+Journal of Functional Analysis 284 (2023), no. 9, Article 109856;
+arXiv:2203.15938.
+\end{thebibliography}
+
+\end{document}

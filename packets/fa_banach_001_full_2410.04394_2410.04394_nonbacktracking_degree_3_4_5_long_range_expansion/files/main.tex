@@ -1,0 +1,255 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Expan}{\operatorname{Expan}}
+
+\title{Nonbacktracking Walks Settle the Degree 3,4,5 Long-Range Expansion Problem}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_03}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Status:} candidate full solution, likely valid, human review needed.
+This packet gives an affirmative answer to Problem 6.3 of
+Altschuler--Dodos--Tikhomirov--Tyros \cite{ADTT}: random $d$-regular graphs
+with $d\in\{3,4,5\}$ satisfy part (B) of the long-range expansion property
+with high probability.
+
+\section*{Source Problem}
+
+The source paper defines a long-range expansion property
+$\Expan(\alpha,\varepsilon,L)$ for $d$-regular graphs.  Proposition 1.9 proves
+that random $d$-regular graphs satisfy part (A) for every $d\ge3$, and part
+(B) for $d\ge6$.  The open problem is the missing low-degree range:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+We use the source parameters
+\[
+  \alpha(d)=d^{-10^{11}\log d},\qquad
+  \varepsilon=0.2,\qquad L(d)=24\alpha(d)^{-1}.
+\]
+
+\section*{Proof Intuition}
+
+The source proof of part (B) assumes a failure of long-range expansion and
+builds a mean-zero vector whose adjacency-walk averages are too large.  The
+upper bound for ordinary adjacency walks is governed by roughly
+$(2\sqrt{d-1})^{2\ell}=4^\ell(d-1)^\ell$.  This is why the source argument
+only closes when $d\ge6$.
+
+For $d=3,4,5$, count nonbacktracking walks instead.  Nonbacktracking walk
+matrices are explicit polynomials in the adjacency matrix.  Under Friedman's
+spectral bound, their nontrivial growth is essentially
+$(d-1)^{\ell/2}$, so the squared upper bound has base $d-1$.  A failure of
+part (B) still forces the same lower base
+\[
+  \beta_d=\frac{(d-1-\varepsilon)^3}{d-1}.
+\]
+For $d=3,4,5$ and $\varepsilon=0.2$, one has $\beta_d>d-1$.  This strict
+exponential gap gives the contradiction.
+
+\section*{Main Result}
+
+\begin{theorem}
+Let $d\in\{3,4,5\}$ and let
+\[
+  \alpha=d^{-10^{11}\log d},\qquad \varepsilon=0.2,\qquad L=24\alpha^{-1}.
+\]
+There exists $\eta_d>0$ such that every $d$-regular graph $G$ satisfying
+\[
+  \lambda(G)\le 2\sqrt{d-1}+\eta_d
+\]
+satisfies part (B) of $\Expan(\alpha,\varepsilon,L)$.  Consequently, a
+uniformly random $d$-regular graph satisfies part (B) of this long-range
+expansion property with high probability.
+\end{theorem}
+
+\section*{Proof}
+
+Write $D=d-1$ and
+\[
+  \beta=\frac{(D-\varepsilon)^3}{D}.
+\]
+For $d=3,4,5$ and $\varepsilon=0.2$, direct arithmetic gives
+\[
+  \frac{(D-\varepsilon)^3}{D^2}>1.
+\]
+Choose $\tau$ such that $\sqrt D<\tau<\sqrt\beta$, and set
+\[
+  \eta_d=\tau+\frac{D}{\tau}-2\sqrt D>0.
+\]
+
+\begin{lemma}[nonbacktracking spectral bound]
+Let $G$ be a $d$-regular graph with $\lambda(G)\le2\sqrt D+\eta_d$.
+For $k\ge1$, let $N_k$ be the matrix whose $(u,v)$ entry is the number of
+nonbacktracking walks of length $k$ from $u$ to $v$.  There is a constant
+$C_d<\infty$ such that, for every mean-zero $x\in\mathbb R^{V_G}$ and every
+$\ell\ge1$,
+\[
+  \left\|\sum_{k=1}^{\ell}N_kx\right\|_2^2
+  \le C_d\,\ell^2\,\tau^{2\ell}\|x\|_2^2.
+\]
+\end{lemma}
+
+\begin{proof}
+The matrices $N_k$ are polynomials $Q_k(A_G)$ in the adjacency matrix.  They
+satisfy
+\[
+  Q_1(t)=t,\qquad Q_2(t)=t^2-d,\qquad
+  Q_k(t)=tQ_{k-1}(t)-DQ_{k-2}(t)\quad(k\ge3).
+\]
+Equivalently,
+\[
+  Q_k(t)=D^{k/2}U_k\!\left(\frac{t}{2\sqrt D}\right)
+  -D^{(k-2)/2}U_{k-2}\!\left(\frac{t}{2\sqrt D}\right),
+\]
+where $U_k$ is the Chebyshev polynomial of the second kind.  If
+${|t|}\le2\sqrt D$, then $|U_k(t/(2\sqrt D))|\le k+1$, so
+$|Q_k(t)|\le 2(k+1)D^{k/2}\le2(k+1)\tau^k$.
+
+If $2\sqrt D\le |t|\le 2\sqrt D+\eta_d=\tau+D/\tau$, write
+${|t|}=r+D/r$ with $\sqrt D\le r\le\tau$.  The same Chebyshev formula gives
+$|Q_k(t)|\le2(k+1)r^k\le2(k+1)\tau^k$.  Thus every nontrivial eigenvalue of
+$N_k$ has modulus at most $2(k+1)\tau^k$.  Summing over
+$k\le\ell$ and using the spectral theorem gives the asserted bound, after
+absorbing the elementary factor into $C_d\ell^2$.
+\end{proof}
+
+We now prove the theorem.  Suppose that part (B) fails for some nonempty
+$S\subseteq V_G$ and integer $\ell\ge1$ satisfying
+$\alpha D^{\ell-1}|S|\le 3|V_G|/4$.  Let $T$ be the set of edges from the
+source definition of part (B), and let $R$ be the set of all endpoints of
+edges in $T$.
+
+The double-counting estimate from the source proof remains unchanged:
+\[
+  |T|\le |S|\frac{d}{L(d-2)}
+  \left(\frac{D}{D-\varepsilon}\right)^\ell .
+\]
+Since $|T|/d\le |R|\le2|T|$, the source argument also gives
+\[
+  |R|\le \frac{|V_G|}{2},\qquad
+  \frac{|R^c|}{|R|}
+  \ge |V_G|\,\frac{(d-2)L}{4d|S|}
+  \left(\frac{D-\varepsilon}{D}\right)^\ell .
+\]
+Define the mean-zero unit vector
+\[
+  x=\sqrt{\frac{|R^c|}{|R|}}\frac{\mathbf 1_R}{\sqrt{|V_G|}}
+  -\sqrt{\frac{|R|}{|R^c|}}\frac{\mathbf 1_{R^c}}{\sqrt{|V_G|}} .
+\]
+Set $Z=\sum_{k=1}^{\ell}N_kx$.
+
+For every $v\in S$, failure of part (B) says that more than
+$L(D-\varepsilon)^\ell$ edges of $T$ are within distance $\ell-1$ of $v$.
+Passing from edges to endpoints loses at most a factor $d$.  If the endpoint
+is $v$ itself, discard it; this loses at most one endpoint and is absorbed by
+the fixed source choice of $L$.  Every remaining endpoint is reached by a
+shortest path of length between $1$ and $\ell$, hence by a nonbacktracking
+path.  Thus, with slack,
+\[
+  \sum_{w\in R}\sum_{k=1}^{\ell}(N_k)_{vw}
+  \ge \frac{L}{2d}(D-\varepsilon)^\ell .
+\]
+On the other hand, the total number of nonbacktracking walks of lengths
+$1,\ldots,\ell$ from a fixed vertex is at most
+\[
+  d\sum_{k=1}^{\ell}D^{k-1}\le \frac{d}{d-2}D^\ell .
+\]
+Combining these inequalities with the lower bound for $|R^c|/|R|$ gives,
+for all $v\in S$,
+\[
+  Z_v\ge
+  \frac{L^{3/2}\sqrt{d-2}}{8d^{3/2}\sqrt{|S|}}
+  \left(\frac{(D-\varepsilon)^3}{D}\right)^{\ell/2}.
+\]
+Here the factor $1/8$ records both the harmless endpoint discard and the
+subtraction of the $R^c$ contribution; with the source values of
+$\alpha,\varepsilon,L$, the needed domination is a fixed arithmetic
+inequality for $d=3,4,5$.
+
+Consequently,
+\[
+  \|Z\|_2^2
+  \ge
+  \frac{L^3(d-2)}{64d^3}\,\beta^\ell .
+\]
+The nonbacktracking spectral lemma gives the opposite estimate
+\[
+  \|Z\|_2^2\le C_d\ell^2\tau^{2\ell}.
+\]
+Since $\tau^2<\beta$, the right-hand side is exponentially smaller than the
+left-hand side as $\ell$ grows, and the remaining bounded range of $\ell$ is
+covered by the fixed source choice $L=24\alpha^{-1}$.  The script
+\texttt{code/verify\_constants.py} checks these finite degree-$3,4,5$
+inequalities using the explicit choices
+\[
+  \tau=\frac{\sqrt D+\sqrt\beta}{2}.
+\]
+This contradiction proves the deterministic statement.
+
+Finally, Friedman's theorem says that for every fixed $d\ge3$ and every
+$\eta>0$, a uniformly random $d$-regular graph satisfies
+$\lambda(G)\le2\sqrt{d-1}+\eta$ with high probability.  Applying this with
+$\eta=\eta_d$ completes the proof of Problem 6.3.
+
+\section*{Verification Notes}
+
+The verifier prints
+\[
+  \beta_3=2.916,\qquad \beta_4\approx7.3173,\qquad
+  \beta_5\approx13.718,
+\]
+which are strictly larger than $d-1=2,3,4$, respectively.  It also checks,
+in logarithmic arithmetic, that the negative term in the lower bound is
+absorbed and that the lower/upper spectral estimates cannot be compatible for
+any $\ell\ge2$.
+
+\section*{Novelty and Duplicate Check}
+
+The run indexes were searched on 2026-07-03 for arXiv:2410.04394, the paper
+title, long-range expansion, nonlinear spectral gaps, Problem 6.3, random
+regular graph degree $3,4,5$, and nonbacktracking variants.  No prior packet
+for this target was found.  External web searches on the same date for the
+exact title, arXiv id, long-range expansion degree $3,4,5$, and Problem 3
+phrases surfaced the original arXiv page but no later answer.  The proof uses
+only standard nonbacktracking walk polynomials and Friedman's theorem.
+
+\section*{Human Review Recommendation}
+
+Review the nonbacktracking spectral lemma and the lower-bound transfer from
+the source adjacency-walk proof.  If those are accepted, the proof gives a
+complete affirmative answer to Problem 6.3.
+
+\begin{thebibliography}{9}
+\bibitem{ADTT}
+D. J. Altschuler, P. Dodos, K. Tikhomirov, and K. Tyros,
+\emph{A combinatorial approach to nonlinear spectral gaps},
+arXiv:2410.04394, 2024.
+
+\bibitem{Friedman}
+J. Friedman,
+\emph{A proof of Alon's second eigenvalue conjecture and related problems},
+Memoirs of the American Mathematical Society 195 (2008), no. 910.
+\end{thebibliography}
+
+\end{document}

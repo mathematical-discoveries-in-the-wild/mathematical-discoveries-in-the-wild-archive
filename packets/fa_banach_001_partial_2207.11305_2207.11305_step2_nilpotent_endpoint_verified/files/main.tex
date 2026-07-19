@@ -1,0 +1,987 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\g}{\mathfrak g}
+\newcommand{\h}{\mathfrak h}
+\newcommand{\f}{\mathfrak f}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\A}[2]{A_{#1}^{#2}}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\B}[4]{\mathcal B^{#1}_{#2;#3,#4}}
+\newcommand{\Bw}[3]{\mathcal B^{#1}_{#2;#3,\infty}}
+\newcommand{\prof}[3]{\Phi^{#1}_{#2}[#3]}
+\newcommand{\weak}{L^{q,\infty}}
+\newcommand{\less}{\lesssim}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\spanop}{span}
+\DeclareMathOperator{\esssup}{ess\,sup}
+
+\title{Endpoint \(L^1\) Vertical Inequalities on Nilpotent Groups\\
+Verified Theorems, Lorentz Propagation, and the Cartan Barrier}
+\author{}
+\date{June 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Ryoo asked whether every nonabelian simply connected nilpotent Lie group admits a
+finite scale-summability exponent in the endpoint \(L^1\) vertical-versus-horizontal
+inequality along a last-layer direction~\cite{Ryoo2026}.  This note records the strongest
+conclusions obtained in a sustained attempt to answer that question.  The complete step-two case is
+proved with exponent \(4\), in fact for arbitrary bracket-generating left-invariant
+Carnot--Carath\'eodory structures on step-two groups.  A universal mixed-bracket theorem
+is proved in the full Lorentz scale: regularity and scale summability propagate from a
+direction \(W\) to \([X,W]\), with the exact Carnot-weight transformation.  The weak
+endpoint version is particularly useful because a finite weak scale exponent, together
+with the deterministic path bound, automatically gives every larger strong exponent.
+Consequently, the whole step-three problem---including arbitrary bracket-generating
+left-invariant horizontal structures---is equivalent to a single finite weak-type estimate
+for one top-layer direction on the five-dimensional Cartan group.  A still more
+structured weak estimate for its noncentral second-layer direction would imply the
+strong step-three theorem for every exponent greater than \(6\).  More generally, one
+weak rank-two seed on the free group \(F_{2,s}\) yields the full strong theorem in step
+\(s\) above an explicit exponent.  These reductions also give unconditional higher-step
+examples, including exponent \(2s\) for the top direction of \(UT_{s+1}(\R)\).
+
+No proof or counterexample for the remaining Cartan weak estimate is obtained here.
+The final sections explain why quotient lifting and plain Heisenberg slicing do not close,
+and isolate the missing statement as a finite-index kinetic/Carleson cancellation
+estimate.  The results in this note are intended as a rigorous research record and have
+not been peer reviewed.
+\end{abstract}
+
+\begin{center}
+\fbox{\begin{minipage}{0.91\linewidth}
+\textbf{Status.}  The general conjecture is not proved in this note.  What is proved is:
+(i) the complete step-two theorem; (ii) strong and weak Lorentz mixed-bracket
+propagation; (iii) permanence under subgroups and nilpotent quotients; (iv) an exact
+weak-type reduction of all step-three nilpotent groups to the Cartan group; (v) a
+rank-two weak seed theorem in arbitrary step; and (vi) unconditional higher-step
+structured examples.
+The sole universal step-three target is the weak Cartan estimate in
+\cref{eq:cartan-weak-target} below.  This packet supersedes the previous
+step-two-only packet, which is preserved in
+\texttt{history/previous\_step\_two\_packet\_2026\_06\_19/}.
+\end{minipage}}
+\end{center}
+
+\section*{Source-question screenshot}
+
+The source paper is Seung-Yeon Ryoo, \emph{Quantitative nonembeddability of groups
+of polynomial growth into uniformly convex spaces}, arXiv:2207.11305.  The targeted
+open endpoint problem is Questions 38 and 42 / Conjecture 43, asking for finite
+scale-summability exponents in endpoint \(L^1\) vertical-versus-horizontal
+inequalities.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\tableofcontents
+
+\section{The endpoint question and scale profiles}
+
+Let \(G\) be a connected, simply connected nilpotent Lie group with Haar measure
+\(\mu\).  A fixed bracket-generating horizontal space is equipped with a Euclidean norm,
+and \(\nabla_H f\) denotes the corresponding left-invariant horizontal gradient.  For
+\(U\in\g\), set
+\begin{equation}\label{eq:Adef}
+ \A{U}{f}(t)=\int_G\abs{f(g\exp(tU))-f(g)}\dd\mu(g),\qquad t>0.
+\end{equation}
+If \(U\) is homogeneous of Carnot weight \(k\), define its normalized logarithmic scale
+profile by
+\begin{equation}\label{eq:profile}
+ \prof{\alpha}{U}{f}(x)=e^{-\alpha x}\A{U}{f}(e^x),\qquad x\in\R,
+ \quad \alpha=\frac1k.
+\end{equation}
+For \(1<q<\infty\) and \(1\le r\le\infty\), let
+\begin{equation}\label{eq:LorentzBesov}
+ \B{U}{\alpha}{q}{r}(f)=
+ \norm{\prof{\alpha}{U}{f}}_{L^{q,r}(\R)}.
+\end{equation}
+Here \(L^{q,r}\) is the usual Lorentz space with respect to Lebesgue measure in the
+logarithmic variable.  Thus
+\[
+ \B{U}{\alpha}{q}{q}(f)=
+ \left(\int_0^\infty
+ \left(\frac{\A{U}{f}(t)}{t^\alpha}\right)^q\frac{\dd t}{t}
+ \right)^{1/q},
+\]
+and the weak endpoint is
+\begin{equation}\label{eq:weakdef}
+ \Bw{U}{\alpha}{q}(f)=
+ \sup_{\lambda>0}\lambda
+ \abs{\{x\in\R:\prof{\alpha}{U}{f}(x)>\lambda\}}^{1/q}.
+\end{equation}
+We write
+\begin{equation}\label{eq:Hdef}
+ \HH_G(f)=\int_G\abs{\nabla_Hf(g)}\dd\mu(g).
+\end{equation}
+
+If \(G\) has nilpotency step \(s\), write \(\g_s=[\g,[\g,\ldots,[\g,\g]\ldots]]\)
+for its final nonzero lower-central layer.  For \(0\ne v\in\g_s\), Ryoo's endpoint
+question asks whether there is a finite \(q\) such that
+\begin{equation}\label{eq:Ryoo}
+ \B{v}{1/s}{q}{q}(f)\less_{G,v,q}\HH_G(f)
+ \qquad\forall f\in C_c^\infty(G).
+\end{equation}
+This is Question 38 in \cite{Ryoo2026}; by coarea it is equivalent to the vertical
+perimeter formulation in Question 42 of that paper.
+
+The elementary deterministic bound will be used repeatedly.  Whenever a direction
+\(U\) admits horizontal paths from \(e\) to \(\exp(tU)\) of length at most
+\(C_Ut^\alpha\) for every \(t>0\), differentiation along such a path and right
+invariance of Haar measure give
+\begin{equation}\label{eq:Linfty}
+ \norm{\prof{\alpha}{U}{f}}_{L^\infty(\R)}
+ \less_{G,U}\HH_G(f).
+\end{equation}
+This applies to \(U\in V_k\) in a Carnot group with \(\alpha=1/k\).  It also applies,
+with the same exponent, to a fixed \(k\)-fold horizontal bracket in an arbitrary
+step-at-most-\(k\) nilpotent group, and to finite sums of such brackets when they are
+central.  In particular it applies with \(\alpha=1/s\) to every final-layer direction
+used below.  The difficulty is therefore not a bound at one scale, but summability over
+all scales.
+
+\subsection*{Main conclusions of this note}
+
+The central new reduction is the following informal statement, proved precisely in
+\cref{sec:weak,sec:cartan}:
+\[
+ \boxed{\text{A finite weak scale exponent is enough.}}
+\]
+Indeed, weak \(L^r\) plus \eqref{eq:Linfty} gives strong \(L^q\) for every \(q>r\).
+In step three, it is enough to prove this weak estimate for one direction on one group,
+the Cartan group.
+
+\section{The complete step-two theorem}\label{sec:step2}
+
+We first verify and strengthen the supplied partial result.  In this section \(G\) is any
+connected, simply connected, step-two nilpotent group, not necessarily Carnot graded.
+Let \(W\subseteq\g\) be a bracket-generating horizontal space with its fixed norm.  Then
+\([\g,\g]=[W,W]\) is central.  For \(z\in[\g,\g]\), define
+\begin{equation}\label{eq:kappa}
+ \kappa_W(z)=\inf\left\{
+ \sum_{j=1}^m\sqrt{\abs{a_j}\abs{b_j}}:
+ z=\sum_{j=1}^m[a_j,b_j],\ a_j,b_j\in W
+ \right\}.
+\end{equation}
+
+\begin{theorem}[Complete step-two endpoint theorem]\label{thm:step2}
+There is a universal constant \(C<\infty\) such that every
+\(f\in C_c^\infty(G)\) and \(z\in[\g,\g]\) satisfy
+\begin{equation}\label{eq:step2q4}
+ \left(\int_0^\infty
+ \left(\frac{\A{z}{f}(t)}{\sqrt t}\right)^4\frac{\dd t}{t}
+ \right)^{1/4}
+ \le C\kappa_W(z)\int_G\abs{\nabla_Wf}\dd\mu.
+\end{equation}
+Consequently the same estimate holds for every strong exponent \(q\ge4\), with a
+constant depending on \(q\).  In particular, Ryoo's endpoint question is completely
+resolved in nilpotency step two.
+\end{theorem}
+
+\begin{lemma}[Elementary Heisenberg transfer]\label{lem:heis-transfer}
+Let \(a,b\in W\) and \(z=[a,b]\ne0\).  Then
+\begin{equation}\label{eq:heis-transfer}
+ \left(\int_0^\infty
+ \left(\frac{\A{z}{f}(t)}{\sqrt t}\right)^4\frac{\dd t}{t}
+ \right)^{1/4}
+ \less \sqrt{\abs a\abs b}\int_G\abs{\nabla_Wf}\dd\mu.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The vectors \(a,b,z\) span a three-dimensional Heisenberg Lie algebra.  The connected
+subgroup
+\[
+ H=\exp(\spanop\{a,b,z\})
+\]
+is closed because the exponential map of a simply connected nilpotent group is a
+diffeomorphism and the displayed linear subspace is closed.  Both \(G\) and \(H\) are
+unimodular.  Weil disintegration therefore gives
+\[
+ \int_G\Psi(g)\dd\mu(g)=\int_{G/H}\int_H\Psi(xh)\dd\mu_H(h)\dd\bar\mu(x).
+\]
+On each left coset, apply the sharp three-dimensional Heisenberg inequality of Naor and
+Young \cite{NaorYoung2022} to \(h\mapsto f(xh)\).  Minkowski's integral inequality in
+\(L^4(\dd t/t)\) and Weil disintegration yield
+\[
+ \B{z}{1/2}{4}{4}(f)
+ \less\int_G\bigl(\abs{af}+\abs{bf}\bigr)\dd\mu.
+\]
+Replace \((a,b)\) by \((\lambda a,\lambda^{-1}b)\) and minimize
+\(\lambda\abs a+\lambda^{-1}\abs b\) over \(\lambda>0\).  This gives
+\eqref{eq:heis-transfer}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:step2}]
+Choose a representation \(z=\sum_{j=1}^m[a_j,b_j]\) and set
+\(z_j=[a_j,b_j]\).  Since all \(z_j\) are central,
+\(\exp(tz)=\prod_j\exp(tz_j)\).  Telescoping and right invariance of Haar measure give
+\[
+ \A{z}{f}(t)\le\sum_{j=1}^m\A{z_j}{f}(t).
+\]
+Minkowski and \cref{lem:heis-transfer} imply
+\[
+ \B{z}{1/2}{4}{4}(f)
+ \less\left(\sum_{j=1}^m\sqrt{\abs{a_j}\abs{b_j}}\right)
+ \int_G\abs{\nabla_Wf}\dd\mu.
+\]
+Take the infimum over all representations to prove \eqref{eq:step2q4}.
+
+A commutator rectangle of side lengths \(r,u\) reaches
+\(\exp(ru[a,b])\) with horizontal length \(2r\abs a+2u\abs b\).  Optimizing under
+\(ru=t\), summing over a representation of \(z\), and then taking the infimum yields
+\[
+ \sup_{t>0}\frac{\A{z}{f}(t)}{\sqrt t}
+ \less\kappa_W(z)\int_G\abs{\nabla_Wf}\dd\mu.
+\]
+Interpolation of the scalar scale profile between \(L^4\) and \(L^\infty\) proves all
+\(q\ge4\).
+\end{proof}
+
+\begin{remark}
+The exponent \(4\) is not always optimal.  It is sharp for the three-dimensional
+Heisenberg group, whereas for \(\mathbb H^{2k+1}\), \(k\ge2\), the sharp known exponent is
+\(2\); see \cite{NaorYoung2018,NaorYoung2022}.  The point of \cref{thm:step2} is
+existence for every step-two group and every commutator direction.
+\end{remark}
+
+\section{Permanence principles}\label{sec:permanence}
+
+The reductions below use three elementary permanence facts.  They are stated for the
+strong norm and for the finite weak norm.  The weak case uses the equivalent Banach
+function norm, valid for \(q>1\),
+\begin{equation}\label{eq:weak-equivalent}
+ \norm{F}_{(q,\infty)}=
+ \sup_{0<\abs E<\infty}\abs E^{-1/q'}\int_E\abs{F(x)}\dd x,
+\end{equation}
+which is equivalent to the distribution-function expression in \eqref{eq:weakdef}.
+
+\begin{lemma}[Coset transfer]\label{lem:coset}
+Let \(H\le G\) be a closed connected subgroup.  Suppose an estimate in a direction
+\(U\in\h\), with either a strong \(L^q\) scale norm or a weak \(L^{q,\infty}\) scale norm,
+holds on \(H\) with horizontal derivatives belonging to the ambient horizontal space.
+Then the same estimate holds on \(G\), with a constant changed only by the fixed norm
+comparison.
+\end{lemma}
+
+\begin{proof}
+Apply the estimate to \(h\mapsto f(xh)\) on each left coset.  For a strong norm, integrate
+in \(G/H\) and use Minkowski.  For a weak norm, use \eqref{eq:weak-equivalent}; its
+definition gives the corresponding Minkowski integral inequality directly.  Finish with
+Weil disintegration.
+\end{proof}
+
+\begin{proposition}[Descent through nilpotent quotients]\label{prop:quotient}
+Let \(\pi:G\to\bar G\) be a surjective homomorphism between connected, simply
+connected nilpotent groups, with the quotient horizontal structure.  If a strong or finite
+weak scale estimate holds on \(G\) in direction \(U\), then it holds on \(\bar G\) in
+direction \(\pi_*U\ne0\).
+\end{proposition}
+
+\begin{proof}
+It is enough to treat a quotient by a connected central subgroup, since every ideal in a
+finite-dimensional nilpotent Lie algebra admits a finite filtration with central successive
+quotients.  Write the central quotient measure-theoretically as
+\(G\cong\bar G\times\R^m\).  Given \(\bar f\in C_c^\infty(\bar G)\), choose a smooth
+cutoff \(\eta_R\) on \(\R^m\) with mass \(m_R\to\infty\), and put
+\(F_R(\bar g,z)=\bar f(\bar g)\eta_R(z)\).  After division by \(m_R\), the horizontal
+energy converges to that of \(\bar f\), while for every fixed scale the normalized
+translation integral converges to the corresponding quotient translation integral.
+Fatou's lemma proves the strong case.  For the weak case, apply Fatou inside
+\eqref{eq:weak-equivalent}, then take the supremum over measurable scale sets.  Iterate
+the central filtration.
+\end{proof}
+
+\begin{lemma}[Finite central sums]\label{lem:central-sum}
+Let \(U_1,\ldots,U_N\) be commuting directions.  If a strong or finite weak scale
+estimate with the same homogeneity and exponent holds for each \(U_j\), then it holds for
+\(U_1+\cdots+U_N\).
+\end{lemma}
+
+\begin{proof}
+Central telescoping gives
+\(\A{U_1+\cdots+U_N}{f}(t)\le\sum_j\A{U_j}{f}(t)\).  Use the triangle inequality in the
+strong scale space or in the equivalent weak norm \eqref{eq:weak-equivalent}.
+\end{proof}
+
+\section{A universal Lorentz mixed-bracket theorem}\label{sec:mixed}
+
+The following theorem is the main propagation mechanism.  It does not require \(W\) or
+\([X,W]\) to be central.
+
+\begin{lemma}[Universal anisotropic bracket word]\label{lem:word}
+For every nilpotency bound \(s\ge2\), there are a finite number of coefficients and a word,
+depending only on \(s\), such that for every step-at-most-\(s\) nilpotent group, every
+\(X,W\in\g\), and every \(r,u>0\),
+\begin{equation}\label{eq:word}
+ \exp(ru[X,W])=
+ \prod_{j=1}^{N(s)}\exp\bigl(c_j\lambda_j(r,u)\Sigma_j\bigr),
+\end{equation}
+where \(\Sigma_j\in\{X,W\}\), and \(\lambda_j=r\) when \(\Sigma_j=X\), while
+\(\lambda_j=u\) when \(\Sigma_j=W\).
+\end{lemma}
+
+\begin{proof}
+Work in the free step-\(s\) nilpotent group on generators \(x,w\).  Let \(S\) be the
+set of finite products of elements of the one-parameter subgroups \(\exp(\R x)\) and
+\(\exp(\R w)\).  It is a subgroup.  By Chow--Rashevskii (equivalently, by the orbit
+theorem), the reachable set from the identity has nonempty interior because \(x,w\)
+Lie-generate the free algebra.  Hence \(S\) is an open subgroup; the free group is
+connected, so \(S\) is the whole group.  In particular \(\exp([x,w])\) is a finite word in
+those two one-parameter subgroups.  Apply the multigraded automorphism
+\(x\mapsto rx\), \(w\mapsto uw\), and then the universal homomorphism
+\(x\mapsto X\), \(w\mapsto W\).
+\end{proof}
+
+Let \(D_h(f)=\int_G\abs{f(gh)-f(g)}\dd\mu(g)\).  Unimodularity gives
+\(D_{h_1\cdots h_N}(f)\le\sum_jD_{h_j}(f)\).  Thus \cref{lem:word} implies
+\begin{equation}\label{eq:rectangle}
+ \A{[X,W]}{f}(ru)
+ \less_s\sum_j\A{X}{f}(c_jr)+\sum_j\A{W}{f}(d_ju),
+\end{equation}
+with fixed positive constants after replacing signs by absolute values.
+
+\begin{theorem}[Lorentz mixed-bracket propagation]\label{thm:lorentz-mixed}
+Let \(G\) have nilpotency step at most \(s\), let \(X,W\in\g\), let \(\alpha>0\),
+\(1<q<\infty\), and \(1\le r\le\infty\).  Put
+\begin{equation}\label{eq:betaQ}
+ \beta=\frac{\alpha}{1+\alpha},\qquad Q=(1+\alpha)q,
+ \qquad R=(1+\alpha)r,
+\end{equation}
+with \(R=\infty\) when \(r=\infty\).  Then
+\begin{equation}\label{eq:lorentz-mixed}
+ \B{[X,W]}{\beta}{Q}{R}(f)
+ \less_{s,\alpha,q,r}
+ \left(\int_G\abs{Xf}\dd\mu\right)^\beta
+ \left(\B{W}{\alpha}{q}{r}(f)\right)^{1-\beta}.
+\end{equation}
+In particular:
+\begin{equation}\label{eq:strongmixed}
+ \B{[X,W]}{\beta}{Q}{Q}(f)
+ \less
+ \left(\int_G\abs{Xf}\dd\mu\right)^\beta
+ \left(\B{W}{\alpha}{q}{q}(f)\right)^{1-\beta}.
+\end{equation}
+\begin{equation}\label{eq:weakmixed}
+ \Bw{[X,W]}{\beta}{Q}(f)
+ \less
+ \left(\int_G\abs{Xf}\dd\mu\right)^\beta
+ \left(\Bw{W}{\alpha}{q}(f)\right)^{1-\beta}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ a(r)=\A{X}{f}(r),\quad b(u)=\A{W}{f}(u),\quad
+ c(t)=\A{[X,W]}{f}(t),\quad M=\int_G\abs{Xf}\dd\mu.
+\]
+The path bound gives \(a(r)\le rM\).  Define
+\[
+ B(y)=e^{-\alpha y}b(e^y),\qquad C(x)=e^{-\beta x}c(e^x).
+\]
+The finite word \eqref{eq:rectangle} gives, after absorbing its fixed dilations into a
+finite sum of translates \(\widetilde B\),
+\begin{equation}\label{eq:prelog}
+ c(ru)\less_s rM+u^\alpha\widetilde B(\log u),
+ \qquad
+ \norm{\widetilde B}_{L^{q,r}}\less_s\norm{B}_{L^{q,r}}.
+\end{equation}
+Choose
+\[
+ u=\exp\left(\frac{x}{1+\alpha}+z\right),\qquad
+ r=\exp\left(\frac{\alpha x}{1+\alpha}-z\right).
+\]
+Then \(ru=e^x\), and \eqref{eq:prelog} becomes
+\begin{equation}\label{eq:logbound}
+ C(x)\less_s Me^{-z}+e^{\alpha z}
+ \widetilde B\left(\frac{x}{1+\alpha}+z\right).
+\end{equation}
+Assume first \(M>0\).  If \(C(x)>\lambda\), choose
+\(z=\log(c_sM/\lambda)\) with the constant adjusted so that the first term in
+\eqref{eq:logbound} is at most \(\lambda/2\).  It follows that
+\[
+ \widetilde B\left(\frac{x}{1+\alpha}+z\right)
+ \gtrsim_{s,\alpha}M^{-\alpha}\lambda^{1+\alpha}.
+\]
+Writing \(m_F(\lambda)=\abs{\{F>\lambda\}}\), we obtain
+\begin{equation}\label{eq:distribution}
+ m_C(\lambda)\le(1+\alpha)
+ m_{\widetilde B}(c_{s,\alpha}M^{-\alpha}\lambda^{1+\alpha}).
+\end{equation}
+Equivalently, in terms of decreasing rearrangements,
+\begin{equation}\label{eq:rearrangement}
+ C^*(t)\less_{s,\alpha}M^\beta
+ \bigl(\widetilde B^*(c_\alpha t)\bigr)^{1/(1+\alpha)}.
+\end{equation}
+Multiply by \(t^{1/Q}\), raise to the power
+\(R=(1+\alpha)r\), and integrate \(\dd t/t\).  Since
+\(Q=(1+\alpha)q\), this gives
+\[
+ \norm{C}_{L^{Q,R}}
+ \less M^\beta\norm{\widetilde B}_{L^{q,r}}^{1/(1+\alpha)}.
+\]
+Use \eqref{eq:prelog}.  If \(M=0\), replace it by an arbitrary positive upper bound and
+let that bound decrease to zero.
+\end{proof}
+
+\begin{corollary}[Exact Carnot-weight recurrence]\label{cor:recurrence}
+Suppose \(W_k\in V_k\) satisfies a strong or weak estimate with regularity \(1/k\) and
+scale exponent \(q_k\).  For \(a\in V_1\), set \(W_{k+1}=[a,W_k]\).  Then the same type
+of estimate holds for \(W_{k+1}\), with
+\begin{equation}\label{eq:recurrence}
+ q_{k+1}=\frac{k+1}{k}q_k.
+\end{equation}
+Starting at weight two, this telescopes to
+\begin{equation}\label{eq:qk}
+ q_k=\frac{k}{2}q_2.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Apply \cref{thm:lorentz-mixed} with \(\alpha=1/k\).  Then
+\(\beta=1/(k+1)\), and \(Q=(k+1)q_k/k\).  If both factors on the right are controlled
+by \(\HH_G(f)\), their weighted product is also controlled by \(\HH_G(f)\).
+\end{proof}
+
+\section{Why a finite weak exponent is enough}\label{sec:weak}
+
+\begin{lemma}[Weak-to-strong upgrade]\label{lem:weak-strong}
+Let \(0<r<p<\infty\), and suppose \(F\in L^{r,\infty}(\R)\cap L^\infty(\R)\).  Then
+\begin{equation}\label{eq:weak-strong}
+ \norm{F}_{L^p}
+ \le\left(\frac{p}{p-r}\right)^{1/p}
+ \norm{F}_{L^{r,\infty}}^{r/p}
+ \norm{F}_{L^\infty}^{1-r/p}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If \(K=\norm{F}_{L^{r,\infty}}\) and \(M=\norm{F}_{L^\infty}\), then
+\(m_F(\lambda)\le(K/\lambda)^r\) for \(0<\lambda\le M\).  The layer-cake formula gives
+\[
+ \norm{F}_{L^p}^p
+ =p\int_0^M\lambda^{p-1}m_F(\lambda)\dd\lambda
+ \le\frac{p}{p-r}K^rM^{p-r}.
+\]
+\end{proof}
+
+\begin{corollary}[Finite weak endpoint suffices]\label{cor:weak-suffices}
+Let \(\alpha>0\), and suppose the deterministic profile bound
+\(\norm{\prof{\alpha}{U}{f}}_\infty\lesssim\HH_G(f)\) holds.  If for some
+\(1<r<\infty\)
+\begin{equation}\label{eq:weakassume}
+ \Bw{U}{\alpha}{r}(f)\less\HH_G(f),
+\end{equation}
+then for every \(p>r\),
+\begin{equation}\label{eq:strongabove}
+ \B{U}{\alpha}{p}{p}(f)\less_p\HH_G(f).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Combine \cref{lem:weak-strong} with the assumed deterministic \(L^\infty\) profile
+bound.  The applications below use \(\alpha=1/k\) for a weight-\(k\) direction, or
+\(\alpha=1/s\) for a final-layer direction in a step-\(s\) group.
+\end{proof}
+
+This observation changes the remaining target substantially.  One does not need to prove
+a sharp strong estimate at its endpoint.  Any polynomial distribution bound for the bad
+scales is enough.
+
+\section{Universal finite models and rank-two seeds}\label{sec:free}
+
+\subsection{A fixed-step free-model equivalence}
+
+Let \(F_{m,s}\) denote the free step-\(s\) Carnot group on \(m\) horizontal generators.
+
+\begin{proposition}[Finite universal model at each step]\label{prop:free-model}
+Fix \(s\ge2\).  The following assertions are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item Every connected, simply connected, step-\(s\) nilpotent group, equipped with any
+bracket-generating left-invariant horizontal structure, and every nonzero direction in its
+final lower-central layer satisfy Ryoo's inequality for some finite strong exponent.
+\item Every basis vector of \(V_s(F_{s,s})\) satisfies a finite weak-type estimate.
+\end{enumerate}
+If (ii) holds with a common weak exponent \(r>1\), then every step-\(s\) group in (i)
+satisfies the strong estimate for every \(p>r\).
+\end{proposition}
+
+\begin{proof}
+The implication (i)\(\Rightarrow\)(ii) is immediate.  Conversely, there are only finitely many chosen basis vectors.  Increase the exponent
+past all of their weak exponents, use \cref{lem:weak-strong}, and then use finite central
+sums.  This gives a common finite strong (hence weak) estimate for every vector in the
+finite-dimensional space \(V_s(F_{s,s})\).  Let \(W\) be the given horizontal space in an
+arbitrary step-\(s\) group.  Since the image of \(W\) spans \(\g/[\g,\g]\), multilinearity
+of the bracket and the identity \([\g_2,\g_{s-1}]\subseteq\g_{s+1}=0\) show that the final
+layer \(\g_s\) is spanned by right-normed brackets
+\[
+ [a_s,[a_{s-1},\ldots,[a_2,a_1]\ldots]]],\qquad a_j\in W.
+\]
+Each such bracket is the quotient image of a top-layer vector in \(F_{s,s}\).  Use
+quotient descent, coset transfer, and central sums.  Finally apply
+\cref{cor:weak-suffices}.
+\end{proof}
+
+\subsection{The rank-two weak seed theorem}
+
+Let \(F_{2,s}\) have free horizontal generators \(X,Y\), and put
+\begin{equation}\label{eq:Tseed}
+ T=[X,Y]\in V_2(F_{2,s}).
+\end{equation}
+For \(s\ge3\), this direction is noncentral.
+
+\begin{theorem}[One weak rank-two seed controls every group]\label{thm:ranktwo}
+Fix \(s\ge2\).  Suppose that for some \(1<q_2<\infty\),
+\begin{equation}\label{eq:weakseed}
+ \Bw{T}{1/2}{q_2}(f)
+ \less_{s,q_2}\int_{F_{2,s}}\bigl(\abs{Xf}+\abs{Yf}\bigr)
+ \qquad\forall f\in C_c^\infty(F_{2,s}).
+\end{equation}
+Then for every connected, simply connected, step-\(s\) nilpotent group \(G\), every
+bracket-generating horizontal space \(W\), every \(v\in\g_s\), and every \(p>sq_2/2\),
+\begin{equation}\label{eq:ranktwo-output}
+ \B{v}{1/s}{p}{p}(f)\less_{G,W,v,p}\int_G\abs{\nabla_Wf}\dd\mu.
+\end{equation}
+Before the weak-to-strong upgrade, the final direction satisfies weak exponent
+\(sq_2/2\).
+\end{theorem}
+
+\begin{proof}
+By the spanning argument in \cref{prop:free-model}, it is enough to treat a
+right-normed bracket
+\[
+ v=[a_s,[a_{s-1},\ldots,[a_3,[a_2,a_1]]\ldots]],\qquad a_j\in W.
+\]
+Map the free generators \(X,Y\) to \(a_2,a_1\).  The subgroup they generate is a
+nilpotent quotient of \(F_{2,s}\).  Thus \eqref{eq:weakseed} descends to the direction
+\([a_2,a_1]\), and then transfers from that subgroup to \(G\).  Apply the weak form
+\eqref{eq:weakmixed} successively with \(a_3,\ldots,a_s\).  By
+\eqref{eq:qk}, the final weak exponent is \(sq_2/2\).  Sum the finitely many central
+right-normed terms and use \cref{cor:weak-suffices}.
+\end{proof}
+
+\begin{remark}
+The natural hoped-for seed is \(q_2=4\), inherited from the three-dimensional Heisenberg
+quotient.  A weak lift of that one estimate through the central extensions
+\(F_{2,s}\to F_{2,s-1}\) would give the universal strong conclusion for every
+\(p>2s\).  The reverse lift through a central extension is precisely where the current
+argument stops.
+\end{remark}
+
+\section{The Cartan group is the complete step-three test}\label{sec:cartan}
+
+Let \(C=F_{2,3}\) be the five-dimensional Cartan group, with Lie algebra
+\begin{equation}\label{eq:cartan-brackets}
+ [X,Y]=T,\qquad [X,T]=U,\qquad [Y,T]=V,
+\end{equation}
+where \(U,V\) are central.  Its grading has dimensions \((2,1,2)\).
+
+\subsection{Polarization and symmetry}
+
+For \(P(a,b)=[a,[a,b]]\), the identity
+\begin{equation}\label{eq:polarization}
+ 3[a,[b,c]]=
+ P(a+b,c)-P(a,c)-P(b,c)-P(a+c,b)+P(a,b)+P(c,b)
+\end{equation}
+shows that every triple bracket is a linear combination of brackets involving only two
+horizontal vectors.  Each \(P(a,b)\) is the image of \(U=[X,[X,Y]]\) under the
+homomorphism \(C\to G\) sending \(X\mapsto a\), \(Y\mapsto b\).
+
+Moreover, \(\mathrm{GL}_2(\R)\) acts by graded automorphisms on \(C\).  On
+\(V_3(C)=\spanop\{U,V\}\), this action is the standard two-dimensional action twisted
+by the determinant, and is transitive on nonzero vectors.  Thus all nonzero top-layer
+directions of \(C\) are equivalent.
+
+\begin{theorem}[Exact weak Cartan reduction]\label{thm:cartan-equivalence}
+The following are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item Ryoo's endpoint conjecture has a positive answer for every connected, simply
+connected, step-three nilpotent group with every bracket-generating left-invariant
+horizontal structure.
+\item For some \(1<r<\infty\), every \(f\in C_c^\infty(C)\) satisfies
+\begin{equation}\label{eq:cartan-weak-target}
+ \boxed{
+ \Bw{U}{1/3}{r}(f)
+ \less_r\int_C\bigl(\abs{Xf}+\abs{Yf}\bigr).}
+\end{equation}
+\end{enumerate}
+If \eqref{eq:cartan-weak-target} holds, then every group and horizontal structure in
+(i) satisfies the strong inequality for every exponent \(p>r\).
+\end{theorem}
+
+\begin{proof}
+The implication (i)\(\Rightarrow\)(ii) follows by applying (i) to \(C\), since a strong
+estimate implies a weak estimate.  Conversely, the graded automorphism action gives the same weak estimate for every top
+direction in \(C\).  Let \(W\) be a bracket-generating horizontal space in an arbitrary
+step-three nilpotent group.  Its final layer is spanned by \([a,[b,c]]\) with
+\(a,b,c\in W\).  The polarization identity \eqref{eq:polarization} writes each such vector
+as a finite sum of terms \(P(u,w)=[u,[u,w]]\), each of which is a quotient image of
+\(U=[X,[X,Y]]\).  Quotient descent, coset transfer, and central sums therefore transfer
+the weak estimate to every final-layer direction.  Apply \cref{cor:weak-suffices}.
+\end{proof}
+
+Thus the whole step-three problem is not merely reduced to Cartan in a heuristic sense:
+it is equivalent to one explicit weak distribution estimate on that group.
+
+\subsection{A stronger but reusable noncentral seed}
+
+A particularly useful sufficient statement concerns the second-layer direction \(T\).
+
+\begin{corollary}[Weak Cartan seed in the noncentral direction]\label{cor:Tseed}
+Suppose that for some \(1<q_2<\infty\),
+\begin{equation}\label{eq:Tweak}
+ \Bw{T}{1/2}{q_2}(f)
+ \less\int_C\bigl(\abs{Xf}+\abs{Yf}\bigr).
+\end{equation}
+Then \(U\) and \(V\) satisfy weak exponent \(3q_2/2\), and every step-three nilpotent
+group with a bracket-generating horizontal structure satisfies the strong endpoint
+inequality for every
+\(p>3q_2/2\).  In particular, the natural quotient-Heisenberg value \(q_2=4\) would give
+every strong exponent \(p>6\).
+\end{corollary}
+
+\begin{proof}
+Apply \eqref{eq:weakmixed} to \(U=[X,T]\) and \(V=[Y,T]\) with
+\(\alpha=1/2\).  Then \(\beta=1/3\) and \(Q=3q_2/2\).  Finish with
+\cref{thm:cartan-equivalence,cor:weak-suffices}.
+\end{proof}
+
+\begin{proposition}[A concrete absorption criterion]\label{prop:absorption}
+Suppose the following twisted Heisenberg lifting estimate holds on \(C\):
+\begin{equation}\label{eq:twisted-lift}
+ \B{T}{1/2}{4}{4}(f)
+ \less \HH_C(f)+\B{U}{1/3}{6}{6}(f)+\B{V}{1/3}{6}{6}(f).
+\end{equation}
+Then
+\begin{equation}\label{eq:cartan-strong-closure}
+ \B{T}{1/2}{4}{4}(f)+\B{U}{1/3}{6}{6}(f)+\B{V}{1/3}{6}{6}(f)
+ \less \HH_C(f).
+\end{equation}
+Consequently every step-three nilpotent group with a bracket-generating horizontal
+structure satisfies the strong endpoint inequality for every \(q\ge6\).
+\end{proposition}
+
+\begin{proof}
+The strong mixed-bracket theorem gives
+\[
+ \B{U}{1/3}{6}{6}(f)+\B{V}{1/3}{6}{6}(f)
+ \less \HH_C(f)^{1/3}\B{T}{1/2}{4}{4}(f)^{2/3}.
+\]
+Insert this into \eqref{eq:twisted-lift} and use Young's inequality with a sufficiently
+small coefficient to absorb the \(T\)-term.  The estimates for \(U,V\) then follow from
+the displayed mixed bound.  Apply \cref{thm:cartan-equivalence} and the deterministic
+profile bound to obtain all \(q\ge6\).
+\end{proof}
+
+Thus \eqref{eq:twisted-lift} is a second, stronger formulation of the missing analytic
+step.  Unlike the weak target \eqref{eq:cartan-weak-target}, it is scale-critical and has a
+specified exponent; its advantage is that it is directly compatible with absorption.
+
+\section{Unconditional higher-step families}\label{sec:families}
+
+The propagation theorem already proves nontrivial examples in every step.
+
+\begin{theorem}[Step-three groups of type \(\star\)]\label{thm:type-star}
+Let \(G\) be a step-three Carnot group of type \(\star\) in the sense of
+Marchi~\cite{Marchi2014}.  Thus \(V_1\) has a basis \(X_1,\ldots,X_m\) satisfying
+\begin{equation}\label{eq:type-star}
+ [X_j,[X_j,X_i]]=0\qquad\forall i,j.
+\end{equation}
+Then every \(v\in V_3\) satisfies
+\begin{equation}\label{eq:type-star-q6}
+ \B{v}{1/3}{6}{6}(f)\less_{G,v}\HH_G(f).
+\end{equation}
+Hence every exponent \(q\ge6\) is admissible.
+\end{theorem}
+
+\begin{proof}
+For each pair \(i,j\), the relations \eqref{eq:type-star} imply that
+\(W_{ij}=[X_j,X_i]\) commutes with both \(X_i\) and \(X_j\).  If \(W_{ij}\ne0\), these
+three vectors generate a three-dimensional Heisenberg subgroup.  The Naor--Young
+theorem and coset transfer therefore give the strong \((1/2,4)\) estimate for
+\(W_{ij}\).  Since \(V_3=[V_1,V_2]\), every \(v\in V_3\) is a finite sum of vectors
+\([X_k,W_{ij}]\).  Apply the strong mixed-bracket theorem with \(\alpha=1/2\) to obtain
+exponent \(6\) for each term, and then use central telescoping.
+\end{proof}
+
+\begin{theorem}[Upper unitriangular groups]\label{thm:UT}
+Let \(UT_{s+1}(\R)\) have its standard Carnot grading and horizontal generators
+\(X_i=E_{i,i+1}\), \(1\le i\le s\).  For the top direction
+\(Z=E_{1,s+1}\),
+\begin{equation}\label{eq:UT}
+ \B{Z}{1/s}{2s}{2s}(f)\less_s\HH_{UT_{s+1}}(f).
+\end{equation}
+Hence every exponent \(q\ge2s\) is admissible for this direction.
+\end{theorem}
+
+\begin{proof}
+Set \(W_2=[X_{s-1},X_s]=E_{s-1,s+1}\).  The subgroup generated by
+\(X_{s-1},X_s\) is three-dimensional Heisenberg, so the Naor--Young theorem and coset
+transfer give strong exponent \(q_2=4\) for \(W_2\).  Recursively define
+\[
+ W_k=[X_{s-k+1},W_{k-1}]=E_{s-k+1,s+1},\qquad 3\le k\le s.
+\]
+Apply \cref{cor:recurrence}; \(q_k=(k/2)4=2k\).  At \(k=s\), \(W_s=Z\).
+\end{proof}
+
+This family gives a positive endpoint theorem in every nilpotency step without assuming
+any unproved seed.
+
+\section{Why the Cartan estimate does not follow by the obvious lifts}\label{sec:barrier}
+
+The quotient \(C/\exp(\spanop\{U,V\})\) is the three-dimensional Heisenberg group, where
+the \(T\)-estimate with exponent \(4\) is known.  It is tempting to lift that estimate back
+to \(C\), but the two simplest routes fail for structural reasons.
+
+\subsection{Failure of plain quotient lifting}
+
+A section of the central quotient turns quotient horizontal derivatives into ambient
+horizontal derivatives plus top-layer drift.  In any fixed trivialization the two lifted
+horizontal fields cannot both be made drift-free, because the connection has curvature.
+The resulting \(U\)- and \(V\)-derivatives are not controlled in \(L^1\) by
+\(\abs{Xf}+\abs{Yf}\).  Averaging over larger and larger central fibers proves descent
+from an extension to its quotient, as in \cref{prop:quotient}, but gives no reverse
+estimate.
+
+\subsection{Failure of plain Heisenberg slicing}
+
+The subgroup \(\exp(\spanop\{X,T,U\})\) is a genuine Heisenberg group.  Slicing by its
+left cosets and applying Naor--Young controls top translation in \(U\) by the derivatives
+\(Xf\) and \(Tf\).  The latter is not an ambient horizontal derivative.  The analogous
+subgroup \(\exp(\spanop\{Y,T,V\})\) has the same defect.
+
+\begin{proposition}[No first-derivative substitute for compensation]\label{prop:no-T}
+There is no constant \(C_0\) such that
+\begin{equation}\label{eq:no-T}
+ \norm{Tf}_{L^1(C)}\le C_0\bigl(\norm{Xf}_{L^1(C)}+\norm{Yf}_{L^1(C)}\bigr)
+ \qquad\forall f\in C_c^\infty(C).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Use polynomial coordinates \((x,y,a,b,c)\) in which
+\[
+ Y=\partial_y,\qquad
+ X=\partial_x-y\partial_a-\frac{y^2}{2}\partial_b-xy\partial_c,
+ \qquad
+ T=\partial_a+y\partial_b+x\partial_c.
+\]
+Choose nonzero smooth compactly supported one-variable cutoffs and set
+\[
+ f_\eps(x,y,a,b,c)=
+ \chi_1(x)\eta(y/\eps)\varphi(a/\eps^2)\chi_2(b)\chi_3(c).
+\]
+Choose \(\chi_2,\chi_3\) equal to one on a fixed neighborhood and choose
+\(\varphi'\not\equiv0\).  Direct scaling gives
+\[
+ \norm{Yf_\eps}_1=O(\eps^2),\qquad
+ \norm{Xf_\eps}_1=O(\eps^2),\qquad
+ \norm{Tf_\eps}_1\gtrsim\eps.
+\]
+For the last inequality, restrict to the region where \(\chi_2=\chi_3=1\); there the
+\(\partial_a\)-term has size \(\asymp\eps\) in \(L^1\), while the remaining terms are of
+smaller order.  Letting \(\eps\downarrow0\) contradicts \eqref{eq:no-T}.
+\end{proof}
+
+Therefore a successful argument must use compensation or multiscale cancellation, not
+a pointwise derivative comparison.
+
+\subsection{Exact commutator geometry}
+
+The Baker--Campbell--Hausdorff formula gives, up to harmless sign conventions,
+\begin{equation}\label{eq:cartan-commutator}
+ \exp(aX)\exp(bY)\exp(-aX)\exp(-bY)
+ =\exp\left(abT+\frac{a^2b}{2}U+\frac{ab^2}{2}V\right).
+\end{equation}
+The top-layer errors have exactly the correct ambient homogeneity: when \(a\asymp b\asymp
+\sqrt t\), they have size \(t^{3/2}\), whose Carnot distance is \(t^{1/2}\).  Thus the
+obstruction is not a mismatch of powers.  It is the need to sum the horizontal cost over
+many scales without charging the entire perimeter at each scale.
+
+\section{Kinetic and Rumin formulations of the missing estimate}\label{sec:kinetic}
+
+Continue in the polynomial coordinates used in the proof of \cref{prop:no-T}:
+\begin{equation}\label{eq:kinetic-fields}
+ Y=\partial_y,
+ \qquad
+ X=\partial_x-y\partial_a-\frac{y^2}{2}\partial_b-xy\partial_c.
+\end{equation}
+For an intrinsic graph \(y=\psi(x,a,b,c)\), the horizontal slope is governed by
+\[
+ \partial_x\psi-\partial_a\frac{\psi^2}{2}
+ -\partial_b\frac{\psi^3}{6}
+ -x\partial_c\frac{\psi^2}{2}.
+\]
+Introducing a kinetic parameter \(\xi\), define
+\begin{equation}\label{eq:Lxi}
+ L_\xi=\partial_x-\xi\partial_a-\frac{\xi^2}{2}\partial_b-x\xi\partial_c.
+\end{equation}
+The exact commutator identities are
+\begin{align}
+ [L_\xi,\partial_\xi]
+ &=\partial_a+\xi\partial_b+x\partial_c,\label{eq:kin1}\\
+ [L_\xi,[L_\xi,\partial_\xi]]&=\partial_c,\label{eq:kin2}\\
+ [\partial_\xi,[L_\xi,\partial_\xi]]&=\partial_b,\label{eq:kin3}\\
+ [L_\xi,L_\eta]&=(\xi-\eta)\partial_c.\label{eq:kin4}
+\end{align}
+These identities show that the missing top-layer estimate is a critical kinetic
+transfer-of-regularity statement.  The closest available trajectory-based theorem reaches
+the critical regularity in a Besov class with fine index \(\infty\)~\cite{Niebel2026}; the
+desired result asks for a finite distribution exponent, or equivalently a polynomial bound
+on the number of bad logarithmic scales.
+
+There is also a Rumin-complex formulation.  The horizontal gradient
+\(d_cf=(Xf,Yf)\) is not an arbitrary \(L^1\) vector field: it satisfies the compatibility
+relation \(d_c(d_cf)=0\).  A successful proof should exploit this cancellation to solve a
+multiscale horizontal divergence equation.  For example, standard
+\(L^6\)--\(L^{6/5}\), \(L^1\)--\(L^\infty\), and Hahn--Banach duality reduces the strong
+top-layer estimate at exponent \(6\) to the following construction.  For every family
+\(\phi_t\) satisfying
+\[
+ \norm{\phi}_{L^{6/5}((0,\infty),\dd t/t;L^\infty(C))}\le1,
+\]
+one seeks a horizontal vector field \(\Psi\) with
+\begin{equation}\label{eq:dual}
+ \operatorname{div}_H\Psi
+ =\int_0^\infty
+ \frac{\phi_t(\,\cdot\,\exp(-tU))-\phi_t}{t^{1/3}}\frac{\dd t}{t},
+ \qquad \norm{\Psi}_\infty\less1.
+\end{equation}
+Indeed, integration by parts would then bound the dual pairing by \(\HH_C(f)\).  Solving
+each scale separately causes a logarithmic divergence; the desired theorem is exactly the
+missing cancellation across scales.
+
+Recent endpoint Poincar\'e and Hodge estimates on the Cartan group
+\cite{BaldiRosa2026}, critical kinetic Besov estimates \cite{Niebel2026}, and nonlocal
+Sobolev--BV characterizations on Carnot groups \cite{SerraCassanoZambanini2026} are
+highly relevant to this formulation.  The Cartan estimates are spatial, the kinetic theorem
+reaches the critical regularity with fine index \(\infty\), and none of the three papers
+states the directional finite logarithmic-scale summability in
+\eqref{eq:cartan-weak-target}.
+
+\section{Counterexample audit and literature status}\label{sec:literature}
+
+Ryoo's version of record, accepted on March 22, 2026 and available online in April
+2026 (with issue publication listed for August 1, 2026), still states the endpoint problem
+as Questions 38 and 42 and Conjecture 43
+\cite{Ryoo2026}.  The sharp Heisenberg inputs are the \(q=2\) result in dimensions at
+least five \cite{NaorYoung2018} and the sharp \(q=4\) result in dimension three
+\cite{NaorYoung2022}.  The theorem that general nonabelian nilpotent groups do not
+embed bi-Lipschitzly into \(L^1\) is qualitative and does not provide a finite
+scale-summability exponent \cite{EBGLD2023}.
+
+A literature search through June 19, 2026 did not locate a later proof or counterexample
+for Ryoo's finite-exponent endpoint conjecture.  Several plausible counterexample
+sources were examined:
+\begin{itemize}[leftmargin=2em]
+\item pathological constant-normal sets in the Engel and Cartan groups;
+\item translated homogeneous cones in the Cartan group;
+\item critical kinetic examples of De Lellis--Westdickenberg type;
+\item rough intrinsic graphs in higher-step groups.
+\end{itemize}
+None of these produced a verified divergence of every finite scale norm.  In the explicit
+Cartan cone models, the top-layer translation modulus appears at least as good as the
+critical homogeneity, so they do not presently furnish a counterexample.  This negative
+search result is not a proof that no counterexample exists.
+
+\section{Final formulation of the remaining problem}\label{sec:final}
+
+After all reductions, the first unresolved universal statement can be written without any
+auxiliary group theory.
+
+\begin{conjecture}[Weak Cartan endpoint]\label{conj:weak-cartan}
+There exists \(1<r<\infty\) such that every \(f\in C_c^\infty(C)\) satisfies
+\[
+ \sup_{\lambda>0}\lambda
+ \abs{\left\{x\in\R:
+ e^{-x/3}\int_C\abs{f(g\exp(e^xU))-f(g)}\dd g>\lambda
+ \right\}}^{1/r}
+ \less_r\int_C(\abs{Xf}+\abs{Yf}).
+\]
+\end{conjecture}
+
+By \cref{thm:cartan-equivalence}, this conjecture is equivalent to a positive resolution
+of the endpoint problem for every step-three nilpotent group with every bracket-generating
+left-invariant horizontal structure.  By
+\cref{cor:weak-suffices}, it immediately yields strong estimates at every larger
+exponent.  Alternatively, the stronger noncentral weak seed \eqref{eq:Tweak} with
+\(q_2=4\) would imply every strong step-three exponent \(p>6\), and a weak rank-two
+seed on \(F_{2,s}\) would propagate to arbitrary step by \cref{thm:ranktwo}.
+
+The final attempt therefore does not close the conjecture, but it reduces the first hard
+case to a strictly weaker and more concrete target than the original strong inequality:
+a polynomial distribution estimate for the bad scales of one Cartan translation profile.
+
+\begin{thebibliography}{99}
+
+\bibitem{BaldiRosa2026}
+A.~Baldi and F.~Rosa.
+\newblock \(L^p\)-Hodge decomposition and global integral estimates on the Cartan group.
+\newblock arXiv:2604.15206, 2026.
+
+\bibitem{EBGLD2023}
+S.~Eriksson-Bique, C.~Gartland, E.~Le Donne, L.~Naples, and S.~Nicolussi Golo.
+\newblock Nilpotent groups and bi-Lipschitz embeddings into \(L^1\).
+\newblock \emph{International Mathematics Research Notices}, 2023(12):10759--10797, 2023.
+
+\bibitem{Marchi2014}
+M.~Marchi.
+\newblock Regularity of sets with constant intrinsic normal in a class of Carnot groups.
+\newblock \emph{Annales de l'Institut Fourier}, 64(2):429--455, 2014.
+
+\bibitem{NaorYoung2018}
+A.~Naor and R.~Young.
+\newblock Vertical perimeter versus horizontal perimeter.
+\newblock \emph{Annals of Mathematics}, 188(1):171--279, 2018.
+
+\bibitem{NaorYoung2022}
+A.~Naor and R.~Young.
+\newblock Foliated corona decompositions.
+\newblock \emph{Acta Mathematica}, 229(1):55--200, 2022.
+
+\bibitem{Niebel2026}
+L.~Niebel.
+\newblock Transfer of regularity by kinetic mollification along critical trajectories.
+\newblock arXiv:2605.13582v2, 2026.
+
+\bibitem{SerraCassanoZambanini2026}
+F.~Serra Cassano and K.~Zambanini.
+\newblock Characterizations of Sobolev and BV functions on Carnot groups.
+\newblock arXiv:2603.28996, 2026.
+
+\bibitem{Ryoo2026}
+S.-Y.~Ryoo.
+\newblock Quantitative nonembeddability of groups of polynomial growth into uniformly convex spaces.
+\newblock \emph{Journal of Functional Analysis}, article 111491, 2026.
+\newblock DOI: 10.1016/j.jfa.2026.111491; arXiv:2207.11305v2.
+
+\end{thebibliography}
+
+\end{document}

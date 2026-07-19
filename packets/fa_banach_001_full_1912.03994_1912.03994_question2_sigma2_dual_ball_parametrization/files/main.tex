@@ -1,0 +1,701 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1.03in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\definecolor{darkblue}{RGB}{27,67,114}
+\hypersetup{colorlinks=true,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkblue}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ellTwo}{\ell_2}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\clspan}{\overline{\operatorname{span}}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Ball}{B}
+\newcommand{\Haus}{d_{\mathrm H}}
+\newcommand{\Proj}{\operatorname{P}}
+\newcommand{\equiviso}{\equiv}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\SigmaTwo}{\boldsymbol{\Sigma}^{0}_{2}}
+\newcommand{\DeltaTwo}{\boldsymbol{\Delta}^{0}_{2}}
+
+\title{Audit of a Fixed-Representative Reduction\\
+\large and a Continuous Realization of All Pseudonorm Codes}
+\author{Research note on Questions 1 and 2 of C\'uth--Dole\v{z}al--Doucha--Kurka}
+\date{21 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+C\'uth, Dole\v{z}al, Doucha and Kurka asked whether every infinite-dimensional
+pseudonorm code can be converted continuously into a genuine norm code for the
+same Banach space, and whether one can at least obtain a
+$\SigmaTwo$ reduction to an admissibly topologized space of closed subspaces.
+This note audits a proposed fixed-subsequence argument and finds a genuine flaw:
+it tests only rational linear independence, whereas membership in $\Bcal$
+requires real linear independence after extension to real $c_{00}$.  An explicit
+irrational-slope counterexample is given, followed by the corrected fixed-stratum
+theorem.
+
+A literature search through the date above did not locate a published or arXiv
+resolution of either stated question.  The main result of the note is a direct
+construction of continuous maps
+$\chi_n:\Pcal\to C(Q)$, for one fixed compact metric space $Q$, satisfying
+\[
+ \left\|\sum_{n=1}^N a_n\chi_n(\mu)\right\|_\infty
+ =\mu\left(\sum_{n=1}^N a_ne_n\right)
+ \qquad(\mu\in\Pcal,\ a_n\in\R).
+\]
+This extends the continuous realization theorem in the source paper from
+$\Bcal$ to all pseudonorms.  It yields a $\SigmaTwo$ reduction from all of
+$\Pcal$ to $SB(X)$ for every isometrically universal separable Banach space
+$X$ and every admissible topology, and therefore gives a positive answer to
+Question 2.  The construction preserves all null relations, so it does not by
+itself answer Question 1.  The argument appears not to be in the searched
+literature and should be independently checked before being treated as a
+published result.
+\end{abstract}
+
+\section{Source problem and conclusions}
+
+Let $V=c_{00}(\Q)$ with its canonical Hamel basis $(e_n)_{n\in\N}$.  The space
+$\Pcal$ consists of all pseudonorms on $V$, with the pointwise topology inherited
+from $\R^V$.  Every $\mu\in\Pcal$ has a unique extension to a real pseudonorm on
+$c_{00}(\R)$.  Let $X_\mu$ be the completion of $c_{00}(\R)/\ker\mu$.  The
+subspace $\Pcal_\infty$ consists of codes with $X_\mu$ infinite-dimensional, and
+$\Bcal\subseteq\Pcal_\infty$ consists of those $\mu$ whose real extension is a
+norm.  Equivalently, the vectors $[e_n]_\mu$ are linearly independent over
+$\R$ in $X_\mu$.
+
+The source paper asks:
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.8em]
+\item Is there a continuous map $\Phi:\Pcal_\infty\to\Bcal$ such that
+      $X_{\Phi(\mu)}\equiviso X_\mu$ for all $\mu$?
+\item Given an isometrically universal separable Banach space $X$ and an
+      admissible topology $\tau$ on $SB(X)$, is there a $\SigmaTwo$ map
+      $\Phi:\Pcal_\infty\to(SB(X),\tau)$ such that
+      $\Phi(\mu)\equiviso X_\mu$ for all $\mu$?
+\end{enumerate}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop_page20.png}
+
+\medskip
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop_page21.png}
+\caption{Questions 1 and 2 in the source paper, pages 20--21.}
+\end{figure}
+
+The conclusions of this audit are as follows.
+\begin{enumerate}[leftmargin=2.3em]
+\item The submitted fixed-representative statement is false as written, because
+      rational independence does not imply real independence.
+\item The same proof is correct after replacing rational independence by real
+      independence.
+\item No resolution of Question 1 was located in the literature search described
+      in \cref{sec:literature}; Question 1 also remains unresolved by this note.
+\item \Cref{thm:realization,cor:q2} give a positive answer to Question 2, in the
+      stronger form of a $\SigmaTwo$ reduction defined on all of $\Pcal$.
+\end{enumerate}
+
+\section{Audit of the fixed-representative argument}
+
+Fix a strictly increasing sequence $s=(s_j)_{j\geq 1}$ in $\N$.  The proposed
+argument assumed that
+\[
+ \mu\left(\sum_{j=1}^m q_je_{s_j}\right)>0
+ \quad\text{for every nonzero }(q_1,\dots,q_m)\in\Q^m,
+ \tag{2.1}\label{eq:rational-ind}
+\]
+and inferred that the pullback along $e_j\mapsto e_{s_j}$ belongs to $\Bcal$.
+That inference is invalid.
+
+\begin{proposition}[Irrational-slope counterexample]\label{prop:irrational}
+There is $\mu\in\Pcal_\infty$ such that \eqref{eq:rational-ind} holds for
+$s_j=j$, the coordinate vectors have dense span in $X_\mu$, but $\mu\notin\Bcal$.
+Consequently the fixed-representative theorem in the submitted packet is false
+as stated.
+\end{proposition}
+
+\begin{proof}
+Fix an irrational number $\alpha$, for instance $\alpha=\sqrt2$, and define on
+real $c_{00}$
+\[
+ \mu(x)=|x_1-\alpha x_2|+\sum_{n=3}^{\infty}|x_n|.
+ \tag{2.2}\label{eq:irrational-mu}
+\]
+Restricting \eqref{eq:irrational-mu} to $V$ gives an element of $\Pcal$.  If
+$x\in V\setminus\{0\}$ and $\mu(x)=0$, then $x_n=0$ for $n\geq3$ and
+$x_1=\alpha x_2$.  Since $x_1,x_2\in\Q$ and $\alpha\notin\Q$, this forces
+$x_1=x_2=0$, a contradiction.  Thus the restriction is positive on every
+nonzero rational vector.
+
+On real $c_{00}$, however,
+\[
+ \mu(\alpha e_1+e_2)=0.
+\]
+Hence the real extension is not a norm and $\mu\notin\Bcal$.  The quotient map
+\[
+ c_{00}\longrightarrow c_{00},\qquad
+ x\longmapsto (x_1-\alpha x_2,x_3,x_4,\ldots)
+\]
+identifies $X_\mu$ isometrically with $\ell_1$, so $\mu\in\Pcal_\infty$.
+Finally, the images of the coordinate vectors span the canonical dense copy of
+$c_{00}/\ker\mu$ in its completion.
+\end{proof}
+
+The correct hypothesis is real linear independence.  It is useful to record it
+in a quantitative finite-dimensional form.  Put $\Pcal_s^{\mathrm{ind}}$ equal
+to the set of all $\mu\in\Pcal_\infty$ such that
+\begin{align}
+ &\inf_{\|a\|_2=1}
+   \mu\left(\sum_{j=1}^m a_je_{s_j}\right)>0
+   \quad\text{for every }m\in\N,                                    
+   \tag{2.3}\label{eq:real-ind}\\
+ &\clspan\{[e_{s_j}]_\mu:j\in\N\}=X_\mu.                           
+   \tag{2.4}\label{eq:dense}
+\end{align}
+Condition \eqref{eq:real-ind} is equivalent to real linear independence of every
+finite initial segment.  The strict lower bound follows from compactness of the
+Euclidean unit sphere.
+
+\begin{theorem}[Corrected fixed-stratum theorem]\label{thm:fixed}
+For every strictly increasing $s=(s_j)$, the formula
+\[
+ \Phi_s(\mu)\left(\sum_{j=1}^m q_je_j\right)
+ =\mu\left(\sum_{j=1}^m q_je_{s_j}\right),\qquad q_j\in\Q,
+ \tag{2.5}\label{eq:fixed-map}
+\]
+defines a continuous map
+$\Phi_s:\Pcal_s^{\mathrm{ind}}\to\Bcal$.  Moreover,
+$X_{\Phi_s(\mu)}\equiviso X_\mu$ for every
+$\mu\in\Pcal_s^{\mathrm{ind}}$.
+\end{theorem}
+
+\begin{proof}
+Let $T_s:c_{00}\to c_{00}$ be the real-linear map $T_se_j=e_{s_j}$.
+The real extension of \eqref{eq:fixed-map} is
+\[
+ \Phi_s(\mu)(x)=\mu(T_sx).
+\]
+By \eqref{eq:real-ind}, $T_sx$ is not $\mu$-null when $x\neq0$; hence
+$\Phi_s(\mu)$ is a norm and lies in $\Bcal$.
+
+For $v\in V$, the coordinate function
+$\mu\mapsto\Phi_s(\mu)(v)=\mu(T_sv)$ is continuous in the pointwise topology of
+$\Pcal$.  This proves continuity of $\Phi_s$.
+
+The map $e_j\mapsto[e_{s_j}]_\mu$ is an isometry from
+$(c_{00},\Phi_s(\mu))$ into $X_\mu$.  Its range has dense span by
+\eqref{eq:dense}, so it extends to a surjective linear isometry
+$X_{\Phi_s(\mu)}\to X_\mu$.
+\end{proof}
+
+\begin{corollary}\label{cor:fixed-zero}
+Let $A\subseteq\N$ have infinite complement
+$S=\{s_1<s_2<\cdots\}$.  On the stratum where $[e_i]_\mu=0$ for $i\in A$ and
+$([e_{s_j}]_\mu)_j$ is real-linearly independent, Question 1 has a positive
+answer via $\Phi_s$.
+\end{corollary}
+
+\begin{proof}
+Every finitely supported vector is, modulo the null coordinates indexed by $A$,
+a finite linear combination of the $e_{s_j}$.  Thus \eqref{eq:dense} holds, and
+\cref{thm:fixed} applies.
+\end{proof}
+
+\section{Literature check}\label{sec:literature}
+
+The published source paper~\cite{CDDK} proves a $\SigmaTwo$ reduction
+$\Pcal_\infty\to\Bcal$, a continuous realization theorem on $\Bcal$, and a
+$\boldsymbol\Sigma^0_3$ reduction $\Pcal\to SB(X)$.  It explicitly leaves open
+both Questions 1 and 2, and also states that it is open whether its continuous
+realization theorem extends from $\Bcal$ to all of $\Pcal$.
+
+The search for a later resolution used the exact wording of both questions,
+combinations of the symbols $\Pcal_\infty$, $\Bcal$, $SB(X)$ and
+``admissible topology'', the arXiv record and versions of the source paper, the
+2024 sequel~\cite{CDDK2}, the citation trail visible through the publisher and
+general scholarly search, and a 2026 quotient-encoding preprint that cites the
+source~\cite{Kania}.  The cited papers visible in that trail through June 2026
+do not advertise a solution of these questions.  A 2025 thesis surveying the
+coding comparison~\cite{Kaplan} still records the
+$\boldsymbol\Sigma^0_3$ map from $\Pcal$ to $SB(X)$ as the available general
+result.  No exact published or arXiv answer was located.
+
+This is necessarily an absence-of-evidence statement rather than a proof of
+novelty.  The construction below should therefore be viewed as a candidate new
+solution of Question 2 pending expert verification.
+
+\section{A continuously varying compact dual ball}
+
+The main idea is to place the dual balls of all $X_\mu$ inside one compact
+Hilbert cube, prove Hausdorff continuity, and use Hilbert-space metric projection
+to pull the varying canonical function spaces back to one fixed $C(Q)$.
+
+Fix positive numbers $w_n=2^{-n}$ and set
+\[
+ Q=\{z=(z_n)\in\ellTwo: |z_n|\leq w_n\text{ for all }n\}.
+ \tag{4.1}\label{eq:Q}
+\]
+Since $(w_n)\in\ellTwo$, $Q$ is compact in the norm topology of $\ellTwo$.
+For $\mu\in\Pcal$ put
+\[
+ d_n(\mu)=1+\mu(e_n),\qquad
+ u_n^\mu=\frac{[e_n]_\mu}{d_n(\mu)}\in X_\mu.
+ \tag{4.2}\label{eq:normalized}
+\]
+Then $\|u_n^\mu\|<1$.  For $N\in\N$ and $a=(a_1,\ldots,a_N)\in\R^N$, define
+\[
+ p_{\mu,N}(a)
+ =\left\|\sum_{n=1}^N a_nu_n^\mu\right\|
+ =\mu\left(\sum_{n=1}^N\frac{a_n}{d_n(\mu)}e_n\right).
+ \tag{4.3}\label{eq:pmun}
+\]
+
+\begin{lemma}[Continuity of real finite-dimensional evaluations]
+\label{lem:finite-eval}
+For every $N$, the map
+\[
+ \Pcal\times\R^N\longrightarrow\R,
+ \qquad
+ (\mu,a)\longmapsto\mu\left(\sum_{n=1}^N a_ne_n\right)
+\]
+is continuous.  Consequently, if $\mu_j\to\mu$ in $\Pcal$, then
+$p_{\mu_j,N}\to p_{\mu,N}$ uniformly on every compact subset of $\R^N$.
+\end{lemma}
+
+\begin{proof}
+It is enough to use sequences.  Suppose $\mu_j\to\mu$ and $a^{(j)}\to a$ in
+$\R^N$.  The numbers $\mu_j(e_n)$, $j\in\N$ and $n\leq N$, are uniformly
+bounded.  Hence there is $M<\infty$ such that
+\[
+ \mu_j\left(\sum_{n=1}^N b_ne_n\right)\leq M\|b\|_1
+ \quad(j\in\N,\ b\in\R^N).
+ \tag{4.4}\label{eq:Lipschitz}
+\]
+The same estimate holds for $\mu$ after increasing $M$ if needed.  Thus
+\[
+ |\mu_j(a^{(j)})-\mu_j(a)|\leq M\|a^{(j)}-a\|_1\longrightarrow0.
+\]
+To prove $\mu_j(a)\to\mu(a)$, approximate $a$ by a rational vector $q$ and use
+\[
+ |\mu_j(a)-\mu(a)|
+ \leq \mu_j(a-q)+|\mu_j(q)-\mu(q)|+\mu(a-q),
+\]
+where the middle term tends to zero by the defining topology of $\Pcal$ and the
+other two terms are bounded by \eqref{eq:Lipschitz}.  This proves joint
+continuity.  The final assertion follows by applying uniform continuity on the
+compact product of a convergent sequence (together with its limit) and the given
+compact subset of $\R^N$, also taking into account the continuous denominators
+in \eqref{eq:pmun}.
+\end{proof}
+
+For $\mu\in\Pcal$ and $N\in\N$, let
+\[
+ D_{\mu,N}=
+ \{t\in\R^N: |\langle a,t\rangle|\leq p_{\mu,N}(a)
+                 \text{ for every }a\in\R^N\}.
+ \tag{4.5}\label{eq:Dmun}
+\]
+
+\begin{lemma}[Finite polar balls]\label{lem:finite-polar}
+Each $D_{\mu,N}$ is a nonempty compact convex symmetric subset of
+$[-1,1]^N$.  Its support function is
+\[
+ h_{D_{\mu,N}}(a)=\sup_{t\in D_{\mu,N}}\langle a,t\rangle
+ =p_{\mu,N}(a).
+ \tag{4.6}\label{eq:support}
+\]
+Moreover, $\mu\mapsto D_{\mu,N}$ is continuous for the Euclidean Hausdorff
+metric.
+\end{lemma}
+
+\begin{proof}
+All structural properties follow immediately from \eqref{eq:Dmun}; the coordinate
+bound follows by testing $a=e_n$ and observing that
+$p_{\mu,N}(e_n)=\mu(e_n)/(1+\mu(e_n))\leq1$.
+
+The inequality $h_{D_{\mu,N}}\leq p_{\mu,N}$ is part of the definition.  For the
+reverse inequality, fix $a\in\R^N$.  Hahn--Banach, applied to the seminorm
+$p_{\mu,N}$, gives a linear functional $\ell$ on $\R^N$ with
+$|\ell(b)|\leq p_{\mu,N}(b)$ for all $b$ and $\ell(a)=p_{\mu,N}(a)$.  Writing
+$\ell(b)=\langle b,t\rangle$ gives $t\in D_{\mu,N}$ and proves
+\eqref{eq:support}.
+
+For compact convex subsets of Euclidean space,
+\[
+ \Haus(A,B)=\sup_{\|a\|_2\leq1}|h_A(a)-h_B(a)|.
+ \tag{4.7}\label{eq:haus-support}
+\]
+By \cref{lem:finite-eval}, the right-hand side for
+$A=D_{\mu_j,N}$ and $B=D_{\mu,N}$ tends to zero whenever $\mu_j\to\mu$.
+\end{proof}
+
+Define the compact convex set
+\[
+ K_\mu=\left\{z\in Q:
+ \left|\sum_{n=1}^N a_n\frac{z_n}{w_n}\right|
+ \leq p_{\mu,N}(a)
+ \text{ for every }N\in\N\text{ and }a\in\R^N\right\}.
+ \tag{4.8}\label{eq:Kmu}
+\]
+It is nonempty because $0\in K_\mu$.
+
+\begin{lemma}[Dual-ball representation]\label{lem:dual-rep}
+Let $\Ball_{X_\mu^*}$ be the closed dual unit ball.  Then
+\[
+ K_\mu=
+ \left\{\bigl(w_nf(u_n^\mu)\bigr)_{n\geq1}:
+             f\in\Ball_{X_\mu^*}\right\}.
+ \tag{4.9}\label{eq:dual-rep}
+\]
+If $\pi_N:\ellTwo\to\R^N$ denotes the first-coordinate projection and
+$W_N=\operatorname{diag}(w_1,\ldots,w_N)$, then
+\[
+ \pi_N(K_\mu)=W_ND_{\mu,N}.
+ \tag{4.10}\label{eq:finite-proj}
+\]
+\end{lemma}
+
+\begin{proof}
+If $f\in\Ball_{X_\mu^*}$ and $z_n=w_nf(u_n^\mu)$, then $z\in Q$ and every
+inequality in \eqref{eq:Kmu} follows from
+\[
+ \left|f\left(\sum_{n=1}^N a_nu_n^\mu\right)\right|
+ \leq p_{\mu,N}(a).
+\]
+Conversely, if $z\in K_\mu$, define on the algebraic span of the $u_n^\mu$
+\[
+ f_z\left(\sum_{n=1}^N a_nu_n^\mu\right)
+ =\sum_{n=1}^N a_n\frac{z_n}{w_n}.
+ \tag{4.11}\label{eq:fz}
+\]
+The inequalities in \eqref{eq:Kmu} show both that \eqref{eq:fz} is well-defined
+and that $\|f_z\|\leq1$.  Since the $u_n^\mu$ have dense linear span in
+$X_\mu$, $f_z$ extends continuously to an element of $\Ball_{X_\mu^*}$.
+This proves \eqref{eq:dual-rep}.
+
+The inclusion $\pi_N(K_\mu)\subseteq W_ND_{\mu,N}$ is immediate.  Conversely,
+$t\in D_{\mu,N}$ defines a norm-one functional on
+$\Span\{u_1^\mu,\ldots,u_N^\mu\}$ by
+$\sum a_nu_n^\mu\mapsto\sum a_nt_n$.  Hahn--Banach extends it to
+$X_\mu$, and \eqref{eq:dual-rep} supplies an element of $K_\mu$ whose first
+$N$ coordinates are $W_Nt$.
+\end{proof}
+
+\begin{proposition}[Hausdorff continuity of the dual balls]
+\label{prop:hausdorff}
+The map $\mu\mapsto K_\mu$ from $\Pcal$ into the nonempty compact subsets of
+$Q$ is continuous for the Hausdorff metric inherited from $\ellTwo$.
+\end{proposition}
+
+\begin{proof}
+Set
+\[
+ r_N=\left(\sum_{n>N}w_n^2\right)^{1/2}\longrightarrow0.
+\]
+For any $\mu,\nu\in\Pcal$, \eqref{eq:finite-proj} gives
+\[
+ \Haus(K_\mu,K_\nu)
+ \leq \Haus(W_ND_{\mu,N},W_ND_{\nu,N})+2r_N.
+ \tag{4.12}\label{eq:tail-estimate}
+\]
+Indeed, given $z\in K_\mu$, choose $y\in K_\nu$ whose first $N$ coordinates
+are within the finite-dimensional Hausdorff distance of $\pi_Nz$.  Both tails
+have $\ellTwo$ norm at most $r_N$, yielding \eqref{eq:tail-estimate}; the reverse
+direction is identical.
+
+If $\mu_j\to\mu$, then for every fixed $N$ the first term on the right of
+\eqref{eq:tail-estimate} tends to zero by \cref{lem:finite-polar}.  Taking
+$\limsup_j$ and then $N\to\infty$ proves the result.
+\end{proof}
+
+\section{Metric projection and the continuous realization theorem}
+
+For a nonempty closed convex subset $K$ of $\ellTwo$, let $\Proj_K$ denote the
+Hilbert-space metric projection onto $K$.
+
+\begin{lemma}[Continuous dependence of metric projections]
+\label{lem:projection}
+If $K_j,K$ are nonempty compact convex subsets of $Q$ and
+$\Haus(K_j,K)\to0$, then
+\[
+ \sup_{z\in Q}\|\Proj_{K_j}z-\Proj_Kz\|_2\longrightarrow0.
+ \tag{5.1}\label{eq:projection-uniform}
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose $z_j\to z$ in $Q$ and put $p_j=\Proj_{K_j}z_j$.  Compactness of
+$Q$ gives convergent subsequences of $(p_j)$.  If $p_{j_k}\to p$, Hausdorff
+convergence implies $p\in K$.  For every $y\in K$, choose $y_{j_k}\in K_{j_k}$
+with $y_{j_k}\to y$.  The minimizing property gives
+\[
+ \|z_{j_k}-p_{j_k}\|_2\leq\|z_{j_k}-y_{j_k}\|_2.
+\]
+Passing to the limit shows $\|z-p\|_2\leq\|z-y\|_2$ for all $y\in K$.
+Uniqueness of Hilbert-space projection yields $p=\Proj_Kz$.  Thus
+$\Proj_{K_j}z_j\to\Proj_Kz$.
+
+If \eqref{eq:projection-uniform} failed, there would be $z_j\in Q$ and
+$\eps>0$ with
+$\|\Proj_{K_j}z_j-\Proj_Kz_j\|_2\geq\eps$.  Passing to a subsequence, compactness
+of $Q$ gives $z_j\to z$, and the preceding sequential continuity applied both
+to $K_j$ and to the constant sequence $K$ gives a contradiction.
+\end{proof}
+
+For $\mu\in\Pcal$, abbreviate
+\[
+ P_\mu=\Proj_{K_\mu}|_Q:Q\longrightarrow K_\mu.
+\]
+Since $P_\mu$ fixes every point of $K_\mu$, it maps $Q$ onto $K_\mu$.
+
+\begin{theorem}[Continuous realization of all pseudonorms]
+\label{thm:realization}
+There is a fixed compact metric space $Q$ and continuous maps
+\[
+ \chi_n:\Pcal\longrightarrow C(Q),\qquad n\in\N,
+\]
+such that for every $\mu\in\Pcal$, every $N\in\N$ and every
+$a_1,\ldots,a_N\in\R$,
+\[
+ \left\|\sum_{n=1}^N a_n\chi_n(\mu)\right\|_{C(Q)}
+ =\mu\left(\sum_{n=1}^N a_ne_n\right).
+ \tag{5.2}\label{eq:main-identity}
+\]
+One may take $Q$ as in \eqref{eq:Q} and
+\[
+ \chi_n(\mu)(z)
+ =d_n(\mu)\frac{(P_\mu z)_n}{w_n},
+ \qquad z\in Q.
+ \tag{5.3}\label{eq:chi}
+\]
+\end{theorem}
+
+\begin{proof}
+For fixed $\mu$ and $n$, formula \eqref{eq:chi} defines a continuous function on
+$Q$.  If $\mu_j\to\mu$, then \cref{prop:hausdorff,lem:projection} give
+$P_{\mu_j}\to P_\mu$ uniformly on $Q$, while
+$d_n(\mu_j)\to d_n(\mu)$.  Hence
+$\chi_n(\mu_j)\to\chi_n(\mu)$ in the supremum norm, proving continuity of
+$\chi_n$.
+
+Because $P_\mu(Q)=K_\mu$, \cref{lem:dual-rep} gives
+\begin{align*}
+ \left\|\sum_{n=1}^N a_n\chi_n(\mu)\right\|_\infty
+ &=\sup_{y\in K_\mu}
+   \left|\sum_{n=1}^N a_nd_n(\mu)\frac{y_n}{w_n}\right|\\
+ &=\sup_{f\in\Ball_{X_\mu^*}}
+   \left|f\left(\sum_{n=1}^N a_n[e_n]_\mu\right)\right|\\
+ &=\left\|\sum_{n=1}^N a_n[e_n]_\mu\right\|_{X_\mu}
+ =\mu\left(\sum_{n=1}^N a_ne_n\right),
+\end{align*}
+where the penultimate equality is the usual dual formula for the norm.  This is
+\eqref{eq:main-identity}.
+\end{proof}
+
+\begin{remark}
+The source paper proves the analogue of \cref{thm:realization} on $\Bcal$ and
+explicitly asks whether it extends to $\Pcal$.  Thus \cref{thm:realization}
+settles that intermediate problem as well.  Conceptually, $K_\mu$ is a weighted
+copy of the weak-star compact dual unit ball, and $P_\mu$ is a continuously
+varying surjection from one fixed compact space onto $K_\mu$.
+\end{remark}
+
+\section{Positive answer to Question 2}
+
+Let $X$ be an isometrically universal separable Banach space.  Since $C(Q)$ is
+separable, fix a linear isometric embedding $J:C(Q)\to X$.  Define
+\[
+ F(\mu)=\clspan\{J\chi_n(\mu):n\in\N\}\in SB(X).
+ \tag{6.1}\label{eq:Fmu}
+\]
+
+\begin{corollary}[Question 2, with a stronger domain]\label{cor:q2}
+For every admissible topology $\tau$ on $SB(X)$, the map
+\[
+ F:\Pcal\longrightarrow(SB(X),\tau)
+\]
+is $\SigmaTwo$-measurable and satisfies $F(\mu)\equiviso X_\mu$ for every
+$\mu\in\Pcal$.  Its restriction to $\Pcal_\infty$ takes values in
+$SB_\infty(X)$ and gives a positive answer to Question 2.
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:main-identity}, the linear map
+$e_n\mapsto J\chi_n(\mu)$ has exactly the pseudonorm $\mu$.  It therefore
+factors through $c_{00}/\ker\mu$ and extends to a surjective linear isometry
+$X_\mu\to F(\mu)$.
+
+For an open set $U\subseteq X$, write
+$E^+(U)=\{Y\in SB(X):Y\cap U\neq\varnothing\}$.  Rational finite linear
+combinations of the $J\chi_n(\mu)$ are dense in $F(\mu)$, so
+\[
+ F^{-1}(E^+(U))
+ =\bigcup_{q\in V}
+   \left\{\mu\in\Pcal:
+      \sum_n q_nJ\chi_n(\mu)\in U\right\}.
+ \tag{6.2}\label{eq:hit-open}
+\]
+Every set on the right is open, hence the inverse image in
+\eqref{eq:hit-open} is open.
+
+By definition, an admissible topology has a subbasis whose members are
+countable unions of sets $E^+(U)\setminus E^+(V)$ with $U,V$ open in $X$.
+The inverse image of such a difference is the difference of two open subsets of
+the Polish space $\Pcal$.  This is an $F_\sigma$ set: every open subset of a
+metrizable space is $F_\sigma$, and intersecting an $F_\sigma$ set with a closed
+set preserves that class.  Therefore inverse images of
+subbasic open sets are $\boldsymbol\Sigma^0_2$.  Since the target topology is
+second countable, every open set is a countable union of finite intersections
+of subbasic sets, and $\boldsymbol\Sigma^0_2$ is closed under these operations.
+Thus $F$ is $\SigmaTwo$-measurable.
+\end{proof}
+
+\begin{remark}
+The conclusion is stronger than Question 2 in two ways: the map is defined on
+all pseudonorms, including finite-dimensional and zero codes, and the hit-open
+sets in \eqref{eq:hit-open} have open inverse image.  The loss to
+$\boldsymbol\Sigma^0_2$ occurs only when passing from the lower hit topology to
+an arbitrary admissible topology.
+\end{remark}
+
+\section{What remains for Question 1}
+
+The realization theorem deliberately preserves null relations.  Indeed,
+\eqref{eq:main-identity} gives
+\[
+ \sum_{n=1}^N a_n\chi_n(\mu)=0
+ \quad\Longleftrightarrow\quad
+ \mu\left(\sum_{n=1}^N a_ne_n\right)=0.
+ \tag{7.1}\label{eq:null-relations}
+\]
+Thus, when $\mu\notin\Bcal$, the displayed continuous generating sequence is
+not linearly independent.  To answer Question 1 one must additionally replace
+it, continuously in $\mu$, by a real-linearly independent dense sequence in the
+same Banach space.  Neither the metric-projection construction nor the corrected
+fixed-stratum theorem performs that global selection.
+
+The following observation rules out the most rigid possible repair.
+
+\begin{proposition}[No fixed real-linear pullback solves Question 1]
+\label{prop:no-fixed}
+There is no fixed real-linear map $T:c_{00}(\R)\to c_{00}(\R)$ such that
+\[
+ \Phi_T(\mu)(v)=\mu(Tv),\qquad v\in V,
+\]
+belongs to $\Bcal$ and codes a space isometric to $X_\mu$ for every
+$\mu\in\Pcal_\infty$.
+\end{proposition}
+
+\begin{proof}
+If $T$ is not injective, choose $0\neq v\in c_{00}(\R)$ with $Tv=0$; then the
+real extension of $\Phi_T(\mu)$ has the nonzero null vector $v$ for every $\mu$.
+Suppose $T$ is injective and choose $0\neq v\in c_{00}(\R)$.  Put $y=Tv\neq0$.
+Choose a real-linear automorphism $A$ of $c_{00}$ with $Ay=e_1$, and define
+\[
+ \mu(x)=\sum_{n=2}^{\infty}|(Ax)_n|.
+\]
+Then $\ker\mu=\R y$, while $X_\mu$ is infinite-dimensional (indeed, isometric
+to $\ell_1$ after a coordinate identification).  Hence
+$\Phi_T(\mu)(v)=\mu(y)=0$, so $\Phi_T(\mu)\notin\Bcal$.
+\end{proof}
+
+A recursive construction would require continuous choices outside varying
+finite-dimensional spans.  This resembles a zero-avoiding continuous-selection
+problem.  General selection theory does not provide such avoidance on arbitrary
+infinite-dimensional parameter spaces without additional hypotheses.  This is
+consistent with, but of course does not prove, the continued difficulty of
+Question 1.
+
+\section{Final status}
+
+The fixed-representative packet contains a correct idea but an incorrect
+independence test.  After replacing rational independence by real independence,
+its theorem is valid on the stated fixed strata.  The global norm-code problem
+(Question 1) remains open in this investigation.
+
+The compact-dual-ball and metric-projection construction gives a candidate
+continuous realization of every pseudonorm in one fixed separable Banach space.
+Subject to independent verification, it supplies a full positive solution of
+Question 2 and improves
+the previously stated $\boldsymbol\Sigma^0_3$ reduction from $\Pcal$ to
+$SB(X)$ to $\boldsymbol\Sigma^0_2$.  Because this appears to be a new argument,
+independent expert checking is especially important; the most delicate points
+are the Hausdorff continuity in \cref{prop:hausdorff} and the uniform projection
+continuity in \cref{lem:projection}.
+
+\begin{thebibliography}{9}
+
+\bibitem{CDDK}
+M.~C\'uth, M.~Dole\v{z}al, M.~Doucha and O.~Kurka,
+\emph{Polish spaces of Banach spaces},
+Forum of Mathematics, Sigma \textbf{10} (2022), e26.
+\href{https://doi.org/10.1017/fms.2022.16}{doi:10.1017/fms.2022.16};
+\href{https://arxiv.org/abs/1912.03994}{arXiv:1912.03994}.
+
+\bibitem{CDDK2}
+M.~C\'uth, M.~Dole\v{z}al, M.~Doucha and O.~Kurka,
+\emph{Polish spaces of Banach spaces: complexity of isometry and isomorphism
+classes},
+J. Inst. Math. Jussieu \textbf{23} (2024), 1919--1957.
+\href{https://doi.org/10.1017/S1474748023000440}{doi:10.1017/S1474748023000440};
+\href{https://arxiv.org/abs/2204.06834}{arXiv:2204.06834}.
+
+\bibitem{Kaplan}
+A.~Kaplan,
+\emph{Descriptive Complexities in Polish Spaces of Separable Banach Spaces},
+M.S. thesis, Middle East Technical University, August 2025.
+
+\bibitem{Kania}
+T.~Kania,
+\emph{Polish spaces for countable and separable structures through quotient
+encodings},
+arXiv:2604.15843, 2026.
+
+\bibitem{GSR}
+G.~Godefroy and J.~Saint-Raymond,
+\emph{Descriptive complexity of some isomorphism classes of Banach spaces},
+J. Funct. Anal. \textbf{275} (2018), 1008--1022.
+
+\bibitem{Kechris}
+A.~S. Kechris,
+\emph{Classical Descriptive Set Theory},
+Graduate Texts in Mathematics 156, Springer, 1995.
+
+\bibitem{RepovsSemenov}
+D.~Repov\v{s} and P.~V. Semenov,
+\emph{Continuous selections of multivalued mappings},
+in: Recent Progress in General Topology III, Atlantis Press, 2014, 423--461;
+\href{https://arxiv.org/abs/1401.2257}{arXiv:1401.2257}.
+
+\end{thebibliography}
+
+\end{document}

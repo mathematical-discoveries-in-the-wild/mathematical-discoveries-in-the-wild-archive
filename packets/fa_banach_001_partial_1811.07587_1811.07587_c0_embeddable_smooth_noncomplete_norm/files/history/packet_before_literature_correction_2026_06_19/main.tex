@@ -1,0 +1,310 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A Consolidated Partial Answer to the Smooth Non-Complete Norm Question}
+\author{Run fa\_banach\_001, agent lane 16}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records the consolidated likely valid partial results for the question in
+Azagra--Dobrowolski--Garcia-Bravo \cite{ADG}.  The result is not a full
+solution of the question as stated.  It includes the earlier separable
+compact-operator argument and the stronger theorem proving the desired
+conclusion for every infinite-dimensional Banach space admitting a bounded
+linear injection into some \(c_0(\Gamma)\), hence for every infinite-dimensional
+Banach space with a Marku\v{s}evi\v{c} basis.
+
+\section*{Source Question}
+
+The source paper asks, on page 13 immediately before Lemma 2.10:
+
+\begin{quote}
+It is not known whether every infinite-dimensional Banach space with a
+\(C^1\) equivalent norm possesses a \(C^1\) smooth non-complete norm.
+\end{quote}
+
+The same passage notes that for \(C^k\), \(k\geq 2\), the corresponding answer
+is positive by work of D'Alessandro and Hajek \cite{DH}.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+All Banach spaces are real. A norm \(p\) on a Banach space \(X\) is
+\emph{continuous} if it is continuous for the original Banach norm. It is
+\emph{non-complete} if the normed space \((X,p)\) is not complete.
+
+A bounded linear operator \(T:X\to Y\) is \emph{bounded below} if there is
+\(c>0\) such that \(\norm{Tx}\geq c\norm{x}\) for every \(x\in X\).
+
+\section*{Idea of the Proof}
+
+In the separable case, countably many norm-one functionals separate points.
+After rapidly weighting them, they define a compact injective operator into
+\(\ell_2\).  Pulling back the Hilbert norm gives a \(C^\infty\)-smooth norm,
+and compactness prevents completeness.
+
+For nonseparable spaces with coordinate structure, \(c_0(\Gamma)\) is the
+right replacement.  An infinite-dimensional subspace of \(c_0(\Gamma)\) always
+has vectors that can be made almost supported on successively new finite
+coordinate sets.  A positive diagonal multiplier can damp those finite sets by
+factors tending to zero.  This multiplier remains injective on all of
+\(c_0(\Gamma)\), but it is not bounded below on the chosen infinite-dimensional
+subspace.
+
+After composing the original injection \(J:X\to c_0(\Gamma)\) with this
+diagonal multiplier, the pullback of a \(C^\infty\)-smooth equivalent norm on
+\(c_0(\Gamma)\) is a \(C^\infty\)-smooth norm on \(X\).  If that pullback norm
+were complete, the open mapping theorem would force it to be equivalent to the
+original Banach norm, making the composed operator bounded below.  This
+contradicts the diagonal construction.
+
+\begin{theorem}[Separable subcase]
+\label{thm:separable}
+Let \(X\) be an infinite-dimensional separable Banach space.  Then \(X\)
+admits a continuous \(C^\infty\)-smooth non-complete norm.
+\end{theorem}
+
+\begin{proof}
+Choose a sequence \((u_n)\) dense in the unit sphere of \(X\).  For each
+\(n\), pick \(x_n^*\in S_{X^*}\) with \(x_n^*(u_n)=1\).  The family
+\((x_n^*)\) separates points: if \(x\neq0\), choose \(n\) with
+\(\norm{u_n-x/\norm{x}}<1/2\), and then
+\[
+    x_n^*(x/\norm{x})\geq x_n^*(u_n)-\norm{u_n-x/\norm{x}}>1/2.
+\]
+
+Define
+\[
+    T:X\longrightarrow \ell_2,\qquad
+    Tx=\bigl(2^{-n}x_n^*(x)\bigr)_{n=1}^{\infty}.
+\]
+Then \(T\) is bounded, injective, and compact, since the finite-rank
+truncations \(T_Nx=(2^{-n}x_n^*(x))_{n=1}^N\) converge to \(T\) in operator
+norm.  Set \(p(x)=\norm{Tx}_{\ell_2}\).  This is a continuous norm on \(X\),
+and it is \(C^\infty\)-smooth on \(X\setminus\{0\}\) because \(T\) is
+injective and the Hilbert norm is \(C^\infty\)-smooth off the origin.
+
+If \((X,p)\) were complete, then \(T\) would be an isometry from \((X,p)\)
+onto a closed subspace of \(\ell_2\).  Thus \(T:X\to T(X)\), viewed as a
+bounded bijection from the original Banach space \(X\) onto the Banach space
+\(T(X)\), would have bounded inverse by the open mapping theorem.  Hence \(T\)
+would be bounded below in the original norm.  This is impossible for a compact
+operator on an infinite-dimensional Banach space.  Therefore \(p\) is
+non-complete.
+\end{proof}
+
+\begin{lemma}[Diagonal damping in \(c_0(\Gamma)\)]
+\label{lem:diagonal}
+Let \(Y\) be an infinite-dimensional linear subspace of \(c_0(\Gamma)\).  Then
+there is a bounded injective diagonal operator
+\[
+    D:c_0(\Gamma)\longrightarrow c_0(\Gamma), \qquad (Da)(\gamma)=w_\gamma a(\gamma),
+\]
+with \(0<w_\gamma\leq 1\), such that \(D|_Y\) is not bounded below.
+\end{lemma}
+
+\begin{proof}
+We inductively construct \(y_n\in Y\) and pairwise disjoint finite sets
+\(F_n\subseteq\Gamma\).  Put \(H_0=\emptyset\).  Having chosen
+\(H_{n-1}=F_1\cup\cdots\cup F_{n-1}\), the space
+\[
+    Y\cap \bigcap_{\gamma\in H_{n-1}}\ker \delta_\gamma
+\]
+is still infinite-dimensional, because only finitely many coordinate
+functionals have been imposed.  Choose \(y_n\) in this space with
+\(\norm{y_n}_\infty=1\).  Since \(y_n\in c_0(\Gamma)\), choose a finite
+set \(E_n\subseteq\Gamma\) such that
+\[
+    |y_n(\gamma)|\leq 2^{-n}\qquad(\gamma\notin E_n).
+\]
+Set \(F_n=E_n\setminus H_{n-1}\) and \(H_n=H_{n-1}\cup F_n\).  Then the
+sets \(F_n\) are pairwise disjoint, \(y_n\) vanishes on \(H_{n-1}\), and
+\[
+    |y_n(\gamma)|\leq 2^{-n}\qquad(\gamma\notin F_n).
+\]
+
+Define \(w_\gamma=2^{-n}\) for \(\gamma\in F_n\), and \(w_\gamma=1\) for
+\(\gamma\notin\bigcup_n F_n\).  The associated diagonal operator \(D\) is
+bounded and injective, since all weights are positive.  For every \(n\),
+the coordinates in \(F_n\) are damped by \(2^{-n}\), while all coordinates
+outside \(F_n\) already have modulus at most \(2^{-n}\).  Hence
+\[
+    \norm{Dy_n}_\infty\leq 2^{-n}\qquad(n\in\N).
+\]
+Thus \(D|_Y\) is not bounded below.
+\end{proof}
+
+\begin{theorem}
+\label{thm:c0}
+Let \(X\) be an infinite-dimensional Banach space.  Suppose that there is a
+bounded injective linear operator \(J:X\to c_0(\Gamma)\) for some set
+\(\Gamma\).  Then \(X\) admits a continuous \(C^\infty\)-smooth non-complete
+norm.
+\end{theorem}
+
+\begin{proof}
+Let \(Y=JX\).  By Lemma \ref{lem:diagonal}, choose a bounded injective
+diagonal operator \(D:c_0(\Gamma)\to c_0(\Gamma)\) such that \(D|_Y\) is not
+bounded below.  Then \(DJ:X\to c_0(\Gamma)\) is injective.  It is not bounded
+below: if \(\norm{DJx}_\infty\geq c\norm{x}\) for all \(x\in X\), then for
+\(y=Jx\in Y\) we would have
+\[
+    \norm{Dy}_\infty\geq c\norm{x}\geq \frac{c}{\norm{J}}\norm{y}_\infty,
+\]
+contradicting the choice of \(D\).
+
+Let \(\rho\) be a \(C^\infty\)-smooth equivalent norm on \(c_0(\Gamma)\).
+Such norms exist for arbitrary \(\Gamma\), by the \(c_0(\Gamma)\) smooth
+renorming theorem of Bible--Smith; see the discussion in
+Hajek--Talponen \cite{HT}.  Define
+\[
+    p(x)=\rho(DJx)\qquad(x\in X).
+\]
+Since \(DJ\) is injective, \(p\) is a norm.  It is continuous for the original
+norm because \(D\), \(J\), and \(\rho\) are continuous.  It is
+\(C^\infty\)-smooth on \(X\setminus\{0\}\), because \(DJx\neq 0\) whenever
+\(x\neq 0\) and \(\rho\) is \(C^\infty\)-smooth off the origin.
+
+It remains to prove that \(p\) is not complete.  Suppose, to the contrary, that
+\((X,p)\) is complete.  The identity map
+\[
+    I:(X,\norm{\cdot})\longrightarrow (X,p)
+\]
+is a bounded bijection between Banach spaces, so the open mapping theorem gives
+a constant \(C>0\) such that \(\norm{x}\leq C p(x)\) for all \(x\in X\).  Since
+\(\rho\) is equivalent to the usual \(c_0(\Gamma)\) norm, there is \(A>0\) with
+\(\rho(u)\leq A\norm{u}_\infty\) for all \(u\in c_0(\Gamma)\).  Therefore
+\[
+    \norm{x}\leq CA\norm{DJx}_\infty\qquad(x\in X),
+\]
+which says that \(DJ\) is bounded below.  This contradicts the construction of
+\(D\).  Hence \(p\) is non-complete.
+\end{proof}
+
+\begin{corollary}[M-bases, including separable spaces]
+Every infinite-dimensional Banach space with a Marku\v{s}evi\v{c} basis admits
+a continuous \(C^\infty\)-smooth non-complete norm.
+\end{corollary}
+
+\begin{proof}
+It is standard that every Banach space with a Marku\v{s}evi\v{c} basis admits
+a continuous linear injection into \(c_0(\Gamma)\); see, for example, the
+survey discussion in Hajek--Russo \cite{HRsurvey} and the cited reference
+\cite[Theorem II.2.4]{DGZ}.  Theorem \ref{thm:c0} applies.
+\end{proof}
+
+\section*{Consequences for the Source Problem}
+
+The source question receives a positive answer for every \(C^1\)-smoothly
+renormable infinite-dimensional Banach space that also admits a bounded
+injection into \(c_0(\Gamma)\), and in particular for every such space with an
+M-basis.  This includes all separable spaces by the classical Marku\v{s}evi\v{c}
+theorem, and it also includes many standard nonseparable classes with M-bases
+or projectional skeletons.  The direct compact-operator proof of
+Theorem \ref{thm:separable} is kept in this consolidated packet because it is
+the simplest way to see the separable case.
+
+This does not settle the full \(C^1\) problem.  The proof uses an actual
+coordinate injection into \(c_0(\Gamma)\).  A \(C^1\)-smooth equivalent norm
+implies strong Asplund-type structure, but the literature search did not
+produce a theorem giving an M-basis, a \(c_0(\Gamma)\)-injection, or a quotient
+smoothness principle sufficient to run this argument in every such space.
+
+\section*{Literature and Novelty Check}
+
+Searches were run for exact phrases and close variants: ``smooth non-complete
+norm'', ``C1 smooth non-complete norm'', ``non-complete norm Banach smooth'',
+\(c_0(\Gamma)\) subspaces, separable compact injective operators, and
+Marku\v{s}evi\v{c} bases.  The search recovered the source paper, dense smooth
+subspace results of Dantas--Hajek--Russo \cite{DHR}, c0-smooth renorming
+background \cite{HT}, and M-basis surveys \cite{HRsurvey}, but no exact
+published solution of the \(C^1\) source question or of the c0-embeddable
+partial theorem above.
+
+The earlier live packet
+\texttt{1811.07587\_separable\_smooth\_noncomplete\_norm} has been superseded
+by this consolidated packet.  Its separable compact-operator proof is now
+included as Theorem \ref{thm:separable}.
+
+\section*{Verification Notes}
+
+The argument is purely functional analytic.  The key points for review are:
+
+\begin{enumerate}
+\item Lemma \ref{lem:diagonal} only uses finite-codimensional coordinate
+avoidance in the infinite-dimensional subspace \(Y\subseteq c_0(\Gamma)\).
+\item The diagonal weights are strictly positive, so \(D\) is injective.
+\item The pullback norm is smooth because \(DJ\) is injective.
+\item Non-completeness follows from the open mapping theorem and the fact that
+\(DJ\) was constructed not to be bounded below.
+\item The separable theorem is also independently verified by the compact
+injective \(\ell_2\)-operator construction.
+\end{enumerate}
+
+\section*{Human Review Recommendation}
+
+Review as the single consolidated packet for this target.  The theorem is not
+the full answer to the Azagra--Dobrowolski--Garcia-Bravo question, but it
+contains the separable compact-operator proof and the stronger
+\(c_0(\Gamma)\)-embeddable theorem, hence the M-basis corollary.
+
+\begin{thebibliography}{9}
+
+\bibitem{ADG}
+D. Azagra, T. Dobrowolski, and M. Garcia-Bravo,
+\emph{Smooth approximations without critical points of continuous mappings
+between Banach spaces, and diffeomorphic extractions of sets},
+arXiv:1811.07587.
+
+\bibitem{DH}
+S. D'Alessandro and P. Hajek,
+\emph{Polynomial algebras and smooth functions in Banach spaces},
+J. Funct. Anal. \textbf{266} (2014), 1627--1646.
+
+\bibitem{DGZ}
+R. Deville, G. Godefroy, and V. Zizler,
+\emph{Smoothness and Renormings in Banach Spaces},
+Pitman Monographs and Surveys in Pure and Applied Mathematics, \textbf{64},
+Longman, Essex, 1993.
+
+\bibitem{DHR}
+S. Dantas, P. Hajek, and T. Russo,
+\emph{Smooth and polyhedral norms via fundamental biorthogonal systems},
+Int. Math. Res. Not. IMRN \textbf{2023} (2023), 13909--13939;
+arXiv:2201.03379.
+
+\bibitem{HRsurvey}
+P. Hajek and T. Russo,
+\emph{Norming Markushevich bases: recent results and open problems},
+arXiv:2402.18442.
+
+\bibitem{HT}
+P. Hajek and J. Talponen,
+\emph{Some remarks on smooth renormings of Banach spaces},
+arXiv:1705.01384.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,313 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Lip}{Lip}
+\newcommand{\cyl}{\mathfrak C}
+\newcommand{\opnorm}[1]{\left\|#1\right\|_{\mathrm{op}}}
+
+\title{Rank-Two and Finite-Set Results for the Cylinder Constant in Dymond--Maleva}
+\author{Automatic Math Discovery Smoke Test}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source is Michael Dymond and Olga Maleva,
+\emph{Extreme non-differentiability of typical Lipschitz mappings},
+arXiv:2504.04117.  In Definition 4.2 they associate to a finite-rank operator
+\(T\in \mathcal L(X,Y)\) the constant
+\[
+\cyl(T)=
+\min_{(w_i)_{i=1}^l}
+\max_{1\leq j\leq l}
+\opnorm{\sum_{i=1}^j w_i^*\circ T(\cdot)\,w_i},
+\]
+where \(w_1,\ldots,w_l\) is a basis of \(T(X)\) and
+\((w_i^*)_{i=1}^l\) is the dual basis.  Lemma 4.4 then constructs, for a
+compact purely unrectifiable set \(E\) in a finite-dimensional domain, a small
+supported map \(g:X\to T(X)\) with derivative approximately \(T\) near \(E\)
+and
+\[
+  \Lip(g)\leq \cyl(T)+\theta.
+\]
+Immediately before Definition 4.2, the authors ask whether this upper bound is
+optimal.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Results}
+
+We settle the rank-one and rank-two cases of the optimality question.  In this
+range the cylinder constant always collapses to the trivial lower bound
+\(\opnorm{T}\).  Consequently the source lemma already gives the hoped-for
+constant \(\opnorm{T}+\theta\).  If \(E\neq\emptyset\), no smaller asymptotic
+constant can satisfy the derivative requirement.
+
+We also show that \(\cyl(T)\) is not the pointwise optimal constant for every
+individual instance of Lemma 4.4.  If the compact purely unrectifiable set is
+finite, then for every finite-rank \(T\), in every rank, one can achieve
+\(\Lip(g)\leq \opnorm{T}+\varepsilon\).  Since the source paper notes that
+\(\cyl(\mathrm{Id}_X)>1=\|\mathrm{Id}_X\|\) for some norms in dimension at
+least \(3\), finite sets, already singletons, give counterexamples to the
+literal reading that \(\cyl(T)\) is always the pointwise optimal constant.
+
+\section*{Proof Intuition}
+
+The constant \(\cyl(T)\) is a finite-dimensional basis constant for the range
+of \(T\), measured after composing the partial-sum projections with \(T\).  In
+rank two there is only one nontrivial partial sum before the full operator.
+Choose the first basis vector \(w_1\) to be a unit vector in \(T(X)\), and
+choose a norm-one functional \(w_1^*\) that norms it.  The kernel of \(w_1^*\)
+is a complementary line; taking \(w_2\) in that line makes \(w_1^*\) the first
+coordinate functional.  The first partial-sum operator is then
+\[
+  x\mapsto w_1^*(Tx)w_1,
+\]
+whose norm is at most \(\opnorm{T}\), while the second partial sum is exactly
+\(T\).  Since \(\cyl(T)\geq \opnorm{T}\) for every basis, equality follows.
+
+The finite-set construction uses a different idea.  Around each point \(a_m\),
+there is no geometric interaction provided the supporting balls are chosen much
+smaller than their mutual separation.  Choose disjoint tiny balls
+\(B(a_m,R)\subset U\), and an even tinier radius \(r\ll R\).  On each ball the
+logarithmic radial cut-off
+\[
+  F_m(x)=\beta(\|x-a_m\|)(x-a_m)
+\]
+equals \(x-a_m\) on \(B(a_m,r)\), vanishes outside \(B(a_m,R)\), and can be
+made \((1+\varepsilon)\)-Lipschitz by taking \(r/R\) sufficiently small.  The
+balls are so small that jumps between different balls are harmless.  Then
+\(g=T\circ F\), where \(F\) agrees with \(F_m\) on the \(m\)-th ball and is zero
+elsewhere, has derivative \(T\) near every point of \(E\), vanishes outside
+\(U\), has arbitrarily small sup norm, and has Lipschitz constant arbitrarily
+close to \(\opnorm{T}\).
+
+\begin{theorem}[Rank-two collapse of the cylinder constant]
+Let \(X\) and \(Y\) be normed spaces and let \(T\in\mathcal L(X,Y)\) have
+finite rank at most \(2\).  Then
+\[
+  \cyl(T)=\opnorm{T}.
+\]
+\end{theorem}
+
+\begin{proof}
+The case \(T=0\) is part of the definition of \(\cyl\).  If \(\rank T=1\),
+there is only one basis vector in \(T(X)\), and the only partial sum in the
+definition of \(\cyl(T)\) is \(T\) itself.  Thus \(\cyl(T)=\opnorm{T}\).
+
+Assume now that \(\rank T=2\), and set \(Z=T(X)\subseteq Y\).  Choose
+\(w_1\in Z\) with \(\|w_1\|_Y=1\).  By Hahn--Banach, choose
+\(\varphi\in Z^*\) with \(\|\varphi\|_{Z^*}=1\) and \(\varphi(w_1)=1\).  Since
+\(\dim Z=2\), the kernel of \(\varphi\) is a one-dimensional subspace.  Pick
+any nonzero \(w_2\in\ker\varphi\).  Then \(w_1,w_2\) is a basis of \(Z\), and
+the first functional in the associated dual basis is \(w_1^*=\varphi\).
+
+For this basis, the first partial-sum operator is
+\[
+  P_1T:X\to Y,\qquad P_1T(x)=\varphi(Tx)\,w_1.
+\]
+Therefore
+\[
+  \opnorm{P_1T}\leq \|\varphi\|_{Z^*}\,\opnorm{T}\,\|w_1\|_Y=\opnorm{T}.
+\]
+The second partial sum is \(T\).  Hence this basis gives
+\[
+  \max\{\opnorm{P_1T},\opnorm{T}\}\leq \opnorm{T}.
+\]
+The reverse inequality \(\cyl(T)\geq \opnorm{T}\) is the general observation
+recorded in Remark 4.3(ii) of the source paper, since the final partial sum is
+always \(T\).  Thus \(\cyl(T)=\opnorm{T}\).
+\end{proof}
+
+\begin{theorem}[Finite-set prescribed-derivative constant]
+Let \(X\) be a finite-dimensional normed space, let \(Y\) be a normed space,
+let \(T\in\mathcal L(X,Y)\) have finite rank, and let \(E\subseteq U\subseteq X\),
+where \(E\) is finite and \(U\) is open.  For every \(\eta>0\) and every
+\(M>0\), there are an open set \(H\) with \(E\subseteq H\), and a Lipschitz
+mapping \(g:X\to T(X)\), such that
+\[
+  \operatorname{supp}g\subseteq U,\qquad
+  \sup_{x\in X}\|g(x)\|_Y\leq M,\qquad
+  Dg(x)=T\quad(x\in H),
+\]
+\[
+  Dg(x)=0\quad(x\in X\setminus U),\qquad
+  \Lip(g)\leq \opnorm{T}+\eta.
+\]
+\end{theorem}
+
+\begin{proof}
+If \(T=0\) or \(E=\emptyset\), take \(g=0\).  Assume \(T\neq 0\), and write
+\(E=\{a_1,\ldots,a_N\}\).  If \(N=1\), put \(\Delta=1\).  If \(N\geq2\), put
+\[
+  \Delta=\min_{m\neq n}\|a_m-a_n\|_X>0.
+\]
+Choose \(R>0\) so small that the closed balls \(\overline B(a_m,R)\) are
+contained in \(U\), and
+\[
+  R<\Delta/4,\qquad \opnorm{T}R\leq M.
+\]
+Choose \(L>0\) with
+\[
+  \frac{\opnorm{T}}{L}\leq \eta,
+\]
+and set \(r=Re^{-L}\).  Define \(\beta:[0,\infty)\to[0,1]\) by
+\[
+\beta(t)=
+\begin{cases}
+1, & 0\leq t\leq r,\\
+\dfrac{\log(R/t)}{\log(R/r)}, & r<t<R,\\
+0, & t\geq R.
+\end{cases}
+\]
+For each \(m\), define
+\[
+  F_m(x)=\beta(\|x-a_m\|)(x-a_m).
+\]
+Since the balls \(B(a_m,R)\) are pairwise disjoint, define
+\[
+  F(x)=
+  \begin{cases}
+  F_m(x), & x\in B(a_m,R)\text{ for some }m,\\
+  0, & x\notin \bigcup_{m=1}^N B(a_m,R).
+  \end{cases}
+\]
+Finally set \(g(x)=T(F(x))\).  Then \(F(x)=x-a_m\) on \(B(a_m,r)\),
+\(F(x)=0\) outside \(\bigcup_m B(a_m,R)\), and \(\|F(x)\|\leq R\).  Hence
+\(g\) has support in \(U\), \(\sup_x\|g(x)\|\leq\opnorm{T}R\leq M\), and
+\[
+  Dg=T\quad\text{on}\quad H:=\bigcup_{m=1}^N B(a_m,r).
+\]
+Also \(Dg=0\) on \(X\setminus U\), because \(g\) vanishes on a neighbourhood of
+that set.
+
+It remains to estimate the Lipschitz constant of \(F\).  Fix \(m\).  Put
+\(s=\|x-a_m\|\) and \(t=\|y-a_m\|\).  If \(s\geq t\), since \(\beta\) is
+nonincreasing,
+\[
+\begin{aligned}
+\|F_m(x)-F_m(y)\|
+&\leq \beta(s)\|x-y\|+|\beta(s)-\beta(t)|\,\|y-a_m\|\\
+&\leq \|x-y\|+\frac{1}{L}t\log(s/t)\\
+&\leq \left(1+\frac1L\right)\|x-y\|,
+\end{aligned}
+\]
+where the middle term is interpreted as \(0\) if \(t=0\), and the last
+inequality uses \(t\log(s/t)\leq s-t\leq\|x-y\|\).  The case \(t\geq s\) is
+the same after writing
+\[
+F_m(x)-F_m(y)=\beta(t)(x-y)+(\beta(s)-\beta(t))(x-a_m)
+\]
+and using \(s\log(t/s)\leq t-s\leq\|x-y\|\).  Thus
+\(\Lip(F_m)\leq 1+1/L\).
+
+If \(x,y\) lie in the same ball \(B(a_m,R)\), this gives the desired estimate
+for \(F\).  If one point lies in \(B(a_m,R)\) and the other point lies outside
+all balls, the same estimate follows because \(F_m\) is zero outside
+\(B(a_m,R)\).  Finally, if \(x\in B(a_m,R)\), \(y\in B(a_n,R)\), and
+\(m\neq n\), then
+\[
+  \|F(x)-F(y)\|\leq 2R
+  \leq \|a_m-a_n\|-2R
+  \leq \|x-y\|.
+\]
+Therefore \(\Lip(F)\leq 1+1/L\), and so
+\[
+  \Lip(g)\leq \opnorm{T}\left(1+\frac1L\right)\leq \opnorm{T}+\eta.
+\]
+\end{proof}
+
+\begin{remark}
+The singleton theorem recorded in the previous version of this packet is the
+case \(N=1\) of the finite-set theorem.
+\end{remark}
+
+\begin{corollary}[Pointwise non-optimality of \(\cyl(T)\)]
+In dimensions at least \(3\), the bound \(\cyl(T)\) is not pointwise optimal
+for every individual instance of Lemma 4.4.
+\end{corollary}
+
+\begin{proof}
+By Remark 4.3(iii) of the source paper, there is a finite-dimensional normed
+space \(X\) of dimension at least \(3\) for which
+\(\cyl(\mathrm{Id}_X)>1=\|\mathrm{Id}_X\|\).  Apply the finite-set theorem, in
+the singleton case, to
+\(T=\mathrm{Id}_X\), \(E=\{a\}\), and \(\eta<\cyl(\mathrm{Id}_X)-1\).  The
+resulting admissible map has Lipschitz constant strictly smaller than
+\(\cyl(\mathrm{Id}_X)\).  Thus \(\cyl(T)\) cannot be the optimal constant for
+that individual instance.
+\end{proof}
+
+\begin{corollary}[Optimal prescribed-derivative constant in rank at most two]
+Let \(X\) be finite-dimensional, let \(Y\) be a normed space, let
+\(T\in\mathcal L(X,Y)\) have rank at most \(2\), and let
+\(E\subseteq U\subseteq X\) be as in Lemma 4.4 of Dymond--Maleva, with
+\(E\) compact purely unrectifiable and \(U\) open.  For every \(\theta>0\),
+the map \(g:X\to T(X)\) in Lemma 4.4 can be chosen with
+\[
+  \Lip(g)\leq \opnorm{T}+\theta.
+\]
+If \(E\neq\emptyset\), this is asymptotically sharp: any admissible \(g\) and
+open set \(H\) satisfying the lemma's derivative condition
+\[
+  \opnorm{Dg(x)-T}\leq \theta
+  \quad\text{for Lebesgue almost every }x\in H
+\]
+must obey
+\[
+  \Lip(g)\geq \opnorm{T}-\theta.
+\]
+\end{corollary}
+
+\begin{proof}
+The upper bound is Lemma 4.4 of the source paper combined with the theorem
+above.
+
+For the lower bound, suppose \(E\neq\emptyset\).  Then the open set \(H\)
+appearing in Lemma 4.4 is nonempty, so it has positive Lebesgue measure in the
+finite-dimensional space \(X\).  At almost every \(x\in H\), the derivative
+condition gives
+\[
+  \opnorm{Dg(x)}\geq \opnorm{T}-\opnorm{Dg(x)-T}\geq \opnorm{T}-\theta.
+\]
+For every point where the derivative exists, \(\opnorm{Dg(x)}\leq \Lip(g)\).
+Thus \(\Lip(g)\geq \opnorm{T}-\theta\).
+\end{proof}
+
+\section*{Limitations and Novelty Check}
+
+This is a partial result.  It does not settle the general rank-three-and-higher
+case for arbitrary compact purely unrectifiable sets.  The finite-set theorem
+shows, however, that \(\cyl(T)\) is not a pointwise optimal constant for every
+individual instance.  Any genuine obstruction to the hoped-for constant
+\(\opnorm{T}\) must therefore use infinite, nontrivial purely unrectifiable
+sets, not finite sets.
+
+Local duplicate checks over the run registry, solution index, attempt index,
+and proof-gap index found no prior packet for arXiv:2504.04117, the cylinder
+constant \(\cyl(T)\), the rank-two subcase, finite-set prescribed derivatives,
+or the singleton pointwise non-optimality observation.  Web searches on
+2026-06-20 for exact phrases
+including ``cyl(T)'', ``It would be of interest to determine whether this upper
+bound is optimal'', ``monotone basis three-dimensional Banach space'', and the
+paper title found the arXiv source page and background on monotone bases but no
+later answer to this optimality question.
+
+\section*{References}
+
+Michael Dymond and Olga Maleva, \emph{Extreme non-differentiability of typical
+Lipschitz mappings}, arXiv:2504.04117, 2025.
+
+\end{document}

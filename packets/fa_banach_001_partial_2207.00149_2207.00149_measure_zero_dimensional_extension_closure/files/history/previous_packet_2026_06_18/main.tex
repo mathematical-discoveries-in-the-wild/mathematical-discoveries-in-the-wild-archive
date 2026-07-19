@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\K}{K}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dimtop}{\operatorname{dim}}
+
+\title{A Partial Measure-Extraction Closure Theorem for Problem 7.3 of arXiv:2207.00149}
+\author{Run \texttt{fa\_banach\_001}, lane 16}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Damian Glodkowski, \emph{A Banach space \(C(K)\) reading the dimension of \(K\)}, arXiv:2207.00149.  In Section 7, after using the metrizable measure-extraction lemma in the construction, the paper asks:
+
+\begin{quote}
+\textbf{Problem 7.3.} Describe the class of compact Hausdorff spaces \(K\) such that for every non-zero Radon measure \(\mu\) on \(K\) there is a zero-dimensional compact subset \(L\subseteq K\) such that \(\mu(L)\neq 0\).
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+This packet proves a closure theorem for a strong form of the property in Problem 7.3.  It is not a full solution of the problem, and it does not remove the set-theoretic hypothesis from the main theorem of the source paper.  It does show that the measure-extraction property is compatible with the exact extension operation used in the paper when the exceptional set is already zero-dimensional.
+
+\begin{definition}[Strong zero-dimensional measure extraction]
+A compact Hausdorff space \(K\) has property \(\mathsf{SZM}\) if for every finite positive Radon measure \(\mu\) on \(K\) and every \(\eta>0\), there is a compact zero-dimensional set \(Z\subseteq K\) such that
+\[
+  \mu(K\setminus Z)<\eta .
+\]
+\end{definition}
+
+\begin{theorem}
+The class of compact Hausdorff spaces with property \(\mathsf{SZM}\) has the following closure properties.
+\begin{enumerate}
+\item It is inherited by compact subspaces.
+\item It contains all compact metrizable spaces and all zero-dimensional compact spaces.
+\item It is closed under finite products.
+\item Let \(L\) be an extension of \(K\) by a pairwise disjoint sequence \((f_n)\subseteq C(K,[0,1])\), with natural projection \(\pi:L\to K\).  Let \(D=D((f_n))\) be the open set on which \(\sum_n f_n\) is continuous, so that \(\pi\) is a homeomorphism from \(\pi^{-1}(D)\) onto \(D\).  If \(K\) has \(\mathsf{SZM}\) and \(E=K\setminus D\) is zero-dimensional, then \(L\) has \(\mathsf{SZM}\).
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}
+Every finite tower of the source-paper extension steps, starting from a compact metrizable space and using only steps for which \(K_\alpha\setminus D((f_n^\alpha))\) is zero-dimensional, has property \(\mathsf{SZM}\).
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+The metrizable proof in the source paper removes the boundaries of a countable family of neighbourhoods and leaves a positive-measure zero-dimensional remainder.  The closure theorem isolates the part of that argument that survives without metrizability: once a compactum has enough zero-dimensional compact sets to approximate all Radon measures, products preserve this by projecting the measure one coordinate at a time.  For an extension \(L\subseteq K\times[0,1]\), the measure splits into the graph part over \(D\), which is homeomorphic to a subspace of \(K\), and the exceptional part over \(E=K\setminus D\), which sits inside \(E\times[0,1]\).  The first part is handled by heredity; the second by the product theorem, because \(E\) is zero-dimensional and \([0,1]\) is metrizable.
+
+\section*{Proof}
+
+\begin{lemma}[Heredity]
+If \(K\) has \(\mathsf{SZM}\) and \(F\subseteq K\) is compact, then \(F\) has \(\mathsf{SZM}\).
+\end{lemma}
+
+\begin{proof}
+Let \(\nu\) be a finite positive Radon measure on \(F\).  Extend it to a Radon measure \(\tilde\nu\) on \(K\) by the positive functional \(g\mapsto \int_F g|_F\,d\nu\) on \(C(K)\).  Given \(\eta>0\), choose compact zero-dimensional \(Z\subseteq K\) with \(\tilde\nu(K\setminus Z)<\eta\).  Then \(Z\cap F\) is compact and zero-dimensional, and
+\[
+  \nu(F\setminus (Z\cap F))=\tilde\nu(K\setminus Z)<\eta .
+\]
+\end{proof}
+
+\begin{lemma}[Basic examples]
+Every compact metrizable space and every zero-dimensional compact Hausdorff space has \(\mathsf{SZM}\).
+\end{lemma}
+
+\begin{proof}
+For zero-dimensional \(K\), take \(Z=K\).  Now let \(K\) be compact metrizable and let \(\mu\) be a finite positive Radon measure.  Fix a compatible metric and a countable dense set \(\{d_n:n\in\mathbb N\}\).  For each \(n\), choose a sequence of distinct radii \(r_i^n>0\) such that every tail \(\{r_i^n:i\ge k\}\) is dense in \((0,\operatorname{diam} K)\), and put \(U_i^n=B(d_n,r_i^n)\).  For fixed \(n\), the boundaries \(\partial U_i^n\) are pairwise disjoint, so choose \(k_n\) with
+\[
+ \sum_{i\ge k_n}\mu(\partial U_i^n)<\eta 2^{-n-2}.
+\]
+Let
+\[
+Y=K\setminus \bigcup_{n=0}^\infty\bigcup_{i\ge k_n}\partial U_i^n .
+\]
+Then \(\mu(K\setminus Y)<\eta/2\).  The sets \(U_i^n\cap Y\), for \(i\ge k_n\), form a base of \(Y\) consisting of clopen subsets, so \(Y\) is zero-dimensional.  By inner regularity, choose compact \(Z\subseteq Y\) with \(\mu(Y\setminus Z)<\eta/2\).  Then \(Z\) is compact zero-dimensional and \(\mu(K\setminus Z)<\eta\).
+\end{proof}
+
+\begin{lemma}[Finite products]
+If \(K\) and \(M\) have \(\mathsf{SZM}\), then \(K\times M\) has \(\mathsf{SZM}\).
+\end{lemma}
+
+\begin{proof}
+Let \(\mu\) be a finite positive Radon measure on \(K\times M\), and let \(\eta>0\).  Let \(\nu=(p_K)_*\mu\).  Choose compact zero-dimensional \(A\subseteq K\) such that \(\nu(K\setminus A)<\eta/2\).  Restrict \(\mu\) to \(A\times M\) and project to \(M\), obtaining a finite positive Radon measure \(\rho\).  Choose compact zero-dimensional \(B\subseteq M\) with \(\rho(M\setminus B)<\eta/2\).  Then \(A\times B\) is compact zero-dimensional and
+\[
+\mu\big((K\times M)\setminus(A\times B)\big)
+\le \mu((K\setminus A)\times M)+\mu(A\times(M\setminus B))<\eta .
+\]
+\end{proof}
+
+\begin{proof}[Proof of the theorem]
+The first three assertions are the preceding lemmas and induction for finite products.  It remains to prove the extension assertion.
+
+Let \(\mu\) be a finite positive Radon measure on \(L\), and fix \(\eta>0\).  Put \(L_D=\pi^{-1}(D)\) and \(L_E=\pi^{-1}(E)\).  The set \(L_E\) is compact and is a compact subspace of \(E\times[0,1]\).  Since \(E\) is zero-dimensional and \([0,1]\) is compact metrizable, \(E\times[0,1]\) has \(\mathsf{SZM}\) by the product lemma, hence \(L_E\) has \(\mathsf{SZM}\) by heredity.  Choose compact zero-dimensional \(Z_E\subseteq L_E\) such that
+\[
+\mu(L_E\setminus Z_E)<\eta/2 .
+\]
+
+For the graph part, use inner regularity to choose compact \(C_D\subseteq L_D\) such that
+\[
+\mu(L_D\setminus C_D)<\eta/4 .
+\]
+Because \(\pi|_{L_D}\) is a homeomorphism onto \(D\), the compact set \(H=\pi[C_D]\) is a compact subspace of \(K\), and \(C_D\) is homeomorphic to \(H\).  By heredity, \(H\) has \(\mathsf{SZM}\).  Apply this property to the push-forward of \(\mu|_{C_D}\) under \(\pi\) and choose compact zero-dimensional \(A\subseteq H\) so that
+\[
+\mu(C_D\setminus \pi^{-1}(A))<\eta/4 .
+\]
+Then \(Z_D=\pi^{-1}(A)\cap C_D\) is compact zero-dimensional, and
+\[
+\mu(L_D\setminus Z_D)<\eta/2 .
+\]
+
+The compact sets \(Z_D\subseteq L_D\) and \(Z_E\subseteq L_E\) are disjoint.  In a Hausdorff compact space two disjoint compact sets are separated by open sets, so their union is again zero-dimensional.  Thus
+\[
+  Z=Z_D\cup Z_E
+\]
+is compact zero-dimensional and \(\mu(L\setminus Z)<\eta\).  This proves that \(L\) has \(\mathsf{SZM}\).
+\end{proof}
+
+\section*{Signed and Complex Measures}
+
+The theorem is stated for finite positive Radon measures.  The non-zero signed or complex variants in Problem 7.3 follow from the positive version in the standard way: take a non-zero real part after rotation if necessary, choose a Hahn-positive compact set of positive variation, and apply the hereditary positive theorem inside that compact set.  The resulting zero-dimensional compact subset has non-zero value for the original measure after the chosen rotation is undone.
+
+\section*{Limitations}
+
+This partial result does not yet solve the main ZFC problem from the source paper.  Proposition 5.9 in the source paper uses not only a positive-measure zero-dimensional compact set but a countable decreasing neighbourhood sequence around it, available automatically in compact metrizable spaces.  The closure theorem above gives compact zero-dimensional subsets but does not guarantee that they are \(G_\delta\) or have countable character in the ambient compactum.  Long inverse-limit stages are also not covered by the finite closure argument.
+
+\section*{Novelty and Literature Check}
+
+The run indexes had no prior packet or attempt for arXiv:2207.00149 or Problem 7.3.  Searches were run for the exact title, the exact problem phrase, and variants including ``zero-dimensional compact subset non-zero Radon measure'', ``Radon measure compact Hausdorff zero-dimensional subset'', and Maharam/uniform-regularity formulations.  No separate paper explicitly answering Problem 7.3 was found.  Related results on uniformly regular measures and simple extensions were noted, but they do not remove the \(G_\delta\)/countable-character obstacle identified above.
+
+\section*{References}
+
+\begin{enumerate}
+\item Damian Glodkowski, \emph{A Banach space \(C(K)\) reading the dimension of \(K\)}, arXiv:2207.00149, 2022.
+\item Ryszard Engelking, \emph{Theory of Dimensions, Finite and Infinite}, Heldermann Verlag, 1995.
+\item M. Dzamonja and G. Plebanek, \emph{On Efimov spaces and Radon measures}, Topology Appl. 154 (2007), 2063--2072.
+\end{enumerate}
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid partial theorem.  The most important follow-up is to test whether \(\mathsf{SZM}\) can be strengthened to return a zero-dimensional compact \(G_\delta\) subset under the extension and limit operations relevant to the ZFC few-operators construction.
+
+\end{document}

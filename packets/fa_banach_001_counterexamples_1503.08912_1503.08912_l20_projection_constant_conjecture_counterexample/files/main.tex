@@ -1,0 +1,209 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\lp}{\ell_{20}^{2}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\la}{\lambda}
+
+\title{A Counterexample to the \(L_p\) Projection-Constant Equality Conjecture}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_16}}
+\date{2026-06-28}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\section*{Source Problem}
+
+The source is G. M. Ivanov, \emph{Modulus of supporting convexity and
+supporting smoothness}, arXiv:1503.08912. In Section 6 the paper defines
+\[
+\xi_X=
+\sup_{\norm{x}=1,\ \norm{y}=1}\sup_{p\in J_1(y)}
+\norm{x-\langle p,x\rangle y},
+\]
+the maximal Lipschitz constant of the metric projection onto a hyperplane.
+Theorem 4 proves
+\[
+\xi_X\leq
+\frac{1}{1-\lambda_X^+\!\left((1-\lambda_X^-(1))/2\right)}.
+\]
+Conjecture 1 states that this right-hand side becomes an equality for
+\(L_p\), \(p\in(1,\infty)\).
+
+\begin{center}
+\includegraphics[width=0.9\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The conjecture is already false for the two-atom \(L_p\) space
+\(X=\ell_{20}^2\). In two dimensions, every support projection has rank one
+and its norm can be written explicitly. This gives a global analytic bound
+\(\xi_X\leq 2^{9/10}\).
+
+The source upper expression is larger. To see this, first make
+\(\lambda_X^-(1)\) almost zero using a very asymmetric tangent pair. This
+forces the argument \((1-\lambda_X^-(1))/2\) of \(\lambda_X^+\) to be almost
+\(1/2\). At radius \(0.4999995\), the symmetric tangent pair in \(\ell_{20}^2\)
+already yields a \(\lambda^+\)-value whose reciprocal upper expression exceeds
+\(2^{9/10}\). Therefore the source upper estimate is strict.
+
+\section*{Counterexample}
+
+\begin{theorem}
+Conjecture 1 of Ivanov's paper is false. More precisely, for
+\(X=\ell_{20}^{2}\),
+\[
+\xi_X<
+\frac{1}{1-\lambda_X^+\!\left((1-\lambda_X^-(1))/2\right)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(q=20/19\). Let \(y=(a,b)\in S_X\), so
+\(|a|^{20}+|b|^{20}=1\), and let \(j(y)=(\operatorname{sgn}(a)|a|^{19},
+\operatorname{sgn}(b)|b|^{19})\) be the norming functional of \(y\).
+By signs and symmetry it is enough to display the computation for
+\(a,b\geq0\).
+
+The projection \(P_yx=x-j(y)(x)y\) has range \(\ker j(y)\), which is spanned
+by \(u=(b^{19},-a^{19})\). Since
+\(\det(u,y)=a^{20}+b^{20}=1\), we have
+\[
+P_y(s,t)=(bs-at)u .
+\]
+Consequently
+\[
+\norm{P_y}
+=\left(a^{380}+b^{380}\right)^{1/20}
+ \left(a^{q}+b^{q}\right)^{1/q}.
+\]
+The first factor is at most \(1\). For the second factor, Holder's inequality
+or the standard comparison of finite-dimensional \(\ell_r\)-norms gives
+\[
+\left(a^q+b^q\right)^{1/q}\leq
+2^{1/q-1/20}\left(a^{20}+b^{20}\right)^{1/20}
+=2^{18/20}=2^{9/10}.
+\]
+Taking the supremum over \(y\) gives
+\begin{equation}\label{eq:xi-upper}
+\xi_X\leq 2^{9/10}.
+\end{equation}
+
+We next show that the right-hand side of Ivanov's estimate is strictly larger
+than \(2^{9/10}\). Put \(t=9/20\), \(\varepsilon=10^{-6}\),
+\[
+A=(1+t^{20})^{1/20},\qquad
+B=(1+t^{380})^{1/20},
+\]
+and
+\[
+x=\frac{(1,t)}{A},\qquad y=\frac{(t^{19},-1)}{B}.
+\]
+Then \(x,y\in S_X\), and \(y\) is quasi-orthogonal to \(x\), because the
+norming functional of \(x\) is \(A^{-19}(1,t^{19})\), which annihilates \(y\).
+A direct estimate gives
+\[
+\left|
+\frac{1-\varepsilon}{A}+\frac{t^{19}}{B}
+\right|^{20}
++
+\left|
+\frac{(1-\varepsilon)t}{A}-\frac{1}{B}
+\right|^{20}
+<1 .
+\]
+The verifier in \texttt{code/check\_counterexample.py} evaluates the left
+side as \(0.9999914532\ldots\). The same script evaluates
+\(\norm{x+y}_{20}^{20}\) as \(1.0000114530\ldots\). Hence the point
+\((1-\varepsilon)x+y\) lies inside the unit ball, while \(x+y\) lies outside
+it. By continuity of the line section,
+\[
+\lambda_X^-(1)<\varepsilon,
+\qquad
+r:=\frac{1-\lambda_X^-(1)}2>\frac{1-\varepsilon}{2}=:r_0.
+\]
+
+Now take the symmetric quasi-orthogonal pair
+\[
+x_0=2^{-1/20}(1,1),\qquad y_0=2^{-1/20}(1,-1).
+\]
+For this pair, writing \(u=1-\lambda\), the equation
+\(\norm{(1-\lambda)x_0+r_0y_0}_{20}=1\) is
+\[
+(u+r_0)^{20}+|u-r_0|^{20}=2.
+\]
+Let \(u_0=2^{-9/10}\). A direct strict check gives
+\[
+(u_0+r_0)^{20}+|u_0-r_0|^{20}>2
+\]
+(the verifier gives \(2.0241430960\ldots\)). Since the left-hand side is
+strictly increasing for \(u>r_0\), the corresponding root satisfies
+\(u<u_0\), i.e. the symmetric pair gives
+\[
+\lambda_X^+(r_0)>1-u_0.
+\]
+As \(\lambda_X^+\) is increasing and \(r>r_0\),
+\[
+\lambda_X^+(r)>1-2^{-9/10}.
+\]
+Therefore
+\[
+\frac{1}{1-\lambda_X^+(r)}>2^{9/10}\geq \xi_X
+\]
+by \eqref{eq:xi-upper}. This is a strict failure of the equality conjectured
+for \(L_p\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is analytic except for two scalar strict inequalities involving
+fixed decimal/rational parameters. They are also easy to check by hand with
+interval arithmetic; the included Python script records a reproducible
+high-precision check:
+\[
+1.0000114530\ldots>1,\qquad
+0.9999914532\ldots<1,\qquad
+2.0241430960\ldots>2.
+\]
+
+Bounded novelty check: the run indexes were searched for arXiv:1503.08912,
+supporting convexity/smoothness, hyperplane projection constants, and
+Birkhoff-James terminology. Web searches on 2026-06-28 for the exact title,
+the \(L_p\) conjecture phrase, and hyperplane projection constants found the
+source arXiv record and the related later Ivanov--Martini paper
+arXiv:1609.01587, but no explicit later resolution of this conjecture.
+The run already contains a counterexample packet for a different conjecture in
+arXiv:1609.01587.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid counterexample. The main checks are the rank-one
+projection formula in \(\ell_{20}^{2}\), the orientation of
+quasi-orthogonality relative to the source definitions, and the two strict
+scalar inequalities above.
+
+\begin{thebibliography}{9}
+
+\bibitem{Ivanov}
+G. M. Ivanov,
+\emph{Modulus of supporting convexity and supporting smoothness},
+arXiv:1503.08912, 2015.
+
+\bibitem{IvanovMartini}
+G. Ivanov and H. Martini,
+\emph{New Moduli for Banach Spaces},
+arXiv:1609.01587, 2016.
+
+\end{thebibliography}
+
+\end{document}

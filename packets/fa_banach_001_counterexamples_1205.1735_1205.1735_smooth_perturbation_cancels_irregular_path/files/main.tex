@@ -1,0 +1,159 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\W}{\mathcal W}
+
+\title{\textbf{Counterexample Packet}\\[0.35em]
+       A smooth perturbation can cancel an irregular path}
+\author{Run \texttt{fa\_banach\_001}, lane 1}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: candidate full counterexample, likely valid}\\
+\textbf{Target: the smooth-perturbation conjecture in arXiv:1205.1735}
+\end{center}
+
+\section{Source and exact conjecture}
+
+For a continuous path $w:[0,T]\to\R^d$, Catellier and Gubinelli define
+\[
+ \Phi^w_{s,t}(\xi)=\int_s^t e^{i\langle\xi,w_r\rangle}\,dr,
+ \qquad
+ \|\Phi^w\|_{\W_T^{\rho,\gamma}}
+ =\sup_{\xi\in\R^d}\sup_{0\le s<t\le T}
+ (1+|\xi|)^\rho\frac{|\Phi^w_{s,t}(\xi)|}{|t-s|^\gamma}.
+ \tag{1}
+\]
+The path is $(\rho,\gamma)$-irregular when this norm is finite. On PDF page 6,
+the source conjectures that adding any smooth $\varphi$ preserves the same
+pair $(\rho,\gamma)$ \cite{CG}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+\noindent\emph{Source evidence.} The displayed crop is the complete printed
+conjecture on source PDF page 6.
+
+\section{Counterexample}
+
+\begin{theorem}[Linear cancellation]
+For every $0<\rho<\tfrac12$, set $\gamma=1-\rho$. On $[0,1]$ in dimension one,
+let
+\[
+                  w(r)=r, \qquad \varphi(r)=-r.                 \tag{2}
+\]
+Then $w$ is $(\rho,\gamma)$-irregular and $\varphi$ is smooth, but
+$w+\varphi$ is not $(\rho,\gamma)$-irregular. In fact the constant path
+$w+\varphi$ is not $(\rho',\gamma')$-irregular for any $\rho'>0$ and any
+$\gamma'>0$.
+\end{theorem}
+
+\begin{proof}
+Fix $0\le s<t\le1$ and write $h=t-s$. For $\xi\ne0$,
+\[
+ \Phi^w_{s,t}(\xi)
+   =\frac{e^{i\xi t}-e^{i\xi s}}{i\xi},
+ \qquad
+ |\Phi^w_{s,t}(\xi)|\le \min\!\left\{h,\frac2{|\xi|}\right\}. \tag{3}
+\]
+If $|\xi|\le1$, then, using $1-\gamma=\rho$,
+\[
+ (1+|\xi|)^\rho\frac{|\Phi^w_{s,t}(\xi)|}{h^\gamma}
+ \le 2^\rho h^{1-\gamma}=2^\rho h^\rho\le2^\rho.               \tag{4}
+\]
+This also covers $\xi=0$. If $|\xi|>1$, the elementary interpolation bound
+$\min\{A,B\}\le A^{1-\rho}B^\rho$ applied to (3) gives
+\[
+ |\Phi^w_{s,t}(\xi)|
+ \le 2^\rho h^{1-\rho}|\xi|^{-\rho}
+ =2^\rho h^\gamma|\xi|^{-\rho}.
+\]
+Consequently
+\[
+ (1+|\xi|)^\rho\frac{|\Phi^w_{s,t}(\xi)|}{h^\gamma}
+ \le 2^\rho\left(\frac{1+|\xi|}{|\xi|}\right)^\rho
+ \le4^\rho.                                                     \tag{5}
+\]
+Equations (4)--(5) prove
+$\|\Phi^w\|_{\W_1^{\rho,\gamma}}\le4^\rho<\infty$. Since
+$\gamma=1-\rho>\tfrac12$, this also makes $w$ $\rho$-irregular in the
+source's terminology.
+
+On the other hand, $z:=w+\varphi\equiv0$, so
+\[
+                       \Phi^z_{s,t}(\xi)=t-s                 \tag{6}
+\]
+for every $\xi$. Taking $s=0,t=1$ in (1) yields
+\[
+ \sup_{\xi\in\R}(1+|\xi|)^{\rho'}|\Phi^z_{0,1}(\xi)|
+ =\sup_{\xi\in\R}(1+|\xi|)^{\rho'}=\infty
+\]
+for every $\rho'>0$. Thus $z$ has no positive irregularity exponent, proving
+the claim and refuting the printed conjecture.
+\end{proof}
+
+\section{Why the example is decisive}
+
+The conjecture is universally quantified over $(\rho,\gamma)$-irregular
+paths and over smooth perturbations. One admissible pair and one smooth
+perturbation therefore suffice. The construction is not exploiting an endpoint:
+$\rho$ may be any number strictly between $0$ and $1/2$, while
+$\gamma=1-\rho$ is strictly greater than $1/2$.
+
+The mechanism is complete cancellation. A nonconstant smooth curve already
+has a small positive irregularity exponent because its oscillatory integral
+decays like $|\xi|^{-1}$ after the time interval is resolved. The conjecture
+allows a smooth perturbation depending on that curve, so the perturbation can
+cancel it exactly.
+
+\section{Verification and scope report}
+
+\begin{itemize}
+\item \textbf{Definition check.} The proof uses the source's inhomogeneous
+factor $(1+|\xi|)^\rho$; (4) handles the low-frequency regime explicitly.
+\item \textbf{Time exponent.} The interpolation in (3) produces exactly
+$h^{1-\rho}$, so choosing $\gamma=1-\rho$ gives the required uniform bound.
+\item \textbf{Smoothness.} Both $w$ and $\varphi$ in (2) are $C^\infty$.
+The conjecture places no independence or roughness restriction on them.
+\item \textbf{Failure strength.} The perturbed path fails every positive
+spatial irregularity exponent, not merely the original $\rho$.
+\item \textbf{Scope limitation.} This refutes the literal statement through
+the range $0<\rho<1/2$. It does not decide whether smooth perturbations
+preserve $(\rho,\gamma)$ for suitably rough paths or for $\rho>1/2$.
+\end{itemize}
+
+\section{Later literature and human review}
+
+The run's registry, solution, attempt, and proof-gap indexes contain no prior
+record for arXiv:1205.1735 or this counterexample. A bounded primary-literature
+search found the latest source version and Galeati--Gubinelli's later study
+\cite{GG}. Section 5.4 of that paper calls the smooth-additive assertion a
+conjecture left open in the source, assumes $\rho>1/2$ for its additive
+analysis, and proves a positive stability result only after strengthening the
+hypothesis to \emph{strong} $\rho$-irregularity. It does not state the linear
+cancellation family above. Novelty confidence is therefore moderate, not
+absolute.
+
+Before any external claim, a specialist should check whether the source
+authors intended an unstated restriction such as $\rho>1/2$, strong
+irregularity, or a perturbation prescribed independently of $w$. None appears
+in the printed conjecture reproduced above.
+
+\begin{thebibliography}{9}
+\bibitem{CG} R. Catellier and M. Gubinelli,
+\emph{Averaging along irregular curves and regularisation of ODEs},
+arXiv:1205.1735v4.
+\bibitem{GG} L. Galeati and M. Gubinelli,
+\emph{Prevalence of $\rho$-irregularity and related properties},
+arXiv:2004.00872v2.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,312 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\spanop}{\operatorname{span}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\relint}{\operatorname{relint}}
+
+\title{A Direct Linear-Algebra Proof of the Carlen--Cordero-Erausquin Radial-Isotropic Criterion}
+\author{Run \texttt{fa\_banach\_001}, lane 16}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status and Source}
+
+This packet answers the proof-style question in Carlen--Cordero-Erausquin,
+\emph{Subadditivity of the Entropy and its Relation to Brascamp--Lieb Type
+Inequalities}, arXiv:0710.0870 \cite{CCE}.  On page 30, just before Theorem
+4.3, the authors write that the theorem concerns a problem in linear algebra
+and that they do not know a direct proof in a purely linear algebra context.
+The theorem itself is already proved in the source via entropy and
+Brascamp--Lieb extremizers.  The contribution here is a direct proof of the
+same linear-algebra criterion.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Source Question}
+
+Let \(A=\{a_1,\ldots,a_m\}\) span \(\R^n\), \(n\ge 2\), and let
+\(0\le c_j\le 1\).  The source asks for a direct linear-algebra proof of the
+criterion for the existence of an invertible symmetric matrix \(R\) such that
+\[
+  \sum_{j=1}^m c_j
+  \left(\frac{Ra_j}{|Ra_j|}\right)\otimes
+  \left(\frac{Ra_j}{|Ra_j|}\right)
+  =\Id_{\R^n}.
+  \tag{1}
+\]
+The criterion is that \(A\) is totally reducible for \(c\), in the sense of the
+source's Definition 3.8.
+
+\section*{Definitions}
+
+For \(J\subseteq\{1,\ldots,m\}\), write
+\[
+  V_J=\spanop\{a_j:j\in J\}.
+\]
+The Brascamp--Lieb rank polytope associated with \(A\) is
+\[
+  K_A=
+  \left\{
+    c\in[0,1]^m:
+    \sum_{j=1}^m c_j=n,\quad
+    \sum_{j\in J}c_j\le \dim V_J \text{ for all }J
+  \right\}.
+\]
+Its strict part is
+\[
+  K_A^\circ=
+  \left\{
+    c\in K_A:
+    \sum_{j\in J}c_j<\dim V_J
+    \text{ for all nonempty proper }J
+  \right\}.
+\]
+After discarding zero-weight indices, \(A\) is \emph{totally reducible for
+\(c\)} if the remaining index set can be partitioned into nonempty sets
+\(J_1,\ldots,J_r\) such that
+\[
+  \R^n=V_{J_1}\oplus\cdots\oplus V_{J_r},
+  \qquad
+  c_{J_\ell}\in K_{A_{J_\ell}}^\circ
+  \quad(\ell=1,\ldots,r),
+\]
+where each \(A_{J_\ell}\) is considered inside \(V_{J_\ell}\).
+
+\section*{Proof Intuition}
+
+The equation is exactly the condition that a linear image of the vectors is in
+weighted radial isotropic position.  For the strict/interior case, one can find
+the required change of variables by minimizing a log-det function.  Cauchy--
+Binet rewrites this function as a log-sum-exp over the bases of the vector
+matroid of \(A\).  The rank inequalities defining \(K_A^\circ\) are precisely
+the statement that \(c\) lies in the relative interior of the basis polytope,
+which makes the log-sum-exp coercive modulo its harmless lineality.  At the
+minimum, the leverage-score equations give (1).
+
+For boundary points, every saturated rank inequality forces an actual
+orthogonal splitting after any solution of (1): taking the trace against the
+orthogonal projection onto the saturated span leaves no room for positive
+weight vectors outside that span to have a component inside it.  Conversely,
+if total reducibility gives a direct-sum decomposition into strict blocks, solve
+the strict problem on each block and assemble the block solutions.  A final
+polar-decomposition step makes the resulting map symmetric positive definite.
+
+\section*{Main Result}
+
+\begin{theorem}
+Let \(A=\{a_1,\ldots,a_m\}\) span \(\R^n\), \(n\ge2\), and let
+\(0\le c_j\le1\).  Ignoring indices with \(c_j=0\), assume all positive-weight
+vectors are nonzero.  Then there exists an invertible symmetric matrix \(R\)
+satisfying \((1)\) if and only if \(A\) is totally reducible for \(c\).
+\end{theorem}
+
+\begin{proof}
+We give a proof independent of entropy and Brascamp--Lieb extremizers.
+
+\medskip
+\noindent\textbf{Step 1: the strict case.}
+Let \(\mathcal B\) denote the family of \(n\)-element subsets
+\(B\subseteq\{1,\ldots,m\}\) for which \(\{a_j:j\in B\}\) is a basis of
+\(\R^n\).  By the vector-matroid base-polytope theorem of Edmonds
+\cite{Edmonds}, the polytope
+\[
+  \conv\{1_B:B\in\mathcal B\}
+\]
+is exactly \(K_A\).  Thus \(c\in K_A^\circ\) is the same as saying that \(c\)
+lies in the relative interior of this basis polytope.
+
+Assume \(c\in K_A^\circ\).  For \(t=(t_1,\ldots,t_m)\in\R^m\), put
+\[
+  M(t)=\sum_{j=1}^m e^{t_j}a_j\otimes a_j
+\]
+and define
+\[
+  F(t)=\log\det M(t)-\sum_{j=1}^m c_jt_j.
+\]
+By Cauchy--Binet,
+\[
+  \det M(t)=
+  \sum_{B\in\mathcal B} \det(A_B)^2
+  \exp\left(\sum_{j\in B}t_j\right),
+\]
+where \(A_B\) is the \(n\times n\) matrix with columns \(a_j\), \(j\in B\).
+Therefore
+\[
+  F(t)=
+  \log\sum_{B\in\mathcal B}\det(A_B)^2
+     e^{\langle 1_B-c,t\rangle}.
+\]
+Since \(0\in\relint\conv\{1_B-c:B\in\mathcal B\}\), this log-sum-exp is
+coercive on the quotient by its lineality space and hence attains its minimum.
+Let \(t^*\) be a minimizer.  Differentiating at \(t^*\) gives, for every \(j\),
+\[
+  c_j=e^{t_j^*}\,\langle M(t^*)^{-1}a_j,a_j\rangle.
+  \tag{2}
+\]
+Set \(R=M(t^*)^{-1/2}\), the positive square root.  Then
+\[
+\begin{aligned}
+ \sum_{j=1}^m c_j
+ \left(\frac{Ra_j}{|Ra_j|}\right)\otimes
+ \left(\frac{Ra_j}{|Ra_j|}\right)
+ &= \sum_{j=1}^m
+    e^{t_j^*}\, Ra_j\otimes Ra_j \\
+ &= R\left(\sum_{j=1}^m e^{t_j^*}a_j\otimes a_j\right)R
+  = \Id.
+\end{aligned}
+\]
+Thus the desired matrix exists in the strict case.
+
+\medskip
+\noindent\textbf{Step 2: a solution forces splitting on saturated sets.}
+Suppose now that an invertible \(R\) satisfying (1) exists.  Put
+\[
+  u_j=\frac{Ra_j}{|Ra_j|}
+\]
+for all \(j\) with \(c_j>0\).  Then
+\[
+  \sum_{j:c_j>0}c_j\,u_j\otimes u_j=\Id.
+  \tag{3}
+\]
+Taking traces in (3) gives \(\sum_jc_j=n\).  If \(J\) is any set of positive
+weight indices and \(P_J\) is the orthogonal projection onto
+\(\spanop\{u_j:j\in J\}\), then
+\[
+  \dim\spanop\{u_j:j\in J\}
+  =\tr P_J
+  =\sum_i c_i |P_Ju_i|^2
+  \ge \sum_{j\in J}c_j.
+  \tag{4}
+\]
+Because \(R\) is invertible, this is exactly the rank inequality for the
+original vectors \(a_j\).  Hence \(c\in K_A\).
+
+Moreover, equality in (4) for a nonempty proper \(J\) is rigid.  Since
+\(|P_Ju_j|=1\) for \(j\in J\), equality can hold only if
+\[
+  P_Ju_i=0
+  \qquad(i\notin J,\ c_i>0).
+  \tag{5}
+\]
+Thus every positive-weight vector outside a saturated span is orthogonal to
+that span, after applying \(R\).
+
+If there is no nonempty proper saturated set among the positive-weight indices,
+then \(c\in K_A^\circ\) and \(A\) is totally reducible with one block.  Otherwise
+choose an inclusion-minimal nonempty saturated set \(J\).  Minimality implies
+\(c_J\in K_{U_J}^\circ\), where \(U_J=\{u_j:j\in J\}\) is considered in its
+span.  By (5), the remaining positive-weight vectors lie in the orthogonal
+complement of \(\spanop U_J\), and (3) splits into two identity decompositions,
+one on \(\spanop U_J\) and one on its orthogonal complement.  Repeating this
+finite procedure yields an orthogonal direct-sum decomposition for the vectors
+\(\{u_j:c_j>0\}\) into strict blocks.  Applying \(R^{-1}\) transfers it to a
+direct-sum decomposition of the original spans \(V_{J_\ell}\).  Therefore
+\(A\) is totally reducible for \(c\).
+
+\medskip
+\noindent\textbf{Step 3: total reducibility gives a solution.}
+Conversely, suppose \(A\) is totally reducible for \(c\).  Discard the indices
+with \(c_j=0\), and write the positive index set as a disjoint union
+\[
+  J_1\cup\cdots\cup J_r
+\]
+with
+\[
+  \R^n=V_{J_1}\oplus\cdots\oplus V_{J_r},
+  \qquad
+  c_{J_\ell}\in K_{A_{J_\ell}}^\circ.
+\]
+Choose an invertible linear map \(T\) such that the subspaces
+\[
+  E_\ell:=T V_{J_\ell}
+\]
+are mutually orthogonal.  The rank inequalities and their strictness are
+preserved by \(T\), so
+\[
+  c_{J_\ell}\in K_{T A_{J_\ell}}^\circ
+\]
+inside \(E_\ell\).  By Step 1, for each \(\ell\) there is a positive definite
+operator \(R_\ell:E_\ell\to E_\ell\) such that
+\[
+  \sum_{j\in J_\ell}c_j
+  \left(\frac{R_\ell T a_j}{|R_\ell T a_j|}\right)\otimes
+  \left(\frac{R_\ell T a_j}{|R_\ell T a_j|}\right)
+  =\Id_{E_\ell}.
+\]
+Let \(R_0\) be the block-diagonal operator on the orthogonal sum
+\(\R^n=E_1\oplus\cdots\oplus E_r\) whose restriction to \(E_\ell\) is
+\(R_\ell\).  Then the invertible map \(L=R_0T\) satisfies
+\[
+  \sum_j c_j
+  \left(\frac{La_j}{|La_j|}\right)\otimes
+  \left(\frac{La_j}{|La_j|}\right)
+  =\Id.
+\]
+Finally take the polar decomposition \(L=QS\), where \(Q\) is orthogonal and
+\(S\) is symmetric positive definite.  Since \(La_j/|La_j|=Q(Sa_j/|Sa_j|)\),
+conjugating the last identity by \(Q^*\) gives
+\[
+  \sum_j c_j
+  \left(\frac{Sa_j}{|Sa_j|}\right)\otimes
+  \left(\frac{Sa_j}{|Sa_j|}\right)
+  =\Id.
+\]
+Thus the required invertible symmetric matrix exists.  This completes the
+direct proof.
+\end{proof}
+
+\section*{Verification and Limitations}
+
+The proof is purely finite-dimensional linear algebra plus the standard vector
+matroid basis-polytope theorem.  It does not use entropy, Fisher information,
+Brascamp--Lieb extremizers, or Gaussian optimization.  The theorem being proved
+is not new: it is Theorem 4.3 of the source paper.  The packet answers the
+authors' request for a direct proof in a purely linear-algebra context.
+
+Bounded novelty check: local run indexes had no `0710.0870` packet.  Web search
+for radial isotropic position, Tyler's M-estimator, Forster transforms, and the
+normalized identity equation found close known formulations, especially the
+subspace-condition criterion for Tyler's M-estimator and radial isotropic
+position.  Therefore the novelty confidence is only for this compact direct
+derivation and its explicit connection to the source theorem, not for the
+criterion itself.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid full answer to the source's direct-proof request.
+The main items to check are: the identification of \(K_A\) with the vector
+matroid basis polytope, the existence of a minimizer of \(F\) in the relative
+interior case, and the transfer from an arbitrary invertible map to a symmetric
+positive map via polar decomposition.
+
+\begin{thebibliography}{9}
+
+\bibitem{CCE}
+E. A. Carlen and D. Cordero-Erausquin,
+\emph{Subadditivity of the Entropy and its Relation to Brascamp--Lieb Type
+Inequalities}, arXiv:0710.0870, 2007.
+
+\bibitem{Edmonds}
+J. Edmonds,
+\emph{Submodular functions, matroids, and certain polyhedra},
+in \emph{Combinatorial Structures and their Applications}, Gordon and Breach,
+1970, pp. 69--87.
+
+\end{thebibliography}
+
+\end{document}

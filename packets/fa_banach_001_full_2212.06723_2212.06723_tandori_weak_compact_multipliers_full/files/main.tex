@@ -1,0 +1,526 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\K}{\mathcal K}
+\newcommand{\W}{\mathcal W}
+\newcommand{\StrictSing}{\mathcal{SS}}
+\newcommand{\Lin}{\mathcal L}
+\newcommand{\tX}{\widetilde X}
+\newcommand{\tY}{\widetilde Y}
+\newcommand{\tf}{\widetilde f}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\one}{\mathbf 1}
+
+\title{Weakly Compact Multipliers Between Abstract Tandori Function Spaces\\
+\large Candidate full solution packet for Problem 7.5}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{21 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $I=(0,1)$ or $I=(0,\infty)$ with Lebesgue measure, and let $X,Y$ be
+K\"othe function spaces on $I$.  For the associated abstract Tandori spaces
+$\tX,\tY$, we prove that every bounded multiplication operator
+$M_\lambda:\tX\to\tY$ is maximally far from both the weakly compact and the
+compact operators:
+\[
+ \dist\bigl(M_\lambda,\W(\tX,\tY)\bigr)
+ =\dist\bigl(M_\lambda,\K(\tX,\tY)\bigr)
+ =\norm{M_\lambda}.
+\]
+Consequently, $M_\lambda$ is weakly compact, or compact, if and only if
+$\lambda=0$ almost everywhere.  In fact, every nonzero multiplier fixes an
+isometric copy of $\ell_\infty$ and hence is not strictly singular.  The key
+ingredient for the exact norm formula is a simultaneous tail-preserving
+disjointization lemma: any two nonnegative measurable functions can be cut
+into countably many pairwise disjoint pieces, each of which has exactly the
+same least decreasing majorant as the original function.
+\end{abstract}
+
+\section{Packet status and source evidence}
+
+This packet upgrades the earlier compact-only partial packet for the same
+source problem.  That packet is preserved in the local history directory, and
+the supplied TeX/PDF report is stored in a dated evidence directory.
+
+The source target is Problem~7.5 of Kiwerski--Tomaszewski:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{The problem and the main result}
+
+Throughout, $I=(0,1)$ or $I=(0,\infty)$, equipped with Lebesgue measure $m$.
+For a measurable function $f$ on $I$, put
+\[
+ \tf(x):=\esssup_{t>x}|f(t)|,\qquad x\in I.
+\]
+(The harmless alternative $t\geq x$ gives the same function because
+singletons are null.)  If $X$ is a K\"othe function space on $I$, its abstract
+Tandori space is
+\[
+ \tX:=\{f:\tf\in X\},\qquad \norm{f}_{\tX}:=\norm{\tf}_X.
+\]
+We use the convention of Kiwerski--Tomaszewski that $\one_A\in X$ whenever
+$m(A)<\infty$, and similarly for $Y$.
+
+For Banach spaces $E,F$, let $\K(E,F)$ and $\W(E,F)$ denote, respectively,
+the compact and weakly compact operators from $E$ to $F$.  The essential and
+weak essential norms of $T\in\Lin(E,F)$ are
+\[
+ \norm{T}_{\mathrm{ess}}:=\dist(T,\K(E,F)),\qquad
+ \norm{T}_{\mathrm{wess}}:=\dist(T,\W(E,F)).
+\]
+
+The following gives a complete answer to Problem 7.5 in the source paper
+\cite[Problem 7.5]{KT}.
+
+\begin{theorem}[Exact weak and compact essential norms]\label{thm:main}
+Let $X$ and $Y$ be K\"othe function spaces on $I$, and suppose that
+$M_\lambda:\tX\to\tY$ is bounded.  Then
+\begin{equation}\label{eq:main}
+ \norm{M_\lambda}_{\mathrm{wess}}
+ =\norm{M_\lambda}_{\mathrm{ess}}
+ =\norm{M_\lambda}.
+\end{equation}
+More precisely, for every nonzero $f\in\tX$ there is a linear isometry
+$J_f:\ell_\infty\to\tX$ such that
+\begin{equation}\label{eq:scaled-isometry}
+ \norm{M_\lambda J_f a}_{\tY}
+ =\frac{\norm{M_\lambda f}_{\tY}}{\norm{f}_{\tX}}\,
+   \norm{a}_{\ell_\infty}
+ \qquad(a\in\ell_\infty).
+\end{equation}
+\end{theorem}
+
+\begin{corollary}\label{cor:characterization}
+For a bounded multiplier $M_\lambda:\tX\to\tY$, the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+ \item $M_\lambda$ is weakly compact;
+ \item $M_\lambda$ is compact;
+ \item $M_\lambda=0$;
+ \item $\lambda=0$ almost everywhere.
+\end{enumerate}
+Every nonzero $M_\lambda$ fixes an isometric copy of $\ell_\infty$ and is
+therefore not strictly singular.
+\end{corollary}
+
+No Fatou property, rearrangement invariance, separability, reflexivity, or
+order continuity is required.
+
+\section{Proof intuition}
+
+The Tandori norm remembers, for each point $x$, the largest value appearing
+to the right of $x$.  This makes it possible to split a function into many
+disjoint pieces without changing its least decreasing majorant, as long as
+each piece still meets every right-tail level set.  The countable
+disjointization lemma performs this split simultaneously for $|f|$ and
+$|\lambda f|$.
+
+Once such pieces are available, the map
+$a=(a_n)\mapsto \sum_n a_n f\one_{A_n}$ embeds $\ell_\infty$ isometrically
+into $\tX$, and multiplication by $\lambda$ acts on that copy with exactly
+the scale $\norm{M_\lambda f}_{\tY}/\norm{f}_{\tX}$.  Any weakly compact
+operator within a smaller distance from $M_\lambda$ would be bounded below
+on an $\ell_\infty$ copy, impossible because bounded-below weakly compact
+operators have reflexive domain.  Taking near-extremizing $f$ gives the
+exact weak essential norm, and compact operators are a subclass of weakly
+compact operators.
+
+\section{Assessment and completion of the supplied partial argument}
+
+The supplied compactness obstruction is correct.  Its only informal step is
+the construction of disjoint subsets having a common essential right
+endpoint; the following elementary lemma makes that step precise.
+
+\begin{lemma}[Common-endpoint partition]\label{lem:endpoint}
+Let $E\subset I$ have positive measure and finite essential supremum
+$b:=\esssup E$.  Then $E$ contains pairwise disjoint measurable sets
+$B_1,B_2,\ldots$ such that $\esssup B_n=b$ for every $n$.
+\end{lemma}
+
+\begin{proof}
+Choose $r_1\in(0,b)$.  Having chosen $r_k<b$, the set
+$E\cap(r_k,b)$ has positive measure and is the increasing union of the sets
+$E\cap(r_k,s)$ with rational $s<b$.  Hence some $s_k<b$ satisfies
+$m(E\cap(r_k,s_k))>0$.  Choose
+\[
+ \max\{r_k,s_k,b-1/(k+1)\}<r_{k+1}<b.
+\]
+Then $r_k\uparrow b$ and
+$m(E\cap(r_k,r_{k+1}))>0$ for every $k$.  Partition
+$\mathbb N$ into pairwise disjoint infinite sets $N_1,N_2,\ldots$, and set
+\[
+ B_n:=\bigcup_{k\in N_n} E\cap(r_k,r_{k+1}).
+\]
+Each $N_n$ is unbounded, so each $B_n$ has essential supremum $b$.
+\end{proof}
+
+The partial proof then normalizes the functions $\one_{B_n}$ and obtains a
+bounded sequence whose images are uniformly separated.  That proves
+noncompactness.  The same construction actually gives more: it produces an
+entire copy of $\ell_\infty$, which also rules out weak compactness.
+
+\begin{lemma}\label{lem:weak-below}
+Let $S:E\to F$ be a weakly compact operator between Banach spaces.  If $S$ is
+bounded below, then $E$ is reflexive.  In particular, no weakly compact
+operator defined on $\ell_\infty$ is bounded below.
+\end{lemma}
+
+\begin{proof}
+If $\norm{Sx}\geq c\norm{x}$ for some $c>0$, then $S(E)$ is closed and
+$S:E\to S(E)$ is an isomorphism.  Moreover, $S(B_E)$ is norm closed and
+convex, hence weakly closed.  Since $S$ is weakly compact, $S(B_E)$ is
+therefore weakly compact.  The bounded inverse $S^{-1}:S(E)\to E$ is
+weak-to-weak continuous (the weak topology of a closed subspace is the
+induced weak topology, by Hahn--Banach), so $B_E=S^{-1}(S(B_E))$ is weakly
+compact.  Thus $E$ is reflexive.  Since $\ell_\infty$ is not reflexive, the
+final claim follows.
+\end{proof}
+
+\begin{proposition}[The partial argument already yields the qualitative
+answer]\label{prop:qualitative}
+If $M_\lambda:\tX\to\tY$ is nonzero, then it is bounded below on an isometric
+copy of $\ell_\infty$.  Hence it is neither weakly compact nor compact.
+\end{proposition}
+
+\begin{proof}
+Since $M_\lambda\neq0$, the symbol is nonzero on a set of positive measure.
+Choose $\varepsilon>0$ and $N<\infty$ so that
+\[
+ E:=\{t\in I:|\lambda(t)|>\varepsilon\}\cap(0,N)
+\]
+has positive measure.  Put $b=\esssup E$, and use Lemma~\ref{lem:endpoint}
+to obtain disjoint $B_n\subset E$ with $\esssup B_n=b$.  Let
+$c_X=\norm{\one_{(0,b)}}_X$ and define
+\[
+ Ja:=\frac1{c_X}\sum_{n=1}^\infty a_n\one_{B_n},
+ \qquad a=(a_n)\in\ell_\infty.
+\]
+The sum is pointwise unambiguous because the $B_n$ are disjoint.  For every
+$a\in\ell_\infty$,
+\[
+ \widetilde{Ja}=\frac{\norm{a}_\infty}{c_X}\one_{(0,b)},
+\]
+so $J$ is an isometry.  Moreover,
+\[
+ \widetilde{\lambda Ja}
+ \geq \frac{\varepsilon\norm{a}_\infty}{c_X}\one_{(0,b)}.
+\]
+Consequently,
+\[
+ \norm{M_\lambda Ja}_{\tY}
+ \geq \varepsilon\frac{\norm{\one_{(0,b)}}_Y}
+                         {\norm{\one_{(0,b)}}_X}\norm{a}_\infty.
+\]
+Thus $M_\lambda J$ is bounded below.  If $M_\lambda$ were weakly compact,
+then so would be $M_\lambda J$, contradicting Lemma~\ref{lem:weak-below}.
+\end{proof}
+
+This proves Corollary~\ref{cor:characterization} qualitatively.  To obtain the
+sharp identities in Theorem~\ref{thm:main}, the copy of $\ell_\infty$ must be
+adapted not only to a level set of $\lambda$, but simultaneously to an
+arbitrary near-extremizer $f$ and its image $\lambda f$.
+
+\section{Simultaneous tail-preserving disjointization}
+
+We first prove a measure-theoretic splitting lemma.  A finite measure
+$\nu$ is called equivalent to Lebesgue measure if it has the same null sets.
+On $(0,\infty)$, for example, one may take $d\nu(t)=e^{-t}\,dt$.
+
+\begin{lemma}[Countable simultaneous splitting]\label{lem:split}
+Let $(\Omega,\Sigma,\nu)$ be an atomless finite measure space, and let
+$E_1,E_2,\ldots\in\Sigma$ satisfy $\nu(E_k)>0$ for every $k$.  There are
+pairwise disjoint measurable sets $A_1,A_2,\ldots$ such that
+\[
+ \nu(A_n\cap E_k)>0\qquad(n,k\in\mathbb N).
+\]
+\end{lemma}
+
+\begin{proof}
+We first show that any measurable set $P$ satisfying
+$\nu(P\cap E_k)>0$ for all $k$ can be divided into two disjoint pieces, each
+of which still meets every $E_k$ in positive measure.
+
+Work in the measure algebra of $P$, equipped with the complete metric
+$d(A,B)=\nu(A\triangle B)$.  For each $k$, put $C_k=P\cap E_k$ and define
+\[
+ \mathcal U_k:=\bigl\{A\subset P:
+        0<\nu(A\cap C_k)<\nu(C_k)\bigr\}.
+\]
+The set $\mathcal U_k$ is open.  It is also dense: if a given $A\subset P$
+does not already split $C_k$, then either $A\cap C_k$ or $C_k\setminus A$ is
+null.  Atomlessness allows us to add or remove an arbitrarily small
+positive-measure subset of $C_k$, thereby producing a nearby set that does
+split $C_k$.  By the Baire category theorem,
+$\bigcap_{k=1}^\infty\mathcal U_k$ is nonempty.  Any $A$ in this intersection
+gives the desired division $P=A\sqcup(P\setminus A)$.
+
+Starting with $P_\varnothing=\Omega$, apply this division recursively to
+construct a binary tree $(P_s)_{s\in\{0,1\}^{<\mathbb N}}$ such that
+$P_s=P_{s0}\sqcup P_{s1}$ and every $P_s$ meets every $E_k$ in positive
+measure.  Finally, set
+\[
+ A_n:=P_{\underbrace{11\cdots1}_{n-1}0}\qquad(n\geq1).
+\]
+These sets are pairwise disjoint, and each one meets every $E_k$ in positive
+measure.
+\end{proof}
+
+\begin{lemma}[Tail-preserving disjointization]\label{lem:tail}
+Let $g,h:I\to[0,\infty]$ be measurable.  There are pairwise disjoint
+measurable sets $A_1,A_2,\ldots\subset I$ such that, for every $n$,
+\begin{equation}\label{eq:tail-preserve}
+ \widetilde{g\one_{A_n}}=\widetilde g,
+ \qquad
+ \widetilde{h\one_{A_n}}=\widetilde h
+ \quad\text{almost everywhere on }I.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose an atomless finite measure $\nu$ equivalent to Lebesgue measure.  Form
+the countable family consisting of all positive-measure sets of the form
+\[
+ E^g_{r,q}:=\{t>r:g(t)>q\},\qquad
+ E^h_{r,q}:=\{t>r:h(t)>q\},
+\]
+where $r\in\mathbb Q\cap I$ and $q\in\mathbb Q_{>0}$; discard the null sets.
+Apply Lemma~\ref{lem:split} to this family, repeating its members if it is
+finite.  (If the family is empty, take $A_n=\varnothing$.)  We obtain
+disjoint $A_n$ meeting every retained set in positive measure.
+
+Fix $n$ and $x\in I$.  The inequality
+$\widetilde{g\one_{A_n}}(x)\leq\widetilde g(x)$ is immediate.  Conversely,
+let $0\leq\alpha<\widetilde g(x)$.  Choose rational $q$ with
+$\alpha<q<\widetilde g(x)$.  Then
+$\{t>x:g(t)>q\}$ has positive measure.  Since
+\[
+ \{t>x:g(t)>q\}
+ =\bigcup_{\substack{r\in\mathbb Q\cap I\\r>x}}
+   \{t>r:g(t)>q\},
+\]
+some retained $E^g_{r,q}$ has positive measure.  Its intersection with
+$A_n$ has positive measure, and therefore
+$\widetilde{g\one_{A_n}}(x)\geq q>\alpha$.  Letting $\alpha$ increase to
+$\widetilde g(x)$ gives equality.  The argument for $h$ is identical.
+\end{proof}
+
+\begin{proposition}[An adapted isometric copy of $\ell_\infty$]
+\label{prop:adapted}
+Let $f\in\tX$ be nonzero and let $M_\lambda:\tX\to\tY$ be bounded.  There are
+pairwise disjoint measurable sets $A_n$ such that the map
+\begin{equation}\label{eq:Jf}
+ J_f(a):=\frac1{\norm{f}_{\tX}}
+          \sum_{n=1}^\infty a_n f\one_{A_n}
+ \qquad(a=(a_n)\in\ell_\infty)
+\end{equation}
+is a linear isometry from $\ell_\infty$ into $\tX$ and satisfies
+\eqref{eq:scaled-isometry}.
+\end{proposition}
+
+\begin{proof}
+Apply Lemma~\ref{lem:tail} to $g=|f|$ and $h=|\lambda f|$.  Put
+$f_n=f\one_{A_n}$.  Then
+\[
+ \widetilde{f_n}=\widetilde f,
+ \qquad
+ \widetilde{\lambda f_n}=\widetilde{\lambda f}
+ \quad(n\geq1).
+\]
+For $a\in\ell_\infty$, disjointness gives the pointwise estimates
+\[
+ \left|\sum_n a_nf_n\right|\leq\norm{a}_\infty|f|,
+ \qquad
+ \left|\lambda\sum_n a_nf_n\right|
+       \leq\norm{a}_\infty|\lambda f|.
+\]
+On the other hand, for every fixed $n$ the two sums dominate, on $A_n$,
+$|a_n||f|$ and $|a_n||\lambda f|$, respectively.  Hence their least
+decreasing majorants dominate $|a_n|\widetilde f$ and
+$|a_n|\widetilde{\lambda f}$ for every $n$.  Taking the supremum over $n$
+and combining with the preceding upper estimates yields the exact identities
+\[
+ \widetilde{\sum_n a_nf_n}=\norm{a}_\infty\widetilde f,
+ \qquad
+ \widetilde{\lambda\sum_n a_nf_n}
+       =\norm{a}_\infty\widetilde{\lambda f}.
+\]
+After the normalization in \eqref{eq:Jf}, these are precisely the asserted
+isometry and formula \eqref{eq:scaled-isometry}.
+\end{proof}
+
+\section{Proof of the exact norm formula}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let $T=M_\lambda$ and fix $0\neq f\in\tX$.  Take the isometry
+$J_f:\ell_\infty\to\tX$ from Proposition~\ref{prop:adapted}, and set
+\[
+ c_f:=\frac{\norm{Tf}_{\tY}}{\norm{f}_{\tX}}.
+\]
+Then $\norm{TJ_fa}=c_f\norm{a}_\infty$ for all $a\in\ell_\infty$.
+
+Let $W\in\W(\tX,\tY)$.  If $\norm{T-W}<c_f$, then
+\[
+ \norm{WJ_fa}
+ \geq \norm{TJ_fa}-\norm{(T-W)J_fa}
+ \geq \bigl(c_f-\norm{T-W}\bigr)\norm{a}_\infty.
+\]
+Thus $WJ_f:\ell_\infty\to\tY$ would be weakly compact and bounded below,
+contrary to Lemma~\ref{lem:weak-below}.  Hence
+\[
+ \norm{T-W}\geq c_f
+ \qquad\text{for every }0\neq f\in\tX.
+\]
+Taking the supremum over $f$ gives
+\[
+ \norm{T-W}\geq\norm{T}.
+\]
+Since the zero operator is weakly compact, the reverse inequality for the
+distance is automatic.  Therefore
+\[
+ \dist(T,\W(\tX,\tY))=\norm{T}.
+\]
+Finally, $\K(\tX,\tY)\subset\W(\tX,\tY)$, so
+\[
+ \norm{T}
+ =\dist(T,\W)
+ \leq\dist(T,\K)
+ \leq\norm{T},
+\]
+which proves \eqref{eq:main}.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:characterization}]
+The equivalence of weak compactness, compactness, and $M_\lambda=0$ follows
+immediately from Theorem~\ref{thm:main}.  If $\lambda\neq0$ on a set of
+positive measure, choose $b<\infty$ so that
+$\lambda\one_{(0,b)}\neq0$.  Since $\one_{(0,b)}\in\tX$, this shows
+$M_\lambda\neq0$.  Thus $M_\lambda=0$ if and only if $\lambda=0$ almost
+everywhere.
+
+If $M_\lambda\neq0$, choose $f$ with $M_\lambda f\neq0$.  Formula
+\eqref{eq:scaled-isometry} shows that the restriction of $M_\lambda$ to
+$J_f(\ell_\infty)$ is bounded below, hence an isomorphism onto its range.
+Therefore $M_\lambda$ is not strictly singular.
+\end{proof}
+
+The same argument gives a small additional strengthening.
+
+\begin{corollary}[Distance from strictly singular operators]
+For every bounded multiplier $M_\lambda:\tX\to\tY$,
+\[
+ \dist\bigl(M_\lambda,\StrictSing(\tX,\tY)\bigr)=\norm{M_\lambda},
+\]
+where $\StrictSing$ denotes the ideal of strictly singular operators.
+\end{corollary}
+
+\begin{proof}
+If $S$ is strictly singular and $\norm{M_\lambda-S}<c_f$, the same estimate
+used above makes $SJ_f$ bounded below on $\ell_\infty$, contradicting strict
+singularity.  Take the supremum over $f$ and use $0\in\StrictSing$.
+\end{proof}
+
+\section{Literature check and relation to earlier structure results}
+
+The accessible source version is arXiv:2212.06723v5, last revised in March
+2024; it explicitly poses the compact/weakly compact Tandori multiplier
+question as Problem 7.5 \cite{KT}.  The paper was published online in
+\emph{Mathematische Nachrichten} in June 2026.  Searches performed through
+21 June 2026 for the exact problem number, the phrases ``compact multipliers
+between Tandori function spaces'' and ``weakly compact multipliers Tandori'',
+and papers citing the source did not locate a published or preprint solution.
+
+A relevant earlier structural theorem of Kiwerski--Kolwicz--Maligranda says
+that every nontrivial abstract Tandori function space contains an order
+isometric copy of $\ell_\infty$ \cite[Proposition 4.8]{KKM}.  That fact alone
+does not force a particular multiplier to be bounded below on that copy.  The
+common-endpoint construction in Proposition~\ref{prop:qualitative} localizes
+the copy inside a level set of the symbol, while Lemma~\ref{lem:tail} adapts
+it simultaneously to $f$ and $\lambda f$; this extra localization is what
+produces the exact weak essential norm.
+
+The later work on arithmetic and factorization of spaces related to
+decreasing functions develops formulas for bounded multiplier spaces and
+factorizations involving Tandori spaces \cite{KTamalgams}, but does not
+address this weak compactness obstruction.  Thus the theorem above appears
+to supply the missing full answer to the stated problem; this novelty claim
+is necessarily qualified by the limits of the literature search.
+
+\section{Human review recommendation}
+
+Review as a candidate full solution.  The main points to check are the
+tail-preserving disjointization lemma, the exact least-decreasing-majorant
+identities in Proposition~\ref{prop:adapted}, and whether the source
+paper's conventions for K\"othe function spaces cover every indicator and
+non-atomic splitting step used here.  The literature status should also be
+checked against later multiplier papers and the 2026 published version.
+
+\section{Conclusion}
+
+The partial compactness proof is valid, but it stops one step before the
+strongest consequence of its own construction.  Its disjoint common-endpoint
+sets span an isometric $\ell_\infty$ on which every nonzero multiplier is
+bounded below, already excluding weak compactness.  A simultaneous
+version of the same idea then yields the quantitative identity
+\[
+ \boxed{\quad
+ \norm{M_\lambda}_{\mathrm{wess}}
+ =\norm{M_\lambda}_{\mathrm{ess}}
+ =\norm{M_\lambda}.
+ \quad}
+\]
+
+\begin{thebibliography}{9}
+
+\bibitem{KT}
+T. Kiwerski and J. Tomaszewski,
+\emph{Essential norms of pointwise multipliers in the non-algebraic setting},
+Mathematische Nachrichten (2026), 1--39,
+DOI: \href{https://doi.org/10.1002/mana.70174}{10.1002/mana.70174};
+accessible preprint: \href{https://arxiv.org/abs/2212.06723}{arXiv:2212.06723v5}.
+
+\bibitem{KKM}
+T. Kiwerski, P. Kolwicz and L. Maligranda,
+\emph{Isomorphic and isometric structure of the optimal domains for
+Hardy-type operators},
+Studia Math. \textbf{260} (2021), 45--89;
+\href{https://arxiv.org/abs/1906.09672}{arXiv:1906.09672}.
+
+\bibitem{KTamalgams}
+T. Kiwerski and J. Tomaszewski,
+\emph{Arithmetic, interpolation and factorization of amalgams},
+\href{https://arxiv.org/abs/2401.05526}{arXiv:2401.05526v2} (2024).
+
+\bibitem{LMT}
+K. Le\'snik, L. Maligranda and J. Tomaszewski,
+\emph{Weakly compact sets and weakly compact pointwise multipliers in Banach
+function lattices},
+Math. Nachr. \textbf{295} (2022), 574--592.
+
+\end{thebibliography}
+
+\end{document}

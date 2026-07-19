@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+
+\title{Spaceability of Smooth Disk-Algebra Functions with Boundary Pringsheim Singularities}
+\author{Math discovery smoke-test packet}
+\date{June 12, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Source}
+
+The source paper is
+
+\begin{quote}
+Andreas Debrouwere, \emph{Some results about spaceability in function spaces},
+arXiv:2606.13195.
+\end{quote}
+
+Remark 3.15 points to the following question from Bernal-Gonzalez et al.:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here \(A^\infty(\D)\) denotes the smooth disk algebra.  A boundary point is
+Pringsheim singular for the boundary restriction when the holomorphic
+function has no analytic continuation through that point.  Thus it is enough
+to construct a closed infinite-dimensional subspace of \(A^\infty(\D)\) whose
+nonzero elements all have \(\T\) as a natural boundary.
+
+\section{Claim}
+
+\begin{theorem}
+The set
+\[
+\{f\in A^\infty(\D): f|_{\T}\text{ is Pringsheim singular at every boundary point}\}
+\]
+is spaceable in \(A^\infty(\D)\).
+\end{theorem}
+
+\section{Proof}
+
+We use the classical Hadamard gap theorem in the following form.
+
+\begin{lemma}[Hadamard gap theorem]
+Let
+\[
+F(z)=\sum_{\ell=1}^\infty a_\ell z^{m_\ell}
+\]
+have radius of convergence \(1\), where \(m_{\ell+1}/m_\ell\ge q>1\).
+Then the unit circle is a natural boundary for \(F\).
+\end{lemma}
+
+Let the master lacunary sequence be \(N_k=2^k\), \(k\ge 1\).  Partition
+\(\N\) into infinitely many infinite sets
+\[
+A_m=\{2^m(2j+1): j=0,1,2,\ldots\},\qquad m=0,1,2,\ldots .
+\]
+For \(m\ge0\), define
+\[
+n_{m,j}=2^{2^m(2j+1)}
+\]
+and
+\[
+g_m(z)=\sum_{j=0}^{\infty}\exp(-\sqrt{n_{m,j}})\,z^{n_{m,j}}.
+\]
+The sets \(\{n_{m,j}:j\ge0\}\) are pairwise disjoint and all lie in the
+master support \(\{2^k:k\ge1\}\).  Moreover,
+\[
+\sum_j n_{m,j}^r \exp(-\sqrt{n_{m,j}})<\infty
+\]
+for every \(r\ge0\).  Hence each derivative series of \(g_m\) converges
+uniformly on \(\overline{\D}\), so \(g_m\in A^\infty(\D)\).
+
+Let
+\[
+X=\overline{\operatorname{span}\{g_m:m=0,1,2,\ldots\}}^{A^\infty(\D)}.
+\]
+This is a closed infinite-dimensional subspace, since the \(g_m\)'s have
+pairwise disjoint nonzero Taylor supports and are therefore linearly
+independent.
+
+We claim that every nonzero \(f\in X\) has \(\T\) as a natural boundary.
+Write
+\[
+f(z)=\sum_{n=0}^{\infty} c_n z^n .
+\]
+The coefficient functionals \(f\mapsto c_n=f^{(n)}(0)/n!\) are continuous on
+\(A^\infty(\D)\).  Since finite linear combinations of the \(g_m\)'s have no
+coefficients outside the master set, every \(f\in X\) also satisfies
+\[
+c_n=0\qquad(n\notin\{2^k:k\ge1\}).
+\]
+Likewise, for fixed \(m\), finite linear combinations satisfy
+\[
+\frac{c_{n_{m,j}}}{\exp(-\sqrt{n_{m,j}})}
+=
+\frac{c_{n_{m,j'}}}{\exp(-\sqrt{n_{m,j'}})}
+\qquad(j,j'\ge0),
+\]
+and this equality is preserved under closure.  Therefore each \(f\in X\)
+has scalars \(\lambda_m\) such that
+\[
+c_{n_{m,j}}=\lambda_m\exp(-\sqrt{n_{m,j}})\qquad(j\ge0).
+\]
+If \(f\ne0\), then \(\lambda_m\ne0\) for at least one \(m\); otherwise all
+Taylor coefficients of \(f\) would be zero.
+
+For such an \(m\),
+\[
+\lim_{j\to\infty}
+|c_{n_{m,j}}|^{1/n_{m,j}}
+=
+\lim_{j\to\infty}
+|\lambda_m|^{1/n_{m,j}}\exp(-1/\sqrt{n_{m,j}})
+=1.
+\]
+Since \(f\in A^\infty(\D)\), its radius of convergence is at least \(1\).
+The preceding limit shows that the radius is exactly \(1\).  The nonzero
+Taylor support of \(f\) is a subsequence of the master support \(\{2^k\}\);
+therefore, when listed increasingly, its successive exponents have ratio at
+least \(2\).  Hadamard's gap theorem applies and gives \(\T\) as a natural
+boundary for \(f\).  Thus \(f|_{\T}\) is Pringsheim singular at every
+boundary point.
+
+Therefore \(X\setminus\{0\}\) is contained in the set in the theorem, and
+the set is spaceable.
+\qed
+
+\section{Verification Notes}
+
+The script \texttt{code/check\_lacunary\_construction.py} checks finite
+samples of the partition and coefficient profile:
+
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/check_lacunary_construction.py
+\end{verbatim}
+
+The run confirmed disjoint blocks, a master consecutive ratio at least \(2\),
+and the expected root behavior of \(\exp(-\sqrt n)\).  These checks are only
+sanity checks; the proof above is analytic and uses Hadamard's theorem.
+
+\section{Limitations and Review Focus}
+
+The main external ingredient is the classical Hadamard gap theorem.  A human
+reviewer should verify that the terminology ``Pringsheim singular at every
+point'' in Bernal-Gonzalez et al. agrees with the natural-boundary conclusion
+used here.  The construction gives the stronger conclusion that no nonzero
+element of \(X\) analytically continues through any boundary point.
+
+\end{document}

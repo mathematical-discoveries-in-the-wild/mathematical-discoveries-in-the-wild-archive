@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\Ideal}{\mathrm{Ideal}}
+\newcommand{\dist}{\mathrm{dist}}
+
+\title{Dedekind Finiteness Is Not Open In The Free-Monoid Quotient Coding}
+\author{agent\_super\_01}
+\date{2026-07-01}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Question}
+
+The source paper is Tomasz Kania, \emph{Polish spaces for countable and
+separable structures through quotient encodings}, arXiv:2604.15843.
+In Section 12, under ``Dedekind finiteness for Banach algebras'', the paper
+asks whether the closed set of Dedekind finite Banach-algebra quotients is
+non-open in the Wijsman topology, or whether natural subclasses exhibit sharper
+completeness phenomena.
+
+This packet answers the non-openness part for the standard unital
+Banach-algebra quotient generator used in the paper:
+\[
+        A=\ell_1(S),
+\]
+where \(S\) is the free monoid on countably many generators.
+
+\section*{Definitions}
+
+A unital Banach algebra \(B\) is Dedekind finite, or directly finite, if
+\[
+        ab=1 \quad\Longrightarrow\quad ba=1
+\]
+for all \(a,b\in B\).  Otherwise \(B\) is Dedekind infinite.
+
+For a closed ideal \(K\subset A\), the Wijsman topology is the topology of
+pointwise convergence of quotient norms:
+\[
+        K_i\to K
+        \quad\Longleftrightarrow\quad
+        \dist(x,K_i)=\|x+K_i\|_{A/K_i}\to \|x+K\|_{A/K}
+        \quad(x\in A).
+\]
+
+\section*{Proof Intuition}
+
+Dedekind infiniteness can be hidden arbitrarily far out in the free generating
+sequence.  Put a one-sided inverse pair on the generators \(s_{2n-1},s_{2n}\)
+and send all other generators to zero.  Each quotient is Dedekind infinite.
+But every fixed finite word only uses finitely many generators, so for large
+\(n\) the quotient cannot see the one-sided inverse pair on that finite part;
+there it agrees with the scalar quotient.  Finite-support approximation then
+upgrades this agreement to Wijsman convergence on all of \(\ell_1(S)\).
+
+\begin{theorem}
+Let \(S\) be the free monoid on generators \(s_1,s_2,\ldots\), and let
+\(A=\ell_1(S)\) be the standard unital free Banach-algebra quotient generator.
+In \(\Ideal(A)\) with the Wijsman topology, the class of Dedekind finite
+proper quotients is not open.
+\end{theorem}
+
+\begin{proof}
+Let \(1\in S\) denote the empty word.  Define the augmentation character
+\(\chi:A\to\C\) by
+\[
+        \chi(1)=1,\qquad \chi(w)=0\quad(w\ne 1),
+\]
+extended linearly and continuously.  This is a contractive unital algebra
+homomorphism, and \(K_\infty:=\ker\chi\) gives the scalar quotient
+\(A/K_\infty\cong\C\), which is Dedekind finite.
+
+Let \(H=\ell_2(\N_0)\).  Let \(R e_j=e_{j+1}\) be the forward unilateral
+shift and let \(L e_0=0,\ L e_{j+1}=e_j\) be the backward shift.  Then
+\[
+        LR=I,\qquad RL=I-p_0,
+\]
+where \(p_0\) is the rank-one projection onto \(\C e_0\).
+
+For each \(n\ge 1\), define a contractive unital homomorphism
+\(\pi_n:A\to B(H)\) by assigning
+\[
+        \pi_n(s_{2n-1})=L,\qquad
+        \pi_n(s_{2n})=R,\qquad
+        \pi_n(s_j)=0\quad(j\notin\{2n-1,2n\}),
+\]
+and extending by the universal \(\ell_1\)-free-monoid construction.  Put
+\(K_n=\ker\pi_n\).  In \(A/K_n\), the cosets of \(s_{2n-1}\) and \(s_{2n}\)
+satisfy
+\[
+        (s_{2n-1}+K_n)(s_{2n}+K_n)=1+K_n,
+\]
+but
+\[
+        (s_{2n}+K_n)(s_{2n-1}+K_n)\ne 1+K_n,
+\]
+because \(\pi_n(s_{2n}s_{2n-1}-1)=RL-I=-p_0\ne0\).  Thus every quotient
+\(A/K_n\) is Dedekind infinite.
+
+It remains to prove \(K_n\to K_\infty\) in the Wijsman topology.  First take
+an element \(y\in A\) with finite support, and suppose all non-empty words in
+its support use only generators among \(s_1,\ldots,s_m\).  If \(2n-1>m\), then
+\(\pi_n(w)=0\) for every non-empty word \(w\) in the support of \(y\), whence
+\[
+        \pi_n(y)=\chi(y)I.
+\]
+Since \(y-\chi(y)1\in K_n\), we get
+\[
+        \dist(y,K_n)\le |\chi(y)|.
+\]
+Conversely, \(\pi_n\) is contractive and vanishes on \(K_n\), so for every
+\(k\in K_n\),
+\[
+        |\chi(y)|=\|\pi_n(y)\|=\|\pi_n(y-k)\|\le \|y-k\|.
+\]
+Hence \(\dist(y,K_n)=|\chi(y)|\) for all sufficiently large \(n\).  The same
+identity holds for \(K_\infty\): \(\dist(y,K_\infty)=|\chi(y)|\), because
+\(\chi\) is a norm-one quotient map onto \(\C\).
+
+Now let \(x\in A\) be arbitrary and choose finite-support \(y\) with
+\(\|x-y\|<\varepsilon\).  Distance to a closed set is 1-Lipschitz in the
+point, so for all sufficiently large \(n\),
+\[
+\begin{aligned}
+|\dist(x,K_n)-\dist(x,K_\infty)|
+&\le |\dist(x,K_n)-\dist(y,K_n)| \\
+&\quad + |\dist(y,K_n)-\dist(y,K_\infty)|
+      + |\dist(y,K_\infty)-\dist(x,K_\infty)| \\
+&\le 2\varepsilon .
+\end{aligned}
+\]
+As \(\varepsilon>0\) is arbitrary, \(\dist(x,K_n)\to\dist(x,K_\infty)\) for
+every \(x\in A\).  Thus \(K_n\to K_\infty\) Wijsman.
+
+We have exhibited a Dedekind finite quotient \(A/K_\infty\) that is a Wijsman
+limit of Dedekind infinite quotients \(A/K_n\).  Therefore the Dedekind finite
+class is not open.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses only the standard free-monoid generator from the source paper
+and the elementary unilateral-shift one-sided inverse \(LR=I\), \(RL\ne I\).
+The Wijsman convergence proof is pointwise on quotient norms, first for
+finite-support elements and then by density of finitely supported elements in
+\(\ell_1(S)\).
+
+\section*{Limitations And Novelty Check}
+
+Cheap run indexes were searched for arXiv:2604.15843, Dedekind finiteness,
+Banach-algebra quotient coding, and related stable-rank/operator-algebra
+keywords.  No prior packet for this source question was found.
+
+This is a partial result for the paper's list of open questions.  It answers
+the non-openness question for the standard unital Banach-algebra quotient
+generator \(A=\ell_1(S)\).  It does not prove an optimal completeness rank, and
+it does not address every possible quotient generator or every admissible
+hyperspace topology.
+
+\section*{References}
+
+\begin{itemize}
+\item T. Kania, \emph{Polish spaces for countable and separable structures
+through quotient encodings}, arXiv:2604.15843.
+\end{itemize}
+
+\section*{Human Review Recommendation}
+
+Check that the source's intended ``present coding'' for Banach algebras includes
+the standard unital free-monoid generator \(A=\ell_1(S)\), and verify the
+quotient-norm convergence calculation.  If accepted, this should be recorded as
+a scoped partial answer to the Dedekind-finiteness item in Section 12.
+
+\end{document}

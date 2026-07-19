@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\iq}{\operatorname{iq}}
+
+\title{Balanced Simplex Joins Interpolate the Vertex Endpoints}
+\author{Candidate partial result for arXiv:2509.13898\\Model: GPT5.6}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: partial result, likely valid.}
+For every $1\le r\le n$ we construct an $n$-polytope with exactly $n+r$
+vertices and isoperimetric quotient $\asymp n/\sqrt r$.  The matching
+universal lower bound remains open.}}
+\end{center}
+
+\section{Source problem}
+
+For a convex body $K\subset\mathbb R^n$, write
+\[
+  \iq(K)=\frac{\vol_{n-1}(\partial K)}{\vol_n(K)^{(n-1)/n}}.
+\]
+Ball, B\"or\"oczky, and Naor ask how the optimal universal lower bound on
+$\iq(K)$ interpolates when an $n$-dimensional polytope has $\beta$ vertices
+with $n+1<\beta<2n$ \cite[Remark~2]{BBN}.  The two endpoints are represented
+by the regular simplex, with quotient of order $n$, and the cross-polytope,
+with quotient of order $\sqrt n$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Remark 2 on page 2 of the source paper.}
+\end{figure}
+
+To state the contribution compactly, define
+\[
+ \mathcal I_n(\beta)=\inf\{\iq(P): P\subset\mathbb R^n
+ \text{ is a convex polytope with exactly $\beta$ vertices}\}.
+\]
+
+\section{Idea of the proof}
+
+The endpoint bodies are themselves joins of regular simplices: one
+$n$-simplex at $r=1$, and the join of $n$ one-dimensional simplices at
+$r=n$, which is the cross-polytope.  The natural interpolation is therefore
+to join $r$ regular simplices whose dimensions are as equal as possible.
+
+The source paper already computes the volume and surface area of an arbitrary
+join (called an $\ell_1$-sum there) \cite[Lemma~12, equations (24)--(26)]{BBN}.
+Scaling a $b$-simplex to inradius $1/\sqrt b$ makes the surface factor from
+that lemma add exactly as $\sqrt{b_1+\cdots+b_r}=\sqrt n$.  What remains is a
+single balanced product.  Stirling's formula turns that product into
+$\sqrt{n/r}$, yielding $n/\sqrt r$ after the surface prefactor is restored.
+
+\section{The partial result}
+
+\begin{theorem}[Balanced simplex-join interpolation]\label{thm:main}
+There are universal constants $c,C>0$ such that for every $n\ge1$ and every
+integer $r$ with $1\le r\le n$, there exists an $n$-dimensional convex
+polytope $K_{n,r}\subset\mathbb R^n$ with exactly $n+r$ vertices and
+\[
+  c\frac{n}{\sqrt r}\le \iq(K_{n,r})\le C\frac{n}{\sqrt r}.
+\]
+In particular,
+\[
+  \mathcal I_n(n+r)\le C\frac{n}{\sqrt r}.
+\]
+\end{theorem}
+
+\begin{proof}
+Choose positive integers $b_1,\ldots,b_r$ with
+\[
+ b_1+\cdots+b_r=n,
+ \qquad b_i\in\{\lfloor n/r\rfloor,\lceil n/r\rceil\}.
+\]
+For each $i$, let $\Delta_i\subset\mathbb R^{b_i}$ be a regular simplex,
+centered at the origin and scaled so that its inradius is
+$h_i=1/\sqrt{b_i}$.  In mutually orthogonal coordinate blocks, form their
+join
+\[
+ K_{n,r}=\operatorname{conv}(\Delta_1'\cup\cdots\cup\Delta_r')
+ \subset \mathbb R^{b_1}\times\cdots\times\mathbb R^{b_r}=\mathbb R^n.
+\]
+This is precisely the $\ell_1$-sum in equation (24) of \cite{BBN}.  The
+vertex count in Lemma 12 of that paper gives
+\[
+  \#\operatorname{vert}(K_{n,r})=
+  \sum_{i=1}^r(b_i+1)=n+r.
+\]
+
+We next record the simplex normalization.  A regular $b$-simplex of side
+length $a$ has volume
+\[
+ \frac{a^b\sqrt{b+1}}{b!\sqrt{2^b}}
+ \quad\text{and inradius}\quad
+ \frac{a}{\sqrt{2b(b+1)}}.
+\]
+Consequently, a regular $b$-simplex with inradius $h$ has volume
+\[
+ \frac{h^b b^{b/2}(b+1)^{(b+1)/2}}{b!}.
+\]
+At $h=1/\sqrt b$ this becomes
+\begin{equation}\label{eq:simplex-volume}
+ b!\,\vol_b(\Delta_i)=(b+1)^{(b+1)/2}.
+\end{equation}
+
+Let
+\[
+  P=\prod_{i=1}^r (b_i+1)^{(b_i+1)/2}.
+\]
+The volume and surface formulas (25) and (26) of \cite{BBN}, together with
+\eqref{eq:simplex-volume} and $\sum_i h_i^{-2}=\sum_i b_i=n$, give
+\[
+ \vol_n(K_{n,r})=\frac{P}{n!},
+ \qquad
+ \vol_{n-1}(\partial K_{n,r})
+   =\frac{\sqrt n\,P}{(n-1)!}
+   =n\sqrt n\,\vol_n(K_{n,r}).
+\]
+It follows exactly that
+\begin{equation}\label{eq:exact-iq}
+ \iq(K_{n,r})
+   =n\sqrt n\left(\frac{P}{n!}\right)^{1/n}.
+\end{equation}
+
+Put $m=n/r\ge1$.  Balance of the blocks implies
+\[
+ m\le b_i+1\le m+2\le3m,
+ \qquad
+ \sum_{i=1}^r(b_i+1)=n+r=n\left(1+\frac1m\right).
+\]
+Therefore
+\[
+ \sqrt m
+ \le P^{1/n}
+ \le (3m)^{(1+1/m)/2}
+ \le 3\sqrt m,
+\]
+where the last constant is universal.  Stirling's formula gives
+$(n!)^{1/n}\asymp n$.  Substitution into \eqref{eq:exact-iq} yields
+\[
+ \iq(K_{n,r})\asymp \sqrt n\,\sqrt m
+ =\frac{n}{\sqrt r},
+\]
+as claimed.
+\end{proof}
+
+\begin{corollary}[Current bracket for the open interpolation]\label{cor:bracket}
+For $1\le r\le n$,
+\[
+ c\sqrt n\le \mathcal I_n(n+r)\le C\frac{n}{\sqrt r}.
+\]
+The lower estimate is the classical Euclidean isoperimetric inequality.
+\end{corollary}
+
+\section{Verification notes}
+
+Three checks are especially diagnostic.
+\begin{enumerate}[leftmargin=2em]
+\item If $r=1$, then $b_1=n$ and \eqref{eq:exact-iq} is the regular-simplex
+formula in equation (11) of \cite{BBN}, asymptotic to $en$.
+\item If $r=n$, then every $b_i=1$ and the join is the cross-polytope.
+Equation \eqref{eq:exact-iq} becomes
+$2n\sqrt n/(n!)^{1/n}\sim2e\sqrt n$, again matching equation (11).
+\item The first part of Lemma 12, namely equations (24)--(26), does not
+require origin symmetry.  Origin symmetry is imposed only for the later
+affine-minimality formula (27), which is not used here.
+\end{enumerate}
+
+The script \texttt{code/verify\_formula.py} evaluates the logarithmic form of
+\eqref{eq:exact-iq} for all $1\le r\le n\le500$.  This finite computation is
+only a consistency audit; the proof above is uniform and noncomputational.
+
+\section{Limitations and novelty check}
+
+The theorem supplies an interpolating \emph{upper construction} for the
+extremal infimum.  It does not establish the conjecturally matching statement
+that every $n$-polytope with $n+r$ vertices satisfies
+$\iq(K)\gtrsim n/\sqrt r$.  Thus Remark 2 remains open.
+
+Before promotion, the run's registry, solution, attempt, and proof-gap indexes
+were searched for the source id and the vertex-interpolation terminology.
+Exact web/arXiv searches for ``$n+r$ vertices,'' ``isoperimetric quotient,''
+``join,'' and the scale $n/\sqrt r$ found the source paper but no occurrence
+of this construction.  This was a bounded search rather than a complete
+MathSciNet or zbMATH audit, so the novelty assessment is provisional.  The
+source uses Lemma 12 for symmetric cube blocks in the regime of at least
+$2n$ vertices; it does not state the balanced-simplex application above.
+
+\begin{thebibliography}{9}
+\bibitem{BBN}
+K. Ball, K. J. B\"or\"oczky, and A. Naor,
+\emph{Approximate isoperimetry for convex polytopes},
+arXiv:2509.13898 (2025), especially Remark 2 and Lemma 12.
+\end{thebibliography}
+
+\end{document}

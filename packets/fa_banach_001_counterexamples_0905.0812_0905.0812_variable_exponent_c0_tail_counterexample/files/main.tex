@@ -1,0 +1,224 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\ellp}{\ell^{p(\cdot)}}
+\newcommand{\cnull}{c_0}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+
+\title{A \(c_0\)-Vector Outside the Closed Span in a Variable-Exponent Sequential Space}
+\author{Agent lane 05}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target}
+
+The source paper is Talponen, \emph{Constructions of sequential spaces},
+arXiv:0905.0812 \cite{Talponen}.  It introduces the sequential
+variable-exponent spaces
+\[
+  \ell^{p(\cdot)}
+  =\{x\in\ell^\infty:\Phi(x)<\infty\},
+\]
+where, for \(p:\N\to[1,\infty]\),
+\[
+  |||x|||_{(1)}=|x_1|\boxplus_{p(1)} |x_2|,\qquad
+  |||x|||_{(k)}=|||x|||_{(k-1)}\boxplus_{p(k)} |x_{k+1}|,
+\]
+and \(\Phi(x)=\lim_k |||x|||_{(k)}\).  Here
+\(a\boxplus_r b=(a^r+b^r)^{1/r}\) for finite \(r\).
+
+On page 8 the paper repeats the following open problem:
+\begin{quote}
+Does \(\ell^{p(\cdot)}\cap c_0\) always coincide with
+\([(e_n)]\subset \ell^{p(\cdot)}\)?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+The answer is negative.  We construct a finite-valued exponent map
+\(p:\N\to[2,\infty)\) and a vector \(x\in \ell^{p(\cdot)}\cap c_0\) such
+that \(x\notin[(e_n)]\).
+
+\section*{Proof Intuition}
+
+The obstruction is that membership in the closed span \([(e_n)]\) requires
+the coordinate tails \(Q_nx=x-P_nx\) to vanish in the \(\ell^{p(\cdot)}\)
+norm.  We build \(x\) from blocks.  Inside block \(j\) the exponent is very
+large, \(r_j=j+1\), and there are \(j^{r_j}\) equal coordinates \(c/j\).
+Viewed by itself, the block has norm exactly \(c\), so tails starting at the
+block never become small.  Viewed after the previously accumulated initial
+segment, however, the same block contributes only \(c^{r_j}\) under an
+\(r_j\)-root.  Since \(\sum_j c^{r_j}/r_j<\infty\), the global recursive norm
+remains bounded.
+
+\begin{lemma}\label{lem:tail-characterization}
+For every \(p:\N\to[1,\infty]\) and every \(y\in\ell^{p(\cdot)}\),
+\[
+  y\in[(e_n)] \quad\Longleftrightarrow\quad
+  \norm{Q_ny}_{\ell^{p(\cdot)}}\to0.
+\]
+\end{lemma}
+
+\begin{proof}
+The implication from right to left is immediate because \(P_ny\) is finitely
+supported and
+\[
+  y-P_ny=Q_ny\to0.
+\]
+Conversely, suppose \(y\in[(e_n)]\).  Given \(\varepsilon>0\), choose a
+finitely supported vector \(z\), supported in \(\{1,\ldots,N\}\), such that
+\(\norm{y-z}_{\ell^{p(\cdot)}}<\varepsilon\).  For \(n\ge N\), \(Q_nz=0\).
+The recursive norm is coordinatewise monotone in the absolute values of the
+coordinates, so every coordinate projection, including \(Q_n\), is
+contractive.  Hence
+\[
+  \norm{Q_ny}_{\ell^{p(\cdot)}}=\norm{Q_n(y-z)}_{\ell^{p(\cdot)}}
+  \le \norm{y-z}_{\ell^{p(\cdot)}}<\varepsilon
+\]
+for all \(n\ge N\).
+\end{proof}
+
+\begin{theorem}\label{thm:counterexample}
+There are \(p:\N\to[2,\infty)\) and
+\[
+  x\in \ell^{p(\cdot)}\cap c_0
+\]
+such that \(x\notin[(e_n)]\).  Therefore
+\(\ell^{p(\cdot)}\cap c_0\) need not coincide with
+\([(e_n)]\subset\ell^{p(\cdot)}\).
+\end{theorem}
+
+\begin{proof}
+Fix \(0<c<1\), for instance \(c=1/2\).  Put
+\[
+  r_j=j+1,\qquad m_j=j^{r_j}\qquad (j\ge1).
+\]
+Let \(N_1=2\) and \(N_{j+1}=N_j+m_j\).  The \(j\)-th block of coordinates is
+\[
+  B_j=\{N_j,N_j+1,\ldots,N_{j+1}-1\}.
+\]
+Define \(x\in\ell^\infty\) by
+\[
+  x_1=1,\qquad x_n=\frac{c}{j}\quad\text{if }n\in B_j.
+\]
+Since \(c/j\to0\), \(x\in c_0\).
+
+Define \(p:\N\to[2,\infty)\) by
+\[
+  p(k)=r_j\quad\text{whenever}\quad N_j-1\le k\le N_{j+1}-2.
+\]
+These intervals partition \(\N\), so \(p\) is well defined.
+
+Let \(A_j\) be the norm of the initial segment consisting of \(x_1\) and the
+first \(j\) whole blocks; equivalently
+\[
+  A_j=\norm{P_{N_{j+1}-1}x}_{\ell^{p(\cdot)}}.
+\]
+Then \(A_0=1\).  Since every exponent used while appending block \(j\) is
+\(r_j\),
+\[
+  A_j
+  =\left(A_{j-1}^{r_j}+m_j\left(\frac cj\right)^{r_j}\right)^{1/r_j}
+  =\left(A_{j-1}^{r_j}+c^{r_j}\right)^{1/r_j}.
+\]
+As \(A_{j-1}\ge1\),
+\[
+  A_j
+  =A_{j-1}\left(1+\left(\frac{c}{A_{j-1}}\right)^{r_j}\right)^{1/r_j}
+  \le A_{j-1}(1+c^{r_j})^{1/r_j}.
+\]
+Therefore
+\[
+  A_j\le \prod_{i=1}^j(1+c^{r_i})^{1/r_i}.
+\]
+The infinite product converges because
+\[
+  \sum_{i=1}^\infty \frac{\log(1+c^{r_i})}{r_i}
+  \le \sum_{i=1}^\infty \frac{c^{r_i}}{r_i}<\infty.
+\]
+All finite prefixes inside a block have norm at most the norm after the whole
+block.  Hence \(\sup_n\norm{P_nx}_{\ell^{p(\cdot)}}<\infty\), so
+\(x\in\ell^{p(\cdot)}\).
+
+It remains to show that \(x\notin[(e_n)]\).  Consider the tail starting just
+before block \(j\), namely \(Q_{N_j-1}x\).  The finite projection of this tail
+onto the coordinates in \(B_j\) has all earlier coordinates equal to zero,
+then \(m_j\) coordinates equal to \(c/j\), and all relevant exponents equal
+to \(r_j\).  Its norm is
+\[
+  \left(m_j\left(\frac cj\right)^{r_j}\right)^{1/r_j}=c.
+\]
+By coordinatewise monotonicity,
+\[
+  \norm{Q_{N_j-1}x}_{\ell^{p(\cdot)}}\ge c
+\]
+for every \(j\).  Thus the tails of \(x\) do not tend to zero in norm.
+Lemma \ref{lem:tail-characterization} gives \(x\notin[(e_n)]\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The construction uses only finite exponents \(p(k)\ge2\), so it fits the
+source paper's setting \(p:\N\to[1,\infty]\), and also the broader
+\((0,\infty)\)-valued wording of the final open-problem list.
+
+A small script, \texttt{code/block\_counterexample\_check.py}, prints the first few
+values of the block recurrence
+\[
+  A_j=(A_{j-1}^{j+1}+c^{j+1})^{1/(j+1)}
+\]
+and the fixed lower bound \(c\) for the selected block tails.  This is only a
+sanity check for the displayed formulas; the convergence proof above is
+analytic.
+
+\section*{Novelty And Search Bounds}
+
+Before promotion, the run's registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:0905.0812, the paper title, Talponen, and the core
+phrases around \(\ell^{p(\cdot)}\cap c_0\) and \([(e_n)]\).  No existing
+solution packet or serious prior attempt for this question was found.
+
+External web searches on 2026-06-15 used exact and near-exact phrases
+including
+\[
+\text{``Constructions of sequential spaces'' Talponen ``c\_0'' ``[(e\_n)]''},
+\]
+\[
+\text{``ell\string^{p(\textbackslash cdot)}'' ``c\_0'' ``[(e\_n)]''},
+\]
+and
+\[
+\text{``variable exponent sequential spaces'' Talponen}.
+\]
+These searches surfaced the source paper but no later explicit answer to this
+equality question.  The packet should therefore be read as a candidate new
+counterexample with medium novelty confidence, pending broader human
+literature review.
+
+\section*{Human Review Recommendation}
+
+Review as a candidate full negative answer to the second open problem in
+\cite{Talponen}.  The main checks are the indexing of the block exponents, the
+contractivity of coordinate projections under the recursive norm, and the
+tail-norm characterization in Lemma \ref{lem:tail-characterization}.
+
+\begin{thebibliography}{9}
+\bibitem{Talponen}
+J. Talponen,
+\emph{Constructions of sequential spaces},
+arXiv:0905.0812, 2009.
+\end{thebibliography}
+
+\end{document}

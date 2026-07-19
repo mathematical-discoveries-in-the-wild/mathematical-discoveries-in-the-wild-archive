@@ -1,0 +1,324 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\muZ}{\mu_Z}
+\sloppy
+
+\title{A De-Poissonization Reduction for the UMD Case of Remark 12.10}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a conditional reduction for Remark 12.10 of Yaroslavtsev's paper
+\emph{Local characteristics and tangency of vector-valued martingales}
+\cite{Yaroslavtsev2019}.  It does not prove the broad UMD case.  It isolates
+a single symmetric de-Poissonization estimate whose verification for all UMD
+spaces would settle the remaining discrete aggregate-domination bottleneck.
+
+The lane context is now as follows.  The broad Banach-space statement is false
+in \(c_0\).  The Hilbert-valued case is solved for every finite \(p\).  The
+\(L^q(S)\)-valued case is solved for all \(1<q<\infty\) and all \(p\ge1\).
+The remaining question is whether UMD geometry alone forces the same
+de-Poissonization phenomenon that Hilbert and \(L^q\) spaces enjoy.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source states
+that the general local-martingale case is open and reduces the missing issue
+to independent increments.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The continuation gives the aggregate-domination formulation and says that even
+the symmetric case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{The Conditional Property}
+
+Let \(X\) be a Banach space.  If \(Z_1,\ldots,Z_n\) are independent symmetric
+\(X\)-valued random variables, put
+\[
+  \mu_Z=\sum_{i=1}^n \mathcal L(Z_i)|_{X\setminus\{0\}}.
+\]
+Let \(\Pi_{\mu_Z}\) denote the compound-Poisson \(X\)-valued random variable
+whose intensity measure is \(\mu_Z\).  Equivalently, if
+\[
+  Z_i=B_i U_i,\qquad p_i=\Pp(Z_i\ne0),
+\]
+where \(B_i\) is Bernoulli \(p_i\) and \(U_i\) has the conditional law of
+\(Z_i\) given \(Z_i\ne0\), then
+\[
+  \Pi_{\mu_Z}
+  =
+  \sum_i\sum_{k=1}^{N_i} U_{i,k},
+\]
+where \(N_i\) are independent Poisson variables with means \(p_i\), and
+\((U_{i,k})\) are independent copies of \(U_i\).  Since the \(Z_i\) are
+symmetric, \(\Pi_{\mu_Z}\) is symmetric and mean zero whenever the relevant
+first moment exists.
+
+\begin{definition}[Symmetric \(p\) de-Poissonization]
+Let \(1\le p<\infty\).  Say that \(X\) has symmetric \(p\)
+de-Poissonization if there is a constant \(D_{p,X}\) such that every finite
+independent symmetric family \(Z_1,\ldots,Z_n\) with finite \(p\)-moments
+satisfies
+\[
+  \left(\E\norm{\Pi_{\mu_Z}}^p\right)^{1/p}
+  \le
+  D_{p,X}
+  \left(\E\norm{\sum_i Z_i}^p\right)^{1/p}.
+\]
+\end{definition}
+
+\section*{Main Conditional Reduction}
+
+\begin{theorem}
+\label{thm:conditional}
+Fix \(1\le p<\infty\).  If \(X\) has symmetric \(p\) de-Poissonization, then
+the symmetric discrete aggregate-domination problem in Remark 12.10 holds in
+\(X\): whenever \((\xi_i)\) and \((\eta_j)\) are finite independent symmetric
+\(X\)-valued families and
+\[
+  \sum_i \Pp(\xi_i\in B)
+  \le
+  \sum_j \Pp(\eta_j\in B),
+  \qquad B\in\mathcal B(X\setminus\{0\}),
+\]
+one has
+\[
+  \left(\E\norm{\sum_i\xi_i}^p\right)^{1/p}
+  \le
+  2D_{p,X}
+  \left(\E\norm{\sum_j\eta_j}^p\right)^{1/p}.
+\]
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+Aggregate domination is awkward for Bernoulli sums because each original
+increment can occur at most once.  It becomes natural after Poissonization:
+if \(\mu_\xi\le\mu_\eta\), then the compound-Poisson sum with intensity
+\(\mu_\eta\) is the sum of an independent copy of the compound-Poisson sum
+with intensity \(\mu_\xi\) and an independent symmetric remainder.
+
+Thus two facts suffice.  First, for symmetric families, the original Bernoulli
+sum is universally controlled by its Poissonized aggregate.  Second, the
+assumed de-Poissonization property controls the Poissonized dominating family
+by the original dominating family.  The first fact is where the threshold
+\(1-e^{-1}>1/2\) reappears from the \(L^q\) endpoint packet; unlike the
+positive \(L^q\) proof, no lattice order is needed because symmetry and
+Jensen replace positivity.
+
+\section*{Proof}
+
+\begin{lemma}[Lower Poissonization for symmetric sums]
+\label{lem:lower}
+For every Banach space \(X\), every \(1\le p<\infty\), and every finite
+independent symmetric family \(Z_1,\ldots,Z_n\),
+\[
+  \left(\E\norm{\sum_i Z_i}^p\right)^{1/p}
+  \le
+  2
+  \left(\E\norm{\Pi_{\mu_Z}}^p\right)^{1/p}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(Z_i=B_iU_i\), where \(B_i\) is Bernoulli \(p_i=\Pp(Z_i\ne0)\), and
+\(U_i\) has the conditional symmetric law of \(Z_i\) given \(Z_i\ne0\).  Let
+\(R_i\) be independent Bernoulli variables with common parameter
+\[
+  c=1-e^{-1}>1/2.
+\]
+Set \(S=\sum_i B_iU_i\) and \(S_R=\sum_i R_iB_iU_i\).  Since
+\[
+  S=S_R+\sum_i(1-R_i)B_iU_i,
+\]
+the triangle inequality in \(L^p(\Omega;X)\) gives
+\[
+  \norm{S}_{L^p}
+  \le
+  \norm{S_R}_{L^p}
+  +
+  \left\|\sum_i(1-R_i)B_iU_i\right\|_{L^p}.
+\]
+Because \(1-c<c\), the second thinning can be coupled as a sub-thinning of
+the first.  For symmetric independent summands, adding back an independent
+symmetric remainder can only increase the \(L^p\)-norm by Jensen's inequality.
+Hence
+\[
+  \left\|\sum_i(1-R_i)B_iU_i\right\|_{L^p}\le \norm{S_R}_{L^p},
+\]
+and therefore \(\norm{S}_{L^p}\le2\norm{S_R}_{L^p}\).
+
+Now let \(N_i\) be independent Poisson variables with means \(p_i\).  Since
+\[
+  \Pp(N_i\ge1)=1-e^{-p_i}\ge (1-e^{-1})p_i=cp_i,
+  \qquad 0\le p_i\le1,
+\]
+the first nonzero Poisson layer can be coupled as \(S_R\) plus an independent
+symmetric remainder.  Jensen's inequality again gives
+\[
+  \norm{S_R}_{L^p}
+  \le
+  \left\|\sum_i \mathbf 1_{\{N_i\ge1\}}U_{i,1}\right\|_{L^p}
+  \le
+  \norm{\Pi_{\mu_Z}}_{L^p}.
+\]
+Combining the two estimates proves the lemma.
+\end{proof}
+
+\begin{lemma}[Poisson monotonicity under symmetric aggregate domination]
+\label{lem:monotone}
+Let \(\mu\le\nu\) be finite symmetric Borel measures on \(X\setminus\{0\}\),
+and let \(\Pi_\mu,\Pi_\nu\) be the corresponding compound-Poisson sums.  Then
+\[
+  \norm{\Pi_\mu}_{L^p}\le \norm{\Pi_\nu}_{L^p}.
+\]
+\end{lemma}
+
+\begin{proof}
+By Poisson superposition, \(\Pi_\nu\) has the same law as
+\(\Pi_\mu+\Pi_{\nu-\mu}\), where the two terms are independent.  The measure
+\(\nu-\mu\) is symmetric, so \(\Pi_{\nu-\mu}\) is mean zero whenever integrable.
+Conditioning on \(\Pi_\mu\) and applying Jensen's inequality to the convex map
+\(x\mapsto\norm{x}^p\) yields the claim.  The general finite \(p\)-moment case
+follows by the usual truncation at \(\norm{x}\le R\) and monotone convergence.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:conditional}]
+Let
+\[
+  \mu_\xi=\sum_i\mathcal L(\xi_i)|_{X\setminus\{0\}},
+  \qquad
+  \mu_\eta=\sum_j\mathcal L(\eta_j)|_{X\setminus\{0\}}.
+\]
+The hypothesis is \(\mu_\xi\le\mu_\eta\).  Lemma \ref{lem:lower} gives
+\[
+  \left(\E\norm{\sum_i\xi_i}^p\right)^{1/p}
+  \le
+  2\norm{\Pi_{\mu_\xi}}_{L^p}.
+\]
+By Lemma \ref{lem:monotone},
+\[
+  \norm{\Pi_{\mu_\xi}}_{L^p}\le \norm{\Pi_{\mu_\eta}}_{L^p}.
+\]
+Finally, symmetric \(p\) de-Poissonization for the family \((\eta_j)\) gives
+\[
+  \norm{\Pi_{\mu_\eta}}_{L^p}
+  \le
+  D_{p,X}
+  \left(\E\norm{\sum_j\eta_j}^p\right)^{1/p}.
+\]
+Combining the three estimates proves the theorem.
+\end{proof}
+
+\section*{Relation to the General UMD Case}
+
+Yaroslavtsev's Remark 12.10 says that, by a standard symmetrization trick
+\cite[Lemma 6.3]{LedouxTalagrand}, the discrete problem may be reduced to the
+symmetric case.  Therefore the broad UMD problem is reduced to the following
+geometric question.
+
+\begin{quote}
+Does every UMD Banach space have symmetric \(p\) de-Poissonization for every
+\(1\le p<\infty\)?
+\end{quote}
+
+This formulation also explains the existing lane results.  Hilbert spaces have
+the property by square-function identities, Rosenthal estimates, and the
+fractional-moment Laplace comparison used in the Hilbert packet.  The spaces
+\(L^q(S)\), \(1<q<\infty\), have it by the Dirksen--Yaroslavtsev
+Burkholder--Rosenthal formula for \(p>1\) and by the positive
+\(L^{q/2}\) Poissonization argument at the endpoint \(p=1\).  The \(c_0\)
+counterexample is exactly a failure of de-Poissonization: the deterministic
+Rademacher sum \(\sum_{k=1}^N\varepsilon_ke_k\) has \(c_0\)-norm \(1\), while
+the Poissonized or with-replacement version has signed occupancy maximum of
+order \(\log N/\log\log N\).
+
+\section*{Literature and Search Notes}
+
+The bounded search for this push used the local run indexes for
+\texttt{1907.11588}, \texttt{Remark 12.10}, \texttt{aggregate domination},
+\texttt{UMD}, \texttt{Poissonization}, and \texttt{de-Poissonization}.  Web
+and local source searches also checked Montgomery-Smith--Pruss
+\cite{MontgomerySmithPruss}, Hitczenko--Montgomery-Smith
+\cite{HitczenkoMontgomerySmithNote,HitczenkoMontgomerySmithMagnitude}, and
+Banach-space type/cotype context from Hyt\"onen--McIntosh--Portal
+\cite{HytonenMcIntoshPortal}.  Montgomery-Smith--Pruss give the universal
+one-sided comparison from a heterogeneous independent family to an iid
+aggregate model, but they explicitly note that the converse tail inequality
+fails even for symmetric real variables.  The present packet isolates the
+moment-level converse needed after imposing UMD geometry.
+
+\section*{Limitations}
+
+This packet is conditional.  It does not prove that every UMD space has
+symmetric \(p\) de-Poissonization.  It also does not give a UMD
+counterexample.  The next decisive step is either:
+\begin{itemize}
+\item prove symmetric de-Poissonization from UMD geometry, perhaps through
+      \(K\)-convexity, finite cotype, or a random-coordinate thinning theorem
+      for Rademacher sums; or
+\item construct a UMD space and a finite vector/law list for which the
+      Poissonized aggregate has unbounded \(L^p\)-norm relative to the original
+      independent symmetric sum.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev.
+\newblock \emph{Local characteristics and tangency of vector-valued martingales}.
+\newblock arXiv:1907.11588, 2019.
+
+\bibitem{LedouxTalagrand}
+M. Ledoux and M. Talagrand.
+\newblock \emph{Probability in Banach Spaces}.
+\newblock Springer, 1991.
+
+\bibitem{MontgomerySmithPruss}
+S. J. Montgomery-Smith and A. R. Pruss.
+\newblock \emph{A comparison inequality for sums of independent random variables}.
+\newblock arXiv:math/9811124, 1998.
+
+\bibitem{HitczenkoMontgomerySmithNote}
+P. Hitczenko and S. J. Montgomery-Smith.
+\newblock \emph{A note on sums of independent random variables}.
+\newblock arXiv:math/9804068, 1998.
+
+\bibitem{HitczenkoMontgomerySmithMagnitude}
+P. Hitczenko and S. J. Montgomery-Smith.
+\newblock \emph{Measuring the magnitude of sums of independent random variables}.
+\newblock arXiv:math/9909054, 1999.
+
+\bibitem{HytonenMcIntoshPortal}
+T. Hyt\"onen, A. McIntosh, and P. Portal.
+\newblock \emph{Kato's square root problem in Banach spaces}.
+\newblock arXiv:0703012, 2007.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,257 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Lp}{L_p[0,1]}
+\newcommand{\ellr}{\ell_r}
+\newcommand{\ells}{\ell_s}
+\newcommand{\SSone}{\mathcal S_1}
+\newcommand{\SSing}{\mathcal S}
+\newcommand{\FSS}{\mathcal{FSS}}
+\newcommand{\oplusell}[2]{\left(\bigoplus_{n=1}^{\infty} #1_n\right)_{\ell_{#2}}}
+
+\title{A Schreier-Rank Obstruction to Approximate \texorpdfstring{$(\ell_r,\ell_s)$}{(ell_r,ell_s)} Factorization}
+\author{Run \texttt{fa\_banach\_001}, lane 6}
+\date{2026-06-19}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a conditional reduction packet.  The proved part is a necessary
+condition for the approximate factorization asked about by Mathieu and
+Tradacete in Remark 6.11 of \cite{MT}.  The packet does not prove that the
+needed counterexample operator exists on $L_p$.
+
+\section*{Source Question}
+
+Mathieu and Tradacete ask the following in Remark 6.11 of
+\cite{MT}.  The crop below is from page 16 of the source PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In text form, the first question asks whether every
+$T\in\SSing(L_p)$ is approximately $(\ell_r,\ell_s)$-factorizable for
+some $r<s$.  The stronger version asks whether, for every $\varepsilon>0$,
+one may factor $T$ within $\varepsilon$ through
+\[
+  \oplusell{X}{r(\varepsilon)}
+  \longrightarrow
+  \oplusell{Y}{s(\varepsilon)}
+\]
+for finite-dimensional spaces $X_n,Y_n$ and $r(\varepsilon)<s(\varepsilon)$.
+
+\section*{Definitions}
+
+Let $\mathcal S_1$ denote the first Schreier family:
+\[
+  \mathcal S_1=\{F\subset \mathbb N:\; F\text{ finite and } |F|\leq \min F\}.
+\]
+An operator $A:E\to F$ is $\mathcal S_1$-strictly singular if, for every
+normalized basic sequence $(x_n)$ in $E$ and every $\eta>0$, there are
+$G\in\mathcal S_1$ and $0\ne x\in [x_n]_{n\in G}$ such that
+\[
+  \|Ax\|\leq \eta\|x\|.
+\]
+Androulakis, Dodos, Sirotkin, and Troitsky prove the standard properties
+we use: the class is norm closed and stable under composition with bounded
+operators, and every operator $\ell_r\to\ell_s$ belongs to
+$\mathcal S_1(\ell_r,\ell_s)$ when $1<r<s<\infty$ \cite{ADST}.
+
+\section*{Proof Intuition}
+
+The source factorization has a hidden rank restriction.  The middle space
+changes from an $\ell_r$ geometry to an $\ell_s$ geometry with $r<s$.  On
+long disjoint blocks, normalized sums in the domain have size $N^{1/r}$,
+while their images in the target have size at most on the order of
+$N^{1/s}$.  Since $1/s<1/r$, long Schreier-admissible averages force the
+middle map to be $\mathcal S_1$-strictly singular.  Composition and norm
+closure then pass this property to every operator obtained by the proposed
+approximate factorization.
+
+This explains why finite strict singularity is the wrong obstruction:
+arbitrary maps $\ell_r\to\ell_s$ may fail to be finitely strictly singular,
+but they still have the first Schreier small-vector property.
+
+\section*{Main Lemma}
+
+\begin{lemma}\label{lem:fdd-middle}
+Let $1<r<s<\infty$, let $(X_n)$ and $(Y_n)$ be finite-dimensional Banach
+spaces, and set
+\[
+  E=\oplusell{X}{r},\qquad F=\oplusell{Y}{s}.
+\]
+Then every bounded operator $U:E\to F$ is $\mathcal S_1$-strictly singular.
+\end{lemma}
+
+\begin{proof}
+This is the finite-dimensional-decomposition version of the standard
+gliding-hump proof for operators $\ell_r\to\ell_s$; compare
+\cite[Example 2.4]{ADST}.  Let $(x_k)$ be a normalized basic sequence in
+$E$ and fix $\eta>0$.  Since $E$ is reflexive and has a finite-dimensional
+decomposition, the Bessaga-Pelczynski selection principle and the usual
+sliding-hump reduction allow us, after passing to a subsequence and, if
+necessary, to a seminormalized difference sequence, to prove the estimate for
+a normalized block sequence of the FDD.  Passing to such a block sequence
+preserves Schreier admissibility, since the original indices only increase.
+
+Thus suppose $(x_k)$ is a normalized block sequence in $E$.  If
+$\inf_k\|Ux_k\|=0$, a singleton Schreier set gives the conclusion.  Otherwise
+pass to a subsequence so that $(Ux_k)$ is seminormalized.  A second
+gliding-hump argument in the finite-dimensional decomposition of $F$ gives a
+block sequence $(y_k)$ in $F$ and a summable positive sequence $(\delta_k)$
+such that
+\[
+  \|Ux_k-y_k\|\leq \delta_k,\qquad \sup_k\|y_k\|=:M<\infty .
+\]
+For $N\in\mathbb N$ put
+\[
+  z_N=\sum_{k=N+1}^{2N} x_k .
+\]
+The set $\{N+1,\ldots,2N\}$ belongs to $\mathcal S_1$.  Since $(x_k)$ is a
+normalized block sequence in an $\ell_r$-sum,
+\[
+  \|z_N\|=N^{1/r}.
+\]
+Also, using that $(y_k)$ is a block sequence in an $\ell_s$-sum,
+\[
+  \|Uz_N\|
+  \leq \left\|\sum_{k=N+1}^{2N} y_k\right\|
+       +\sum_{k=N+1}^{2N}\delta_k
+  \leq M N^{1/s}+\sum_{k=N+1}^{2N}\delta_k .
+\]
+Therefore
+\[
+  \frac{\|Uz_N\|}{\|z_N\|}
+  \leq M N^{1/s-1/r}
+      +N^{-1/r}\sum_{k=N+1}^{2N}\delta_k
+  \longrightarrow 0.
+\]
+Choose $N$ large enough that this ratio is at most $\eta$.  This gives the
+required Schreier vector.
+\end{proof}
+
+\section*{Necessary Condition}
+
+\begin{theorem}\label{thm:necessary}
+Let $X$ be a Banach space.  Suppose $T\in\mathcal L(X)$ is a norm limit of
+operators of the form
+\[
+  X \xrightarrow{A_\varepsilon}
+  \oplusell{X^\varepsilon}{r_\varepsilon}
+  \xrightarrow{U_\varepsilon}
+  \oplusell{Y^\varepsilon}{s_\varepsilon}
+  \xrightarrow{B_\varepsilon}
+  X,
+\]
+where $1<r_\varepsilon<s_\varepsilon<\infty$ and all
+$X^\varepsilon_n,Y^\varepsilon_n$ are finite-dimensional.  Then
+$T\in\mathcal S_1(X)$.
+\end{theorem}
+
+\begin{proof}
+By Lemma \ref{lem:fdd-middle}, each middle operator $U_\varepsilon$ is
+$\mathcal S_1$-strictly singular.  The ideal property of
+$\mathcal S_1$-strict singularity implies that
+$B_\varepsilon U_\varepsilon A_\varepsilon$ is $\mathcal S_1$-strictly
+singular on $X$.  Since $\mathcal S_1(X)$ is norm closed
+\cite[Proposition 2.2]{ADST}, the norm limit $T$ is also
+$\mathcal S_1$-strictly singular.
+\end{proof}
+
+\begin{corollary}\label{cor:counterexample-reduction}
+Fix $1<p<\infty$, $p\ne2$.  If there exists an operator
+\[
+  T\in \SSing(L_p)\setminus \mathcal S_1(L_p),
+\]
+then $T$ is not approximately factorizable in the sense of Remark 6.11 of
+\cite{MT}, in the reflexive exponent range $1<r<s<\infty$, even allowing the
+finite-dimensional-sum formulation.
+\end{corollary}
+
+\begin{proof}
+The proposed factorization would put $T$ in $\mathcal S_1(L_p)$ by Theorem
+\ref{thm:necessary}, contradicting the choice of $T$.
+\end{proof}
+
+\section*{Conditional Dependencies}
+
+The proof above is complete as a necessary-condition theorem.  To turn the
+packet into a negative answer to the source question, one still needs the
+following unproved dependency:
+\[
+  \text{construct } T\in\SSing(L_p)\setminus\mathcal S_1(L_p).
+\]
+No such operator was proved in this loop.  The packet should therefore remain
+classified as a conditional reduction.
+
+The exponent range is also part of the scope: the proof uses reflexivity of
+the $\ell_r$-sum and the finite-dimensional-decomposition gliding-hump
+reduction for $1<r<s<\infty$.  Endpoint variants such as $r=1$ or
+$s=\infty$, if intended, require separate verification.
+
+\section*{Why Finite Strict Singularity Does Not Work}
+
+One might try to replace $\mathcal S_1$ by finite strict singularity.  That
+would be too strong.  Androulakis-Dodos-Sirotkin-Troitsky record that, for
+$1<r<s<\infty$,
+\[
+  \FSS(\ell_r,\ell_s)\ne \SSing(\ell_r,\ell_s)=\mathcal L(\ell_r,\ell_s)
+\]
+\cite[Example 2.5]{ADST}.  Thus the source definition, whose middle leg is an
+arbitrary bounded map $\ell_r\to\ell_s$, already permits non-FSS behavior in
+the middle.  The correct necessary obstruction supplied here is the weaker
+Schreier-rank condition $\mathcal S_1$.
+
+\section*{Literature and Duplicate Checks}
+
+The cheap run indexes were searched for arXiv id \texttt{1810.09194}, the
+title phrase ``Strictly singular multiplication operators'', and the terms
+``approximately factorizable'', ``ell\_r ell\_s'', and ``strictly singular
+multiplication''.  No direct packet for this source question was found.
+
+Targeted web searches for the exact approximate-factorization phrases found
+the source paper but no later direct answer.  The supporting Schreier-singular
+facts used here come from arXiv:math/0609039 \cite{ADST}; this is a tool
+combination, not a literature answer to Remark 6.11.
+
+\section*{Human Review Recommendation}
+
+Review the two standard reductions used in Lemma \ref{lem:fdd-middle}: the
+Bessaga-Pelczynski passage from a basic sequence in an FDD space to a block or
+difference block sequence, and the gliding-hump approximation of its image by
+a block sequence in the target FDD.  If those are accepted, Theorem
+\ref{thm:necessary} follows directly from the closed ideal property of
+$\mathcal S_1$-strict singularity.
+
+\begin{thebibliography}{9}
+
+\bibitem{MT}
+M. Mathieu and P. Tradacete,
+\emph{Strictly singular multiplication operators on $\mathcal L(X)$},
+arXiv:1810.09194, 2018.
+
+\bibitem{ADST}
+G. Androulakis, P. Dodos, G. Sirotkin, and V. G. Troitsky,
+\emph{Classes of strictly singular operators and their products},
+arXiv:math/0609039, 2006.
+
+\bibitem{BP}
+C. Bessaga and A. Pelczynski,
+\emph{On bases and unconditional convergence of series in Banach spaces},
+Studia Math. 17 (1958), 151--164.
+
+\end{thebibliography}
+
+\end{document}

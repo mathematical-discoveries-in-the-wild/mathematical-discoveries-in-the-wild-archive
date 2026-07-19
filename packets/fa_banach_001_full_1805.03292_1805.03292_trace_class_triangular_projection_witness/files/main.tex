@@ -1,0 +1,253 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\spanop}{\operatorname{span}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title[Trace-Class Triangular Projection Witness]{A Trace-Class Operator Whose Triangular Projection Is Not Trace Class}
+\author{Agent lane 11}
+\date{June 26, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Question}
+
+The source paper is Alice Barbara Tumpach, \emph{Banach Poisson-Lie groups
+and Bruhat-Poisson structure of the restricted Grassmannian},
+arXiv:1805.03292. In Remark 1.14 on page 9, after defining the triangular
+truncations \(T_-\) and \(T_{++}\), the paper recalls the classical theorem
+that these truncations are unbounded on \(L_\infty(\Hh)\) and on
+\(L_1(\Hh)\), but bounded on \(L_p(\Hh)\) for \(1<p<\infty\)
+\cite[Remark 1.14]{Tumpach2018}. The same remark then asks for the existence
+and construction of a trace-class operator whose triangular projection is not
+trace class.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\caption{Remark 1.14 on page 9 of the source paper, including the
+unboundedness statement and the trace-class triangular-projection question.}
+\end{figure}
+
+\section*{Proof Intuition}
+
+Unboundedness of triangular truncation on \(S_1\) already contains the needed
+witness, but not in a single line. If every finite-dimensional triangular
+projection had norm bounded by one universal constant, then finite-rank
+operators would give a uniformly bounded dense-domain triangular truncation,
+and continuity would extend it to a bounded operator on all trace-class
+operators. This contradicts the source-cited unboundedness theorem.
+
+Thus there are finite matrix blocks whose trace norm is tiny but whose
+triangular part has trace norm bounded below. Putting these blocks on disjoint
+consecutive diagonal intervals gives a trace-class direct sum. Triangular
+truncation acts independently on those diagonal blocks, so the first \(N\)
+block compressions of the triangular part have trace norm at least \(N\). A
+trace-class operator cannot have uniformly unbounded finite compressions, so
+the triangular part is not trace class.
+
+\section*{Notation}
+
+Let \(\Hh=\ell^2(\N)\) with its usual ordered orthonormal basis
+\((e_j)_{j\ge1}\). For a matrix \(A=(a_{ij})\), write
+\[
+  \mathcal T(A)=(b_{ij}), \qquad
+  b_{ij}=
+  \begin{cases}
+    a_{ij}, & i\le j,\\
+    0, & i>j.
+  \end{cases}
+\]
+This is the same entrywise triangular projection as the source paper's
+displayed definition of \(T_-\), up to the harmless choice of indexing order.
+Write \(S_1(\Hh)\) for the trace-class operators on \(\Hh\), with norm
+\(\|A\|_1=\Tr(|A|)\). If \(E\) is an \(n\)-dimensional initial coordinate
+subspace, \(P_n:S_1(E)\to S_1(E)\) denotes the corresponding finite matrix
+triangular projection.
+
+\section*{Main Result}
+
+\begin{lemma}[finite-dimensional triangular norms are unbounded]
+\label{lem:finite-unbounded}
+The norms \(\|P_n:S_1^n\to S_1^n\|\) are unbounded as \(n\to\infty\).
+\end{lemma}
+
+\begin{proof}
+Suppose instead that \(\|P_n\|\le C\) for every \(n\). Then for every
+finite-rank operator \(F\) supported on an initial coordinate subspace,
+\[
+  \|\mathcal T(F)\|_1\le C\|F\|_1.
+\]
+Since such finite-rank operators are dense in \(S_1(\Hh)\), this inequality
+extends by continuity to a bounded linear map \(R:S_1(\Hh)\to S_1(\Hh)\).
+For fixed \(i,j\), the coefficient functional
+\(A\mapsto \langle A e_j,e_i\rangle\) is continuous on \(S_1(\Hh)\). Hence
+approximating \(A\in S_1(\Hh)\) by finite-rank initial compressions shows that
+the matrix coefficients of \(R A\) are exactly those of the entrywise
+triangular truncation \(\mathcal T(A)\).
+
+Thus triangular truncation would be a bounded operator on \(S_1(\Hh)\). This
+contradicts the classical unboundedness theorem recalled in Remark 1.14 of
+the source paper \cite{Tumpach2018}, which cites Macaev, Kwapien--Pelczynski,
+Gohberg--Krein, and Arazy for this fact
+\cite{Macaev1961,KwapienPelczynski1970,GohbergKrein1970,Arazy1978}.
+\end{proof}
+
+\begin{theorem}
+\label{thm:witness}
+There exists \(A\in S_1(\Hh)\) such that the entrywise triangular projection
+\(\mathcal T(A)\) is not trace class. Moreover \(A\) can be chosen as a block
+diagonal direct sum of finite-rank operators on consecutive coordinate blocks.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:finite-unbounded}, for each \(k\ge1\) there are an integer
+\(n_k\) and a matrix \(C_k\in S_1^{n_k}\) such that
+\[
+  \|C_k\|_1=1,\qquad \|P_{n_k}C_k\|_1\ge 2^k.
+\]
+Set \(B_k=2^{-k}C_k\). Then
+\[
+  \|B_k\|_1=2^{-k}, \qquad \|P_{n_k}B_k\|_1\ge 1.
+\]
+
+Choose pairwise disjoint consecutive intervals
+\[
+  I_k=\{m_k+1,\ldots,m_k+n_k\}\subset\N
+\]
+and order-preserving unitaries \(U_k:\mathbb C^{n_k}\to \ell^2(I_k)\). Define
+\[
+  A_k=U_kB_kU_k^*,\qquad
+  A=\bigoplus_{k=1}^{\infty} A_k
+\]
+with respect to the orthogonal decomposition
+\(\Hh=\bigoplus_k \ell^2(I_k)\) plus any unused coordinates. Since
+\[
+  \sum_{k=1}^\infty \|A_k\|_1
+  =\sum_{k=1}^\infty 2^{-k}<\infty,
+\]
+the block diagonal operator \(A\) is trace class.
+
+Because the blocks are consecutive and all off-block matrix coefficients of
+\(A\) vanish, triangular truncation preserves the block diagonal form:
+on the block \(I_k\), the compression of \(\mathcal T(A)\) is
+\[
+  U_k(P_{n_k}B_k)U_k^*.
+\]
+Let \(Q_N\) be the orthogonal projection onto the sum of the first \(N\)
+blocks. Then
+\[
+\begin{aligned}
+  \|Q_N\mathcal T(A)Q_N\|_1
+    &= \sum_{k=1}^{N}\|U_k(P_{n_k}B_k)U_k^*\|_1  \\
+    &= \sum_{k=1}^{N}\|P_{n_k}B_k\|_1
+     \ge N .
+\end{aligned}
+\]
+If \(\mathcal T(A)\) were trace class, then
+\(\|Q_N\mathcal T(A)Q_N\|_1\le \|\mathcal T(A)\|_1\) for every \(N\), an
+impossibility. Therefore \(\mathcal T(A)\notin S_1(\Hh)\).
+\end{proof}
+
+\section*{Consequence for the Source Question}
+
+Theorem~\ref{thm:witness} supplies the trace-class operator requested in
+Remark 1.14. The construction is canonical once one selects a sequence of
+finite-dimensional matrices witnessing the unboundedness of triangular
+projection on \(S_1^n\). The same paper later uses unboundedness of triangular
+truncation to choose a sequence \(K_n\in L_1\) with bounded trace norm and
+triangular truncations of arbitrarily large trace norm
+\cite[Proposition 7.1 proof]{Tumpach2018}; the present argument upgrades this
+``unbounded sequence'' phenomenon to one single trace-class operator by the
+block-direct-sum device.
+
+\section*{Verification Notes}
+
+No numerical verification is needed for the proof. The two functional-analytic
+checks are:
+\begin{enumerate}
+\item finite-dimensional triangular norms must be unbounded, otherwise the
+dense finite-rank truncation extends boundedly to all \(S_1\);
+\item for a trace-class operator \(C\), finite-rank compressions satisfy
+\(\|Q C Q\|_1\le \|C\|_1\), while the constructed triangular truncation has
+compressions with norms tending to infinity.
+\end{enumerate}
+The script in \texttt{code/render\_open\_problem\_crop.py} only regenerates
+the source-page crop.
+
+\section*{Novelty Check}
+
+Before promotion, the run checked the lightweight registry, solution, attempt,
+and proof-gap indexes for arXiv:1805.03292 and the phrases
+``triangular projection'', ``triangular truncation'', ``trace class operator'',
+``not trace class'', ``Macaev'', ``Kwapien'', ``Pelczynski'', ``Gohberg'',
+``Krein'', and ``Arazy''. No duplicate packet was found. A local parsed-corpus
+search found the source question, the same paper's later use of an unbounded
+sequence of trace-class witnesses, and related later arXiv records on
+triangular projection for \(0<p<1\), but no separate answer to the
+\(S_1\) single-operator question. Web searches for exact phrases including
+``trace class operator triangular projection not trace class'', ``triangular
+truncation trace class not trace class'', and ``Tumpach triangular projection
+trace class'' did not reveal a later paper explicitly answering Remark 1.14.
+
+\section*{Limitations}
+
+This packet answers only the trace-class triangular-projection question in
+Remark 1.14. It does not address the separate broad problem, also present in
+the source paper, about integrating Banach Lie bialgebras into Banach
+Poisson-Lie groups. The construction is explicit at the operator-assembly
+level but depends on choosing finite-dimensional matrices from the classical
+unboundedness theorem for triangular projections on \(S_1^n\).
+
+\section*{Human-Review Recommendation}
+
+Review as a likely valid full answer to the trace-class triangular-projection
+open problem in Remark 1.14. The main point to verify is the passage from
+source-cited unboundedness on \(S_1(\Hh)\) to unbounded finite-dimensional
+triangular projection norms in Lemma~\ref{lem:finite-unbounded}.
+
+\begin{thebibliography}{9}
+
+\bibitem{Tumpach2018}
+A. B. Tumpach,
+\emph{Banach Poisson-Lie groups and Bruhat-Poisson structure of the
+restricted Grassmannian},
+arXiv:1805.03292; Comm. Math. Phys. 373 (2020), 795--858.
+
+\bibitem{Arazy1978}
+J. Arazy,
+\emph{Some remarks on interpolation theorems and the boundness of the
+triangular projection in unitary matrix spaces},
+Integral Equations Operator Theory 1 (1978), 453--495.
+
+\bibitem{GohbergKrein1970}
+I. C. Gohberg and M. G. Krein,
+\emph{Theory and Applications of Volterra Operators on Hilbert Space},
+Translations of Mathematical Monographs, vol. 24, American Mathematical
+Society, 1970.
+
+\bibitem{KwapienPelczynski1970}
+S. Kwapien and A. Pelczynski,
+\emph{The main triangle projection in matrix spaces and its applications},
+Studia Math. 34 (1970), 43--68.
+
+\bibitem{Macaev1961}
+V. I. Macaev,
+\emph{Volterra operators produced by perturbation of self-adjoint operators},
+Soviet Math. Dokl. 2 (1961), 1013--1016.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,179 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\BX}{B_X}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{A Width-Gap Criterion for Compact Images}
+\author{fa\_banach\_001 agent lane 12}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target Problem}
+
+This packet concerns Problem 8.1 of Oikhberg and Ostrovskii
+\cite{OO2012}, arXiv:1205.0095, ``Dependence of Kolmogorov widths
+on the ambient space.''  The source asks:
+
+\begin{quote}
+Let \(K\) be a compact in a Banach space \(X\) and
+\(T:X\to Y\) be a compact operator. Does it follow that
+\(d_n(TK)=o(d_n(K))\)?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The result below is a partial positive criterion for this problem. It
+does not settle the full problem.
+
+\section*{Definitions}
+
+For a bounded set \(A\) in a Banach space \(Z\), let
+\[
+d_n(A,Z)=\inf_{\dim E\le n}\sup_{a\in A}\dist(a,E)
+\]
+denote the Kolmogorov \(n\)-width.  For a bounded operator
+\(T:X\to Y\), set
+\[
+\beta_r(T)=d_r(TB_X,Y),\qquad r=0,1,2,\ldots .
+\]
+If \(T\) is compact, then \(TB_X\) is relatively compact, hence
+\(\beta_r(T)\to 0\).
+
+\section*{Idea of the Proof}
+
+The proof spends the available \(n\) dimensions in two accounts.  Use
+\(n-r\) dimensions to approximate \(K\) inside \(X\).  The error vector
+then lies in a small multiple of the unit ball of \(X\), and applying
+\(T\) sends that error into the compact set \(TB_X\).  Spend the
+remaining \(r\) dimensions to approximate \(TB_X\).  This gives a
+direct inequality with a tunable parameter \(r\).  Proposition 8.3 in
+the source corresponds to keeping \(r\) fixed after choosing it so that
+\(\beta_r(T)\) is small; the criterion here also allows \(r\) to vary
+with \(n\).
+
+\section*{Main Result}
+
+\begin{theorem}[Width-gap inequality]\label{thm:gap}
+Let \(X,Y\) be Banach spaces, let \(T:X\to Y\) be bounded, and let
+\(K\subset X\) be bounded.  For every \(0\le r\le n\),
+\[
+d_n(TK,Y)\le \beta_r(T)\,d_{n-r}(K,X).
+\]
+Consequently,
+\[
+d_n(TK,Y)\le
+\inf_{0\le r\le n}\beta_r(T)\,d_{n-r}(K,X).
+\]
+\end{theorem}
+
+\begin{proof}
+Fix \(0\le r\le n\) and \(\varepsilon>0\).  Choose a subspace
+\(F\subset Y\) with \(\dim F\le r\) such that
+\[
+TB_X\subset F+(\beta_r(T)+\varepsilon)B_Y.
+\]
+Choose a subspace \(E\subset X\) with \(\dim E\le n-r\) such that
+\[
+\sup_{x\in K}\dist(x,E)\le d_{n-r}(K,X)+\varepsilon.
+\]
+Set \(G=TE+F\).  Then \(\dim G\le n\).
+
+For \(x\in K\), choose \(e\in E\) with
+\(\|x-e\|\le d_{n-r}(K,X)+2\varepsilon\).  Since
+\[
+T x=T e+T(x-e)
+\]
+and \(T(x-e)\in \|x-e\|\,TB_X\), the choice of \(F\) gives
+\[
+\dist(Tx,G)\le
+(\beta_r(T)+\varepsilon)\big(d_{n-r}(K,X)+2\varepsilon\big).
+\]
+Taking the supremum over \(x\in K\), then the infimum over admissible
+\(G\), and finally letting \(\varepsilon\downarrow0\), proves the
+claim.
+\end{proof}
+
+\begin{corollary}[Operator-adapted positive cases]\label{cor:criterion}
+Let \(K\subset X\) be compact and let \(T:X\to Y\) be compact.  If
+\[
+\inf_{0\le r\le n}
+\frac{\beta_r(T)d_{n-r}(K,X)}{d_n(K,X)}
+\longrightarrow 0
+\]
+along all \(n\) for which \(d_n(K,X)>0\), then
+\[
+d_n(TK,Y)=o(d_n(K,X)).
+\]
+In particular, the conclusion holds whenever for every \(C>1\) and
+each fixed \(r\) one eventually has
+\[
+d_{n-r}(K,X)\le C\,d_n(K,X),
+\]
+which recovers Proposition 8.3 of \cite{OO2012}.
+\end{corollary}
+
+\begin{proof}
+The first assertion follows immediately from Theorem
+\ref{thm:gap}.  For the final statement, fix \(\delta>0\).  Since
+\(T\) is compact, choose \(r\) with \(\beta_r(T)<\delta\).  The
+finite-shift hypothesis gives, for all sufficiently large \(n\),
+\[
+d_n(TK,Y)\le \beta_r(T)d_{n-r}(K,X)
+ \le C\delta\,d_n(K,X).
+\]
+Letting \(\delta\downarrow0\) proves the claim.
+\end{proof}
+
+\section*{Verification and Scope}
+
+The proof is purely functional analytic.  It uses only the definition of
+Kolmogorov width and the compactness fact \(\beta_r(T)\to0\).  The crop
+in `figures/open\_problem\_crop.png' was generated from page 18 of the
+source PDF by `code/crop\_open\_problem.py'.
+
+This result is a partial theorem, not a full solution of Problem 8.1.
+The unresolved case is exactly where the width sequence of \(K\) has
+large enough finite gaps to defeat every possible choice of \(r\) in the
+criterion.
+
+Bounded novelty check: local run indexes were searched for arXiv
+1205.0095, Kolmogorov widths, ambient space, and compact-operator width
+keywords, with no duplicate packet found.  A web search for the exact
+phrases ``\(d_n(TK)=o(d_n(K))\)'', ``Widths of images of compacts under
+compact operators'', and variants returned only the source paper or
+irrelevant width papers, not a later answer to Problem 8.1.
+
+\section*{Human Review Recommendation}
+
+Review Theorem \ref{thm:gap} first.  If accepted, the packet should be
+recorded as a likely valid partial result for Problem 8.1: it gives a
+compactness-rate criterion and clarifies that Proposition 8.3 is a fixed
+finite-shift special case.
+
+\begin{thebibliography}{9}
+\bibitem{OO2012}
+T. Oikhberg and M. I. Ostrovskii,
+\emph{Dependence of Kolmogorov widths on the ambient space},
+arXiv:1205.0095, 2012.
+
+\bibitem{OS2009}
+M. I. Ostrovskii and V. S. Shulman,
+\emph{Weak operator topology, operator ranges and operator equations via
+Kolmogorov widths},
+Integral Equations Operator Theory 65 (2009), 551--572.
+\end{thebibliography}
+
+\end{document}

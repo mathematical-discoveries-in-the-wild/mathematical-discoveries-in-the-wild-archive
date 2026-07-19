@@ -1,0 +1,394 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{\mathbb B}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Int}{\operatorname{Int}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\title{Exact stability of affine sections of Hilbert balls\\
+and the sharp role of uniform continuity}
+\author{Candidate full extension for arXiv:1902.02363}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate full answer, likely valid.}
+For closed balls in arbitrary Hilbert spaces, affine fibers of a closed-range
+operator have an explicit orthogonal-product form and an exact Hausdorff
+distance.  This removes compactness and ambient finite dimensionality from the
+source example.  Arbitrary continuous objectives remain valid when the kernel
+is finite-dimensional; uniformly continuous objectives work for every kernel.
+An explicit bounded continuous objective shows that mere continuity is not
+enough when the kernel is infinite-dimensional.}}
+\end{center}
+
+\section{Source question}
+
+The source is Daniel Reem, Simeon Reich, and Alvaro De Pierro,
+\emph{Stability of the optimal values under small perturbations of the
+constraint set}, arXiv:1902.02363v4 \cite{RRD}.  Example 5.11 proves continuity
+of
+\[
+ t\longmapsto \inf\{f(x):x\in C,\ Lx=t\}
+\]
+when $C\subset\R^n$ is compact, convex, and has nonempty interior and
+$f:C\to\R$ is continuous.  In Remark 5.12(i), page 19, the authors write:
+
+\begin{quote}
+``We believe that the theory developed in this section can be extended
+further, and, in particular, that it is possible to remove (at least in some
+interesting cases) the compactness and finite-dimensionality assumptions from
+Example 5.11.''
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The source question in full-width context, page 19.}
+\label{fig:question}
+\end{figure}
+
+The result below supplies such a case, with an exact geometric modulus, and
+also determines precisely where the source proof's use of compactness cannot
+simply be discarded.
+
+\section{Proof intuition}
+
+Let $N=\ker L$ and $M=N^\perp$.  Closed range makes the restriction
+$L|_M$ continuously invertible onto $L(H)$.  Thus fixing $Lx=t$ fixes
+the $M$-coordinate of $x-c$, while the $N$-coordinate ranges over a
+ball.  Pythagoras gives both its center and radius.  Two fibers are therefore
+orthogonal translates of concentric kernel-balls, so their Hausdorff distance
+is the Euclidean combination of center displacement and radius displacement.
+
+This exact formula yields continuity, local Lipschitz bounds, and value
+stability for uniformly continuous objectives without any compactness.  If
+$N$ is finite-dimensional, the fibers encountered along a convergent
+parameter sequence lie in one compact set, so mere continuity is again
+enough.  If $N$ is infinite-dimensional, orthogonal directions allow
+localized continuous wells to escape without accumulating.  Those wells
+make the value function jump even though the fibers converge in Hausdorff
+distance.
+
+\section{Exact fiber geometry}
+
+Let $H,Y$ be real Hilbert spaces and let $L:H\to Y$ be bounded and linear
+with closed range $R=L(H)$.  Put
+\[
+ N:=\ker L,\qquad M:=N^\perp,
+\]
+and let
+\[
+ G:R\longrightarrow M
+\]
+be the inverse of $L|_M:M\to R$.  This inverse is bounded by the bounded
+inverse theorem \cite{Conway}.  Fix $c\in H$, $r>0$, and the closed ball
+\[
+ C:=\overline B(c,r).
+\]
+For
+\[
+ J:=\{t\in R:\|G(t-Lc)\|\le r\},\qquad
+ I:=\{t\in R:\|G(t-Lc)\|<r\},
+\]
+define
+\[
+ A_t:=C\cap L^{-1}(t),\quad
+ z_t:=G(t-Lc),\quad
+ \rho_t:=\sqrt{r^2-\|z_t\|^2}\qquad(t\in J).
+\]
+Here $I$ is exactly the set of parameters whose affine fiber meets
+$\Int C$.
+
+\begin{theorem}[Exact affine-section formula]\label{thm:geometry}
+For every $t\in J$,
+\begin{equation}\label{eq:fiber}
+ A_t=c+z_t+\rho_t\B_N,
+ \qquad \B_N:=\{n\in N:\|n\|\le1\}.
+\end{equation}
+If $N\ne\{0\}$, then for all $s,t\in J$,
+\begin{equation}\label{eq:exactH}
+ D_H(A_s,A_t)^2
+ =\|z_s-z_t\|^2+|\rho_s-\rho_t|^2.
+\end{equation}
+If $N=\{0\}$, then $A_t=\{c+z_t\}$ and
+\begin{equation}\label{eq:trivialH}
+ D_H(A_s,A_t)=\|z_s-z_t\|.
+\end{equation}
+Consequently $t\mapsto A_t$ is Hausdorff-continuous on $J$ and locally
+Lipschitz on $I$.  Quantitatively, for every $0\le b<r$ and all $s,t$
+such that $\|z_s\|,\|z_t\|\le b$,
+\begin{equation}\label{eq:localLip}
+ D_H(A_s,A_t)
+ \le \frac{r\|G\|}{\sqrt{r^2-b^2}}\,\|s-t\|.
+\end{equation}
+On all of $J$, including its boundary,
+\begin{equation}\label{eq:holder}
+ D_H(A_s,A_t)
+ \le 2\sqrt{r\|G\|\,\|s-t\|}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $x-c=m+n$ with $m\in M$, $n\in N$.  The condition $Lx=t$
+is equivalent to
+\[
+ Lm=t-Lc,
+\]
+so it forces $m=z_t$.  Orthogonality and Pythagoras give
+\[
+ \|x-c\|^2=\|z_t\|^2+\|n\|^2.
+\]
+This proves \eqref{eq:fiber}, as well as the descriptions of $I$ and $J$.
+
+Assume first that $N\ne\{0\}$.  If $a,b\in M$, $\alpha,\beta\ge0$,
+and $n\in N$, orthogonality gives
+\begin{equation}\label{eq:pointdist}
+ \dist(a+n,b+\beta\B_N)^2
+ =\|a-b\|^2+(\|n\|-\beta)_+^2.
+\end{equation}
+Taking the supremum over $\|n\|\le\alpha$ shows
+\[
+ D_{\mathrm{asy}H}(a+\alpha\B_N,b+\beta\B_N)^2
+ =\|a-b\|^2+(\alpha-\beta)_+^2.
+\]
+Interchanging the sets and taking the maximum proves \eqref{eq:exactH}.
+When $N=\{0\}$, formula \eqref{eq:trivialH} is immediate.
+
+Let $d=\|z_s-z_t\|$.  If $\|z_s\|,\|z_t\|\le b<r$, then
+\begin{align*}
+ |\rho_s-\rho_t|
+ &=\frac{|\|z_t\|^2-\|z_s\|^2|}{\rho_s+\rho_t}\\
+ &\le \frac{b}{\sqrt{r^2-b^2}}d.
+\end{align*}
+Combining this with \eqref{eq:exactH}, or just using
+\eqref{eq:trivialH}, yields
+\[
+ D_H(A_s,A_t)\le
+ \sqrt{1+\frac{b^2}{r^2-b^2}}\,d
+ =\frac r{\sqrt{r^2-b^2}}d
+ \le\frac{r\|G\|}{\sqrt{r^2-b^2}}\|s-t\|,
+\]
+which is \eqref{eq:localLip}.
+
+For the boundary estimate, the elementary inequality
+$(\sqrt u-\sqrt v)^2\le|u-v|$ gives
+\[
+ |\rho_s-\rho_t|^2
+ \le |\|z_s\|^2-\|z_t\|^2|
+ \le 2r d.
+\]
+Also $d\le2r$, hence $d^2\le2rd$.  Therefore
+\[
+ D_H(A_s,A_t)^2\le d^2+2rd\le4rd
+ \le4r\|G\|\|s-t\|,
+\]
+with the singleton case even easier.  This proves \eqref{eq:holder} and all
+continuity assertions.
+\end{proof}
+
+\section{Optimal-value stability without ambient compactness}
+
+For $f:C\to\R$, write
+\[
+ \phi_-(t):=\inf_{x\in A_t}f(x),\qquad
+ \phi_+(t):=\sup_{x\in A_t}f(x).
+\]
+
+\begin{theorem}[Infinite-dimensional optimal-value extension]\label{thm:values}
+In the setting of Theorem~\ref{thm:geometry}:
+\begin{enumerate}
+\item If $f:C\to\R$ is uniformly continuous, then $f$ is bounded on
+  $C$, and both $\phi_-$ and $\phi_+$ are finite and uniformly continuous
+  on $J$.  If $f$ is
+  $\Lambda$-Lipschitz, then
+  \begin{equation}\label{eq:valueLip}
+  |\phi_\pm(s)-\phi_\pm(t)|\le\Lambda D_H(A_s,A_t),
+  \end{equation}
+  so \eqref{eq:localLip} and \eqref{eq:holder} give explicit moduli.
+\item If $N=\ker L$ is finite-dimensional and $f:C\to\R$ is merely
+  continuous, then $\phi_-$ and $\phi_+$ are finite, attained, and
+  continuous on $J$.
+\end{enumerate}
+Thus both compactness of $C$ and finite dimensionality of the ambient space
+can be removed.  In particular, part 1 allows an arbitrary, possibly
+infinite-dimensional kernel, while part 2 retains the source's mere
+continuity hypothesis whenever the kernel is finite-dimensional.
+\end{theorem}
+
+\begin{proof}
+First suppose that $f$ is uniformly continuous.  It is bounded on $C$:
+choose $\delta>0$ such that $\|x-y\|<\delta$ implies
+$|f(x)-f(y)|<1$, fix $x_0\in C$, and join $x_0$ to any $x\in C$
+by a line segment split into more than $2r/\delta$ equal pieces.  The
+triangle inequality bounds $|f(x)-f(x_0)|$ uniformly in $x$.
+
+Now let $s_j\to s$ in $J$.  Theorem~\ref{thm:geometry} gives
+$D_H(A_{s_j},A_s)\to0$.  Uniform continuity then implies
+\[
+ \inf_{A_{s_j}}f\longrightarrow\inf_{A_s}f,
+ \qquad
+ \sup_{A_{s_j}}f\longrightarrow\sup_{A_s}f.
+\]
+Indeed, approximate each point of either set by a point of the other and use
+the uniform modulus; no minimizer is required.  Estimate \eqref{eq:holder}
+makes this argument uniform on all of $J$.  For a $\Lambda$-Lipschitz
+function it gives the standard estimate \eqref{eq:valueLip} directly, with
+the sharper interior bound \eqref{eq:localLip}.
+
+Suppose next that $N$ is finite-dimensional and $f$ is continuous.  Each
+$A_t$ is compact by \eqref{eq:fiber}, so its two extrema are finite and
+attained.  Given a sequence $s_j\to s$, the pairs
+$(z_{s_j},\rho_{s_j})$ converge to $(z_s,\rho_s)$.  The set
+\[
+ P:=\{(z_s,\rho_s)\}\cup\{(z_{s_j},\rho_{s_j}):j\ge1\}
+\]
+is compact.  Therefore
+\[
+ K:=\bigcup_{j\ge1}A_{s_j}\cup A_s
+ =\{c+z+\rho n:(z,\rho)\in P,\ n\in\B_N\}
+\]
+is the continuous image of the compact set $P\times\B_N$, and hence is
+compact.  The restriction $f|_K$ is uniformly
+continuous, and the first argument applied to $A_{s_j},A_s\subset K$
+proves sequential continuity.  Since $J$ is metric, this is continuity.
+\end{proof}
+
+\section{Sharpness: continuity alone can fail}
+
+The finite-dimensional-kernel condition in the second part cannot be removed
+without some replacement such as uniform continuity.
+
+\begin{proposition}[Escaping continuous wells]\label{prop:counterexample}
+Let
+\[
+ H=\R\oplus\ell^2,\qquad Y=\R,\qquad L(a,x)=a,
+ \qquad C=\overline B_H(0,1).
+\]
+Then $I=(-1,1)$ and
+\[
+ A_t=\{(t,x):\|x\|\le\sqrt{1-t^2}\}.
+\]
+There is a bounded continuous $f:C\to[-1,0]$ such that
+\[
+ \inf_{A_0}f=0,
+ \qquad
+ \inf_{A_{t_n}}f=-1
+\]
+for a sequence $t_n\downarrow0$.  Hence the optimal value function is
+discontinuous at an interior parameter even though
+$D_H(A_{t_n},A_0)\to0$.  Replacing $f$ by $-f$ gives the same failure
+for supremal values.
+\end{proposition}
+
+\begin{proof}
+Let $(e_n)$ be the standard orthonormal basis of $\ell^2$, and put
+\[
+ t_n:=2^{-(n+2)},\qquad
+ \rho_n:=\sqrt{1-t_n^2},\qquad
+ y_n:=(t_n,\rho_ne_n)\in A_{t_n},\qquad
+ \delta_n:=t_n/3.
+\]
+The nearest point of $A_0=\{0\}\oplus\B_{\ell^2}$ to $y_n$ is
+$(0,\rho_ne_n)$, so
+\begin{equation}\label{eq:distA0}
+ \dist(y_n,A_0)=t_n>\delta_n.
+\end{equation}
+For $m\ne n$, orthogonality gives
+\[
+ \|y_n-y_m\|^2=(t_n-t_m)^2+\rho_n^2+\rho_m^2.
+\]
+Since $t_n\le1/8$, the centers are uniformly separated, whereas
+$\delta_n\le1/24$.  Thus the relative balls
+$B(y_n,\delta_n)\cap C$ are pairwise separated and form a locally finite
+family.
+
+Define
+\begin{equation}\label{eq:bump}
+ f(x):=
+ \begin{cases}
+ -\left(1-\|x-y_n\|/\delta_n\right),
+   &\text{if }\|x-y_n\|<\delta_n\text{ for some }n,\\
+ 0,&\text{otherwise.}
+ \end{cases}
+\end{equation}
+The supports are disjoint and locally finite, and the displayed expression
+vanishes on each support boundary; hence $f$ is continuous on $C$.
+Equation \eqref{eq:distA0} implies $f=0$ on $A_0$, while
+$f(y_n)=-1$.  Because $f\ge-1$, the asserted infima follow.  Notice also
+that $x_n=(0,\rho_ne_n)\in A_0$ satisfies
+$\|x_n-y_n\|=t_n\to0$ but
+$|f(x_n)-f(y_n)|=1$; this pinpoints the failure of uniform continuity.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The included checker audits the exact Hausdorff formula in finite-dimensional
+proxies, both quantitative bounds, and the separation and distance claims in
+Proposition~\ref{prop:counterexample}.  Run
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/check_hilbert_ball_fibers.py
+\end{verbatim}
+from the packet directory.  The computation is only a sanity check; all
+arguments above are exact.
+
+The source asks for removal ``at least in some interesting cases.''  The
+closed-ball class gives a complete affirmative theorem: arbitrary Hilbert
+dimension, closed-range operators, exact fiber distance, and sharp objective
+hypotheses.  This is not a theorem for all closed bounded convex sets or all
+Banach spaces.  The counterexample rules out the naive statement with an
+arbitrary continuous objective and an infinite-dimensional kernel, but does
+not rule out other geometric or coercive hypotheses.
+
+Before promotion, the run indexes were searched for arXiv:1902.02363, the
+source title, Hilbert balls, affine fibers, Hausdorff continuity, and
+finite-dimensional kernels.  A bounded arXiv/web search used the exact source
+sentence and close phrases involving affine sections of Hilbert balls and
+noncompact parametric optimization.  It found the source paper and general
+noncompact Berge-theorem extensions such as \cite{FKV,FKK}, but no exact
+closed-ball fiber formula or sharpness theorem matching
+Theorems~\ref{thm:geometry}--\ref{thm:values}.  This records search bounds; it
+is not an exhaustive novelty certification.
+
+Human review is recommended.  The highest-value checks are the exact
+asymmetric Hausdorff calculation \eqref{eq:pointdist}, the compact-union
+argument for finite-dimensional kernels, and local finiteness in the escaping
+well construction.
+
+\begin{thebibliography}{9}
+\bibitem{RRD}
+D. Reem, S. Reich, and A. De Pierro,
+\emph{Stability of the optimal values under small perturbations of the
+constraint set}, Pure Appl. Funct. Anal. 5 (2020), no. 3, 705--731;
+arXiv:1902.02363v4.
+\url{https://arxiv.org/abs/1902.02363}.
+
+\bibitem{Conway}
+J. B. Conway, \emph{A Course in Functional Analysis}, second edition,
+Graduate Texts in Mathematics 96, Springer, 1990.
+
+\bibitem{FKV}
+E. A. Feinberg, P. O. Kasyanov, and M. Voorneveld,
+\emph{Berge's maximum theorem for noncompact image sets},
+J. Math. Anal. Appl. 413 (2014), 1040--1046; arXiv:1309.7708.
+
+\bibitem{FKK}
+E. A. Feinberg, P. O. Kasyanov, and D. N. Kraemer,
+\emph{Continuity of parametric optima for possibly discontinuous functions
+and noncompact decision sets}, arXiv:2109.06299, 2021.
+\end{thebibliography}
+
+\end{document}

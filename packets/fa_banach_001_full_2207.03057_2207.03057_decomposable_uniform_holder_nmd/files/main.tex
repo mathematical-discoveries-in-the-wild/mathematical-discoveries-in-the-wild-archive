@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\dist}{\operatorname{d}}
+
+\title{Uniform H\"older Nonexpansive Maps on Decomposable Banach Balls}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 12, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source}
+
+Cleon S. Barroso and Valdir Ferreira,
+\emph{H\"older-contractive mappings, nonlinear extension problem and fixed
+point free results}, arXiv:2207.03057.
+
+The final open questions ask whether \(B_X\) fails the fixed point property
+for uniformly \(\alpha\)-H\"older nonexpansive maps with null minimal
+displacement when, among other cases, \(X\) is isomorphic to a Hilbert space
+or \(X\) is reflexive with an unconditional basis.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+\label{thm:main}
+Let \(X\) be an infinite-dimensional Banach space that splits as
+\[
+  X=Y\oplus Z
+\]
+with \(Y\) and \(Z\) closed infinite-dimensional subspaces.  Then, for every
+\(\alpha\in(0,1)\), there is a map \(V:B_X\to B_X\) such that
+\[
+  \Fix(V)=\varnothing,\qquad
+  \dist(V,B_X)=0,
+\]
+and
+\[
+  \|V^n x-V^n y\|\leq \|x-y\|^\alpha
+  \qquad(x,y\in B_X,\ n\geq 1).
+\]
+Thus \(V\) is uniformly \(\alpha\)-H\"older nonexpansive.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:source-questions}
+For every \(\alpha\in(0,1)\), the source paper's final open questions have
+affirmative answers in the following cases:
+\begin{enumerate}
+\item \(X\) is isomorphic to an infinite-dimensional Hilbert space;
+\item \(X\) has an unconditional basis, in particular when \(X\) is reflexive
+and has an unconditional basis.
+\end{enumerate}
+\end{corollary}
+
+\section*{Input Lemma From The Run}
+
+We use the decomposable-space packet already established in this run:
+if \(X=Y\oplus Z\) with both summands infinite-dimensional, then there is a
+map \(U:B_X\to B_X\) such that
+\[
+  \Fix(U)=\varnothing,\qquad
+  \dist(U,B_X)=0,\qquad
+  M:=\sup_{n\geq 1}\Lip(U^n)<\infty .
+\]
+This is the result recorded in
+\[
+\texttt{solutions/partial/2307.12958\_decomposable\_tube\_uniformly\_lipschitz\_q2/}.
+\]
+The present packet only adds the H\"older-nonexpansive scaling step.
+
+\section*{Scaling Lemma}
+
+\begin{lemma}
+\label{lem:scaling}
+Let \(X\) be a Banach space.  Suppose \(U:B_X\to B_X\) satisfies
+\[
+  \Fix(U)=\varnothing,\qquad
+  \dist(U,B_X)=0,\qquad
+  M:=\sup_{n\geq 1}\Lip(U^n)<\infty .
+\]
+Then for every \(\alpha\in(0,1)\) there is a uniformly
+\(\alpha\)-H\"older nonexpansive map \(V:B_X\to B_X\) with
+\(\Fix(V)=\varnothing\) and \(\dist(V,B_X)=0\).
+\end{lemma}
+
+\begin{proof}
+Let \(C=2M\) and put
+\[
+  \eta=\min\{2,\, C^{-1/(1-\alpha)}\}.
+\]
+Choose \(r>0\) so small that \(2r\leq \eta^\alpha\).  In particular
+\(r<1\).  Let \(R_r:B_X\to rB_X\) be the radial retraction
+\[
+  R_r(x)=
+  \begin{cases}
+  x,& \|x\|\leq r,\\
+  r\,x/\|x\|,& \|x\|>r.
+  \end{cases}
+\]
+This retraction is \(2\)-Lipschitz on every normed space.
+
+Define the scaled map \(S:rB_X\to rB_X\) by
+\[
+  S(z)=r\,U(z/r).
+\]
+Then \(S^n(z)=r\,U^n(z/r)\), so \(\Lip(S^n)\leq M\) for every \(n\geq1\).
+Moreover, \(S\) is fixed-point free and has null minimal displacement on
+\(rB_X\).
+
+Now set
+\[
+  V=S R_r:B_X\to B_X.
+\]
+Since \(S(rB_X)\subseteq rB_X\) and \(R_r\) is the identity on \(rB_X\),
+\[
+  V^n=S^n R_r\qquad(n\geq1).
+\]
+For \(x,y\in B_X\), write \(d=\|x-y\|\).  Then
+\[
+  \|V^n x-V^n y\|
+  \leq \min\{M\|R_r x-R_r y\|,\,2r\}
+  \leq \min\{Cd,\,2r\}.
+\]
+If \(d\leq \eta\), then \(Cd\leq d^\alpha\) by the definition of \(\eta\).
+If \(d\geq\eta\), then \(2r\leq\eta^\alpha\leq d^\alpha\).  Hence
+\[
+  \|V^n x-V^n y\|\leq d^\alpha
+\]
+for all \(x,y\in B_X\) and every \(n\geq1\).
+
+There is no fixed point: if \(Vx=x\), then \(x\in rB_X\), so \(R_r x=x\)
+and \(Sx=x\), contradicting \(\Fix(S)=\varnothing\).
+
+Finally, since \(S\) has null minimal displacement on \(rB_X\), there are
+\(z_j\in rB_X\) such that \(\|S z_j-z_j\|\to0\).  For these points
+\(R_r z_j=z_j\), so \(\|V z_j-z_j\|\to0\).  Thus
+\(\dist(V,B_X)=0\).
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Apply the input lemma from the run to obtain \(U\), then apply
+Lemma~\ref{lem:scaling}.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:source-questions}]
+If \(X\) is isomorphic to an infinite-dimensional Hilbert space, split the
+Hilbert space into two closed infinite-dimensional orthogonal summands and
+transport that decomposition to \(X\) through an isomorphism.  The transported
+summands are closed and complemented, so Theorem~\ref{thm:main} applies.
+
+If \(X\) has an unconditional basis, split the basis into its odd and even
+subsequences.  The associated coordinate subspaces are closed,
+infinite-dimensional, and complemented by the unconditional coordinate
+projections.  Again Theorem~\ref{thm:main} applies.  The reflexive
+unconditional-basis case from the source paper is therefore included.
+\end{proof}
+
+\section*{Limitations}
+
+This does not answer the source paper's arbitrary reflexive case, nor the
+James-space case.  The argument relies on the existence of a decomposable
+two-infinite-summand structure, because that is what supplies the
+fixed-point-free uniformly Lipschitzian dynamics with null minimal
+displacement.
+
+\section*{Verification Notes}
+
+The only scalar estimate in the new argument is
+\[
+  \min\{Cd,2r\}\leq d^\alpha\qquad(0\leq d\leq2),
+\]
+with \(\eta=\min\{2,C^{-1/(1-\alpha)}\}\) and \(2r\leq\eta^\alpha\).
+The accompanying script \texttt{code/verify\_scaling\_lemma.py} samples this
+inequality for representative values of \(C\), \(r\), and \(\alpha\).
+
+\end{document}

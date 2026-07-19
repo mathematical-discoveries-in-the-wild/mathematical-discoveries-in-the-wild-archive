@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Sone}{S_1}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{A weighted tensor-grid subcase of the Schatten linear-KS question}
+\author{Candidate partial-result packet for arXiv:1501.05213}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\texttt{candidate partial result -- likely valid}.  This note does not solve the full question whether the Schatten trace class $\Sone$ is a linear KS space or a KS metric space.
+
+\section{Source question}
+
+Naor and Schechtman ask whether $\Sone$ satisfies their original linear Kwapie\'{n}--Sch\"utt inequality and, after Definition 1.4, whether $\Sone$ is a KS metric space or even a linear KS space \cite{NaorSchechtman}.  The relevant passage is on pages 3--4 of the arXiv PDF.
+
+For an array $(z_{jk})_{j,k=1}^n$ in a Banach space $Z$, write
+\begin{align*}
+ L(z)&=\frac1n\sum_{j=1}^n\E_{\delta}\left\|\sum_{k=1}^n\delta_kz_{jk}\right\|_Z,\\
+ R_{\mathrm{map}}(z)&=\E_{K\in[n]^n}\E_{\varepsilon}
+ \left\|\sum_{j=1}^n\varepsilon_jz_{j,K_j}\right\|_Z,\\
+ R_{\mathrm{perm}}(z)&=\E_{\pi\in S_n}\E_{\varepsilon}
+ \left\|\sum_{j=1}^n\varepsilon_jz_{j,\pi(j)}\right\|_Z.
+\end{align*}
+The modified linear-KS question asks whether $L(z)\le C R_{\mathrm{map}}(z)$ for all $\Sone$-valued arrays with a universal $C$.  The earlier inequality uses $R_{\mathrm{perm}}$ instead.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Idea of the proof}
+
+The theorem handles the canonical noncommutative tensor grid $u_jv_k^*$ with arbitrary scalar weights.  Within one row, a signed sum is rank one, so its trace norm is simply the Euclidean norm of the coefficient row.  A permutation selects orthogonal initial and terminal vectors, so its trace norm is the sum of the selected absolute weights.
+
+For an arbitrary mapping $K:[n]\to[n]$, collisions are the only new feature.  Grouping the selected rank-one operators by their common terminal vector $v_k$ gives mutually orthogonal column blocks.  Their Euclidean norms are exactly the singular values.  In each block we retain only the largest selected coefficient.  A decreasing rearrangement and a first-success computation for independent Bernoulli variables of mean $1/n$ then supplies the uniform factor $(1-1/n)^{n-1}\ge e^{-1}$.  This proves the modified inequality with constant $e$.  The full $\Sone$ problem remains open because a general array has no fixed two-sided orthogonal tensor grid.
+
+\section{Partial theorem}
+
+\begin{theorem}[weighted tensor grids]
+Let $H$ be a real or complex Hilbert space, let $(u_j)_{j=1}^n$ and $(v_k)_{k=1}^n$ be orthonormal families in $H$, and let $(a_{jk})\in\mathbb F^{n\times n}$.  Define
+\[
+ z_{jk}=a_{jk}u_jv_k^*\in \Sone(H).
+\]
+Then
+\[
+ L(z)\le R_{\mathrm{perm}}(z)
+ \qquad\text{and}\qquad
+ L(z)\le e\,R_{\mathrm{map}}(z).
+\]
+Thus source equations (8) and (10) hold uniformly on every weighted tensor-grid array, with constants $1$ and $e$, respectively.
+\end{theorem}
+
+\begin{proof}
+For fixed $j$ and every sign vector $\delta$,
+\[
+ \sum_{k=1}^n\delta_kz_{jk}
+ =u_j\left(\sum_{k=1}^n\overline{\delta_ka_{jk}}v_k\right)^*.
+\]
+This operator has rank at most one and trace norm $(\sum_k|a_{jk}|^2)^{1/2}$.  Hence
+\begin{equation}\label{eq:left}
+ L(z)=\frac1n\sum_{j=1}^n\left(\sum_{k=1}^n|a_{jk}|^2\right)^{1/2}.
+\end{equation}
+
+If $\pi\in S_n$, then the initial vectors $v_{\pi(j)}$ and terminal vectors $u_j$ are both orthonormal.  Therefore the singular values of $\sum_j\varepsilon_ja_{j,\pi(j)}u_jv_{\pi(j)}^*$ are $|a_{j,\pi(j)}|$, independently of $\varepsilon$.  It follows that
+\[
+ R_{\mathrm{perm}}(z)
+ =\E_{\pi}\sum_{j=1}^n|a_{j,\pi(j)}|
+ =\frac1n\sum_{j,k=1}^n|a_{jk}|.
+\]
+Together with the rowwise inequality $\|(a_{jk})_k\|_2\le\|(a_{jk})_k\|_1$, this and \eqref{eq:left} prove $L(z)\le R_{\mathrm{perm}}(z)$.
+
+Now fix $K=(K_1,\ldots,K_n)\in[n]^n$.  Grouping by the selected terminal index gives
+\[
+ \sum_{j=1}^n\varepsilon_jz_{j,K_j}
+ =\sum_{k=1}^n\left(\sum_{j:K_j=k}\varepsilon_ja_{jk}u_j\right)v_k^*.
+\]
+The vectors in parentheses are pairwise orthogonal because their sets of $u_j$ coordinates are disjoint, and the $v_k$ are orthonormal.  Consequently the nonzero singular values are
+\[
+ \left(\sum_{j:K_j=k}|a_{jk}|^2\right)^{1/2},\qquad k\in[n],
+\]
+and hence
+\begin{equation}\label{eq:selector}
+ R_{\mathrm{map}}(z)=\sum_{k=1}^n\E_K
+ \left(\sum_{j=1}^n|a_{jk}|^2\mathbf1_{\{K_j=k\}}\right)^{1/2}.
+\end{equation}
+
+Fix a column $k$ and rearrange its absolute weights as $b_1\ge\cdots\ge b_n\ge0$.  The indicators $B_r=\mathbf1_{\{K_{j_r}=k\}}$ are independent Bernoulli variables with mean $1/n$.  Since the Euclidean norm dominates the maximum,
+\begin{align*}
+ \E\left(\sum_{r=1}^n b_r^2B_r\right)^{1/2}
+ &\ge \E\max_{1\le r\le n}b_rB_r\\
+ &=\frac1n\sum_{r=1}^n b_r\left(1-\frac1n\right)^{r-1}\\
+ &\ge \frac1n\left(1-\frac1n\right)^{n-1}\sum_{r=1}^n b_r
+ \ge \frac1{en}\sum_{r=1}^n b_r.
+\end{align*}
+For $n=1$ the same conclusion is immediate.  Summing this estimate over $k$ in \eqref{eq:selector} yields
+\[
+ R_{\mathrm{map}}(z)\ge\frac1{en}\sum_{j,k=1}^n|a_{jk}|
+ \ge\frac1e L(z),
+\]
+where the final inequality again uses the rowwise $\ell_2$--$\ell_1$ comparison and \eqref{eq:left}.  This proves the theorem.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof has three checkable inputs: the rank-one row formula, the orthogonal column-block singular-value formula, and the Bernoulli first-hit identity.  The accompanying verifier script enumerates all selectors on randomized weighted arrays for $1\le n\le5$ and directly checks the singular-value formula using matrix SVDs.  These computations are regression checks only; the proof above is exact.
+
+The result does not cover arrays $z_{jk}$ whose left or right singular directions depend on both indices.  It does not imply that $\Sone$ is a linear KS space, and it gives no nonlinear metric KS inequality.  No optimality claim is made for the constant $e$.
+
+\section{Novelty-check status}
+
+The run's lightweight indexes had no record for arXiv:1501.05213 or this subcase.  A bounded exact-phrase, arXiv, and forward-citation search on 19 July 2026 found no claimed resolution of the $\Sone$ linear-KS question or this weighted tensor-grid statement.  The later Naor--Schechtman material on Schatten embeddings uses the distinct upper-property-$\alpha$ inequality.  This bounded search does not certify novelty.
+
+\section{Human-review recommendation}
+
+Check equation \eqref{eq:selector} first.  Once its singular-value identification is accepted, the probability estimate and both conclusions are elementary.  If retained, this packet should remain classified as a narrow partial result; the source's general linear and metric questions are untouched.
+
+\begin{thebibliography}{9}
+\bibitem{NaorSchechtman}
+A. Naor and G. Schechtman,
+\emph{Pythagorean powers of hypercubes},
+Ann. Inst. Fourier (Grenoble) 66 (2016), no. 3, 1093--1116;
+arXiv:1501.05213; doi:10.5802/aif.3032.
+\end{thebibliography}
+
+\end{document}

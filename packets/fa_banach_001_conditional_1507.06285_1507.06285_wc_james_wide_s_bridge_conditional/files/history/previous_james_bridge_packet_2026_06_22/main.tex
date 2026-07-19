@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conditional}{Conditional Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\WC}{\mathbf{WC}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\ord}{\mathrm{Ord}}
+\newcommand{\co}{\operatorname{co}}
+
+\title{A Conditional Reduction for the Raw Weak-Compactness Index Cutoffs}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_18}}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a conditional packet, not a full solution of Question 9.3 of
+Beanland--Causey--Freeman--Wallis \cite{BCFW}.  The conditional dependency is
+isolated in Lemma \ref{bridge}.  If that lemma is proved, then the raw
+weak-compactness cutoff classes at the principal ordinals
+$\omega^{\omega^\eta}$, $\eta\geq 1$, are norm-closed operator ideals.
+
+\section{Source Question}
+
+In \cite[Question 9.3]{BCFW}, after defining the raw weak-compactness index
+$\WC(A,X,Y)$ by finite sequences in $B_X$ whose images dominate the summing
+basis of $c_0$, the authors ask:
+
+\begin{quote}
+For which ordinals $\xi$ is the class of operators $A:X\to Y$ such that
+$\WC(A,X,Y)\leq \xi$ an ideal?
+\end{quote}
+
+The source paper proves that the cutoff $\WC\leq\omega$ is the ideal of super
+weakly compact operators and that $\WC<\omega_1$ is an ideal.  A previous
+packet in this run proves that finite cutoffs $n\geq 2$ are not closed under
+sums.
+
+\section{Definitions}
+
+Let $(s_i)$ denote the summing basis of $c_0$, with
+\[
+  \left\|\sum_{i=1}^n a_i s_i\right\|
+  = \max_{1\leq m\leq n}\left|\sum_{i=1}^m a_i\right|.
+\]
+For $K\geq 1$, $\WC(A,X,Y,K)$ is the tree of all finite sequences
+$(x_i)_{i=1}^n\subset B_X$ such that $(Ax_i)_{i=1}^n$ $K$-dominates
+$(s_i)_{i=1}^n$.  Then
+\[
+  \WC(A,X,Y)=\sup_{K\geq 1} o(\WC(A,X,Y,K)).
+\]
+
+Causey's James index \cite{CauseyJ} is built from convexly separated
+sequences.  For a body $K\subset X^*$ and $\varepsilon>0$, a finite sequence
+$(x_i)_{i=1}^n$ is $(K,\varepsilon)$-convexly separated if, for every
+$1\leq m<n$,
+\[
+ d_K\bigl(\co\{x_i:i\leq m\},\co\{x_i:m<i\leq n\}\bigr)\geq\varepsilon.
+\]
+For an operator $A:X\to Y$, this is applied to $K=A^*B_{Y^*}$; equivalently,
+the image sequence $(Ax_i)$ is convexly separated in norm.  Let
+$j(A,\varepsilon)$ be the order of this tree and
+$\J(A)=\sup_{\varepsilon>0} j(A,\varepsilon)$.
+
+\section{Elementary Comparison}
+
+\begin{lemma}\label{wc-le-j}
+For every operator $A:X\to Y$, $\WC(A,X,Y)\leq \J(A)$.
+\end{lemma}
+
+\begin{proof}
+Fix $K\geq 1$ and $(x_i)_{i=1}^n\in \WC(A,X,Y,K)$.  Given
+$1\leq m<n$, take convex combinations
+$u=\sum_{i\leq m}\lambda_i Ax_i$ and
+$v=\sum_{i>m}\mu_i Ax_i$.  The coefficient vector
+$(\lambda_1,\ldots,\lambda_m,-\mu_{m+1},\ldots,-\mu_n)$ has summing-basis
+norm at least $1$, because its $m$th partial sum is $1$.  Hence
+\[
+  \|u-v\|\geq K^{-1}.
+\]
+Thus every $\WC(A,K)$ node is a $J(A,K^{-1})$ node, so
+$o(\WC(A,K))\leq j(A,K^{-1})$.  Taking the supremum over $K$ gives the claim.
+\end{proof}
+
+\section{Conditional Dependencies}
+
+\begin{conditional}[James-to-wide-(s) tree bridge]\label{bridge}
+For every operator $A:X\to Y$, every $\varepsilon>0$, and every ordinal
+$\alpha$, if
+\[
+  j(A,\varepsilon)>\omega\alpha,
+\]
+then there is some $K\geq 1$ such that
+\[
+  o(\WC(A,X,Y,K))>\alpha.
+\]
+\end{conditional}
+
+This is the only unproved dependency in the packet.  It is plausible for the
+following reasons.  First, Causey's $J(A,\varepsilon)$ trees are closed under
+successive positive convex blocks: a positive convex block of a convexly
+separated branch remains convexly separated.  Second, BCFW use an
+$\omega\alpha\mapsto\alpha$ tree-blocking argument to make branches basic in
+related Bourgain trees.  Third, Rosenthal's finite theory of
+$\lambda$-wide-(s) sequences \cite{RosenthalWideS} identifies the finite
+quantitative version of domination of the summing basis and proves finite
+triangular-array extraction results.  A proof of Lemma \ref{bridge} should
+combine these three ingredients.
+
+The dependency is not automatic.  Convex separation alone does not imply
+summing-basis domination at the same finite level; finite-dimensional monotone
+scalar configurations can be convexly separated while failing even length-two
+raw summing domination.  The expected loss of one factor of $\omega$ is meant
+to remove precisely this finite-dimensional affine obstruction.
+
+\section{Idea of the Proof}
+
+The key observation is that the raw WC index is bounded above by Causey's
+James index, while Lemma \ref{bridge} gives a partial converse after one
+$\omega$ loss.  At ordinals $\gamma=\omega^{\omega^\eta}$ with $\eta\geq 1$,
+this loss disappears, since $\omega\gamma=\gamma$.  Therefore the two ranks
+have the same cutoff at these principal ordinals.  Causey's theorem then
+transfers ideality for the James cutoff to the raw WC cutoff, and the
+elementary comparison transfers the sum back.
+
+\section{Conditional Theorem}
+
+\begin{theorem}\label{main}
+Assume Lemma \ref{bridge}.  Let $\eta\geq 1$ and put
+$\gamma=\omega^{\omega^\eta}$.  Then the class
+\[
+  \mathcal{W}_\gamma
+  =\{A:X\to Y:\WC(A,X,Y)\leq \gamma\}
+\]
+is a norm-closed operator ideal.
+\end{theorem}
+
+\begin{proof}
+We first show that $\WC(A)\leq\gamma$ implies $\J(A)\leq\gamma$.  If not, then
+for some $\varepsilon>0$,
+\[
+  j(A,\varepsilon)>\gamma.
+\]
+Since $\eta\geq 1$, $\gamma=\omega^{\omega^\eta}$ is fixed by left
+multiplication by $\omega$, i.e. $\omega\gamma=\gamma$.  Thus
+$j(A,\varepsilon)>\omega\gamma$, and Lemma \ref{bridge} gives
+$o(\WC(A,K))>\gamma$ for some $K$, contradicting $\WC(A)\leq\gamma$.
+Hence
+\[
+  \mathcal{W}_\gamma\subseteq \{A:\J(A)\leq\gamma\}.
+\]
+
+Causey proves that $\{A:\J(A)\leq\omega^{\omega^\eta}\}$ is a closed operator
+ideal for every ordinal $\eta$ \cite{CauseyJ}.  Let $A,B:X\to Y$ lie in
+$\mathcal{W}_\gamma$.  By the previous paragraph,
+$\J(A),\J(B)\leq\gamma$, so Causey's theorem gives $\J(A+B)\leq\gamma$.
+Lemma \ref{wc-le-j} then gives
+\[
+  \WC(A+B)\leq \J(A+B)\leq\gamma.
+\]
+Thus $\mathcal{W}_\gamma$ is closed under finite sums.
+
+Closure under composition follows directly from the definition of $\WC$: if
+$C:W\to X$ and $D:Y\to Z$ are bounded, any raw WC tree for $DAC$ rescales to a
+raw WC tree for $A$, with only the domination constant changed.  Therefore
+$\WC(DAC)\leq\WC(A)$.
+
+Finally, if $A_n\to A$ in norm and $A_n\in\mathcal{W}_\gamma$, then
+$\J(A_n)\leq\gamma$ by the first paragraph.  Causey's class
+$\{T:\J(T)\leq\gamma\}$ is norm closed, so $\J(A)\leq\gamma$.  Lemma
+\ref{wc-le-j} gives $\WC(A)\leq\gamma$.  Hence $\mathcal{W}_\gamma$ is norm
+closed.
+\end{proof}
+
+\section{Verification Notes}
+
+The cheap run indexes were searched for arXiv:1507.06285, ``weak compactness
+index'', ``summing basis'', ``Causey'', ``James index'', and ``convexly
+separated''.  Existing run memory contains the finite-cutoff partial result
+and a prior full-solution push attempt, but no infinite-cutoff solution.
+
+The bounded literature search for this packet found:
+\begin{itemize}[leftmargin=2em]
+  \item Causey's arXiv:1508.02065 theorem that the James-index cutoffs
+  $\J\leq\omega^{\omega^\eta}$ are closed operator ideals.
+  \item Rosenthal's arXiv:math/9610209 finite and infinite theory of
+  $\lambda$-wide-(s) sequences, triangular arrays, and super weak compactness.
+  \item No source in the local index or web search explicitly answering BCFW
+  Question 9.3 for the raw $\WC$ cutoffs beyond the source paper's
+  $\WC\leq\omega$ result.
+\end{itemize}
+
+\section{Limitations}
+
+This packet does not prove Lemma \ref{bridge}.  Without that bridge, Theorem
+\ref{main} remains conditional.  The most likely obstruction is that
+convex-separation trees may contain high-rank affine configurations that do
+not admit a uniform raw summing-basis subtree after one $\omega$ loss.  A
+counterexample should probably come from a well-founded James-tree-type
+reflexive space with large Causey $\J$ rank but unexpectedly small raw $\WC$
+rank.
+
+\begin{thebibliography}{9}
+
+\bibitem{BCFW}
+K. Beanland, R. Causey, D. Freeman, and R. Wallis,
+\emph{Classes of operators determined by ordinal indices},
+arXiv:1507.06285.
+
+\bibitem{CauseyJ}
+R. M. Causey,
+\emph{An ordinal index characterizing weak compactness of operators},
+arXiv:1508.02065.
+
+\bibitem{RosenthalWideS}
+H. P. Rosenthal,
+\emph{On wide-$(s)$ sequences and their applications to certain classes of
+operators},
+arXiv:math/9610209.
+
+\end{thebibliography}
+
+\end{document}

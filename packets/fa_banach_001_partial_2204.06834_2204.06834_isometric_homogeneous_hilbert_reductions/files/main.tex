@@ -1,0 +1,742 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\setlist{nosep,leftmargin=2em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+
+\newcommand{\N}{\lVert\,\cdot\,\rVert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\qnorm}[1]{\left\lvert #1\right\rvert_q}
+\newcommand{\rnorm}[1]{\left\lvert #1\right\rvert_r}
+\newcommand{\ellTwo}{\ell_2}
+\newcommand{\Hilb}{\mathsf H}
+\newcommand{\dist}{d_{\mathrm{BM}}}
+\newcommand{\ess}{\mathrm{ess}}
+\newcommand{\spec}{\sigma}
+\newcommand{\Id}{I}
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Calk}{\mathcal C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+
+\title{\textbf{The Isometrically Homogeneous Hilbert-Space Problem}\\[0.4em]
+\large Audit of the Supplied Argument, Literature Status, and Structural Reductions}
+\author{Research report prepared from the supplied source paper and partial solution}
+\date{22 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.91\textwidth}
+\textbf{Status.} The supplied conditional theorem is correct.  Its stated
+``symmetric distortion'' corollary needs a small square-root normalization in
+its proof, but its qualitative conclusion is correct.  I found no published
+full proof or counterexample in the literature search described below.  The
+problem therefore remains open on the evidence available to this report.
+Sections~\ref{sec:optimal}--\ref{sec:shift} give additional rigorous reductions:
+an optimal Hilbert position exists; every infinite-dimensional subspace attains
+the full optimal distortion range; optimal Hilbert structures are unique modulo
+compact operators; every linear isometric embedding is a compact perturbation
+of a Hilbert isometry; and a hypothetical counterexample admits a pure
+unilateral-shift normal form.
+\end{minipage}}
+\end{center}
+
+\begin{abstract}
+Let $X$ be a separable infinite-dimensional Banach space linearly isometric to
+every one of its closed infinite-dimensional subspaces.  C\'uth, Dole\v{z}al,
+Doucha and Kurka asked whether $X$ must be isometric to $\ell_2$.  The
+isomorphic homogeneous-space theorem implies only that $X$ is isomorphic to
+$\ell_2$, and arbitrary distortion of Hilbert space prevents the usual shortcut
+from isomorphism to almost-isometry.
+
+This report first verifies the supplied almost-Hilbertian stabilization
+argument.  It then records the literature status and develops a sequence of
+intrinsic reductions.  If $D=d_{\mathrm{BM}}(X,\ell_2)$, the infimum defining
+$D$ is attained by an equivalent Hilbert norm $|\cdot|_q$ normalized by
+$|x|_q\leq\|x\|\leq D|x|_q$.  In a non-Hilbert counterexample, every closed
+infinite-dimensional subspace has norm-ratio infimum $1$ and supremum $D$ in
+this same Hilbert position.  Any other normalized optimal Hilbert norm differs
+from $q$ by a compact positive perturbation.  Consequently, every linear
+$\|\cdot\|$-isometric embedding $U:X\to X$ satisfies $U^*U-I$ compact with
+respect to $q$, and hence is a compact perturbation of a Hilbert isometric
+embedding.  Finally, after passing to an isometric subspace, one may arrange
+that $X$ is an equivalent renorming of $\ell_2$ for which the canonical right
+shift is simultaneously a Banach-space isometry and a Hilbert isometry.
+These conclusions sharply constrain a counterexample but do not yet force
+$D=1$.
+\end{abstract}
+
+\tableofcontents
+
+\section*{Packet status and source evidence}
+\addcontentsline{toc}{section}{Packet status and source evidence}
+
+This is a partial-result packet for arXiv:2204.06834, Question 3 of
+C\'uth--Dole\v{z}al--Doucha--Kurka.  It does not claim a full solution or a
+counterexample.  The source problem remains open on the evidence reviewed here.
+The contribution of this upgraded packet is to preserve the verified
+almost-Hilbertian obstruction from the previous packet, correct the
+square-root normalization in its symmetric-distortion corollary, and record
+additional reductions that any non-Hilbert counterexample must satisfy.
+
+\begin{itemize}
+\item Previous active packet preserved at
+\path{history/2026-06-22_previous_almost_hilbertian_partial/}.
+\item Supplied upgrade report preserved in the dated evidence folder.
+\item Source paper preserved as \path{source_paper.pdf}.
+\end{itemize}
+
+\clearpage
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+\clearpage
+
+\section{The problem and terminology}
+
+Throughout, $\F$ denotes either $\R$ or $\C$.  A Banach space
+$X=(X,\|\cdot\|)$ is called \emph{isometrically homogeneous} in this report if,
+for every closed infinite-dimensional subspace $Y\subseteq X$, there is a
+surjective linear isometry $U:X\to Y$.
+
+The question considered by C\'uth, Dole\v{z}al, Doucha and Kurka is the
+following.
+
+\begin{question}[Isometric homogeneous-space problem]\label{q:main}
+If a separable infinite-dimensional Banach space is isometrically homogeneous,
+must it be linearly isometric to $\ell_2$?
+\end{question}
+
+The homogeneous-space theorem of Komorowski--Tomczak-Jaegermann and Gowers
+implies that such an $X$ is linearly \emph{isomorphic} to $\ell_2$.  Thus one
+may fix an equivalent Hilbert norm on the same vector space.  The open issue is
+whether the given norm itself satisfies the parallelogram identity.
+
+For two isomorphic Banach spaces $E,F$, write
+\[
+ d_{\mathrm{BM}}(E,F)
+ =\inf\{\|T\|\,\|T^{-1}\|:T:E\to F\text{ is a linear isomorphism}\}.
+\]
+When $F$ is a separable infinite-dimensional Hilbert space, we abbreviate
+$d_{\mathrm{BM}}(E,F)$ to $d(E,\ell_2)$.
+
+\section{Literature status}\label{sec:literature}
+
+The journal version of the source paper appeared in 2024 and still lists
+Question~\ref{q:main} as open \cite{CDDK}.  The strongest directly targeted
+result I found is due to de Rancourt:
+
+\begin{theorem}[de Rancourt \cite{deRancourt}]\label{thm:derancourt}
+If $X$ is isometrically homogeneous, then for every $\varepsilon>0$ the space
+$X$ admits a $(1+\varepsilon)$-unconditional basis.
+\end{theorem}
+
+De Rancourt explicitly identifies the missing ingredient as a sufficiently
+strong quantitative form of the Komorowski--Tomczak-Jaegermann theorem.  The
+obstruction is genuine.  Odell and Schlumprecht proved that $\ell_2$ is
+arbitrarily distortable: for every $\lambda>1$ there is an equivalent norm on
+$\ell_2$ whose restriction to every infinite-dimensional subspace has
+oscillation exceeding $\lambda$ relative to the original Hilbert norm
+\cite{OdellSchlumprecht}.  They also constructed, for prescribed $\lambda>1$,
+equivalent norms with no $\lambda$-unconditional basic sequence.  Thus
+Theorem~\ref{thm:derancourt} rules out the most hostile known distortions, but
+it does not by itself supply an almost-Euclidean infinite-dimensional
+restriction.
+
+A second warning comes from Casazza's survey \cite{Casazza}: exact recurrence
+of all finite-dimensional isometry types in every infinite-dimensional
+subspace is not sufficient in arbitrary Banach spaces; $c_0$ has that
+recurrence property.  Any proof of Question~\ref{q:main} must therefore use the
+additional Hilbertian isomorphism structure, not only finite-dimensional
+recurrence.
+
+The search performed for this report covered the exact wording of the
+question, variants of ``isometrically homogeneous Banach space'', the title
+and citations of the source paper, citations of de Rancourt's paper, and
+arXiv/journal material through 22 June 2026.  No later full proof or
+counterexample was located.  This is evidence about the indexed literature,
+not a claim that an unpublished or obscure result cannot exist.
+
+\section{Audit of the supplied partial result}\label{sec:audit}
+
+The central theorem in the supplied packet is correct.  It is useful to state
+it in a slightly normalized form.
+
+\begin{theorem}[Verified supplied theorem]\label{thm:supplied}
+Let $X=(X,\|\cdot\|)$ be separable, infinite-dimensional and isometrically
+homogeneous.  Suppose that there is an equivalent Hilbert norm $|\cdot|$ such
+that for every $\varepsilon>0$ there are a closed infinite-dimensional
+subspace $Y\subseteq X$ and $a>0$ satisfying
+\[
+ a|y|\leq \|y\|\leq (1+\varepsilon)a|y|
+ \qquad(y\in Y).
+\]
+Then $X$ is linearly isometric to $\ell_2$.
+\end{theorem}
+
+\begin{proof}
+Fix a finite-dimensional subspace $F\subseteq X$ and $\varepsilon>0$.  Choose
+$Y$ and $a$ as in the hypothesis, and let $U:X\to Y$ be a surjective linear
+$\|\cdot\|$-isometry.  For $x\in F$,
+\[
+ a|Ux|\leq \|Ux\|=\|x\|\leq(1+\varepsilon)a|Ux|.
+\]
+Since $(U(F),|\cdot|)$ is Euclidean,
+$d_{\mathrm{BM}}(F,\ell_2^{\dim F})\leq1+\varepsilon$.  Letting
+$\varepsilon\downarrow0$ gives distance one.  In finite dimension, distance
+one is attained: after normalizing almost-isometries, compactness of the unit
+sphere in the relevant operator space yields an actual linear isometry.
+Therefore every finite-dimensional subspace of $X$ is Euclidean.  In
+particular every two-dimensional subspace satisfies the parallelogram law, so
+the Jordan--von Neumann theorem makes $\|\cdot\|$ an inner-product norm.
+Separable infinite-dimensional Hilbert spaces are linearly isometric to
+$\ell_2$.
+\end{proof}
+
+There is one normalization point in the packet's corollary.  For a fixed
+Hilbert norm $|\cdot|$ and an infinite-dimensional subspace $Y$, put
+\[
+ m_Y=\inf_{|y|=1,\,y\in Y}\|y\|,
+ \qquad
+ M_Y=\sup_{|y|=1,\,y\in Y}\|y\|.
+\]
+Then
+\begin{equation}\label{eq:symmetric-distortion}
+ \inf_{a>0}\sup_{0\ne y\in Y}
+ \max\left\{\frac{\|y\|}{a|y|},\frac{a|y|}{\|y\|}\right\}
+ =\sqrt{\frac{M_Y}{m_Y}}.
+\end{equation}
+Indeed the left side is $\inf_{a>0}\max\{M_Y/a,a/m_Y\}$, minimized at
+$a=\sqrt{M_Ym_Y}$.  The theorem's hypothesis is the ratio condition
+$M_Y/m_Y\leq1+\varepsilon$, whereas the symmetric expression in
+\eqref{eq:symmetric-distortion} is its square root.
+
+\begin{corollary}[Corrected proof of the packet's corollary]\label{cor:packet}
+If a non-Hilbert counterexample to Question~\ref{q:main} exists, then for every
+equivalent Hilbert norm $|\cdot|$ there is $\delta>0$ such that every closed
+infinite-dimensional $Y\subseteq X$ satisfies
+\[
+ \inf_{a>0}\sup_{0\ne y\in Y}
+ \max\left\{\frac{\|y\|}{a|y|},\frac{a|y|}{\|y\|}\right\}
+ \geq1+\delta.
+\]
+\end{corollary}
+
+\begin{proof}
+Negating the stabilization hypothesis in Theorem~\ref{thm:supplied} gives an
+$\eta>0$ such that $M_Y/m_Y>1+\eta$ for every infinite-dimensional $Y$.
+Equation~\eqref{eq:symmetric-distortion} then gives a uniform lower bound
+strictly larger than $\sqrt{1+\eta}$; decreasing the bound slightly yields the
+stated non-strict inequality.  Thus the qualitative conclusion in the packet
+is correct, but the square-root conversion should be made explicit.
+\end{proof}
+
+\section{An intrinsic almost-Hilbert criterion}\label{sec:intrinsic}
+
+The fixed ambient Hilbert norm in Theorem~\ref{thm:supplied} is unnecessary.
+The real mechanism is intrinsic Banach--Mazur stabilization.
+
+\begin{theorem}[Intrinsic criterion]\label{thm:intrinsic}
+Let $X$ be isometrically homogeneous.  If
+\[
+ \inf\{d(Y,\ell_2):Y\subseteq X\text{ closed and infinite-dimensional}\}=1,
+\]
+then $X$ is linearly isometric to $\ell_2$.
+\end{theorem}
+
+\begin{proof}
+Fix a finite-dimensional $F\subseteq X$ and $\varepsilon>0$.  Choose an
+infinite-dimensional $Y\subseteq X$ with $d(Y,\ell_2)<1+\varepsilon$, and let
+$U:X\to Y$ be a surjective $\|\cdot\|$-isometry.  Restricting an
+$(1+\varepsilon)$-Hilbertian structure on $Y$ to $U(F)$ shows
+$d(F,\ell_2^{\dim F})<1+\varepsilon$.  The rest is exactly the compactness and
+parallelogram argument from Theorem~\ref{thm:supplied}.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:intrinsic} isolates the precise gap left by arbitrary
+distortion.  A full positive solution would follow from proving that an
+isometrically homogeneous renorming of $\ell_2$ cannot remain a fixed positive
+distance from Hilbert space on every infinite-dimensional subspace.
+\end{remark}
+
+\section{Optimal Hilbert position}\label{sec:optimal}
+
+From now on let $X=(H,\|\cdot\|)$ be isomorphic to a separable
+infinite-dimensional Hilbert space, and set
+\[
+ D=d(X,\ell_2).
+\]
+The first useful point is that, although Banach--Mazur infima need not be
+attained for arbitrary pairs of infinite-dimensional spaces, the Hilbert
+target permits attainment.
+
+\begin{theorem}[Attainment of the Hilbert distance]\label{thm:attainment}
+There is an equivalent Hilbert norm $|\cdot|_q$ on $H$ such that
+\begin{equation}\label{eq:optimal-position}
+ |x|_q\leq\|x\|\leq D|x|_q\qquad(x\in H).
+\end{equation}
+In particular, if $D=1$, then $\|\cdot\|$ is a Hilbert norm.
+\end{theorem}
+
+\begin{proof}
+Fix a reference Hilbert norm $|\cdot|_0$.  For each $k$ choose a Hilbert norm
+$|\cdot|_k$, scaled so that
+\[
+ |x|_k\leq\|x\|\leq(D+k^{-1})|x|_k.
+\]
+Write $|x|_k^2=\langle A_kx,x\rangle_0$ with $A_k$ positive and invertible.
+Equivalence of $|\cdot|_0$ and $\|\cdot\|$, together with the displayed
+inequalities, gives constants $0<c<C<\infty$ independent of $k$ such that
+$cI\leq A_k\leq CI$.  The order interval $[cI,CI]$ is compact in the weak
+operator topology after passing to a subnet (or, on separable $H$, a
+subsequence).  Let $A_k\to A$ weakly.  Then $cI\leq A\leq CI$ and
+$|x|_q^2:=\langle Ax,x\rangle_0$ defines an equivalent Hilbert norm.  Passing
+to the limit pointwise in the two inequalities gives
+\eqref{eq:optimal-position}.
+\end{proof}
+
+Now impose isometric homogeneity.
+
+\begin{theorem}[Hereditary full distortion]\label{thm:endpoints}
+Assume $X$ is isometrically homogeneous and let $q$ be normalized as in
+\eqref{eq:optimal-position}.  For every closed infinite-dimensional
+$Y\subseteq H$,
+\begin{equation}\label{eq:endpoints}
+ \inf_{\substack{y\in Y\\|y|_q=1}}\|y\|=1,
+ \qquad
+ \sup_{\substack{y\in Y\\|y|_q=1}}\|y\|=D.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let the two quantities be $m_Y$ and $M_Y$.  From
+\eqref{eq:optimal-position}, $1\leq m_Y\leq M_Y\leq D$.  Since $Y$ is
+isometric to $X$, $d(Y,\ell_2)=D$.  The identity between $(Y,|\cdot|_q)$ and
+$(Y,\|\cdot\|)$ has distortion $M_Y/m_Y$, so
+\[
+ D\leq M_Y/m_Y\leq D.
+\]
+Hence $M_Y=Dm_Y$.  The bounds $M_Y\leq D$ and $m_Y\geq1$ force
+$m_Y=1$ and $M_Y=D$.
+\end{proof}
+
+\begin{corollary}\label{cor:counter-distortion}
+A non-Hilbert counterexample has $D>1$ and, in an optimal Hilbert position,
+its entire distortion interval $[1,D]$ is unavoidable on every
+infinite-dimensional subspace.  In particular, neither endpoint can be
+removed by passing to a subspace.
+\end{corollary}
+
+This is stronger than the supplied corollary because it uses an optimal
+Hilbert norm and identifies the exact hereditary endpoint values.
+
+\section{Rigidity of Hilbert structures modulo compact operators}
+\label{sec:compact}
+
+Let $q$ be an optimal Hilbert norm as above.  If $r$ is another Hilbert norm,
+write
+\[
+ |x|_r^2=\langle Ax,x\rangle_q
+\]
+for its positive invertible comparison operator $A$.  The next result converts
+hereditary full distortion into an essential-spectrum constraint.
+
+\begin{theorem}[Near-optimal essential-spectrum rigidity]\label{thm:ess-spectrum}
+Assume $X$ is isometrically homogeneous and $q$ satisfies
+\eqref{eq:optimal-position}.  Let $r$ be a Hilbert norm normalized by
+\[
+ |x|_r\leq\|x\|\leq D'|x|_r
+ \qquad(x\in H),
+\]
+where $D'\geq D$.  If $|x|_r^2=\langle Ax,x\rangle_q$, then
+\begin{equation}\label{eq:ess-spectrum}
+ \sigma_{\mathrm{ess}}(A)\subseteq
+ \left[\left(\frac{D}{D'}\right)^2,1\right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Suppose first that the essential spectrum meets $(1,\infty)$.  Then for some
+$\eta>0$ the spectral subspace
+$Y=\mathbf 1_{[1+\eta,\infty)}(A)H$ is infinite-dimensional.  On $Y$,
+$|y|_r\geq\sqrt{1+\eta}|y|_q$, and $|y|_r\leq\|y\|$.  Therefore
+$\|y\|/|y|_q\geq\sqrt{1+\eta}$ on $Y\setminus\{0\}$, contradicting the first
+identity in \eqref{eq:endpoints}.
+
+Now suppose the essential spectrum meets
+$\bigl(0,(D/D')^2\bigr)$.  Choose $c<D/D'$ so that
+$Y=\mathbf 1_{(0,c^2]}(A)H$ is infinite-dimensional.  On $Y$,
+$|y|_r\leq c|y|_q$, whence
+\[
+ \|y\|\leq D'|y|_r\leq D'c|y|_q<D|y|_q,
+\]
+contradicting the second identity in \eqref{eq:endpoints}.  This proves
+\eqref{eq:ess-spectrum}.
+\end{proof}
+
+\begin{corollary}[Compact uniqueness of optimal Hilbert positions]
+\label{cor:compact-unique}
+If $q_1$ and $q_2$ are both normalized optimal Hilbert norms,
+\[
+ |x|_{q_i}\leq\|x\|\leq D|x|_{q_i}\quad(i=1,2),
+\]
+and $|x|_{q_1}^2=\langle Ax,x\rangle_{q_2}$, then $A-I$ is compact.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:ess-spectrum} with $D'=D$.  It gives
+$\sigma_{\mathrm{ess}}(A)\subseteq\{1\}$.  The essential spectrum of a
+bounded self-adjoint operator on an infinite-dimensional Hilbert space is
+nonempty, so it equals $\{1\}$.  Equivalently, $A-I$ is compact.
+\end{proof}
+
+\section{Isometries are Hilbertian modulo compacts}\label{sec:isometries}
+
+The preceding compact uniqueness applies directly to every into-isometry.
+Adjoints and compactness in this section are taken with respect to the optimal
+Hilbert norm $q$.
+
+\begin{theorem}[Compact polar rigidity]\label{thm:isom-compact}
+Let $U:X\to X$ be a linear $\|\cdot\|$-isometric embedding, not necessarily
+surjective.  Then
+\begin{equation}\label{eq:ustaru}
+ U^*U-I\quad\text{is compact}.
+\end{equation}
+Consequently, in the polar decomposition $U=V|U|$, the operator $V$ is a
+$q$-Hilbert isometric embedding with the same range as $U$, and
+\[
+ U-V\quad\text{is compact}.
+\]
+If $U$ is surjective, $V$ is unitary.
+\end{theorem}
+
+\begin{proof}
+Define $|x|_{q_U}=|Ux|_q$.  Since $U$ is a $\|\cdot\|$-isometry,
+\[
+ |x|_{q_U}=|Ux|_q\leq\|Ux\|=\|x\|
+ \leq D|Ux|_q=D|x|_{q_U}.
+\]
+Thus $q_U$ is another normalized optimal Hilbert norm.  Its comparison
+operator with $q$ is $U^*U$, so Corollary~\ref{cor:compact-unique} gives
+\eqref{eq:ustaru}.  Functional calculus yields
+$|U|=(U^*U)^{1/2}=I+K$ with $K$ compact.  Hence
+$U=V(I+K)$ and $U-V=VK$ is compact.  Since $|U|$ is invertible, $U$ and $V$
+have the same range.
+\end{proof}
+
+\begin{proposition}[Dual quotient homogeneity]\label{prop:dual-quotient}
+If $X$ is isometrically homogeneous, then every infinite-dimensional quotient
+of $X^*$ is linearly isometric to $X^*$.
+\end{proposition}
+
+\begin{proof}
+The homogeneous-space theorem gives $X\simeq\ell_2$, so $X$ is reflexive.
+Let $Z\subseteq X^*$ be closed and suppose $X^*/Z$ is infinite-dimensional.
+Because $X$ is reflexive, norm-closed subspaces of $X^*$ are weak-star closed.
+With $Y=Z_\perp\subseteq X$, one has $Z=Y^\perp$, and restriction gives the
+canonical quotient isometry
+\[
+ X^*/Z=X^*/Y^\perp\cong Y^*.
+\]
+The quotient is infinite-dimensional exactly when $Y$ is.  Homogeneity gives
+$Y\cong X$ isometrically, hence $Y^*\cong X^*$ isometrically.
+\end{proof}
+
+\section{Interaction with near-unconditional bases}\label{sec:unconditional}
+
+Theorem~\ref{thm:derancourt} can be combined with
+Theorem~\ref{thm:ess-spectrum} to obtain a precise ``unitary modulo compacts''
+form of the sign symmetries.  This does not solve the problem because the basis
+may vary with $\varepsilon$, but it narrows the remaining quantitative gap.
+
+\begin{proposition}[Essential Hilbertianity of sign changes]
+\label{prop:signs}
+Let $(x_n)$ be a $K$-unconditional basis of $X$, using the sign-change
+convention: every coordinate sign operator $S_\theta$ satisfies
+$\|S_\theta\|_{X\to X}\leq K$.  Relative to an optimal Hilbert norm $q$,
+\begin{equation}\label{eq:sign-spectrum}
+ \sigma_{\mathrm{ess}}(S_\theta^*S_\theta)
+ \subseteq[K^{-2},K^2].
+\end{equation}
+Moreover, there is a $q$-unitary $W_\theta$ such that
+\begin{equation}\label{eq:essential-distance}
+ \|S_\theta-W_\theta\|_{\mathrm{ess},q}\leq K-1.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Since $S_\theta^{-1}=S_\theta$, unconditionality gives
+$K^{-1}\|x\|\leq\|S_\theta x\|\leq K\|x\|$.  Define
+\[
+ |x|_r=K^{-1}|S_\theta x|_q.
+\]
+Then $|x|_r\leq\|x\|$ and
+\[
+ \|x\|\leq K\|S_\theta x\|
+ \leq KD|S_\theta x|_q=K^2D|x|_r.
+\]
+The comparison operator of $r$ with $q$ is
+$A=K^{-2}S_\theta^*S_\theta$.  Applying
+Theorem~\ref{thm:ess-spectrum} with $D'=K^2D$ gives
+$\sigma_{\mathrm{ess}}(A)\subseteq[K^{-4},1]$, which is
+\eqref{eq:sign-spectrum}.
+
+Let $S_\theta=W_\theta|S_\theta|$ be its Hilbert polar decomposition.  Because
+$S_\theta$ is invertible, $W_\theta$ is unitary.  Equation
+\eqref{eq:sign-spectrum} implies
+$\sigma_{\mathrm{ess}}(|S_\theta|)\subseteq[K^{-1},K]$, so
+\[
+ \||S_\theta|-I\|_{\mathrm{ess},q}
+ \leq\max\{K-1,1-K^{-1}\}=K-1.
+\]
+Finally $S_\theta-W_\theta=W_\theta(|S_\theta|-I)$.
+\end{proof}
+
+\begin{corollary}
+For an isometrically homogeneous space and every $\varepsilon>0$, there is a
+basis whose entire sign-change group is, in the Calkin algebra of the optimal
+Hilbert space, within $\varepsilon$ of unitary operators.
+\end{corollary}
+
+\begin{remark}
+The unresolved step is to turn these basis-dependent asymptotic unitary
+symmetries into a single infinite-dimensional subspace on which
+$\|\cdot\|/|\cdot|_q$ has oscillation tending to one.  Arbitrary distortion
+shows that this conclusion cannot be obtained from the Hilbertian isomorphism
+alone, while Proposition~\ref{prop:signs} shows exactly what additional
+operator-theoretic information de Rancourt's theorem provides.
+\end{remark}
+
+\section{A pure unilateral-shift normal form}\label{sec:shift}
+
+A counterexample, if it exists, may be put in a particularly rigid self-similar
+position.  The construction uses a shift-invariant Banach limit and the Wold
+decomposition.
+
+\begin{theorem}[Shift normal form]\label{thm:shift}
+Let $X$ be isometrically homogeneous.  There is a Banach space isometric to
+$X$, represented as $(\ell_2,\|\cdot\|)$, and an optimal Hilbert norm equal to
+the standard $\ell_2$ norm, such that the canonical right shift
+\[
+ S(a_1,a_2,\ldots)=(0,a_1,a_2,\ldots)
+\]
+is simultaneously a $\|\cdot\|$-isometry and a Hilbert isometry.  The
+represented space remains isometrically homogeneous.
+\end{theorem}
+
+\begin{proof}
+Choose a closed hyperplane $H_1\subset X$ and a surjective
+$\|\cdot\|$-isometry $T:X\to H_1$, viewed as an into-isometry $T:X\to X$.
+Start with an optimal Hilbert norm $|\cdot|_0$ satisfying
+$|x|_0\leq\|x\|\leq D|x|_0$.  Since $T$ is a Banach-space isometry, for every
+$n\geq0$,
+\[
+ D^{-1}|x|_0\leq |T^nx|_0\leq D|x|_0.
+\]
+Let $\operatorname{LIM}$ be a shift-invariant Banach limit and define
+\[
+ |x|_T^2=\operatorname{LIM}_{n\to\infty}|T^nx|_0^2.
+\]
+This is a positive definite quadratic form equivalent to $|\cdot|_0$; the
+parallelogram identity passes through the Banach limit.  Shift invariance gives
+$|Tx|_T=|x|_T$.  More precisely, because
+$|T^nx|_0\leq\|T^nx\|=\|x\|$ and
+$\|x\|=\|T^nx\|\leq D|T^nx|_0$, one has
+\[
+ |x|_T\leq\|x\|\leq D|x|_T.
+\]
+Thus $|\cdot|_T$ is still optimal.
+
+Apply the Wold decomposition to the Hilbert isometry $T$:
+\[
+ H=H_u\oplus\bigoplus_{n\geq0}T^nW,
+ \qquad W=H\ominus T(H).
+\]
+Since $T(H)$ has codimension one, $\dim W=1$.  The shift part
+$H_s=\bigoplus_{n\geq0}T^nW$ is infinite-dimensional and closed for both
+$|\cdot|_T$ and $\|\cdot\|$.  By homogeneity, $(H_s,\|\cdot\|)$ is isometric
+to $X$.  Replacing $X$ by this isometric copy removes the unitary part.  If
+$w$ is a Hilbert unit vector spanning $W$, the sequence $(T^nw)_{n\geq0}$ is an
+orthonormal basis of $H_s$, and under the resulting identification with
+$\ell_2$, $T$ becomes the canonical right shift.  Any infinite-dimensional
+closed subspace of $H_s$ is also one of $X$, so homogeneity is preserved.
+\end{proof}
+
+\section{The resulting counterexample profile}\label{sec:profile}
+
+Combining the preceding results gives a compact description of what remains to
+be ruled out.
+
+\begin{theorem}[Necessary profile of a counterexample]\label{thm:profile}
+If Question~\ref{q:main} has a negative answer, then there is an equivalent norm
+$\|\cdot\|$ on $\ell_2$ and a number $D>1$ with all of the following properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $|x|_2\leq\|x\|\leq D|x|_2$, and $D=d((\ell_2,\|\cdot\|),\ell_2)$.
+\item On every infinite-dimensional closed $Y\subseteq\ell_2$,
+\[
+ \inf_{|y|_2=1,\,y\in Y}\|y\|=1,
+ \qquad
+ \sup_{|y|_2=1,\,y\in Y}\|y\|=D.
+\]
+\item The canonical right shift is a $\|\cdot\|$-isometry.
+\item Every linear $\|\cdot\|$-isometric embedding $U$ is a compact
+perturbation of a Hilbert isometric embedding; equivalently,
+$U^*U-I$ is compact.
+\item For every $\varepsilon>0$, the space has a
+$(1+\varepsilon)$-unconditional basis, and the associated sign changes satisfy
+Proposition~\ref{prop:signs}.
+\item Every finite-dimensional subspace of $X$ embeds linearly isometrically
+into every infinite-dimensional subspace of $X$.
+\item Every infinite-dimensional quotient of $X^*$ is linearly isometric to
+$X^*$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Items (i)--(iv) are Theorems~\ref{thm:attainment},
+\ref{thm:endpoints}, \ref{thm:isom-compact} and \ref{thm:shift}.  Item (v) is
+de Rancourt's theorem together with Proposition~\ref{prop:signs}.  For (vi), if
+$F\subset X$ is finite-dimensional and $Y\subset X$ is infinite-dimensional,
+a surjective isometry $U:X\to Y$ maps $F$ isometrically into $Y$.  Item (vii)
+is Proposition~\ref{prop:dual-quotient}.
+\end{proof}
+
+\section{Why the remaining step is difficult}\label{sec:bottlenecks}
+
+The reductions above leave a sharply formulated target: prove that the profile
+in Theorem~\ref{thm:profile} is impossible when $D>1$.  Several tempting
+shortcuts fail.
+
+\begin{enumerate}[label=\textbf{B\arabic*.}]
+\item \textbf{Isomorphism does not give an almost-Hilbert subspace.}
+Odell--Schlumprecht distortion directly blocks this inference.
+
+\item \textbf{A $1$-unconditional basis does not itself make the norm
+Euclidean.}  For example,
+\[
+ \|x\|_\alpha=\|x\|_2+\alpha\|x\|_\infty
+ \qquad(\alpha>0)
+\]
+is an equivalent non-Hilbert norm on $\ell_2$ with a $1$-unconditional
+canonical basis.  It is not a counterexample: suitable flat block subspaces
+are arbitrarily close to Hilbert.  The missing issue is to derive such a flat
+subspace uniformly from the hereditary self-isometry property.
+
+\item \textbf{Finite-dimensional recurrence is insufficient by itself.}
+Casazza's $c_0$ observation shows that every finite-dimensional isometry type
+can recur in every infinite-dimensional subspace without the ambient norm
+being Hilbertian.
+
+\item \textbf{Compact perturbation is not yet exact rigidity.}
+The Calkin algebra contains many proper isometries and many equivalent
+infinite projections.  Thus Theorem~\ref{thm:isom-compact} is a substantial
+operator reduction, but Fredholm or Calkin-algebra information alone does not
+force $D=1$.
+
+\item \textbf{The shift symmetry is one-sided.}  Shift invariance gives exact
+self-similarity under insertion of a zero coordinate, but not invariance under
+arbitrary permutations or Hilbert rotations.  A proof must manufacture enough
+additional symmetry from homogeneity, or show that hereditary full distortion
+is incompatible with the available near-unitary sign symmetries.
+\end{enumerate}
+
+A concrete next lemma that would finish the problem is the following.
+
+\begin{question}[Quantitative stabilization target]\label{q:target}
+Does every equivalent norm on $\ell_2$ satisfying items (ii), (iii), and (v) of
+Theorem~\ref{thm:profile} have, for every $\varepsilon>0$, an
+infinite-dimensional subspace $Y$ with
+$d(Y,\ell_2)<1+\varepsilon$?
+\end{question}
+
+A positive answer to Question~\ref{q:target}, even without using all the other
+items in the profile, would combine with Theorem~\ref{thm:intrinsic} to solve
+the original problem.
+
+\section{Conclusion}
+
+The supplied theorem is sound and identifies a valid sufficient condition.
+The only correction needed is to distinguish the ratio $M_Y/m_Y$ from the
+symmetric distortion $\sqrt{M_Y/m_Y}$ in the corollary.
+
+No full answer or counterexample was found in the literature search, and the
+2024 journal source still presents the question as open.  The additional
+results in this report do not settle it, but they reduce a hypothetical
+counterexample to a highly constrained renorming of $\ell_2$: it must be
+hereditarily fully distortive in an attained optimal Hilbert position, possess
+near-perfect unconditional bases, have all isometric embeddings Hilbertian
+modulo compact operators, and admit an exact pure unilateral-shift symmetry.
+The remaining bottleneck is to turn these asymptotic and operator-theoretic
+symmetries into an almost-Hilbertian infinite-dimensional restriction.
+
+\medskip
+\noindent\textbf{Novelty caution.}  The deductions in
+Sections~\ref{sec:optimal}--\ref{sec:shift} were developed and checked for this
+report.  I did not find these exact formulations in the searched literature,
+but they have not undergone peer review.
+
+\begin{thebibliography}{99}
+
+\bibitem{Casazza}
+P.~G. Casazza,
+\emph{Some questions arising from the homogeneous Banach space problem},
+arXiv:math/9205207 (1992).
+
+\bibitem{CDDK}
+M. C\'uth, M. Dole\v{z}al, M. Doucha, and O. Kurka,
+\emph{Polish spaces of Banach spaces: complexity of isometry and isomorphism
+classes},
+J. Inst. Math. Jussieu \textbf{23} (2024), no.~4, 1919--1957;
+\href{https://doi.org/10.1017/S1474748023000440}{doi:10.1017/S1474748023000440}.
+
+\bibitem{deRancourt}
+N. de Rancourt,
+\emph{Spectral-free methods in the theory of hereditarily indecomposable
+Banach spaces},
+Bull. Belg. Math. Soc. Simon Stevin \textbf{27} (2020), 775--787;
+\href{https://doi.org/10.36045/j.bbms.200123}{doi:10.36045/j.bbms.200123}.
+
+\bibitem{Gowers}
+W.~T. Gowers,
+\emph{An infinite Ramsey theorem and some Banach-space dichotomies},
+Ann. of Math. (2) \textbf{156} (2002), 797--833.
+
+\bibitem{KTJ}
+R.~A. Komorowski and N. Tomczak-Jaegermann,
+\emph{Banach spaces without local unconditional structure},
+Israel J. Math. \textbf{89} (1995), 205--226;
+erratum, Israel J. Math. \textbf{105} (1998), 85--92.
+
+\bibitem{OdellSchlumprecht}
+E. Odell and Th. Schlumprecht,
+\emph{The distortion problem},
+Acta Math. \textbf{173} (1994), 259--281.
+
+\end{thebibliography}
+
+\end{document}

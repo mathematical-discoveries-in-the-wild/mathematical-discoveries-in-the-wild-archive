@@ -1,0 +1,176 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+
+\title{The Sharp Constant Two in Talponen's ODE-Determined \(L^{p(\cdot)}\) Norms}
+\author{Agent lane 15}
+\date{June 29, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Jarno Talponen, \emph{ODE to \(L^p\) norms},
+arXiv:1402.0528.  The paper defines an ODE-determined variable exponent
+norm by the terminal value \(\norm{f}_{p(\cdot)}=\varphi_f(1)\), where
+\(\varphi_f\) is the stabilized Caratheodory solution of
+\[
+  \varphi(0)=0^+,\qquad
+  \varphi'(t)=\frac{\abs{f(t)}^{p(t)}}{p(t)}\varphi(t)^{1-p(t)}
+  \quad\text{for a.e. }t\in[0,1].
+\]
+After giving examples showing that the constant \(2\) would be best possible,
+the source asks whether
+\[
+  \frac12\norm{f}_1\leq \norm{f}_{p(\cdot)}\leq 2\norm{f}_\infty
+\]
+always holds.
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The upper estimate improves the source paper's \(e\norm{f}_\infty\) bound.
+The source observes that after the profile reaches \(\norm{f}_\infty\), one
+has \(\varphi'\leq \varphi\).  But at and above that level the stronger
+estimate \(\varphi'\leq\norm{f}_\infty\) holds.  Thus the profile can gain at
+most one more copy of \(\norm{f}_\infty\) during the remaining interval.
+
+The lower estimate is most economical through Proposition 3.3 of the source
+paper, which compares the ODE norm to the corresponding Nakano norm.  Young's
+inequality gives \(\norm{f}_1\leq 2\) times the Nakano norm, and the Nakano
+norm is bounded above by the ODE norm.
+
+\begin{theorem}
+Let \(p:[0,1]\to[1,\infty)\) be measurable and let \(f\in L^{p(\cdot)}\) in
+Talponen's ODE-determined sense.  Then
+\[
+  \frac12\norm{f}_{L^1[0,1]}\leq \norm{f}_{p(\cdot)}
+  \leq 2\norm{f}_{L^\infty[0,1]},
+\]
+with the usual interpretation that the upper inequality is vacuous if
+\(\norm{f}_\infty=+\infty\).  The constant \(2\) is optimal on both sides.
+\end{theorem}
+
+\begin{proof}
+The case \(f=0\) is trivial, so assume \(f\neq0\).  Write
+\(\lambda=\norm{f}_{p(\cdot)}=\varphi_f(1)\).
+
+First prove the upper bound.  Put \(M=\norm{f}_\infty\).  If \(M=+\infty\)
+there is nothing to prove, and if \(M=0\) then \(f=0\), already excluded.
+Assume \(0<M<\infty\).  If \(\varphi_f(1)\leq M\), then
+\(\varphi_f(1)\leq 2M\).  Otherwise, by continuity and monotonicity of
+\(\varphi_f\), choose \(t_0\in[0,1]\) such that \(\varphi_f(t_0)=M\).  For
+almost every \(t\in[t_0,1]\) we have \(\varphi_f(t)\geq M\) and
+\(\abs{f(t)}\leq M\), hence
+\[
+  \varphi_f'(t)
+  =
+  \frac{\abs{f(t)}^{p(t)}}{p(t)}\varphi_f(t)^{1-p(t)}
+  \leq
+  \frac{M^{p(t)}}{p(t)}M^{1-p(t)}
+  =
+  \frac{M}{p(t)}
+  \leq M.
+\]
+Integrating over \([t_0,1]\) gives
+\[
+  \norm{f}_{p(\cdot)}=\varphi_f(1)
+  \leq M+M(1-t_0)\leq 2M.
+\]
+
+Now prove the lower bound.  Let
+\[
+  |||f|||_{p(\cdot)}
+  =
+  \inf\left\{\mu>0:
+    \int_0^1 \frac1{p(t)}
+      \left(\frac{\abs{f(t)}}{\mu}\right)^{p(t)}\,dt
+    \leq 1
+  \right\}
+\]
+be the Nakano norm used in Proposition 3.3 of the source paper.  That
+proposition states that
+\[
+  |||f|||_{p(\cdot)}\leq \norm{f}_{p(\cdot)}.
+\]
+Let \(\mu>|||f|||_{p(\cdot)}\) and set \(u(t)=\abs{f(t)}/\mu\).  By the
+definition of the infimum, after decreasing \(\mu\) slightly if necessary, we
+may assume
+\[
+  \int_0^1 \frac{u(t)^{p(t)}}{p(t)}\,dt\leq 1.
+\]
+For every \(q\geq1\) and \(s\geq0\),
+\[
+  s\leq \frac{s^q}{q}+1.
+\]
+Indeed, this is immediate for \(q=1\), and for \(q>1\) it follows from
+Young's inequality \(s\leq s^q/q+1/q'\leq s^q/q+1\).  Applying this pointwise
+with \(q=p(t)\) and \(s=u(t)\), and using that the measure of \([0,1]\) is
+one, we get
+\[
+  \frac{\norm{f}_1}{\mu}
+  =
+  \int_0^1 u(t)\,dt
+  \leq
+  \int_0^1 \frac{u(t)^{p(t)}}{p(t)}\,dt+1
+  \leq 2.
+\]
+Letting \(\mu\downarrow |||f|||_{p(\cdot)}\) yields
+\(\norm{f}_1\leq 2|||f|||_{p(\cdot)}\leq 2\norm{f}_{p(\cdot)}\), which is the
+desired lower bound.
+
+The source paper's two examples immediately before the question show
+sharpness.  With \(p\) equal to \(p_1\) on \([0,t_0)\) and \(1\) on
+\([t_0,1]\), letting \(p_1\to\infty\) and \(t_0\to0\) gives
+\(\norm{\mathbf1}_{p(\cdot)}\to2=2\norm{\mathbf1}_\infty\).  The altered
+example \(f_{t_0}=1/t_0\) on \([0,t_0)\) and \(f_{t_0}=1\) on \([t_0,1]\),
+with first exponent \(1\), second exponent tending to infinity, and
+\(t_0\to0\), gives \(\norm{f_{t_0}}_{p(\cdot)}\to1\) while
+\(\norm{f_{t_0}}_1\to2\).  Hence no constant smaller than \(2\) can replace
+the right-hand constant, and no constant larger than \(1/2\) can replace the
+left-hand constant.
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+The proof is analytic.  No numerical verification is used.  The only source
+paper input beyond the definition of the ODE norm is Proposition 3.3, the
+comparison \(|||f|||_{p(\cdot)}\leq\norm{f}_{p(\cdot)}\).
+
+Local duplicate checks were performed on June 29, 2026 in
+\texttt{registry\_index.tsv}, \texttt{solutions/index.tsv},
+\texttt{attempts/index.tsv}, and \texttt{proof\_gaps/index.tsv} for arXiv id
+1402.0528 and the phrases ``ODE'', ``variable exponent'', ``constant 2'',
+``Nakano'', and variants of the displayed inequality.  No existing packet for
+this target was found.  A bounded web search for the arXiv id, the paper
+title, Talponen with ``constant 2'', and exact text from the displayed
+inequality did not identify a later answer.  This is a bounded-search novelty
+check, not a complete bibliographic audit.
+
+\section*{Limitations and Human Review Recommendation}
+
+The proof answers the exact constant-two problem stated in the source paper.
+The reviewer should check only routine convention points: the interpretation
+when \(\norm{f}_\infty=+\infty\), the use of Proposition 3.3 for the source
+paper's ODE-determined domain, and the endpoint \(p(t)=1\) in the elementary
+Young inequality step.  I recommend human review as a likely valid full
+solution.
+
+\begin{thebibliography}{9}
+\bibitem{Talponen}
+J. Talponen, \emph{ODE to \(L^p\) norms}, arXiv:1402.0528.
+\end{thebibliography}
+
+\end{document}

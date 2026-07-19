@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\HG}{\mathcal H}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\Reals}{\mathbb R}
+\newcommand{\Complex}{\mathbb C}
+
+\title{The infinite-dimensional Hilbert version of the relative spear theorem}
+\author{FA Banach run \texttt{fa\_banach\_001}}
+\date{June 30, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+The source is Lakshmi Kanta Dey and Subhadip Pal, \emph{On the geometry of
+$G$-norm}, arXiv:2603.20796.  Question 1 on PDF page 13 asks:
+
+\begin{quote}
+What is the infinite-dimensional version of Theorem 3.12?
+\end{quote}
+
+Here Theorem 3.12 is the finite-dimensional Hilbert-space theorem asserting
+that a relative spear operator is a partial isometry.  The source question is
+shown below.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+Let $H_1,H_2$ be Hilbert spaces over $\mathbb K=\Reals$ or $\Complex$, and use
+the inner product convention linear in the first variable.  Let
+$G\in L(H_1,H_2)$ with $\norm{G}=1$.  For $T\in L(H_1,H_2)$, set
+\[
+  \norm{T}_G
+  = \inf_{\delta>0}\sup\{\norm{Tx}:x\in S_{H_1},\ \norm{Gx}>1-\delta\}.
+\]
+The $G$-numerical radius is
+\[
+  \nu_G(T)=
+  \sup\{|\lambda|:\lambda\in V_G(T)\},
+\]
+where $V_G(T)$ consists of the limits of $ \langle T x_i,y_i\rangle $ along
+nets with $x_i\in S_{H_1}$, $y_i\in S_{H_2}$ and
+$\Re\langle Gx_i,y_i\rangle\to 1$.  We call $G$ \emph{relative spear} if
+\[
+  \nu_G(T)=\norm{T}_G\qquad(T\in L(H_1,H_2)).
+\]
+
+\section*{Theorem}
+
+\begin{theorem}\label{thm:classification}
+Let $H_1,H_2$ be Hilbert spaces and let $G\in L(H_1,H_2)$ have norm one.
+Then $G$ is relative spear if and only if $H_2$ is one-dimensional and $G$ is a
+rank-one partial isometry onto $H_2$.
+
+Consequently, if $\norm{\cdot}_G$ is required to be a genuine norm on
+$L(H_1,H_2)$, then $G$ is relative spear if and only if $H_1$ and $H_2$ are both
+one-dimensional and $G$ is a surjective isometry.
+\end{theorem}
+
+\section*{Proof intuition}
+
+The finite-dimensional theorem detects singular values in $(0,1)$ by mapping a
+top singular vector into a lower singular direction.  In infinite dimensions the
+same obstruction has two forms.  If the top spectral value of $G^*G$ is
+isolated, the finite-dimensional argument works with the spectral projection at
+$1$.  If spectral values below $1$ accumulate at $1$, one uses two alternating
+families of near-top spectral slices and builds a nilpotent shift between them.
+That operator still has $G$-norm one because its domain slices approach the top
+of the spectrum, but its $G$-numerical radius is bounded by $1/2$.
+
+Once $G^*G$ is forced to be a projection, $G$ is a partial isometry.  A
+relative spear partial isometry cannot have missing final directions, because a
+test operator can point into the orthogonal complement of the final space and
+be invisible to $\nu_G$.  It also cannot have a final space of dimension at
+least two, because a two-dimensional nilpotent block has numerical radius
+$1/2$.  Thus the only Hilbert relative spear case is one-dimensional in the
+codomain.
+
+\section*{Proof}
+
+We first record a Hilbert-space simplification of $V_G$.
+
+\begin{lemma}\label{lem:hilbert-vg}
+If $\Re\langle Gx_i,y_i\rangle\to 1$ with
+$x_i\in S_{H_1}$ and $y_i\in S_{H_2}$, then
+$\norm{Gx_i}\to 1$ and $\norm{y_i-Gx_i}\to0$.  Hence every element of
+$V_G(T)$ is a limit of $\langle T x_i,Gx_i\rangle$ along a net with
+$\norm{Gx_i}\to1$.
+\end{lemma}
+
+\begin{proof}
+Since $\norm{Gx_i}\le1$ and $\norm{y_i}=1$, the condition
+$\Re\langle Gx_i,y_i\rangle\to1$ forces $\norm{Gx_i}\to1$.  Moreover
+\[
+  \norm{y_i-Gx_i}^2
+  =1+\norm{Gx_i}^2-2\Re\langle Gx_i,y_i\rangle \to0.
+\]
+Thus
+$|\langle T x_i,y_i\rangle-\langle T x_i,Gx_i\rangle|
+\le \norm{T}\,\norm{y_i-Gx_i}\to0$.
+\end{proof}
+
+Let $A=G^*G$.  Then $A$ is a positive contraction on $H_1$ with $\norm{A}=1$.
+We show first that $A$ must be a projection.
+
+Assume, toward a contradiction, that the spectral projection
+$E_A((0,1))$ is nonzero.
+
+\medskip
+\noindent
+\textbf{Case 1: the top is isolated from the rest of the spectrum.}
+Suppose that $1$ is isolated from $\sigma(A)\setminus\{1\}$.  Then
+$M=E_A(\{1\})H_1$ is nonzero, and there is $\gamma<1$ such that
+$\norm{A^{1/2}x}\le \gamma\norm{x}$ on $M^\perp$.  Choose a unit
+$u\in M$ and a unit vector $v\in E_A((0,1))H_1$.  Put
+$e=Gv/\norm{Gv}$ and define
+\[
+  T x=\langle x,u\rangle e.
+\]
+Since $\norm{Gu}=1$ and $\norm{Tu}=1$, we have $\norm{T}_G=1$.  If
+$\norm{Gx_i}\to1$, then writing $x_i=P_Mx_i+(I-P_M)x_i$ gives
+$\norm{(I-P_M)x_i}\to0$.  Also $Gv\perp G M$, so
+\[
+  \langle T x_i,Gx_i\rangle
+  =\langle x_i,u\rangle \langle e,G(I-P_M)x_i\rangle \to0.
+\]
+By Lemma \ref{lem:hilbert-vg}, $\nu_G(T)=0$, contradicting relative spear.
+
+\medskip
+\noindent
+\textbf{Case 2: spectral values below $1$ accumulate at $1$.}
+Choose pairwise disjoint Borel sets $I_n,J_n\subset(0,1)$ with nonzero spectral
+projections and with $\inf I_n,\inf J_n\to1$.  Pick unit vectors
+$u_n\in E_A(I_n)H_1$ and $v_n\in E_A(J_n)H_1$.  The families $(u_n)$ and
+$(v_n)$ are mutually orthonormal, and the vectors
+$e_n=Gv_n/\norm{Gv_n}$ are orthonormal in $H_2$.  Define
+\[
+  T x=\sum_{n=1}^\infty \langle x,u_n\rangle e_n .
+\]
+This is a contraction.  Since $\norm{G u_n}\to1$ and $\norm{T u_n}=1$, it
+follows that $\norm{T}_G=1$.
+
+For every $x\in S_{H_1}$,
+\[
+  \langle T x,Gx\rangle
+  =\sum_n \langle x,u_n\rangle\, \langle e_n,Gx\rangle .
+\]
+The coefficient vector
+$(\langle e_n,Gx\rangle)_n$ depends only on the projection of $x$ onto
+$\overline{\operatorname{span}}\{v_n:n\ge1\}$: indeed
+$\langle e_n,Gx\rangle=\langle A v_n,x\rangle/\norm{Gv_n}$, and the mutually
+orthogonal vectors $A v_n/\norm{Gv_n}$ have norm at most one because
+$0\le A\le I$.  Hence this coefficient vector has norm at most
+$\|P_Vx\|$, and
+\[
+  |\langle T x,Gx\rangle|
+  \le
+  \|P_Ux\|\,\|P_Vx\|
+  \le \frac12,
+\]
+where $P_U$ and $P_V$ are the orthogonal projections onto the closed spans of
+$(u_n)$ and $(v_n)$.  Lemma \ref{lem:hilbert-vg} gives
+$\nu_G(T)\le1/2<1=\norm{T}_G$, again a contradiction.
+
+Both cases are impossible; hence $E_A((0,1))=0$.  Therefore
+$A=G^*G$ is an orthogonal projection, and $G$ is a partial isometry.  Let
+$M=\ran A$ be the initial space and $N=GM$ be the final space.
+
+If $N\ne H_2$, choose a unit $u\in M$ and a unit $z\in N^\perp$.  The operator
+$T x=\langle x,u\rangle z$ satisfies $\norm{T}_G=1$ because $\norm{Gu}=1$.
+But $Gx\in N$ for all $x$, so
+$\langle Tx,Gx\rangle=0$ for all $x$.  Thus $\nu_G(T)=0$, contradiction.
+Consequently $N=H_2$.
+
+If $\dim H_2\ge2$, then $\dim M\ge2$.  Choose orthonormal $u_1,u_2\in M$ and
+let $S$ be the rank-one nilpotent on $M$ given by
+$S u_1=u_2$ and $S=0$ on $u_1^\perp\cap M$.  Define
+$T=G S P_M$, where $P_M$ is the projection onto $M$.  Then $\norm{T}_G=1$.
+For all $x\in H_1$,
+\[
+  \langle Tx,Gx\rangle
+  =\langle S P_Mx,P_Mx\rangle .
+\]
+The numerical radius of this nilpotent block is $1/2$, so
+$|\langle Tx,Gx\rangle|\le1/2$ for $x\in S_{H_1}$.  Lemma
+\ref{lem:hilbert-vg} yields $\nu_G(T)\le1/2$, contradiction.  Therefore
+$\dim H_2=1$.
+
+Since $N=H_2$ and $G$ is a partial isometry, $G$ is a rank-one partial isometry
+onto the one-dimensional codomain.
+
+Conversely, suppose $H_2=\mathbb K v$ and
+\[
+  Gx=\langle x,u\rangle v
+\]
+for unit vectors $u\in H_1$ and $v\in H_2$.  Let $T\in L(H_1,H_2)$, so
+$Tx=f(x)v$ for some bounded functional $f$ on $H_1$.  If
+$x=\alpha u+h$ with $h\perp u$ and $|\alpha|>1-\delta$, then
+$\norm{h}\le (2\delta)^{1/2}$.  It follows that
+\[
+  \norm{T}_G=\lim_{\delta\downarrow0}
+  \sup_{\substack{x\in S_{H_1}\\ |\langle x,u\rangle|>1-\delta}} |f(x)|
+  =|f(u)|.
+\]
+On the other hand, if
+$\Re\langle Gx_i,y_i\rangle\to1$, then $y_i=\beta_i v$ with
+$|\beta_i|=1$, $\langle x_i,u\rangle\overline{\beta_i}\to1$, and
+$x_i-\langle x_i,u\rangle u\to0$.  Hence
+\[
+  \langle Tx_i,y_i\rangle
+  =f(x_i)\overline{\beta_i}\to f(u).
+\]
+Thus $\nu_G(T)=|f(u)|=\norm{T}_G$ for every $T$, so $G$ is relative spear.
+
+Finally, if $\norm{\cdot}_G$ is a genuine norm on $L(H_1,H_2)$ and
+$Gx=\langle x,u\rangle v$, then $u^\perp=\{0\}$; otherwise a nonzero operator
+supported on $u^\perp$ has $G$-seminorm zero.  Hence $H_1$ is also
+one-dimensional.  The converse in the one-dimensional case is immediate.
+\qed
+
+\section*{Answer to the Source Question}
+
+The infinite-dimensional Hilbert version of the source theorem is not merely
+``relative spear implies partial isometry.''  The exact classification is:
+relative spear Hilbert operators are precisely the rank-one partial isometries
+onto a one-dimensional codomain.  With the source paper's standing convention
+that the $G$-norm is a norm on all of $L(H_1,H_2)$, the only Hilbert examples
+are one-dimensional surjective isometries.
+
+\section*{Novelty Check and Limitations}
+
+Run-local indexes were searched for arXiv:2603.20796 and for the terms
+\texttt{G-norm}, \texttt{relative spear}, \texttt{partial isometry}, and
+Hilbert-space variants.  No prior run packet was found.  A targeted web search
+for the exact title and relative-spear/Hilbert/partial-isometry phrases did not
+locate an obvious later answer.
+
+This packet answers Question 1.  It does not settle the source paper's broader
+Banach-space Questions 2 and 3.
+
+\section*{References}
+
+\begin{enumerate}
+\item Lakshmi Kanta Dey and Subhadip Pal, \emph{On the geometry of
+$G$-norm}, arXiv:2603.20796.
+\end{enumerate}
+
+\end{document}

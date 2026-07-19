@@ -1,0 +1,239 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\calF}{\mathcal F}
+
+\title{Endpoint Failure for an Unbounded-Group Transference Principle}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_08}}
+\date{2026-07-19}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Markus Haase, \emph{A Transference Principle for General
+Groups and Functional Calculus on UMD Spaces}, arXiv:0807.3906. In Section 3,
+Theorem 3.2 proves a transference estimate for a \(C_0\)-group \(U\) satisfying
+\[
+  \|U(s)\| \le M\cosh(\omega_0 s)
+\]
+when the measure weight parameter \(\omega\) is strictly larger than
+\(\omega_0\). In Remark 3.3 the source says that this strict inequality is
+essential in the proof and that the endpoint \(\omega=\omega_0\) is not
+expected.
+
+This packet proves that the endpoint estimate indeed fails, already in the
+scalar Hilbert-space case.
+
+\section*{Endpoint Form Refuted}
+
+At the endpoint, the analogue of Haase's Theorem 3.2 would assert the following
+kind of estimate: for \(p=2\), \(X=\C\), a \(C_0\)-group \(U\) with
+\(\|U(s)\|\le M\cosh(\omega_0s)\), and all \(\mu\in M_{\omega_0}(\R)\),
+\[
+  \left|\int_\R U(s)\,\mu(ds)\right|
+  \le C M^2\, \|L_{\mu_{\omega_0}}\|_{L^2(\R)\to L^2(\R)},
+  \qquad
+  \mu_{\omega_0}(ds)=\cosh(\omega_0s)\mu(ds).
+\]
+Here \(L_\nu\) denotes convolution by the finite measure \(\nu\).
+
+\section*{Proof Intuition}
+
+Take the scalar group \(U(s)=e^{\alpha s}\), whose growth type is exactly
+\(\alpha>0\). If \(\nu=\mu_\alpha\), then the transferred scalar operator is
+pairing \(\nu\) with
+\[
+  \frac{e^{\alpha s}}{\cosh(\alpha s)}=1+\tanh(\alpha s).
+\]
+For scalar \(L^2\), the convolution norm of \(\nu\) is just the supremum norm
+of its Fourier transform. Thus the endpoint estimate would say that pairing
+with \(\tanh(\alpha s)\) is controlled by \(\|\widehat\nu\|_\infty\), at least
+for measures of total mass zero.
+
+This is false. The Fourier transform of \(\tanh(\alpha s)\) has a principal
+value \(1/\xi\) singularity at frequency \(0\). Smooth Fourier multipliers
+bounded by one and supported on \(1/N\lesssim |\xi|\lesssim 1\) therefore pair
+with it like \(\int_{1/N}^1 d\xi/\xi\), which grows as \(\log N\).
+
+\section*{Fourier Convention}
+
+We use
+\[
+  \widehat f(\xi)=\int_\R e^{-is\xi}f(s)\,ds,\qquad
+  f(s)=\frac1{2\pi}\int_\R e^{is\xi}\widehat f(\xi)\,d\xi.
+\]
+
+\begin{lemma}\label{lem:tanh}
+For \(\alpha>0\), in the sense of tempered principal-value distributions,
+\[
+  \widehat{\tanh(\alpha\,\cdot)}(\xi)
+  =
+  \frac{\pi}{i\alpha\sinh(\pi\xi/(2\alpha))}.
+\]
+\end{lemma}
+
+\begin{proof}
+The derivative of \(\tanh(\alpha s)\) is \(\alpha\sech^2(\alpha s)\).
+The standard contour computation gives
+\[
+  \calF[\alpha\sech^2(\alpha\,\cdot)](\xi)
+  =
+  \frac{\pi\xi/\alpha}{\sinh(\pi\xi/(2\alpha))}.
+\]
+Since differentiation corresponds to multiplication by \(i\xi\), division by
+\(i\xi\) gives the displayed formula away from zero. The distribution is odd
+and purely imaginary, so there is no additional delta mass at zero.
+\end{proof}
+
+\begin{theorem}
+Let \(\alpha>0\). The endpoint transference estimate with
+\(\omega=\omega_0=\alpha\) fails for the scalar Hilbert space \(X=\C\), \(p=2\),
+and \(U(s)=e^{\alpha s}\).
+\end{theorem}
+
+\begin{proof}
+The group \(U(s)=e^{\alpha s}\) satisfies
+\[
+  |U(s)|\le 2\cosh(\alpha s),\qquad s\in\R,
+\]
+and its growth type is exactly \(\alpha\).
+
+Assume, toward a contradiction, that an endpoint estimate holds with some
+finite constant \(C\) for this fixed group. Put
+\[
+  a=\frac{\pi}{2\alpha}.
+\]
+Choose \(\delta>0\) so small that
+\[
+  |\sinh(a\xi)|\le 2a|\xi|
+  \qquad (|\xi|\le \delta).
+\]
+For each sufficiently large \(N\), let \(\chi_N\in C_c^\infty(\R)\) be even,
+\(0\le\chi_N\le1\), with
+\[
+  \chi_N(\xi)=1
+  \quad\text{for}\quad
+  2/N\le |\xi|\le \delta/2,
+  \qquad
+  \supp \chi_N\subset\{1/N\le |\xi|\le \delta\}.
+\]
+Define
+\[
+  m_N(\xi)=-i\,\sgn(\xi)\chi_N(\xi).
+\]
+Then \(m_N\in C_c^\infty(\R)\), \(m_N(0)=0\), and
+\(\|m_N\|_\infty\le1\). Let
+\[
+  h_N(s)=\frac1{2\pi}\int_\R e^{is\xi}m_N(\xi)\,d\xi,
+  \qquad
+  \nu_N(ds)=h_N(s)\,ds .
+\]
+Since \(m_N\) is smooth and compactly supported, \(h_N\) is a Schwartz
+function, hence \(\nu_N\) is a finite measure. Its Fourier transform is
+\(\widehat{\nu_N}=m_N\), and its total mass is zero because \(m_N(0)=0\).
+Therefore convolution by \(\nu_N\) on scalar \(L^2(\R)\) has norm
+\[
+  \|L_{\nu_N}\|_{2\to2}=\|m_N\|_\infty\le1.
+\]
+
+Now set
+\[
+  \mu_N(ds)=\sech(\alpha s)\,\nu_N(ds).
+\]
+Then \(\mu_N\in M_\alpha(\R)\), since
+\[
+  \int_\R e^{\alpha|s|}\,|\mu_N|(ds)
+  \le 2\|\nu_N\|<\infty,
+\]
+and \((\mu_N)_\alpha=\nu_N\). The transferred scalar operator is
+\[
+  \int_\R e^{\alpha s}\,\mu_N(ds)
+  =
+  \int_\R (1+\tanh(\alpha s))\,\nu_N(ds)
+  =
+  \int_\R \tanh(\alpha s)\,h_N(s)\,ds,
+\]
+because \(\nu_N(\R)=0\).
+
+By Lemma \ref{lem:tanh} and the definition of \(m_N\),
+\[
+\begin{aligned}
+  \int_\R \tanh(\alpha s)h_N(s)\,ds
+  &=
+  \frac1{2\pi}
+  \left\langle
+  \frac{\pi}{i\alpha\sinh(a\xi)},\,m_N(-\xi)
+  \right\rangle  \\
+  &=
+  \frac1{2\alpha}
+  \int_\R
+  \frac{\chi_N(\xi)}{|\sinh(a\xi)|}\,d\xi .
+\end{aligned}
+\]
+For \(N\) large enough that \(2/N<\delta/2\), the last integral is bounded
+below by
+\[
+  \frac1{2\alpha}
+  \int_{2/N\le|\xi|\le\delta/2}
+  \frac{d\xi}{2a|\xi|}
+  =
+  \frac1{2\alpha a}\log\!\left(\frac{\delta N}{4}\right),
+\]
+which tends to infinity with \(N\).
+
+The hypothesized endpoint transference estimate would instead give
+\[
+  \left|\int_\R e^{\alpha s}\,\mu_N(ds)\right|
+  \le C\,2^2\,\|L_{\nu_N}\|_{2\to2}
+  \le 4C
+\]
+for all \(N\), a contradiction. Hence no endpoint estimate can hold.
+\end{proof}
+
+\section*{Verification Notes}
+
+The construction is scalar and uses only Plancherel's theorem for the
+\(L^2\) convolution norm. The measures \(\nu_N\) are absolutely continuous
+finite measures because their Fourier transforms \(m_N\) are smooth and
+compactly supported. The logarithmic divergence comes solely from the
+principal-value \(1/\xi\) singularity in the Fourier transform of
+\(\tanh(\alpha s)\).
+
+\section*{Novelty and Search Bounds}
+
+The run indexes were searched for arXiv:0807.3906, the source title,
+`endpoint transference', `omega\_0', and close variants; no duplicate packet
+was found. A bounded web search on 2026-07-19 found later uses and
+interpolation variants of Haase's unbounded-group transference principle, but
+no exact endpoint counterexample.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{Haase0807}
+M. Haase,
+\emph{A Transference Principle for General Groups and Functional Calculus on
+UMD Spaces},
+arXiv:0807.3906.
+
+\bibitem{SteinShakarchi}
+E. M. Stein and R. Shakarchi,
+\emph{Fourier Analysis: An Introduction},
+Princeton Lectures in Analysis I, Princeton University Press, 2003.
+
+\end{thebibliography}
+
+\end{document}
+

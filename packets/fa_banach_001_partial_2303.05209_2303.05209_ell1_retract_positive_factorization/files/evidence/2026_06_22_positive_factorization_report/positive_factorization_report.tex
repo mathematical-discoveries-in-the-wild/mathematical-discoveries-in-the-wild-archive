@@ -1,0 +1,746 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=28mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+
+\crefname{question}{Question}{Questions}
+\Crefname{question}{Question}{Questions}
+\crefalias{question}{question}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+
+\newcommand{\FBL}{\operatorname{FBL}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\pf}{\operatorname{pf}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Homlat}{\operatorname{Hom}_{\mathrm{lat}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\angles}[2]{\left\langle #1,#2\right\rangle}
+
+\title{Positive Factorization Through Free Banach Lattices\\
+\large Verification, Literature Status, and Further Reductions}
+\author{Research report prepared from the supplied partial solution}
+\date{21 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $X$ be a Banach lattice, let $\delta_X:X\to\FBL[X]$ be the canonical
+linear isometry, and let $\beta_X:\FBL[X]\to X$ be the canonical contractive
+lattice homomorphism satisfying $\beta_X\delta_X=\Id_X$.  Oikhberg asked
+whether $\beta_X$ always has a positive bounded linear right inverse.
+
+The supplied argument is correct: it gives an explicit positive section for
+$\ell_1(I)$ and transfers it to every positive retract of $\ell_1(I)$.  We
+also identify the exact scope of that hypothesis: such retracts are precisely,
+up to lattice isomorphism, the spaces $\ell_1(A)$.  A literature search through
+21 June 2026 found no published or preprint proof or counterexample for the
+general question.  The report records several additional affirmative results
+and reductions.  In particular, Lotz's positive lifting theorem implies the
+answer is affirmative for every AM-space, hence for every $C_0(K)$ and every
+$c_0(\Gamma)$.  We prove an equivalent split-quotient formulation, construct a
+canonical positive contractive section into $\FBL[X]^{**}$ for every $X$, and
+show that the remaining obstruction is precisely weak-star continuity of a
+positive dual retraction.  Finally, we analyze the natural construction for
+nonatomic $L_1$ and show concretely why it leaves the free Banach lattice and
+lands only in its bidual.  The arbitrary Banach-lattice problem remains open.
+\end{abstract}
+
+\section{The problem and the conclusion of this investigation}
+
+For a Banach space $E$, the free Banach lattice $\FBL[E]$ comes with a
+canonical linear isometry $\delta_E:E\to\FBL[E]$.  Every bounded operator
+$T:E\to Y$ into a Banach lattice has a unique lattice-homomorphic extension
+\[
+ \widehat T:\FBL[E]\longrightarrow Y,
+ \qquad \widehat T\delta_E=T,
+ \qquad \norm{\widehat T}=\norm T.
+\]
+If $X$ itself is a Banach lattice, applying this property to $\Id_X$ gives a
+contractive lattice homomorphism
+\[
+ \beta_X:\FBL[X]\longrightarrow X,
+ \qquad \beta_X\delta_X=\Id_X.
+\]
+Thus $\delta_X$ is always a bounded linear section of $\beta_X$, but it is
+usually not positive.  The question raised in \cite[Section~3]{Oikhberg2024}
+is:
+
+\begin{question}[Oikhberg]\label{q:main}
+Does every Banach lattice $X$ admit a positive bounded linear map
+$U:X\to\FBL[X]$ such that $\beta_XU=\Id_X$?
+\end{question}
+
+Our literature search included the exact wording of the question, the phrases
+``positive factorization through $\FBL[X]$'', ``positive right inverse'', and
+``split lattice quotient'', citations to \cite{Oikhberg2024}, and recent work
+on free, projective, semiprojective, and pre-ordered Banach lattices.  We found
+no paper resolving Question~\ref{q:main}.  In particular, the recent construction of
+free Banach lattices over pre-ordered Banach spaces in \cite{deJeuJiang2026}
+uses a different universal object whose generating map is positive by
+definition; it does not produce a positive section into the ordinary
+$\FBL[X]$.  Recent work on complemented subspaces and free products likewise
+does not settle the question \cite{deHeviaTradacete2025,MartinezTradacete2026}.
+A literature search cannot exclude unpublished work, but the best supported
+status as of the date of this report is that the general problem remains open.
+
+The main concrete conclusions below are:
+\begin{enumerate}[label=(\roman*),leftmargin=2.2em]
+\item the supplied partial proof is valid;
+\item its positive-$\ell_1$-retract hypothesis is equivalent to being lattice
+isomorphic to an atomic $L_1$-space $\ell_1(A)$;
+\item all AM-spaces have the desired positive factorization, by a classical
+theorem of Lotz;
+\item the problem is equivalent to asking whether every linearly split lattice
+quotient onto $X$ splits positively;
+\item every $X$ has a canonical positive contractive section into
+$\FBL[X]^{**}$, and the exact remaining issue is whether a suitable dual
+retraction can be chosen weak-star continuous.
+\end{enumerate}
+
+\section{Verification of the supplied partial result}
+
+We first reproduce the argument in a slightly sharpened form.  The proof is
+correct, including for arbitrary index sets.
+
+\begin{lemma}[The atomic $\ell_1$ lifting]\label{lem:l1}
+For every set $I$ there is a positive contraction
+\[
+ S_I:\ell_1(I)\longrightarrow \FBL[\ell_1(I)]
+\]
+such that $\beta_{\ell_1(I)}S_I=\Id_{\ell_1(I)}$.
+\end{lemma}
+
+\begin{proof}
+Let $(e_i)_{i\in I}$ be the canonical atoms of $\ell_1(I)$.  For
+$a=(a_i)_{i\in I}\in\ell_1(I)$ put
+\[
+ S_Ia=\sum_{i\in I}a_i\,\delta_{\ell_1(I)}(e_i)^+.
+\]
+The net of finite partial sums converges in norm, since
+\[
+ \sum_{i\in I}|a_i|\,
+ \norm{\delta_{\ell_1(I)}(e_i)^+}
+ \leq \sum_{i\in I}|a_i|<\infty.
+\]
+Equivalently, every element of $\ell_1(I)$ has countable support and the
+resulting series is absolutely convergent.  Hence $S_I$ is a contraction.  It
+is positive because $a_i\geq0$ for all $i$ implies $S_Ia\geq0$.  Finally,
+$\beta_{\ell_1(I)}$ is a lattice homomorphism, so
+\[
+ \beta_{\ell_1(I)}\bigl(\delta(e_i)^+\bigr)
+ =\beta_{\ell_1(I)}(\delta(e_i))^+=e_i.
+\]
+Linearity and norm convergence now give
+$\beta_{\ell_1(I)}S_Ia=a$.
+\end{proof}
+
+\begin{theorem}[The supplied positive-retract theorem]\label{thm:retract}
+Suppose there are positive bounded maps
+\[
+ J:X\longrightarrow\ell_1(I),
+ \qquad Q:\ell_1(I)\longrightarrow X,
+ \qquad QJ=\Id_X.
+\]
+Then there is a positive map $U:X\to\FBL[X]$ satisfying
+$\beta_XU=\Id_X$ and
+\[
+ \norm U\leq \norm Q\,\norm J.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $S_I$ be as in \cref{lem:l1} and let
+$\FBL[Q]:\FBL[\ell_1(I)]\to\FBL[X]$ be the lattice homomorphism induced by
+the bounded linear map $Q$.  Define
+\[
+ U=\FBL[Q]S_IJ.
+\]
+This is positive and has the stated norm bound.  If $Jx=(a_i)$, then
+\begin{align*}
+ \beta_XUx
+ &=\sum_i a_i\,\beta_X\FBL[Q]\bigl(\delta(e_i)^+\bigr)\\
+ &=\sum_i a_i\,\beta_X\bigl(\delta_X(Qe_i)^+\bigr)\\
+ &=\sum_i a_i Qe_i
+ =QJx=x.
+\end{align*}
+The third equality uses $Qe_i\geq0$.  All series are absolutely convergent in
+norm.
+\end{proof}
+
+\begin{remark}[Two points worth recording]\label{rem:functoriality}
+First, the last calculation is genuinely needed.  The identity
+\[
+ \beta_X\FBL[T]=T\beta_Y
+\]
+is automatic when $T:Y\to X$ is a lattice homomorphism, because both sides
+are then lattice homomorphisms agreeing on the free generators.  It need not
+hold for a merely positive $T$.  Thus the positivity of each $Qe_i$ is the key
+special feature of the atomic proof.
+
+Second, the finite-dimensional corollary is correct but was already known in
+a stronger form: finite-dimensional Banach lattices have the lattice-lifting
+property, in which the section itself can be chosen to be a lattice
+homomorphism \cite[Proposition~2.2]{AvilesEtAl2022}.
+\end{remark}
+
+\section{What the $\ell_1$-retract hypothesis really means}
+
+The partial theorem appears at first to cover a broad class of positive
+retracts.  In fact, that class is exactly the atomic $L_1$ class.
+
+\begin{theorem}[Classification of positive $\ell_1$ retracts]\label{thm:classify}
+For a Banach lattice $X$, the following are equivalent.
+\begin{enumerate}[label=(\alph*),leftmargin=2.2em]
+\item There are a set $I$ and positive bounded maps
+$J:X\to\ell_1(I)$ and $Q:\ell_1(I)\to X$ with $QJ=\Id_X$.
+\item $X$ is lattice isomorphic to $\ell_1(A)$ for some set $A$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Only (a)$\Rightarrow$(b) needs proof.  Let
+$\mathbf 1=(1)_{i\in I}\in\ell_\infty(I)$ and define the positive functional
+\[
+ \varphi=J^*\mathbf 1\in X^*_+.
+\]
+Set
+\[
+ \lVert\!\lvert x\rvert\!\rVert=\varphi(|x|)=\norm{J|x|}_{\ell_1(I)}.
+\]
+This is an equivalent lattice norm.  Indeed,
+\[
+ \lVert\!\lvert x\rvert\!\rVert
+ \leq \norm J\,\norm x,
+\]
+while positivity of $J$ gives $|Jx|\leq J|x|$, and hence
+\[
+ \norm x=\norm{QJx}
+ \leq \norm Q\,\norm{Jx}_1
+ \leq \norm Q\,\lVert\!\lvert x\rvert\!\rVert.
+\]
+For $x,y\geq0$,
+\[
+ \lVert\!\lvert x+y\rvert\!\rVert
+ =\varphi(x+y)
+ =\lVert\!\lvert x\rvert\!\rVert+
+  \lVert\!\lvert y\rvert\!\rVert.
+\]
+Thus $X$, with this equivalent lattice norm, is an abstract AL-space.  By the
+Kakutani representation theorem it is lattice isometric to an $L_1(\mu)$
+space.
+
+On the other hand, $J$ is an isomorphic embedding of the underlying Banach
+space into $\ell_1(I)$, so $X$ has the Schur property.  The Schur property is
+unchanged by equivalent norms.  An $L_1(\mu)$ space has the Schur property
+only when its measure algebra is purely atomic: a nonzero nonatomic finite
+part supports a norm-one weakly null Rademacher sequence.  A purely atomic
+$L_1$ space is lattice isometric, after absorbing the atom weights, to
+$\ell_1(A)$ for a suitable set $A$.  This proves (b).  The converse follows by
+taking $I=A$ and the identity maps.
+\end{proof}
+
+\begin{corollary}
+The new content of \cref{thm:retract}, up to lattice isomorphism, is precisely
+the positive factorization for the spaces $\ell_1(A)$.
+\end{corollary}
+
+This also corrects one limitation stated in the supplied packet.  The packet
+said that it gave no answer for $c_0$.  Although $c_0$ is not in the class of
+\cref{thm:classify}, it does have the desired factorization, and even the
+stronger lattice-lifting property; see the next section.
+
+\section{Affirmative classes already available in the literature}
+
+\subsection{The stronger lattice-lifting property}
+
+Avil\'es, Mart\'inez-Cervantes, Rodr\'iguez, and Tradacete call $X$ a lattice
+lifting space if there is a lattice homomorphism
+$A:X\to\FBL[X]$ with $\beta_XA=\Id_X$ \cite{AvilesEtAl2022}.  This is stronger
+than Question~\ref{q:main}.  Their results include the following.
+\begin{itemize}[leftmargin=2em]
+\item Every projective Banach lattice has the lattice-lifting property; in
+particular this includes finite-dimensional Banach lattices, $\ell_1$, and
+$C[0,1]$.
+\item Every free Banach lattice $\FBL[E]$ has the isometric lattice-lifting
+property.
+\item Every Banach space with a $1$-unconditional Schauder basis, equipped
+with its coordinate order, has the isometric lattice-lifting property.
+Consequently, the classical separable spaces $c_0$ and $\ell_p$ have it.
+\end{itemize}
+The same paper shows that the stronger property fails for nonatomic $L_p$
+spaces and for $c_0(\Gamma)$ and $\ell_p(\Gamma)$ when $\Gamma$ is uncountable.
+Those negative results do not answer Question~\ref{q:main}, since a positive section
+need not preserve disjointness.
+
+\subsection{A classical theorem of Lotz gives all AM-spaces}
+
+The following consequence of a 1975 theorem of Lotz appears not to have been
+noted in the discussion surrounding Question~\ref{q:main}.
+
+\begin{theorem}[Lotz]\label{thm:lotz}
+Every AM-space $X$ admits a positive bounded map
+$U:X\to\FBL[X]$ such that $\beta_XU=\Id_X$.
+Consequently the same is true for every Banach lattice lattice-isomorphic to
+an AM-space.
+\end{theorem}
+
+\begin{proof}
+Lotz proved that every AM-space is \emph{$d$-projective}: if
+$q:Y\to Z$ is a nearly interval-preserving metric surjection of Banach
+lattices and $T:X\to Z$ is positive, then $T$ has a positive bounded lifting
+through $q$ \cite[Proposition~3.3]{Lotz1975}.
+
+We verify the hypotheses for $q=\beta_X$.  It is a metric surjection: for
+$x\in X$,
+\[
+ \inf\{\norm f:\beta_Xf=x\}=\norm x,
+\]
+because $\beta_X$ is contractive and $\delta_Xx$ is a preimage of norm
+$\norm x$.  It is in fact interval preserving.  If $f\geq0$ in $\FBL[X]$ and
+$0\leq x\leq\beta_Xf$, choose $g\in\FBL[X]$ with $\beta_Xg=x$ and put
+$h=f\wedge g^+$.  Then $0\leq h\leq f$ and, since $\beta_X$ is a lattice
+homomorphism,
+\[
+ \beta_Xh=\beta_Xf\wedge(\beta_Xg)^+
+ =\beta_Xf\wedge x=x.
+\]
+Apply Lotz's theorem to the positive map $T=\Id_X:X\to X$.
+\end{proof}
+
+\begin{corollary}\label{cor:am}
+The answer to Question~\ref{q:main} is affirmative for every $C_0(K)$ space and every
+$c_0(\Gamma)$, with arbitrary locally compact $K$ and arbitrary set $\Gamma$.
+In particular, uncountable $c_0(\Gamma)$ has a positive section although it
+has no lattice-homomorphic section.
+\end{corollary}
+
+For orientation, the present state of several standard examples is summarized
+below.  ``Lattice section'' means the stronger property from
+\cite{AvilesEtAl2022}.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Space or class & Positive section & Lattice section \\
+\midrule
+$\ell_1(\Gamma)$ & yes, explicit & no in general if $\Gamma$ uncountable \\
+$c_0(\Gamma)$ & yes, Lotz & no in general if $\Gamma$ uncountable \\
+$C_0(K)$ / AM-spaces & yes, Lotz & not in general \\
+$1$-unconditional Schauder basis & yes & yes \\
+$\FBL[E]$ & yes & yes, isometric \\
+finite-dimensional lattices & yes & yes \\
+nonatomic $L_1$ & open & no \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{An exact split-quotient reformulation}
+
+The next proposition turns the free-lattice question into a problem purely
+about split lattice quotients.  It is the positive analogue of
+\cite[Proposition~2.1]{AvilesEtAl2022}.
+
+Define
+\[
+ \pf(X)=\inf\bigl\{\norm U:
+ U:X\to\FBL[X]\text{ is positive and }\beta_XU=\Id_X\bigr\},
+\]
+with $\pf(X)=\infty$ if no such map exists.
+
+\begin{proposition}[Split-quotient characterization]\label{prop:split}
+Let $X$ be a Banach lattice and $\lambda\geq1$.  The following are equivalent.
+\begin{enumerate}[label=(\alph*),leftmargin=2.2em]
+\item $\pf(X)\leq\lambda$.
+\item For every $\varepsilon>0$, whenever $Y$ is a Banach lattice,
+$q:Y\to X$ is a surjective lattice homomorphism, and $T:X\to Y$ is a
+bounded linear map with $qT=\Id_X$, there is a positive map $S:X\to Y$
+such that
+\[
+ qS=\Id_X,
+ \qquad \norm S\leq(\lambda+\varepsilon)\norm T.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Assume (a), fix $\varepsilon>0$, and choose a positive section
+$U:X\to\FBL[X]$ with $\norm U\leq\lambda+\varepsilon$.  By the universal
+property, $T$ extends to a lattice homomorphism
+$\widehat T:\FBL[X]\to Y$ with $\norm{\widehat T}=\norm T$.  Both
+$q\widehat T$ and $\beta_X$ are lattice homomorphisms from $\FBL[X]$ to $X$,
+and
+\[
+ q\widehat T\delta_X=qT=\Id_X=\beta_X\delta_X.
+\]
+Uniqueness gives $q\widehat T=\beta_X$.  Hence $S=\widehat TU$ is positive,
+$qS=\Id_X$, and $\norm S\leq(\lambda+\varepsilon)\norm T$.
+
+Conversely, apply (b), for every $\varepsilon>0$, with
+$Y=\FBL[X]$, $q=\beta_X$, and $T=\delta_X$.  This gives
+$\pf(X)\leq\lambda$.
+\end{proof}
+
+\begin{corollary}[Ideal formulation]\label{cor:ideal}
+A positive section for $\beta_X$ exists if and only if every lattice quotient
+$q:Y\to X$ whose kernel is complemented as a Banach subspace has a positive
+right inverse.  Equivalently, every such kernel is the kernel of a positive
+projection on $Y$.
+\end{corollary}
+
+\begin{proof}
+A quotient has a bounded linear right inverse exactly when its kernel is
+linearly complemented.  A positive section $S$ produces the positive
+projection $P=Sq$, with $\ker P=\ker q$.  Conversely, if $P$ is positive and
+$\ker P=\ker q$, then $q|_{P(Y)}$ is bijective and its inverse is positive:
+for $x\geq0$, choose $y\geq0$ with $qy=x$ and observe that
+$(q|_{P(Y)})^{-1}x=Py\geq0$.
+\end{proof}
+
+Thus a counterexample to Question~\ref{q:main} can be sought without mentioning free
+Banach lattices: it is enough, and necessary, to find a linearly split lattice
+quotient with no positive splitting.  We found no such example in the
+literature.  Conversely, a theorem asserting that every linearly split lattice
+quotient splits positively would solve the problem affirmatively.
+
+\section{A universal positive lifting into the bidual}
+
+There is always a positive section after passing to the bidual.  This is both a
+partial affirmative result and a precise description of the obstruction.
+
+\begin{theorem}[Canonical bidual section]\label{thm:bidual}
+For every Banach lattice $X$ there is a positive contraction
+\[
+ U_0:X\longrightarrow\FBL[X]^{**}
+\]
+such that
+\[
+ \beta_X^{**}U_0=J_X,
+\]
+where $J_X:X\to X^{**}$ is the canonical embedding.
+\end{theorem}
+
+\begin{proof}
+Put $F=\FBL[X]$ and $I=\ker\beta_X$.  Since $F/I$ is lattice isometric to
+$X$, the adjoint
+\[
+ \beta_X^*:X^*\longrightarrow F^*
+\]
+identifies $X^*$ lattice isometrically with the annihilator $I^\perp$.  The
+annihilator of a closed ideal is a band in the dual Banach lattice $F^*$.
+Dual Banach lattices are Dedekind complete, so there is a band projection
+\[
+ P_I:F^*\longrightarrow I^\perp.
+\]
+It is positive and contractive.  Define
+\[
+ R_0=(\beta_X^*)^{-1}P_I:F^*\longrightarrow X^*.
+\]
+Then $R_0$ is a positive contraction and $R_0\beta_X^*=\Id_{X^*}$.  Taking
+adjoints yields
+\[
+ \beta_X^{**}R_0^*=\Id_{X^{**}}.
+\]
+The map $U_0=R_0^*J_X$ has all the required properties.
+\end{proof}
+
+\begin{proposition}[The exact weak-star criterion]\label{prop:wstar}
+There is a positive section $U:X\to\FBL[X]$ for $\beta_X$ if and only if there
+is a positive weak-star-to-weak-star continuous map
+\[
+ R:\FBL[X]^*\longrightarrow X^*
+\]
+satisfying $R\beta_X^*=\Id_{X^*}$.  In that case one can take $R=U^*$.
+\end{proposition}
+
+\begin{proof}
+If $U$ exists, $U^*$ is positive, weak-star continuous, and
+$U^*\beta_X^*=\Id$.  Conversely, a bounded weak-star-to-weak-star continuous
+operator $R$ has a preadjoint $U:X\to\FBL[X]$.  Positivity of $R$ implies
+positivity of $U$, and taking adjoints in $R\beta_X^*=\Id$ gives
+$\beta_XU=\Id$.
+\end{proof}
+
+The band retraction $R_0$ in \cref{thm:bidual} always exists.  The unresolved
+point is that a band projection on a dual Banach lattice need not be weak-star
+continuous.  This is not merely a technicality; the canonical $R_0$ behaves
+very badly on nonatomic examples.
+
+For $x^*\in X^*$, let $a_{x^*}\in\FBL[X]^*$ be evaluation at $x^*$ in the
+standard functional representation:
+\[
+ a_{x^*}(f)=f(x^*).
+\]
+When $x^*\neq0$, this is an atom of $\FBL[X]^*$.
+
+\begin{proposition}[Action of the canonical band projection on atoms]
+\label{prop:atoms}
+Let $P_I$ be the band projection used in \cref{thm:bidual}.  Then
+\[
+ P_Ia_{x^*}=
+ \begin{cases}
+ a_{x^*}=\beta_X^*x^*,&\text{if }x^*:X\to\R\text{ is a lattice homomorphism},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Consequently,
+\[
+ U_0(x)(a_{x^*})=
+ \begin{cases}
+ x^*(x),&x^*\in\Homlat(X,\R),\\
+ 0,&x^*\notin\Homlat(X,\R).
+ \end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+A band projection sends an atom either to itself or to zero.  We have
+$P_Ia_{x^*}=a_{x^*}$ exactly when $a_{x^*}\in I^\perp=\beta_X^*(X^*)$.
+If $a_{x^*}=\beta_X^*\phi$, evaluation on $\delta_X(X)$ gives $\phi=x^*$.
+Thus membership is equivalent to
+$a_{x^*}=\beta_X^*x^*$.  If $x^*$ is a lattice homomorphism, both sides are
+lattice homomorphisms on $\FBL[X]$ extending the same map on $X$, so uniqueness
+of the free extension gives equality.  Conversely, if equality holds, then
+$x^*\beta_X$ is a lattice homomorphism; surjectivity of $\beta_X$ implies that
+$x^*$ itself is a lattice homomorphism.  The formula for $U_0$ follows from
+the definitions.
+\end{proof}
+
+\begin{corollary}\label{cor:canonical-fails}
+If the real-valued lattice homomorphisms on $X$ do not separate points, then
+for every nonzero $x$ annihilated by all of them, the element $U_0x$ does not
+belong to the canonical copy of $\FBL[X]$ inside $\FBL[X]^{**}$.  In
+particular, this happens for every nonzero $x\in L_1[0,1]$.
+\end{corollary}
+
+\begin{proof}
+If $U_0x=J_Ff$ for $f\in F=\FBL[X]$, then \cref{prop:atoms} gives
+$f(x^*)=0$ for every $x^*\in X^*$.  The functional representation of
+$\FBL[X]$ is faithful, hence $f=0$.  But then
+$J_Xx=\beta_X^{**}U_0x=0$, a contradiction.
+\end{proof}
+
+This shows why the automatic bidual lifting does not settle the original
+problem, especially on nonatomic lattices.
+
+\section{Stability properties}
+
+The following elementary permanence results enlarge any affirmative class.
+
+\begin{proposition}\label{prop:stability}
+The positive factorization property has the following stability properties.
+\begin{enumerate}[label=(\alph*),leftmargin=2.2em]
+\item It is invariant under lattice isomorphism.
+\item Suppose $Y$ has the property, $J:X\to Y$ is positive,
+$Q:Y\to X$ is a lattice homomorphism, and $QJ=\Id_X$.  Then $X$ has the
+property.
+\item If each $X_i$ has a positive section $U_i$ with
+$\sup_i\norm{U_i}<\infty$, then the $\ell_1$-sum
+$X=(\bigoplus_i X_i)_1$ has the property.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For (a), if $A:X\to Y$ is a lattice isomorphism and $U_Y$ is a positive
+section, then
+\[
+ U_X=\FBL[A^{-1}]U_YA
+\]
+is a positive section; naturality of $\beta$ for lattice homomorphisms gives
+the identity.
+
+For (b), put $U_X=\FBL[Q]U_YJ$.  Since $Q$ is a lattice homomorphism,
+\[
+ \beta_X\FBL[Q]=Q\beta_Y,
+\]
+and therefore $\beta_XU_X=Q\beta_YU_YJ=QJ=\Id_X$.
+
+For (c), let $j_i:X_i\to X$ be the coordinate lattice embeddings and set
+\[
+ U(x_i)_i=\sum_i \FBL[j_i]U_ix_i.
+\]
+The series converges absolutely, with
+$\norm{U(x_i)}\leq (\sup_i\norm{U_i})\sum_i\norm{x_i}$.  It is positive, and
+naturality gives
+\[
+ \beta_XU(x_i)=\sum_i j_i\beta_{X_i}U_ix_i=(x_i).
+\]
+\end{proof}
+
+Part (b) explains why lattice retracts inherit the property.  The supplied
+\cref{thm:retract} is stronger in one special direction: there $Q$ is only
+positive, but the atomic coordinate formula compensates for the lack of
+naturality noted in \cref{rem:functoriality}.
+
+\section{Why the obvious nonatomic $L_1$ construction fails}
+
+The atomic formula suggests replacing a sum over atoms by an integral.  This
+produces a bounded positive map into the ambient space of homogeneous
+functions, but not into the free Banach lattice.
+
+Let $X=L_1[0,1]$, so $X^*=L_\infty[0,1]$.  For $f\in L_1$ define
+\[
+ \Gamma_f(g)=\int_0^1 f(t)g(t)^+\,dt,
+ \qquad g\in L_\infty.
+\]
+The map $f\mapsto\Gamma_f$ is linear and positive with respect to pointwise
+order on homogeneous functions.  Moreover, for any finite family
+$g_1,\dots,g_n\in L_\infty$,
+\[
+ \sum_{j=1}^n|\Gamma_f(g_j)|
+ \leq \norm{f}_1\,
+ \norm{\sum_{j=1}^n|g_j|}_\infty.
+\]
+Thus $\Gamma_f$ satisfies exactly the norm estimate one would expect for an
+element of $\FBL[L_1]$.
+
+Nevertheless, $\Gamma_1\notin\FBL[L_1]$.  Let $(r_n)$ be the Rademacher
+functions.  Then $r_n\to0$ in $\sigma(L_\infty,L_1)$: this is immediate first
+against dyadic simple functions and then follows for all $L_1$ functions by
+density.  But
+\[
+ \Gamma_1(r_n)=\int_0^1r_n^+\,dt=\frac12
+ \qquad(n\in\N).
+\]
+Elements of $\FBL[E]$ are weak-star continuous on bounded subsets of $E^*$ in
+the standard functional representation.  Hence $\Gamma_1$ lies outside
+$\FBL[L_1]$.
+
+There is also a finite-dimensional approximation that makes the obstruction
+visible.  For a finite measurable partition
+$\mathcal P=\{E_1,\dots,E_m\}$ with $\mu(E_i)>0$, define
+\[
+ U_{\mathcal P}f
+ =\sum_{i=1}^m
+ \left(\int_{E_i}f\,d\mu\right)
+ \delta_{L_1}\left(\frac{\mathbf1_{E_i}}{\mu(E_i)}\right)^+.
+\]
+Then $U_{\mathcal P}:L_1\to\FBL[L_1]$ is a positive contraction and
+\[
+ \beta_{L_1}U_{\mathcal P}f
+ =\mathbb E(f\mid\mathcal P).
+\]
+Along refining dyadic partitions, the right-hand side converges to $f$ in
+$L_1$.  However, for $f=1$ and $g\in L_\infty$,
+\[
+ U_{\mathcal P}1(g)
+ =\sum_i\mu(E_i)
+ \left(\frac1{\mu(E_i)}\int_{E_i}g\,d\mu\right)^+,
+\]
+which converges pointwise to $\int g^+=\Gamma_1(g)$.  The bounded net therefore
+converges only in a bidual/pointwise sense, to an object outside the free
+Banach lattice.  This is a concrete manifestation of the weak-star
+continuity obstruction in \cref{prop:wstar}.
+
+This calculation is not a counterexample: it rules out the most natural
+integral formula, not every possible positive section for $L_1[0,1]$.
+
+\section{Final assessment and viable routes forward}
+
+The supplied result is mathematically sound.  Its principal proof requires no
+repair, only two contextual corrections: the finite-dimensional case was
+known more strongly, and $c_0$ is already affirmative.  The exact scope of the
+positive-retract hypothesis is the class of atomic $L_1$ spaces
+$\ell_1(A)$.
+
+The strongest additional full theorem located is the AM-space consequence of
+Lotz's positive lifting theory, which yields all $C_0(K)$ and all
+$c_0(\Gamma)$.  The general problem, including the basic nonatomic test case
+$L_1[0,1]$, remains unresolved in the literature we found.
+
+The reductions above suggest two focused approaches.
+\begin{enumerate}[label=(\arabic*),leftmargin=2.2em]
+\item By \cref{prop:split}, construct a Banach lattice $Y$ and a linearly
+complemented ideal $I$ such that the quotient map $Y\to Y/I$ has no positive
+right inverse.  This would give a counterexample immediately.
+\item By \cref{prop:wstar}, seek a positive weak-star continuous retraction of
+$\FBL[X]^*$ onto the band $\beta_X^*(X^*)$.  The canonical band projection is
+positive and contractive but is generally not weak-star continuous; any
+successful proof must replace it by a different positive retraction or prove
+additional structure forcing weak-star continuity.
+\end{enumerate}
+
+The finite-partition computation for $L_1$ shows that a bare compactness or
+local finite-dimensional argument is unlikely to suffice: it naturally
+produces the canonical bidual section rather than an element of
+$\FBL[L_1]$.
+
+\begin{thebibliography}{99}
+
+\bibitem{ART2018}
+A. Avil\'es, J. Rodr\'iguez, and P. Tradacete,
+\emph{The free Banach lattice generated by a Banach space},
+J. Funct. Anal. 274 (2018), 2955--2977.
+
+\bibitem{AvilesEtAl2022}
+A. Avil\'es, G. Mart\'inez-Cervantes, J. Rodr\'iguez, and P. Tradacete,
+\emph{A Godefroy--Kalton principle for free Banach lattices},
+Israel J. Math. 247 (2022), 433--458;
+\url{https://arxiv.org/abs/2011.04639}.
+
+\bibitem{deHeviaTradacete2025}
+D. de Hevia and P. Tradacete,
+\emph{Complemented subspaces of Banach lattices},
+preprint (2025), \url{https://arxiv.org/abs/2505.24084}.
+
+\bibitem{deJeuJiang2026}
+M. de Jeu and X. Jiang,
+\emph{Free Banach lattices over pre-ordered Banach spaces},
+arXiv:2408.06630, version 3 (22 April 2026),
+\url{https://arxiv.org/abs/2408.06630}.
+
+\bibitem{Lotz1975}
+H. P. Lotz,
+\emph{Extensions and liftings of positive linear mappings on Banach lattices},
+Trans. Amer. Math. Soc. 211 (1975), 85--100.
+
+\bibitem{MartinezTradacete2026}
+G. Mart\'inez-Fern\'andez and P. Tradacete,
+\emph{Free products of Banach lattices},
+arXiv:2605.28988 (2026),
+\url{https://arxiv.org/abs/2605.28988}.
+
+\bibitem{MeyerNieberg}
+P. Meyer-Nieberg,
+\emph{Banach Lattices}, Springer, Berlin, 1991.
+
+\bibitem{Oikhberg2024}
+T. Oikhberg,
+\emph{Geometry of unit balls of free Banach lattices, and its applications},
+J. Funct. Anal. 286 (2024), no.~8, Article 110351;
+\url{https://arxiv.org/abs/2303.05209}.
+
+\bibitem{FBLMemoir}
+T. Oikhberg, M. A. Taylor, P. Tradacete, and V. G. Troitsky,
+\emph{Free Banach lattices},
+preprint, \url{https://arxiv.org/abs/2210.00614}.
+
+\end{thebibliography}
+
+\end{document}

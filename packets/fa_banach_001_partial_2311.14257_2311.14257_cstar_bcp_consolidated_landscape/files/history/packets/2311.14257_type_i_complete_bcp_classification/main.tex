@@ -1,0 +1,363 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Prim}{\operatorname{Prim}}
+\newcommand{\Fell}{\operatorname{Fell}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{The Type I C*-Algebra Ball-Covering Classification}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+A normed space \(X\) has the ball-covering property, or BCP, if its unit
+sphere is covered by countably many open balls none of which contains the
+origin.  Equivalently, \(X\) has BCP if and only if there are countably many
+centres \(x_n\in X\) such that
+\[
+        S_X\subseteq\bigcup_n B(x_n,\|x_n\|).
+\]
+It has UBCP if the balls can be chosen with a common positive gap from the
+origin.
+
+For an open set \(O\subseteq\Prim(A)\), let \(A_O\) denote the corresponding
+closed two-sided ideal.  For a Type I algebra \(A\), write \(\Fell(A)\) for
+the largest Fell ideal.
+
+\section*{Statement}
+
+\begin{theorem}[nonseparable elementary open patches obstruct BCP]
+\label{thm:patch}
+Let \(A\) be a \(C^*\)-algebra.  Suppose there is a nonempty open set
+\(O\subseteq\Prim(A)\) such that
+\[
+        A_O\cong C_0(O,\Kcal(H))
+\]
+for a nonseparable Hilbert space \(H\).  Then \(A\) fails BCP.
+\end{theorem}
+
+\begin{theorem}[complete Type I criterion]
+\label{thm:typei}
+Let \(A\) be a Type I \(C^*\)-algebra.  Then the following are equivalent:
+\[
+\begin{array}{ll}
+\textup{(i)}   & A\text{ has BCP};\\
+\textup{(ii)}  & A\text{ has UBCP};\\
+\textup{(iii)} & \Prim(A)\text{ has a countable }\pi\text{-basis and every}\\
+               & \text{irreducible representation of }\Fell(A)
+                 \text{ is separable.}
+\end{array}
+\]
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+The positive half was already proved in the essential-Fell packet: a Type I
+algebra has an essential largest Fell ideal, and if the irreducible
+representations on that Fell ideal are separable, countably many atomic
+multiplier charts cover the sphere uniformly.
+
+The missing half is to show that nonseparable Fell fibres really are visible
+to BCP.  The key is local.  On a trivial patch
+\[
+        C_0(O,\Kcal(H))\triangleleft A
+\]
+with \(H\) nonseparable, choose a scalar bump \(h\) with compact support
+\(S\subset O\).  A countable list of centres acts on this ideal as bounded
+strict-continuous \(B(H)\)-fields \(T_n(P)\).  Over the compact set \(S\),
+strict continuity makes each orbit \(P\mapsto T_n(P)\xi\) norm-compact.
+Therefore one can build a separable subspace \(L\subset H\) reducing all
+operators \(T_n(P)\), \(P\in S\), while still norming each field on \(S\).
+
+Put a rank-one projection \(R\) in \(L^\perp\), and set
+\[
+        p(P)=h(P)R.
+\]
+On \(S\), the difference \(p(P)-T_n(P)\) has the untouched block
+\(-T_n(P)|_L\).  Outside \(S\), \(p\) vanishes.  Thus \(p\) is a unit-sphere
+element escaping all BCP balls.
+
+\section*{The Local Obstruction}
+
+\begin{lemma}[separable reducing subspace for compact strict families]
+\label{lem:strict-reducing}
+Let \(S\) be a compact Hausdorff space, let \(H\) be a Hilbert space, and for
+each \(n\ge1\) let
+\[
+        P\longmapsto T_n(P)\in\Bcal(H)
+\]
+be a bounded field such that both \(P\mapsto T_n(P)\xi\) and
+\(P\mapsto T_n(P)^*\xi\) are norm-continuous for every \(\xi\in H\).
+Then there is a separable closed subspace \(L\subseteq H\) such that:
+\begin{enumerate}
+    \item \(L\) reduces every \(T_n(P)\), for all \(n\) and \(P\in S\);
+    \item
+          \[
+             \sup_{P\in S}\|T_n(P)|_L\|
+             =
+             \sup_{P\in S}\|T_n(P)\|
+             \qquad(n\ge1).
+          \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Put
+\[
+        \alpha_n=\sup_{P\in S}\|T_n(P)\|.
+\]
+For each \(n,k\), choose \(P_{n,k}\in S\) and a unit vector
+\(\xi_{n,k}\in H\) such that
+\[
+        \|T_n(P_{n,k})\xi_{n,k}\|>\alpha_n-1/k
+\]
+when \(\alpha_n>0\); if \(\alpha_n=0\), choose arbitrary unit vectors.
+
+We construct increasing separable subspaces \(L_m\).  Let \(L_0\) be the
+closed span of the countable set \(\{\xi_{n,k}:n,k\ge1\}\).  Given \(L_m\),
+choose a countable dense subset \(D_m\) of its unit ball.  For each
+\(\xi\in D_m\) and each \(n\), the sets
+\[
+        \{T_n(P)\xi:P\in S\},
+        \qquad
+        \{T_n(P)^*\xi:P\in S\}
+\]
+are compact metric subsets of \(H\), hence separable.  Let \(L_{m+1}\) be the
+closed span of \(L_m\) together with countable dense subsets of all these
+compact image sets, over all \(n\) and \(\xi\in D_m\).
+
+Set
+\[
+        L=\overline{\bigcup_{m=0}^\infty L_m}.
+\]
+Then \(L\) is separable.  The construction and boundedness of the fields show
+that \(T_n(P)L\subseteq L\) and \(T_n(P)^*L\subseteq L\) for every \(n,P\):
+first this holds on each dense set \(D_m\), then by norm approximation on
+\(L_m\), and finally by closure.  Hence \(L\) reduces every \(T_n(P)\).
+
+Since each \(\xi_{n,k}\) lies in \(L\),
+\[
+        \sup_{P\in S}\|T_n(P)|_L\|
+        \ge
+        \sup_k\|T_n(P_{n,k})\xi_{n,k}\|
+        =
+        \alpha_n.
+\]
+The reverse inequality is automatic, so equality holds.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:patch}]
+Identify \(A_O\) with \(C_0(O,\Kcal(H))\).  Let \((a_n)\) be any countable
+family of centres in \(A\).  Choose \(h\in C_c(O)\) with
+\[
+        0\le h\le1,\qquad \|h\|=1,
+\]
+and put \(S=\supp h\), a nonempty compact subset of \(O\).
+
+The action of \(A\) on the ideal \(A_O\) gives, for each \(a_n\), a bounded
+strict-continuous multiplier field
+\[
+        P\longmapsto T_n(P)\in\Bcal(H)
+        \qquad(P\in O).
+\]
+On the compact set \(S\), these fields satisfy the hypotheses of
+Lemma~\ref{lem:strict-reducing}.  Choose the corresponding separable reducing
+subspace \(L\).  Since \(H\) is nonseparable, \(L^\perp\ne\{0\}\).  Pick a
+unit vector \(\eta\in L^\perp\), let \(R\) be the rank-one projection onto
+\(\C\eta\), and define
+\[
+        p(P)=h(P)R
+        \qquad(P\in O).
+\]
+Then \(p\in C_c(O,\Kcal(H))\subseteq A_O\subseteq A\), and \(\|p\|=1\).
+
+Fix \(n\).  Put
+\[
+        \alpha_n=\sup_{P\in S}\|T_n(P)\|,
+        \qquad
+        \beta_n=\sup_{P\in\Prim(A)\setminus S}\|a_n+P\|.
+\]
+Here, on \(O\), \(\|a_n+P\|=\|T_n(P)\|\).  Since the \(C^*\)-norm is the
+supremum over primitive quotients,
+\[
+        \|a_n\|=\max\{\alpha_n,\beta_n\}.
+\]
+
+For \(P\notin S\), the element \(p\) vanishes in the primitive quotient at
+\(P\), so
+\[
+        \|p+P-(a_n+P)\|=\|a_n+P\|.
+\]
+Thus the contribution from \(\Prim(A)\setminus S\) is at least \(\beta_n\).
+
+For \(P\in S\), the subspace \(L\) reduces \(T_n(P)\), while \(R\) acts on
+\(L^\perp\).  Therefore
+\[
+        h(P)R-T_n(P)
+        =
+        (-T_n(P)|_L)\oplus
+        (h(P)R-T_n(P)|_{L^\perp})
+\]
+relative to \(H=L\oplus L^\perp\).  Hence
+\[
+        \|h(P)R-T_n(P)\|\ge\|T_n(P)|_L\|.
+\]
+Taking the supremum over \(P\in S\) and using
+Lemma~\ref{lem:strict-reducing} gives a contribution at least \(\alpha_n\).
+Combining the two regions,
+\[
+        \|p-a_n\|\ge\max\{\alpha_n,\beta_n\}=\|a_n\|.
+\]
+
+Thus the unit-sphere element \(p\) is outside every open ball
+\(B(a_n,\|a_n\|)\).  Since the countable family of centres was arbitrary,
+\(A\) fails BCP.
+\end{proof}
+
+\section*{The Type I Classification}
+
+\begin{proof}[Proof of Theorem~\ref{thm:typei}]
+First suppose \(A\) has BCP.  The primitive \(\pi\)-base obstruction from the
+earlier lane-19 packet gives a countable \(\pi\)-basis for \(\Prim(A)\).
+We claim that every irreducible representation of \(\Fell(A)\) is separable.
+If not, choose a nonseparable irreducible representation in the Fell ideal.
+Fell spectra are locally Hausdorff, and on Hausdorff open patches Fell
+algebras are continuous trace \cite{CHR}.  Local triviality of continuous
+trace algebras gives a nonempty open set
+\[
+        O\subseteq\Prim(\Fell(A))\subseteq\Prim(A)
+\]
+such that
+\[
+        A_O=\Fell(A)_O\cong C_0(O,\Kcal(H))
+\]
+for a nonseparable Hilbert space \(H\).  Theorem~\ref{thm:patch} would then
+force \(A\) to fail BCP, a contradiction.  Thus condition (iii) is necessary.
+
+The implication UBCP \(\Rightarrow\) BCP is immediate.
+
+Conversely, assume (iii).  The previous Type I packet proved that every Type
+I algebra has an essential largest Fell ideal \(\Fell(A)\).  Since all
+irreducible representations of \(\Fell(A)\) are separable, the
+essential-Fell theorem \cite{lane19essential} applies: the countable
+\(\pi\)-basis of \(\Prim(A)\) refines to countably many pi-dense trivial
+continuous-trace patches with separable fibres, and the atomic multiplier
+chart construction gives UBCP for \(A\).  Hence (iii) implies (ii).
+
+The three conditions are therefore equivalent.
+\end{proof}
+
+\section*{Scope and Limitations}
+
+This packet gives a complete answer for Type I \(C^*\)-algebras.  It also
+subsumes the one-point nonseparable compact-operator obstruction: if
+\(\Kcal(H)\subseteq A\subseteq\Bcal(H)\) and \(H\) is nonseparable, then
+\(\Prim(A)\) has an open elementary nonseparable patch, so \(A\) fails BCP.
+
+The arbitrary \(C^*\)-classification remains open.  Outside Type I, separable
+non-Type-I algebras still have UBCP, while nonseparable non-Type-I algebras
+can fail by atomless von Neumann or diagonal quotient mechanisms.  The
+remaining problem is to determine exactly when those non-Type-I mechanisms
+are visible to the ambient \(C^*\)-norm.
+
+\section*{Novelty and Search Bounds}
+
+The local indexes were searched for arXiv:2311.14257, Type I, Fell ideal,
+continuous trace, nonseparable compact operators, intermediate algebras
+\(\Kcal(H)\subseteq A\subseteq\Bcal(H)\), BCP, UBCP, and primitive
+\(\pi\)-bases.  Existing packets included the essential-Fell positive theorem,
+the Type I separable-irrep theorem, and the intermediate nonseparable compact
+obstruction, but no complete Type I iff classification.
+
+Web searches on June 17, 2026 for intermediate \(K(H)\)/\(B(H)\) algebras,
+nonseparable compact operators, and BCP located nearby Calkin/operator-space
+material but no exact theorem of the above form.  The Fell and
+continuous-trace structure input is standard and cited via Clark--an
+Huef--Raeburn, Dixmier, and Raeburn--Williams.
+
+\section*{Human Review Focus}
+
+Reviewers should check:
+\begin{enumerate}
+    \item Lemma~\ref{lem:strict-reducing}, especially the use of strict
+          continuity to keep the reducing subspace separable over a compact
+          support;
+    \item the split between the compact support \(S\) and its complement in
+          the proof of Theorem~\ref{thm:patch};
+    \item the passage from a nonseparable irreducible representation of
+          \(\Fell(A)\) to an open trivial continuous-trace patch;
+    \item the handoff to the earlier essential-Fell positive theorem.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{CHR}
+Lisa Orloff Clark, Astrid an Huef, and Iain Raeburn,
+\emph{The equivalence relations of local homeomorphisms and Fell algebras},
+arXiv:1207.2540, 2012.
+
+\bibitem{Dixmier}
+J. Dixmier,
+\emph{\(C^*\)-Algebras},
+North-Holland, 1977.
+
+\bibitem{RW}
+I. Raeburn and D. P. Williams,
+\emph{Morita Equivalence and Continuous-Trace \(C^*\)-Algebras},
+American Mathematical Society, 1998.
+
+\bibitem{lane19essential}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{Essential Fell Ideals and the Ball-Covering Property},
+solution packet
+\texttt{2311.14257\_essential\_fell\_ideal\_bcp}, 2026.
+
+\bibitem{lane19typei}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{Type I C*-Algebras and the Ball-Covering Property},
+solution packet
+\texttt{2311.14257\_type\_i\_separable\_irrep\_bcp}, 2026.
+
+\bibitem{lane19intermediate}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{Intermediate Algebras over Nonseparable Compacts Fail BCP},
+solution packet
+\texttt{2311.14257\_intermediate\_nonseparable\_compacts\_fail\_bcp}, 2026.
+
+\end{thebibliography}
+
+\end{document}

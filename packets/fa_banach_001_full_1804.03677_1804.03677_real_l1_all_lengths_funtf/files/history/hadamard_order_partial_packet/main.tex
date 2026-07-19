@@ -1,0 +1,176 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\ellone}{\ell_1}
+\newcommand{\ellinf}{\ell_\infty}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Hadamard-order FUNTFs for real \texorpdfstring{$\ell_1^n$}{ell_1^n}}
+\author{Agent lane 18 packet for run fa\_banach\_001}
+\date{2026-06-26}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a candidate partial result for Question 8.2 of
+Chavez-Dominguez, Freeman, and Kornelson~\cite{CDFK}. The source question asks
+whether real $\ell_1^n$ has a length $N$ finite unit norm tight frame (FUNTF)
+for every $N \ge n$. The result below proves existence for all Hadamard-order
+lengths $N \ge n$, and in particular for every dyadic length $N=2^m \ge n$.
+It does not settle arbitrary non-Hadamard lengths.
+
+\section*{Source question evidence}
+
+The open problem appears on page 14, Section 8, Questions 8.1 and 8.2 of
+\cite{CDFK}. The relevant source crop is included below.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Question 8.2 asks: ``Does real $\ell_1^n$ have a length $N$ FUNTF for all
+$N \ge n$?'' The same page notes that for each fixed $n$ only finitely many
+values of $N$ were then unknown, since the paper constructs lengths $n$ and
+$n+1$ and then takes unions.
+
+\section*{Proof Intuition}
+
+For real $\ell_1^n$, a vector whose coordinates all have absolute value
+$1/n$ is normed by its coordinate sign vector in $\ell_\infty^n$. Thus each
+row of a sign matrix naturally gives a normalized rank-one projection. The
+only obstruction to tightness is cancellation of off-diagonal matrix entries
+in the sum of these projections. Orthogonality of the columns of the sign
+matrix is exactly the needed cancellation condition. A Hadamard matrix gives
+many such sign matrices at once, because any selection of $n$ columns remains
+orthogonal.
+
+\section*{Main partial result}
+
+\begin{theorem}[Orthogonal sign columns give real $\ell_1$ FUNTFs]
+\label{thm:sign-columns}
+Let $n \le N$ be positive integers. Suppose that
+$H=(h_{r,i})_{1 \le r \le N,\,1 \le i \le n}$ is an $N \times n$ matrix with
+entries in $\{-1,1\}$ and orthogonal columns:
+\[
+  \sum_{r=1}^N h_{r,i} h_{r,k} = N\delta_{ik}
+  \qquad (1 \le i,k \le n).
+\]
+Then real $\ell_1^n$ has a length $N$ FUNTF.
+\end{theorem}
+
+\begin{proof}
+Let $(e_i)_{i=1}^n$ be the standard basis of $\ell_1^n$, with biorthogonal
+functionals $(e_i^*)_{i=1}^n$ identified with the standard basis of
+$\ell_\infty^n$. For each row $r$ of $H$, define
+\[
+  x_r = \frac1n\sum_{i=1}^n h_{r,i} e_i,
+  \qquad
+  x_r^* = \sum_{i=1}^n h_{r,i} e_i^* .
+\]
+Then $\|x_r\|_1=1$, $\|x_r^*\|_\infty=1$, and
+\[
+  x_r^*(x_r) = \frac1n \sum_{i=1}^n h_{r,i}^2 = 1.
+\]
+Thus each $x_r^* \otimes x_r$ is a normalized rank-one projection in the
+sense used in the source paper.
+
+Let $S:\ell_1^n\to\ell_1^n$ be the frame operator
+\[
+  S(x)=\sum_{r=1}^N x_r^*(x)x_r.
+\]
+For a basis vector $e_i$,
+\[
+  S(e_i)
+  = \sum_{r=1}^N h_{r,i}\left(\frac1n\sum_{k=1}^n h_{r,k}e_k\right)
+  = \sum_{k=1}^n
+      \left(\frac1n\sum_{r=1}^N h_{r,i}h_{r,k}\right)e_k
+  = \frac{N}{n} e_i.
+\]
+Hence $S=(N/n)I_{\ell_1^n}$, a scalar multiple of the identity. By the
+definition in \cite{CDFK}, the sequence $(x_r,x_r^*)_{r=1}^N$ is a length
+$N$ FUNTF for real $\ell_1^n$.
+\end{proof}
+
+\begin{corollary}[Dyadic lengths]
+\label{cor:dyadic}
+For every $n$ and every $m$ with $2^m \ge n$, real $\ell_1^n$ has a length
+$2^m$ FUNTF.
+\end{corollary}
+
+\begin{proof}
+The Sylvester construction gives a $2^m \times 2^m$ Hadamard matrix for every
+$m \ge 0$: start from $H_1=(1)$ and set
+\[
+  H_{2M} =
+  \begin{pmatrix}
+    H_M & H_M\\
+    H_M & -H_M
+  \end{pmatrix}.
+\]
+Its columns are pairwise orthogonal. Select any $n$ columns and apply
+Theorem~\ref{thm:sign-columns}.
+\end{proof}
+
+\begin{corollary}[Hadamard orders]
+If a real Hadamard matrix of order $N$ exists and $N\ge n$, then real
+$\ell_1^n$ has a length $N$ FUNTF.
+\end{corollary}
+
+\begin{proof}
+Choose any $n$ columns of the Hadamard matrix and apply
+Theorem~\ref{thm:sign-columns}.
+\end{proof}
+
+\section*{Relation to the source problem}
+
+The source paper proves that real $\ell_1^n$ has FUNTFs of lengths $n$ and
+$n+1$, and that taking unions reduces Question 8.2 for fixed $n$ to finitely
+many lengths. The dyadic corollary supplies, for every $n$, a uniform explicit
+length $2^{\lceil \log_2 n\rceil}$ with
+\[
+  n \le 2^{\lceil \log_2 n\rceil} < 2n.
+\]
+For values of $n$ where this length is not already $n$ or $n+1$, it fills one
+of the finite-gap lengths singled out by the source discussion. The theorem
+also covers every other known Hadamard order $N \ge n$.
+
+This is still only a partial answer. It gives no construction for a length
+$N$ unless an $N\times n$ sign matrix with orthogonal columns is available,
+and it does not decide the remaining non-Hadamard lengths.
+
+\section*{Verifier report}
+
+The included script
+\[
+\texttt{code/verify\_hadamard\_funtf.py}
+\]
+constructs Sylvester matrices, chooses the first $n$ columns, and checks in
+exact rational arithmetic that the frame operator produced above is
+$(N/n)I_n$ for $2 \le n \le 20$. From the packet directory, the command used
+was:
+\begin{quote}\small
+\texttt{conda run --no-capture-output -n sandbox python}\\
+\texttt{code/verify\_hadamard\_funtf.py}
+\end{quote}
+This computation is not a proof of the theorem; it is a reproducible sanity
+check for the construction and its normalization.
+
+\begin{thebibliography}{9}
+
+\bibitem{CDFK}
+J. A. Chavez-Dominguez, D. Freeman, and K. Kornelson,
+\emph{Frame potential for finite-dimensional Banach spaces},
+arXiv:1804.03677.
+
+\end{thebibliography}
+
+\end{document}

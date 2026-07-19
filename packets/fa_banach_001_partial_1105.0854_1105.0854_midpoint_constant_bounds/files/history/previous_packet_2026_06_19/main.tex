@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{A Partial Bound for the Midpoint Constant of Near-Isometries}
+\author{Run fa\_banach\_001, agent\_lane\_10}
+\date{June 16, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+The source is Rafal Gorak, \emph{Perturbations of isometries between Banach
+spaces}, arXiv:1105.0854.  In Section 4, the paper defines, for
+\(\mu(t)=(1+\eps)t\),
+\[
+K_\eps=\sup
+\frac{\left\|T\left(\frac{a+b}{2}\right)-\frac{Ta+Tb}{2}\right\|}
+{\eps\norm{a-b}},
+\]
+where the supremum is over all \(\mu\)-isometries \(T\) between Banach spaces
+and all \(a\ne b\) in the domain of \(T\).  The open constant is
+\[
+K=\limsup_{\eps\to 0} K_\eps .
+\]
+The paper records \(K\ge 0.5\), \(K\le 3\), and asks for the exact value.
+
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+For Gorak's midpoint constant,
+\[
+1\le K\le \frac{e^{\sqrt 2}}{\sqrt 2}<3.
+\]
+\end{theorem}
+
+\section*{Idea of the proof}
+
+The source lower bound uses a one-dimensional map with different slopes on the
+two half-lines.  A two-dimensional shear gives twice the asymptotic midpoint
+defect for the same first-order bi-Lipschitz distortion.  The map is still
+globally controlled because each difference is governed by a shear matrix of
+the form
+\[
+\begin{pmatrix}1&a\\0&1\end{pmatrix}
+\]
+with \(|a|\) bounded by the same parameter.  For the upper bound, no new
+midpoint theorem is needed: optimizing the dyadic parameter already present in
+Gorak's Theorem 2.1 gives a uniform asymptotic constant below \(3\).
+
+\section*{Proof}
+
+Let \(M=1+\eps>1\) and put
+\[
+\eta=M-M^{-1}.
+\]
+On the Euclidean plane \(\R^2\), define
+\[
+T(s,t)=(s+\eta |t|,t).
+\]
+This map is bijective, with inverse \((u,v)\mapsto (u-\eta |v|,v)\).
+
+\begin{lemma}
+\(T\) is \(M\)-bi-Lipschitz.
+\end{lemma}
+
+\begin{proof}
+For two points \((s,t)\) and \((s',t')\), write
+\[
+u=s-s',\qquad v=t-t'.
+\]
+If \(v\ne0\), set
+\[
+\theta=\frac{|t|-|t'|}{t-t'},
+\]
+and if \(v=0\), set \(\theta=0\).  Then \(|\theta|\le1\) and
+\[
+T(s,t)-T(s',t')=(u+\eta\theta v,v).
+\]
+Thus this difference is obtained from \((u,v)\) by the matrix
+\[
+A_a=\begin{pmatrix}1&a\\0&1\end{pmatrix},
+\qquad a=\eta\theta,\quad |a|\le \eta .
+\]
+The Euclidean operator norm of \(A_a\) is
+\[
+\norm{A_a}=\frac{\sqrt{a^2+4}+|a|}{2}.
+\]
+Since this expression is increasing in \(|a|\) and
+\[
+\frac{\sqrt{\eta^2+4}+\eta}{2}=M
+\quad\text{when}\quad \eta=M-M^{-1},
+\]
+we get \(\norm{A_a}\le M\).  Also \(\det A_a=1\), so the least singular value
+of \(A_a\) is at least \(M^{-1}\).  Therefore
+\[
+M^{-1}\norm{(u,v)}_2\le \norm{T(s,t)-T(s',t')}_2\le M\norm{(u,v)}_2.
+\]
+\end{proof}
+
+Hence \(T\) is a \(\mu\)-isometry for \(\mu(r)=Mr\).  Now take
+\[
+a=(0,1),\qquad b=(0,-1).
+\]
+Then \((a+b)/2=0\), \(T(0)=0\), and
+\[
+\frac{Ta+Tb}{2}=(\eta,0).
+\]
+Since \(\norm{a-b}=2\), this example gives
+\[
+K_\eps\ge \frac{\eta}{2\eps}
+=\frac{M-M^{-1}}{2(M-1)}
+=\frac{M+1}{2M}.
+\]
+Letting \(M\downarrow1\), equivalently \(\eps\downarrow0\), gives \(K\ge1\).
+
+For the upper bound, apply Gorak's Theorem 2.1 to \(\mu(r)=Mr\).  With
+\(k=2^{n+1}\), it gives
+\[
+\left\|T\left(\frac{a+b}{2}\right)-\frac{Ta+Tb}{2}\right\|
+\le M^{k-1}\frac{\norm{a-b}}{k}.
+\]
+Therefore
+\[
+K_\eps\le \inf_{k\in\{2,4,8,\ldots\}}\frac{M^{k-1}}{\eps k}.
+\]
+Let \(h=\log M\).  For small \(\eps\), choose a dyadic \(k\) such that
+\[
+\frac1{\sqrt2}\le hk\le \sqrt2.
+\]
+This is possible because consecutive dyadic numbers differ by a factor of
+\(2\).  With \(s=hk\), we have
+\[
+\frac{M^{k-1}}{\eps k}
+=e^{-h}\frac{h}{\eps}\frac{e^s}{s}.
+\]
+As \(\eps\to0\), \(e^{-h}h/\eps\to1\).  Since \(e^s/s\) decreases on
+\((0,1]\) and increases on \([1,\infty)\),
+\[
+\limsup_{\eps\to0}K_\eps
+\le \max_{1/\sqrt2\le s\le \sqrt2}\frac{e^s}{s}
+=\frac{e^{\sqrt2}}{\sqrt2}.
+\]
+This proves the theorem.
+
+\section*{Verification notes}
+
+The companion script \texttt{code/check\_midpoint\_bounds.py} checks the
+singular-value identity for the shear matrix and prints the numerical upper
+constant
+\[
+\frac{e^{\sqrt2}}{\sqrt2}\approx 2.9085072356.
+\]
+
+\section*{Novelty and literature check}
+
+The cheap run indexes were searched for arXiv:1105.0854, perturbations of
+isometries, Hyers-Ulam stability, midpoint constants, \(\mu\)-isometries,
+Banach-Stone constants, and related phrases.  No direct duplicate was found.
+Web searches for the exact title, \(K_\eps\), the midpoint expression, Gorak,
+Vestfrid, and the Banach-Stone \(M_0=\sqrt2\) problem found the source paper
+and adjacent perturbation literature, but no later answer to the midpoint
+constant in this bounded pass.
+
+\section*{Limitations}
+
+This is not a full solution of the source problem.  It improves the explicit
+interval for \(K\) from
+\[
+0.5\le K\le3
+\]
+to
+\[
+1\le K\le e^{\sqrt2}/\sqrt2,
+\]
+but it does not determine the exact value of \(K\).  It also does not address
+the separate final-remarks problem about the optimal Banach-Stone constant
+\(M_0\).
+
+\section*{Human-review recommendation}
+
+This packet is a likely valid partial result.  Review should focus on the
+global Lipschitz estimate for the nonlinear shear and on the dyadic choice in
+the upper-bound optimization.
+
+\begin{thebibliography}{9}
+
+\bibitem{Gorak}
+R. Gorak,
+\emph{Perturbations of isometries between Banach spaces},
+arXiv:1105.0854.
+
+\bibitem{Vestfrid}
+I. Vestfrid,
+\emph{Affine properties and injectivity of quasi isometries},
+Israel Journal of Mathematics 141 (2004), 185--210.
+
+\end{thebibliography}
+
+\end{document}

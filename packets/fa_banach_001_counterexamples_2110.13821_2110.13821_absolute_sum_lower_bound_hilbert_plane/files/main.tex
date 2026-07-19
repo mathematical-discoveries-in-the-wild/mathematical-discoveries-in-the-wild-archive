@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Lip}{\operatorname{Lip}_0}
+\newcommand{\nL}{n_L}
+\newcommand{\nuL}{\nu_L}
+
+\title{A Hilbert-plane counterexample to the absolute-sum lower bound for the Lipschitz numerical index}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Source and target question}
+
+The source is Choi--Jung--Tag, \emph{On the Lipschitz numerical index of Banach spaces}, arXiv:2110.13821.  The target is Question 4.4, appearing on page 22 of the source PDF:
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In words, the question asks whether, in the absolute-sum setting, one has
+\[
+\nL\left(\left[\bigoplus_{\lambda\in\Lambda} X_\lambda\right]_E\right)
+\geq \inf_{\lambda\in\Lambda}\nL(X_\lambda)
+\]
+in general, possibly after imposing more conditions.
+
+\section*{Definitions used}
+
+For a Banach space \(X\), a map \(T\in\Lip(X,X)\), and
+\[
+D(h)=\{x^*\in X^*: x^*(h)=\|x^*\|\|h\|=\|h\|^2\},
+\]
+the Lipschitz numerical radius is
+\[
+\nuL(T)=\sup\left\{\frac{|x^*(Tx-Ty)|}{\|x-y\|^2}: x\ne y,\ x^*\in D(x-y)\right\}.
+\]
+The Lipschitz numerical index is
+\[
+\nL(X)=\inf\{\nuL(T): T\in\Lip(X,X),\ \|T\|_L=1\}.
+\]
+
+\section*{Idea of the proof}
+
+The proposed lower bound cannot hold without conditions on the absolute norm \(E\).  If the summands are one-dimensional scalar spaces, they each have Lipschitz numerical index \(1\).  Choosing \(E=\ell_2^2\), however, makes the absolute sum the two-dimensional Hilbert space.  Hilbert planes have norm-one linear maps whose numerical radius is strictly below \(1\).  Since linear maps are admissible Lipschitz maps, the Lipschitz numerical index of the sum is strictly below the index of its scalar summands.
+
+\begin{lemma}\label{lem:scalar}
+For the one-dimensional scalar space \(\K\), real or complex, \(\nL(\K)=1\).
+\end{lemma}
+
+\begin{proof}
+Let \(T\in\Lip(\K,\K)\).  For \(h=x-y\ne 0\), take the norming functional
+\[
+\phi_h(z)=
+\begin{cases}
+hz, & \K=\R,\\
+\overline h z, & \K=\C.
+\end{cases}
+\]
+Then \(\phi_h\in D(h)\), and therefore
+\[
+\frac{|\phi_h(Tx-Ty)|}{|h|^2}
+=\frac{|Tx-Ty|}{|x-y|}.
+\]
+Taking the supremum over \(x\ne y\) gives \(\nuL(T)=\|T\|_L\).  Hence every norm-one Lipschitz self-map of \(\K\) has Lipschitz numerical radius \(1\), so \(\nL(\K)=1\).
+\end{proof}
+
+\begin{lemma}\label{lem:linear}
+If \(A\in\mathcal L(X,X)\) is linear, then its Lipschitz numerical radius equals its classical numerical radius.
+\end{lemma}
+
+\begin{proof}
+For \(h=x-y\ne 0\) and \(x^*\in D(h)\), put \(u=h/\|h\|\) and \(u^*=x^*/\|h\|\).  Then \((u,u^*)\in S_X\times S_{X^*}\), \(u^*(u)=1\), and
+\[
+\frac{|x^*(Ax-Ay)|}{\|x-y\|^2}=|u^*(Au)|.
+\]
+Conversely, any classical state \((u,u^*)\), \(u^*(u)=1\), is obtained by taking \(h=u\).  Thus the two suprema agree.
+\end{proof}
+
+\begin{theorem}
+Question 4.4 has a negative answer under its literal ``hold in general'' reading.
+\end{theorem}
+
+\begin{proof}
+Let \(\Lambda=\{1,2\}\), let \(E=\ell_2^2\) with its usual absolute norm on \(\R^2\), and let \(X_1=X_2=\K\).  Then
+\[
+\left[\bigoplus_{\lambda\in\Lambda}X_\lambda\right]_E
+=\K^2_2,
+\]
+the two-dimensional Hilbert space over the same scalar field.  By Lemma~\ref{lem:scalar},
+\[
+\inf_{\lambda\in\Lambda}\nL(X_\lambda)=1.
+\]
+
+In the real case, define \(R:\R^2\to\R^2\) by \(R(s,t)=(-t,s)\).  This is a norm-one linear operator and, for every unit vector \(u\), \(\langle Ru,u\rangle=0\).  Lemma~\ref{lem:linear} gives \(\nuL(R)=0\), and hence \(\nL(\R^2_2)=0\).  Thus the proposed lower bound would read \(0\geq 1\), a contradiction.
+
+In the complex case, define \(N:\C^2\to\C^2\) by \(N(z_1,z_2)=(z_2,0)\).  This is a norm-one linear operator.  For \(z=(z_1,z_2)\in S_{\C^2_2}\),
+\[
+|\langle Nz,z\rangle|=|z_2\overline{z_1}|\leq \frac{|z_1|^2+|z_2|^2}{2}=\frac12.
+\]
+Equality is attained when \(|z_1|=|z_2|=2^{-1/2}\), so the classical numerical radius of \(N\) is \(1/2\).  Lemma~\ref{lem:linear} gives \(\nuL(N)=1/2\), and therefore \(\nL(\C^2_2)\leq 1/2<1\).  The proposed lower bound again fails.
+\end{proof}
+
+\section*{Verification notes}
+
+The example satisfies the hypotheses of the broad absolute-sum setup in the source paper: \(E=\ell_2^2\) is a finite-dimensional absolute normed lattice, hence order-continuous, and the two coordinate spaces are arbitrary Banach spaces, here just one-dimensional scalar spaces.  The counterexample does not address a narrower version with extra hypotheses designed to exclude Hilbertian absolute norms; in particular it does not prove or disprove a possible MMPR-style Lipschitz theorem under assumptions such as \(n(E)=1\).
+
+No numerical computation is used.  The only quantitative checks are the displayed Hilbert-space numerical-radius computations.
+
+\section*{Novelty and literature check}
+
+Before promotion, the run indexes were searched for arXiv:2110.13821 and for core phrases including ``Lipschitz numerical index'', ``absolute sum'', and ``numerical index''.  No existing packet or attempt for this source question was found.
+
+The local source corpus was searched for Lipschitz numerical index stability results.  It found the original 2012 paper of Wang--Huang--Tan proving stability for \(c_0\)-, \(\ell_1\)-, and \(\ell_\infty\)-sums, and the 2010 MMPR paper on classical numerical indices of absolute sums.  These are compatible with the example: the present counterexample uses the Hilbertian \(\ell_2^2\) absolute norm.
+
+External web searches on 2026-06-16 for quoted and unquoted variants of ``Lipschitz numerical index absolute sums Banach spaces'', ``absolute sums'', and ``\(n_L\)'' found the source paper, the 2010 MMPR paper, the 2012 foundational Lipschitz numerical-radius paper, and a 2025 paper on equality \(n_L=n\) for real separable or dual spaces.  No exact prior answer to Question 4.4 was found in that bounded search.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{CJT}
+G. Choi, M. Jung, and H.-J. Tag,
+\emph{On the Lipschitz numerical index of Banach spaces},
+arXiv:2110.13821.
+
+\bibitem{MMPR}
+M. Martin, J. Meri, M. Popov, and B. Randrianantoanina,
+\emph{Numerical index of absolute sums of Banach spaces},
+J. Math. Anal. Appl. 375 (2011), 207--222; arXiv:1003.3269.
+
+\bibitem{WHT}
+R. Wang, X. Huang, and D. Tan,
+\emph{On the numerical radius of Lipschitz operators in Banach spaces},
+arXiv:1211.5753.
+
+\end{thebibliography}
+
+\section*{Human-review recommendation}
+
+Recommended verdict: likely valid counterexample to the literal general form of Question 4.4.  Review should focus on whether the intended reading of ``possibly with more conditions'' was meant to exclude \(E=\ell_2^2\); if so, the packet should be counted as a broad negative answer and not as a settlement of the strongest constrained variant.
+
+\end{document}

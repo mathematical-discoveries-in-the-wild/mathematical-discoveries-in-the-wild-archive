@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pol}{\mathcal P}
+\newcommand{\Lin}{\mathcal L}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{A scalar counterexample for nonlinear polynomial Daugavet centers}
+\author{Run \texttt{fa\_banach\_001}, agent lane 12}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\section*{Source and question}
+
+The source paper is Sheldon Dantas, Miguel Martin, and Yoel Perreau,
+\emph{The Daugavet property is equivalent to the polynomial Daugavet property},
+arXiv:2507.06143 \cite{DMP}.
+
+After proving that every linear Daugavet center is a polynomial Daugavet center,
+the authors ask on page 11 whether the linearity assumption can be removed:
+\begin{quote}\small
+Given a non-null polynomial \(Q\in\Pol(X,Y)\) satisfying
+\[
+\norm{Q+T}=\norm{Q}+\norm{T}
+\]
+for every rank-one \(T\in\Lin(X,Y)\), must \(Q\) be a polynomial Daugavet
+center, i.e. must the same equality hold when \(T\) is a rank-one polynomial
+from \(X\) to \(Y\)?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.93\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is negative, even in dimension one.
+
+\section*{Definitions Used}
+
+The source paper defines a polynomial \(P:X\to Y\) as a finite linear
+combination of homogeneous polynomials, including constant maps as
+\(0\)-homogeneous polynomials.  It defines a rank-one polynomial as a map
+\[
+P(x)=p(x)y_0
+\]
+with \(p\in\Pol(X)\) scalar-valued and \(y_0\in Y\).  A non-null polynomial
+\(Q\in\Pol(X,Y)\) is a polynomial Daugavet center if
+\[
+\norm{Q+P}=\norm{Q}+\norm{P}
+\]
+for every rank-one polynomial \(P\in\Pol(X,Y)\).
+
+\section*{Proof Intuition}
+
+Linear perturbations of the scalar polynomial \(Q(z)=z^2\) are too symmetric to
+detect the obstruction.  If \(T(z)=az\), the maximum of \(|z^2+az|\) on the
+unit ball is attained at a boundary point whose phase aligns \(z\) with \(a\),
+giving exactly \(1+|a|\).  Polynomial perturbations are much more flexible:
+the rank-one polynomial \(P=-Q\) cancels \(Q\) identically.  Thus the linear
+Daugavet-center test is strictly weaker than the polynomial one.
+
+\begin{theorem}
+Over either \(\K=\R\) or \(\K=\C\), there are one-dimensional Banach spaces
+\(X=Y=\K\) and a non-null polynomial \(Q\in\Pol(X,Y)\) such that
+\[
+\norm{Q+T}=\norm{Q}+\norm{T}
+\]
+for every rank-one linear operator \(T\in\Lin(X,Y)\), but \(Q\) is not a
+polynomial Daugavet center.
+\end{theorem}
+
+\begin{proof}
+Take \(X=Y=\K\) with the usual absolute-value norm and define
+\[
+Q(z)=z^2 \qquad (z\in\K).
+\]
+Then \(\norm{Q}=1\).  Every linear operator \(T:X\to Y\) has the form
+\(T(z)=az\) for some \(a\in\K\), and in dimension one every nonzero such
+operator has rank one.  The zero operator also causes no issue.
+
+For \(|z|\leq 1\), the triangle inequality gives
+\[
+|Q(z)+T(z)|=|z^2+az|\leq |z|^2+|a||z|\leq 1+|a|.
+\]
+Conversely, if \(a\neq 0\), choose \(z=a/|a|\) in the complex case and
+\(z=\operatorname{sign}(a)\) in the real case.  Then \(|z|=1\) and
+\[
+|z^2+az|=|z|\,|z+a|=1+|a|.
+\]
+If \(a=0\), the same equality is clear.  Hence
+\[
+\norm{Q+T}=1+|a|=\norm{Q}+\norm{T}
+\]
+for every rank-one linear \(T\).
+
+However, \(P=-Q\) is a rank-one polynomial from \(X\) to \(Y\): indeed
+\[
+P(z)=p(z)y_0,\qquad p(z)=z^2,\quad y_0=-1.
+\]
+It has \(\norm{P}=1\), while
+\[
+\norm{Q+P}=0 < 2=\norm{Q}+\norm{P}.
+\]
+Therefore \(Q\) is not a polynomial Daugavet center.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is exact.  The accompanying script
+\texttt{code/verify\_scalar\_example.py} samples the complex unit circle for
+several values of \(a\) and illustrates
+\(\sup_{|z|\leq1}|z^2+az|=1+|a|\), and records the failure for \(P=-Q\).
+
+\section*{Novelty Check and Limitations}
+
+On 2026-06-20, I searched for exact phrases including
+\begin{quote}\small
+\texttt{"polynomial Daugavet center" "rank-one" "linear"},\\
+\texttt{"we do not know" "polynomial Daugavet center"},
+\end{quote}
+and the source title.  The only direct hit found was the source arXiv paper.
+This counterexample answers only the nonlinear polynomial-center question; it
+does not address the separate Bourgain-type lemma question for the weak
+polynomial topology or the open problem of whether DPr implies WODP.
+
+\section*{Human Review Recommendation}
+
+This should be reviewed as a likely valid counterexample.  The key point is
+whether the source definition of rank-one polynomial indeed includes
+\(P(x)=p(x)y_0\) for arbitrary scalar polynomial \(p\in\Pol(X)\).  Under that
+definition, \(P=-Q\) is rank-one and the counterexample is immediate.
+
+\begin{thebibliography}{9}
+\bibitem{DMP}
+Sheldon Dantas, Miguel Martin, and Yoel Perreau,
+\emph{The Daugavet property is equivalent to the polynomial Daugavet property},
+arXiv:2507.06143, 2025.
+\end{thebibliography}
+
+\end{document}

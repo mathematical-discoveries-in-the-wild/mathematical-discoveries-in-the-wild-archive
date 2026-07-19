@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\title{Hilbert-Valued Characteristic Domination for General Local Martingales in \(L^2\)}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial result, likely valid, for the open
+general-local-martingale problem stated in Remark 12.10 of Yaroslavtsev's
+paper \emph{Local characteristics and tangency of vector-valued martingales}
+\cite{Yaroslavtsev2019}.  The result proves the desired strong estimate for
+general Hilbert-valued local martingales at the exponent \(p=2\).  It is not a
+solution of the full UMD problem for all exponents.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source crop
+below states the open general-local-martingale issue and its discrete
+independent-increment reduction.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The next page adds that, by symmetrization, one can assume the variables are
+symmetric, and that even this case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+In the notation of the source, a local martingale \(N\) is characteristically
+dominated by \(M\) if the initial weak coordinates are dominated, the
+continuous covariation bilinear form of \(N\) is dominated by that of \(M\),
+and the compensator \(\nu^N\) of the jump measure is dominated by
+\(\nu^M\).  The question is whether the quasi-left-continuous estimate from
+Theorem 12.8 remains true for general local martingales.
+
+\section*{Idea of the Proof}
+
+At \(p=2\), Hilbert spaces retain exactly the information that characteristic
+domination records.  For a Hilbert-valued square-integrable martingale, the
+terminal second moment is the initial square norm plus the trace of the
+continuous quadratic covariation plus the integral of \(\norm{x}^2\) against
+the jump compensator.  Characteristic domination decreases each of these
+terms.  Thus the terminal \(L^2\) estimate has constant \(1\).  The strong
+maximal estimate follows by Doob's \(L^2\) inequality.
+
+\section*{Hilbert \(L^2\) Subcase of the General Problem}
+
+\begin{lemma}[Hilbert square identity]
+Let \(H\) be a separable Hilbert space and let \(M\) be an \(H\)-valued
+square-integrable martingale on \([0,T]\).  Let
+\(\langle\!\langle M^c\rangle\!\rangle\) denote the predictable covariation
+bilinear form of the continuous part, and let \(\nu^M\) be the compensator of
+the jump measure.  Then
+\[
+  \E\norm{M_T}^2
+  =
+  \E\norm{M_0}^2
+  + \E\,\operatorname{tr}\langle\!\langle M^c\rangle\!\rangle_T
+  + \E\int_{[0,T]\times H}\norm{x}^2\,d\nu^M(t,x),
+\]
+with the value \(+\infty\) allowed.
+\end{lemma}
+
+\begin{proof}
+For finite-dimensional \(H\), this is the usual coordinatewise martingale
+isometry applied to an orthonormal basis: the continuous part contributes the
+trace of its predictable covariation and the purely discontinuous part
+contributes the compensator of \(\sum_{s\leq T}\norm{\Delta M_s}^2\).
+
+For separable \(H\), let \(P_m\) be the orthogonal projection onto the span of
+the first \(m\) vectors of an orthonormal basis.  Apply the finite-dimensional
+identity to \(P_m M\).  Then let \(m\to\infty\) and use monotone convergence for
+\(\norm{P_m M_T}^2\), for the finite-dimensional traces, and for
+\(\int \norm{P_m x}^2\,d\nu^M(t,x)\).
+\end{proof}
+
+\begin{theorem}
+Let \(H\) be a separable Hilbert space.  Let \(M\) and \(N\) be \(H\)-valued
+local martingales such that \(N\) is characteristically dominated by \(M\) in
+the sense of Yaroslavtsev.  Then for every bounded stopping time \(\tau\),
+\[
+   \E\norm{N_\tau}^2 \leq \E\norm{M_\tau}^2.
+\]
+Consequently, if \(\E\sup_{t\geq 0}\norm{M_t}^2<\infty\), then
+\[
+   \E\sup_{t\geq 0}\norm{N_t}^2
+   \leq
+   4\,\E\sup_{t\geq 0}\norm{M_t}^2.
+\]
+\end{theorem}
+
+\begin{proof}
+First assume that \(M^\tau\) and \(N^\tau\) are square integrable.  By the
+initial-coordinate domination, outside one null set
+\[
+   |\ip{N_0}{h}|\leq |\ip{M_0}{h}|
+   \qquad\text{for every }h\in H.
+\]
+Taking \(h=N_0/\norm{N_0}\) when \(N_0\neq0\) gives
+\(\norm{N_0}\leq\norm{M_0}\).
+
+Characteristic domination of the continuous characteristics says that the
+bilinear form
+\[
+  \langle\!\langle M^c\rangle\!\rangle_\tau
+  -
+  \langle\!\langle N^c\rangle\!\rangle_\tau
+\]
+is nonnegative.  Therefore its trace is nonnegative, so
+\[
+ \operatorname{tr}\langle\!\langle N^c\rangle\!\rangle_\tau
+ \leq
+ \operatorname{tr}\langle\!\langle M^c\rangle\!\rangle_\tau .
+\]
+The jump-compensator domination \(\nu^N\leq \nu^M\) gives
+\[
+  \int_{[0,\tau]\times H}\norm{x}^2\,d\nu^N(t,x)
+  \leq
+  \int_{[0,\tau]\times H}\norm{x}^2\,d\nu^M(t,x).
+\]
+Applying the Hilbert square identity to \(N^\tau\) and \(M^\tau\), and
+comparing the three terms, yields
+\[
+   \E\norm{N_\tau}^2 \leq \E\norm{M_\tau}^2.
+\]
+
+For general local martingales, apply this argument to
+\(\tau\wedge\rho_k\), where \((\rho_k)\) is a common localizing sequence for
+which both stopped martingales are square integrable.  Characteristic
+domination is preserved by stopping.  If \(\E\norm{M_\tau}^2=\infty\), there is
+nothing to prove.  Otherwise, optional sampling for the submartingale
+\(\norm{M_t}^2\) gives
+\(\E\norm{M_{\tau\wedge\rho_k}}^2\leq \E\norm{M_\tau}^2\), while Fatou's lemma
+gives
+\[
+   \E\norm{N_\tau}^2
+   \leq
+   \liminf_k \E\norm{N_{\tau\wedge\rho_k}}^2
+   \leq
+   \E\norm{M_\tau}^2 .
+\]
+
+Finally, for each deterministic \(T\), Doob's \(L^2\) maximal inequality for
+the submartingale \(\norm{N_t}\) gives
+\[
+  \E\sup_{0\leq t\leq T}\norm{N_t}^2
+  \leq
+  4\,\E\norm{N_T}^2
+  \leq
+  4\,\E\norm{M_T}^2
+  \leq
+  4\,\E\sup_{0\leq t\leq T}\norm{M_t}^2.
+\]
+Letting \(T\to\infty\) proves the stated strong estimate.
+\end{proof}
+
+\begin{corollary}[Discrete aggregate domination in Hilbert space at \(p=2\)]
+Let \((\xi_n)_{n=1}^N\) and \((\eta_n)_{n=1}^N\) be independent mean-zero
+\(H\)-valued random variables.  If
+\[
+  \sum_{n=1}^N \mathbb P(\xi_n\in B)
+  \leq
+  \sum_{n=1}^N \mathbb P(\eta_n\in B)
+  \qquad
+  \text{for every Borel }B\subset H\setminus\{0\},
+\]
+then
+\[
+  \E\norm{\sum_{n=1}^N \xi_n}^2
+  \leq
+  \E\norm{\sum_{n=1}^N \eta_n}^2.
+\]
+\end{corollary}
+
+\begin{proof}
+Independence and the mean-zero assumption give orthogonality in \(L^2(H)\):
+\[
+  \E\norm{\sum_{n=1}^N \xi_n}^2
+  =
+  \sum_{n=1}^N \E\norm{\xi_n}^2.
+\]
+The aggregate domination hypothesis, integrated against the nonnegative
+function \(x\mapsto\norm{x}^2\), gives
+\[
+  \sum_{n=1}^N \E\norm{\xi_n}^2
+  \leq
+  \sum_{n=1}^N \E\norm{\eta_n}^2.
+\]
+The same orthogonality identity for \((\eta_n)\) completes the proof.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is insensitive to accessible versus quasi-left-continuous jumps:
+both jump types enter the Hilbert \(L^2\) identity through the same scalar
+quantity \(\int\norm{x}^2\,d\nu\).  Thus the argument addresses precisely the
+general-local-martingale issue at \(p=2\), not only the quasi-left-continuous
+case already handled in the source paper.
+
+The result is compatible with the previous \(c_0\) counterexample.  That
+counterexample exploits the failure of Hilbert square additivity in sup norm.
+In Hilbert space, grouping the same aggregate jump mass among independent
+variables cannot change the terminal second moment.
+
+\section*{Novelty and Literature Check}
+
+The run indexes were searched for \texttt{1907.11588},
+\texttt{characteristically dominated}, \texttt{aggregate domination},
+\texttt{Hilbert}, and \texttt{L2}; no prior run packet for this subcase was
+found.  Web searches for the exact problem and nearby phrases found the source
+paper, Montgomery-Smith--Pruss comparison inequalities
+\cite{MontgomerySmithPruss2001}, and Rosenthal/Pinelis moment tools, but no
+exact recorded answer to the Hilbert \(p=2\) general-local-martingale subcase.
+
+This packet should be read as a new observation for the run rather than as a
+claim that the Hilbert \(L^2\) estimate is technically deep: the proof is the
+standard Hilbert martingale square identity applied to the source paper's
+characteristic-domination data.
+
+\section*{Limitations and Next Routes}
+
+This does not settle the original UMD-space problem for all \(p\), nor even the
+Hilbert-space problem for \(p\neq2\).  For \(p>2\), the plausible route is to
+combine Hilbert-valued martingale Rosenthal or Bichteler-Jacod inequalities
+with domination of the second and \(p\)-th jump characteristic terms.  That
+route was not promoted here because this packet keeps only the completely
+self-contained \(L^2\) argument.
+
+\section*{Human Review Recommendation}
+
+Review the passage from bilinear-form domination to trace domination and the
+localization step.  If those check out, this should be accepted as a positive
+Hilbert-valued \(p=2\) subcase of the general characteristically dominated
+local martingale problem.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev,
+\emph{Local characteristics and tangency of vector-valued martingales},
+arXiv:1907.11588, 2019.
+
+\bibitem{MontgomerySmithPruss2001}
+S. J. Montgomery-Smith and A. R. Pruss,
+\emph{A comparison inequality for sums of independent random variables},
+J. Math. Anal. Appl. 254 (2001), no. 1, 35--42;
+arXiv:math/9811124.
+
+\end{thebibliography}
+
+\end{document}

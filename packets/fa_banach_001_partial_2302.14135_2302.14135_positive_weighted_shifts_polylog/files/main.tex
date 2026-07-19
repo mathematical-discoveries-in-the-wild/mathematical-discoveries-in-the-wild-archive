@@ -1,0 +1,238 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{K_{\mathrm{SK}}}
+\DeclareMathOperator{\supp}{supp}
+
+\title{Positive Strongly Kreiss Weighted Shifts Have\\
+Polylogarithmic Power Growth}
+\author{Run \texttt{fa\_banach\_001}, lane 0}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: partial result, likely valid; human review requested.}
+\end{center}
+
+\section{Source question}
+
+Arnold and Cuny ask the following in Question 5.8 of
+\cite{ArnoldCuny}: if $1<p<\infty$ and $T$ is a positive strongly Kreiss
+bounded operator on an $L^p$-space, must there be $C,\kappa>0$ such that
+\[
+  \|T^N\|\le C\log^\kappa(N+1)\qquad(N\in\N)?
+\]
+The source question is reproduced below from page 19 of the arXiv PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove an affirmative answer for positive unilateral weighted backward
+shifts whose weights are at least one.  This class includes the familiar
+telescoping logarithmic examples discussed in \cite{ArnoldCuny,CCEL}.
+
+\section{Definitions}
+
+Let $1\le p\le\infty$ and use the convention $\N_0=\{0,1,2,\ldots\}$.
+Given a bounded sequence $(w_j)_{j\ge0}$ of positive numbers, the unilateral
+weighted backward shift $T$ on $\ell^p(\N_0)$ is
+\[
+  (Tx)_j=w_jx_{j+1}.
+\]
+Put $a_0=1$ and $a_n=\prod_{j=0}^{n-1}w_j$ for $n\ge1$.  Then
+\begin{equation}\label{eq:powers}
+  (T^m x)_j=\frac{a_{j+m}}{a_j}x_{j+m},\qquad
+  \|T^m\|=\sup_{j\ge0}\frac{a_{j+m}}{a_j}.
+\end{equation}
+
+The strong Kreiss condition is the iterated resolvent estimate from
+\cite{ArnoldCuny}.  We use its equivalent exponential formulation: there is
+$\K\ge1$ such that
+\begin{equation}\label{eq:exp}
+  \|e^{zT}\|\le \K e^{|z|}\qquad(z\in\mathbb C).
+\end{equation}
+This equivalence is recalled in the introduction of \cite{ArnoldCuny}.
+
+\section{Proof intuition}
+
+For a positive shift, $e^{-N}e^{NT}$ is a Poisson average of its powers.
+Poisson mass is of order $N^{-1/2}$ throughout a window of width of order
+$\sqrt N$ around $N$.  Test this average on a constant vector supported on
+one coordinate block of that width and inspect its image on a second block.
+Monotonicity of the cumulative weights makes every matrix entry between the
+two blocks at least a fixed Poisson factor times
+$a_{n+N}/a_{n+c\sqrt N}$.  There are $c\sqrt N$ entries in every relevant
+row, exactly cancelling the $N^{-1/2}$ Poisson scale in every $\ell^p$ norm.
+
+The strong Kreiss bound therefore forces the cumulative weight to grow by
+only a fixed factor when its index is reduced from $N$ to $c\sqrt N$.
+Iterating square roots takes only $O(\log\log N)$ steps, so the total growth is
+at most a power of $\log N$.  The remaining general positive-operator
+question is open because the coordinate-block test uses the shift geometry.
+
+\section{The partial theorem}
+
+\begin{theorem}\label{thm:main}
+Let $1\le p\le\infty$, and let $T$ be the weighted backward shift on
+$\ell^p(\N_0)$ defined by a bounded sequence $(w_j)$ satisfying $w_j\ge1$.
+If $T$ is strongly Kreiss bounded, then there are constants $C,\kappa>0$
+such that
+\[
+  \|T^N\|\le C\log^\kappa(N+2)\qquad(N\ge1).
+\]
+In particular, Question 5.8 has an affirmative answer in this class.
+\end{theorem}
+
+We first record the only scalar estimate needed.
+
+\begin{lemma}[Poisson window]\label{lem:poisson}
+There are constants $\eta,c_0>0$ and $N_0\in\N$ such that, whenever
+$N\ge N_0$ and $m\in\N_0$ satisfies $|m-N|\le\eta\sqrt N$, one has
+\[
+  e^{-N}\frac{N^m}{m!}\ge \frac{c_0}{\sqrt N}.
+\]
+\end{lemma}
+
+\begin{proof}
+By the upper Stirling estimate, for an absolute $C>0$,
+\[
+ m!\le C\sqrt m\,(m/e)^m.
+\]
+Writing $m=N+s$, the exponential factor in the resulting lower bound is
+\[
+ -N+m+m\log(N/m)
+ =s-(N+s)\log(1+s/N).
+\]
+For $|s|\le\eta\sqrt N$ this expression is bounded below by an absolute
+constant, while $m$ is comparable with $N$.  Decreasing $c_0$ handles the
+finitely many remaining values after fixing $N_0$.
+\end{proof}
+
+\begin{lemma}[Square-root recurrence]\label{lem:recurrence}
+Under the assumptions of Theorem \ref{thm:main}, define
+\[
+  b_N:=\|T^N\|=\sup_{n\ge0}\frac{a_{n+N}}{a_n}.
+\]
+There are $C_0\ge1$, $c\in(0,1)$, and $N_1\in\N$ such that
+\begin{equation}\label{eq:recurrence}
+  b_N\le C_0 b_{\lfloor c\sqrt N\rfloor}\qquad(N\ge N_1).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $\eta,c_0,N_0$ be as in Lemma \ref{lem:poisson}.  For large $N$, put
+$L=\lfloor\eta\sqrt N/2\rfloor$.  From \eqref{eq:exp}, the normalized
+Poisson operator
+\[
+  P_N:=e^{-N}e^{NT}
+       =\sum_{m=0}^\infty e^{-N}\frac{N^m}{m!}T^m
+\]
+satisfies $\|P_N\|\le\K$.
+
+Fix $n\ge0$.  If $p<\infty$, let
+\[
+ x=L^{-1/p}\sum_{k=n+N}^{n+N+L-1}e_k;
+\]
+if $p=\infty$, omit the factor $L^{-1/p}$.  In either case $\|x\|_p=1$.
+For $j\in\{n,\ldots,n+L-1\}$ and every
+$k\in\supp x$, the integer $m=k-j$ satisfies $|m-N|<L$, and hence its
+Poisson coefficient is at least $c_0/\sqrt N$.  Since $w_j\ge1$, the sequence
+$(a_j)$ is nondecreasing, and therefore
+\[
+ \frac{a_k}{a_j}\ge\frac{a_{n+N}}{a_{n+L}}.
+\]
+Using \eqref{eq:powers}, all terms are nonnegative and we obtain
+\[
+ (P_Nx)_j
+ \ge \frac{c_0L}{\sqrt N}\,
+      \frac{a_{n+N}}{a_{n+L}}L^{-1/p}.
+\]
+Taking the $\ell^p$ norm over the $L$ displayed output coordinates (with the
+usual interpretation for $p=\infty$), and using $L/\sqrt N\ge\eta/4$ for
+large $N$, gives
+\[
+ \K\ge\|P_Nx\|_p
+ \ge \frac{c_0\eta}{4}\frac{a_{n+N}}{a_{n+L}}.
+\]
+Thus $a_{n+N}/a_{n+L}\le C_0:=4\K/(c_0\eta)$, uniformly in $n$.  Consequently,
+\[
+ \frac{a_{n+N}}{a_n}
+ =\frac{a_{n+N}}{a_{n+L}}\frac{a_{n+L}}{a_n}
+ \le C_0 b_L.
+\]
+Taking the supremum over $n$ proves \eqref{eq:recurrence}, after changing
+$c$ and the finite threshold if necessary.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+The numbers $b_N$ are nondecreasing because $(a_j)$ is nondecreasing.  Starting
+from $N$, repeatedly apply Lemma \ref{lem:recurrence} while the current index
+is at least $N_1$.  The indices obey $N_{r+1}\le c\sqrt{N_r}$, so the process
+stops after at most
+\[
+  r\le C_1+\log_2\log(N+2)
+\]
+steps, where $C_1$ depends only on $c$ and $N_1$.  If
+$B=\max_{1\le m\le N_1}b_m$, iteration yields
+\[
+ b_N\le B C_0^r
+ \le C\,\log(N+2)^{\log_2 C_0}.
+\]
+This proves the theorem with $\kappa=\log_2 C_0$ (or any larger positive
+number).
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof is independent of computation.  The included script
+\texttt{code/weighted\_shift\_probe.py} computes finite-section induced norms
+of $e^{-r}e^{rT}$ for cumulative weights $a_n=(n+1)^\beta$, three values of
+$p$, three values of $\beta$, and four radii.  The observed norms increase
+with the radius, as predicted by the theorem because polynomial power growth
+cannot coexist with a uniform strong Kreiss bound in this monotone shift
+class.  This finite computation is only a sanity check.
+
+The result does not cover arbitrary positive operators on $L^p$, nor weighted
+shifts with nonmonotone cumulative products.  A bounded literature search
+through 19 July 2026 used the phrases ``positive strongly Kreiss bounded'',
+``strongly Kreiss weighted shift'', and ``weighted shift logarithmic powers'',
+and checked \cite{ArnoldCuny,CCEL,BermudezEtAl}.  No statement of Lemma
+\ref{lem:recurrence} or Theorem \ref{thm:main} was found.  Novelty confidence
+is moderate because the argument may be folklore in weighted-shift theory.
+
+The recommended human-review focus is the uniform Poisson lower bound and the
+two block endpoints in Lemma \ref{lem:recurrence}.  Once that lemma is
+accepted, the logarithmic iteration is immediate.
+
+\begin{thebibliography}{9}
+
+\bibitem{ArnoldCuny}
+L. Arnold and C. Cuny,
+\emph{On the growth rate of powers of a strongly Kreiss bounded operator on
+an $L^p$-space}, Studia Math., published online 23 March 2026,
+DOI: \href{https://doi.org/10.4064/sm230303-29-10}{10.4064/sm230303-29-10};
+arXiv:2302.14135.
+
+\bibitem{CCEL}
+G. Cohen, C. Cuny, T. Eisner, and M. Lin,
+\emph{Resolvent conditions and growth of powers of operators},
+J. Math. Anal. Appl. 487 (2020), 124035; arXiv:1912.10507.
+
+\bibitem{BermudezEtAl}
+T. Bermudez, A. Bonilla, V. Muller, and A. Peris,
+\emph{Cesaro bounded operators in Banach spaces},
+J. Math. Anal. Appl. 472 (2019), 1264--1278; arXiv:1706.03638.
+
+\end{thebibliography}
+
+\end{document}

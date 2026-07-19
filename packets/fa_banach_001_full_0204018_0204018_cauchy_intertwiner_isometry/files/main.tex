@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\TT}{\widetilde T}
+\newcommand{\DD}{\widetilde D}
+
+\title{A Schur-normalization proof for the hyperbolic Cauchy transform\\
+\large Candidate full solution to Section 3.4(i) of arXiv:math/0204018}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 2}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!4}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full solution to Open Problem (i), subject to
+human verification.  The conclusion applies to the irreducible unitary
+realizations specified in the question.  Reducible parameters are covered
+sectorwise, with one normalization constant per irreducible sector.}}
+\end{center}
+
+\section{Source and exact question}
+
+The source is V.~V.~Kisil, \emph{Spaces of Analytical Functions and
+Wavelets---Lecture Notes}~\cite{Kisil}.  It appeared as arXiv:math/0204018
+(2002).  In Section 3.4, printed page 47 (PDF page 48), item (i) asks:
+
+\begin{quote}
+Demonstrate that Cauchy formula (3.3.23) is an isometry between
+$F_2(\TT)$ and $H_\sigma(\DD)$ with suitable norms chosen.  This almost
+follows (up to some constant factor) from its property to intertwine two
+irreducible representations of $SL_2(\mathbb R)$.
+\end{quote}
+
+Figure~\ref{fig:problem} reproduces the source statement.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Section 3.4 and the complete text of Open Problem (i) in the
+  source paper~\cite{Kisil}.}
+  \label{fig:problem}
+\end{figure}
+
+The Cauchy transform in (3.3.23) is denoted below by
+\[
+  W_\sigma:F_2(\TT)\longrightarrow H_\sigma(\DD).
+\]
+The source's Appendix ``Boundedness of the Singular Integral Operator
+$W_\sigma$'' treats the four boundary singularities in the principal-value
+sense and states the resulting $L^2$ boundedness.  The general reduced-wavelet
+construction proves equivariance, and item (i) explicitly identifies the
+relevant representations as irreducible.  These facts are the only
+source-specific inputs used below.
+
+\section{Definitions and proof intuition}
+
+For a unitary representation $\pi:G\to\mathcal U(\mathcal H)$, its
+\emph{commutant} consists of bounded operators $A$ satisfying
+$A\pi(g)=\pi(g)A$ for every $g\in G$.  A bounded map
+$W:\mathcal H_1\to\mathcal H_2$ \emph{intertwines} representations $\pi$
+and $\rho$ if
+\[
+  W\pi(g)=\rho(g)W\qquad(g\in G).
+\]
+
+\subsection*{Proof Intuition}
+
+Equivariance makes the positive operator $W^*W$ invisible to the group:
+it belongs to the commutant of the irreducible source representation.
+Every spectral projection of $W^*W$ is then group invariant.  Irreducibility
+leaves no nontrivial spectral projection, forcing $W^*W$ to be one positive
+scalar times the identity.  Thus $W$ already preserves every norm ratio by
+the same constant.  Removing that single constant makes it an isometry.
+The same identity makes the range closed; equivariance and target
+irreducibility then force surjectivity.
+
+\section{Normalization theorem}
+
+\begin{theorem}[bounded irreducible intertwiners are scalar unitaries]
+\label{thm:intertwiner}
+Let $G$ be a group, let
+$\pi:G\to\mathcal U(\mathcal H_1)$ and
+$\rho:G\to\mathcal U(\mathcal H_2)$ be irreducible complex unitary
+representations, and let $0\ne W\in\mathcal B(\mathcal H_1,\mathcal H_2)$
+satisfy $W\pi(g)=\rho(g)W$ for every $g\in G$.  Then there are a unique
+constant $c>0$ and a unitary intertwiner $U:\mathcal H_1\to\mathcal H_2$
+such that
+\[
+  W=\sqrt c\,U.
+\]
+Equivalently, $W^*W=cI_{\mathcal H_1}$ and
+$\|Wf\|_{\mathcal H_2}=\sqrt c\,\|f\|_{\mathcal H_1}$ for all $f$.
+\end{theorem}
+
+\begin{proof}
+Taking adjoints of the intertwining identity, and using unitarity, gives
+\[
+  W^*W\pi(g)=W^*\rho(g)W=\pi(g)W^*W
+  \qquad(g\in G).
+\]
+Thus the positive operator $A=W^*W$ commutes with $\pi(G)$.  By bounded
+functional calculus, every spectral projection of $A$ also commutes with
+$\pi(G)$.  The range and kernel of such a projection are closed invariant
+subspaces.  Irreducibility therefore makes every spectral projection either
+$0$ or $I$.  Hence the spectrum of $A$ is a singleton and $A=cI$ for some
+$c\ge0$.  Since $W\ne0$, we have $c>0$.
+
+It follows that $U=c^{-1/2}W$ is an isometry, so its range is closed.  The
+range of $W$ (and hence of $U$) is nonzero and $\rho(G)$-invariant.  Target
+irreducibility forces this closed range to equal $\mathcal H_2$.  Therefore
+$U$ is a surjective isometry, hence unitary.  Uniqueness of $c$ follows from
+$W^*W=cI$.
+\end{proof}
+
+\begin{corollary}[solution of Section 3.4(i)]
+\label{cor:application}
+Fix a parameter $\sigma$ for which the boundary and Hardy realizations in
+Section 3.3 of~\cite{Kisil} are the irreducible unitary representations
+specified in Open Problem (i), and let $W_\sigma$ be the bounded nonzero
+principal-value Cauchy transform (3.3.23).  Then there is a constant
+$c_\sigma>0$ such that
+\[
+  \|W_\sigma f\|_{H_\sigma(\DD)}^2
+    =c_\sigma\|f\|_{F_2(\TT)}^2
+  \qquad(f\in F_2(\TT)).
+\]
+Moreover, $W_\sigma$ maps onto $H_\sigma(\DD)$.  With the target norm
+\[
+  \|h\|_{H_\sigma,\mathrm{iso}}
+    :=c_\sigma^{-1/2}\|h\|_{H_\sigma(\DD)},
+\]
+the original Cauchy formula $W_\sigma$ is an onto isometry.
+\end{corollary}
+
+\begin{proof}
+The source establishes that $W_\sigma$ is a bounded intertwiner, while the
+question specifies irreducibility of the two representations.  The Cauchy
+kernel is not identically zero, so the transform is nonzero.  Apply
+Theorem~\ref{thm:intertwiner} with $G=SL_2(\mathbb R)$.
+\end{proof}
+
+The normalizing constant can be recovered from any single nonzero test vector:
+\[
+  c_\sigma=\frac{\|W_\sigma f\|^2}{\|f\|^2}.
+\]
+The theorem proves that this quotient is independent of the chosen $f$.
+
+\section{Even-Clifford sectors}
+
+The source writes parts of the construction using even Clifford-valued
+functions.  If that notation displays the Hilbert realization as an orthogonal
+sum of irreducible sectors,
+\[
+  \mathcal H_1=\bigoplus_{j=1}^m\mathcal H_{1,j},\qquad
+  \mathcal H_2=\bigoplus_{j=1}^m\mathcal H_{2,j},
+\]
+and $W_\sigma=\bigoplus_j W_{\sigma,j}$ respects the sectors, the same proof
+gives $W_{\sigma,j}^*W_{\sigma,j}=c_{\sigma,j}I$ on every nonzero irreducible
+sector.  The invariant target norm
+\[
+  \|(h_j)_j\|_{\mathrm{iso}}^2
+   =\sum_j c_{\sigma,j}^{-1}\|h_j\|^2
+\]
+makes the full transform isometric.  Thus the Clifford bookkeeping changes
+only the number of scalar normalizations, not the argument.
+
+\section{Verification notes and limitations}
+
+\noindent\textbf{1. Proof audit.}  Boundedness makes $W_\sigma^*$ available;
+unitarity is used exactly to move group operators through the adjoint;
+irreducibility is used twice, first on spectral projections of $W^*W$ and
+then on the closed range.  No density-to-surjectivity shortcut is used.
+
+\par\medskip\noindent\textbf{2. Singular-vacuum issue.}  The source notes that its vacuum
+vector is not in $L^2$.  The proof above does not use that vector as an
+$L^2$ element.  It starts from the principal-value bounded operator asserted
+in the source appendix.
+
+\par\medskip\noindent\textbf{3. Reducibility parameters.}  If a value of $\sigma$ makes the
+representation reducible, the single-scalar statement need not hold on the
+unreduced space.  The sectorwise statement above is the correct conclusion.
+Open Problem (i) itself invokes two irreducible representations, and
+Corollary~\ref{cor:application} matches precisely that scope.
+
+\par\medskip\noindent\textbf{4. What is not computed.}  The proof determines the normalization
+intrinsically but does not evaluate $c_\sigma$ in closed form relative to a
+preselected geometric normalization of boundary measure.  The question asks
+for suitable norms, so this does not leave a logical gap in the stated
+isometry problem.
+
+\par\medskip\noindent\textbf{5. Remaining source questions.}  Section 3.4(ii), concerning
+domain deformation via Stokes' theorem, and Section 3.4(iii), concerning a
+principal-series Dirac condition, are not addressed.
+
+\section{Bounded novelty check and review recommendation}
+
+The run's solution, attempt, and registry indexes were searched for arXiv id
+0204018 and the title/keywords.  Targeted web/arXiv searches through
+19 July 2026 used the exact title and combinations of ``Cauchy formula'',
+``isometry'', ``principal series'', ``$H_\sigma$'', and ``Kisil''.  They found
+the source paper, the author's earlier paper on principal function theory,
+and later surveys, but no paper explicitly resolving item (i).  Since the
+argument is the standard commutant proof behind Schur's lemma, the claim of
+novelty is deliberately modest: this packet records an explicit completion
+of the source's stated ``up to a constant'' route.
+
+\textbf{Human-review recommendation: likely valid.}  The decisive source
+check is that the selected $\sigma$ gives the positive-definite irreducible
+unitary boundary and Hardy realizations claimed in the question, and that the
+principal-value transform is nonzero on the selected sector.  Once those
+source hypotheses are confirmed, the normalization proof is complete.
+
+\begin{thebibliography}{9}
+\bibitem{Kisil}
+V. V. Kisil,
+\emph{Spaces of Analytical Functions and Wavelets---Lecture Notes},
+arXiv:math/0204018 (2002), especially Sections 2.2, 3.3, 3.4 and the appendix
+``Boundedness of the Singular Integral Operator $W_\sigma$''.
+\end{thebibliography}
+
+\end{document}

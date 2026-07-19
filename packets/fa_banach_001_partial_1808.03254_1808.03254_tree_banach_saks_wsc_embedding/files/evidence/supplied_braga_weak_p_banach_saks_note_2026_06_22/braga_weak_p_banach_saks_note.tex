@@ -1,0 +1,459 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[margin=1.08in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ol}{\overline}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\BS}{\mathrm{BS}}
+\newcommand{\wBS}{\mathrm{wBS}}
+\newcommand{\treeBS}{\mathrm{tree\text{-}BS}}
+\newcommand{\Def}{\mathop{\mathrm{Def}}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\angles}[1]{\left\langle #1\right\rangle}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.35em}
+\emergencystretch=3em
+
+\title[Braga's weak $p$--Banach--Saks problem]{Braga's weak $p$--Banach--Saks problem for weakly sequentially continuous coarse embeddings:\\audit, modulus transfer, and current status}
+\author{Research note prepared from the supplied solver output}
+\date{June 21, 2026}
+
+\begin{document}
+\begin{abstract}
+Braga asked whether the weak $p$--Banach--Saks property passes from a Banach space $Y$ to a Banach space $X$ whenever $X$ admits a weakly sequentially continuous coarse Lipschitz embedding into $Y$.  We audit a supplied partial proof and find it correct, apart from a misnumbered citation and two minor omitted justifications.  The proof gives permanence under the stronger hypothesis that $Y$ has the tree-$p$--Banach--Saks property.
+
+We place that argument in a more general modulus-transfer statement.  If $Y$ has tree-$p$--Banach--Saks constant $C$ and $f:X\to Y$ is a weakly sequentially continuous coarse embedding, then, for every scale $r$ with $\rho_f(r)>0$, every normalized weakly null tree in $X$ has a branch satisfying
+\[
+ \rho_f\!\left(r\norm{\sum_{j=1}^k x_{n_1,\ldots,n_j}}\right)
+ \le C\,\omega_f(r)k^{1/p}.
+\]
+For coarse Lipschitz embeddings this yields tree-$p$--Banach--Saks permanence with an explicit sharp-at-infinity constant.  We also give a direct positive answer under the original weak $p$--Banach--Saks target assumption when the embedding has controlled additive defect.
+
+A literature search through June 21, 2026 found no published proof or counterexample to Braga's question.  The original problem therefore appears to remain open.  The central obstruction is genuine: weak $p$--Banach--Saks controls one weakly null sequence, whereas the nonlinear telescoping argument creates a weakly null tree, and Braga constructed reflexive weak $p$--Banach--Saks spaces with no tree-$q$--Banach--Saks property for any $q>1$.
+\end{abstract}
+\maketitle
+
+\section{The problem and a result ledger}
+
+For a map $f:X\to Y$ between Banach spaces, write
+\begin{align*}
+ \omega_f(t)&=\sup\set{\norm{f(x)-f(y)}: \norm{x-y}\le t},\\
+ \rho_f(t)&=\inf\set{\norm{f(x)-f(y)}: \norm{x-y}\ge t}.
+\end{align*}
+The map is a \emph{coarse embedding} if $\omega_f(t)<\infty$ for every $t$ and $\rho_f(t)\to\infty$ as $t\to\infty$.  It is a \emph{coarse Lipschitz embedding} if there are $a,b>0$ and $A\ge0$ such that
+\begin{equation}\label{eq:affine-control}
+ a\norm{x-y}-A\le \norm{f(x)-f(y)}\le b\norm{x-y}+A
+ \qquad(x,y\in X).
+\end{equation}
+It is \emph{weakly sequentially continuous} if $x_n\rightharpoonup x$ implies $f(x_n)\rightharpoonup f(x)$.
+
+Braga's Problem~8.6 asks the following \cite[Problem~8.6]{BragaJIMJ}.
+
+\begin{question}[Braga]\label{q:Braga}
+Let $1<p<\infty$.  Suppose that $Y$ has the weak $p$--Banach--Saks property and that there is a weakly sequentially continuous coarse Lipschitz embedding $f:X\to Y$.  Must $X$ have the weak $p$--Banach--Saks property?
+\end{question}
+
+The conclusions established in this note are as follows.
+\begin{enumerate}[label=\textup{(\roman*)}]
+ \item The supplied partial proof is valid: tree-$p$--Banach--Saks in $Y$ implies tree-$p$--Banach--Saks in $X$ under such an embedding; see Corollary~\ref{cor:CL-tree-transfer}.
+ \item The argument admits the scale-sensitive form in Theorem~\ref{thm:modulus-transfer}, valid for arbitrary coarse embeddings and for $1<p\le\infty$.
+ \item Under the original weak $p$--Banach--Saks assumption on $Y$, a positive answer follows if the nonlinear embedding is sufficiently additive at suitable large scales; see Theorem~\ref{thm:defect-criterion}.  In particular it follows for embeddings with bounded Cauchy defect; see Corollary~\ref{cor:bounded-defect}.
+ \item No complete proof or counterexample to Question~\ref{q:Braga} was located in the literature.  The tree-versus-sequence gap prevents the supplied argument from settling the original question.
+\end{enumerate}
+
+\section{Banach--Saks definitions and the tree gap}
+
+\begin{definition}
+Let $1<p\le\infty$ and use $k^{1/\infty}=1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+ \item A Banach space $Z$ has the \emph{weak $p$--Banach--Saks property with constant $C$} if for every weakly null sequence $(z_n)\subset B_Z$ and every $k\in\N$ there is an infinite $M\subset\N$ such that
+ \[
+  \norm{\sum_{j=1}^k z_{n_j}}\le Ck^{1/p}
+  \quad\text{whenever }n_1<\cdots<n_k\text{ belong to }M.
+ \]
+ \item A family $(z_s)_{s\in[\N]^{\le k}}$ is a \emph{weakly null tree} if, for every node $s$ of length less than $k$, the successor sequence $(z_{s\frown n})_{n>\max s}$ is weakly null.
+ \item The space $Z$ has the \emph{tree-$p$--Banach--Saks property with constant $C$} if every normalized weakly null tree $(z_s)_{s\in[\N]^{\le k}}\subset S_Z$ has a branch $n_1<\cdots<n_k$ for which
+ \[
+  \norm{\sum_{j=1}^k z_{(n_1,\ldots,n_j)}}\le Ck^{1/p}.
+ \]
+\end{enumerate}
+\end{definition}
+
+The tree property implies the weak property by applying it to the tree whose value at $(n_1,\ldots,n_j)$ is the $n_j$th term of a weakly null sequence \cite[Remark~6.4]{BragaJIMJ}.  The converse is false in a very strong form: for every $1<p<\infty$, Braga constructed a separable reflexive space with the weak (indeed alternating) $p$--Banach--Saks property but without tree-$q$--Banach--Saks for any $1<q<\infty$ \cite[Theorem~7.1]{BragaJIMJ}.  Later work places tree-$p$--Banach--Saks among a hierarchy of asymptotic and Hamming concentration properties and records strict inclusions even among reflexive spaces \cite{FovelleHamming,CauseyFovelleLancien}.
+
+We use the signed form of the tree property.
+
+\begin{proposition}[Braga's signed stabilization]\label{prop:signed-tree}
+If $Z$ has tree-$p$--Banach--Saks constant $C$, then for every normalized weakly null tree $(z_s)_{s\in[\N]^{\le k}}$ there is an infinite $M\subset\N$ such that
+\[
+ \norm{\sum_{j=1}^k \eps_j z_{(n_1,\ldots,n_j)}}\le Ck^{1/p}
+\]
+for every $(n_1,\ldots,n_k)\in[M]^k$ and every choice $\eps_j\in\{-1,1\}$.
+\end{proposition}
+
+This is Proposition~6.3 of \cite{BragaJIMJ}, not Proposition~6.5 as stated in the supplied packet.  It follows by applying the tree property to the finitely many levelwise sign changes and then using Ramsey stabilization.
+
+\begin{lemma}[Convexity of the sign cube]\label{lem:sign-cube}
+Let $e_1,\ldots,e_k$ belong to a normed space and let $t_1,\ldots,t_k\in[-1,1]$.  Then
+\[
+ \sum_{j=1}^k t_j e_j\in
+ \conv\set{\sum_{j=1}^k\eps_j e_j:\eps_j\in\{-1,1\}}.
+\]
+Consequently, if all signed sums on the right have norm at most $K$, then $\norm{\sum_jt_je_j}\le K$.
+\end{lemma}
+
+\begin{proof}
+Choose independent signs $\eps_j$ with $\mathbb E\eps_j=t_j$.  Then
+$\sum_jt_je_j=\mathbb E\sum_j\eps_je_j$, a convex combination of the sign vectors.
+\end{proof}
+
+\section{Audit of the supplied partial proof}
+
+The supplied argument has the right architecture.  Given a normalized weakly null tree $(x_s)$ in $X$, set
+\[
+ u_s=\sum_{t\preceq s}x_t,
+ \qquad
+ y_s=f(u_s)-f(u_{s^-}).
+\]
+For a fixed predecessor $s$, one has $u_s+x_{s\frown n}\rightharpoonup u_s$, so weak sequential continuity makes $(y_{s\frown n})_n$ weakly null.  Coarse Lipschitz control makes the increments semi-normalized after a harmless change of scale.  Normalize the increments, use Proposition~\ref{prop:signed-tree}, return to the unequal increment lengths by Lemma~\ref{lem:sign-cube}, and telescope.
+
+There are only three corrections or additions to make.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+ \item The cited signed result is Braga's Proposition~6.3.
+ \item If $y_{s\frown n}\rightharpoonup0$ and $\inf_n\norm{y_{s\frown n}}>0$, then $y_{s\frown n}/\norm{y_{s\frown n}}\rightharpoonup0$: for every $y^*\in Y^*$, the numerator tends to zero while the denominator stays bounded away from zero.
+ \item The rescaled map $x\mapsto m^{-1}(f(mx)-f(0))$ is still weakly sequentially continuous because scalar multiplication and translation preserve weak convergence.
+\end{enumerate}
+No other gap occurs.  The next theorem gives a cleaner proof and retains the full compression and expansion moduli.
+
+\section{A general modulus-transfer theorem}
+
+\begin{theorem}[Modulus transfer]\label{thm:modulus-transfer}
+Let $1<p\le\infty$.  Suppose that $Y$ has tree-$p$--Banach--Saks constant $C$ and that $f:X\to Y$ is a weakly sequentially continuous coarse embedding.  Fix $r>0$ such that $\rho_f(r)>0$.  Then every normalized weakly null tree $(x_s)_{s\in[\N]^{\le k}}$ in $X$ has a branch $n_1<\cdots<n_k$ satisfying
+\begin{equation}\label{eq:master-transfer}
+ \rho_f\!\left(
+  r\norm{\sum_{j=1}^k x_{(n_1,\ldots,n_j)}}
+ \right)
+ \le C\,\omega_f(r)k^{1/p}.
+\end{equation}
+The convention is $k^{1/\infty}=1$.
+\end{theorem}
+
+\begin{proof}
+Translation does not change $\rho_f$ or $\omega_f$, so assume $f(0)=0$.  For a nonempty node $s$, let
+\[
+ u_s=\sum_{t\preceq s}x_t,\qquad u_\emptyset=0,
+ \qquad y_s=f(ru_s)-f(ru_{s^-}).
+\]
+For every fixed predecessor $s$, the sequence $u_s+x_{s\frown n}$ converges weakly to $u_s$.  Hence $(y_{s\frown n})_n$ is weakly null.  Since adjacent partial sums are exactly distance $r$ apart after scaling,
+\begin{equation}\label{eq:increment-window}
+ 0<\rho_f(r)\le\norm{y_s}\le\omega_f(r)<\infty.
+\end{equation}
+It follows from the lower bound in \eqref{eq:increment-window} that
+$e_s=y_s/\norm{y_s}$ is a normalized weakly null tree.
+
+Apply Proposition~\ref{prop:signed-tree} to $(e_s)$.  On the resulting branch put
+\[
+ t_j=\frac{\norm{y_{(n_1,\ldots,n_j)}}}{\omega_f(r)}\in[0,1].
+\]
+Lemma~\ref{lem:sign-cube} gives
+\begin{align*}
+ \norm{\sum_{j=1}^k y_{(n_1,\ldots,n_j)}}
+ &=\omega_f(r)\norm{\sum_{j=1}^k t_j e_{(n_1,\ldots,n_j)}}\\
+ &\le C\,\omega_f(r)k^{1/p}.
+\end{align*}
+The sum on the left telescopes to
+\[
+ f\!\left(r\sum_{j=1}^k x_{(n_1,\ldots,n_j)}\right)-f(0).
+\]
+The definition of the compression modulus now yields \eqref{eq:master-transfer}.
+\end{proof}
+
+The theorem can be read as an inverse-compression estimate.  With the generalized inverse
+\[
+ \rho_f^{-1,+}(s)=\sup\set{t\ge0:\rho_f(t)\le s},
+\]
+Equation~\eqref{eq:master-transfer} gives
+\begin{equation}\label{eq:inverse-compression}
+ \norm{\sum_{j=1}^k x_{(n_1,\ldots,n_j)}}
+ \le \frac1r\,\rho_f^{-1,+}\!\left(C\omega_f(r)k^{1/p}\right).
+\end{equation}
+This is meaningful without any affine hypothesis.
+
+\begin{corollary}[Coarse Lipschitz permanence]\label{cor:CL-tree-transfer}
+Let $1<p<\infty$.  Assume that $Y$ has tree-$p$--Banach--Saks constant $C$, and let $f:X\to Y$ be weakly sequentially continuous and satisfy \eqref{eq:affine-control}.  Then $X$ has the tree-$p$--Banach--Saks property.  More precisely, for every $r>A/a$, every normalized weakly null tree in $X$ has a branch with
+\begin{equation}\label{eq:CL-constant}
+ \norm{\sum_{j=1}^k x_{(n_1,\ldots,n_j)}}
+ \le \frac{C(br+A)+A}{ar}\,k^{1/p}.
+\end{equation}
+Consequently, for every $\eta>0$, $X$ has tree-$p$--Banach--Saks constant at most
+\[
+ \frac{bC}{a}+\eta.
+\]
+In particular, $X$ has the weak $p$--Banach--Saks property.
+\end{corollary}
+
+\begin{proof}
+The affine bounds give $\omega_f(r)\le br+A$ and, directly on the endpoint of the selected branch,
+\[
+ ar\norm{\sum_jx_{(n_1,\ldots,n_j)}}-A
+ \le \norm{f(r\sum_jx_{(n_1,\ldots,n_j)})-f(0)}.
+\]
+Combine this with the proof of Theorem~\ref{thm:modulus-transfer} and use $k^{1/p}\ge1$.  Letting $r\to\infty$ gives the limiting constant.  Tree-$p$--Banach--Saks implies weak $p$--Banach--Saks.
+\end{proof}
+
+In the symmetric notation used in the supplied packet,
+\[
+ L^{-1}\norm{x-y}-A\le\norm{f(x)-f(y)}\le L\norm{x-y}+A,
+\]
+Corollary~\ref{cor:CL-tree-transfer} gives constants arbitrarily close to $L^2C$.
+
+\begin{corollary}[Power compression]\label{cor:power-compression}
+Under the hypotheses of Theorem~\ref{thm:modulus-transfer}, suppose additionally that
+\[
+ \rho_f(t)\ge c t^\alpha-d\qquad(t\ge0)
+\]
+for some $c>0$, $d\ge0$, and $\alpha>0$.  Then, for every $r$ with $\rho_f(r)>0$, the selected branch satisfies
+\[
+ \norm{\sum_{j=1}^k x_{(n_1,\ldots,n_j)}}
+ \le
+ \frac{(C\omega_f(r)+d)^{1/\alpha}}{r c^{1/\alpha}}
+ k^{1/(\alpha p)}.
+\]
+Thus, if $\alpha p>1$, the space $X$ has tree-$(\alpha p)$--Banach--Saks.
+\end{corollary}
+
+\begin{proof}
+Insert the power lower bound in \eqref{eq:master-transfer} and use
+$C\omega_f(r)k^{1/p}+d\le(C\omega_f(r)+d)k^{1/p}$.
+\end{proof}
+
+\begin{remark}[The endpoint case]
+For $p=\infty$, Theorem~\ref{thm:modulus-transfer} gives
+\[
+ \rho_f\!\left(r\norm{\sum_jx_{(n_1,\ldots,n_j)}}\right)
+ \le C\omega_f(r).
+\]
+Since $\rho_f(t)\to\infty$, the branch sums are uniformly bounded independently of the height.  Hence tree-$\infty$--Banach--Saks passes under weakly sequentially continuous coarse embeddings.  This is the tree formulation of the endpoint phenomenon in Braga's Theorem~6.11; tree-$\infty$ and upper $\ell_\infty$ tree estimates coincide in this setting \cite{BragaJIMJ,FovelleHamming}.
+\end{remark}
+
+\section{A direct weak p theorem from additive defect}
+
+The tree proof cannot use weak $p$--Banach--Saks directly because its increments have different predecessors.  There is, however, a complementary route: apply weak $p$--Banach--Saks to the single sequence $f(r x_n)$ and quantify the failure of $f$ to commute with finite sums.
+
+After translating $f$, put $\widetilde f=f-f(0)$.  For $k\in\N$ and $r>0$, define the $k$-term additive defect on the unit ball by
+\begin{equation}\label{eq:defect-definition}
+ \Def_f(k,r)=
+ \sup_{x_1,\ldots,x_k\in B_X}
+ \norm{
+  \widetilde f\!\left(r\sum_{j=1}^k x_j\right)
+  -\sum_{j=1}^k\widetilde f(rx_j)
+ }.
+\end{equation}
+
+\begin{theorem}[A defect criterion]\label{thm:defect-criterion}
+Let $1<p<\infty$.  Suppose that $Y$ has weak $p$--Banach--Saks constant $C$, and let $f:X\to Y$ be weakly sequentially continuous and satisfy \eqref{eq:affine-control}.  Assume that there are $D\ge0$ and scales $r_k\ge1$ such that
+\begin{equation}\label{eq:defect-assumption}
+ \frac{\Def_f(k,r_k)}{r_k}\le Dk^{1/p}
+ \qquad(k\in\N).
+\end{equation}
+Then $X$ has the weak $p$--Banach--Saks property, with constant at most
+\begin{equation}\label{eq:defect-constant}
+ \frac{C(b+A)+D+A}{a}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $(x_n)\subset B_X$ be weakly null and fix $k$.  Define
+\[
+ g_k(x)=\frac{\widetilde f(r_kx)}{r_k}.
+\]
+Then $g_k$ is weakly sequentially continuous, $g_k(0)=0$, and
+\[
+ \norm{g_k(x_n)}\le b+\frac{A}{r_k}\le b+A.
+\]
+The sequence $(g_k(x_n))$ is weakly null in $Y$.  The weak $p$--Banach--Saks property of $Y$ supplies an infinite $M\subset\N$ such that
+\begin{equation}\label{eq:image-sequence-bound}
+ \norm{\sum_{j=1}^k g_k(x_{n_j})}
+ \le C(b+A)k^{1/p}
+ \qquad(n_1<\cdots<n_k\text{ in }M).
+\end{equation}
+For such indices, \eqref{eq:defect-assumption} and \eqref{eq:image-sequence-bound} imply
+\[
+ \norm{g_k(\sum_{j=1}^k x_{n_j})}
+ \le \bigl(C(b+A)+D\bigr)k^{1/p}.
+\]
+The lower affine estimate for $g_k$ is
+\[
+ a\norm{x-y}-\frac{A}{r_k}
+ \le\norm{g_k(x)-g_k(y)}.
+\]
+Taking $x=\sum_jx_{n_j}$ and $y=0$, and using $A/r_k\le A k^{1/p}$, gives \eqref{eq:defect-constant}.
+\end{proof}
+
+A simple concrete hypothesis implies the defect condition.
+
+\begin{corollary}[Bounded Cauchy defect]\label{cor:bounded-defect}
+Under the hypotheses on $p,Y$, and $f$ in Theorem~\ref{thm:defect-criterion}, assume
+\begin{equation}\label{eq:cauchy-defect}
+ D_0:=\sup_{u,v\in X}
+ \norm{f(u+v)-f(u)-f(v)+f(0)}<\infty.
+\end{equation}
+Then $X$ has the weak $p$--Banach--Saks property.
+\end{corollary}
+
+\begin{proof}
+An induction gives $\Def_f(k,r)\le(k-1)D_0$ for every $k$ and $r$.  Taking $r_k=k$ yields
+\[
+ \frac{\Def_f(k,r_k)}{r_k}\le D_0\le D_0k^{1/p},
+\]
+so Theorem~\ref{thm:defect-criterion} applies.
+\end{proof}
+
+A genuinely asymptotic version is also enough.  Define the local binary defect
+\[
+ \delta_f(R)=\sup_{\norm{u},\norm{v}\le R}
+ \norm{f(u+v)-f(u)-f(v)+f(0)}.
+\]
+
+\begin{corollary}[Sublinear additive defect]\label{cor:sublinear-defect}
+Under the hypotheses on $p,Y$, and $f$ in Theorem~\ref{thm:defect-criterion}, suppose
+\[
+ \lim_{R\to\infty}\frac{\delta_f(R)}{R}=0.
+\]
+Then $X$ has the weak $p$--Banach--Saks property.
+\end{corollary}
+
+\begin{proof}
+For $x_1,\ldots,x_k\in B_X$, iterative addition at scale $r$ only evaluates the binary defect on vectors of norm at most $kr$.  Hence
+\[
+ \Def_f(k,r)\le(k-1)\delta_f(kr).
+\]
+For each $k\ge2$, choose $R_k\ge k$ so large that
+\[
+ \frac{\delta_f(R_k)}{R_k}\le\frac{k^{1/p}}{k(k-1)},
+\]
+and put $r_k=R_k/k\ge1$.  Then
+\[
+ \frac{\Def_f(k,r_k)}{r_k}
+ \le k(k-1)\frac{\delta_f(R_k)}{R_k}
+ \le k^{1/p}.
+\]
+Take $r_1=1$ and apply Theorem~\ref{thm:defect-criterion}.
+\end{proof}
+
+\begin{remark}
+Condition \eqref{eq:cauchy-defect} says that the translated map $\widetilde f$ is a quasi-homomorphism of the additive Banach groups; by classical Hyers--Ulam stability, such maps are close to additive maps under mild regularity.  Theorem~\ref{thm:defect-criterion} and Corollary~\ref{cor:sublinear-defect} are more flexible: they only ask for finite-sum additivity after division by scales that may depend on $k$.  Thus they isolate a precise analytic quantity whose control would settle Question~\ref{q:Braga} for a given embedding.
+\end{remark}
+
+\section{Why the original argument stops at trees}
+
+Let $(x_s)$ be a weakly null tree in $X$ and define increments
+\begin{equation}\label{eq:increment-tree-again}
+ y_s=f\!\left(r\sum_{t\preceq s}x_t\right)
+      -f\!\left(r\sum_{t\prec s}x_t\right).
+\end{equation}
+Weak sequential continuity says that the successors of each fixed node form a weakly null sequence.  It does \emph{not} say that an enumeration of all $y_s$ is weakly null: the predecessor changes while one enumerates the tree.  Weak $p$--Banach--Saks can be applied separately at each node, but those local subsequences need not produce one branch on which the sum of increments is small.
+
+Several standard-looking reductions therefore fail at exactly the same point.
+\begin{itemize}
+ \item Enumerating tree nodes loses weak nullity because the base point of the increment moves.
+ \item Applying weak $p$--Banach--Saks to the sequence $f(rx_n)-f(0)$ controls $\sum_j f(rx_{n_j})$, whereas coarse lower bounds concern $f(r\sum_jx_{n_j})$; their difference is the additive defect in \eqref{eq:defect-definition}.
+ \item Hamming-cube or Hamming-graph averaging requires a concentration property stronger than weak $p$--Banach--Saks.  Tree-$p$--Banach--Saks yields such concentration in reflexive or quasi-reflexive settings, but weak $p$ alone does not currently do so \cite{FovelleHamming}.
+ \item Passing to ultrapowers turns the levels of a weakly null tree into an asymptotic sequence, but weak $p$--Banach--Saks is not known to have the required ultrapower stability; tree properties are designed precisely to retain this asymptotic information.
+\end{itemize}
+
+The bad-tree example in Braga's Theorem~7.1 shows that this is not a cosmetic distinction.  Any complete positive proof must exploit the additional ``gradient'' or cocycle relations enjoyed by \eqref{eq:increment-tree-again}, rather than merely treating it as an arbitrary weakly null tree.  Conversely, a counterexample should combine a weak $p$--Banach--Saks target having bad weakly null trees with a weakly sequentially continuous coarse Lipschitz embedding whose increment tree realizes that bad behavior.
+
+\section{Counterexample routes checked}
+
+This section records the most concrete routes examined, both to delimit the result and to make the remaining task reproducible.
+
+\subsection*{The Kalton--Peck source candidate}
+The reflexive Kalton--Peck space $Z_p$ fails the weak $p$--Banach--Saks property.  Causey, Fovelle, and Lancien also show that $Z_p$ fails the Hamming concentration properties indexed by $p$ \cite[Propositions~5.6--5.7]{CauseyFovelleLancien}.  Hence $Z_p$ cannot coarse Lipschitz embed into targets carrying the corresponding tree/Hamming concentration.  This does not exclude a weak $p$--Banach--Saks target with bad tree structure, so $Z_p$ remains a natural possible source for a counterexample; no suitable weakly sequentially continuous embedding was found.
+
+\subsection*{Braga's Baire-sum target candidate}
+The well-founded-tree construction in \cite[Theorem~7.1]{BragaJIMJ} gives a separable reflexive target $Y_p$ with weak $p$--Banach--Saks but with arbitrarily bad finite weakly null trees.  It is therefore a natural target candidate.  A counterexample would follow, for example, from a weakly sequentially continuous coarse Lipschitz embedding of $\ell_q$ into $Y_p$ for some $1<q<p$, since the unit vector basis shows that $\ell_q$ fails weak $p$--Banach--Saks.  Natural support-sorting and branch-selection maps are not stable under changes in early coordinates and no coarse Lipschitz, weakly sequentially continuous construction was obtained.
+
+\subsection*{Averaging and cube identities}
+The increment tree is a discrete gradient: endpoint values are independent of the order in which coordinates are added, and increments satisfy square-cocycle identities.  Averaging over permutations or over finite blocks makes certain convex combinations of endpoint images small, using weak $p$--Banach--Saks locally.  Coarse lower estimates, however, apply to individual endpoints and do not pass from a small convex average to a small member without additional geometry of $Y$.  This route therefore does not close the gap under the present hypothesis.
+
+These failures are not counterexamples to the desired statement.  They identify the two plausible fronts for further work: prove a branch estimate for gradient trees in every weak $p$--Banach--Saks space, or construct a WSC coarse Lipschitz map into a bad-tree weak $p$ target.
+
+\section{Literature status as of June 21, 2026}
+
+The source article appeared in the \emph{Journal of the Institute of Mathematics of Jussieu} in 2021 and states Question~\ref{q:Braga} explicitly \cite{BragaJIMJ}.  Searches were made for the exact problem number, the exact weak-$p$ phrase, combinations with ``weakly sequentially continuous'' and ``coarse Lipschitz'', and forward citations of the source.  The later papers most closely connected to the problem develop tree-$p$--Banach--Saks and Hamming concentration properties \cite{FovelleHamming}, study the strict hierarchy of asymptotic properties and note that $Z_p$ fails weak $p$--Banach--Saks \cite{CauseyFovelleLancien}, and construct concentration examples beyond asymptotic smoothness \cite{FovelleSmoothness}.  A 2025 monograph surveys the current nonlinear/asymptotic geometry program broadly \cite{BaudierLancienBook}.
+
+No located paper states a proof or a counterexample to Question~\ref{q:Braga}, and no located later source claims that Problem~8.6 has been resolved.  On that evidence, the problem appears open.  This is necessarily a literature-search conclusion rather than a proof of nonexistence: an unpublished or differently phrased result could have been missed.
+
+\section{Conclusion}
+
+The supplied partial result is correct and can be sharpened to the exact modulus estimate \eqref{eq:master-transfer}.  In particular, tree-$p$--Banach--Saks is stable under weakly sequentially continuous coarse Lipschitz embeddings, with constants governed by the asymptotic slope ratio of the embedding.  The original weak-$p$ question is also positive for maps with controlled finite-sum defect.
+
+The unresolved core is now quite narrow.  Weak $p$--Banach--Saks must somehow control the special gradient trees generated by a single weakly sequentially continuous coarse Lipschitz map, even though it cannot control arbitrary weakly null trees.  Alternatively, those gradient relations must be realized inside one of the known weak-$p$, bad-tree spaces to produce a counterexample.
+
+\begin{thebibliography}{99}
+
+\bibitem{BaudierLancienBook}
+F.~P. Baudier and G. Lancien,
+\emph{Asymptotic and nonlinear geometries of Banach spaces and their interactions},
+arXiv:2512.00817, 2025.
+
+\bibitem{Beauzamy}
+B. Beauzamy,
+Banach--Saks properties and spreading models,
+\emph{Math. Scand.} \textbf{44} (1979), no.~2, 357--384.
+
+\bibitem{BragaWSC}
+B. de Mendon\c{c}a Braga,
+Nonlinear weakly sequentially continuous embeddings between Banach spaces,
+\emph{Int. Math. Res. Not. IMRN} (2020), no.~18, 5506--5533.
+
+\bibitem{BragaJIMJ}
+B. de Mendon\c{c}a Braga,
+On asymptotic uniform smoothness and nonlinear geometry of Banach spaces,
+\emph{J. Inst. Math. Jussieu} \textbf{20} (2021), no.~1, 65--102;
+arXiv:1808.03254.
+
+\bibitem{CauseyFovelleLancien}
+R.~M. Causey, A. Fovelle, and G. Lancien,
+Asymptotic smoothness in Banach spaces, three-space properties and coarse Lipschitz geometry,
+arXiv:2110.06710, version 2, 2022.
+
+\bibitem{FovelleHamming}
+A. Fovelle,
+Hamming graphs and concentration properties in Banach spaces,
+arXiv:2106.04297, version 3, 2023.
+
+\bibitem{FovelleSmoothness}
+A. Fovelle,
+Asymptotic smoothness, concentration properties in Banach spaces and applications,
+arXiv:2311.15900, version 2, 2024.
+
+\end{thebibliography}
+
+\end{document}

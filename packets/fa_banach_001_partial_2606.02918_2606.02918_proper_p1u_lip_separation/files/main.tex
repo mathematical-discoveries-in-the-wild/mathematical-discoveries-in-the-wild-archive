@@ -1,0 +1,252 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\lip}{\operatorname{lip}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\R}{\mathbb{R}}
+
+\title[Proper purely unrectifiable spaces]{Proper purely 1-unrectifiable metric spaces have locally flat uniform separation}
+\author{arxiv\_automatic\_math run fa\_banach\_001}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Result type: partial result.  Status: likely valid pending human review.
+
+This packet addresses Question~2.7 (TeX label \texttt{q:spu p1u}) in
+Aliaga's exposition \cite{Aliaga2606}.  The question asks whether every purely
+$1$-unrectifiable metric space $M$ has $\lip(M)$ separating points uniformly.
+The packet proves an affirmative answer for every proper purely
+$1$-unrectifiable metric space.  Here proper means that every closed bounded
+ball is compact.  This is still not the full arbitrary metric-space case.
+
+\section*{Open-problem evidence}
+
+The source question appears on page 6 of the rendered source PDF:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Transcription: Let $M$ be a purely $1$-unrectifiable metric space. Does
+$\lip(M)$ separate points of $M$ uniformly?
+
+\section*{Definitions}
+
+A metric space is proper if every closed bounded ball is compact.  A
+real-valued Lipschitz function $f$ on $M$ is locally flat at $p\in M$ if its
+asymptotic Lipschitz constant at $p$ is zero; equivalently, the small-scale
+Lipschitz constants of $f$ at $p$ tend to zero.  We write $\lip(M)$ for the
+space of Lipschitz functions that are locally flat at every point.  The space
+$\lip(M)$ separates points uniformly if for every $a,b\in M$ and every
+$\eps>0$ there is $h\in\lip(M)$ with $\Lip(h)\leq1$ and
+\[
+  h(b)-h(a)>d(a,b)-\eps.
+\]
+
+\section*{Input from the compact theory}
+
+We use the compact approximation lemma quoted in \cite[Lemma 2.11]{Aliaga2606}
+from Bate's work \cite{Bate}.  In the form needed here, if $K$ is compact and
+purely $1$-unrectifiable, $f\in\Lip(K)$, and $\eta>0$, then there are
+$g\in\Lip(K)$ and $\delta>0$ such that
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item $|g(z)-f(z)|\leq\eta$ for all $z\in K$;
+\item for all $u\neq v$ in $K$,
+\[
+  \frac{|g(u)-g(v)|}{d(u,v)}
+  \leq
+  \frac{|f(u)-f(v)|}{d(u,v)}+\eta;
+\]
+\item for all $u\neq v$ in $K$ with $d(u,v)\leq\delta$,
+\[
+  \frac{|g(u)-g(v)|}{d(u,v)}\leq\eta.
+\]
+\end{enumerate}
+
+\section*{Proof intuition}
+
+The compact AGPP theorem is proved by repeatedly applying the approximation
+lemma until small-scale slopes are forced to zero.  For a proper noncompact
+space, closed balls are compact, so we can run the same idea on larger and
+larger balls.  After improving a function on a compact ball, extend it back to
+the whole space by McShane.  Later improvements on larger balls may change the
+old ball, but the lemma's slope inequality says they can increase old slopes
+only by the chosen error.  Choosing summable errors with tails tending to zero
+makes the final diagonal limit locally flat at every point, because every
+point eventually sits in the interior of some compact ball.
+
+\section*{Main theorem}
+
+\begin{theorem}
+\label{thm:proper}
+Let $M$ be a proper purely $1$-unrectifiable metric space.  Then $\lip(M)$
+separates points of $M$ uniformly.
+\end{theorem}
+
+\begin{proof}
+Fix $a,b\in M$ and $\eps>0$.  The case $a=b$ is trivial, so put
+$D=d(a,b)>0$.  We will construct a locally flat function whose Lipschitz
+constant is slightly larger than $1$, then rescale.
+
+Choose a summable sequence $(\eta_n)_{n\geq 1}$ of positive numbers so small
+that
+\[
+  S:=\sum_{n=1}^\infty \eta_n
+  < \frac{\eps}{D+3}.
+\]
+Let $o=a$ and choose radii $R_n\uparrow\infty$ with $b\in K_1$, where
+\[
+  K_n=\overline{B}(o,R_n).
+\]
+Each $K_n$ is compact by properness and purely $1$-unrectifiable as a subset
+of $M$.
+
+Set $F_0(z)=d(a,z)$ on $M$.  Inductively suppose that $F_{n-1}$ is defined on
+$M$.  Apply the compact approximation lemma to
+$F_{n-1}|_{K_n}\in\Lip(K_n)$ with parameter $\eta_n$.  This gives
+$g_n\in\Lip(K_n)$ and $\delta_n>0$ such that
+\begin{align}
+  |g_n(z)-F_{n-1}(z)|&\leq\eta_n &&(z\in K_n), \label{eq:uniform-step}\\
+  \frac{|g_n(u)-g_n(v)|}{d(u,v)}
+  &\leq
+  \frac{|F_{n-1}(u)-F_{n-1}(v)|}{d(u,v)}+\eta_n
+  &&(u\neq v\in K_n), \label{eq:slope-step}\\
+  \frac{|g_n(u)-g_n(v)|}{d(u,v)}
+  &\leq\eta_n
+  &&(u\neq v\in K_n,\ d(u,v)\leq\delta_n). \label{eq:flat-step}
+\end{align}
+Let $F_n$ be any McShane extension of $g_n$ to $M$.  Then
+$F_n|_{K_n}=g_n$ and
+\[
+  \Lip(F_n)\leq\Lip(g_n)\leq \Lip(F_{n-1})+\eta_n.
+\]
+Consequently $\Lip(F_n)\leq 1+\sum_{k=1}^n\eta_k$.
+
+For a fixed $N$, the restrictions $F_n|_{K_N}$ are uniformly Cauchy for
+$n\geq N$.  Indeed, if $n>N$, then $K_N\subset K_n$, and
+\eqref{eq:uniform-step} gives
+\[
+  \sup_{z\in K_N}|F_n(z)-F_{n-1}(z)|\leq\eta_n.
+\]
+Thus the restrictions converge uniformly on every $K_N$ to a compatible
+function $F:M\to\R$.  The Lipschitz estimates pass to the limit and give
+\[
+  \Lip(F)\leq 1+S.
+\]
+Since $a,b\in K_1$, telescoping \eqref{eq:uniform-step} also gives
+\[
+  |F(a)-F_0(a)|\leq S,\qquad |F(b)-F_0(b)|\leq S.
+\]
+Therefore
+\[
+  F(b)-F(a)\geq D-2S.
+\]
+
+We now prove that $F$ is locally flat.  Fix $p\in M$ and $\alpha>0$.  Choose
+$N$ so large that $p$ lies in the interior of $K_N$ and
+\[
+  \sum_{n=N}^\infty \eta_n < \alpha.
+\]
+Let $\rho>0$ be such that $B(p,\rho)\subset K_N$.  For $u,v\in K_N$ with
+$u\neq v$ and $d(u,v)\leq\delta_N$, \eqref{eq:flat-step} gives the slope bound
+$\eta_N$ for $F_N$.  For every $m>N$, applying \eqref{eq:slope-step} on
+$K_m$ to the same pair gives
+\[
+  \frac{|F_m(u)-F_m(v)|}{d(u,v)}
+  \leq
+  \frac{|F_{m-1}(u)-F_{m-1}(v)|}{d(u,v)}+\eta_m.
+\]
+Letting $m\to\infty$ yields
+\[
+  \frac{|F(u)-F(v)|}{d(u,v)}
+  \leq \sum_{n=N}^\infty \eta_n <\alpha
+\]
+whenever $u,v\in K_N$ and $d(u,v)\leq\delta_N$.  In particular this holds for
+$u,v\in B(p,\rho/2)$ with $d(u,v)\leq\delta_N$.  Hence the asymptotic
+Lipschitz constant of $F$ at $p$ is $0$.  Since $p$ was arbitrary,
+$F\in\lip(M)$.
+
+Finally set $H=F/(1+S)$.  Then $H\in\lip(M)$ and $\Lip(H)\leq1$.  Moreover
+\[
+  H(b)-H(a)
+  \geq \frac{D-2S}{1+S}
+  = D-\frac{S(D+2)}{1+S}
+  > D-\eps,
+\]
+by the choice of $S$.  Thus $\lip(M)$ separates the pair $a,b$ uniformly, and
+the pair was arbitrary.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof is non-computational.  The main things to check are:
+\begin{itemize}[leftmargin=*]
+\item The compact approximation lemma is applied only to compact balls, which
+  are purely $1$-unrectifiable because pure unrectifiability passes to
+  subsets.
+\item McShane extension is used only after the compact modification; all later
+  estimates on older compact balls are made before extension matters, because
+  the next compact ball contains the old one.
+\item Local flatness follows from the summable tail of the slope errors and
+  from the fact that every point eventually lies in the interior of a compact
+  ball in the exhaustion.
+\end{itemize}
+
+\section*{Novelty and limitations}
+
+The run indexes were searched for \texttt{2606.02918}, \texttt{q:spu},
+\texttt{locally flat}, \texttt{separates points uniformly}, \texttt{proper},
+\texttt{boundedly compact}, and \texttt{purely 1-unrectifiable}.  The only
+same-question packet found was the earlier metric-wedge partial result from
+this run.  A bounded web phrase search on 2026-06-29 for proper/boundedly
+compact variants of the locally-flat separation question found no exact
+proper-space closure result.
+
+This is not a full answer to Question~2.7.  The proof uses compact
+neighborhoods essentially: without local compactness, the exhaustion does not
+place small neighborhoods of a point inside a compact pure set, and the
+argument gives no local-flatness control.
+
+\section*{Human review recommendation}
+
+Reviewers should focus on the diagonal/exhaustion step: the restrictions
+$F_n|_{K_N}$ are Cauchy, and the slope estimates on $K_N$ survive all later
+steps by the one-sided slope inequality in Bate's compact lemma.  If that
+bookkeeping is accepted, the theorem is a direct noncompact extension of the
+compact approximation proof.
+
+\begin{thebibliography}{9}
+
+\bibitem{Aliaga2606}
+R. J. Aliaga,
+\emph{Lipschitz-free spaces and purely 1-unrectifiable metric spaces},
+arXiv:2606.02918, 2026.
+\url{https://arxiv.org/abs/2606.02918}
+
+\bibitem{Bate}
+D. Bate,
+\emph{Purely unrectifiable metric spaces and perturbations of Lipschitz functions},
+Acta Math. \textbf{224} (2020), 1--65.
+
+\bibitem{AGPP}
+R. J. Aliaga, C. Gartland, C. Petitjean, and A. Prochazka,
+\emph{Purely 1-unrectifiable metric spaces and locally flat Lipschitz functions},
+Trans. Amer. Math. Soc. \textbf{375} (2022), 3529--3567.
+\url{https://arxiv.org/abs/2103.09370}
+
+\end{thebibliography}
+
+\end{document}

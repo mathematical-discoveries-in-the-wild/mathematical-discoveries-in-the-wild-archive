@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\title{A Literal Smoothing Counterexample to a Non-Elliptic FIO Schatten Question}
+\author{FA/Banach run \texttt{fa\_banach\_001}, agent lane 15}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Candidate counterexample, likely valid for the literal
+class-membership wording.}  This packet concerns arXiv:2408.06833 by
+Cardona, Delgado, and Ruzhansky \cite{CDR2024}.  It does not claim to settle
+the corrected exact-order variant discussed in Section~\ref{sec:limitations}.
+
+\section*{Source Problem}
+
+The source paper asks the following in its Main Results section, PDF page~5.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Transcribed, the open problem asks whether, for
+\[
+  r\in (0,1)\cup\bigl((1,\infty)\setminus\mathbb Z\bigr),
+\]
+every non-elliptic Fourier integral operator
+\[
+  T\in I^\mu_{1,0}(X;\Lambda)
+\]
+that belongs to the Schatten class \(S_r(L^2(X))\) must satisfy
+\[
+  \mu<-n/r.
+\]
+
+\section*{Definitions and Convention}
+
+Let \(X\) be a compact smooth manifold of positive dimension \(n\), equipped
+with a smooth positive density so that \(L^2(X)\) is fixed.  We write
+\(\Delta\) for the diagonal canonical relation.  The standard smoothing
+operators satisfy
+\[
+  \Psi^{-\infty}(X)\subseteq \Psi^\mu_{1,0}(X)
+  = I^\mu_{1,0}(X;\Delta)
+\]
+for every real \(\mu\); equivalently, their kernels are \(C^\infty\) and their
+finite-order principal symbols vanish.  This is the ordinary
+class-membership interpretation of \(T\in I^\mu\), as opposed to saying that
+\(T\) has exact order \(\mu\).
+
+\section*{Proof Intuition}
+
+Schatten membership cannot force a strict upper bound on a merely declared
+order class, because smoothing operators belong to all finite-order classes at
+once.  A rank-one smoothing operator is as compact as possible: it has only one
+nonzero singular value, so it lies in every Schatten class.  But if we view the
+same operator as an element of \(I^\mu_{1,0}\) for an arbitrary large
+\(\mu\), it is still non-elliptic because its principal symbol at that order
+is zero.  Thus the order parameter in the literal hypothesis is not an
+intrinsic order of the operator.
+
+\begin{theorem}
+Let \(X\) be a compact smooth manifold of positive dimension \(n\).  For every
+\(r>0\) and every \(\mu\ge -n/r\), there exists a nonzero non-elliptic
+operator \(T\in I^\mu_{1,0}(X;\Delta)\) such that
+\[
+  T\in S_r(L^2(X)).
+\]
+Consequently the literal statement of the source open problem is false.
+\end{theorem}
+
+\begin{proof}
+Choose nonzero functions \(u,v\in C^\infty(X)\).  Define
+\[
+  Tf=\langle f,v\rangle_{L^2(X)}\,u,\qquad f\in L^2(X).
+\]
+The Schwartz kernel is
+\[
+  K_T(x,y)=u(x)\overline{v(y)},
+\]
+which is \(C^\infty\) on \(X\times X\).  Hence \(T\) is smoothing:
+\[
+  T\in \Psi^{-\infty}(X).
+\]
+By the usual nesting of pseudodifferential symbol classes,
+\(\Psi^{-\infty}(X)\subseteq \Psi^\mu_{1,0}(X)\) for every real \(\mu\).
+Since pseudodifferential operators are Fourier integral operators associated
+with the diagonal canonical relation, this gives
+\[
+  T\in I^\mu_{1,0}(X;\Delta)
+\]
+for every real \(\mu\).
+
+The operator \(T\) has rank one.  More explicitly,
+\[
+  T = u\otimes v
+\]
+in the Hilbert-space rank-one notation, so its singular values are
+\[
+  s_1(T)=\|u\|_2\|v\|_2,\qquad s_j(T)=0\quad(j\ge2).
+\]
+Therefore
+\[
+  \sum_{j\ge1}s_j(T)^r = \bigl(\|u\|_2\|v\|_2\bigr)^r<\infty
+\]
+for every \(r>0\).  Thus \(T\in S_r(L^2(X))\), including the quasi-Banach
+range \(0<r<1\).
+
+Finally, \(T\) is not elliptic as an element of any finite-order class
+\(I^\mu_{1,0}(X;\Delta)\).  Its finite-order principal symbol is zero because
+the operator is smoothing.  In particular it is non-elliptic.  If
+\(\mu\ge -n/r\), the conclusion \(\mu<-n/r\) fails.  Taking \(\mu=0\) gives a
+counterexample for every \(r>0\) and every \(n\ge1\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is symbolic and does not rely on computation.  The included script
+\path{code/rank_one_schatten_check.py} verifies the finite-dimensional
+rank-one singular-value pattern used in the argument.  The command used was:
+
+\begin{quote}\small
+\verb|conda run --no-capture-output -n sandbox python code/rank_one_schatten_check.py|
+\end{quote}
+
+The script is only a sanity check.  The proof of smoothing/FIO membership is
+the standard kernel-class argument above.
+
+\section{Limitations and Exact-Order Variant}\label{sec:limitations}
+
+This counterexample uses the difference between membership in a filtered class
+and exact order.  It does not address the strengthened statement:
+
+\begin{quote}
+If \(T\) is non-elliptic but has exact order \(\mu\), or has a nonzero
+principal symbol at order \(\mu\), and \(T\in S_r(L^2(X))\), must
+\(\mu<-n/r\)?
+\end{quote}
+
+That is the natural repaired version of the problem.  The source paper itself
+uses exact-order language in the proofs of the trace-class and integer-index
+results; for instance it argues with \(T\) ``having order \(\mu\)'' and with a
+nonzero principal symbol.  The present packet therefore should be read as a
+literal counterexample and a repair note: the stated open problem needs an
+exact-order or nonzero-principal-symbol hypothesis to avoid smoothing
+operators.
+
+\section*{Novelty Check}
+
+The local run indexes were searched for the arXiv id, the paper title, and
+the phrases
+\[
+\begin{gathered}
+\texttt{non-elliptic Fourier integral},\quad
+\texttt{mu < -n/r},\\
+\texttt{smoothing Fourier integral Schatten},\quad
+\texttt{rank-one smoothing}.
+\end{gathered}
+\]
+No prior run packet or attempt for this target was found.
+
+A bounded web search on 2026-06-28 for \(\texttt{2408.06833}\), the title,
+and the exact open-problem phrase surfaced the source arXiv page but no later
+answer or discussion of this smoothing counterexample.  Novelty confidence is
+therefore moderate: the example is elementary and may be considered an
+implicit convention issue by specialists, but no indexed duplicate was found.
+
+\section*{Human Review Recommendation}
+
+Check the source authors' intended convention for \(T\in I^\mu\).  Under the
+ordinary class-membership convention, the counterexample is decisive.  If the
+authors intended exact order, the packet should be logged as a wording repair
+and not as a disproof of that strengthened problem.
+
+\begin{thebibliography}{9}
+
+\bibitem{CDR2024}
+D.~Cardona, J.~Delgado, and M.~Ruzhansky,
+\emph{Nuclearity, Schatten-von Neumann classes, distribution of eigenvalues
+and \(L^p\)-\(L^q\)-boundedness of Fourier integral operators on compact
+manifolds},
+arXiv:2408.06833, 2024.
+
+\bibitem{HormanderIII}
+L.~H\"ormander,
+\emph{The Analysis of Linear Partial Differential Operators III:
+Pseudo-Differential Operators},
+Springer, 1985.
+
+\end{thebibliography}
+
+\end{document}

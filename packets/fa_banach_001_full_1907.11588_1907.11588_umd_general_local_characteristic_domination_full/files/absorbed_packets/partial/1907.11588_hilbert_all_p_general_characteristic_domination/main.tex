@@ -1,0 +1,593 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\simequiv}{\simeq}
+
+\title{Hilbert-Valued Characteristic Domination for All Finite \(p\)}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial result, likely valid, for Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of vector-valued
+martingales} \cite{Yaroslavtsev2019}.  It solves the Hilbert-valued subcase of
+the general-local-martingale characteristic-domination problem for every
+\(1\leq p<\infty\).  It is partial relative to the broad source question
+because it does not cover non-Hilbert UMD spaces.
+
+The new part of this packet is the range \(1\leq p<2\).  The already packaged
+Hilbert \(p=2\) and \(p\geq2\) packets handled the upper range by the Hilbert
+square identity and Rosenthal/BDG estimates.  Below \(2\), the missing
+substitute is a Laplace-transform comparison for random square functions.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source crop
+below states that the general-local-martingale case is open and reduces the
+missing accessible-jump issue to a discrete independent-increment comparison.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The next page adds that, by symmetrization, one may assume the variables are
+symmetric, and that even this symmetric discrete case was not known to the
+author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+In discrete form, the source asks whether independent mean-zero \(X\)-valued
+variables \((\xi_n)\), \((\eta_n)\) satisfying
+\[
+   \sum_n \Pp(\xi_n\in B)
+   \leq
+   \sum_n \Pp(\eta_n\in B)
+   \qquad
+   (B\subset X\setminus\{0\}\text{ Borel})
+\]
+must satisfy
+\[
+   \E\norm{\sum_n \xi_n}^p
+   \leq
+   C_{p,X}\E\norm{\sum_n \eta_n}^p .
+\]
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:hilbert-all-p}
+Let \(H\) be a separable Hilbert space and \(1\leq p<\infty\).  Let \(M\) and
+\(N\) be \(H\)-valued local martingales such that \(N\) is characteristically
+dominated by \(M\) in the sense of \cite{Yaroslavtsev2019}.  Then
+\[
+  \E\sup_{t\geq0}\norm{N_t}^p
+  \leq
+  C_p\,\E\sup_{t\geq0}\norm{M_t}^p ,
+\]
+whenever the right hand side is finite.
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+The hard range is \(1\leq p<2\).  A naive Rosenthal estimate is poorly matched
+there: the term \(\sum_n\E\norm{Z_n}^p\) is too large and is not comparable to
+the \(p\)-moment of the sum.  The right object is instead the random square
+function
+\[
+   S_Z=\Bigl(\sum_n \norm{Z_n}^2\Bigr)^{1/2}.
+\]
+For independent mean-zero Hilbert-valued variables,
+\[
+   \E\norm{\sum_n Z_n}^p \simequiv_p \E S_Z^p,
+   \qquad 1\leq p<\infty.
+\]
+Thus the discrete problem below \(2\) becomes a scalar question: if the
+aggregate law of the nonnegative variables \(Y_n=\norm{\xi_n}^2\) is dominated
+by that of \(V_n=\norm{\eta_n}^2\), does
+\[
+   \E\Bigl(\sum_nY_n\Bigr)^\alpha
+   \lesssim_\alpha
+   \E\Bigl(\sum_nV_n\Bigr)^\alpha,
+   \qquad \alpha=p/2<1,
+\]
+hold?  Yes.  For \(S=\sum_nY_n\),
+\[
+   \E S^\alpha
+   =
+   c_\alpha\int_0^\infty (1-\E e^{-tS})t^{-1-\alpha}\,dt,
+\]
+and independence gives
+\[
+   1-\E e^{-tS}=1-\prod_n(1-u_n(t)),
+   \qquad
+   u_n(t)=\E(1-e^{-tY_n}).
+\]
+Writing \(U(t)=\sum_nu_n(t)\), one has
+\[
+   (1-e^{-1})\min\{1,U(t)\}
+   \leq
+   1-\prod_n(1-u_n(t))
+   \leq
+   \min\{1,U(t)\}.
+\]
+The quantity \(U(t)\) depends only on the aggregate law.  Hence aggregate
+domination controls every fractional square-function moment with
+\(\alpha<1\).  This is the below-\(2\) good-lambda substitute.
+
+\section*{Discrete Hilbert Comparison}
+
+\begin{lemma}[Independent Hilbert sums and square functions]
+\label{lem:hilbert-mz}
+Let \(H\) be a Hilbert space, \(1\leq p<\infty\), and let
+\(Z_1,\ldots,Z_N\) be independent mean-zero \(H\)-valued random variables.
+Then
+\[
+   \E\norm{\sum_{n=1}^N Z_n}^p
+   \simequiv_p
+   \E\Bigl(\sum_{n=1}^N\norm{Z_n}^2\Bigr)^{p/2}.
+\]
+Moreover,
+\[
+   \E\max_{1\leq m\leq N}\norm{\sum_{n=1}^m Z_n}^p
+   \simequiv_p
+   \E\Bigl(\sum_{n=1}^N\norm{Z_n}^2\Bigr)^{p/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The maximal estimate is the classical Hilbert-valued discrete
+Burkholder-Davis-Gundy inequality, recalled for instance in
+\cite{Yaroslavtsev2018}.  Since \(H\) is Hilbert, the Gaussian/radonifying
+term in the discrete BDG theorem is exactly
+\((\sum_n\norm{Z_n}^2)^{1/2}\).
+
+For the terminal estimate, let \(Z'_1,\ldots,Z'_N\) be an independent copy and
+write \(S=\sum_n Z_n\), \(S'=\sum_n Z'_n\), and \(W_n=Z_n-Z'_n\).  By Jensen,
+\[
+   \E\norm{S}^p
+   =
+   \E\norm{\E(S-S'\mid Z_1,\ldots,Z_N)}^p
+   \leq
+   \E\norm{S-S'}^p .
+\]
+The variables \(W_n\) are independent and symmetric, so their joint law is
+invariant under independent sign changes.  Hence, for an auxiliary Rademacher
+sequence \((\varepsilon_n)\), the Hilbert-space Khintchine inequality gives
+\[
+   \E\norm{S-S'}^p
+   =
+   \E\E_\varepsilon\norm{\sum_n\varepsilon_nW_n}^p
+   \simequiv_p
+   \E\Bigl(\sum_n\norm{W_n}^2\Bigr)^{p/2}
+   \lesssim_p
+   \E\Bigl(\sum_n\norm{Z_n}^2\Bigr)^{p/2}.
+\]
+For the final inequality we used the triangle inequality in
+\(L^p(\Omega;\ell_2(H))\).
+
+Conversely,
+\[
+   \E\norm{S-S'}^p
+   \leq
+   2^p\E\norm{S}^p,
+\]
+again by the triangle inequality and the equality in law of \(S\) and \(S'\).
+The lower Khintchine inequality and Jensen applied in the Hilbert space
+\(\ell_2^N(H)\) give
+\[
+   \E\norm{S}^p
+   \gtrsim_p
+   \E\Bigl(\sum_n\norm{W_n}^2\Bigr)^{p/2}
+   \geq
+   \E\Bigl(\sum_n\norm{\E(W_n\mid Z_1,\ldots,Z_N)}^2\Bigr)^{p/2}.
+\]
+Since \(\E(W_n\mid Z_1,\ldots,Z_N)=Z_n\), this is the desired lower bound.
+\end{proof}
+
+\begin{lemma}[Laplace comparison for fractional square functions]
+\label{lem:laplace-square}
+Let \(0<\alpha<1\).  For \(i=1,\ldots,N\), let \(Y_i\) and \(V_i\) be
+independent nonnegative random variables.  Let \(\mu_i\) and \(\nu_i\) be the
+restrictions of their laws to \((0,\infty)\).  If
+\[
+   \sum_{i=1}^N\mu_i \leq \sum_{i=1}^N\nu_i
+   \qquad\text{as measures on }(0,\infty),
+\]
+then
+\[
+   \E\Bigl(\sum_{i=1}^N Y_i\Bigr)^\alpha
+   \leq
+   \frac{1}{1-e^{-1}}\,
+   \E\Bigl(\sum_{i=1}^N V_i\Bigr)^\alpha .
+\]
+\end{lemma}
+
+\begin{proof}
+For \(S_Y=\sum_iY_i\), set
+\[
+   u_i(t)=\E(1-e^{-tY_i})
+          =\int_{(0,\infty)}(1-e^{-ty})\,d\mu_i(y),
+   \qquad
+   U_Y(t)=\sum_i u_i(t).
+\]
+Then \(0\leq u_i(t)\leq1\), and independence gives
+\[
+   \E e^{-tS_Y}=\prod_i(1-u_i(t)).
+\]
+Therefore
+\[
+   1-\E e^{-tS_Y}
+   =
+   1-\prod_i(1-u_i(t))
+   \leq
+   \min\{1,U_Y(t)\},
+\]
+while
+\[
+   1-\E e^{-tS_Y}
+   \geq
+   1-e^{-U_Y(t)}
+   \geq
+   (1-e^{-1})\min\{1,U_Y(t)\}.
+\]
+The same statements hold for \(S_V=\sum_iV_i\).  The measure domination implies
+\[
+   U_Y(t)
+   =
+   \int_{(0,\infty)}(1-e^{-ty})\,d\sum_i\mu_i(y)
+   \leq
+   \int_{(0,\infty)}(1-e^{-ty})\,d\sum_i\nu_i(y)
+   =
+   U_V(t).
+\]
+Hence, for every \(t>0\),
+\[
+   1-\E e^{-tS_Y}
+   \leq
+   \frac{1}{1-e^{-1}}\,(1-\E e^{-tS_V}).
+\]
+Finally use the standard fractional-moment identity
+\[
+   \E S^\alpha
+   =
+   \frac{\alpha}{\Gamma(1-\alpha)}
+   \int_0^\infty (1-\E e^{-tS})t^{-1-\alpha}\,dt
+   \qquad(0<\alpha<1).
+\]
+\end{proof}
+
+\begin{proposition}[Discrete aggregate domination in Hilbert spaces below \(2\)]
+\label{prop:discrete-hilbert-low}
+Let \(H\) be a Hilbert space and \(1\leq p<2\).  Let
+\((\xi_n)_{n=1}^N\) and \((\eta_n)_{n=1}^N\) be independent mean-zero
+\(H\)-valued random variables.  If
+\[
+   \sum_{n=1}^N \Pp(\xi_n\in B)
+   \leq
+   \sum_{n=1}^N \Pp(\eta_n\in B)
+   \qquad
+   (B\subset H\setminus\{0\}\text{ Borel}),
+\]
+then
+\[
+   \E\norm{\sum_{n=1}^N \xi_n}^p
+   \leq
+   C_p\,\E\norm{\sum_{n=1}^N \eta_n}^p .
+\]
+The same comparison holds with terminal sums replaced by the corresponding
+maxima over partial sums in any fixed order.
+\end{proposition}
+
+\begin{proof}
+Put \(Y_n=\norm{\xi_n}^2\), \(V_n=\norm{\eta_n}^2\), and
+\(\alpha=p/2\in[1/2,1)\).  Applying the map \(x\mapsto\norm{x}^2\) to the
+aggregate jump measures gives
+\[
+   \sum_n \mathcal L(Y_n)|_{(0,\infty)}
+   \leq
+   \sum_n \mathcal L(V_n)|_{(0,\infty)} .
+\]
+Lemma \ref{lem:laplace-square} yields
+\[
+   \E\Bigl(\sum_n\norm{\xi_n}^2\Bigr)^{p/2}
+   \leq
+   C\,\E\Bigl(\sum_n\norm{\eta_n}^2\Bigr)^{p/2}.
+\]
+The terminal and maximal assertions now follow from Lemma
+\ref{lem:hilbert-mz}.
+\end{proof}
+
+\begin{proposition}[Discrete aggregate domination in Hilbert spaces for all \(p\)]
+\label{prop:discrete-hilbert-all}
+Let \(H\) be a Hilbert space and \(1\leq p<\infty\).  Let
+\((\xi_n)_{n=1}^N\) and \((\eta_n)_{n=1}^N\) be independent mean-zero
+\(H\)-valued random variables satisfying the aggregate domination hypothesis
+of Proposition \ref{prop:discrete-hilbert-low}.  Then
+\[
+   \E\norm{\sum_{n=1}^N \xi_n}^p
+   \leq
+   C_p\,\E\norm{\sum_{n=1}^N \eta_n}^p ,
+\]
+and the same comparison holds for maxima over partial sums in any fixed order.
+\end{proposition}
+
+\begin{proof}
+The case \(1\leq p<2\) is Proposition \ref{prop:discrete-hilbert-low}.  Let
+\(p\geq2\) and set \(r=p/2\geq1\).  Lemma \ref{lem:hilbert-mz} reduces matters
+to square functions.  For \(Y_n=\norm{\xi_n}^2\), the scalar Rosenthal
+inequality for independent nonnegative variables gives
+\[
+  \E\Bigl(\sum_nY_n\Bigr)^r
+  \lesssim_p
+  \Bigl(\sum_n\E Y_n\Bigr)^r+\sum_n\E Y_n^r .
+\]
+Aggregate domination controls the two terms:
+\[
+   \sum_n\E\norm{\xi_n}^2\leq \sum_n\E\norm{\eta_n}^2,
+   \qquad
+   \sum_n\E\norm{\xi_n}^p\leq \sum_n\E\norm{\eta_n}^p.
+\]
+For \(V_n=\norm{\eta_n}^2\),
+\[
+  \Bigl(\sum_n\E V_n\Bigr)^r+\sum_n\E V_n^r
+  \leq
+  2\,\E\Bigl(\sum_nV_n\Bigr)^r,
+\]
+by Jensen and the pointwise inequality \((\sum_nV_n)^r\geq\sum_nV_n^r\).
+Thus the \(\xi\)-square-function \(p\)-moment is controlled by the
+\(\eta\)-square-function \(p\)-moment, and Lemma \ref{lem:hilbert-mz} finishes
+the proof.  The endpoint \(p=2\) is also immediate from the Hilbert square
+identity.
+\end{proof}
+
+\section*{Independent-Increment Characteristic Comparison}
+
+\begin{proposition}[Hilbert independent-increment comparison]
+\label{prop:ind-incr-hilbert}
+Let \(H\) be a separable Hilbert space and \(1\leq p<\infty\).  Let \(L\) and
+\(K\) be \(H\)-valued martingales with independent increments and deterministic
+local characteristics \((A_L,\nu_L)\) and \((A_K,\nu_K)\).  Assume
+\[
+   \operatorname{tr} A_L(\infty)\leq \operatorname{tr} A_K(\infty),
+   \qquad
+   \nu_L(\mathbb R_+\times B)\leq \nu_K(\mathbb R_+\times B)
+\]
+for every Borel \(B\subset H\setminus\{0\}\).  Then
+\[
+   \E\sup_{t\geq0}\norm{L_t}^p
+   \leq
+   C_p\,\E\sup_{t\geq0}\norm{K_t}^p .
+\]
+\end{proposition}
+
+\begin{proof}
+By the Hilbert-valued BDG inequality,
+\[
+   \E\sup_{t\geq0}\norm{L_t}^p
+   \simequiv_p
+   \E Q_L^{p/2},
+   \qquad
+   Q_L:=\operatorname{tr}A_L(\infty)+\sum_{s\geq0}\norm{\Delta L_s}^2,
+\]
+and similarly for \(K\).  Thus it is enough to compare the scalar square
+characteristics \(Q_L\) and \(Q_K\).
+
+First suppose \(1\leq p<2\) and put \(\alpha=p/2\).  For a martingale with
+deterministic characteristics \((A,\nu)\), write
+\[
+   a=\operatorname{tr}A(\infty),\qquad
+   U_{A,\nu}(t)
+   =
+   (1-e^{-ta})
+   +
+   \int_{\mathbb R_+\times H}(1-e^{-t\norm{x}^2})\,d\nu(s,x).
+\]
+The source paper's Grigelionis representation for independent-increment
+martingales decomposes the jump measure into a Poisson part over the
+nonatomic-in-time component of \(\nu\) and independent single jumps over the
+time atoms of \(\nu\).  Consequently the Laplace transform of
+\(Q=a+\sum_s\norm{\Delta L_s}^2\) has the form
+\[
+  \E e^{-tQ}
+  =
+  e^{-ta}
+  e^{-U_0(t)}
+  \prod_j(1-u_j(t)),
+\]
+where \(U_0(t)\) is the contribution of the nonatomic part and \(u_j(t)\) are
+the atom-time contributions.  As in Lemma \ref{lem:laplace-square},
+\[
+   (1-e^{-1})\min\{1,U_{A,\nu}(t)\}
+   \leq
+   1-\E e^{-tQ}
+   \leq
+   \min\{1,U_{A,\nu}(t)\}.
+\]
+The assumptions imply \(U_{A_L,\nu_L}(t)\leq U_{A_K,\nu_K}(t)\) for all
+\(t>0\).  The fractional-moment identity used in Lemma
+\ref{lem:laplace-square} yields
+\[
+   \E Q_L^\alpha \lesssim_\alpha \E Q_K^\alpha .
+\]
+
+Now let \(p\geq2\) and set \(\alpha=p/2\geq1\).  For the same scalar
+nonnegative independent-increment square sum, the scalar Rosenthal inequality,
+applied first to finite truncations of the Poisson and atom-time
+decomposition and then by monotone convergence, gives
+\[
+   \E Q^\alpha
+   \lesssim_\alpha
+   \left(a+\int\norm{x}^2\,d\nu\right)^\alpha
+   +
+   \int\norm{x}^{2\alpha}\,d\nu .
+\]
+The reverse lower bounds needed for \(K\) are elementary:
+\[
+   \E Q_K^\alpha\geq
+   \left(\E Q_K\right)^\alpha
+   =
+   \left(a_K+\int\norm{x}^2\,d\nu_K\right)^\alpha
+\]
+by Jensen, and
+\[
+   \E Q_K^\alpha
+   \geq
+   \E\sum_s\norm{\Delta K_s}^{2\alpha}
+   =
+   \int\norm{x}^{2\alpha}\,d\nu_K,
+\]
+because \(r\mapsto r^\alpha\) is superadditive on \(\mathbb R_+\).  The
+assumptions control the two upper-bound terms for \(L\) by the corresponding
+terms for \(K\).  Hence \(\E Q_L^\alpha\lesssim_\alpha\E Q_K^\alpha\), and
+BDG completes the proof.
+\end{proof}
+
+\section*{General Local Martingales}
+
+\begin{proof}[Proof of Theorem \ref{thm:hilbert-all-p}]
+Since Hilbert spaces are UMD, Theorem
+\texttt{thm:mainforDTMgencasenananana} of \cite{Yaroslavtsev2019} gives
+decoupled tangent local martingales \(\widetilde M\) and \(\widetilde N\) for
+\(M\) and \(N\).  The tangent estimate
+\texttt{thm:tangentgencaseUMDuhoditrotasoldat} gives
+\[
+  \E\sup_t\norm{M_t}^p\simequiv_p
+  \E\sup_t\norm{\widetilde M_t}^p,
+  \qquad
+  \E\sup_t\norm{N_t}^p\simequiv_p
+  \E\sup_t\norm{\widetilde N_t}^p .
+\]
+The same source theorem constructs the decoupled tangent process so that,
+conditional on the original local characteristics, \(\widetilde M\) and
+\(\widetilde N\) have independent increments and deterministic local
+characteristics \(([\![M^c]\!],\nu^M)\) and
+\(([\![N^c]\!],\nu^N)\), respectively.
+
+Fix a base point \(\omega\) outside the exceptional null sets.  Characteristic
+domination says
+\[
+   [\![N^c]\!]_\infty(\omega)\leq[\![M^c]\!]_\infty(\omega),
+   \qquad
+   \nu^N(\omega;\mathbb R_+\times B)
+   \leq
+   \nu^M(\omega;\mathbb R_+\times B)
+\]
+for every Borel \(B\subset H\setminus\{0\}\).  The bilinear-form order implies
+\(\operatorname{tr}[\![N^c]\!]_\infty(\omega)\leq
+\operatorname{tr}[\![M^c]\!]_\infty(\omega)\).  Proposition
+\ref{prop:ind-incr-hilbert}, applied on this conditional probability space,
+therefore gives
+\[
+   \E\!\left(\sup_t\norm{\widetilde N_t}^p\mid
+      [\![N^c]\!],\nu^N,[\![M^c]\!],\nu^M\right)
+   \leq
+   C_p\,
+   \E\!\left(\sup_t\norm{\widetilde M_t}^p\mid
+      [\![N^c]\!],\nu^N,[\![M^c]\!],\nu^M\right).
+\]
+Integrating over \(\omega\) and using the tangent estimates above yields the
+claimed inequality.
+\end{proof}
+
+\section*{Verification Notes}
+
+The only genuinely new step is Lemma \ref{lem:laplace-square}.  It is
+insensitive to the partition of the aggregate measure into independent
+summands: all such partitions have Laplace deficits comparable to
+\(\min\{1,U(t)\}\), where \(U(t)\) is determined by the aggregate law alone.
+This is why rare huge jumps do not break the \(p<2\) Hilbert comparison.
+
+The proof does not use symmetry of the original variables.  Symmetrization is
+used only inside Lemma \ref{lem:hilbert-mz}, via an independent copy.  The
+mean-zero assumption is exactly what makes
+\(\E(Z_n-Z'_n\mid Z_1,\ldots,Z_N)=Z_n\).
+
+The line-by-line reduction audit found one important point: characteristic
+domination in \cite{Yaroslavtsev2019} controls the total spatial jump
+compensator \(\nu(\mathbb R_+\times\cdot)\), not the accessible and
+quasi-left-continuous compensator parts separately.  Thus the general proof
+above deliberately does not claim that the accessible part of \(N\) is
+dominated by the accessible part of \(M\).  Instead it uses the source's full
+decoupled tangent theorem and compares the resulting independent-increment
+martingales by their full characteristics in Proposition
+\ref{prop:ind-incr-hilbert}.  This is exactly the source reduction, but
+without imposing an unjustified componentwise domination.
+
+A small verification script, \texttt{code/check\_laplace\_partition.py},
+tests random finite partitions of the same aggregate nonnegative law and
+checks the Laplace-deficit bounds used in Lemma \ref{lem:laplace-square}.
+
+\section*{Novelty and Literature Check}
+
+The cheap run indexes were searched for the arXiv id and for the terms
+\texttt{characteristically dominated}, \texttt{aggregate domination},
+\texttt{Hilbert}, \texttt{p<2}, \texttt{all p}, \texttt{Rosenthal}, and
+\texttt{Laplace}.  The run already contained the broad \(c_0\) counterexample,
+the Hilbert \(p=2\) packet, and the Hilbert \(p\geq2\) packet, but no Hilbert
+\(1\leq p<2\) or all-\(p\) packet.  Literature/source searches identified the
+source reduction in \cite{Yaroslavtsev2019}, Hilbert-valued BDG and
+square-function estimates in \cite{Yaroslavtsev2018}, and Rosenthal/comparison
+tools such as \cite{Pinelis2012,MontgomerySmithPruss2001}, but no exact
+recorded solution of the Hilbert \(1\leq p<2\) subcase of Remark 12.10.
+
+\section*{Limitations}
+
+This result solves the Hilbert-valued subcase, not the full UMD-space problem.
+The previous \(c_0\) counterexample shows that the unrestricted Banach-space
+discrete statement in Remark 12.10 is false.  The remaining interesting
+direction is therefore geometric: identify which non-Hilbert UMD spaces retain
+enough square-function or tail comparability to replace Lemma
+\ref{lem:hilbert-mz}.
+
+\section*{Human Review Recommendation}
+
+First verify Lemma \ref{lem:laplace-square}; it is short and is the decisive
+new below-\(2\) mechanism.  Then verify Lemma \ref{lem:hilbert-mz}, especially
+the terminal lower bound using the independent copy.  Finally verify
+Proposition \ref{prop:ind-incr-hilbert}, which is the hardened replacement for
+the informal accessible-jump reduction: it compares the full independent-
+increment characteristics after decoupling, so no separate domination of
+canonical jump parts is needed.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev,
+\emph{Local characteristics and tangency of vector-valued martingales},
+arXiv:1907.11588, 2019.
+
+\bibitem{Yaroslavtsev2018}
+I. S. Yaroslavtsev,
+\emph{Burkholder-Davis-Gundy inequalities in UMD Banach spaces},
+arXiv:1807.05573, 2018.
+
+\bibitem{Pinelis2012}
+I. Pinelis,
+\emph{Rosenthal-type inequalities for martingales in 2-smooth Banach spaces},
+arXiv:1212.1912, 2012.
+
+\bibitem{MontgomerySmithPruss2001}
+S. J. Montgomery-Smith and A. R. Pruss,
+\emph{Rosenthal inequalities for sums of independent random variables},
+arXiv:math/9811124, 1998.
+
+\end{thebibliography}
+
+\end{document}

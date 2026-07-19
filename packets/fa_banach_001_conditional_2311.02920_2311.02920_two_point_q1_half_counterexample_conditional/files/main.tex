@@ -1,0 +1,232 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{conditionallemma}{Conditional Lemma}
+
+\newcommand{\absamen}{\operatorname{aa}}
+\newcommand{\amen}{\operatorname{amen}}
+\newcommand{\Fp}{\mathcal F_p}
+\newcommand{\NN}{\mathcal N}
+\newcommand{\MM}{\mathcal M}
+
+\title{Conditional half-exponent reduction for the two-point metric constant}
+\author{Run \texttt{fa\_banach\_001}, lane 0}
+\date{2026-06-23}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} This is a conditional packet.  It isolates one
+explicit scalar inequality whose proof would give a negative answer to Question
+3 of Cuth--Raunig \cite{CR}.  The packet does not claim that the scalar
+inequality has been proved.
+
+\section{Source question}
+
+The source paper is Marek Cuth and Tomas Raunig, \emph{Canonical embedding of
+Lipschitz-free \(p\)-spaces}, arXiv:2311.02920 \cite{CR}.  In Section 4, after
+Proposition 3.24, the authors ask:
+\[
+  \text{Is it true that } \absamen_p^1(2)>1 \text{ for every } p\in(0,1)?
+\]
+The crop below shows the source context.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions and reduction used}
+
+For \(0<p\le q\le1\), \(\absamen_p^q(2)\) denotes the supremal
+\(p\)-amenability constant over two non-base-point \(q\)-metric spaces
+\(\NN\subset \MM\).  The source paper's Theorem 3.17 reduces \(\absamen_p^q(2)\)
+to weighted rooted trees with two leaves.  For \(q=1\), the only nontrivial
+tree has vertices \(0,z,x,y\), edges \(0z,zx,zy\), and positive edge lengths
+\(u,v,w\).  Thus
+\[
+ d(0,x)=u+v,\qquad d(0,y)=u+w,\qquad d(x,y)=v+w.
+\]
+For coefficients \(a,b\in\mathbb R\), put
+\[
+ X=|a|^p,\qquad Y=|b|^p,\qquad Z=|a+b|^p.
+\]
+Corollary 2.4 of \cite{CR} gives the \(p\)-th power of the norm in
+\(\Fp(\{0,x,y\})\) as the minimum of
+\[
+\begin{aligned}
+N_1&=X(u+v)^p+Y(u+w)^p,\\
+N_2&=Z(u+v)^p+Y(v+w)^p,\\
+N_3&=Z(u+w)^p+X(v+w)^p.
+\end{aligned}
+\]
+The corresponding tree expression in \(\Fp(\{0,z,x,y\})\) is
+\[
+  D=Zu^p+Xv^p+Yw^p.
+\]
+Therefore \(\amen_{p}(\{0,x,y\},\{0,z,x,y\})\le1\) follows from
+\[
+  \min\{N_1,N_2,N_3\}\le D
+\]
+for all \(a,b,u,v,w\).
+
+\section{Proof intuition}
+
+At \(p=1/2\), the tree distances raised to the \(p\)-power are Euclidean
+distances in the Hilbert embedding of a weighted tree: each tree edge becomes
+an orthogonal vector of length equal to the square root of the edge length.
+This makes the two-leaf problem a four-point Euclidean tripod inequality.
+
+The certificate below averages the three possible three-point tree formulas
+\(N_1,N_2,N_3\).  The weights are chosen so that the \(X\)- and \(Y\)-coefficients
+match the fork expression \(D\) exactly.  The only remaining issue is the
+\(Z\)-coefficient, and that leftover condition is precisely Scalar Lemma E.
+
+\section{Conditional dependency}
+
+\begin{conditionallemma}[Scalar Lemma E]\label{lem:E}
+For all \(u,v,w>0\), set
+\[
+\begin{gathered}
+A=\sqrt{u+v},\qquad B=\sqrt{u+w},\qquad C=\sqrt{v+w},\\
+U=\sqrt u,\qquad V=\sqrt v,\qquad W=\sqrt w.
+\end{gathered}
+\]
+Then
+\[
+  2AB(V+W-C)\ge (A+B-C)(AW+BV-UC).
+\tag{E}
+\]
+\end{conditionallemma}
+
+\noindent Numerical evidence for Lemma \ref{lem:E} is included in
+\texttt{code/check\_half\_tripod\_certificate.py}.  A useful equivalent
+Euclidean form is obtained by writing \(U=r\), \(V=x\), \(W=y\).  Then
+\[
+A=\sqrt{r^2+x^2},\quad B=\sqrt{r^2+y^2},\quad C=\sqrt{x^2+y^2},
+\]
+and (E) becomes
+\[
+  2AB(x+y-C)\ge (A+B-C)(Ay+Bx-rC).
+\tag{E'}
+\]
+After normalizing \(x^2+y^2=1\) and putting \(m=xy\), this is the two-variable
+inequality
+\[
+\begin{aligned}
+&2P(\sqrt{1+2m}-1)\\
+&\quad \ge
+\big(\sqrt{2r^2+1+2P}-1\big)
+\big(\sqrt{r^2+2m^2+2mP}-r\big),
+\end{aligned}
+\]
+where \(P=\sqrt{r^4+r^2+m^2}\), \(r>0\), and \(0<m\le1/2\).
+
+\section{Conditional theorem}
+
+\begin{theorem}\label{thm:conditional}
+Assume Scalar Lemma \ref{lem:E}.  Then
+\[
+  \absamen_{1/2}^{1}(2)=1.
+\]
+Consequently, under the same scalar lemma, Question 3 of \cite{CR} has a
+negative answer.
+\end{theorem}
+
+\begin{proof}
+By the tree reduction recalled above, it suffices to prove the estimate for
+an arbitrary two-leaf metric tripod with edge lengths \(u,v,w>0\).  We work
+with \(p=1/2\) and use the notation of Lemma \ref{lem:E}.
+
+Define
+\[
+  \lambda_1=\frac{V+W-C}{A+B-C},\qquad
+  \lambda_2=\frac{W-B\lambda_1}{C},\qquad
+  \lambda_3=\frac{V-A\lambda_1}{C}.
+\]
+The denominator \(A+B-C\) is positive, and \(V+W-C\ge0\).  The inequalities
+\(\lambda_2,\lambda_3\ge0\) follow from concavity of \(t^{1/2}\): for instance,
+if \(C>A\), the increment \(C-A\) is a terminal subinterval increment of
+\(t^{1/2}\) inside the larger increment \(C-V\), and hence
+\[
+  \frac{C-A}{C-V}\le1\le\frac{B}{W};
+\]
+this is equivalent to \(\lambda_2\ge0\).  The other cases and \(\lambda_3\ge0\)
+are symmetric or immediate.  Directly from the definitions,
+\[
+  \lambda_1+\lambda_2+\lambda_3=1,\qquad
+  \lambda_1 A+\lambda_3 C=V,\qquad
+  \lambda_1 B+\lambda_2 C=W.
+\]
+Scalar Lemma \ref{lem:E} is equivalent, after substituting the above value of
+\(\lambda_1\), to
+\[
+  \lambda_2 A+\lambda_3 B\le U.
+\]
+
+Now average the three three-point tree expressions \(N_1,N_2,N_3\):
+\[
+\begin{aligned}
+\lambda_1N_1+\lambda_2N_2+\lambda_3N_3
+&=X(\lambda_1A+\lambda_3C)
+  +Y(\lambda_1B+\lambda_2C)
+  +Z(\lambda_2A+\lambda_3B)\\
+&\le XV+YW+ZU=D.
+\end{aligned}
+\]
+Since the \(\lambda_i\) are nonnegative and sum to one,
+\[
+  \min\{N_1,N_2,N_3\}\le
+  \lambda_1N_1+\lambda_2N_2+\lambda_3N_3\le D.
+\]
+Thus the canonical inclusion \(\Fp(\{0,x,y\})\to
+\Fp(\{0,z,x,y\})\) has inverse norm at most \(1\) for every two-leaf metric
+tripod.  The inverse norm is always at least \(1\), because the inclusion map
+is contractive.  Hence every such tripod has amenability constant exactly
+\(1\).  The source paper's reduction to two-leaf tripods gives
+\(\absamen_{1/2}^{1}(2)=1\).
+
+Since Question 3 asks whether \(\absamen_p^1(2)>1\) for every \(p\in(0,1)\), the
+identity at \(p=1/2\) gives a negative answer, conditional on Lemma
+\ref{lem:E}.
+\end{proof}
+
+\section{Verification notes}
+
+The included Python script performs deterministic log-grid and random checks of
+Scalar Lemma \ref{lem:E}, the nonnegativity of the three weights, and the
+normalized Euclidean form.  These checks are evidence only; they are not used
+as a proof.
+
+The literature check was bounded.  Local run indexes were searched for
+arXiv:2311.02920, \(\absamen_p^1(2)\), \(\absamen_p(2)\), and two-point
+\(p\)-amenability terms.  Web searches for exact variants of these phrases
+found the source paper and the later broad embedding paper arXiv:2603.28193,
+but no answer to the sharp two-point \(q=1\) question.
+
+\section{Limitations}
+
+This packet is not a promoted counterexample.  The proof of Theorem
+\ref{thm:conditional} is complete only after Scalar Lemma \ref{lem:E}.  Human
+review should either prove Lemma \ref{lem:E}, find a counterexample to it, or
+replace it by a different certificate for
+\(\min\{N_1,N_2,N_3\}\le D\).
+
+\begin{thebibliography}{9}
+\bibitem{CR}
+M. Cuth and T. Raunig,
+\emph{Canonical embedding of Lipschitz-free \(p\)-spaces},
+arXiv:2311.02920, 2023.
+
+\bibitem{AA}
+F. Albiac and J. L. Ansorena,
+\emph{Lipschitz extensions into \(p\)-Banach spaces, and canonical embeddings
+of Lipschitz-free \(p\)-spaces for \(0<p<1\)},
+arXiv:2603.28193, 2026.
+\end{thebibliography}
+
+\end{document}

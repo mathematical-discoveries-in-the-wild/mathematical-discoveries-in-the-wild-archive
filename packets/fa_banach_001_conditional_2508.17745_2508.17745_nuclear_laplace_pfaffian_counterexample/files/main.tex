@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[margin=0.92in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+
+\title{A Nuclear-Laplace Reduction for the General\\
+Smallest-Singular-Value Problem}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_14}}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Conditional counterexample reduction, likely valid.  The matrix construction,
+the exact Pfaffian formula, and the implication to a counterexample are proved.
+One scalar asymptotic dependency remains: an explicit Pfaffian ratio must be
+shown to be unbounded.  Exact and high-precision computations support that
+dependency but are not a proof.
+
+\section*{Source question}
+
+Livshyts, Fernandez, and Mui prove
+\[
+ \Pp\{s_n(A)\leq \varepsilon/\sqrt n\}
+ \leq C\varepsilon+e^{-cn}
+\]
+for square unconditional isotropic log-concave matrices, and ask whether the
+same behavior persists for general square isotropic log-concave matrix
+laws~\cite{LFM}.  Their discussion on PDF page~4 is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the proof}
+
+The nuclear norm is the convex matrix analogue of the $\ell_1$ norm, so the
+law with density $e^{-\|A\|_*}$ is an especially natural place for excessive
+mass near low rank.  Orthogonal invariance makes its covariance scalar, hence
+isotropic normalization costs only one scalar.
+
+For real square matrices the ordered singular values have density
+\[
+ e^{-\sum x_i}\prod_{i<j}(x_j^2-x_i^2).
+\]
+The density of the minimum at zero is therefore a ratio $d_n=B_n/Z_n$ of two
+partition functions.  De Bruijn's identity turns both into completely
+explicit Pfaffians.  More importantly, shifting all remaining singular values
+by $x$ proves the quantitative inequality $g_n(x)\geq e^{-nx}d_n$.  Thus an
+unbounded boundary ratio creates probability at least a diverging multiple of
+$1/n$ on a window whose isotropic parameter is at most $1/n$.  This is
+incompatible with any universal linear small-ball constant.
+
+\section*{The ensemble and the conditional result}
+
+Let $X_n$ be a random real $n\times n$ matrix with density
+\begin{equation}\label{eq:matrix-law}
+ d\mu_n(A)=\mathcal Z_n^{-1}e^{-\|A\|_*}\,dA.
+\end{equation}
+The density is log-concave and invariant under $A\mapsto UAV$ for
+$U,V\in O(n)$.  It is centered, and its entry covariance is $v_n I_{n^2}$ for
+some $v_n>0$.  Put $\widetilde X_n=X_n/\sqrt{v_n}$.
+
+For $0<x_1<\cdots<x_n$, define
+\begin{align}
+ Z_n&=\int e^{-\sum_{i=1}^n x_i}
+       \prod_{1\leq i<j\leq n}(x_j^2-x_i^2)\,dx_1\cdots dx_n,\label{eq:Z}\\
+ B_n&=\int_{0<y_1<\cdots<y_{n-1}} e^{-\sum_{j=1}^{n-1}y_j}
+       \prod_{j=1}^{n-1}y_j^2
+       \prod_{1\leq i<j\leq n-1}(y_j^2-y_i^2)\,dy.\label{eq:B}
+\end{align}
+For $n=1$, the empty integral defining $B_1$ is $1$.  Write
+$d_n=B_n/Z_n$.
+
+\begin{theorem}[conditional counterexample]\label{thm:conditional}
+If $d_n$ is unbounded along a sequence of dimensions, then no absolute
+constants $C,c>0$ can satisfy
+\[
+ \Pp\{s_n(A)\leq\varepsilon/\sqrt n\}
+ \leq C\varepsilon+e^{-cn}
+\]
+for every square isotropic log-concave random matrix $A$ and every
+$\varepsilon>0$.  The isotropic matrices $\widetilde X_n$ from
+\eqref{eq:matrix-law} give the counterexample sequence.
+\end{theorem}
+
+\section*{Proof of the conditional theorem}
+
+The real square SVD change of variables shows that the ordered singular values
+of $X_n$ have joint density $Z_n^{-1}$ times the integrand in
+\eqref{eq:Z}; the orthogonal-group constant cancels in the normalization.
+Let $g_n$ be the density of the least singular value.  Directly,
+\begin{equation}\label{eq:g}
+ g_n(x)=\frac{e^{-x}}{Z_n}
+ \int_{x<y_1<\cdots<y_{n-1}}e^{-\sum y_j}
+ \prod_j(y_j^2-x^2)\prod_{i<j}(y_j^2-y_i^2)\,dy.
+\end{equation}
+In particular, $g_n(0)=B_n/Z_n=d_n$.
+
+\begin{lemma}[a quantitative boundary window]\label{lem:window}
+For every $x\geq0$,
+\[
+ g_n(x)\geq e^{-nx}d_n.
+\]
+\end{lemma}
+\begin{proof}
+In \eqref{eq:g}, substitute $y_j=z_j+x$.  The exponential contributes
+$e^{-nx}$.  For $i<j$,
+\[
+ (z_j+x)^2-(z_i+x)^2=(z_j-z_i)(z_j+z_i+2x)
+ \geq z_j^2-z_i^2,
+\]
+and
+\[
+ (z_j+x)^2-x^2=z_j(z_j+2x)\geq z_j^2.
+\]
+The shifted integral is therefore at least $B_n$.
+\end{proof}
+
+It remains to track isotropic normalization.  Orthogonal row and column sign
+flips kill every covariance between distinct entries, while row and column
+permutations make all entry variances equal.  Thus
+$\operatorname{Cov}(\operatorname{vec}X_n)=v_nI$.
+
+There is also a useful dimension-free lower bound on $v_n$.  Radial
+integration for any norm in dimension $D=n^2$ gives
+\[
+ \E\|X_n\|_*^2=D(D+1)=n^2(n^2+1).
+\]
+Since $\|A\|_*\leq\sqrt n\|A\|_F$,
+\[
+ n^2v_n=\E\|X_n\|_F^2
+ \geq \frac1n\E\|X_n\|_*^2,
+ \qquad v_n\geq n+\frac1n.\label{eq:variance}
+\]
+
+Integrating Lemma~\ref{lem:window} on $[0,1/n]$ yields
+\begin{equation}\label{eq:lowerprob}
+ \Pp\{s_n(X_n)\leq1/n\}
+ \geq \frac{1-e^{-1}}{n}d_n.
+\end{equation}
+For
+\[
+ \varepsilon_n=\frac{1}{\sqrt n\sqrt{v_n}},
+\]
+the event in \eqref{eq:lowerprob} is exactly
+$\{s_n(\widetilde X_n)\leq\varepsilon_n/\sqrt n\}$, and
+the preceding variance estimate gives $\varepsilon_n\leq1/n$.  If universal $C,c$
+existed, \eqref{eq:lowerprob} would imply
+\[
+ (1-e^{-1})d_n\leq C+n e^{-cn}.
+\]
+This contradicts unboundedness of $d_n$ and proves
+Theorem~\ref{thm:conditional}.  \qed
+
+\section*{Exact Pfaffian reduction}
+
+The remaining dependency is not a high-dimensional integral.  It is an
+explicit Pfaffian ratio.  For integers $0\leq i<j$, set
+\begin{align}
+ q_{ij}
+ &=\frac{1}{(2i)!(2j)!}
+ \int_{0<x<y}e^{-x-y}
+   \bigl(x^{2i}y^{2j}-x^{2j}y^{2i}\bigr)\,dx\,dy\label{eq:qint}\\
+ &=2I_{1/2}(2i+1,2j+1)-1,\label{eq:qbeta}
+\end{align}
+and put $q_{ji}=-q_{ij}$, $q_{ii}=0$.  For an ordered finite index set
+$S$, let $\operatorname{DPf}(S)$ denote the Pfaffian of $(q_{ij})_{i,j\in S}$
+when $|S|$ is even.  When $|S|$ is odd, augment this skew matrix by a last
+column of ones and a last row of minus ones before taking the Pfaffian.
+
+\begin{proposition}[de Bruijn formula]\label{prop:pf}
+With the sign convention in \eqref{eq:qint},
+\[
+ d_n=\frac{\operatorname{DPf}(\{1,\ldots,n-1\})}
+           {\operatorname{DPf}(\{0,\ldots,n-1\})}.
+\]
+\end{proposition}
+\begin{proof}
+Write the Vandermonde factor as
+\[
+ \prod_{i<j}(x_j^2-x_i^2)=
+ \det[x_j^{2(i-1)}]_{i,j=1}^n.
+\]
+De Bruijn's ordered-chamber integration identity expresses its integral
+against $\prod e^{-x_j}dx_j$ as the Pfaffian of the skew moments in
+\eqref{eq:qint}; for odd size the unpaired moments are
+$\int_0^\infty x^{2i}e^{-x}dx=(2i)!$, producing the one-vector after
+normalization.  The factors $\prod_{i=0}^{n-1}(2i)!$ occur in $Z_n$.
+For $B_n$, the basis exponents are $2,4,\ldots,2(n-1)$, so the factors are
+$\prod_{i=1}^{n-1}(2i)!$.  Their ratio is $1/0!=1$, proving the formula.
+Finally, \eqref{eq:qbeta} follows by interpreting normalized gamma integrals:
+if $G_i,G_j$ are independent gamma variables of shapes $2i+1,2j+1$, then
+$G_i/(G_i+G_j)$ is beta distributed.
+\end{proof}
+
+\section*{Conditional dependencies and computation}
+
+The only unproved statement is
+\begin{equation}\label{eq:dependency}
+ \sup_n d_n=\infty.
+\end{equation}
+No rate is needed.  The supplied exact-fraction program implements
+Proposition~\ref{prop:pf} and gives:
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & 1 & 10 & 40 & 100 & 200\\
+\midrule
+$d_n$ & 1.000000 & 2.038100 & 2.577737 & 2.917386 & 3.168924\\
+\bottomrule
+\end{tabular}
+\end{center}
+Values through $n=40$ were computed exactly as rational numbers; a separate
+high-precision implementation continued the audit through $n=200$.  The data
+are consistent with growth comparable to $\sqrt{\log n}$, but neither that fit
+nor the weaker dependency \eqref{eq:dependency} is claimed as proved.
+
+\section*{Limitations and novelty check}
+
+This packet is conditional, not a claimed disproof.  A bounded search used the
+exact source title and arXiv id together with ``smallest singular value
+Schatten 1 ball'', ``nuclear norm random matrix hard edge'', and close
+Pfaffian/partition-function phrases.  The closest inspected sources concerned
+macroscopic Schatten-ball equilibrium measures~\cite{DFGZ,KPT}, the critical
+Freud ensemble~\cite{CKM}, and hard-edge universality for other Laguerre-type
+weights~\cite{DGKV}.  No source was found that states \eqref{eq:dependency} or
+this counterexample reduction.
+
+\section*{Human-review recommendation}
+
+The matrix argument should be checked by a specialist in asymptotic convex
+geometry; the remaining ratio should be sent to a specialist in Pfaffian
+ensembles or skew-orthogonal polynomials.  Proving any divergence of the ratio
+would immediately promote this packet to a full counterexample.
+
+\begin{thebibliography}{9}
+\bibitem{LFM}
+G. V. Livshyts, M. Fernandez V, and S. Mui,
+\emph{On the Smallest Singular Value of Log-Concave Random Matrices},
+arXiv:2508.17745 (2025).
+
+\bibitem{DFGZ}
+B. Dadoun, M. Fradelizi, O. Gu\'edon, and P.-A. Zitt,
+\emph{Asymptotics of the inertia moments and the variance conjecture in
+Schatten balls}, J. Funct. Anal. 284 (2023), 109752; arXiv:2111.07803.
+
+\bibitem{KPT}
+Z. Kabluchko, J. Prochno, and C. Th\"ale,
+\emph{Exact asymptotic volume and volume ratio of Schatten unit balls},
+J. Approx. Theory 257 (2020), 105457; arXiv:1804.03467.
+
+\bibitem{CKM}
+T. Claeys, I. Krasovsky, and O. Minakov,
+\emph{Weak and strong confinement in the Freud random matrix ensemble and
+gap probabilities}, Comm. Math. Phys. 402 (2023), 285--340;
+arXiv:2209.07253.
+
+\bibitem{DGKV}
+P. Deift, D. Gioev, T. Kriecherbauer, and M. Vanlessen,
+\emph{Universality for orthogonal and symplectic Laguerre-type ensembles},
+J. Stat. Phys. 129 (2007), 949--1053; arXiv:math-ph/0612007.
+\end{thebibliography}
+
+\end{document}

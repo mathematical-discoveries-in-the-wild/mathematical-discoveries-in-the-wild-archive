@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+
+\title{No Unbounded Convex \texorpdfstring{$W$}{W}-Hyperbolic Set Has the UAFPP}
+\author{Automated Math Discovery Smoke Test}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Problem}
+
+This packet concerns the open problem on page 44 of:
+
+\begin{quote}\raggedright
+Laurentiu Leustean, \emph{Proof mining in metric fixed point theory and
+ergodic theory}, arXiv:0903.1529, Oberwolfach Preprints OWP 2009-05.
+\end{quote}
+
+The same UAFPP problem is also the final open problem of the original
+Kohlenbach--Leustean paper on approximate fixed points in product spaces.
+The source asks whether any unbounded convex subset of a $W$-hyperbolic space
+can have the uniform approximate fixed point property for all nonexpansive
+self-maps.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+We use the standard notation from the source. A $W$-hyperbolic space is a
+metric space $(X,d)$ equipped with a convexity map
+\[
+  W:X\times X\times[0,1]\to X.
+\]
+The only axiom needed below is the arc-length axiom
+\[
+  d\bigl(W(x,y,\lambda),W(x,y,\mu)\bigr)
+  =
+  |\lambda-\mu|\,d(x,y)
+  \qquad(\lambda,\mu\in[0,1]).
+\]
+A subset $C\subseteq X$ is convex if
+$W(x,y,\lambda)\in C$ for all $x,y\in C$ and $\lambda\in[0,1]$.
+
+\begin{definition}[UAFPP]
+Let $C$ be a metric space and let $\mathcal F$ be a class of maps
+$T:C\to C$. We say that $C$ has the uniform approximate fixed point property
+for $\mathcal F$ if for every $\eps>0$ and every $b>0$ there is $D>0$ such
+that, for every $x\in C$ and every $T\in\mathcal F$,
+\[
+  d(x,Tx)\le b
+  \quad\Longrightarrow\quad
+  \exists x^*\in C\ 
+  \bigl(d(x,x^*)\le D\ \text{and}\ d(x^*,Tx^*)<\eps\bigr).
+\]
+\end{definition}
+
+\section*{Proof Intuition}
+
+The source already observes that a stronger, basepoint-free uniform property
+would force boundedness by testing constant maps. UAFPP avoids that simple
+obstruction because it only asks for nearby approximate fixed points when the
+chosen base point is moved by at most $b$.
+
+The missing obstruction is still one-dimensional. From a base point $a$ choose
+a very long geodesic segment inside the unbounded convex set. Collapse every
+point of $C$ to this segment according to its distance from $a$, then move one
+unit farther along the segment, stopping only at the far endpoint. This radial
+map is nonexpansive because both the distance-to-$a$ function and the
+arc-length parametrization of the segment are $1$-Lipschitz. Near $a$, it
+increases the distance from $a$ by exactly one, so the reverse triangle
+inequality forces displacement at least one throughout any prescribed bounded
+neighborhood of $a$.
+
+\section*{Main Result}
+
+\begin{theorem}
+Let $C$ be a nonempty unbounded convex subset of a $W$-hyperbolic space
+$(X,d,W)$. Then $C$ does not have the UAFPP for the class of all nonexpansive
+self-mappings $T:C\to C$.
+
+Consequently, the open problem in arXiv:0903.1529 has a negative answer:
+there are no unbounded convex subsets of $W$-hyperbolic spaces with the UAFPP
+for all nonexpansive self-maps.
+\end{theorem}
+
+\begin{proof}
+Fix $a\in C$. Suppose, toward a contradiction, that $C$ has the UAFPP for all
+nonexpansive self-maps. Apply the definition with $\eps=1$ and $b=1$, and let
+$D>0$ be the corresponding radius.
+
+Since $C$ is unbounded, choose $y\in C$ such that
+\[
+  L:=d(a,y)>D+1.
+\]
+For $t\in[0,L]$, define the geodesic segment
+\[
+  \gamma(t):=W(a,y,t/L).
+\]
+By convexity of $C$, $\gamma([0,L])\subseteq C$, and by the arc-length axiom,
+\[
+  d(\gamma(s),\gamma(t))=|s-t|
+  \qquad (s,t\in[0,L]).
+\]
+
+Define $h:[0,\infty)\to[0,L]$ by
+\[
+  h(r):=\min\{r+1,L\},
+\]
+and define $T:C\to C$ by
+\[
+  Tz:=\gamma\bigl(h(d(a,z))\bigr).
+\]
+The function $h$ is $1$-Lipschitz, and $z\mapsto d(a,z)$ is $1$-Lipschitz.
+Therefore, for all $z,z'\in C$,
+\[
+\begin{aligned}
+  d(Tz,Tz')
+  &=
+  \bigl|h(d(a,z))-h(d(a,z'))\bigr| \\
+  &\le |d(a,z)-d(a,z')|
+   \le d(z,z').
+\end{aligned}
+\]
+Thus $T$ is nonexpansive. Moreover,
+\[
+  d(a,Ta)=d(\gamma(0),\gamma(1))=1,
+\]
+so the UAFPP hypothesis applies at the base point $a$.
+
+We now show that no point in the $D$-neighborhood of $a$ is a $1$-fixed point
+of $T$. Let $z\in C$ satisfy $d(a,z)\le D$. Since $D+1<L$, we have
+$h(d(a,z))=d(a,z)+1$. Hence
+\[
+  d(a,Tz)=d(a,z)+1.
+\]
+By the reverse triangle inequality,
+\[
+  d(z,Tz)\ge |d(a,Tz)-d(a,z)|=1.
+\]
+Thus $d(z,Tz)<1$ fails for every $z\in C$ with $d(a,z)\le D$.
+
+This contradicts the UAFPP conclusion for $\eps=1$, $b=1$, the point $a$, and
+the nonexpansive map $T$. Therefore no such unbounded convex set $C$ has the
+UAFPP.
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+The proof is purely metric and uses only the arc-length axiom of
+$W$-hyperbolic spaces, convexity of $C$, and the reverse triangle inequality.
+No computation is used in the proof.
+
+Before promotion, the run indexes were searched for `0903.1529`, proof mining,
+metric fixed point theory, UAFPP, approximate fixed point property, and related
+fixed-point keywords. No exact prior packet for this source problem was found.
+Nearby registry hits concerned other fixed-point or metastability targets.
+
+A bounded web search using the phrases `uniform approximate fixed point
+property`, `unbounded convex subsets`, `W-hyperbolic`, `UAFPP`, and the exact
+open-problem wording found the source arXiv survey and the original
+Kohlenbach--Leustean article, both presenting the problem as open, but did not
+find a later solution.
+
+\section*{Human Review Recommendation}
+
+Review as a likely-valid full solution. The main check is whether the
+arc-length property quoted above is indeed part of the source's definition of
+$W$-hyperbolic space; it is the standard axiom used in this literature. Once
+that is confirmed, the nonexpansiveness and contradiction are immediate.
+
+\begin{thebibliography}{9}
+
+\bibitem{Leustean2009}
+L. Leustean,
+\emph{Proof mining in metric fixed point theory and ergodic theory},
+arXiv:0903.1529, Oberwolfach Preprints OWP 2009-05, 2009.
+
+\bibitem{KohlenbachLeustean2007}
+U. Kohlenbach and L. Leustean,
+\emph{The approximate fixed point property in product spaces},
+Nonlinear Analysis: Theory, Methods \& Applications 66 (2007), 806--818.
+
+\end{thebibliography}
+
+\end{document}

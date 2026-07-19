@@ -1,0 +1,414 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\diam}{diam}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ph}{\varphi}
+\DeclareMathOperator{\supp}{supp}
+
+\title{A Converse Estimate for the Schlumprecht-Space Szlenk Radius}
+\author{Draft proof note}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $S$ be Schlumprecht's space, with
+\[
+ \|x\|_S=\max\left\{\|x\|_\infty,
+ \sup_{E_1<\cdots<E_n}\frac1{\ph(n)}\sum_{i=1}^n\|E_i x\|_S\right\},
+ \qquad \ph(n)=\log_2(n+1).
+\]
+Kochanek and Miarka proved [KM]
+\[
+ r_{S^*}(\eps)\le \inf_{n\in\N}
+ \frac{\log_2(n+2)-\eps/2}{\log_2(n+1)},\qquad 0<\eps<2,
+\]
+and asked whether the converse inequality holds.  This note gives a proof of the converse.
+The central point is a strengthened scalar majorant estimate.  It replaces a weaker estimate
+that is not sufficient for the local recursive majorant argument.
+\end{abstract}
+
+\section{The logarithmic product estimate}
+
+Throughout, put
+\[
+ \ph(n)=\log_2(n+1),\qquad
+ B_i=\ph(i+1),\qquad
+ \Delta_i=\ph(i+1)-\ph(i) \quad (i\ge 1).
+\]
+
+\begin{lemma}[monotonicity]
+The function
+\[
+ h(u)=\frac{u\log u}{u-1}\qquad (u>1)
+\]
+is increasing.
+\end{lemma}
+
+\begin{proof}
+A direct differentiation gives
+\[
+ h'(u)=\frac{u-1-\log u}{(u-1)^2}\ge 0,
+\]
+because $\log u\le u-1$ for $u>0$.
+\end{proof}
+
+\begin{lemma}[product lemma]
+For all $i,j\ge 1$, there exists $\ell\in\N$, namely
+\[
+ \ell=(i+1)(j+1)-1,
+\]
+such that
+\[
+ B_\ell\le B_iB_j,
+ \qquad
+ \Delta_\ell\le \Delta_i\Delta_j.
+\]
+Equivalently, for all $p,q\ge 1$,
+\begin{align}
+ \log_2(pq+1)&\le \log_2(p+1)\log_2(q+1), \label{eq:prod-B}\\
+ \log_2\left(1+\frac1{pq}\right)&\le
+ \log_2\left(1+\frac1p\right)\log_2\left(1+\frac1q\right). \label{eq:prod-Delta}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+We prove the two logarithmic inequalities.  For fixed $p\ge 1$, define
+\[
+ F_p(q)=\frac{\log(pq+1)}{\log(q+1)}\qquad(q>1),
+\]
+where $\log$ is the natural logarithm.  Its derivative has the sign of
+\[
+ p(q+1)\log(q+1)-(pq+1)\log(pq+1).
+\]
+Writing $u=q+1$ and $v=pq+1=1+p(u-1)$, this sign is non-positive because
+\[
+ \frac{u\log u}{u-1}\le \frac{v\log v}{v-1}
+\]
+by the preceding monotonicity lemma.  Hence $F_p$ is decreasing, and therefore
+\[
+ \frac{\log(pq+1)}{\log(q+1)}\le
+ \frac{\log(p+1)}{\log 2}.
+\]
+This is exactly \eqref{eq:prod-B} after division by $\log 2$.
+
+For \eqref{eq:prod-Delta}, put $a=1/p$ and $b=1/q$, so $0<a,b\le 1$.  For fixed $a$ define
+\[
+ G_a(b)=\frac{\log(1+ab)}{\log(1+b)}\qquad(0<b\le 1).
+\]
+The derivative has the sign of
+\[
+ a(1+b)\log(1+b)-(1+ab)\log(1+ab).
+\]
+Writing $u=1+b$ and $v=1+ab=1+a(u-1)$, this sign is non-negative, again by the monotonicity of
+$u\log u/(u-1)$.  Thus $G_a$ is increasing on $(0,1]$, and
+\[
+ \frac{\log(1+ab)}{\log(1+b)}\le
+ \frac{\log(1+a)}{\log 2}.
+\]
+This is \eqref{eq:prod-Delta}.
+
+Now take $p=i+1$ and $q=j+1$.  If $\ell=pq-1$, then
+\[
+ B_\ell=\ph(\ell+1)=\log_2(pq+1),
+ \qquad
+ B_i=\log_2(p+1),\quad B_j=\log_2(q+1),
+\]
+and
+\[
+ \Delta_\ell=\log_2\left(1+\frac1{pq}\right),
+ \quad
+ \Delta_i=\log_2\left(1+\frac1p\right),
+ \quad
+ \Delta_j=\log_2\left(1+\frac1q\right).
+\]
+The two desired inequalities follow.
+\end{proof}
+
+\section{The scalar majorant}
+
+For $0<\alpha<1$ set
+\[
+ a_\alpha=\inf_{n\in\N}\frac{\ph(n+1)-\alpha}{\ph(n)}.
+\]
+Equivalently,
+\begin{equation}
+ \ph(n)a_\alpha+\alpha\le \ph(n+1)\qquad(n\in\N).
+ \label{eq:a-alpha-def}
+\end{equation}
+For $u\ge 0$ define
+\[
+ M_\alpha(u)=\max\left\{u,\alpha,
+ \sup_{m\in\N}\frac{\ph(m)u+\alpha}{\ph(m+1)}\right\}.
+\]
+In particular, if $0\le u\le a_\alpha$, then $M_\alpha(u)\le 1$, by
+\eqref{eq:a-alpha-def} and $a_\alpha\le 1$.
+
+\begin{lemma}[strengthened scalar estimate]
+Let $0<\alpha<1$, $0\le s\le t$, and $k\ge 2$.  Then
+\begin{equation}
+ M_\alpha(s)+\min\{\ph(k-1)t,\ph(k)t-s\}
+ \le \ph(k)M_\alpha(t).
+ \label{eq:strong-scalar}
+\end{equation}
+Consequently, the same inequality holds for $0\le s\le t\le a_\alpha$.
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ a=\ph(k-1),\qquad b=\ph(k),\qquad \delta=b-a.
+\]
+It suffices to verify \eqref{eq:strong-scalar} for each affine term in the maximum defining
+$M_\alpha(s)$.
+
+For the term $s$, use the second member of the minimum:
+\[
+ s+\min\{at,bt-s\}\le s+(bt-s)=bt\le bM_\alpha(t).
+\]
+For the term $\alpha$, use the first member of the minimum and the $(k-1)$-st affine term in
+$M_\alpha(t)$:
+\[
+ \alpha+\min\{at,bt-s\}\le \alpha+at
+ \le bM_\alpha(t).
+\]
+
+It remains to consider the $m$-th affine term.  Put
+\[
+ c=\ph(m),\qquad d=\ph(m+1),\qquad \eta=d-c.
+\]
+Since $0<\delta<1$, for fixed $t$, the function
+\[
+ s\mapsto \frac{cs+\alpha}{d}+\min\{at,bt-s\}
+\]
+is increasing on $[0,\delta t]$ and decreasing on $[\delta t,t]$.  Hence its maximum over
+$0\le s\le t$ occurs at $s=\delta t$, where it equals
+\[
+ \frac{\alpha+t(c\delta+ad)}{d}
+ =\frac{\alpha+t(bd-\delta\eta)}{d}.
+\]
+Thus it remains to prove
+\begin{equation}
+ M_\alpha(t)\ge
+ \frac{\alpha+t(bd-\delta\eta)}{bd}.
+ \label{eq:scalar-reduced}
+\end{equation}
+Apply the product lemma with $i=k-1$ and $j=m$.  There is $\ell\in\N$ such that, writing
+$D=B_\ell=\ph(\ell+1)$ and $\lambda=\Delta_\ell=\ph(\ell+1)-\ph(\ell)$,
+\[
+ D\le bd,
+ \qquad
+ \lambda\le \delta\eta.
+\]
+The $\ell$-th affine term in $M_\alpha(t)$ gives
+\[
+ M_\alpha(t)
+ \ge \frac{\ph(\ell)t+\alpha}{\ph(\ell+1)}
+ =t+\frac{\alpha-\lambda t}{D}.
+\]
+If $\alpha-\delta\eta t<0$, then the right-hand side of \eqref{eq:scalar-reduced} is below
+$t$, while $M_\alpha(t)\ge t$.  If $\alpha-\delta\eta t\ge 0$, then $\alpha-\lambda t\ge
+\alpha-\delta\eta t\ge 0$ and $D\le bd$, so
+\[
+ M_\alpha(t)
+ \ge t+\frac{\alpha-\delta\eta t}{bd}
+ =\frac{\alpha+t(bd-\delta\eta)}{bd}.
+\]
+This proves \eqref{eq:scalar-reduced}, and hence \eqref{eq:strong-scalar}.
+\end{proof}
+
+\begin{remark}
+The scalar estimate needed in the recursive norm argument is \eqref{eq:strong-scalar}, not merely
+\[
+ M_\alpha(s)+\min\{\ph(k-1)t,\ph(k)t-s\}\le \ph(k).
+\]
+The extra factor $M_\alpha(t)$ on the right is the local normalization required when one estimates
+the norm inside a restriction $F$.
+\end{remark}
+
+\section{The far-coordinate perturbation lemma}
+
+We shall use the standard iterative construction of the Schlumprecht norm.  Set
+$\|x\|_0=\|x\|_\infty$ and
+\[
+ \|x\|_{r+1}=\max\left\{\|x\|_\infty,
+ \sup_{k\ge 2}\sup_{E_1<\cdots<E_k}
+ \frac1{\ph(k)}\sum_{i=1}^k\|E_i x\|_r\right\}.
+\]
+Then $\|x\|_S=\sup_r\|x\|_r$.  The case $k=1$ is redundant, since $\ph(1)=1$.
+
+\begin{lemma}[comparison by local majorants]
+Let $y\in c_{00}$.  Suppose $\rho(F)\ge 0$ is assigned to every finite $F\subset\N$ and satisfies
+\begin{align*}
+ \|Fy\|_\infty&\le \rho(F),\\
+ G\subset F&\Longrightarrow \rho(G)\le \rho(F),\\
+ \sum_{i=1}^k\rho(E_i)&\le \ph(k)\rho(F)
+\end{align*}
+whenever $k\ge 2$ and $E_1<\cdots<E_k$ are finite subsets of $F$.  Then
+\[
+ \|Fy\|_S\le \rho(F)
+ \qquad(F\subset\N\text{ finite}).
+\]
+\end{lemma}
+
+\begin{proof}
+Induct on the iterative norms.  The estimate is true for $\|\cdot\|_0$ by the first assumption.
+Assume it is true for $\|\cdot\|_r$, and fix a finite set $F$ and a collection
+$E_1<\cdots<E_k$, $k\ge 2$.  Put $G_i=E_i\cap F$ and discard the empty intersections.
+If no $G_i$ remains, the corresponding sum is zero.  If exactly one set $G$ remains, then
+\[
+ \|Gy\|_r\le \rho(G)\le \rho(F)\le \ph(k)\rho(F).
+\]
+If $q\ge 2$ sets $G_1<\cdots<G_q$ remain, then, since $\ph(q)\le \ph(k)$,
+\[
+ \sum_{j=1}^q\|G_jy\|_r
+ \le \sum_{j=1}^q\rho(G_j)
+ \le \ph(q)\rho(F)
+ \le \ph(k)\rho(F).
+\]
+Thus every admissible sum occurring in the definition of $\|Fy\|_{r+1}$ is bounded by
+$\ph(k)\rho(F)$, and so $\|Fy\|_{r+1}\le \rho(F)$.  Taking the supremum over $r$ proves the
+claim.
+\end{proof}
+
+\begin{lemma}[far-coordinate unit-ball lemma]
+Let $0<\alpha<1$.  If $x\in c_{00}$ and $\|x\|_S<a_\alpha$, then, for every
+$N>\max\supp x$,
+\[
+ \|x+\alpha e_N\|_S\le 1,
+ \qquad
+ \|x-\alpha e_N\|_S\le 1.
+\]
+\end{lemma}
+
+\begin{proof}
+By $1$-unconditionality, it is enough to prove the assertion for $x\ge 0$ and
+$y=x+\alpha e_N$.  For each finite $F\subset\N$ define
+\[
+ \rho(F)=
+ \begin{cases}
+  \|Fx\|_S, & N\notin F,\\
+  M_\alpha(\|Fx\|_S), & N\in F.
+ \end{cases}
+\]
+Since $\|Fx\|_S\le \|x\|_S<a_\alpha$, we have $\rho(F)\le 1$ whenever $N\in F$.
+Also $\|Fy\|_\infty\le \rho(F)$: this is immediate if $N\notin F$, and if $N\in F$ it follows
+from $M_\alpha(u)\ge u$ and $M_\alpha(u)\ge \alpha$.  The map $M_\alpha$ is increasing, being
+the maximum of increasing affine functions; therefore $G\subset F$ implies $\rho(G)\le\rho(F)$.
+
+We verify the local majorant inequality.  Fix $F$ and $E_1<\cdots<E_k\subset F$, $k\ge 2$.
+If $N\notin F$, then
+\[
+ \sum_i\rho(E_i)=\sum_i\|E_i x\|_S\le \ph(k)\|Fx\|_S=\ph(k)\rho(F).
+\]
+Assume now that $N\in F$, and put $t=\|Fx\|_S$.
+
+If none of the $E_i$ contains $N$, then
+\[
+ \sum_i\rho(E_i)=\sum_i\|E_i x\|_S\le \ph(k)t\le \ph(k)M_\alpha(t)=\ph(k)\rho(F).
+\]
+If exactly one of them, say $E_j$, contains $N$, put $s=\|E_jx\|_S$.  The pieces not meeting
+$N$ satisfy the two bounds
+\[
+ \sum_{i\ne j}\|E_i x\|_S\le \ph(k-1)t,
+ \qquad
+ \sum_{i\ne j}\|E_i x\|_S\le \ph(k)t-s.
+\]
+The first uses the $k-1$ pieces not meeting $N$; the second uses the full $k$-tuple, including
+$E_jx$.  Therefore the strengthened scalar estimate gives
+\[
+ \sum_i\rho(E_i)
+ \le M_\alpha(s)+\min\{\ph(k-1)t,\ph(k)t-s\}
+ \le \ph(k)M_\alpha(t)
+ =\ph(k)\rho(F).
+\]
+The comparison lemma now yields $\|Fy\|_S\le\rho(F)$ for all finite $F$.  Taking
+$F=\supp x\cup\{N\}$ gives
+\[
+ \|x+\alpha e_N\|_S\le M_\alpha(\|x\|_S)\le 1.
+\]
+The estimate for $x-\alpha e_N$ follows from unconditionality.
+\end{proof}
+
+\section{The Szlenk-radius formula}
+
+Recall that for a Banach space $X$,
+\[
+ r_X(\eps)=\sup\{r>0:rB_{X^*}\subset s_\eps B_{X^*}\}.
+\]
+For $X=S^*$ we identify $X^*=S^{**}$ with $S$.
+
+\begin{theorem}
+For every $0<\eps<2$,
+\[
+ r_{S^*}(\eps)=
+ \inf_{n\in\N}\frac{\log_2(n+2)-\eps/2}{\log_2(n+1)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\beta=\eps/2$ and
+\[
+ a_\beta=\inf_{n\in\N}\frac{\ph(n+1)-\beta}{\ph(n)}.
+\]
+Kochanek and Miarka proved [KM] $r_{S^*}(\eps)\le a_\beta$.  We prove the reverse inequality.
+
+First observe that $\alpha\mapsto a_\alpha$ is continuous on $(0,1)$; indeed, each function
+\[
+ \alpha\mapsto \frac{\ph(n+1)-\alpha}{\ph(n)}
+\]
+is $1$-Lipschitz because $\ph(n)\ge 1$, and the infimum of a family of $1$-Lipschitz functions
+is $1$-Lipschitz.  Hence, if $x\in c_{00}$ and $\|x\|_S<a_\beta$, we can choose
+$\alpha\in(\beta,1)$ such that $\|x\|_S<a_\alpha$.
+
+For every $N>\max\supp x$, the far-coordinate lemma gives
+\[
+ x+\alpha e_N\in B_S,
+ \qquad
+ x-\alpha e_N\in B_S.
+\]
+Since $S$ is reflexive, the basis vector sequence $(e_N)$ is weakly null; for $X=S^*$ this is also
+weak-star null in $X^*=S$.  Thus $x\pm\alpha e_N$ converge weak-star to $x$.  Moreover,
+\[
+ \|(x+\alpha e_N)-(x-\alpha e_N)\|_S=2\alpha>\eps.
+\]
+Therefore every weak-star neighborhood of $x$ intersects $B_S$ in a set of diameter greater than
+$\eps$, and so $x\in s_\eps B_S$.
+
+Now fix $0<r<a_\beta$.  If $z\in rB_S$, choose $z_m\in c_{00}$ with $z_m\to z$ in norm.
+For all large $m$, $\|z_m\|_S<a_\beta$, hence $z_m\in s_\eps B_S$.  The set $s_\eps B_S$ is
+weak-star closed, hence norm closed: its complement in $B_S$ is relatively weak-star open by the
+definition of the Szlenk derivation.  Consequently $z\in s_\eps B_S$.  Thus
+$rB_S\subset s_\eps B_S$ for every $r<a_\beta$, and so $r_{S^*}(\eps)\ge a_\beta$.
+Combining this with the known upper estimate gives the formula.
+\end{proof}
+
+\section{Check against the conditional packet}
+
+The conditional packet identifies the correct perturbative mechanism, but the majorant step needs
+the local normalized estimate
+\[
+ \sum_i\rho(E_i)\le \ph(k)\rho(F),
+\]
+not merely a global estimate by $\ph(k)$.  The strengthened scalar estimate above is exactly the
+missing normalized statement.  After this replacement, the far-coordinate lemma and the Szlenk
+radius converse go through as written above.
+
+\begin{thebibliography}{9}
+\bibitem{KM} T. Kochanek and M. Miarka, \emph{When is the Szlenk derivation of a dual unit ball another ball?}, arXiv:2409.05516 (2024).
+\bibitem{S} T. Schlumprecht, \emph{An arbitrarily distortable Banach space}, Israel J. Math. 76 (1991), 81--95.
+\end{thebibliography}
+
+\end{document}

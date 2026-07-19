@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\F}{\mathcal F}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\edg}{E_{\mathrm{ext}}}
+
+\title{A One-Point Star Rigidification for Bounded Extreme-Free Spaces}
+\author{Run \texttt{fa\_banach\_001}, lane 18}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Open Problem}
+
+The source paper is Cuth--Doucha--Titkos, \emph{Isometries of Lipschitz-free Banach spaces}, arXiv:2402.08266 \cite{CDT}.  In Section 8.2 it asks:
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove another infinite subcase of Question 3, complementary to the finite one-point result from this run.
+
+\section*{Proof Intuition}
+
+If \(M\) is bounded and has no preserved-extreme old pairs, then adding a single point \(p\) at a common distance \(R>\diam(M)\) creates a pure preserved-extreme star.  The source paper's isometry correspondence says that every linear isometry of the free space is encoded by a bijection of the directed star edges satisfying a norm identity for every star path.
+
+A star-edge bijection can permute the leaves and can, a priori, reverse each spoke independently.  But the path \(x\to p\to y\) has length \(d(x,y)<R\).  If the two image spokes have opposite orientations, the corresponding molecule has to transport one unit from each of two leaves to \(p\), so its norm is \(2R\), impossible.  Thus the orientation sign is global.  Once the sign is global, the same path identity becomes simply \(d(x,y)=d(f(x),f(y))\), so the leaf permutation is an isometry of \(M\).
+
+\section*{Result}
+
+\begin{theorem}[Bounded extreme-free one-point star rigidification]
+\label{thm:star}
+Let \(M\) be a bounded metric space such that \(\edg[M]=\emptyset\).  Choose \(R>\diam(M)\), add a point \(p\notin M\), and define
+\[
+  d(p,x)=R,\qquad x\in M,
+\]
+leaving the metric on \(M\) unchanged.  Then \(M^+=M\cup\{p\}\) is Lipschitz-free rigid.
+\end{theorem}
+
+\begin{proof}
+The displayed formula defines a metric: for \(x,y\in M\),
+\[
+  |d(p,x)-d(p,y)|=0\le d(x,y)
+  \quad\text{and}\quad
+  d(x,y)\le \diam(M)<2R=d(x,p)+d(p,y).
+\]
+
+We first identify the preserved-extreme graph.  Since \(\edg[M]=\emptyset\), no old pair \(\{x,y\}\subset M\) is preserved extreme in \(M\).  Adding \(p\) cannot turn such a pair into a preserved extreme pair, because the same witnesses or approximating metric segments inside \(M\) remain available in the larger space.
+
+Every radial pair \(\{p,x\}\), however, is preserved extreme in \(M^+\).  By the source paper's preserved-extreme criterion \cite[Fact 2.1]{CDT}, it is enough to show a positive gap away from the endpoints.  Fix \(\varepsilon>0\).  If \(z\in M^+\) satisfies
+\[
+  \min\{d(p,z),d(x,z)\}\ge \varepsilon,
+\]
+then \(z\in M\setminus\{x\}\), and
+\[
+  d(p,z)+d(z,x)-d(p,x)=R+d(z,x)-R=d(z,x)\ge \varepsilon.
+\]
+Thus the radial molecule \(m_{p,x}\) is preserved extreme.  Consequently
+\[
+  \edg[M^+]=\{(p,x),(x,p):x\in M\}.
+\]
+This directed star is weakly admissible: it is symmetric, connected, and its vertex set is all of \(M^+\).
+
+Let \(T:\F(M^+)\to\F(M^+)\) be a surjective linear isometry.  By the source paper's weak Prague correspondence \cite[Theorem 3.4]{CDT}, \(T\) induces a symmetric bijection \(\sigma:\edg[M^+]\to\edg[M^+]\) satisfying the source conditions (SA), (SB), and (SC), and
+\[
+  T(m_e)=m_{\sigma(e)},\qquad e\in\edg[M^+].
+\]
+Since the graph is a star, there are a bijection \(f:M\to M\) and signs \(\eta_x\in\{\pm1\}\) such that
+\[
+  \sigma(p,x)=
+  \begin{cases}
+  (p,f(x)), & \eta_x=1,\\
+  (f(x),p), & \eta_x=-1.
+  \end{cases}
+\]
+
+We claim the signs are constant.  Take distinct \(x,y\in M\).  Apply condition (SC) to the directed path \((x,p),(p,y)\) from \(x\) to \(y\).  Since both source edges have length \(R\), it gives
+\[
+  d(x,y)=\left\|R\,m_{\sigma(x,p)}+R\,m_{\sigma(p,y)}\right\|.
+\]
+If \(\eta_x\neq\eta_y\), the vector on the right is either
+\[
+  \delta_{f(x)}+\delta_{f(y)}-2\delta_p
+  \quad\text{or}\quad
+  2\delta_p-\delta_{f(x)}-\delta_{f(y)}.
+\]
+Its Arens--Eells norm is \(2R\): the only negative mass is at \(p\), or the only positive mass is at \(p\), and each of the two unit masses must travel distance \(R\).  Hence \(d(x,y)=2R\), contradicting \(d(x,y)\le \diam(M)<R\).  Thus all \(\eta_x\)'s are equal to a single sign \(\eta\).
+
+With this global sign, the same condition (SC) gives, for all \(x,y\in M\),
+\[
+  d(x,y)
+  =
+  \left\|\delta_{f(x)}-\delta_{f(y)}\right\|
+  =
+  d(f(x),f(y)).
+\]
+Therefore \(f\) is a surjective isometry of \(M\).  Extending \(f\) by \(f(p)=p\) gives a surjective isometry of \(M^+\), and \(T\) is exactly the induced molecule map, multiplied by the global sign \(\eta\).  This is precisely Lipschitz-free rigidity.
+\end{proof}
+
+\begin{remark}
+Every bounded geodesic metric space satisfies the hypothesis \(\edg[M]=\emptyset\), because between any two distinct points there is a non-endpoint metric midpoint.  Thus Theorem~\ref{thm:star} gives one-point rigidifications for all bounded geodesic spaces.
+\end{remark}
+
+\section*{Verification And Limitations}
+
+This is a genuine infinite subcase of the source question.  It does not settle the full problem.  The remaining difficulty is an infinite metric space with old preserved-extreme pairs: then the one-point extension has both radial and old preserved-extreme edges, and a full proof must rule out admissible bijections that mix the two edge types.
+
+Novelty check: local run indexes contained only the source paper and the earlier finite packet from this run.  Web searches on 2026-07-03 for ``Lipschitz-free rigid one additional point'', ``one-point Lipschitz-free rigid metric space'', and the arXiv id 2402.08266 found the source paper but no later settlement.
+
+The scratch script \texttt{code/constant\_cone\_search.py} checks small finite constant-cone examples.  It is included only as exploratory evidence; the proof above is independent.
+
+\section*{Human Review Recommendation}
+
+Reviewers should check the claim that no old pair becomes preserved extreme after adding \(p\), and the transport-norm computation giving norm \(2R\) when two star spokes have opposite image orientations.
+
+\begin{thebibliography}{9}
+\bibitem{CDT}
+M. Cuth, M. Doucha, and T. Titkos,
+\emph{Isometries of Lipschitz-free Banach spaces},
+arXiv:2402.08266, 2024.
+\url{https://arxiv.org/abs/2402.08266}
+\end{thebibliography}
+
+\end{document}

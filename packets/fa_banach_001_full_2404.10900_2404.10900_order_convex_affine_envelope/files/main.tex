@@ -1,0 +1,304 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Aff}{\operatorname{Aff}}
+\newcommand{\Lin}{\operatorname{L}}
+
+\title{A Convex-Operator Envelope Theorem for Dedekind Complete Riesz-Valued Maps}
+\author{Solution packet for arXiv:2404.10900}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Result type:} candidate full solution, pending human review.
+
+\medskip
+
+\textbf{Source paper.} Mario Ghossoub, Giulio Principi, and Ruodu Wang,
+\emph{Allocation Mechanisms in Decentralized Exchange Markets with Frictions},
+arXiv:2404.10900.
+
+\medskip
+
+\textbf{Target.} Section 6 of the source paper states that the authors prove
+order-theoretic envelope representations for sublinear operators with values in
+Dedekind complete Riesz spaces, and then says that ``the generalization of our
+results toward convex operators remains an open question.'' The statement below
+answers the direct finite-valued algebraic version of that question.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Open Problem Transcription}
+
+The source paper writes:
+\begin{quote}
+The provided representation results are then refined, adding further
+restrictions on the behavior of the sublinear operators, and they highlight a
+classic feature: the dominated linear operators often inherit the same
+properties of the dominating sublinear operator. Among such restrictions, the
+main ones are monotonicity and normalization, that are both meaningful in
+economics and finance. \dots\ To the best of our knowledge, the
+generalization of our results toward convex operators remains an open question.
+\end{quote}
+
+\section*{Definitions}
+
+Let $V$ be a real vector space and let $(W,\succeq)$ be a partially ordered real
+vector space. A map $f:V\to W$ is \emph{$\succeq$-convex} if
+\[
+  f(\lambda x+(1-\lambda)y)
+  \preceq \lambda f(x)+(1-\lambda)f(y)
+\]
+for all $x,y\in V$ and all $\lambda\in[0,1]$.
+
+An affine map $a:V\to W$ is a map of the form
+\[
+  a(x)=Lx+c,\qquad L\in \Lin(V,W),\ c\in W.
+\]
+For two maps $a,f:V\to W$, write $a\preceq f$ when $a(x)\preceq f(x)$ for every
+$x\in V$. Define
+\[
+  \Aff(f)=\{a:V\to W: a \text{ is affine and } a\preceq f\}.
+\]
+If $V$ is also partially ordered by $\succeq_V$, let $\Aff_+(f)$ denote the
+members of $\Aff(f)$ whose linear part is
+$(\succeq_V,\succeq)$-positive.
+
+\section*{Proof Intuition}
+
+For a convex real-valued function, a supporting affine minorant at $x$ can be
+obtained from a subgradient at $x$. The same idea works here, but the
+subgradient is produced algebraically rather than topologically. At a base
+point $x$, take the order-valued directional derivative
+\[
+  p_x(y)=\inf_{t>0}\frac{f(x+ty)-f(x)}{t}.
+\]
+Convexity makes these quotients decreasing as $t\downarrow0$ and also gives a
+lower bound, so the infimum exists in the Dedekind complete Riesz space $W$.
+The function $p_x$ is sublinear. The Hahn-Banach extension theorem quoted in
+the source paper therefore gives a linear $L_x\preceq p_x$. Since
+$p_x(y)\preceq f(x+y)-f(x)$, the map
+\[
+  a_x(z)=f(x)+L_x(z-x)
+\]
+is an affine minorant of $f$ touching $f$ at $x$. Taking one such minorant for
+each base point gives the desired envelope representation. If $f$ is monotone,
+then $p_x$ is monotone, and the Hahn-Banach-Kantorovich variant gives $L_x$
+positive.
+
+\section*{Main Result}
+
+\begin{theorem}[Affine envelope for order-convex maps]\label{thm:main}
+Let $V$ be a real vector space and let $(W,\succeq)$ be a Dedekind complete
+Riesz space. If $f:V\to W$ is $\succeq$-convex, then
+\[
+  f(x)=\sup_{a\in\Aff(f)} a(x),\qquad x\in V.
+\]
+The supremum is the lattice supremum in $W$.
+
+If, in addition, $(V,\succeq_V)$ is a partially ordered vector space and $f$ is
+$(\succeq_V,\succeq)$-monotone, then
+\[
+  f(x)=\sup_{a\in\Aff_+(f)} a(x),\qquad x\in V.
+\]
+\end{theorem}
+
+\begin{lemma}[Directional quotient]\label{lem:directional}
+Fix $x\in V$ and define
+\[
+  q_t(y)=\frac{f(x+ty)-f(x)}{t},\qquad t>0,\ y\in V.
+\]
+Then, for each $y\in V$, the family $\{q_t(y):t>0\}$ is bounded below and has an
+infimum
+\[
+  p_x(y):=\inf_{t>0}q_t(y)
+\]
+in $W$. The map $p_x:V\to W$ is $\succeq$-sublinear, i.e.
+\[
+  p_x(y)+p_x(z)\succeq p_x(y+z),\qquad
+  p_x(\alpha y)=\alpha p_x(y)\quad(\alpha\geq0).
+\]
+If $V$ is ordered and $f$ is monotone, then $p_x$ is monotone.
+\end{lemma}
+
+\begin{proof}
+If $0<s<t$, then
+\[
+  x+sy=\left(1-\frac{s}{t}\right)x+\frac{s}{t}(x+ty).
+\]
+Convexity gives
+\[
+  f(x+sy)\preceq \left(1-\frac{s}{t}\right)f(x)+\frac{s}{t}f(x+ty),
+\]
+and hence $q_s(y)\preceq q_t(y)$. Thus the quotients are increasing in the
+ordinary parameter $t$, or decreasing as $t\downarrow0$.
+
+They are bounded below. Indeed, for $t>0$,
+\[
+  x=\frac{1}{1+t}(x+ty)+\frac{t}{1+t}(x-y).
+\]
+Convexity yields
+\[
+  f(x)\preceq \frac{1}{1+t}f(x+ty)+\frac{t}{1+t}f(x-y),
+\]
+which rearranges to
+\[
+  f(x)-f(x-y)\preceq q_t(y).
+\]
+Since $W$ is a Dedekind complete Riesz space, lower bounded nonempty subsets
+have infima. Hence $p_x(y)$ is well-defined.
+
+Positive homogeneity is immediate for $\alpha>0$ from
+\[
+  q_t(\alpha y)=\alpha q_{\alpha t}(y),
+\]
+and the case $\alpha=0$ follows from $q_t(0)=0$.
+
+For subadditivity, convexity gives
+\[
+  x+t(y+z)=\frac12(x+2ty)+\frac12(x+2tz),
+\]
+so
+\[
+  q_t(y+z)\preceq q_{2t}(y)+q_{2t}(z),\qquad t>0.
+\]
+It remains only to pass to infima. We use the elementary order fact that if
+$a_t\downarrow a$ and $b_t\downarrow b$ over the same directed parameter set,
+then $a_t+b_t\downarrow a+b$. To verify it, let $c$ be a lower bound of
+$a_t+b_t$. For any two parameters $s,u$, choose $t$ below both. Then
+$c\preceq a_s+b_u$. Taking the infimum first over $s$ and then over $u$ gives
+$c\preceq a+b$. Applying this to $a_t=q_t(y)$ and $b_t=q_t(z)$ gives
+\[
+  p_x(y+z)
+  \preceq \inf_{t>0}\big(q_{2t}(y)+q_{2t}(z)\big)
+  =p_x(y)+p_x(z).
+\]
+
+Finally, if $f$ is monotone and $y\succeq_V z$, then $x+ty\succeq_V x+tz$ for
+all $t>0$, hence $q_t(y)\succeq q_t(z)$ for all $t>0$. Taking infima gives
+$p_x(y)\succeq p_x(z)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+Fix $x\in V$ and form $p_x$ as in Lemma \ref{lem:directional}. By Theorem A.1
+of the source paper, applied to the zero subspace and the zero linear map,
+there is a linear $L_x:V\to W$ such that
+\[
+  L_x(y)\preceq p_x(y),\qquad y\in V.
+\]
+For any $z\in V$, putting $y=z-x$ and using the term $t=1$ in the infimum gives
+\[
+  L_x(z-x)\preceq p_x(z-x)\preceq f(z)-f(x).
+\]
+Therefore
+\[
+  a_x(z):=f(x)+L_x(z-x)
+\]
+is an affine map satisfying $a_x\preceq f$, and it touches $f$ at $x$:
+$a_x(x)=f(x)$.
+
+For each fixed $z$, the set $\{a(z):a\in\Aff(f)\}$ is nonempty and bounded
+above by $f(z)$, so its supremum exists in $W$. Since every $a\in\Aff(f)$ is
+dominated by $f$, we have
+\[
+  \sup_{a\in\Aff(f)}a(z)\preceq f(z).
+\]
+Taking the touching minorant $a_z$ constructed at $z$ gives the reverse
+inequality, because $a_z(z)=f(z)$. Hence
+\[
+  f(z)=\sup_{a\in\Aff(f)}a(z).
+\]
+
+If $V$ is ordered and $f$ is monotone, Lemma \ref{lem:directional} shows that
+$p_x$ is monotone. Applying Theorem A.2 of the source paper instead of Theorem
+A.1 gives $L_x$ positive. The same touching-minorant argument then gives the
+representation over $\Aff_+(f)$.
+\end{proof}
+
+\begin{corollary}[Largest representing family]\label{cor:largest}
+The family $\Aff(f)$ is convex and is the largest family of affine minorants
+whose pointwise lattice supremum represents $f$. In the monotone case,
+$\Aff_+(f)$ has the corresponding largest-family property among affine
+minorants with positive linear part.
+\end{corollary}
+
+\begin{proof}
+Convexity of $\Aff(f)$ is immediate: if $a,b\preceq f$ and
+$\lambda\in[0,1]$, then $\lambda a+(1-\lambda)b\preceq f$. If a family
+$\mathcal A$ of affine maps represents $f$ by a pointwise supremum, then each
+$a\in\mathcal A$ satisfies $a(x)\preceq f(x)$ for all $x$, hence
+$\mathcal A\subseteq\Aff(f)$. The same proof applies to $\Aff_+(f)$.
+\end{proof}
+
+\section*{Verification Notes}
+
+The source paper's Appendix A proves the Hahn-Banach extension theorem
+(Theorem A.1) and the positive Hahn-Banach-Kantorovich variant (Theorem A.2)
+for maps into Dedekind complete Riesz spaces. Those are the only external
+mathematical tools used here.
+
+The theorem is finite-valued, matching the source paper's maps $h:V\to W$.
+It does not address proper extended-valued convex operators, topological
+lower-semicontinuity issues, or conditional-expectation penalty
+representations. It does, however, give the direct affine-minorant envelope
+generalization of the source paper's sublinear envelope theorem and its
+monotone-positive refinement.
+
+No computational verification is relevant. The packet was rendered from this
+LaTeX source, and the source paper PDF was rebuilt locally from the arXiv
+source bundle. The open-question crop is from page 22 of that rebuilt PDF.
+
+\section*{Novelty and Search Bounds}
+
+Local run indexes were searched for arXiv id \texttt{2404.10900}, the source
+title, \texttt{convex operators}, \texttt{order-convex},
+\texttt{affine minorants}, \texttt{affine envelope},
+\texttt{Hahn-Banach-Kantorovich}, and \texttt{Dedekind complete Riesz}. No
+prior run packet or attempt was found for this exact target before this packet
+was created.
+
+Bounded web searches on July 3, 2026 for exact and close phrases around the
+source sentence and the theorem statement found no matching answer. Scalar
+supporting-affine-minorant theorems are classical; this packet claims the
+order-valued finite-valued theorem prompted by the source paper, not a
+complete survey of all vector-valued convex duality.
+
+\section*{Human Review Recommendation}
+
+Check Lemma \ref{lem:directional}, especially the lower boundedness of the
+quotient family and the infimum-of-sums step in the Riesz order. If those
+steps are accepted, the rest is a direct application of the source paper's
+Hahn-Banach-Kantorovich theorem and should be considered a full finite-valued
+answer to the source paper's stated convex-operator generalization question.
+
+\begin{thebibliography}{9}
+
+\bibitem{GhossoubPrincipiWang}
+M. Ghossoub, G. Principi, and R. Wang,
+\emph{Allocation Mechanisms in Decentralized Exchange Markets with Frictions},
+arXiv:2404.10900.
+
+\bibitem{AliprantisBurkinshaw}
+C. D. Aliprantis and O. Burkinshaw,
+\emph{Positive Operators},
+Springer, 2006.
+
+\end{thebibliography}
+
+\end{document}

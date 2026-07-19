@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\intn}{\int_{\R^n}}
+\newcommand{\lap}{\mathcal L_p}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\grad}{\nabla}
+
+\title{A Regular-Class Existence Theorem for Santaló Gradient-Flow Curves}
+\author{Run fa\_banach\_001, lane 19}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Cordero-Erausquin, Fradelizi, and Langharst ask in Section 5.2 of
+arXiv:2409.05541 whether the time-dependent gradient-flow equation
+\[
+  s'(t)=-\frac{p}{2q}\grad_z Q(t,s(t))
+\]
+has at least one sufficiently smooth solution on $\R_+$ with
+$\lim_{t\to\infty}s(t)=0$. Here $0<p<1$, $q=p/(p-1)<0$, $f_t$ is a heat or
+Fokker-Planck evolution, and
+\[
+  Q(t,z)=\log\int_{\R^n}\lap(\tau_z f_t)(x)\dd x.
+\]
+The source passage is shown in Figure~\ref{fig:open}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[height=.78\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\caption{Open question on Santaló gradient-flow curves, source PDF page 33.}
+\label{fig:open}
+\end{figure}
+
+This packet proves a positive answer for the regular class used in the source
+paper's core semigroup theorem: bounded compactly supported nonzero data under
+the Fokker-Planck flow. The arbitrary nonnegative-function case and the
+$p=0$ volume-product endpoint are not claimed.
+
+\begin{remark}[Sign convention]
+We use the first equality in the source's proposed equation,
+$s'=-(p/(2q))\nabla_z Q(t,s)$, which is exactly the choice making the
+monotonicity condition used below hold with equality. With the source
+convention $\tau_a f(x)=f(x-a)$ one has $\nabla_z Q=q\,\mathbb E[X]$ under
+the tilted $\lap(\tau_z f_t)$ density, so the equivalent expectation formula
+carries a minus sign. This packet is therefore aligned with the displayed
+gradient equation and with the monotonicity condition, not with the informal
+sign in that expectation rewrite.
+\end{remark}
+
+\section*{Definitions}
+
+Fix $0<p<1$ and $q=p/(p-1)$. For a nonnegative function $g$ define
+\[
+  \lap(g)(x)=\left(\intn g(y)^{1/p}\e^{x\cdot y}\dd y\right)^q .
+\]
+Let $P_t f$ be the Fokker-Planck flow as in the source paper and set
+$f_t=P_tf$. For $t>0$ put
+\[
+  Q(t,z)=\log\intn \lap(f_t)(x)\e^{qz\cdot x}\dd x
+        =\log\intn \lap(\tau_z f_t)(x)\dd x .
+\]
+For bounded compactly supported nonzero $f$, the source paper proves that
+$Q$ is smooth on $(0,\infty)\times\R^n$, strictly convex in $z$, and finite
+for every $z$.
+
+It is convenient to set
+\[
+  c_p=-\frac{p}{2q}=\frac{1-p}{2}>0.
+\]
+The source equation is therefore
+\begin{equation}
+\label{eq:ode}
+  s'(t)=c_p\grad_z Q(t,s(t)).
+\end{equation}
+
+\section*{Proof Intuition}
+
+Along the Fokker-Planck flow, any bounded compactly supported density converges
+exponentially, with derivatives on compact sets, to a centered Gaussian. For a
+centered Gaussian $g$, a direct computation gives
+\[
+  Q_g(z)=C+\frac{|z|^2}{2(1-p)}, \qquad
+  c_p\grad Q_g(z)=\frac12 z.
+\]
+Thus the requested ODE is, near $t=\infty$, a small nonautonomous perturbation
+of $s'=s/2$. A terminal-at-infinity solution can then be obtained from the
+integral equation
+\[
+  s(t)=-\int_t^\infty \e^{(t-u)/2}R(u,s(u))\dd u,
+\]
+where $R(t,z)=c_p\grad Q(t,z)-z/2$ decays exponentially in $t$ and is small
+Lipschitz in $z$ on a large tail. The resulting small solution on
+$[T,\infty)$ is then extended backward by standard ODE continuation.
+
+\section*{Auxiliary Estimates}
+
+\begin{lemma}[Gaussian asymptotics of the vector field]
+\label{lem:asymptotic}
+Let $f\ge0$ be bounded, compactly supported, and not identically zero. Let
+$f_t=P_tf$. For every $R>0$ there are constants $C_R,\lambda>0$ and
+$T_R>0$ such that, for all $t\ge T_R$ and $|z|\le R$,
+\[
+  \left|c_p\grad_z Q(t,z)-\frac12 z\right|\le C_R\e^{-\lambda t},
+\]
+and
+\[
+  \left\|D_z\left(c_p\grad_z Q(t,z)-\frac12 z\right)\right\|
+  \le C_R\e^{-\lambda t}.
+\]
+\end{lemma}
+
+\begin{proof}
+The Fokker-Planck formula in the source paper can be written as a centered
+Gaussian factor multiplied by a Laplace transform of $f$ at a parameter of
+size $O(\e^{-t/2})$. Since $f$ is bounded and compactly supported, that
+Laplace transform and all its derivatives admit a Taylor expansion at the
+origin with remainders $O(\e^{-\lambda t})$ on compact $x$-sets. The same is
+therefore true for $f_t^{1/p}$ and for its Laplace transform
+$H_t(x)=\int f_t(y)^{1/p}\e^{x\cdot y}\dd y$, again locally uniformly with
+derivatives.
+
+Moreover the Gaussian upper and lower bounds in the source paper's class
+$\mathcal C$ are uniform for $t$ large. Since $q<0$, the functions
+$H_t(x)^q\e^{qz\cdot x}$ are dominated, uniformly for $|z|\le R$, by an
+integrable Gaussian. Differentiation under the integral sign is justified by
+the same domination, so $Q(t,\cdot)$ and its first two $z$-derivatives converge
+exponentially on $|z|\le R$ to the corresponding quantities for the limiting
+centered Gaussian.
+
+For $g=a\gamma_1$ one computes
+\[
+  \lap(g)(x)=C_{a,p,n}\exp\left(-\frac{p^2}{2(1-p)}|x|^2\right),
+\]
+and hence
+\[
+  Q_g(z)=C'_{a,p,n}+\frac{|z|^2}{2(1-p)}.
+\]
+Multiplying the gradient by $c_p=(1-p)/2$ gives the limiting vector field
+$z/2$. This proves the two displayed estimates.
+\end{proof}
+
+\begin{lemma}[No finite backward blow-up away from zero]
+\label{lem:continuation}
+Let $0<\varepsilon<T<\infty$. On $[\varepsilon,T]\times\R^n$ the vector field
+$F(t,z)=c_p\grad_zQ(t,z)$ is smooth and has at most linear growth in $z$.
+Consequently every solution of $s'=F(t,s)$ defined at time $T$ extends
+backward to all of $[\varepsilon,T]$.
+\end{lemma}
+
+\begin{proof}
+For $t\in[\varepsilon,T]$, the source paper's heat/Fokker-Planck regularization
+places $f_t$, its needed derivatives, and $\lap(f_t)$ in the Gaussian class
+$\mathcal C$, with constants locally uniform in $t$. Thus
+\[
+  \lap(f_t)(x)\e^{qz\cdot x}
+\]
+is squeezed between Gaussian tails with a linear tilt. Its normalized first
+moment is therefore bounded by $A_{\varepsilon,T}|z|+B_{\varepsilon,T}$. Since
+$\grad_zQ(t,z)$ is $q$ times that normalized first moment, $F$ has at most
+linear growth. Standard Picard-Lindelof continuation then prevents finite-time
+blow-up on $[\varepsilon,T]$.
+\end{proof}
+
+\section*{Main Partial Theorem}
+
+\begin{theorem}[Regular Santaló gradient-flow curves exist]
+\label{thm:main}
+Let $0<p<1$, $q=p/(p-1)$, and let $f:\R^n\to[0,\infty)$ be bounded, compactly
+supported, and not identically zero. Let $f_t=P_t f$ be its Fokker-Planck
+evolution and let $Q$ be defined above. Then there exists a $C^1$ curve
+$s:(0,\infty)\to\R^n$ such that
+\[
+  s'(t)=-\frac{p}{2q}\grad_z Q(t,s(t))
+\]
+for every $t>0$, and
+\[
+  \lim_{t\to\infty}s(t)=0.
+\]
+In particular, this curve satisfies the source paper's condition (58) with
+equality, and hence belongs to the regular version of
+$\widetilde{\mathcal S}_p(f)$.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+  F(t,z)=c_p\grad_zQ(t,z),\qquad
+  R(t,z)=F(t,z)-\frac12z .
+\]
+By Lemma~\ref{lem:asymptotic}, choose $T$ so large that on the unit ball
+$B(0,1)$ and for all $t\ge T$,
+\[
+  |R(t,0)|\le A\e^{-\lambda t},
+  \qquad
+  |R(t,z)-R(t,w)|\le \eta |z-w|,
+\]
+where $\eta>0$ is small enough that
+\[
+  \eta\int_0^\infty \e^{-v/2}\dd v <\frac12.
+\]
+Increase $T$ if necessary so that
+\[
+  A\int_T^\infty \e^{(T-u)/2}\e^{-\lambda u}\dd u<\frac12.
+\]
+
+Let $X_T$ be the closed set of continuous curves
+$s:[T,\infty)\to B(0,1)$ such that $\lim_{t\to\infty}s(t)=0$, equipped with
+the supremum norm. Define
+\[
+  (\Phi s)(t)=
+  -\int_t^\infty \e^{(t-u)/2}R(u,s(u))\dd u .
+\]
+The estimates above show that $\Phi$ maps $X_T$ into itself and is a
+contraction. Hence $\Phi$ has a unique fixed point $s$ on $[T,\infty)$. The
+fixed point is $C^1$ by differentiating the integral equation, and it satisfies
+\[
+  s'(t)=\frac12s(t)+R(t,s(t))=F(t,s(t)).
+\]
+Also $s(t)\to0$ by construction.
+
+It remains to extend the solution to all positive times. Lemma~\ref{lem:continuation}
+extends the solution backward from $T$ to every interval $[\varepsilon,T]$,
+$\varepsilon>0$. These extensions agree on overlaps by uniqueness for the
+smooth vector field. Taking their union gives a $C^1$ solution on
+$(0,\infty)$ with the same terminal limit at infinity.
+
+Finally, because $s'=-(p/(2q))\grad_zQ(t,s(t))$, the expression in source
+condition (58) is
+\[
+  \frac{p}{2q}|\grad_zQ(t,s(t))|^2
+  +\grad_zQ(t,s(t))\cdot s'(t)=0.
+\]
+Thus the curve is admissible in the regular $\widetilde{\mathcal S}_p(f)$
+sense.
+\end{proof}
+
+\section*{Scope and Novelty Check}
+
+The theorem proves the open-question existence statement for the source
+paper's regular bounded-compact-support class and the Fokker-Planck flow. It
+does not settle arbitrary nonnegative data, uniqueness among all terminal
+solutions, compact-region descriptions for all Santaló curves, or the endpoint
+$p=0$ volume-product equation.
+
+Cheap run indexes were searched for arXiv:2409.05541, Santaló, Nakamura,
+Tsuji, gradient flow, Laplace transform, and related convex-geometric terms.
+A bounded web search on July 19, 2026 found the source paper and open-problem
+summaries but no exact later answer to this gradient-flow existence question.
+
+\section*{References}
+
+\begin{enumerate}
+\item D. Cordero-Erausquin, M. Fradelizi, and D. Langharst,
+\emph{On a Santaló point for Nakamura-Tsuji's Laplace transform inequality},
+arXiv:2409.05541; Forum of Mathematics, Sigma 13 (2025), e125.
+\item S. Nakamura and H. Tsuji,
+\emph{The functional volume product under heat flow}, arXiv:2401.00427.
+\end{enumerate}
+
+\end{document}

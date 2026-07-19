@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\D}{\mathbb D}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{A Counterexample to the Clark Cauchy Transform Converse}
+\author{Automated Math Discovery Smoke Test}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Problem}
+
+This packet concerns Open Problem 4.4 from:
+
+\begin{quote}\raggedright
+C. Bellavita, E. Dellepiane, A. Hartmann, and J. Mashreghi,
+\emph{Infinitely supported harmonically weighted Dirichlet spaces which are
+de Branges Rovnyak spaces}, arXiv:2509.04907.
+\end{quote}
+
+The source proves that if $u$ is a one-component inner function and
+$\sigma$ is its Clark measure, then the truncated Cauchy transform
+\[
+  \cC_\sigma f(\zeta)
+  =
+  \int_{\T\setminus\{\zeta\}}
+    \frac{f(s)}{1-\overline{s}\zeta}\,d\sigma(s)
+\]
+is bounded on $L^2(\sigma)$. It then asks whether the converse is true:
+
+\begin{quote}
+Open problem 4.4. Let $\sigma$ be the Clark measure associated with $u$.
+Is it true that if $\cC_\sigma$ is bounded on $L^2(\sigma)$, then $u$ is a
+one-component inner function?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+Boundedness of the full Cauchy transform controls the singular integral
+operator, but it does not force the geometric mass-gap conditions appearing
+in Bessonov's characterization of Clark measures of one-component inner
+functions. We make the atom masses so small that the Cauchy matrix is
+Hilbert-Schmidt. At the same time, the masses are far too small compared to
+the adjacent gaps, so Bessonov's necessary lower estimate fails.
+
+\section*{The Counterexample}
+
+\begin{theorem}
+There is an inner function $u$ with Clark measure $\sigma$ such that
+$\cC_\sigma$ is bounded on $L^2(\sigma)$, but $u$ is not one-component.
+\end{theorem}
+
+\begin{proof}
+For $n\ge1$ put
+\[
+  \theta_n=2^{-n},\qquad
+  \zeta_n=e^{i\theta_n},\qquad
+  m_n=2^{-4n},
+\]
+and define the finite positive singular measure
+\[
+  \sigma=\sum_{n=1}^{\infty} m_n\delta_{\zeta_n}.
+\]
+By the standard Herglotz--Clark correspondence for singular measures on
+$\T$, there is an inner function $u$ for which $\sigma$ is the Clark measure
+corresponding to the parameter $1$.
+
+We first prove that $\cC_\sigma$ is bounded on $L^2(\sigma)$. Identifying
+$L^2(\sigma)$ with $\ell^2(m_n)$, the transform is represented on finitely
+supported sequences by
+\[
+  (\cC_\sigma f)(\zeta_j)
+  =
+  \sum_{i\ne j}
+    \frac{m_i f(\zeta_i)}
+         {1-\overline{\zeta_i}\zeta_j}.
+\]
+Conjugating by the unitary map
+$f\mapsto (m_n^{1/2}f(\zeta_n))_{n\ge1}$ gives the matrix
+\[
+  a_{ji}
+  =
+  \begin{cases}
+  \displaystyle
+  \frac{(m_i m_j)^{1/2}}
+       {1-\overline{\zeta_i}\zeta_j},& i\ne j,\\[1.2ex]
+  0,&i=j.
+  \end{cases}
+\]
+It is enough to show that this matrix is Hilbert-Schmidt.
+
+For $i<j$,
+\[
+  |\theta_i-\theta_j|
+  =
+  2^{-i}-2^{-j}
+  \ge 2^{-i-1}.
+\]
+Since $|\theta_i-\theta_j|<1$, the elementary estimate
+$|1-e^{it}|\ge c|t|$ gives
+\[
+  |1-\overline{\zeta_i}\zeta_j|
+  =
+  |1-e^{i(\theta_j-\theta_i)}|
+  \ge c\,2^{-i}.
+\]
+Therefore
+\[
+  |a_{ji}|^2
+  \le
+  C\,2^{-4i}2^{-4j}2^{2i}
+  =
+  C\,2^{-2i-4j}
+  \qquad (i<j).
+\]
+The same estimate with $i$ and $j$ interchanged handles $j<i$. Hence
+\[
+  \sum_{i,j\ge1}|a_{ji}|^2
+  \le
+  2C\sum_{1\le i<j}2^{-2i-4j}
+  <\infty.
+\]
+Thus $\cC_\sigma$ is Hilbert-Schmidt, in particular bounded, on
+$L^2(\sigma)$.
+
+It remains to show that $u$ is not one-component. The source quotes
+Bessonov's characterization as Theorem 3.8. One necessary condition for a
+Clark measure of a one-component inner function is the existence of a
+constant $A>0$ such that every isolated atom $\xi$ satisfies
+\[
+  \sigma(\{\xi\})\ge A|\xi-\xi^+|
+\]
+for each adjacent atom $\xi^+$.
+Here $\zeta_{n+1}$ is adjacent to $\zeta_n$ in the accumulating chain, and
+\[
+  |\zeta_n-\zeta_{n+1}|
+  \asymp
+  |\theta_n-\theta_{n+1}|
+  =
+  2^{-n-1}.
+\]
+Consequently
+\[
+  \frac{\sigma(\{\zeta_n\})}{|\zeta_n-\zeta_{n+1}|}
+  \asymp
+  \frac{2^{-4n}}{2^{-n}}
+  =
+  2^{-3n}
+  \longrightarrow 0.
+\]
+No positive lower mass-gap constant $A$ exists. Therefore Bessonov's
+necessary condition fails, and the inner function $u$ cannot be
+one-component.
+\end{proof}
+
+\section*{Verification and Novelty Check}
+
+The file \texttt{code/check\_hilbert\_schmidt.py} computes finite partial
+sums of the Hilbert-Schmidt norm for the displayed matrix. This is only a
+sanity check; the proof above gives the exact summability estimate.
+
+Before promotion, the run indexes were searched for \texttt{2509.04907},
+the source title, \texttt{Clark measure}, \texttt{Cauchy transform}, and
+\texttt{one-component inner function}. Web searches for exact and nearby
+phrases from Open Problem 4.4 only found the source paper. The counterexample
+uses the problem exactly as stated; it does not address possible strengthened
+versions where one assumes Bessonov's atom-neighbor geometry or mass-gap
+conditions in advance.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{BDHM}
+C. Bellavita, E. Dellepiane, A. Hartmann, and J. Mashreghi,
+\emph{Infinitely supported harmonically weighted Dirichlet spaces which are
+de Branges Rovnyak spaces}, arXiv:2509.04907, 2025.
+
+\bibitem{Bessonov}
+R. V. Bessonov,
+\emph{Duality theorems for coinvariant subspaces of $H^1$},
+Advances in Mathematics \textbf{271} (2015), 62--90.
+
+\bibitem{CMR}
+J. A. Cima, A. L. Matheson, and W. T. Ross,
+\emph{The Cauchy Transform},
+Mathematical Surveys and Monographs, American Mathematical Society, 2006.
+
+\end{thebibliography}
+
+\end{document}

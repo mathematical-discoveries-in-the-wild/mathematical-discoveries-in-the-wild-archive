@@ -1,0 +1,262 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Torus}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{The Random Furstenberg Set is a $\Lambda(q)$-Set\\
+for Every Finite $q>2$}
+\author{Candidate full solution produced in run \texttt{fa\_banach\_001}\\
+Model: GPT5.6}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, currently assessed as likely valid and awaiting
+human review. The novelty search described below was bounded, not exhaustive.}}
+\end{center}
+
+\section{Source and open question}
+
+Fan, Queff\'elec, and Queff\'elec define the random Furstenberg set
+$T=T(\omega)$ by independent selectors
+\begin{equation}\label{eq:selectors}
+ \mathbb P(n\in T)=\delta_n:=\frac{\log n}{n},\qquad n\geq2.
+\end{equation}
+In arXiv:2104.08944v2 they prove that $T$ is almost surely $p$-Rider for
+$p>4/3$ and then ask whether $T$, like the deterministic Furstenberg set,
+is a $\Lambda(p)$-set for every finite $p$~\cite[p.~9]{source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open question in arXiv:2104.08944v2, PDF page 9, immediately
+after Theorem 1.7. The crop retains the full readable text width.}
+\end{figure}
+
+For $q>2$, a set $E\subset\mathbb Z$ is a $\Lambda(q)$-set if there is a
+constant $C_{q,E}<\infty$ such that every trigonometric polynomial
+$f(x)=\sum_{n\in E}a_ne^{2\pi i n x}$ satisfies
+\begin{equation}\label{eq:lambda-def}
+ \|f\|_{L^q(\Torus)}\leq C_{q,E}
+ \Big(\sum_{n\in E}|a_n|^2\Big)^{1/2}.
+\end{equation}
+
+\section{Proof intuition}
+
+The selector means in \eqref{eq:selectors} are just large enough to give
+$|T\cap[1,N]|$ order $(\log N)^2$, but they are small enough that every
+\emph{fixed} additive-relation type occurs only finitely often. Indeed, if a
+fixed integer relation has largest entry $M$, another entry must be comparable
+to $M$. Once the other entries are fixed, this second large entry is
+determined. The expected number of such relations is then bounded by a
+convergent series of order
+$\sum_M (\log M)^{2r-2}/M^2$.
+
+The key bookkeeping point is that a Fourier moment contains repeated indices.
+Those repetitions cannot be fed directly into the independence calculation.
+Instead, cancel the common multiplicity of each frequency on the two sides of
+the moment equation. The remaining distinct support is one of finitely many
+random relation cores. The canceled part is an arbitrary common multiset, but
+summing it produces exactly a power of the coefficient $\ell^2$ norm. Thus
+every even Fourier moment has the required bound.
+
+\section{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let $T$ be the random subset of the positive integers defined by the
+independent selectors \eqref{eq:selectors}. With probability one, simultaneously
+for every finite $q>2$, the set $T$ is a $\Lambda(q)$-set.
+Equivalently, almost surely, for every finite $q>2$ there is a random constant
+$C_{q,T}<\infty$ for which \eqref{eq:lambda-def} holds for all finitely
+supported coefficient families on $T$.
+\end{theorem}
+
+\section{Proof}
+
+We first isolate the probabilistic input. A tuple is called injective if all
+its entries are distinct.
+
+\begin{lemma}[Only finitely many fixed injective relations]\label{lem:cores}
+Fix $r\geq1$ and nonzero integers $c_1,\ldots,c_r$. Almost surely there are
+only finitely many injective tuples $(v_1,\ldots,v_r)\in T^r$ satisfying
+\begin{equation}\label{eq:fixed-relation}
+ c_1v_1+\cdots+c_rv_r=0.
+\end{equation}
+Moreover, the almost-sure event can be chosen simultaneously for all such
+finite integer coefficient vectors.
+\end{lemma}
+
+\begin{proof}
+There is nothing to prove for a coefficient vector admitting no positive
+solution, so suppose a solution is given and put $M=\max_k v_k$. Choose an
+index $i$ with $v_i=M$. The relation gives
+\[
+ |c_i|M\leq\sum_{k\ne i}|c_k|v_k.
+\]
+Consequently some $j\ne i$ satisfies $v_j\geq\kappa M$, where
+$\kappa>0$ depends only on the fixed coefficient vector. There are only
+finitely many choices for the ordered pair $(i,j)$.
+
+Write $D(M)=\sum_{n\leq M}\delta_n$. For $M$ large enough,
+\begin{equation}\label{eq:selector-bounds}
+ D(M)\leq C(1+\log M)^2,
+ \qquad
+ \delta_M\leq C\frac{1+\log M}{M},
+ \qquad
+ \sup_{\kappa M\leq n\leq M}\delta_n
+ \leq C_{\kappa}\frac{1+\log M}{M}.
+\end{equation}
+Fix $i,j$, the value $M=v_i$, and all $v_k$ with $k\ne i,j$.
+Equation \eqref{eq:fixed-relation} determines $v_j$ uniquely. Restricting to
+injective tuples lets us multiply the selector probabilities. Therefore the
+expected number $N_c$ of injective solutions is bounded by
+\begin{align*}
+ \E N_c
+ &\leq O_c(1)+
+ C_c\sum_{M\geq3}
+ \delta_M\frac{1+\log M}{M}D(M)^{r-2} \\
+ &\leq O_c(1)+C_c'
+ \sum_{M\geq3}\frac{(1+\log M)^{2r-2}}{M^2}<\infty.
+\end{align*}
+For $r=1$ there are no positive solutions, and for $r=2$ the factor
+$D(M)^{r-2}$ is interpreted as $1$.
+
+Thus $N_c<\infty$ almost surely. There are only countably many finite integer
+coefficient vectors, so intersecting their probability-one events proves the
+simultaneous assertion.
+\end{proof}
+
+We now work on the probability-one event supplied by Lemma~\ref{lem:cores}.
+Fix an integer $m\geq2$ and a trigonometric polynomial
+\[
+ f(x)=\sum_{n\in T}a_ne^{2\pi i n x},
+ \qquad B:=\sum_{n\in T}|a_n|^2<\infty.
+\]
+Fourier orthogonality gives
+\begin{equation}\label{eq:moment-expansion}
+ \|f\|_{2m}^{2m}
+ =\sum_{x_1+\cdots+x_m=y_1+\cdots+y_m}
+ a_{x_1}\cdots a_{x_m}
+ \overline{a_{y_1}\cdots a_{y_m}},
+\end{equation}
+where all indices lie in $T$ and in the finite support of $f$.
+
+For a tuple in \eqref{eq:moment-expansion} and each distinct frequency $v$,
+let
+\[
+ c_v=\#\{i:x_i=v\}-\#\{j:y_j=v\}.
+\]
+Delete the frequencies with $c_v=0$. If none remain, call the tuple diagonal.
+Otherwise the remaining distinct frequencies form an injective reduced core
+\begin{equation}\label{eq:core}
+ \sum_{v\in V}c_vv=0,
+ \qquad 0<|c_v|\leq m,
+ \qquad \sum_{v\in V}c_v=0.
+\end{equation}
+For fixed $m$ there are only finitely many possible coefficient patterns in
+\eqref{eq:core}; Lemma~\ref{lem:cores} says that each has only finitely many
+realizations in $T$. Hence the total number $K_m(T)$ of nonempty reduced cores
+is finite.
+
+Fix one core and put
+\[
+ s=\sum_{c_v>0}c_v=-\sum_{c_v<0}c_v\leq m.
+\]
+Every full tuple reducing to this core is obtained by adding a common multiset
+of $m-s$ frequencies to its two sides and then ordering the slots. To obtain
+an upper bound, represent that multiset by an ordered list
+$z_1,\ldots,z_{m-s}\in T$ and allow all slot permutations. The total absolute
+contribution of the fixed core to \eqref{eq:moment-expansion} is at most
+\begin{align*}
+ (m!)^2
+ \Big(\prod_{v\in V}|a_v|^{|c_v|}\Big)
+ \sum_{z_1,\ldots,z_{m-s}\in T}
+ \prod_{\ell=1}^{m-s}|a_{z_\ell}|^2
+ &=(m!)^2
+ \Big(\prod_{v\in V}|a_v|^{|c_v|}\Big)B^{m-s} \\
+ &\leq(m!)^2B^m.
+\end{align*}
+The last inequality uses $|a_v|\leq B^{1/2}$ and
+$\sum_v|c_v|=2s$. The diagonal tuples obey the same estimate with the empty
+core. Taking absolute values termwise in \eqref{eq:moment-expansion} therefore
+gives
+\begin{equation}\label{eq:even-bound}
+ \|f\|_{2m}^{2m}
+ \leq (m!)^2\bigl(1+K_m(T)\bigr)B^m.
+\end{equation}
+Thus $T$ is a $\Lambda(2m)$-set for every integer $m\geq2$.
+
+Finally, given any finite $q>2$, choose $m$ with $2m\geq q$. Haar measure on
+$\Torus$ is normalized, so $\|f\|_q\leq\|f\|_{2m}$. Combining this with
+\eqref{eq:even-bound} proves the $\Lambda(q)$ inequality and completes the
+proof of Theorem~\ref{thm:main}.
+
+\section{Verification notes}
+
+Two tempting shortcuts would be false, and the proof avoids both. First, a
+full $2m$-term relation need not occur only finitely often: a fixed nontrivial
+core can be padded by arbitrary common frequencies. The proof sums this padding
+as $B^{m-s}$. Second, repeated indices cannot be assigned a product of selector
+probabilities. Independence is invoked only after the support has been reduced
+to distinct core frequencies.
+
+The relation-count estimate is uniform enough for simultaneous use because
+there are countably many coefficient vectors. For any fixed moment order only
+finitely many of those vectors are relevant. No computational experiment is
+an ingredient of the proof.
+
+\section{Novelty search, scope, and limitations}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched for
+arXiv:2104.08944, the exact title, random Furstenberg sets, $\Lambda(q)$,
+$p$-Rider, quasi-independent relations, and selector means $\log n/n$.
+No duplicate was found.
+
+The authors' 2023 follow-up still states that a positive-density subset
+$T'\subset T$ is $\Lambda(q)$ for every finite $q$, but that they do not know
+whether $T$ itself has this property~\cite[Section 5.2]{followup}. Bounded
+arXiv-focused and general web searches on 19 July 2026 used the exact titles,
+authors, quoted question, and close selector formulations. They found the 2021
+source and 2023 follow-up but no later resolution. This is not an exhaustive
+bibliographic guarantee.
+
+The theorem proves the qualitative $\Lambda(q)$ property with an almost-sure
+constant depending on $q$ and the realization. It does not provide a useful
+deterministic bound on that random constant, and it does not settle whether
+$T$ is $4/3$-Rider or whether the deterministic Furstenberg set $S$ is
+$4/3$-Rider or $4/3$-Sidon.
+
+\section{Human-review recommendation}
+
+This is a candidate full affirmative answer to the source's whole-set
+$\Lambda(q)$ question. The highest-value expert checks are (i) the summation
+over a coefficient-dependent comparable pair in Lemma~\ref{lem:cores}; and
+(ii) the claim that every moment tuple is overcounted by one reduced core,
+an ordered common list, and at most $(m!)^2$ slot permutations.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+A. Fan, H. Queff\'elec, and M. Queff\'elec,
+\emph{The Furstenberg set and its random version},
+arXiv:2104.08944v2, 2022.
+
+\bibitem{followup}
+A. Fan, H. Queff\'elec, and M. Queff\'elec,
+\emph{Old and new results on the Furstenberg sets},
+arXiv:2303.06850v1, 2023.
+\end{thebibliography}
+
+\end{document}

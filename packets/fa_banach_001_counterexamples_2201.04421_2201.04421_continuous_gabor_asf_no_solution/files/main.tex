@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Lp}{L^p(\mathbb R)}
+\newcommand{\Lq}{L^q(\mathbb R)}
+\newcommand{\Cc}{C_c^\infty(\mathbb R)}
+
+\title{A negative answer to the continuous same-sign Gabor ASF problem}
+\author{agent\_lane\_14}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper is K. Mahesh Krishna, \emph{The \((abc,pqr)\)-problem for
+Approximate Schauder Frames for Banach Spaces}, arXiv:2201.04421.  At the end
+of Section 2 it asks:
+
+\begin{quote}
+Let \(1<p<\infty\) and \(q\) be the conjugate index of \(p\). Characterize
+functions \(g\in L^p(\mathbb R)\), \(h\in L^q(\mathbb R)\) such that the pair
+\[
+  (\{\widetilde E_b\widetilde T_a h\}_{a,b\in\mathbb R},
+    \{E_bT_ag\}_{a,b\in\mathbb R})
+\]
+is a continuous approximate Schauder frame for \(L^p(\mathbb R)\).
+\end{quote}
+
+The same paper defines the dual pairing by
+\[
+   [x,\omega]=\int_{\mathbb R}x(t)\omega(t)\,dt
+\]
+and defines
+\[
+ (E_b f)(t)=e^{2\pi i bt}f(t),\qquad
+ (T_a f)(t)=f(t-a),
+\]
+with the analogous same-sign definitions for \(\widetilde E_b,\widetilde T_a\)
+on \(L^q\).  The continuous ASF definition used by the source paper is the one
+in Krishna's arXiv:2201.00980: for every \(x\in X\) and \(\phi\in X^*\), the
+coefficient product is measurable and integrable, and the Pettis frame operator
+\[
+ Sx=\int_\Omega f_\alpha(x)\tau_\alpha\,d\mu(\alpha)
+\]
+is bounded and invertible.
+
+\section*{Result}
+
+\begin{theorem}
+Let \(1<p<\infty\), let \(q\) be conjugate to \(p\), and let
+\(g\in L^p(\mathbb R)\), \(h\in L^q(\mathbb R)\).  With the same-sign
+translation-modulation convention above, the pair
+\[
+  (\{\widetilde E_b\widetilde T_a h\}_{a,b\in\mathbb R},
+    \{E_bT_ag\}_{a,b\in\mathbb R})
+\]
+is not a continuous approximate Schauder frame for \(L^p(\mathbb R)\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+For Hilbert-space continuous Gabor frames, the analysis coefficient carries the
+opposite phase from the synthesis vector.  In the source problem, both phases
+have the same sign with respect to the \(L^p\)-\(L^q\) bilinear pairing.  When
+one integrates over the full frequency line, this does not produce
+\(\delta(t-s)\); it produces \(\delta(t+s)\).  Thus the putative frame operator
+is forced to be reflection, \(x(s)\mapsto x(-s)\), followed by multiplication
+by a correlation of \(h\) and \(g\).  That correlation is a \(C_0\)-function, so
+it decays at infinity and cannot be bounded away from zero.  Hence the operator
+cannot be invertible on \(L^p(\mathbb R)\).
+
+\section*{Proof}
+
+Assume, toward a contradiction, that the displayed pair is a continuous ASF.
+Thus for all \(x\in L^p\) and all \(y\in L^q\), the scalar function
+\[
+ (a,b)\mapsto
+ \left(\int_\R x(t)e^{2\pi i bt}h(t-a)\,dt\right)
+ \left(\int_\R e^{2\pi i bs}g(s-a)y(s)\,ds\right)
+\]
+is integrable over \(\R^2\), and the Pettis integral defines a bounded
+invertible operator \(S:L^p\to L^p\).
+
+Fix \(x,y\in C_c^\infty(\mathbb R)\).  For fixed \(a\), set
+\[
+  u_a(t)=x(t)h(t-a),\qquad v_a(t)=y(t)g(t-a).
+\]
+Then \(u_a,v_a\in L^1(\mathbb R)\).  With the Fourier transform convention
+\(\widehat f(\xi)=\int_\R f(t)e^{-2\pi i t\xi}\,dt\), the two coefficients are
+\(\widehat u_a(-b)\) and \(\widehat v_a(-b)\).  By the continuous ASF
+integrability hypothesis and Fubini's theorem, for almost every \(a\) the
+product \(\widehat u_a(-b)\widehat v_a(-b)\) is integrable in \(b\).  For
+\(L^1\)-functions whose Fourier-transform product is integrable, Fourier
+inversion for the product gives
+\[
+ \int_\R \widehat u_a(-b)\widehat v_a(-b)\,db
+ =\int_\R u_a(t)v_a(-t)\,dt .
+\]
+Therefore
+\begin{align*}
+ \langle Sx,y\rangle
+ &= \int_\R\int_\R x(t)y(-t)h(t-a)g(-t-a)\,dt\,da  \\
+ &= \int_\R x(t)y(-t)c(t)\,dt,
+\end{align*}
+where
+\[
+  c(t)=\int_\R h(t-a)g(-t-a)\,da
+      =\int_\R h(u)g(u-2t)\,du .
+\]
+The interchange of the \(a\)- and \(t\)-integrals is justified by
+\[
+ \int_\R |h(t-a)g(-t-a)|\,da
+ \le \|h\|_q\|g\|_p
+\]
+and the compact support of \(x(t)y(-t)\).
+
+Thus, for every \(x,y\in C_c^\infty(\mathbb R)\),
+\[
+  \langle Sx,y\rangle=\int_\R c(-s)x(-s)y(s)\,ds.
+\]
+Since \(C_c^\infty\) is dense in \(L^q\), it follows that
+\[
+  (Sx)(s)=m(s)x(-s),\qquad m(s)=c(-s)=\int_\R h(u)g(u+2s)\,du
+\]
+for every \(x\in C_c^\infty(\mathbb R)\).
+
+Now \(m\in C_0(\mathbb R)\).  Indeed, if \(\check g(r)=g(-r)\), then
+\[
+  c(t)=(h*\check g)(2t),
+\]
+and the standard \(L^q*L^p\subset C_0\) convolution fact applies for conjugate
+\(p,q\) with \(1<p<\infty\).  In particular \(m\) is bounded and tends to zero
+at infinity.
+
+The operator \(x\mapsto m(\cdot)x(-\cdot)\) is bounded on \(L^p\).  Since it
+agrees with \(S\) on the dense subspace \(C_c^\infty\), the boundedness of
+\(S\) forces
+\[
+  Sx=m(\cdot)x(-\cdot)\qquad (x\in L^p(\mathbb R)).
+\]
+But no such operator is bounded below when \(m\in C_0(\mathbb R)\).  Given
+\(\varepsilon>0\), choose a measurable set \(E\) of positive finite measure
+outside a compact set on which \(|m|<\varepsilon\), and take
+\(x=\mathbf 1_{-E}\).  Then
+\[
+ \|Sx\|_p=\|m\,\mathbf 1_E\|_p\le \varepsilon \|\mathbf 1_E\|_p
+       =\varepsilon\|x\|_p .
+\]
+As \(\varepsilon\) is arbitrary, \(S\) is not bounded below, contradicting
+invertibility.  This proves the theorem.
+
+\section*{Verification and Limitations}
+
+The argument proves a negative answer only for the continuous full-plane
+problem as written in arXiv:2201.04421, using the source paper's same-sign
+definition of \(\widetilde E_b\) on the dual side.  It does not address the
+discrete \((abc,pqr)\)-problem, the discrete \((MN,PQ)\)-problem, or a modified
+continuous Gabor problem with the opposite phase in the dual coefficient.
+
+The proof is non-computational.  The only analytic inputs are the continuous ASF
+integrability hypothesis, the elementary Fourier identity
+\(\int \widehat u(\xi)\widehat v(\xi)\,d\xi=\int u(t)v(-t)\,dt\) when
+\(u,v\in L^1\) and \(\widehat u\,\widehat v\in L^1\), and the standard
+convolution inclusion \(L^q*L^p\subset C_0\).
+
+\section*{Novelty Check}
+
+The run indexes were searched for arXiv:2201.04421 and the keywords
+`abc', `pqr', `approximate Schauder frame', `continuous approximate Schauder
+frame', and `Gabor'.  Adjacent frame packets were found, but no packet for this
+paper.  Web searches on 2026-06-28 for exact phrases including
+`abc,pqr approximate Schauder frames', `continuous approximate Schauder frame
+Gabor Lp', and `tilde E tilde T approximate Schauder frame Lp' found the source
+arXiv page and the Eisner--Freeman continuous Schauder frame paper, but no later
+answer to this same-sign continuous formulation.
+
+\section*{References}
+
+\begin{enumerate}
+\item K. Mahesh Krishna, \emph{The \((abc,pqr)\)-problem for Approximate
+Schauder Frames for Banach Spaces}, arXiv:2201.04421,
+\url{https://arxiv.org/abs/2201.04421}.
+\item K. Mahesh Krishna, \emph{Discrete and continuous Welch bounds for Banach
+spaces with applications}, arXiv:2201.00980.
+\item Joseph Eisner and Daniel Freeman, \emph{Continuous Schauder frames for
+Banach spaces}, arXiv:1812.08360.
+\end{enumerate}
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid counterexample/negative solution to the continuous
+problem in arXiv:2201.04421.  The key convention to verify is that the source
+paper's dual pairing is bilinear, \([x,\omega]=\int x\omega\), and its dual
+modulation \(\widetilde E_b\) has the same sign as \(E_b\).
+
+\end{document}

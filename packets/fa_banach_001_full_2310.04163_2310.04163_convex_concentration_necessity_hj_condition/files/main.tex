@@ -1,0 +1,258 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[margin=1.08in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\PsiF}{\Psi}
+\newcommand{\PhiF}{\Phi}
+
+\title{Convex concentration forces the Hoffmann--Jorgensen Orlicz condition}
+\author{Agent lane 06}
+\date{Run \texttt{fa\_banach\_001}, 2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a full answer to Remark 4.9 of Adamczak--Kutek,
+\emph{On Orlicz spaces satisfying the Hoffmann--Jorgensen inequality}
+\cite{AK2023}.  They prove that condition \((\mathrm{HJ})\) implies their
+convex-Lipschitz concentration inequality (4.9), and ask whether
+\((\mathrm{HJ})\) is also necessary when \(\Psi(x)\le C e^{Cx}\).  It is
+necessary.
+
+\section*{Source question}
+
+The source defines \(\Psi(x)=e^{\psi(x)}-1\) and says that \(\Psi\) satisfies
+\((\mathrm{HJ})\) if there is \(K>0\) such that, for all large \(s,u\),
+\[
+        \psi(su)\le K\bigl(s\log(1+s)+s\psi(u)\bigr).
+\]
+For \(\Phi(t)=\Psi(t^2)\), Proposition 4.7 proves a concentration inequality
+for convex 1-Lipschitz functions under \((\mathrm{HJ})\).  Immediately after
+it, Remark 4.9 states:
+
+\begin{quote}
+We note that unlike in the case of inequalities presented in Section 4.1 we do
+not know if under an additional assumption that \(\Psi(x)\le Ce^{Cx}\), the
+condition \((\mathrm{HJ})\) is necessary for the inequality (4.9) to hold.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Theorem}
+
+Let \(\Psi\) be an Orlicz function, write \(\Psi=e^\psi-1\), and set
+\(\Phi(t)=\Psi(t^2)\).  Assume that \(\Psi(x)\le A e^{Ax}\) for all large
+\(x\), for some \(A<\infty\).  Suppose that there are constants \(a,A_0>0\)
+such that for every \(N\), every random vector
+\(X=(X_1,\ldots,X_N)\) with independent real coordinates, every convex
+1-Lipschitz \(f:\R^N\to\R\), and every \(t>0\),
+\begin{equation}\label{eq:assumed-convex}
+\Pp\bigl(|f(X)-\E f(X)|\ge t\bigr)
+\le
+A_0\exp\left(-a\,\frac{t^2}{(\E \max_{i\le N}|X_i|)^2}\right)
++
+\frac{A_0}{\Phi\left(a\,t/\|\max_{i\le N}|X_i|\|_\Phi\right)+1}.
+\end{equation}
+Then \(\Psi\) satisfies \((\mathrm{HJ})\).
+
+\section*{Idea of the proof}
+
+Use the same sparse Bernoulli variables as in the source's necessity proof for
+the empirical-process inequalities, but feed them to the convex function
+\(x\mapsto \|x\|_2\).  If there are at least \(s\) rare hits, the Euclidean
+norm is of size \(\sqrt{s}\).  Meanwhile the maximum coordinate has expectation
+of order \(1/\Psi(u)\) and \(\Phi\)-norm of order \(u^{-1/2}\).  Therefore the
+second term in \eqref{eq:assumed-convex}, evaluated at \(t\simeq\sqrt{s}\), is
+of order \(\exp[-\psi(csu)]\).  The rare-hit event has Poisson probability at
+least \(\exp[-C(s\log(1+s)+s\psi(u))]\).  Comparing the upper and lower bounds
+forces the \((\mathrm{HJ})\) inequality.
+
+\section*{Proof}
+
+We shall use constants \(C,c\in(0,\infty)\) depending only on the constants in
+\eqref{eq:assumed-convex} and on \(\Psi\).  Their values may change from line
+to line.
+
+Fix \(u\) large enough that \(\Psi(u)>2\), and fix \(s\ge 1\).  For each
+large \(N\), let \(p_N=(N\Psi(u))^{-1}\), let
+\(Y_{N,1},\ldots,Y_{N,N}\) be independent Bernoulli variables with
+\(\Pp(Y_{N,i}=1)=p_N\), and set
+\[
+        X_{N,i}=Y_{N,i}-p_N,\qquad
+        X^{(N)}=(X_{N,1},\ldots,X_{N,N}).
+\]
+Let \(K_N=\sum_{i=1}^N Y_{N,i}\), and let \(Z\) be a Poisson random variable
+with parameter \(\lambda=1/\Psi(u)\).  Then \(K_N\) converges in total
+variation to \(Z\).
+
+Take the convex 1-Lipschitz function \(f_N(x)=\|x\|_2\).  If
+\(K_N\ge \lceil 16s\rceil\) and \(N\) is so large that \(p_N\le 1/2\), then
+\[
+        f_N(X^{(N)})\ge (1-p_N)\sqrt{K_N}\ge 2\sqrt{s}.
+\]
+Also
+\[
+        \E f_N(X^{(N)})
+        \le \bigl(\E \|X^{(N)}\|_2^2\bigr)^{1/2}
+        = \bigl(Np_N(1-p_N)\bigr)^{1/2}
+        \le \Psi(u)^{-1/2}\le 1.
+\]
+Thus, for \(s\ge 1\),
+\[
+        \{K_N\ge \lceil 16s\rceil\}
+        \subset
+        \{f_N(X^{(N)})-\E f_N(X^{(N)})\ge \sqrt{s}\}.
+\]
+Letting \(N\to\infty\), Stirling's lower bound gives
+\begin{equation}\label{eq:poisson-lower}
+\liminf_{N\to\infty}
+\Pp\bigl(f_N(X^{(N)})-\E f_N(X^{(N)})\ge \sqrt{s}\bigr)
+\ge
+\exp\{-C(s\log(1+s)+s\psi(u))\}.
+\end{equation}
+Indeed, the single term
+\(\Pp(Z=\lceil 16s\rceil)=e^{-\lambda}\lambda^{\lceil 16s\rceil}/\lceil
+16s\rceil!\) has this size, since
+\(\log\Psi(u)\le \psi(u)\).
+
+We now estimate the two parameters in \eqref{eq:assumed-convex}.  Let
+\[
+        W_N=\max_{i\le N}|X_{N,i}|.
+\]
+If no Bernoulli success occurs, then \(W_N=p_N\); otherwise \(W_N\le 1\).  Hence
+\[
+        \E W_N\le \Pp(K_N\ge 1)+p_N\le Np_N+p_N\le \frac{2}{\Psi(u)}
+\]
+for \(N\) large.
+
+For the \(\Phi\)-norm, put \(B_N=\mathbf 1_{\{K_N\ge 1\}}\).  Since
+\(\Pp(B_N=1)\le 1/\Psi(u)\),
+\[
+        \E \Phi(\sqrt{u}\,B_N)
+        =
+        \Pp(B_N=1)\Psi(u)
+        \le 1,
+\]
+and so \(\|B_N\|_\Phi\le u^{-1/2}\).  Since \(W_N\le B_N+p_N\) and
+\(\|\mathbf 1\|_\Phi\) is a fixed finite constant, taking \(N\) still larger
+if necessary yields
+\begin{equation}\label{eq:parameters}
+        \E W_N\le \frac{2}{\Psi(u)},\qquad
+        \|W_N\|_\Phi\le \frac{C}{\sqrt{u}} .
+\end{equation}
+
+Applying \eqref{eq:assumed-convex} to \(f_N\) with \(t=\sqrt{s}\), using
+\eqref{eq:parameters}, and letting \(N\to\infty\), we obtain
+\begin{multline}\label{eq:upper}
+\limsup_{N\to\infty}
+\Pp\bigl(f_N(X^{(N)})-\E f_N(X^{(N)})\ge \sqrt{s}\bigr)\\
+\le
+C\exp\{-c\,s\Psi(u)^2\}
++
+C\exp\{-\psi(csu)\}.
+\end{multline}
+Here the second term uses \(\Phi(r)=\Psi(r^2)\):
+\[
+        \Phi\left(a\sqrt{s}/\|W_N\|_\Phi\right)
+        \ge
+        \Psi(csu).
+\]
+
+Combining \eqref{eq:poisson-lower} and \eqref{eq:upper}, and writing
+\[
+        R(s,u)=C\bigl(s\log(1+s)+s\psi(u)\bigr),
+\]
+gives
+\begin{equation}\label{eq:comparison}
+        e^{-R(s,u)}
+        \le
+        C e^{-c s\Psi(u)^2}
+        +
+        C e^{-\psi(csu)}
+\end{equation}
+for all large \(s,u\).
+
+We extract \((\mathrm{HJ})\) from this comparison.  If
+\(c s\Psi(u)^2\ge R(s,u)+\log(2C)\), then the first term in
+\eqref{eq:comparison} is at most \(e^{-R(s,u)}/2\), and hence
+\[
+        \psi(csu)\le R(s,u)+\log(2C)
+        \le C\bigl(s\log(1+s)+s\psi(u)\bigr).
+\]
+
+It remains to consider the complementary case
+\[
+        c s\Psi(u)^2< R(s,u)+\log(2C).
+\]
+After increasing the constants and taking \(s,u\) large, this implies
+\[
+        \Psi(u)^2\le C\bigl(\log(1+s)+\psi(u)\bigr).
+\]
+Since an Orlicz function is convex, increasing, and nonzero, \(\Psi(u)\ge c u\)
+for all large \(u\).  Therefore
+\[
+        u\le C\bigl(\log(1+s)+\psi(u)\bigr).
+\]
+Using the assumed upper exponential growth of \(\Psi\), equivalently
+\(\psi(x)\le Cx+C\) for all large \(x\), we get
+\[
+        \psi(csu)\le Csu+C
+        \le C\bigl(s\log(1+s)+s\psi(u)\bigr).
+\]
+Thus in every case
+\[
+        \psi(csu)\le C\bigl(s\log(1+s)+s\psi(u)\bigr)
+\]
+for all sufficiently large \(s,u\).  Replacing \(s\) by \(s/c\) and adjusting
+the constant gives the standard \((\mathrm{HJ})\) condition:
+\[
+        \psi(su)\le K\bigl(s\log(1+s)+s\psi(u)\bigr)
+\]
+for all large \(s,u\).  This proves the theorem.
+
+\section*{Verification and Novelty Notes}
+
+The proof uses only the source paper's definitions, the sparse Bernoulli/Poisson
+test-array idea already used in its proof of Proposition 4.5, and elementary
+estimates on Orlicz norms.  The new observation is to test the convex
+concentration inequality with the Euclidean norm.
+
+Local indexes for \texttt{fa\_banach\_001} were searched for arXiv:2310.04163,
+Hoffmann--Jorgensen, Orlicz, and convex concentration; no duplicate packet or
+attempt was found.  A bounded web search on 2026-06-29 for the exact arXiv id
+and for the phrases ``convex-unbounded'', ``Hoffmann-Jorgensen Orlicz
+condition'', and ``necessity convex functions'' found only the source paper and
+no later exact resolution.
+
+\section*{Human Review Recommendation}
+
+Review the constants in the final case split, especially the passage from the
+comparison inequality \eqref{eq:comparison} to the use of the exponential
+growth assumption.  The main probabilistic test and the Orlicz scaling appear
+robust.
+
+\begin{thebibliography}{9}
+\bibitem{AK2023}
+R. Adamczak and D. Kutek,
+\emph{On Orlicz spaces satisfying the Hoffmann--Jorgensen inequality},
+arXiv:2310.04163.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,178 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\ack}{\operatorname{ac}_k}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Ball}{B}
+
+\title{A Literature-Implied Sharpening of the \texorpdfstring{\(\ell_1^n\)}{ell1n} Helly Radius}
+\author{Math discovery packet}
+\date{June 13, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Status}
+
+This packet records a \emph{literature-implied} correction/sharpening, not a
+new original lower-bound proof.  The source paper is
+
+\begin{quote}
+G. Ivanov, \emph{On Banach Spaces with the Helly Approximation Property},
+arXiv:2603.22743.
+\end{quote}
+
+The supporting paper is
+
+\begin{quote}
+V. Reis and T. Rothvoss, \emph{Approximate Carath\'eodory bounds via
+Discrepancy Theory}, arXiv:2207.03614.
+\end{quote}
+
+The source paper obtains \(r_k(\ell_1^n)\le C\sqrt{\log n/k}\) and then
+conjectures that this bound is optimal.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/source_conjecture_crop.png}
+\end{center}
+
+\section{Claim}
+
+\begin{theorem}
+Let \(h_k(\ell_1^n)\) be the optimal radius in the no-dimensional Helly
+definition of arXiv:2603.22743.  For \(1\le k\le n\),
+\[
+  h_k(\ell_1^n)
+  \le
+  C\sqrt{\frac{\log(2n/k)}{k}}
+\]
+for a universal constant \(C\).
+Consequently, the displayed \(\sqrt{\log n/k}\) bound in the source paper is
+not uniformly optimal in \(k\) as written.
+\end{theorem}
+
+\section{Supporting Literature}
+
+Reis--Rothvoss define \(\operatorname{ac}_k(P,Q)\) as the worst-case error
+when approximating a point of \(\conv(X)\), \(X\subseteq P\), by the uniform
+average of \(k\) points of \(X\), measured in the \(Q\)-norm.  Their Corollary
+5 states:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/supporting_corollary_crop.png}
+\end{center}
+
+Taking \(p=\infty\) and \(m=n\) gives
+\[
+  \operatorname{ac}_k(B_\infty^n,B_\infty^n)
+  \le
+  C_0 \sqrt{\frac{\log(2n/k)}{k}}.
+\]
+
+\section{Transfer to Helly}
+
+\begin{lemma}
+Let \(X\) be finite-dimensional.  If
+\[
+  \operatorname{ac}_k(B_{X^*},B_{X^*})\le \varepsilon,
+\]
+then \(3\varepsilon\) is a valid no-dimensional Helly radius for \(X\).
+\end{lemma}
+
+\begin{proof}
+Let \(\mathcal F\) be a finite family of closed convex subsets of \(X\) such
+that every \(k\)-element subfamily intersects \(B_X\).  Put
+\[
+  f(x)=\max_{K\in\mathcal F}\dist(x,K)
+\]
+and choose a minimizer \(x_0\).  Since every \(K\in\mathcal F\) intersects
+\(B_X\), \(f(0)\le 1\), and hence \(x_0\in 2B_X\).
+
+Let \(r=f(x_0)\).  If \(r=0\) there is nothing to prove.  Otherwise the
+standard subdifferential argument used in arXiv:2603.22743 gives active sets
+\(K_1,\ldots,K_m\) and functionals \(u_1,\ldots,u_m\in B_{X^*}\) with
+\[
+  0\in\conv\{u_1,\ldots,u_m\}
+\]
+and
+\[
+  \langle u_i,x-x_0\rangle\le -r
+  \qquad (x\in K_i).
+\]
+By the definition of \(\operatorname{ac}_k\), choose indices
+\(i_1,\ldots,i_k\) such that
+\[
+  \left\|\frac1k\sum_{t=1}^k u_{i_t}\right\|\le\varepsilon.
+\]
+Repeated indices cause no difficulty: the distinct chosen active sets can be
+extended to a \(k\)-element subfamily, so the Helly hypothesis supplies
+\[
+  q\in B_X\cap\bigcap_{t=1}^k K_{i_t}.
+\]
+Average the displayed inequalities at \(q\):
+\[
+  r
+  \le
+  -\left\langle \frac1k\sum_{t=1}^k u_{i_t},q-x_0\right\rangle
+  \le
+  \varepsilon\|q-x_0\|
+  \le
+  3\varepsilon.
+\]
+Thus \(x_0\) lies within \(3\varepsilon\) of every set in \(\mathcal F\).
+\end{proof}
+
+Apply the lemma to \(X=\ell_1^n\), so \(X^*=\ell_\infty^n\), and use the
+Reis--Rothvoss corollary.  This proves the claimed bound.
+
+\section{Interpretation}
+
+The source paper's conjecture is not wrong if read as a rough statement in
+regimes where \(\log(2n/k)\) and \(\log n\) are comparable.  But it cannot be
+correct as a uniform-in-\(k\) lower-bound assertion.  For example, when
+\(k=n\), the bound above gives
+\[
+  h_n(\ell_1^n)\le C/\sqrt n,
+\]
+whereas a matching lower bound of order \(\sqrt{\log n/n}\) would eventually
+contradict this by an unbounded factor.
+
+\section{Limitations}
+
+\begin{itemize}[leftmargin=*]
+\item This packet does not prove the matching lower bound
+  \(\Omega(\sqrt{\log(2n/k)/k})\).
+\item It does not settle the exact asymptotic behavior of \(h_k(\ell_1^n)\).
+\item It records a separate-literature implication, not a new proof of the
+  approximate-Carath\'eodory theorem.
+\end{itemize}
+
+\section{Verification}
+
+The script \texttt{code/check\_implication.py} checks that the source and
+supporting PDFs contain the snippets used above:
+
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/check_implication.py
+\end{verbatim}
+
+\end{document}

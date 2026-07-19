@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ellq}{\ell_q^m(\C)}
+\newcommand{\ellp}{\ell_p^n(\C)}
+
+\title{Completing the finite-\(q\) complex commutative case for embeddings into quasi-Banach \(\ell_p\)}
+\author{Run \texttt{fa\_banach\_001}, lane 14}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate partial result, likely valid. This packet completes the finite-\(q\) complex commutative no-embedding classification adjacent to Xu's Schatten-class question in arXiv:2207.09062. It is not a solution of the full non-commutative problem \(S_q^m\to S_p^n\).
+
+\section{Source question and gap}
+
+The source paper is Chattopadhyay--Hong--Pradhan--Ray, \emph{On Isometric Embeddability of \(S_q^m\) into \(S_p^n\) as non-commutative Quasi-Banach space}, arXiv:2207.09062 \cite{CHPR}. On PDF page 2, the authors record the following question, attributed to Q. Xu.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent The relevant source statement is Question 1.1:
+\[
+  \text{Let }0<p\ne q\le \infty\text{ and }m,n\ge2.
+  \text{ When does }S_q^m\text{ embed isometrically into }S_p^n?
+\]
+The same page states Theorem 1.2 for the commutative model \(\ell_q^m(\mathbb K)\to\ell_p^n(\mathbb K)\), \(0<p<1\). In the complex case, that theorem excludes \(q\in(0,\infty)\setminus 2\N\); hence the even positive integers \(q=2,4,\ldots\) remain outside that complex commutative statement. The new lemma below closes exactly this gap, and the following corollary combines it with source Theorem 1.2 to complete the finite-\(q\) complex commutative case.
+
+\section{Idea of the proof}
+
+The proof uses differentiability at a point selected after the embedding is fixed. Let \(T:\ell_q^m(\C)\to\ell_p^n(\C)\) be a hypothetical complex-linear isometry and let \(f_1,\ldots,f_n\) be its coordinate functionals. Because \(m\ge2\), any nonzero coordinate functional has a nonzero kernel vector \(x_0\). Along a line \(x_0+ty\) with \(f_j(y)\ne0\), the \(j\)-th target coordinate contributes the cusp \(|t f_j(y)|^p\). This prevents differentiability at \(t=0\) when \(0<p<1\). But the source function \(x\mapsto\|x\|_q^p\) is real differentiable away from \(0\) whenever \(q>1\), so the isometry identity cannot hold.
+
+\section{Result}
+
+\begin{theorem}\label{thm:main}
+Let \(0<p<1<q<\infty\), and let \(2\le m\le n<\infty\). There is no complex-linear isometric embedding
+\[
+  T:\ell_q^m(\C)\longrightarrow \ell_p^n(\C).
+\]
+\end{theorem}
+
+\begin{proof}
+Assume toward a contradiction that such a complex-linear isometry \(T\) exists. Write
+\[
+  T(x)=(f_1(x),\ldots,f_n(x)),
+\]
+where \(f_1,\ldots,f_n\) are complex-linear functionals on \(\C^m\). Since \(T\) is an isometry, for every \(x\in\C^m\),
+\begin{equation}\label{eq:isometry}
+  \sum_{r=1}^n |f_r(x)|^p
+  = \|Tx\|_p^p
+  = \|x\|_q^p
+  = \left(\sum_{s=1}^m |x_s|^q\right)^{p/q}.
+\end{equation}
+
+At least one \(f_j\) is nonzero, since \(T\) is injective. Fix such a \(j\). Because \(m\ge2\), the kernel of \(f_j\) contains a nonzero vector; choose \(x_0\in\ker f_j\setminus\{0\}\). Also choose \(y\in\C^m\) with \(f_j(y)\ne0\). Restrict \eqref{eq:isometry} to the real line \(x_0+ty\), \(t\in\mathbb R\):
+\begin{equation}\label{eq:line}
+  \sum_{r=1}^n |f_r(x_0)+t f_r(y)|^p
+  =
+  \left(\sum_{s=1}^m |(x_0)_s+t y_s|^q\right)^{p/q}.
+\end{equation}
+
+The right-hand side of \eqref{eq:line} is differentiable at \(t=0\). Indeed, \(q>1\), so \(z\mapsto |z|^q\) is real differentiable on \(\C\), and \(x_0\ne0\) makes the sum inside the outer power strictly positive at \(t=0\).
+
+Now examine the left-hand side. Let
+\[
+  Z=\{r: f_r(x_0)=0\}.
+\]
+This set contains \(j\), and therefore
+\[
+  c:=\sum_{r\in Z}|f_r(y)|^p\ge |f_j(y)|^p>0.
+\]
+For \(r\notin Z\), the scalar function
+\[
+  t\mapsto |f_r(x_0)+t f_r(y)|^p
+\]
+is differentiable at \(0\), since its value inside the modulus is nonzero at \(t=0\). For \(r\in Z\), the contribution is exactly
+\[
+  |f_r(x_0)+t f_r(y)|^p=|t|^p |f_r(y)|^p.
+\]
+Thus the left-hand side of \eqref{eq:line} has the form
+\[
+  h(t)+c|t|^p,
+\]
+where \(h\) is differentiable at \(0\) and \(c>0\). This function is not differentiable at \(0\), because
+\[
+  \frac{c|t|^p}{t}=c\,\mathrm{sgn}(t)\,|t|^{p-1}
+\]
+has no finite limit as \(t\to0\) when \(0<p<1\). This contradicts differentiability of the right-hand side of \eqref{eq:line}. Hence no such \(T\) exists.
+\end{proof}
+
+\begin{theorem}[Complete finite-\(q\) complex commutative conclusion]\label{thm:combined}
+Let \(0<p<1\), \(0<q<\infty\), \(p\ne q\), and \(2\le m\le n<\infty\). Then there is no complex-linear isometric embedding
+\[
+  \ell_q^m(\C)\longrightarrow \ell_p^n(\C).
+\]
+\end{theorem}
+
+\begin{proof}
+If \(q\in(0,\infty)\setminus2\N\), this is exactly the complex case of source Theorem 1.2 in \cite{CHPR}. If \(q\in2\N\), then \(q>1\), and Theorem \ref{thm:main} applies. These two alternatives exhaust \(0<q<\infty\).
+\end{proof}
+
+\section{Scope and limitations}
+
+Theorems \ref{thm:main} and \ref{thm:combined} are commutative results. They do not address the non-commutative Schatten-class embedding problem \(S_q^m\to S_p^n\), where coordinate hyperplanes are replaced by spectral behavior of matrix paths and the source paper's remaining cases require different tools. The combined conclusion also does not claim the endpoint \(q=\infty\).
+
+The direct new contribution is Theorem \ref{thm:main}, which covers the positive even integers \(q\in2\N\), the finite-\(q\) values absent from the complex clause of source Theorem 1.2. Theorem \ref{thm:combined} is the resulting complete finite-\(q\) complex commutative classification.
+
+\section{Verification and novelty check}
+
+The new proof is deterministic and uses only elementary differentiability. No computational verifier is needed.
+
+Duplicate and novelty checks performed before promotion:
+\begin{itemize}
+\item Local cheap indexes searched: the run registry, solution index, attempt index, and proof-gap index.
+\item Search terms included \texttt{2207.09062}, \texttt{ell\_q\^{}m}, \texttt{ell\_p\^{}n}, and isometric-embedding keywords.
+\item A bounded web search for exact phrases around complex \(\ell_q^m\to\ell_p^n\), quasi-Banach \(p<1\), and arXiv:2207.09062 surfaced the source paper and unrelated hits, but no later explicit closing of the complex even-\(q\) commutative gap.
+\end{itemize}
+
+Human-review recommendation: check the convention that ``isometric embedding'' in the source commutative theorem is linear. This matches the source proof on PDF page 6, where the authors pass to a linear map \(T:\ell_q^2(\mathbb K)\to\ell_p^n(\mathbb K)\).
+
+\begin{thebibliography}{9}
+\bibitem{CHPR}
+S. Chattopadhyay, G. Hong, C. Pradhan, and S. K. Ray,
+\emph{On Isometric Embeddability of \(S_q^m\) into \(S_p^n\) as non-commutative Quasi-Banach space},
+arXiv:2207.09062, 2022.
+\end{thebibliography}
+
+\end{document}

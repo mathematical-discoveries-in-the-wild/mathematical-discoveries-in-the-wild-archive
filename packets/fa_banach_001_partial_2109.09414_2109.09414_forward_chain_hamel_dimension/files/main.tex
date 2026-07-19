@@ -1,0 +1,188 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\F}{\mathbb F}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Gammahat}{\widehat{\Gamma}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{Forward Orthogonal Chains and Hamel Dimension}
+\author{FA/Banach automatic math run: \texttt{fa\_banach\_001}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Partial result likely valid.}  The source paper asks which normed-space
+properties can be decided from Birkhoff--James orthogonality alone, and then
+shows, among other things, that its projective di-orthograph detects finite
+dimension, smoothness, and strict convexity in the stated settings
+\cite{AKKRZ2021}.  The result below strengthens the dimension-recognition
+part for smooth spaces: the graph determines not only whether the dimension is
+finite, but the exact Hamel dimension cardinal.
+
+\section*{Source Question}
+
+The extracted question is Question 2.1 in arXiv:2109.09414, page 4:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source immediately notes that the question is too broad for a definite
+global answer and restricts to the dimension, smoothness, and rotundness.  The
+present packet stays in that dimension-recognition lane.
+
+\section*{Definitions}
+
+Let \(X\) be a normed space over \(\F\in\{\R,\C\}\).  Recall that \(x\) is
+Birkhoff--James orthogonal to \(y\), written \(x\perp y\), if
+\[
+  \|x+\lambda y\|\geq \|x\| \qquad(\lambda\in\F).
+\]
+The projective di-orthograph \(\Gammahat(X)\) has as vertices the one
+dimensional subspaces \([x]=\F x\), \(x\neq 0\), and a directed edge
+\([x]\to [y]\) exactly when \(x\perp y\).  In a smooth normed space every
+nonzero \(x\) has a unique supporting functional \(f_x\) normalized by
+\(\|f_x\|=1\) and \(f_x(x)=\|x\|\).  The James criterion recalled in the
+source gives
+\[
+  x\perp y \quad\Longleftrightarrow\quad f_x(y)=0
+\]
+in the smooth case.
+
+\begin{definition}
+A \emph{forward orthogonal chain} in \(\Gammahat(X)\) is a well-ordered family
+\((v_\alpha)_{\alpha<\kappa}\) of distinct vertices such that
+\[
+  v_\alpha\to v_\beta \qquad(\alpha<\beta<\kappa).
+\]
+Let
+\[
+  \operatorname{fo}(X)
+  = \sup\{\kappa:\Gammahat(X)\text{ contains a forward orthogonal chain of
+  cardinal }\kappa\}.
+\]
+\end{definition}
+
+\section*{Proof Intuition}
+
+In a smooth normed space, each vertex \(v=[x]\) carries a single hyperplane
+\(\ker f_x\) of outgoing neighbors.  A forward chain therefore behaves like a
+triangular biorthogonal system: earlier supporting functionals vanish on later
+vectors.  This triangularity forces every finite subset of the chain to be
+linearly independent, giving the upper bound by the Hamel dimension.
+
+For the reverse inequality, run the same idea by transfinite recursion.  Before
+stage \(\alpha<\dim X\), fewer than \(\dim X\) supporting hyperplanes have been
+chosen, so their intersection is still nonzero.  Choosing the next vector in
+that intersection makes all earlier vertices point to the new one.
+
+\begin{theorem}
+Let \(X\) be a smooth normed space over \(\F\in\{\R,\C\}\).  Then
+\[
+  \operatorname{fo}(X)=\dim_{\F} X .
+\]
+Consequently, among smooth normed spaces, the projective Birkhoff--James
+di-orthograph determines the full Hamel dimension cardinal.
+\end{theorem}
+
+\begin{proof}
+The zero-dimensional case is empty, so assume \(X\neq\{0\}\).  Put
+\(\kappa=\dim_{\F}X\).
+
+First let \((v_\alpha)_{\alpha<\lambda}\) be a forward orthogonal chain.  Choose
+nonzero representatives \(x_\alpha\in v_\alpha\), and let \(f_\alpha\) be the
+unique supporting functional at \(x_\alpha\).  If \(\alpha<\beta\), then
+\(v_\alpha\to v_\beta\), hence \(x_\alpha\perp x_\beta\), and smoothness gives
+\[
+  f_\alpha(x_\beta)=0.
+\]
+We claim that the family \((x_\alpha)_{\alpha<\lambda}\) is linearly
+independent.  Indeed, take a finite relation
+\[
+  a_1x_{\alpha_1}+\cdots+a_nx_{\alpha_n}=0,
+  \qquad \alpha_1<\cdots<\alpha_n .
+\]
+Applying \(f_{\alpha_1}\) gives
+\[
+  a_1f_{\alpha_1}(x_{\alpha_1})=0,
+\]
+because \(f_{\alpha_1}(x_{\alpha_j})=0\) for \(j>1\).  Since
+\(f_{\alpha_1}(x_{\alpha_1})=\|x_{\alpha_1}\|\neq 0\), we get \(a_1=0\).
+Repeating the argument with \(f_{\alpha_2},\ldots,f_{\alpha_n}\) yields
+all \(a_j=0\).  Thus every forward orthogonal chain has cardinal at most
+\(\dim X\), so \(\operatorname{fo}(X)\leq\kappa\).
+
+For the reverse inequality, well-order a Hamel basis cardinal of \(X\) as
+\(\kappa\).  We construct by transfinite recursion vectors
+\((x_\alpha)_{\alpha<\kappa}\) and their supporting functionals
+\((f_\alpha)_{\alpha<\kappa}\) so that
+\[
+  f_\beta(x_\alpha)=0 \qquad(\beta<\alpha).
+\]
+Suppose the construction has been completed for all \(\beta<\alpha\).  Since
+\(|\alpha|<\kappa\), the intersection
+\[
+  M_\alpha=\bigcap_{\beta<\alpha}\ker f_\beta
+\]
+has codimension at most \(|\alpha|<\kappa\).  Therefore \(M_\alpha\neq\{0\}\).
+Choose \(0\neq x_\alpha\in M_\alpha\), and let \(f_\alpha\) be the unique
+supporting functional at \(x_\alpha\).  Then for every \(\beta<\alpha\),
+\(f_\beta(x_\alpha)=0\), so \(x_\beta\perp x_\alpha\).  Thus the vertices
+\(([x_\alpha])_{\alpha<\kappa}\) form a forward orthogonal chain of cardinal
+\(\kappa\).  Hence \(\operatorname{fo}(X)\geq\kappa\), completing the proof.
+\end{proof}
+
+\section*{Limitations and Novelty Check}
+
+The theorem is not a full answer to Question 2.1 of the source paper; that
+question is intentionally broad.  It also does not remove smoothness.  Without
+smoothness, an edge \(x\to y\) may be witnessed by one supporting functional at
+\(x\) and another edge \(x\to z\) by a different supporting functional, so the
+triangular linear-independence argument above can fail.
+
+The local run indexes were searched for arXiv:2109.09414, Birkhoff--James
+orthogonality, Hamel dimension, forward chains, transitive cliques, and
+dimension-cardinal language.  No exact duplicate was found.  A web search on
+2026-07-18 found the later open-access follow-up
+\emph{Birkhoff--James classification of norm's properties} \cite{GKSSZ2024}.
+That paper advances finite-dimensional property recognition, including smooth
+points, maximal faces, supremum norms, and Radon-plane examples, but I did not
+find the forward-chain/Hamel-cardinal statement above.
+
+\section*{Human Review Recommendation}
+
+Review as a compact partial theorem.  The key point is the use of smoothness in
+both directions: it converts graph edges into equations against unique support
+functionals.  A possible follow-up would be to determine whether a modified
+graph invariant can recover Hamel cardinality without smoothness.
+
+\begin{thebibliography}{9}
+
+\bibitem{AKKRZ2021}
+Lj. Arambasic, A. Guterman, B. Kuzma, R. Rajic, and S. Zhilina.
+\emph{What does Birkhoff--James orthogonality know about the norm?}
+arXiv:2109.09414, 2021.
+
+\bibitem{GKSSZ2024}
+A. Guterman, B. Kuzma, S. Singla, and S. Zhilina.
+\emph{Birkhoff--James classification of norm's properties.}
+Advances in Operator Theory 9, Article 43, 2024.
+\url{https://doi.org/10.1007/s43036-024-00321-0}.
+
+\end{thebibliography}
+
+\end{document}

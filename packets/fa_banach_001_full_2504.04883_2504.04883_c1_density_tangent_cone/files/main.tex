@@ -1,0 +1,169 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\D}{\mathcal D}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A \texorpdfstring{$C^1$}{C1} Tangent Cone for Density Matrices}
+\author{FA/Banach run \texttt{fa\_banach\_001}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a likely valid full solution to the regularity question
+raised in Cai--Govindarajan--Junge, arXiv:2504.04883.  The source defines the
+tangent cone to the finite-dimensional density-matrix state space using
+one-sided $C^2$ curves, then says that a possible future direction is weakening
+the analytic condition to $C^1$.  The result below proves that this weakening
+is possible and that the cone is unchanged.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Source page 14: future-work sentence and the existing $C^2$ tangent cone theorem.}
+\end{figure}
+
+\section*{Theorem}
+
+Let $\Hh$ be finite-dimensional and let
+\[
+  \D(\Hh)=\{\rho\in B(\Hh): \rho\ge 0,\ \tr\rho=1\}.
+\]
+For $\rho\in \D(\Hh)$, define the one-sided $C^1$ tangent cone
+\[
+T^{(1)}_\rho \D(\Hh)
+  = \left\{\gamma'(0):
+      \gamma\in C^1([0,\varepsilon),\D(\Hh)),\ \gamma(0)=\rho
+    \right\}.
+\]
+If $s$ is the orthogonal projection onto $\supp\rho$, and $q=1-s$, then
+\[
+T^{(1)}_\rho \D(\Hh)
+ =
+\{x\in B(\Hh): x=x^*,\ \tr x=0,\ qxq\ge 0\}.
+\]
+In particular, the $C^1$ tangent cone agrees with the $C^2$ tangent cone of
+arXiv:2504.04883, Theorem 3.3.  Consequently the source's identity
+\[
+T_\rho^+\D(\Hh)=\{L(\rho): L\text{ is Lindbladian}\}
+\]
+remains true when $T_\rho^+\D(\Hh)$ is defined using $C^1$ curves.
+
+\section*{Idea of the Proof}
+
+A $C^1$ path has the expansion $\gamma(t)=\rho+t x+o(t)$.  On the kernel of
+$\rho$, positivity gives $q\gamma(t)q=t\,qxq+o(t)\ge 0$.  Dividing by $t$ and
+taking the limit gives $qxq\ge 0$.  Conversely, every $x$ satisfying this
+condition can be realized by a quadratic correction.  The correction absorbs
+the off-diagonal block that prevents the linear path $\rho+t x$ from staying
+positive at boundary points.
+
+\section*{Proof}
+
+First suppose $x\in T^{(1)}_\rho \D(\Hh)$.  Then there is a one-sided
+$C^1$ curve $\gamma:[0,\varepsilon)\to \D(\Hh)$ with $\gamma(0)=\rho$ and
+$\gamma'(0)=x$.  Since every $\gamma(t)$ is self-adjoint and has trace one,
+$x=x^*$ and $\tr x=0$.  Also
+\[
+  \gamma(t)=\rho+t x+r(t),\qquad \|r(t)\|=o(t).
+\]
+Compress to $q\Hh=\ker\rho$.  Since $q\rho q=0$ and $\gamma(t)\ge 0$,
+\[
+  0\le q\gamma(t)q=t\,qxq+q r(t)q .
+\]
+After division by $t>0$ and passage to the limit, closedness of the positive
+semidefinite cone gives $qxq\ge 0$.
+
+Conversely, assume $x=x^*$, $\tr x=0$, and $qxq\ge 0$.  If $q=0$, then $\rho$
+is positive definite and $\rho+t x\in\D(\Hh)$ for all sufficiently small
+$t\ge 0$, so $x$ is realized by a $C^\infty$ path.
+
+It remains to treat the boundary case.  Write matrices relative to
+$s\Hh\oplus q\Hh$:
+\[
+  \rho=
+  \begin{pmatrix} R&0\\0&0\end{pmatrix},
+  \qquad
+  x=
+  \begin{pmatrix} A&B\\B^*&C\end{pmatrix},
+\]
+where $R>0$ on $s\Hh$, $C\ge 0$ on $q\Hh$, and
+$\tr A+\tr C=0$.  Choose $D\ge 0$ on $q\Hh$ so large that
+\[
+  D\ge 2B^*R^{-1}B .
+\]
+For small $t\ge 0$, define
+\[
+  \rho_t=
+  \begin{pmatrix}
+  R+tA-t^2(\tr D)R & tB\\
+  tB^* & tC+t^2D
+  \end{pmatrix}.
+\]
+This curve is polynomial in $t$, satisfies $\rho_0=\rho$, and has derivative
+$x$ at $0$.  Its trace is
+\[
+  1+t(\tr A+\tr C)-t^2(\tr D)\tr R+t^2\tr D=1,
+\]
+because $\tr R=\tr\rho=1$.
+
+For all sufficiently small $t$, the upper-left block
+\[
+R_t=R+tA-t^2(\tr D)R
+\]
+is positive definite and satisfies $R_t^{-1}\le 2R^{-1}$ in the Loewner order.
+The Schur complement of $R_t$ in $\rho_t$ is therefore
+\[
+  tC+t^2D-t^2B^*R_t^{-1}B
+  \ge
+  tC+t^2(D-2B^*R^{-1}B)
+  \ge 0.
+\]
+Thus $\rho_t\ge 0$ for all sufficiently small $t\ge 0$.  We have constructed a
+$C^2$ path in $\D(\Hh)$ with derivative $x$, hence certainly a $C^1$ path.
+
+Combining the two inclusions proves the formula for $T^{(1)}_\rho\D(\Hh)$.
+The final Lindbladian assertion follows by comparing this formula with
+Theorem 3.8 of the source, which identifies the same cone with
+$\{L(\rho):L\text{ is Lindbladian}\}$.
+
+\section*{Verification Notes}
+
+The only point where boundary singularity enters is the Schur-complement
+estimate.  The $t^2D$ term dominates the order-$t^2$ off-diagonal obstruction,
+while the $-t^2(\tr D)R$ term preserves trace without destroying positivity of
+the support block.  No compactness or infinite-dimensional closure issue is
+involved.
+
+\section*{Novelty Check and Limitations}
+
+On 2026-07-18, the run indexes and web searches were checked for arXiv:2504.04883,
+``How Far do Lindbladians Go'', ``C1 tangent cone'', ``density matrices tangent
+cone support projection'', ``positive semidefinite C1 tangent cone'', and
+``Lindbladian tangent cone''.  The search found the source paper itself and
+general convex-analysis material, but no exact later answer to the source's
+$C^1$ weakening direction.
+
+This packet does not solve the broader lifting/retract problem for selecting
+Lindbladian generators continuously, smoothly, or analytically along arbitrary
+paths.  It only proves that the tangent-cone definition can be weakened from
+$C^2$ to $C^1$.
+
+\begin{thebibliography}{9}
+\bibitem{CGJ}
+J. Cai, A. Govindarajan, and M. Junge,
+\emph{How Far do Lindbladians Go?},
+arXiv:2504.04883.
+\end{thebibliography}
+
+\end{document}

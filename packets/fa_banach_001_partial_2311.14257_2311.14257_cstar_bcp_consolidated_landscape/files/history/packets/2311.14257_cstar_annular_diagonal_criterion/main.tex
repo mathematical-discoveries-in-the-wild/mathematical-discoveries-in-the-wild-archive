@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\Kcal}{\mathcal K}
+
+\title{A C*-Annular Diagonal Criterion for Failure of BCP}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The quotient-level diagonal criterion says that BCP fails when countably many
+centers can be tested on local pieces that nearly see their quotient norm,
+while elements of the ideal vanish on those pieces.  In C*-algebras the local
+tests usually have the form
+\[
+        b\longmapsto a_kbc_k
+\]
+for contractions \(a_k,c_k\) in a multiplier algebra.  The global escaping
+element is then built by gluing local pieces over disjoint annuli or corners.
+
+This packet records the C*-version as a theorem.  A second, more concrete
+phase-annular corollary covers the common situation where the local pieces
+are right annuli \(g_k\), the local escape is a scalar phase \(\lambda_kg_k\),
+and one can glue bounded scalar choices into a single element of the ambient
+C*-algebra.
+
+\section*{A Localizer Criterion}
+
+Let \(B\) be a \(C^*\)-algebra, let \(I\triangleleft B\) be a closed two-sided
+ideal, and let
+\[
+        q:B\longrightarrow B/I
+\]
+be the quotient map.  We write \(M(B)\) for the multiplier algebra of \(B\).
+If \(B\) is unital, \(M(B)=B\).
+
+\begin{definition}
+\label{def:localizer-property}
+The quotient \(B/I\) has the C*-localizer diagonal property if for every
+sequence \((b_i)_{i\ge1}\subset B\) there are:
+\begin{itemize}
+\item a map \(\pi:\N\to\N\) with every fiber infinite;
+\item contractions \(a_k,c_k\in M(B)\);
+\item a null sequence \(\eta_k\downarrow0\);
+\item elements \(u_k\in B\);
+\item an element \(y\in B\) with \(q(y)\in S_{B/I}\);
+\end{itemize}
+such that:
+\begin{enumerate}
+\item \emph{Assigned near-norming}
+\[
+        \|a_kb_{\pi(k)}c_k\|
+        \ge
+        \|q(b_{\pi(k)})\|-\eta_k .
+\]
+\item \emph{Ideal vanishing along fibers}: for every \(d\in I\) and every
+\(i\ge1\),
+\[
+        \lim_{\substack{k\to\infty\\ \pi(k)=i}}\|a_kdc_k\|=0 .
+\]
+\item \emph{Local gluing}
+\[
+        \|a_kyc_k-u_k\|\le \eta_k .
+\]
+\item \emph{Local escape}
+\[
+        \|u_k-a_kb_{\pi(k)}c_k\|
+        \ge
+        \|a_kb_{\pi(k)}c_k\|-\eta_k .
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+\label{thm:localizer}
+If \(B/I\) has the C*-localizer diagonal property, then \(B/I\) fails BCP.
+\end{theorem}
+
+\begin{proof}
+Let \((\xi_i)_{i\ge1}\subset B/I\) be an arbitrary countable family of
+centers.  Choose representatives \(b_i\in B\), so \(q(b_i)=\xi_i\), and
+choose the data from Definition~\ref{def:localizer-property}.  Put
+\[
+        \zeta=q(y)\in S_{B/I}.
+\]
+Fix \(i\ge1\) and \(d\in I\).  For \(k\) with \(\pi(k)=i\), the map
+\[
+        L_k:B\to B,\qquad L_k(b)=a_kbc_k
+\]
+is contractive, and hence
+\[
+        \|y-b_i-d\|\ge \|a_k(y-b_i-d)c_k\|.
+\]
+Using local gluing, local escape, and assigned near-norming gives
+\begin{align*}
+        \|a_k(y-b_i-d)c_k\|
+        &\ge
+        \|u_k-a_kb_ic_k\|-\|a_kyc_k-u_k\|-\|a_kdc_k\|\\
+        &\ge
+        \|a_kb_ic_k\|-2\eta_k-\|a_kdc_k\|\\
+        &\ge
+        \|\xi_i\|-3\eta_k-\|a_kdc_k\|.
+\end{align*}
+Letting \(k\to\infty\) through the fiber \(\pi^{-1}(\{i\})\), and using ideal
+vanishing, gives
+\[
+        \|y-b_i-d\|\ge \|\xi_i\|.
+\]
+Taking the infimum over \(d\in I\), we obtain
+\[
+        \|\zeta-\xi_i\|\ge \|\xi_i\|.
+\]
+Thus the unit vector \(\zeta\) is outside every open ball
+\[
+        B(\xi_i,\|\xi_i\|).
+\]
+Since the countable family of centers was arbitrary, \(B/I\) fails BCP.
+\end{proof}
+
+\section*{A Phase-Annular Corollary}
+
+The next corollary is often the easiest form to check.  It packages the
+Hahn--Banach phase trick and the auxiliary unit-norm check into the
+hypotheses.
+
+\begin{theorem}[phase-annular criterion]
+\label{thm:phase-annular}
+Let \(B\) be a unital \(C^*\)-algebra and let \(I\triangleleft B\) be a
+proper closed two-sided ideal.  Suppose that for every sequence
+\((b_i)_{i\ge1}\subset B\), after setting \(b_0=1_B\), there are:
+\begin{itemize}
+\item a map \(\pi:\N\to\{0,1,2,\ldots\}\) with every fiber infinite;
+\item contractions \(g_k\in B\);
+\item a null sequence \(\eta_k\downarrow0\);
+\item for every scalar sequence \(\lambda=(\lambda_k)\in\ell_\infty\) with
+\(\|\lambda\|_\infty\le1\), an element \(\Phi(\lambda)\in B\);
+\end{itemize}
+such that:
+\begin{enumerate}
+\item \emph{Assigned right-annulus near-norming}
+\[
+        \|b_{\pi(k)}g_k\|
+        \ge
+        \|q(b_{\pi(k)})\|-\eta_k,\qquad k\ge1.
+\]
+\item \emph{Ideal vanishing}: for every \(d\in I\) and every
+\(i\ge0\),
+\[
+        \lim_{\substack{k\to\infty\\ \pi(k)=i}}\|dg_k\|=0 .
+\]
+\item \emph{Scalar gluing}
+\[
+        \|q(\Phi(\lambda))\|\le1,
+        \qquad
+        \|\Phi(\lambda)g_k-\lambda_kg_k\|\le\eta_k
+        \quad(k\ge1).
+\]
+\end{enumerate}
+Then \(B/I\) fails BCP.
+\end{theorem}
+
+\begin{proof}
+Let \((\xi_i)_{i\ge1}\subset B/I\) be an arbitrary countable family, and
+choose representatives \(b_i\in B\).  Add \(b_0=1_B\) and choose the data in
+the statement.
+
+For each \(k\) with \(\pi(k)\ge1\), choose \(\lambda_k\in\T\) such that
+\[
+        \|\lambda_kg_k-b_{\pi(k)}g_k\|\ge \|b_{\pi(k)}g_k\|.
+\]
+Indeed, if \(b_{\pi(k)}g_k\ne0\), take a norm-one functional \(\varphi\) with
+\(\varphi(b_{\pi(k)}g_k)=\|b_{\pi(k)}g_k\|\), and choose \(\lambda_k\in\T\)
+so that \(\operatorname{Re}(\lambda_k\varphi(g_k))\le0\).  If
+\(b_{\pi(k)}g_k=0\), any \(\lambda_k\in\T\) works.  For \(k\) with
+\(\pi(k)=0\), put \(\lambda_k=1\).
+
+Let
+\[
+        y=\Phi((\lambda_k)_{k\ge1}).
+\]
+The scalar gluing hypothesis gives \(\|q(y)\|\le1\).  We claim that
+\(\|q(y)\|=1\).  Fix \(d\in I\) and let \(k\to\infty\) through the fiber
+\(\pi^{-1}(\{0\})\).  Since \(b_0=1_B\),
+\[
+        \|g_k\|=\|b_0g_k\|\ge \|q(1_B)\|-\eta_k=1-\eta_k.
+\]
+Therefore
+\[
+        \|y-d\|
+        \ge
+        \|(y-d)g_k\|
+        \ge
+        \|\lambda_kg_k\|-\|yg_k-\lambda_kg_k\|-\|dg_k\|
+        \ge
+        1-2\eta_k-\|dg_k\|.
+\]
+Letting \(k\to\infty\) along that fiber gives \(\|y-d\|\ge1\), and then
+taking the infimum over \(d\in I\) gives \(\|q(y)\|\ge1\).  Hence
+\[
+        q(y)\in S_{B/I}.
+\]
+
+Now fix \(i\ge1\) and \(d\in I\).  Let \(k\to\infty\) through
+\(\pi^{-1}(\{i\})\).  Then
+\begin{align*}
+        \|y-b_i-d\|
+        &\ge \|(y-b_i-d)g_k\|\\
+        &\ge \|\lambda_kg_k-b_ig_k\|-\|yg_k-\lambda_kg_k\|-\|dg_k\|\\
+        &\ge \|b_ig_k\|-\eta_k-\|dg_k\|\\
+        &\ge \|q(b_i)\|-2\eta_k-\|dg_k\|.
+\end{align*}
+Letting \(k\to\infty\) along the fiber and then taking the infimum over
+\(d\in I\), we obtain
+\[
+        \|q(y)-\xi_i\|\ge \|\xi_i\|.
+\]
+Thus \(q(y)\) is a unit vector outside every proposed ball
+\(B(\xi_i,\|\xi_i\|)\), and \(B/I\) fails BCP.
+\end{proof}
+
+\section*{Recovering Existing Diagonal Packets}
+
+\subsection*{Sigma-Unital Multiplier Coronas}
+
+Let \(A\) be a nonunital \(\sigma\)-unital \(C^*\)-algebra.  In the
+sigma-unital corona packet, one takes
+\[
+        B=M(A),\qquad I=A.
+\]
+An increasing positive contractive approximate unit \((e_n)\) with
+\(e_me_n=e_n\) for \(m\ge n\) supplies inner annuli
+\[
+        g_k=e_{m_k}-e_{n_k}
+\]
+and larger outer annuli
+\[
+        h_k=e_{b_k}-e_{a_k},\qquad h_kg_k=g_k,\qquad h_jg_k=0\ (j\ne k).
+\]
+Finite annulus recovery gives
+\[
+        \|T_{\pi(k)}g_k\|\approx \|q(T_{\pi(k)})\|,
+\]
+and \(A\)-elements vanish on far-out annuli.  For
+\(\lambda\in\ell_\infty\), strict convergence gives the scalar gluing element
+\[
+        \Phi(\lambda)=\sum_k\lambda_kh_k\in M(A),
+\]
+with \(\|\Phi(\lambda)\|\le\|\lambda\|_\infty\) and
+\(\Phi(\lambda)g_k=\lambda_kg_k\).  Thus Theorem~\ref{thm:phase-annular}
+is exactly the C*-annular checklist behind the sigma-unital corona theorem.
+
+\subsection*{Hilbert-Module Coronas}
+
+Let \(E\) be a Hilbert \(C^*\)-module with a BCP block system.  In the
+Hilbert-module block packet, one takes
+\[
+        B=\Lcal(E),\qquad I=\Kcal(E).
+\]
+The localizers in Theorem~\ref{thm:localizer} are
+\[
+        a_k=1,\qquad c_k=e_{F_k},
+\]
+where \(e_{F_k}\) is a fresh compact block projection.  Tail norm recovery
+gives assigned near-norming, compact-vanishing gives ideal vanishing, fresh
+range escape supplies the local pieces \(u_k=v_k\), and strict gluing gives a
+single operator \(y=V\) with \(Ve_{F_k}=v_k\).  Hence the Hilbert-module block
+criterion is an instance of the localizer theorem.
+
+\subsection*{Ordinary Product Quotients}
+
+For an ordinary \(c_0\)-product quotient
+\[
+        \prod_n A_n\Big/\bigoplus\nolimits_{c_0}A_n
+\]
+with unital \(A_n\)'s, disjoint infinite coordinate sets \(T_k\) give central
+projections \(g_k=1_{T_k}\).  Elements of the \(c_0\)-sum vanish on these
+sets as \(k\to\infty\), after the sets are chosen pairwise disjoint.  Local
+escape elements can be glued coordinatewise.  This is the coordinate version
+of the same annular principle.  For more general ideals \(\mathcal I\), the
+full reduced-product packet is better viewed through the broader
+quotient-level asymptotic criterion, because local restrictions naturally
+land in local reduced quotients rather than in a single ambient C*-algebra.
+
+\section*{Verification and Search Bounds}
+
+The run indexes were searched for arXiv:2311.14257 together with annular
+diagonal, C*-localizer, multiplier corona, Hilbert-module block criterion,
+asymptotic diagonal, and quotient diagonal keywords.  Existing packets
+contained the Banach quotient criterion and concrete C*-diagonal proofs, but
+no standalone C*-localizer/phase-annular criterion.
+
+The proof of Theorem~\ref{thm:localizer} is a direct quotient-norm diagonal
+estimate.  The phase-annular theorem is a self-contained specialization using
+the Hahn--Banach phase choice and an auxiliary \(b_0=1\) fiber to force the
+glued quotient element to have norm one.
+
+\section*{Human Review Focus}
+
+Check the localizer hypotheses in Definition~\ref{def:localizer-property} and
+the scalar gluing hypothesis in Theorem~\ref{thm:phase-annular}.  These are
+the reusable C*-checklists; once they are verified in an application, the BCP
+failure proof is formal.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\end{thebibliography}
+
+\end{document}

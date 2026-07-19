@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\section*{Human Review: No sparse Euclidean grid in \texorpdfstring{$\ell_\infty^n$}{ell-infinity-n}}
+
+\noindent Original automatic proof: \texttt{solution\_packet.pdf}
+
+\noindent Checked date: 18 June 2026
+
+\noindent Status: Manually checked.
+
+\noindent Verdict: The proof appears correct.
+
+\section*{Human Comments}
+
+The proposed argument appears to give a correct negative answer to Fresen's
+Problem 4, already for the spaces \(X=\ell_\infty^n\).  The problem asks
+whether one can choose bases in all \(n\)-dimensional Banach spaces so that
+sufficiently sparse coefficient vectors are uniformly Euclidean.  The proof
+shows that this is impossible in \(\ell_\infty^n\) for any fixed distortion
+constant \(C\), even if the allowed sparsity tends to infinity arbitrarily
+slowly.
+
+The translation to matrices is clear.  A basis of \(\ell_\infty^n\) gives a
+linear map
+\[
+  T:\mathbb R^n\longrightarrow \ell_\infty^n
+\]
+with rows \(r_i=(r_{ij})_{j=1}^n\).  The upper sparse estimate implies that,
+for every row \(i\) and every coordinate set \(A\) with \(|A|\leq k\),
+\[
+  \left(\sum_{j\in A} r_{ij}^2\right)^{1/2}\leq C.
+\]
+This follows by viewing the \(i\)-th row as a functional on the Euclidean
+coordinate subspace supported on \(A\).
+
+\section*{Counting Lemma}
+
+The counting lemma is the main combinatorial ingredient and appears correct.
+It says that \(2n\) subsets of the signed coordinate set
+\[
+  \Omega_n=\{1,\ldots,n\}\times\{-1,1\},
+\]
+each of size at most \(Mh\), cannot substantially hit every signed \(h\)-set
+once \(h\to\infty\) and \(h\leq \sqrt{\log n}\).
+
+For a fixed set \(H\subseteq \Omega_n\) with \(|H|\leq Mh\), the number of
+signed \(h\)-sets meeting \(H\) in at least \(q_0=\lceil \eta h\rceil\)
+points is bounded by
+\[
+  \sum_{q=q_0}^h
+  \binom{Mh}{q}\binom{n}{h-q}2^{h-q}.
+\]
+Dividing by the total number \(\binom nh2^h\) of signed \(h\)-sets gives the
+fraction hit by this particular \(H\).  Using
+\[
+  \frac{\binom{n}{h-q}}{\binom nh}
+  \leq
+  \left(\frac{2h}{n}\right)^q
+\]
+for \(h\leq n/2\), this fraction is at most a constant-factor variant of
+\[
+  h\,2^{Mh}\left(\frac{h}{n}\right)^{\eta h}.
+\]
+After multiplying by \(2n\), the logarithm is bounded above by
+\[
+  \log(2n)+\log h+Mh\log 2
+  -
+  \eta h\log\left(\frac nh\right),
+\]
+which tends to \(-\infty\).  The negative term is essentially
+\(-\eta h\log n\), and it dominates the positive terms because
+\(h\to\infty\) while \(h\leq \sqrt{\log n}\).  Hence the union of the \(2n\)
+families cannot cover all signed \(h\)-sets.
+
+This part of the proof is correct, although it would be useful in a polished
+version to expand the counting estimate slightly more than in the current
+automatic output.
+
+\section*{Application to the Counterexample}
+
+The proof then chooses
+\[
+  h=
+  \left\lfloor
+  \min\left\{\frac{k}{64C^2},\sqrt{\log n}\right\}
+  \right\rfloor,
+  \qquad
+  \theta=\frac{1}{4\sqrt h}.
+\]
+Since \(k\to\infty\) and \(n\to\infty\), one has \(h\to\infty\) directly;
+there is no real need to pass to a subsequence, apart from discarding
+finitely many small values if desired.
+
+For each row \(i\), set
+\[
+  A_i=\{j: |r_{ij}|\geq \theta\}.
+\]
+The proof first shows that \(|A_i|<k\), because otherwise one could choose
+\(k\) elements of \(A_i\) and contradict the row mass estimate.  This step is
+needed because the row mass estimate is only known for coordinate sets of
+size at most \(k\).  Once \(|A_i|<k\) is known, the same estimate applied to
+\(A_i\) gives
+\[
+  |A_i|\leq 16C^2h.
+\]
+
+For each row \(i\) and sign \(s\in\{-1,1\}\), define
+\[
+  H_i^s
+  =
+  \{ (j,\varepsilon)\in\Omega_n:
+      s\varepsilon r_{ij}\geq \theta \}.
+\]
+Then \(|H_i^s|\leq 16C^2h\), so these are precisely the small signed patterns
+to which the counting lemma will be applied.
+
+Given an arbitrary signed \(h\)-set
+\[
+  E(S,\varepsilon)=\{(j,\varepsilon_j):j\in S\},
+\]
+consider the vector \(a_j=\varepsilon_j/\sqrt h\) on \(S\) and \(a_j=0\)
+outside \(S\).  The lower estimate gives a row \(i\) and a sign
+\(s\in\{-1,1\}\) such that
+\[
+  \sum_{j\in S}s r_{ij}\varepsilon_j\geq \sqrt h.
+\]
+Now define
+\[
+  B=\{j\in S: s r_{ij}\varepsilon_j\geq \theta\}.
+\]
+It is helpful to record explicitly that
+\[
+  E(S,\varepsilon)\cap H_i^s
+  =
+  \{(j,\varepsilon_j):j\in B\}.
+\]
+Thus showing that \(|B|\) is large is exactly the same as showing that the
+signed \(h\)-set \(E(S,\varepsilon)\) has large intersection with one of the
+sets \(H_i^s\).
+
+The terms outside \(B\) contribute at most \(h\theta=\sqrt h/4\), so the
+contribution from \(B\) is at least \(3\sqrt h/4\).  By Cauchy-Schwarz and
+the row mass estimate on \(B\),
+\[
+  \frac{3\sqrt h}{4}
+  \leq
+  C |B|^{1/2}.
+\]
+Hence
+\[
+  |B|\geq \frac{9}{16C^2}h.
+\]
+Therefore every signed \(h\)-set has intersection at least
+\(\eta h\), with \(\eta=9/(16C^2)\), with one of the \(2n\) sets \(H_i^s\),
+each of size at most \(Mh\), with \(M=16C^2\).  This contradicts the counting
+lemma.
+
+\section*{Literature Check}
+
+A preliminary citation-oriented search found no indexed citing papers for the
+published Studia Mathematica version of Fresen's article.  OpenAlex, Crossref,
+and OpenCitations all report no citing works for the journal version, and
+targeted searches for the distinctive Problem 4 terminology did not reveal an
+existing answer.  This does not replace author feedback or a final literature
+check, but it supports treating the packet as a potentially new negative
+answer.
+
+\section*{Review Outcome}
+
+Archive this packet as an apparently correct full negative answer to Fresen's
+Problem 4, pending author feedback.  The argument is sound, but a polished
+version should expand the counting lemma and make the relation
+\[
+  E(S,\varepsilon)\cap H_i^s
+  =
+  \{(j,\varepsilon_j):j\in B\}
+\]
+explicit when the set \(B\) is introduced.
+
+\end{document}

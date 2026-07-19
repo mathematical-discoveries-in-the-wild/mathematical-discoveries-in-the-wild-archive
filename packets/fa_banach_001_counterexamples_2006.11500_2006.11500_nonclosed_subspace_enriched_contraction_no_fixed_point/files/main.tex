@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Aprime}{\mathcal A'}
+\newcommand{\ellTwo}{\ell_2}
+
+\title{A Nonclosed Subspace Counterexample for Enriched \texorpdfstring{\(\mathcal A\)}{A}-Contractions}
+\author{Run \texttt{fa\_banach\_001}, lane 15}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Mondal--Garai--Dey, \emph{On some enriched contractions in Banach
+spaces}, arXiv:2006.11500 \cite{MondalGaraiDey}.  After showing that their
+fixed-point theorems can fail on arbitrary closed subsets, they ask:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+Read literally, the question asks only for the existence of at least one
+fixed-point-bearing example on a subspace.  That literal reading has the
+trivial positive answer given by, for instance, a constant zero map.  The
+contextual question suggested by Remark 3.3 is instead whether the positive
+fixed-point theorem remains valid when the Banach-space domain is weakened to a
+linear subspace, not necessarily closed.  The following example answers that
+nontrivial reading negatively, even for an ordinary Banach contraction.
+
+\section*{Result}
+
+\begin{theorem}\label{thm:main}
+There is a real Banach space \(H\), a nonclosed linear subspace \(Y\subset H\),
+and a self-map \(T:Y\to Y\) such that \(T\) is both an enriched
+\(\A\)-contraction and an enriched \(\Aprime\)-contraction in the inherited
+norm, but \(T\) has no fixed point in \(Y\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+Completeness is the only missing ingredient.  On a Banach space, a strict
+contraction has its fixed point in the space.  On an incomplete normed linear
+space, the Picard iterates may still converge, but only in the completion.  The
+construction below makes this obstruction visible inside \(\ellTwo\): each
+iterate has finite support, while the limit has infinitely many nonzero
+coordinates.
+
+\section*{Proof}
+
+\begin{proof}
+Let \(H=\ellTwo(\N)\), and let \(Y=c_{00}\), the subspace of finitely supported
+real sequences, with the norm inherited from \(H\).  Then \(Y\) is a linear
+subspace of the Banach space \(H\), but \(Y\) is not closed.  Let
+\((e_n)_{n\ge 1}\) be the standard unit vector basis, and let \(R:Y\to Y\) be
+the right shift \(R e_n=e_{n+1}\).  Define
+\[
+  T x=e_1+\frac12 R x,\qquad x\in Y.
+\]
+Since \(R\) sends finitely supported sequences to finitely supported sequences,
+\(T\) is a self-map of \(Y\).
+
+For \(x,y\in Y\),
+\[
+  \|T x-T y\|_2
+  =\frac12\|R(x-y)\|_2
+  =\frac12\|x-y\|_2.
+\]
+Thus \(T\) is an ordinary Banach contraction on the normed space \(Y\).
+
+Now set
+\[
+  f(r,s,t)=\frac12 r,\qquad r,s,t\in\R_+.
+\]
+We verify that this single \(f\) belongs to both source classes \(\A\) and
+\(\Aprime\).  It is continuous and homogeneous, so the corresponding
+\(\A_1,\A_3,\Aprime_1,\Aprime_3\) conditions are immediate.  For \(\A_2\), if
+\[
+  r\le f(s,r,s)=\frac12 s,
+\]
+then \(r\le ks\) with \(k=1/2\); and if
+\[
+  r\le f(r,s,s)=\frac12 r,
+\]
+then \(r=0\), again implying \(r\le ks\) with \(k=1/2\).  For \(\Aprime_2\),
+the alternatives are \(r\le r/2\), which forces \(r=0\), or
+\(r\le s/2\), which gives \(r\le ks\) with \(k=1/2\).  The monotonicity
+condition \(\Aprime_4\) is automatic because \(f\) is independent of the third
+variable.  Condition \(\Aprime_5\) says that
+\[
+  r\le f(s,0,r+s)=\frac12 s
+\]
+implies \(r\le ks\), again with \(k=1/2\).  Finally \(\Aprime_6\) follows from
+\[
+  r\le f(r,r,r)=\frac12 r,
+\]
+which implies \(r=0\).  Hence \(f\in \A\cap\Aprime\).
+
+Taking the enrichment parameter \(b=0\), the enriched \(\A\)-inequality becomes
+\[
+  \|T x-T y\|_2
+  \le f(\|x-y\|_2,\|x-Tx\|_2,\|y-Ty\|_2)
+  =\frac12\|x-y\|_2,
+\]
+and the enriched \(\Aprime\)-inequality becomes
+\[
+  \|T x-T y\|_2
+  \le
+  f(\|x-y\|_2,\|x-y+y-Ty\|_2,\|y-x+x-Tx\|_2)
+  =\frac12\|x-y\|_2.
+\]
+Both hold for all distinct \(x,y\in Y\).  Thus \(T\) is both an enriched
+\(\A\)-contraction and an enriched \(\Aprime\)-contraction.
+
+It remains to show that \(T\) has no fixed point in \(Y\).  If \(x=Tx\), then
+\[
+  x=e_1+\frac12 R x.
+\]
+Writing \(x=(x_n)_{n\ge 1}\), this gives \(x_1=1\) and
+\[
+  x_n=\frac12 x_{n-1}\qquad(n\ge 2).
+\]
+Therefore \(x_n=2^{-(n-1)}\) for every \(n\ge 1\).  This sequence belongs to
+\(\ellTwo\), but it has infinitely many nonzero coordinates and so is not an
+element of \(c_{00}=Y\).  Hence no fixed point of \(T\) lies in \(Y\).
+\end{proof}
+
+\begin{remark}
+The Picard iterates from \(0\) are the finite partial sums
+\[
+  0,\quad e_1,\quad e_1+\frac12 e_2,\quad
+  e_1+\frac12 e_2+\frac14 e_3,\ldots,
+\]
+which lie in \(Y\) and converge in \(\ellTwo\) to
+\((1,1/2,1/4,\ldots)\notin Y\).  Thus the example isolates exactly the loss of
+completeness.
+\end{remark}
+
+\section*{Novelty Check}
+
+The bounded search on July 18, 2026 found no duplicate in the run indexes for
+arXiv:2006.11500, enriched \(\A\)-contractions, enriched
+\(\Aprime\)-contractions, or this subspace fixed-point question.  A local
+source-corpus search found the exact open-question wording only in the source
+paper and target-pool copies.  Web searches for the paper title, the arXiv id,
+the exact phrase ``Does there exist a self map defined on a subspace'', and
+near variants involving enriched \(\A\)- and \(\Aprime\)-contractions found no
+later explicit resolution.
+
+\section*{Human Review Note}
+
+The mathematical counterexample is elementary.  The main review point is
+interpretive: it answers the contextual universal fixed-point extension
+suggested by Remark 3.3, not the literal existential grammar of Open Question
+3.5, which is trivially true.
+
+\begin{thebibliography}{9}
+
+\bibitem{MondalGaraiDey}
+P. Mondal, H. Garai, and L. K. Dey,
+\emph{On some enriched contractions in Banach spaces},
+arXiv:2006.11500, 2020.
+
+\end{thebibliography}
+
+\end{document}

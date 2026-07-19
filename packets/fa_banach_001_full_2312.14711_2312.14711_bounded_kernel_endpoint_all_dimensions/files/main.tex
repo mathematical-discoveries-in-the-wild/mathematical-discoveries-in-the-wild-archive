@@ -1,0 +1,296 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Hol}{\operatorname{Hol}}
+\newcommand{\linf}{\ell_\infty}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+
+\title{No Bounded-Kernel RKHS at the Critical Holder Endpoint in Any Dimension}
+\author{Agent lane 7}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source is Max Sch\"olpple and Ingo Steinwart,
+\emph{Which Spaces can be Embedded in Reproducing Kernel Hilbert Spaces?},
+arXiv:2312.14711 \cite{SS}. In Section 4.2, Theorem 12 proves that for bounded
+subsets of \(\R^d\) with non-empty interior there is no bounded-kernel RKHS
+\[
+  \Hol^\alpha(X)\hookrightarrow H\hookrightarrow \linf(X)
+\]
+when \(\alpha<d/2\). The paper then says that this is tight up to the border
+case \(\alpha=d/2\).
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet settles the bounded-kernel critical endpoint \(\alpha=d/2\) on
+cubes in every dimension, under the standard Holder endpoint conventions
+explained below.
+
+\section*{Endpoint Convention}
+
+For non-integer \(s>0\), \(\Hol^s([0,1]^d)\) denotes the usual bounded
+\(C^{\lfloor s\rfloor,s-\lfloor s\rfloor}\) Holder class. For \(s=1\), it
+denotes the bounded Lipschitz class. At higher integer \(s\), the source
+paper's generalized Holder notation is convention-dependent; the proof below
+applies to the classical \(C^s\) endpoint, to \(C^{s-1,1}\), and to the
+Holder-Zygmund/Besov endpoint \(B^s_{\infty,\infty}\). The common property
+used by the proof is the elementary character estimate
+\[
+  \norm{e_m}_{\Hol^s([0,1]^d)}
+  \le C_{d,s}(1+\abs m)^s,\qquad
+  e_m(x)=\exp(2\pi i\,m\cdot x),\quad m\in\Z^d .
+\]
+For \(C^{k,\theta}\) this follows by differentiating \(e_m\) up to order
+\(k=\lfloor s\rfloor\) and taking the \(\theta\)-Holder seminorm of those
+derivatives; for Lipschitz and \(C^k\) it is immediate.
+
+\section*{Result}
+
+\begin{theorem}\label{thm:all-d}
+Let \(d\ge1\) and put \(s=d/2\). There is no bounded-kernel reproducing kernel
+Hilbert space \(H\) on \([0,1]^d\) such that
+\[
+  \Hol^s([0,1]^d)\hookrightarrow H\hookrightarrow \linf([0,1]^d)
+\]
+continuously.
+\end{theorem}
+
+In particular, the bounded-kernel Holder endpoint left open by the source
+paper has a negative answer for every dimension \(d\).
+
+\section*{Idea of the Proof}
+
+The proof uses only Fourier characters. If such an RKHS sandwich existed, then
+each periodic character \(e_m(x)=\exp(2\pi i\,m\cdot x)\) would have a Hilbert
+feature vector \(J e_m\). Bounded point evaluations give uniformly bounded
+Riesz representatives \(v_t\), indexed by \(t\in\T^d\).
+
+For a finite frequency set \(F\subset\Z^d\setminus\{0\}\), project the
+representatives \(v_t\) onto the finite-dimensional space spanned by
+\(\{J e_m:m\in F\}\). The Fourier coefficients \(u_m\) of this projected
+feature map satisfy a Bessel bound
+\[
+  \sum_{m\in F}\norm{u_m}^2\le C .
+\]
+On the other hand, reproducing the character \(e_m\), together with
+\(\norm{e_m}_{\Hol^{d/2}}\lesssim |m|^{d/2}\), forces
+\[
+  \norm{u_m}\gtrsim |m|^{-d/2}.
+\]
+Thus the Bessel bound would imply
+\[
+  \sum_{m\in F}\frac{1}{(1+|m|)^d}\le C .
+\]
+Letting \(F\) exhaust \(\Z^d\setminus\{0\}\) contradicts the critical
+divergence of \(\sum_{m\ne0}|m|^{-d}\).
+
+\section*{Finite Character Lemma}
+
+Let \(\T^d=\R^d/\Z^d\), with normalized Haar measure. We write the proof over
+complex scalars. A real factorization may be complexified in the usual way, so
+proving the complex statement rules out both real and complex RKHS sandwiches.
+Throughout this section Hilbert inner products are linear in the first
+variable.
+
+\begin{lemma}\label{lem:characters}
+Let \(E\) be a Banach space of functions on \([0,1]^d\). Assume that for some
+\(s>0\) and \(M>0\), every character
+\[
+  e_m(x)=\exp(2\pi i\,m\cdot x),\qquad m\in\Z^d,
+\]
+belongs to \(E\) and satisfies
+\[
+  \norm{e_m}_E\le M(1+\abs m)^s .
+\]
+Suppose there are a Hilbert space \(\mathcal H\) and bounded linear maps
+\[
+  J:E\to\mathcal H,\qquad R:\mathcal H\to\linf([0,1]^d)
+\]
+such that \(RJf=f\) for every \(f\in E\). Put
+\[
+  a=\norm J,\qquad b=\norm R .
+\]
+Then for every finite \(F\subset\Z^d\setminus\{0\}\),
+\[
+  \sum_{m\in F}\frac{1}{(1+\abs m)^{2s}}\le a^2b^2M^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+Choose the standard half-open fundamental-domain section
+\(\sigma:\T^d\to[0,1]^d\), and define
+\[
+  (Bh)(t)=Rh(\sigma(t)),\qquad t\in\T^d .
+\]
+Then \(\norm B\le b\), and
+\[
+  BJe_m(t)=e_m(\sigma(t))=e_m(t).
+\]
+
+For each \(t\in\T^d\), the functional \(h\mapsto (Bh)(t)\) on \(\mathcal H\)
+has norm at most \(b\). Let \(v_t\in\mathcal H\) be its Riesz representative,
+so that
+\[
+  (Bh)(t)=\langle h,v_t\rangle_{\mathcal H},
+  \qquad \norm{v_t}_{\mathcal H}\le b .
+\]
+
+Fix a finite set \(F\subset\Z^d\setminus\{0\}\), and let
+\[
+  E_F=\operatorname{span}\{J e_m:m\in F\}\subset\mathcal H .
+\]
+Let \(P_F\) be the orthogonal projection onto \(E_F\). The map
+\[
+  t\longmapsto P_F v_t
+\]
+is a continuous \(E_F\)-valued function, because \(E_F\) is finite-dimensional
+and, for every \(h\in E_F\), the scalar function
+\(\langle h,P_Fv_t\rangle=\langle h,v_t\rangle=(Bh)(t)\) is a finite linear
+combination of continuous characters.
+
+For \(m\in F\), define the vector-valued Fourier coefficient at index \(-m\)
+\[
+  u_m=\int_{\T^d}e_m(t)\,P_Fv_t\,dt\in E_F .
+\]
+Parseval's inequality for the continuous \(E_F\)-valued function
+\(t\mapsto P_Fv_t\) gives
+\[
+  \sum_{m\in F}\norm{u_m}_{\mathcal H}^2
+  \le \int_{\T^d}\norm{P_Fv_t}_{\mathcal H}^2\,dt
+  \le b^2 .
+\]
+For each \(m\in F\), since \(Je_m\in E_F\),
+\[
+  1
+  =
+  \int_{\T^d}e_m(t)\overline{e_m(t)}\,dt
+  =
+  \int_{\T^d}\langle Je_m,P_Fv_t\rangle\overline{e_m(t)}\,dt
+  =
+  \langle Je_m,u_m\rangle .
+\]
+Consequently,
+\[
+  1
+  \le \norm{Je_m}_{\mathcal H}\norm{u_m}_{\mathcal H}
+  \le aM(1+\abs m)^s\norm{u_m}_{\mathcal H}.
+\]
+Thus
+\[
+  \norm{u_m}_{\mathcal H}^2
+  \ge \frac{1}{a^2M^2(1+\abs m)^{2s}}.
+\]
+Combining this lower bound with the Bessel upper bound proves the lemma.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:all-d}}
+
+Assume, toward a contradiction, that such an RKHS \(H\) exists, and let
+\[
+  J:\Hol^s([0,1]^d)\to H,\qquad
+  R:H\to\linf([0,1]^d)
+\]
+be the two continuous inclusions, where \(s=d/2\). After complexifying
+\(H,J,R\) if necessary, use the same notation for the corresponding maps on
+complex-valued functions.
+
+The endpoint Holder norm satisfies the character estimate
+\[
+  \norm{e_m}_{\Hol^s([0,1]^d)}\le M(1+\abs m)^s
+\]
+for a constant \(M\) depending only on \(d\) and the chosen equivalent endpoint
+norm. Therefore Lemma \ref{lem:characters} gives
+\[
+  \sum_{m\in F}\frac{1}{(1+\abs m)^d}\le \norm J^2\norm R^2M^2
+\]
+for every finite \(F\subset\Z^d\setminus\{0\}\).
+
+Taking \(F_N=\{m\in\Z^d\setminus\{0\}:\abs m\le N\}\) gives a uniform bound on
+the partial sums of
+\[
+  \sum_{m\in\Z^d\setminus\{0\}}\frac{1}{(1+\abs m)^d}.
+\]
+But this series diverges. Indeed, the annulus
+\(\{m\in\Z^d:2^j\le \abs m<2^{j+1}\}\) contains at least \(c_d2^{jd}\)
+lattice points for all large \(j\), and each term on that annulus is at least
+\(C_d2^{-jd}\). Hence each dyadic annulus contributes a positive amount
+bounded below independently of \(j\). This contradiction proves the theorem.
+\qed
+
+\section*{Verification and Novelty Notes}
+
+The proof is deterministic and uses no numerical computation. The only
+analytic inputs are the Riesz representation theorem in Hilbert space,
+finite-dimensional Hilbert projections, vector-valued Parseval/Bessel
+inequality on the torus \cite{Rudin}, the elementary Holder norm estimate for
+Fourier characters, and the critical lattice-sum divergence
+\(\sum_{m\in\Z^d\setminus\{0\}}|m|^{-d}=\infty\).
+
+The local run indexes were searched for arXiv id 2312.14711 and for the
+endpoint keywords Hol to smoothness \(d/2\), \(\alpha=d/2\), bounded kernel,
+Holder-Zygmund, Besov critical endpoint, and Hilbert factorization. The exact
+hits were the previous two-dimensional packet, its bundled one-dimensional
+companion packet, and the superseded attempt note.
+
+Bounded web searches for the source title plus \texttt{border}, for
+\texttt{bounded-kernel RKHS alpha=d/2 Holder}, for
+\texttt{Holder-Zygmund d/2 RKHS}, and for
+\texttt{Besov critical RKHS bounded kernel} found the source
+arXiv record and no exact later answer to this endpoint.
+
+\section*{Scope and Remaining Border Cases}
+
+This packet settles the bounded-kernel endpoint
+\[
+  \Hol^{d/2}([0,1]^d)\hookrightarrow H\hookrightarrow \ell_\infty([0,1]^d)
+\]
+for every \(d\ge1\), in the standard endpoint conventions above. It does not
+settle every Holder-to-Holder border case
+\[
+  \Hol^\alpha\hookrightarrow H\hookrightarrow \Hol^\beta,
+  \qquad \alpha-\beta=d/2.
+\]
+Those are harder classification questions and may have mixed positive and
+negative outcomes.
+
+\section*{Human Review Recommendation}
+
+Review should focus on Lemma \ref{lem:characters}. In particular, check the
+finite-dimensional projection \(P_Fv_t\), the Fourier coefficient convention,
+and the reduction from a cube RKHS sandwich to bounded feature vectors for
+characters on the torus. Once these are accepted, the all-dimensional
+contradiction is exactly the critical divergence of
+\(\sum_{m\ne0}|m|^{-d}\).
+
+\begin{thebibliography}{9}
+\bibitem{SS}
+Max Sch\"olpple and Ingo Steinwart.
+\newblock \emph{Which Spaces can be Embedded in Reproducing Kernel Hilbert Spaces?}
+\newblock arXiv:2312.14711, 2023.
+\newblock \url{https://arxiv.org/abs/2312.14711}.
+
+\bibitem{Rudin}
+Walter Rudin.
+\newblock \emph{Fourier Analysis on Groups}.
+\newblock Wiley, 1962.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,328 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\F}{\mathbb F}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diag}{\Delta}
+\newcommand{\Mcal}{\mathcal M}
+
+\title{Separable Essential Ideals and the UBCP Wall}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving the commutative unital
+criterion for \(C(K)\), it asks for a noncommutative \(C^*\)-algebra version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+Let \(X\) be a normed space.  It has BCP if \(S_X\) is covered by countably
+many open balls not containing the origin.  Equivalently, there are countably
+many centres \(x_n\) such that
+\[
+        S_X\subseteq\bigcup_n B(x_n,\|x_n\|).
+\]
+It has UBCP if there is such a cover with bounded radii and with all balls
+uniformly separated from a neighbourhood of the origin.
+
+The earlier packet
+\[
+\texttt{2311.14257\_bcp\_countable\_capture\_exact\_equivalence}
+\]
+proved that a nonzero normed space \(X\) fails BCP if and only if it has
+countable capture: for every countable \(C\subset X\) there is \(u\in S_X\)
+such that
+\[
+        \dist(c,\F u)=\|c\| \qquad(c\in C).
+\]
+
+\section*{Main Positive Theorem}
+
+\begin{theorem}[separable essential ideals force UBCP]
+\label{thm:essential}
+Let \(A\) be a \(C^*\)-algebra.  If \(A\) contains a separable essential
+closed two-sided ideal \(I\), then \(A\) has UBCP.
+\end{theorem}
+
+\begin{proof}
+Since \(I\) is essential, the canonical map from \(A\) into the multiplier
+algebra \(\Mcal(I)\) is isometric.  Thus, for \(a\in A\),
+\[
+        \|a\|
+        =
+        \sup\{\|ax\|:x\in I,\ \|x\|\le1\}.
+\]
+Equivalently, if \((e_\alpha)\) is a positive contractive approximate
+identity for \(I\), then \(\|ae_\alpha\|\to\|a\|\).  Indeed, choose
+\(x\in I\) with \(\|x\|\le1\) and \(\|ax\|\) close to \(\|a\|\), and then use
+\(e_\alpha x\to x\).
+
+Let \(D\) be a countable dense subset of the closed unit ball of \(I\), and
+put
+\[
+        D_0=\{d\in D:\|d\|>13/16\}.
+\]
+For every \(d\in D_0\), take the centre \(2d\) and the fixed radius \(9/8\).
+This is a countable family of balls.  Its radii are bounded, and every centre
+has norm larger than \(13/8\), so all balls avoid \(B(0,1/2)\).
+
+We show that these balls cover \(S_A\).  Fix \(a\in S_A\).  By the first
+paragraph, choose a positive contraction \(e\in I\) such that
+\[
+        \|ae\|>7/8.
+\]
+Since \(ae\in I\) and \(\|ae\|\le1\), choose \(d\in D\) with
+\[
+        \|d-ae\|<1/16.
+\]
+Then \(\|d\|>7/8-1/16=13/16\), so \(d\in D_0\).
+
+In the unitization of \(\Mcal(I)\), the element \(1-2e\) is a contraction,
+because \(e\) is a positive contraction.  Hence
+\[
+\begin{aligned}
+        \|a-2d\|
+        &\le \|a-2ae\|+2\|ae-d\|\\
+        &=   \|a(1-2e)\|+2\|ae-d\|\\
+        &<  1+1/8
+        =   9/8.
+\end{aligned}
+\]
+Thus \(a\in B(2d,9/8)\).  The unit sphere is covered by the countable family
+above, with uniformly bounded radii and a uniform gap from the origin.
+Therefore \(A\) has UBCP.
+\end{proof}
+
+\begin{corollary}
+\label{cor:no-essential}
+If a \(C^*\)-algebra has BCP but not UBCP, then it has no separable essential
+ideal.
+\end{corollary}
+
+\begin{proof}
+This is the contrapositive of Theorem~\ref{thm:essential}, using
+UBCP \(\Rightarrow\) BCP.
+\end{proof}
+
+\section*{Examples Covered}
+
+The theorem recovers several positive regions by a single argument.
+Every separable \(C^*\)-algebra has itself as a separable essential ideal.
+If \(H\) is separable, then \(\mathcal K(H)\) is a separable essential ideal
+in \(\mathcal B(H)\), so \(\mathcal B(H)\) has UBCP.  If \((A_n)\) is a
+sequence of separable \(C^*\)-algebras, then
+\[
+        \bigoplus_{n=1}^\infty A_n
+\]
+is a separable essential ideal in \(\prod_n A_n\), so the countable product
+has UBCP.  This gives a short common explanation for the countable-reservoir
+positive cases in the lane.
+
+\section*{Quantitative UBCP Reformulation}
+
+\begin{lemma}[bounded anti-capture form of UBCP]
+\label{lem:anti}
+For a normed space \(X\), the following are equivalent:
+\begin{enumerate}
+    \item \(X\) has UBCP;
+    \item there are a bounded countable set \(D\subset X\) and a number
+          \(\delta>0\) such that for every \(u\in S_X\) some \(d\in D\)
+          satisfies
+          \[
+                \|u-d\|<\|d\|-\delta .
+          \]
+\end{enumerate}
+Consequently, if \(X\) fails UBCP, then for every bounded countable
+\(D\subset X\) and every \(\delta>0\) there is \(u\in S_X\) such that
+\[
+        \|u-d\|\ge \|d\|-\delta \qquad(d\in D).
+\]
+\end{lemma}
+
+\begin{proof}
+If (2) holds, the balls \(B(d,\|d\|-\delta)\), \(d\in D\), cover \(S_X\).
+Their radii are bounded because \(D\) is bounded, and they all avoid
+\(B(0,\delta)\).  Hence \(X\) has UBCP.
+
+Conversely, a UBCP cover has bounded radii and avoids some ball
+\(B(0,\delta)\).  If its centres are \(d_n\) and its radii are \(r_n\), then
+\[
+        r_n\le \|d_n\|-\delta
+\]
+for every \(n\).  Since \(S_X\) is covered and the radii are bounded, the
+centres are bounded.  This gives (2), after replacing each \(r_n\) by
+\(\|d_n\|-\delta\) if necessary.
+
+The final sentence is the negation of (2).
+\end{proof}
+
+\section*{The Remaining Wall: Asymptotic Capture}
+
+\begin{theorem}[BCP but not UBCP gives quotient capture]
+\label{thm:quotient}
+Let \(X\) be a nonzero normed space over \(\F=\mathbb R\) or \(\mathbb C\).
+Assume \(X\) has BCP but not UBCP.  Let \(C=\{c_1,c_2,\ldots\}\subset X\) be
+any countable set witnessing the positive side of the exact BCP/capture
+equivalence, i.e. for every \(u\in S_X\) there is \(c\in C\) with
+\[
+        \dist(c,\F u)<\|c\|.
+\]
+Then the sequence quotient
+\[
+        X_\infty=\ell_\infty(X)/c_0(X)
+\]
+contains \(v\in S_{X_\infty}\) such that, for the diagonal embedding
+\(\diag:X\to X_\infty\),
+\[
+        \dist(\diag c,\F v)=\|c\| \qquad(c\in C).
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(Q_\F=\mathbb Q\) in the real case and
+\(Q_\F=\mathbb Q+i\mathbb Q\) in the complex case.  For \(m\ge1\), put
+\[
+        D_m=\{q c_j:1\le j\le m,\ q\in Q_\F,\ |q|\le m\}.
+\]
+This is a bounded countable subset of \(X\).  Since \(X\) does not have UBCP,
+Lemma~\ref{lem:anti} gives \(u_m\in S_X\) such that
+\[
+        \|u_m-y\|\ge \|y\|-1/m \qquad(y\in D_m).
+\]
+Let \(v\) be the class of the bounded sequence \((u_m)\) in
+\(\ell_\infty(X)/c_0(X)\).  Its quotient norm is
+\(\limsup_m\|u_m\|=1\), so \(v\in S_{X_\infty}\).
+
+Fix \(c=c_j\in C\) and \(\lambda\in\F\).  If \(\lambda=0\), then
+\(\|\diag c-\lambda v\|=\|c\|\).  Assume \(\lambda\ne0\), and put
+\(\mu=\lambda^{-1}\).  Let \(\varepsilon>0\).  Choose \(q\in Q_\F\) with
+\[
+        |q-\mu|<\varepsilon .
+\]
+For all sufficiently large \(m\), we have \(m\ge j\) and \(|q|\le m\), hence
+\(qc\in D_m\).  Therefore
+\[
+\begin{aligned}
+        \|u_m-\mu c\|
+        &\ge \|u_m-qc\|-\|(q-\mu)c\|\\
+        &\ge |q|\,\|c\|-1/m-\varepsilon\|c\|\\
+        &\ge (|\mu|-2\varepsilon)\|c\|-1/m .
+\end{aligned}
+\]
+Taking the limsup and then letting \(\varepsilon\downarrow0\) gives
+\[
+        \|v-\mu\diag c\|\ge |\mu|\,\|c\|.
+\]
+Multiplying by \(|\lambda|\), we obtain
+\[
+        \|\diag c-\lambda v\|\ge \|c\|.
+\]
+Since this holds for every scalar \(\lambda\), and equality is obtained at
+\(\lambda=0\), the desired distance equality follows.
+\end{proof}
+
+\begin{corollary}[shape of a C*-counterexample]
+\label{cor:shape}
+If a \(C^*\)-algebra \(A\) has BCP but not UBCP, then:
+\begin{enumerate}
+    \item \(A\) has no separable essential ideal;
+    \item for every countable BCP witness \(C\subset A\), the quotient
+          \(\ell_\infty(A)/c_0(A)\) contains a unit vector that captures the
+          diagonal copy of \(C\).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The first assertion is Corollary~\ref{cor:no-essential}; the second is
+Theorem~\ref{thm:quotient}.
+\end{proof}
+
+\section*{What Remains}
+
+Theorem~\ref{thm:essential} is a substantial positive theorem, but it is not
+a full solution of Question 3.  It reduces the possible failure of
+\[
+        \text{BCP}\Rightarrow\text{UBCP}
+\]
+for \(C^*\)-algebras to algebras with no separable essential ideal.  The most
+direct remaining route is therefore:
+
+\begin{center}
+\emph{prove that every \(C^*\)-algebra with BCP contains a separable
+essential ideal.}
+\end{center}
+
+If that statement is true, then Theorem~\ref{thm:essential} immediately gives
+the full implication BCP \(\Rightarrow\) UBCP for \(C^*\)-algebras.  If it is
+false, Corollary~\ref{cor:shape} says any counterexample must hide the
+countable BCP witness in \(A\) while allowing exact line capture of that
+witness in the sequence quotient.
+
+\section*{Novelty and Search Bounds}
+
+Local run indexes were searched for arXiv:2311.14257, UBCP, SBCP, essential
+ideal, separable essential ideal, multiplier algebra, countable capture, and
+the previous lane-19 C*-BCP packets.  The earlier
+essential-Fell packet proves a type-I local chart theorem; it does not contain
+the general separable-essential-ideal compression proof above.  The
+Liu--Liu--Lu--Zheng paper arXiv:2111.04921 was checked for the definitions
+and the vector-valued \(C_0(K,X)\) UBCP stability theorem.  No exact version
+of Theorem~\ref{thm:essential} or Theorem~\ref{thm:quotient} was found in the
+local packet index.
+
+\section*{Human Review Focus}
+
+Reviewers should check:
+\begin{enumerate}
+    \item the use of essentiality to view \(A\) isometrically inside
+          \(\Mcal(I)\);
+    \item the passage from arbitrary contractions in \(I\) to positive
+          contractions \(e\) using an approximate identity;
+    \item the fixed estimate \(\|1-2e\|\le1\);
+    \item the quantitative negation of UBCP in Lemma~\ref{lem:anti};
+    \item the rational-scalar diagonalization in Theorem~\ref{thm:quotient}.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{LLLZ}
+Minzeng Liu, Rui Liu, Jimeng Lu, and Bentuo Zheng,
+\emph{Ball covering property from commutative function spaces to
+non-commutative spaces of operators},
+arXiv:2111.04921, 2021.
+
+\bibitem{Blackadar}
+Bruce Blackadar,
+\emph{Operator Algebras: Theory of \(C^*\)-Algebras and Von Neumann
+Algebras},
+Encyclopaedia of Mathematical Sciences 122, Springer, 2006.
+
+\end{thebibliography}
+
+\end{document}

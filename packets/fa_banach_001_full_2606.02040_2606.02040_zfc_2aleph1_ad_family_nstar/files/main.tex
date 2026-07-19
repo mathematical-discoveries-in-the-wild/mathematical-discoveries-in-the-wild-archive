@@ -1,0 +1,570 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\B}{\mathbb B}
+\newcommand{\wideB}{\widehat{\mathbb B}}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\RO}{\operatorname{RO}}
+\newcommand{\Clop}{\operatorname{Clop}}
+\newcommand{\Int}{\operatorname{int}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\concat}{\mathbin{{}^\frown}}
+\newcommand{\cfrak}{\mathfrak c}
+\newcommand{\AD}{\mathcal A}
+\newcommand{\calU}{\mathcal U}
+
+\title{A ZFC Almost Disjoint Family of Size \(2^{\aleph_1}\) on \(\mathbb N^*\)\\
+\large Verification of the supplied construction and an exploratory full proof}
+\author{}
+\date{22 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Lambie-Hanson and Schrittesser ask whether ZFC proves the existence of an
+almost disjoint family on \(\mathbb N^*=\beta\mathbb N\setminus\mathbb N\)
+of cardinality \(2^{\aleph_1}\), or even of the maximal possible cardinality
+\(2^{2^{\aleph_0}}\).  First, the continuum-sized construction supplied with
+the question is verified; in particular, its regular-open argument is correct.
+Second, a Boolean-algebraic construction is given which appears to answer the
+first part of the question positively in ZFC: there is an almost disjoint
+family on \(\mathbb N^*\) of cardinality \(2^{\aleph_1}\).  The proof uses the
+completion of \(\mathcal P(\omega)/\mathrm{Fin}\), two elementary countable
+fusion/interpolation facts, and a binary interval tree of height \(\omega_1\).
+The maximal target \(2^{2^{\aleph_0}}\) is obtained whenever
+\(2^{\aleph_1}=2^{2^{\aleph_0}}\), but is not settled here in the remaining
+cardinal-arithmetic cases.  The new proof has not been peer reviewed and should
+be checked independently before being cited as a definitive resolution.
+\end{abstract}
+
+\section*{Packet status}
+
+\begin{description}[leftmargin=2.9cm,style=nextline]
+\item[Run] \texttt{fa\_banach\_001}.
+\item[Source arXiv id] \texttt{2606.02040}.
+\item[Source paper] C.~Lambie-Hanson and D.~Schrittesser,
+\emph{Generalized almost disjoint families and injective Banach spaces},
+arXiv:2606.02040v1.
+\item[Packet classification] Candidate full solution for the first cardinal
+target of Question~4.3, likely valid subject to human mathematical review.
+\item[Upgrade note] This packet supersedes the earlier ZFC continuum-sized
+partial packet and absorbs the earlier branch-regular-tree conditional
+reduction.  It proves the \(2^{\aleph_1}\) target in ZFC.  The stronger
+maximal target \(2^{2^{\aleph_0}}\) remains open in the case
+\(2^{\aleph_1}<2^{2^{\aleph_0}}\).
+\end{description}
+
+The source question appears in Question~4.3 of Lambie-Hanson--Schrittesser:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Status of the literature search.}
+The source preprint was submitted on 1 June 2026 and, in its current first
+version, states the question below as open.  Searches through 22 June 2026 for
+the exact question, title, arXiv identifier, author pages, and closely related
+Boolean-algebraic and topological phrases did not locate a later proof or
+counterexample.  Because the preprint is very recent, this is evidence rather
+than a guarantee that no independent solution exists.
+
+\section{Proof Intuition}
+
+The key step is to replace the earlier conditional branch-regular-tree
+hypothesis by an explicit interval tree in \(\mathcal P(\omega)/\Fin\).  The
+countable lower-bound and interpolation lemmas provide exactly the amount of
+fusion needed at each countable limit level below \(\omega_1\).  This produces
+nested Boolean intervals whose sibling upper endpoints meet only in the parent
+lower endpoint.
+
+After passing to the Boolean completion, equivalently the regular-open algebra
+of \(\mathbb N^*\), each branch \(f\in2^{\omega_1}\) yields the join
+\[
+  u_f=\bigvee_{\alpha<\omega_1}\ell_{f\restr\alpha}.
+\]
+Two different branches meet at the lower endpoint of their last common node,
+which is an element of \(\mathcal P(\omega)/\Fin\), hence a compact clopen
+intersection in \(\mathbb N^*\).  Except for at most \(\mathfrak c\) branch
+joins already lying in \(\mathcal P(\omega)/\Fin\), these joins are nonclopen
+regular open sets and therefore noncompact.  If \(2^{\aleph_1}=\mathfrak c\),
+the earlier continuum construction already reaches the same cardinal.
+
+\section{The source question}
+
+For a topological space \(X\), Lambie-Hanson and Schrittesser call a family
+\(\AD\) an \emph{almost disjoint family on \(X\)} if every member of \(\AD\)
+is a noncompact regular open subset of \(X\), and the intersection of every
+two distinct members is compact \cite[Definition~2.1]{LHS}.
+Their Question~4.3 is:
+\begin{quote}
+Is it provable in ZFC that there exists an almost disjoint family on
+\(\mathbb N^*\) of cardinality \(2^{\aleph_1}\), or even of cardinality
+\(2^{2^{\aleph_0}}\)?
+\end{quote}
+They prove the first cardinality from the additional hypothesis
+\(\mathfrak b=\mathfrak c\) \cite[Theorem~C]{LHS}.
+
+\section{Verification of the supplied continuum construction}
+
+For an infinite \(a\subseteq\omega\), put
+\[
+  N_a=\{p\in\mathbb N^*:a\in p\}.
+\]
+This is the basic clopen subset of \(\mathbb N^*\) corresponding to the class
+of \(a\) modulo finite sets.
+
+\begin{proposition}\label{prop:continuum}
+In ZFC there is an almost disjoint family on \(\mathbb N^*\) of cardinality
+\(\mathfrak c=2^{\aleph_0}\).  Its members can in fact be chosen pairwise
+disjoint.
+\end{proposition}
+
+\begin{proof}
+Identify \(2^{<\omega}\) with \(\omega\).  For \(x\in2^\omega\), let
+\[
+  A_x=\{x\restr n:n<\omega\}.
+\]
+The family \(\{A_x:x\in2^\omega\}\) is a classical almost disjoint family on
+\(\omega\) of cardinality \(\mathfrak c\).  Partition each \(A_x\) as
+\[
+  A_x=\bigsqcup_{n<\omega} A_{x,n},
+\]
+where every \(A_{x,n}\) is infinite, and for \(n\geq1\) set
+\[
+  b_{x,n}=\bigcup_{m<n}A_{x,m},
+  \qquad
+  U_x=\bigcup_{n\geq1}N_{b_{x,n}}.
+\]
+Clearly \(U_x\) is open and nonempty.
+
+We verify regularity.  Fix \(p\notin U_x\) and a basic neighborhood
+\(N_y\ni p\), where \(y\in p\).  Since \(b_{x,n}\notin p\), the set
+\(y\setminus b_{x,n}\) is infinite for every \(n\); otherwise
+\(y\subseteq^*b_{x,n}\), and the nonprincipal ultrafilter \(p\) would contain
+\(b_{x,n}\).
+
+If \(y\setminus A_x\) is infinite, choose an infinite
+\(z\subseteq y\setminus A_x\).  Then \(N_z\subseteq N_y\) and
+\(N_z\cap U_x=\varnothing\).  Otherwise \(y\setminus A_x\) is finite.  The
+preceding paragraph then implies that \(y\) meets infinitely many blocks
+\(A_{x,k}\).  Choose an infinite \(z\subseteq y\cap A_x\) containing at most
+one point from each block.  For every \(n\), the intersection
+\(z\cap b_{x,n}\) is finite, so again
+\(N_z\subseteq N_y\) and \(N_z\cap U_x=\varnothing\).
+
+Thus every basic neighborhood of every \(p\notin U_x\) contains a nonempty
+open subset disjoint from \(U_x\).  In particular, no such neighborhood can
+be contained in \(\cl(U_x)\), because \(U_x\) is dense in its closure.
+Consequently
+\[
+  \Int\cl(U_x)\subseteq U_x.
+\]
+The reverse inclusion holds for every open set, hence
+\(U_x=\Int\cl(U_x)\): \(U_x\) is regular open.
+
+The increasing family \(\{N_{b_{x,n}}:n\geq1\}\) is an open cover of
+\(U_x\) with no finite subcover.  Indeed,
+\(N_{b_{x,n+1}}\nsubseteq N_{b_{x,n}}\), since a nonprincipal ultrafilter
+concentrated on the infinite set
+\(A_{x,n}=b_{x,n+1}\setminus b_{x,n}\) belongs to the former clopen set and
+not the latter.  Hence \(U_x\) is not compact.
+
+Finally, if \(x\neq y\), then \(A_x\cap A_y\) is finite.  Therefore
+\(b_{x,n}\cap b_{y,m}\) is finite for all \(m,n\), and
+\(N_{b_{x,n}}\cap N_{b_{y,m}}=\varnothing\) in \(\mathbb N^*\).  It follows
+that \(U_x\cap U_y=\varnothing\).  The sets \(U_x\) are nonempty, so they are
+distinct, and the asserted family has cardinality \(\mathfrak c\).
+\end{proof}
+
+\begin{remark}
+The only delicate point in the supplied proof is that the smaller clopen set
+\(N_z\subseteq N_y\) need not contain the original ultrafilter \(p\).  This is
+not a gap: its existence shows that \(N_y\) is not contained in
+\(\cl(U_x)\), which is exactly what is needed to exclude
+\(p\) from \(\Int\cl(U_x)\).
+\end{remark}
+
+\section{The Boolean-algebraic translation}
+
+Let
+\[
+  \B=\mathcal P(\omega)/\Fin.
+\]
+The Stone space of \(\B\) is \(\mathbb N^*\), and
+\(\B\cong\Clop(\mathbb N^*)\).  Let \(\wideB\) be the Boolean completion of
+\(\B\).  Since \(\mathbb N^*\) is zero-dimensional,
+\[
+  \wideB\cong\RO(\mathbb N^*),
+\]
+with \(\B\) embedded as the clopen regular open sets.  We use the same symbol
+for a Boolean element and the corresponding regular open set when no confusion
+can arise.
+
+\begin{lemma}[Translation lemma]\label{lem:translation}
+Suppose \(\calU\subseteq\wideB\setminus\B\) and
+\(u\wedge v\in\B\) whenever \(u,v\in\calU\) are distinct.  Then the
+corresponding regular open subsets of \(\mathbb N^*\) form an almost disjoint
+family on \(\mathbb N^*\).
+\end{lemma}
+
+\begin{proof}
+In the regular-open algebra, finite meets are set-theoretic intersections.
+Thus \(u\wedge v\in\B\) says that the intersection is clopen, hence compact.
+A regular open subset of a compact Hausdorff space is compact if and only if it
+is clopen: compact subsets are closed, and a clopen subset is closed in a
+compact space.  Therefore every element of \(\wideB\setminus\B\) corresponds
+to a noncompact regular open set.
+\end{proof}
+
+The rest of the proof is therefore purely Boolean-algebraic.
+
+\section{Two countable fusion facts in
+\texorpdfstring{\(\mathcal P(\omega)/\mathrm{Fin}\)}{P(omega)/Fin}}
+
+We write \([A]\) for the class modulo finite sets of \(A\subseteq\omega\).
+
+\begin{lemma}[Countable lower bounds]\label{lem:sigmaclosed}
+If
+\[
+  d_0\geq d_1\geq d_2\geq\cdots>0
+\]
+in \(\B\), then there is \(q>0\) such that \(q\leq d_n\) for every \(n\).
+\end{lemma}
+
+\begin{proof}
+Choose representatives \(D_n\subseteq\omega\).  Replacing \(D_n\) by
+\(\bigcap_{i\leq n}D_i\), we may assume that the representatives are actually
+decreasing and infinite.  Recursively choose distinct
+\(k_n\in D_n\).  Then \(Q=\{k_n:n<\omega\}\) is infinite and
+\(Q\subseteq^*D_n\) for every \(n\), so \(q=[Q]\) works.
+\end{proof}
+
+\begin{lemma}[Countable interpolation]\label{lem:interpolation}
+Let \(x_n,y_n\in\B\) for \(n<\omega\), and suppose
+\[
+  x_n\leq y_m\qquad\text{for all }m,n<\omega.
+\]
+Then there is \(z\in\B\) such that
+\[
+  x_n\leq z\leq y_m\qquad\text{for all }m,n<\omega.
+\]
+\end{lemma}
+
+\begin{proof}
+Choose representatives \(X_n,Y_n\subseteq\omega\), and put
+\[
+  X'_n=\bigcup_{i\leq n}X_i,
+  \qquad
+  Y'_n=\bigcap_{j\leq n}Y_j.
+\]
+Then \(X'_n\subseteq^*Y'_n\).  Choose strictly increasing integers
+\(k_n\) tending to infinity such that
+\[
+  X'_n\setminus Y'_n\subseteq k_n
+\]
+for every \(n\), where an integer is identified with its initial segment of
+\(\omega\).  Define
+\[
+  Z=\bigcup_{n<\omega}
+       \bigl(X'_n\cap[k_n,k_{n+1})\bigr).
+\]
+For fixed \(i\), every point of \(X_i\) above \(k_i\) lies in a block indexed
+by some \(n\geq i\), and hence belongs to \(Z\).  Thus
+\(X_i\subseteq^*Z\).  For fixed \(j\), every block with index \(n\geq j\) is
+contained in \(Y'_n\subseteq Y_j\); the earlier blocks form a finite set.
+Thus \(Z\subseteq^*Y_j\).  Therefore \(z=[Z]\) interpolates the two
+countable families.
+\end{proof}
+
+\section{A binary interval tree of height
+\texorpdfstring{\(\omega_1\)}{omega1}}
+
+For two binary sequences \(s,t\), write \(s\wedge t\) for their longest common
+initial segment.
+
+\begin{lemma}[Interval tree]\label{lem:tree}
+There are elements
+\[
+  \langle \ell_s,r_s:s\in2^{<\omega_1}\rangle
+  \subseteq\B
+\]
+with the following properties.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\ell_s<r_s\) for every \(s\).
+\item If \(s\subseteq t\), then
+\[
+  \ell_s\leq\ell_t<r_t\leq r_s.
+\]
+\item For every \(s\) and \(i<2\),
+\(\ell_s<\ell_{s\concat\langle i\rangle}\).
+\item If \(s,t\) are incomparable, then
+\[
+  r_s\wedge r_t=\ell_{s\wedge t}.
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We construct the intervals \([\ell_s,r_s]\) recursively by levels.  Start
+with \(\ell_\varnothing=0\) and \(r_\varnothing=1\).
+
+Suppose \(\ell_s<r_s\) has been defined, and let
+\[
+  d=r_s\wedge\neg\ell_s>0.
+\]
+The algebra \(\B\) is atomless, so split \(d\) into four pairwise disjoint
+nonzero elements
+\(p_0,q_0,p_1,q_1\) whose join is \(d\).  For \(i<2\), set
+\[
+  \ell_{s\concat\langle i\rangle}=\ell_s\vee p_i,
+  \qquad
+  r_{s\concat\langle i\rangle}=\ell_s\vee p_i\vee q_i.
+\]
+Then each child interval is nondegenerate and lies inside the parent interval,
+its lower endpoint is strictly above \(\ell_s\), and
+\[
+  r_{s\concat\langle0\rangle}
+  \wedge r_{s\concat\langle1\rangle}=\ell_s.
+\]
+
+Now let \(t\in2^\lambda\), where \(\lambda<\omega_1\) is a nonzero limit
+ordinal, and suppose all proper initial-segment intervals have been defined.
+Choose a strictly increasing cofinal sequence
+\(\langle\alpha_n:n<\omega\rangle\) in \(\lambda\), and put
+\(t_n=t\restr\alpha_n\).  The elements
+\[
+  d_n=r_{t_n}\wedge\neg\ell_{t_n}
+\]
+form a decreasing sequence of nonzero elements.  By
+Lemma~\ref{lem:sigmaclosed}, choose \(q>0\) with \(q\leq d_n\) for every
+\(n\).  Put
+\[
+  e_n=r_{t_n}\wedge\neg q.
+\]
+For all \(m,n\), nesting of the earlier intervals gives
+\(\ell_{t_m}\leq r_{t_n}\), while \(q\leq\neg\ell_{t_m}\).  Hence
+\(\ell_{t_m}\leq e_n\).  By Lemma~\ref{lem:interpolation}, choose
+\(z\in\B\) such that
+\[
+  \ell_{t_m}\leq z\leq e_n
+  \qquad(m,n<\omega).
+\]
+Define
+\[
+  \ell_t=z,
+  \qquad
+  r_t=z\vee q.
+\]
+Since \(z\wedge q=0\) and \(q>0\), this interval is nondegenerate.  Moreover,
+for every \(n\),
+\[
+  \ell_{t_n}\leq\ell_t<r_t
+  \leq (r_{t_n}\wedge\neg q)\vee q=r_{t_n}.
+\]
+Cofinality of the sequence then gives nesting inside every proper
+initial-segment interval.
+
+This completes the recursion.  Finally, if \(s,t\) are incomparable and
+\(u=s\wedge t\), then \(s\) and \(t\) extend different immediate successors
+of \(u\).  By nesting, their upper endpoints lie below the two corresponding
+sibling upper endpoints, whose meet is \(\ell_u\).  Conversely
+\(\ell_u\leq\ell_s,\ell_t\leq r_s,r_t\).  Hence
+\(r_s\wedge r_t=\ell_u\), proving (iv).
+\end{proof}
+
+\section{The ZFC construction of size
+\texorpdfstring{\(2^{\aleph_1}\)}{2 to the aleph1}}
+
+Let \(\wideB\) be the completion of \(\B\).  For each branch
+\(f\in2^{\omega_1}\), define
+\[
+  u_f=\bigvee_{\alpha<\omega_1}\ell_{f\restr\alpha}
+  \quad\text{in }\wideB.
+\]
+
+\begin{lemma}\label{lem:branchmeet}
+If \(f,g\in2^{\omega_1}\) are distinct, \(\delta\) is the least ordinal at
+which they differ, and \(s=f\restr\delta=g\restr\delta\), then
+\[
+  u_f\wedge u_g=\ell_s\in\B.
+\]
+In particular, the elements \(u_f\) are pairwise distinct.
+\end{lemma}
+
+\begin{proof}
+In a complete Boolean algebra, meet with a fixed element preserves arbitrary
+joins.  Therefore
+\[
+  u_f\wedge u_g
+  =\bigvee_{\alpha,\beta<\omega_1}
+     \bigl(\ell_{f\restr\alpha}
+           \wedge\ell_{g\restr\beta}\bigr).
+\]
+Every term in this join is at most \(\ell_s\).  Indeed, if at least one of
+\(\alpha,\beta\) is at most \(\delta\), this follows from nesting along the
+common branch.  If both are greater than \(\delta\), the two nodes are
+incomparable with common initial segment \(s\); by
+Lemma~\ref{lem:tree}(iv),
+\[
+  \ell_{f\restr\alpha}\wedge\ell_{g\restr\beta}
+  \leq r_{f\restr\alpha}\wedge r_{g\restr\beta}
+  =\ell_s,
+\]
+while \(\ell_s\) lies below both lower endpoints, so equality holds.  Hence
+the displayed supremum is exactly \(\ell_s\).
+
+By Lemma~\ref{lem:tree}(iii),
+\(u_f\geq\ell_{f\restr(\delta+1)}>\ell_s\), and similarly
+\(u_g>\ell_s\).  Thus \(u_f=u_g\) would contradict
+\(u_f\wedge u_g=\ell_s\), proving distinctness.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+ZFC proves that there is an almost disjoint family on \(\mathbb N^*\) of
+cardinality \(2^{\aleph_1}\).
+\end{theorem}
+
+\begin{proof}
+Let \(\lambda=2^{\aleph_1}\).  Since
+\(|2^{<\omega_1}|=\mathfrak c\), Lemma~\ref{lem:tree} is a construction of
+only \(\mathfrak c\) many elements of \(\B\), as expected.  By
+Lemma~\ref{lem:branchmeet}, the map
+\[
+  f\longmapsto u_f
+  \qquad(f\in2^{\omega_1})
+\]
+is injective and the meet of any two distinct values belongs to \(\B\).
+
+Recall that \(|\B|=\mathfrak c\) and that
+\(\mathfrak c\leq2^{\aleph_1}=\lambda\).  If \(\lambda>\mathfrak c\), then
+at most \(\mathfrak c\) of the \(\lambda\) distinct elements \(u_f\) can lie
+in \(\B\).  After discarding those, there remain \(\lambda\) elements of
+\(\wideB\setminus\B\) with pairwise meets in \(\B\).  The translation lemma
+produces the required almost disjoint family.
+
+If instead \(\lambda=\mathfrak c\), Proposition~\ref{prop:continuum} already
+provides an almost disjoint family of cardinality
+\(\mathfrak c=2^{\aleph_1}\).  These two cases exhaust ZFC.
+\end{proof}
+
+\section{Consequences and the remaining maximal target}
+
+The regular-open algebra has cardinality exactly \(2^{\mathfrak c}\).  The
+upper bound follows because \(\mathbb N^*\) has a clopen base of size
+\(\mathfrak c\).  For the lower bound, \(\B\) has an antichain of size
+\(\mathfrak c\), obtained from a classical continuum-sized almost disjoint
+family on \(\omega\), and distinct subfamilies of that antichain have distinct
+joins in \(\wideB\).  Thus \(2^{\mathfrak c}\) is indeed the maximal possible
+size in Question~4.3.
+
+\begin{corollary}\label{cor:maximal-equality}
+If
+\[
+  2^{\aleph_1}=2^{\mathfrak c},
+\]
+then there is an almost disjoint family on \(\mathbb N^*\) of maximal size
+\(2^{\mathfrak c}=2^{2^{\aleph_0}}\).
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:main}.
+\end{proof}
+
+Combining Theorem~\ref{thm:main} with Theorem~B of
+Lambie-Hanson--Schrittesser also gives the following conditional Banach-space
+consequence.
+
+\begin{corollary}\label{cor:banach}
+If
+\[
+  2^{\,2^{\aleph_1}}>2^{\mathfrak c},
+\]
+then the quotient
+\(\ell_\infty([\omega]^\omega)/C(\mathbb N^*)\) is not injective, and hence
+\(\operatorname{id}(c_0)\geq3\).
+\end{corollary}
+
+\begin{proof}
+Use Theorem~\ref{thm:main} with
+\(\lambda=2^{\aleph_1}\), the dense set of \(\mathbb N^*\) of cardinality
+\(\mathfrak c\) used in \cite{LHS}, and \cite[Theorem~B]{LHS}.
+\end{proof}
+
+The argument above does not settle the maximal target in models satisfying
+\[
+  2^{\aleph_1}<2^{\mathfrak c}.
+\]
+Its natural stopping point is \(\omega_1\): every ordinal below \(\omega_1\)
+has countable cofinality, so the limit step is handled by the two countable
+fusion lemmas.  A direct extension to a tree of height \(\mathfrak c\) would
+require interpolation across limits of uncountable cofinality, which is not
+provided by the elementary structure of \(\mathcal P(\omega)/\Fin\).
+
+There is also a simple obstruction to one tempting shortcut.  Starting with an
+antichain \(\{a_\xi:\xi<\mathfrak c\}\subseteq\B\), one might take joins
+indexed by an ordinary family of subsets of \(\mathfrak c\) having pairwise
+finite intersections.  Such a family cannot have size greater than
+\(\mathfrak c\): choose a countably infinite subset of each member; these
+choices are distinct, while
+\(|[\mathfrak c]^\omega|=\mathfrak c^\omega=\mathfrak c\).  A maximal
+construction therefore needs more structure than the naive finite-intersection
+coding.  This observation does not rule out a different ZFC proof of the
+maximal target.
+
+\section{Audit summary}
+
+\begin{enumerate}[leftmargin=2.2em]
+\item The supplied continuum-sized construction is correct.  The regular-open
+      verification works exactly because every neighborhood outside \(U_x\)
+      contains a nonempty open subset disjoint from \(U_x\).
+\item No literature resolution later than the 1 June 2026 source preprint was
+      located in the search described above.
+\item Theorem~\ref{thm:main} gives a candidate full ZFC answer to the first
+      cardinal target \(2^{\aleph_1}\).  Its nonstandard ingredient is the
+      interval-tree lemma; all fusion and interpolation steps are proved
+      explicitly.
+\item The maximal target \(2^{2^{\aleph_0}}\) remains open in the cardinal
+      arithmetic case \(2^{\aleph_1}<2^{2^{\aleph_0}}\), at least by the
+      methods developed here.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{LHS}
+C. Lambie-Hanson and D. Schrittesser,
+\emph{Generalized almost disjoint families and injective Banach spaces},
+arXiv:2606.02040v1, 2026.
+\url{https://arxiv.org/abs/2606.02040}
+
+\bibitem{Sikorski}
+R. Sikorski,
+\emph{Boolean Algebras}, third edition,
+Springer, 1969.
+
+\bibitem{Koppelberg}
+S. Koppelberg,
+General theory of Boolean algebras,
+in \emph{Handbook of Boolean Algebras}, Vol.~1,
+North-Holland, 1989, pp.~1--307.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+
+\definecolor{navy}{HTML}{17324D}
+\definecolor{pale}{HTML}{EEF4F8}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\LGBPs}{\mathrm{(LGBP_s)}}
+\newcommand{\LGBPl}{\mathrm{(LGBP_l)}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cP}{\mathcal{P}}
+
+\title{A full answer to Question 8.4:\\
+\(\Fin\otimes\Fin\) separates \(\LGBPl\) from \(\LGBPs\)}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\colorbox{pale}{\parbox{0.96\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid; independent human
+review pending.}}
+
+\section{Source question}
+
+Sobota and \.{Z}uchowski ask the following in
+Question~8.4 on PDF page~47 of their preprint~\cite{SZ}.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In words: does there exist an ideal on \(\omega\) which has the
+Local-to-Global Boundedness Property for lower semicontinuous submeasures
+\(\LGBPl\), but not the corresponding property for arbitrary submeasures
+\(\LGBPs\)?
+
+\section{Definitions}
+
+Let \(\Omega=\omega\times\omega\), and write
+\(R_n=\{n\}\times\omega\) and
+\(A_n=\{k:(n,k)\in A\}\).  We work with the standard ideal
+\[
+ \cJ=\Fin\otimes\Fin
+   =\bigl\{A\subseteq\Omega:\{n:A_n\text{ is infinite}\}\text{ is finite}\bigr\}.
+\]
+Since \(\Omega\) is countable, any bijection \(\omega\to\Omega\) transports
+\(\cJ\) to an ideal on \(\omega\).
+
+A submeasure is a monotone, subadditive map
+\(\varphi:\cP(\Omega)\to[0,\infty]\) which vanishes at the empty set and is
+finite on singletons.  Put
+\(\Fin(\varphi)=\{A:\varphi(A)<\infty\}\).  An ideal \(\mathcal I\) has
+\(\LGBPs\) if every submeasure \(\varphi\) with
+\(\mathcal I\subseteq\Fin(\varphi)\) is uniformly bounded on \(\mathcal I\).
+It has \(\LGBPl\) if every \emph{lower semicontinuous} submeasure \(\psi\)
+with \(\mathcal I\subseteq\Fin(\psi)\) satisfies
+\(\psi(\Omega)<\infty\)~\cite{SZ}.
+
+\section{Proof intuition}
+
+Counting the infinite rows gives exactly the non-lower-semicontinuous
+submeasure needed to destroy \(\LGBPs\).  Lower semicontinuity prevents this
+phenomenon: if an lsc submeasure were infinite on the whole grid but finite on
+\(\cJ\), then every tail of rows would still have infinite value.  One can
+choose a finite set of arbitrarily large value from each successive tail.
+Their diagonal union remains finite in every row, hence belongs to \(\cJ\),
+but has infinite value---the required contradiction.
+
+\begin{theorem}
+The ideal \(\cJ=\Fin\otimes\Fin\) has \(\LGBPl\) and does not have
+\(\LGBPs\).  Consequently, Question~8.4 has an affirmative answer in ZFC.
+\end{theorem}
+
+\begin{proof}
+For \(A\subseteq\Omega\), set
+\[
+ S(A)=\{n\in\omega:A_n\text{ is infinite}\},\qquad
+ \rho(A)=|S(A)|\in\mathbb N\cup\{\infty\}.
+\]
+This is a submeasure.  Indeed, it is monotone, vanishes on finite sets, and
+\[
+ S(A\cup B)\subseteq S(A)\cup S(B),
+\]
+because the union of two finite row sections is finite.  Thus \(\rho\) is
+subadditive.  Moreover,
+\(\Fin(\rho)=\cJ\), while for
+\(P_m=\bigcup_{n<m}R_n\) one has \(P_m\in\cJ\) and \(\rho(P_m)=m\).
+Hence \(\rho\) is finite but unbounded on \(\cJ\), proving that \(\cJ\)
+does not have \(\LGBPs\).
+
+Now let \(\psi\) be an lsc submeasure such that
+\(\cJ\subseteq\Fin(\psi)\).  Suppose for a contradiction that
+\(\psi(\Omega)=\infty\).  For every \(m\), the initial row block \(P_m\)
+belongs to \(\cJ\), so \(\psi(P_m)<\infty\).  With
+\[
+ T_m=\Omega\setminus P_m=\bigcup_{n\ge m}R_n,
+\]
+subadditivity forces \(\psi(T_m)=\infty\); otherwise
+\(\psi(\Omega)\le\psi(P_m)+\psi(T_m)<\infty\).
+
+By lower semicontinuity, for every \(m\) there is a finite set
+\(F_m\subseteq T_m\) such that \(\psi(F_m)>m\).  Let
+\(A=\bigcup_m F_m\).  Fix a row \(R_n\).  Since
+\(F_m\subseteq T_m\), the set \(F_m\) misses \(R_n\) whenever \(m>n\).
+Therefore
+\[
+ A\cap R_n\subseteq\bigcup_{m\le n}F_m
+\]
+is finite.  Every row section of \(A\) is finite, so \(A\in\cJ\).  On the
+other hand, monotonicity gives
+\(\psi(A)\ge\psi(F_m)>m\) for every \(m\), hence \(\psi(A)=\infty\),
+contradicting \(\cJ\subseteq\Fin(\psi)\).  Thus
+\(\psi(\Omega)<\infty\), which is precisely \(\LGBPl\).
+\end{proof}
+
+\section{Checks, scope, and novelty}
+
+The witness \(\rho\) is not lower semicontinuous: finite approximations to a
+full row have value zero, while the full row has value one.  Hence it does not
+conflict with the \(\LGBPl\) conclusion.  Also, \(\cJ\) is not a P-ideal:
+the full rows \(R_n\) have no pseudounion in \(\cJ\).  The example therefore
+lies outside the analytic P-ideal class singled out immediately before the
+source question.
+
+The run's lightweight indexes and a bounded web/arXiv search were queried by
+the source id, the exact LGBP terminology, \(\Fin\otimes\Fin\), and close
+variants.  The search found the source and general literature on this ideal,
+but no later answer to Question~8.4 or matching separation argument.  This is
+not an exhaustive novelty claim.
+
+\paragraph{Human-review focus.}
+Check the two LGBP quantifiers, the lsc selection of the finite sets \(F_m\),
+and the row-finiteness of their diagonal union.
+
+\begin{thebibliography}{9}
+\bibitem{SZ}
+D. Sobota and T. \.{Z}uchowski,
+\emph{The Nikodym and Grothendieck properties of Boolean algebras and rings
+related to ideals}, arXiv:2510.19744 (2025), Question~8.4.
+\end{thebibliography}
+
+\end{document}

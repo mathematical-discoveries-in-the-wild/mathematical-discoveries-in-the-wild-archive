@@ -1,0 +1,560 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\K}{\mathbb K}
+\newcommand{\F}{\mathcal F}
+\newcommand{\G}{\mathcal G}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\U}{\mathbb U}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Isom}{\operatorname{Isom}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\preF}{\preccurlyeq_{\F}}
+\newcommand{\simF}{\sim_{\F}}
+
+\title{Replacement Classes and the Isometry Groups\\
+of Combinatorial Banach Spaces}
+\author{A research note on the questions of Brech--Ferenczi--Tcaciuc}
+\date{21 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For a family $\F\subseteq[\N]^{<\omega}$, define the replacement relation
+$i\preccurlyeq_{\F}j$ by requiring that $j$ may replace $i$ in every finite
+context without destroying membership in $\F$.  We prove that this relation
+is a preorder for every family and is total whenever $\F$ is spreading.  Its
+equivalence classes are consecutive intervals of $\N$, and the full
+permutation automorphism group of a spreading family is exactly the
+unrestricted product of the symmetric groups on those intervals.  Combining
+this with the signed-permutation theorem of Brech--Ferenczi--Tcaciuc gives a
+complete intrinsic description of the surjective linear isometry group of
+every regular combinatorial Banach space and of its dual.  We also classify
+which permutation groups occur, verify the supplied threshold-family result,
+and obtain a short rigidity theorem: two permutation-isomorphic spreading
+families on $\N$ are equal.  A literature search found close finite
+antecedents through desirability and vicinal preorders, but no exact statement
+of the countably infinite Banach-space conclusion; this bibliographic
+observation is not a formal novelty certification.
+\end{abstract}
+
+\section{Problem, verdict on the partial result, and main conclusion}
+
+Throughout, $\N=\{1,2,\ldots\}$.  A family means a subset of
+$[\N]^{<\omega}$.  It is \emph{spreading} if every coordinatewise increase of
+a member remains in the family.  It is \emph{regular} if it is hereditary,
+spreading, compact as a subspace of $2^{\N}$, and contains all singletons.
+For a regular family $\F$, the associated combinatorial Banach space is the
+completion of $c_{00}$ under
+\[
+  \|x\|_{\F}=\sup_{A\in\F}\sum_{n\in A}|x(n)|.
+\]
+
+Brech, Ferenczi, and Tcaciuc proved that every surjective linear isometry of a
+combinatorial space, or of its dual, is a signed permutation of the canonical
+basis.  They then asked which permutations preserve a given regular family
+and for which combinatorial spaces the full isometry group can be explicitly
+described \cite{BFT}.  The same problem was still listed in the 2022 survey of
+Antunes and Beanland \cite[Problem~3.1]{ABsurvey}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\caption{Questions 16 and 17 in Brech--Ferenczi--Tcaciuc, page 11 of the
+arXiv PDF.}
+\end{figure}
+
+The supplied partial result treats
+\[
+  \F_g=\{\varnothing\}\cup
+  \bigl\{A\in[\N]^{<\omega}:A\ne\varnothing,
+      \ |A|\le g(\min A)\bigr\},
+\]
+where $g:\N\to\N$ is nondecreasing and $g\ge1$.  Its conclusion is that
+$\Aut(\F_g)$ consists precisely of the permutations preserving every level
+set of $g$.
+
+\begin{remark}[Verdict on the supplied argument]
+The partial result is correct.  In particular, its compactness proof, the
+invariant
+\[
+  h_{\F_g}(n)=\max\{|A|:A\in\F_g,\ n\in A\}=g(n),
+\]
+and the converse argument for level-preserving permutations are all sound.
+Section~\ref{sec:threshold} gives a self-contained verification.  The main
+point of the present note is that the same replacement idea, formulated at
+the right level of generality, settles the permutation problem for every
+spreading family.
+\end{remark}
+
+Here is the resulting answer.  The canonical partition appearing in the
+statement is defined in Section~\ref{sec:preorder}.
+
+\begin{theorem}[Main isometry theorem]\label{thm:main-isometry}
+Let $\F$ be a regular family, let $\Ccal_{\F}$ be its replacement classes, and
+let $\U_{\K}=\{-1,1\}$ in the real case and
+$\U_{\K}=\{z\in\mathbb C:|z|=1\}$ in the complex case.  A map
+$T:X_{\F}\to X_{\F}$ is a surjective linear isometry if and only if there are
+$\varepsilon=(\varepsilon_n)_{n\in\N}\in\U_{\K}^{\N}$ and a permutation
+$\pi$ satisfying $\pi(C)=C$ for every $C\in\Ccal_{\F}$ such that
+\[
+  T e_n=\varepsilon_n e_{\pi(n)}\qquad(n\in\N).
+\]
+The analogous statement holds on $X_{\F}^{*}$.  Consequently,
+\[
+  \Isom(X_{\F})\cong
+  \U_{\K}^{\N}\rtimes
+  \prod_{C\in\Ccal_{\F}}\Sym(C),
+\]
+with the same permutation part for $\Isom(X_{\F}^{*})$.
+\end{theorem}
+
+The product in this formula is the unrestricted direct product: independent
+permutations may be chosen on all replacement classes, including an infinite
+class.  The classes are consecutive intervals, so the permutation part is a
+Young subgroup associated with an interval partition of $\N$.
+
+\section{The replacement preorder}\label{sec:preorder}
+
+The relation below is the set-system analogue of Isbell's desirability
+relation for simple games \cite{Isbell}; closely related generalized vicinal
+preorders occur in the theory of shifted simplicial complexes
+\cite{Klivans}.  We include all details because two elementary features of
+the relation do the entire job.
+
+\begin{definition}[Replacement preorder]\label{def:replacement}
+For a family $\F\subseteq[\N]^{<\omega}$ and $i,j\in\N$, write
+$i\preccurlyeq_{\F}j$ if
+\[
+  A\cup\{i\}\in\F\quad\Longrightarrow\quad A\cup\{j\}\in\F
+  \tag{2.1}\label{eq:replacement}
+\]
+for every finite $A\subseteq\N\setminus\{i,j\}$.  Thus $j$ can replace $i$
+in every context.  Write
+\[
+  i\sim_{\F}j
+  \quad\Longleftrightarrow\quad
+  i\preccurlyeq_{\F}j\text{ and }j\preccurlyeq_{\F}i.
+\]
+The equivalence classes of $\sim_{\F}$ will be called the
+\emph{replacement classes} of $\F$ and denoted by $\Ccal_{\F}$.
+\end{definition}
+
+\begin{proposition}\label{prop:preorder}
+For every family $\F$, the relation $\preccurlyeq_{\F}$ is a preorder.  If
+$\pi$ is a permutation and $\G=\pi[\F]$, then
+\[
+  i\preccurlyeq_{\F}j
+  \quad\Longleftrightarrow\quad
+  \pi(i)\preccurlyeq_{\G}\pi(j).
+  \tag{2.2}\label{eq:transport}
+\]
+\end{proposition}
+
+\begin{proof}
+Reflexivity is immediate.  For transitivity, the cases with repeated indices
+are immediate, so suppose that $i,j,k$ are pairwise distinct,
+$i\preccurlyeq_{\F}j$, and $j\preccurlyeq_{\F}k$.  Let
+$A\subseteq\N\setminus\{i,k\}$ be finite and suppose
+$A\cup\{i\}\in\F$.
+
+If $j\notin A$, replace $i$ by $j$ and then $j$ by $k$.  This gives
+$A\cup\{k\}\in\F$.  If $j\in A$, put $B=A\setminus\{j\}$.  Starting from
+$B\cup\{i,j\}\in\F$, first use $j\preccurlyeq_{\F}k$ with context
+$B\cup\{i\}$ to obtain $B\cup\{i,k\}\in\F$.  Then use
+$i\preccurlyeq_{\F}j$ with context $B\cup\{k\}$ to obtain
+$B\cup\{j,k\}=A\cup\{k\}\in\F$.  Thus
+$i\preccurlyeq_{\F}k$.
+
+For \eqref{eq:transport}, apply $\pi^{-1}$ to a context avoiding
+$\pi(i),\pi(j)$, use \eqref{eq:replacement} in $\F$, and apply $\pi$ again.
+The reverse implication follows in the same way from $\pi^{-1}$.
+\end{proof}
+
+\begin{proposition}\label{prop:spreading-structure}
+If $\F$ is spreading, then:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2.2em]
+  \item $i<j$ implies $i\preccurlyeq_{\F}j$, so the replacement preorder is
+        total;
+  \item each replacement class is a consecutive interval of $\N$;
+  \item for $i\ne j$, one has $i\sim_{\F}j$ if and only if the transposition
+        $(i\ j)$ belongs to $\Aut(\F)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For (i), if $A\cup\{i\}\in\F$ and $A$ avoids $i,j$, the map that fixes $A$
+and sends $i$ to $j$ is an injective pointwise increase.  The spreading
+property therefore gives $A\cup\{j\}\in\F$.
+
+For (ii), suppose $i<k<j$ and $i\sim_{\F}j$.  By (i),
+$i\preccurlyeq_{\F}k\preccurlyeq_{\F}j$.  Combining these inequalities with
+$j\preccurlyeq_{\F}i$ and using transitivity gives both
+$i\sim_{\F}k$ and $k\sim_{\F}j$.
+
+For (iii), if the transposition is an automorphism, applying it to
+$A\cup\{i\}$ or $A\cup\{j\}$ proves the two replacement implications.
+Conversely, if $i\sim_{\F}j$, the transposition fixes every finite set that
+contains both or neither of $i,j$; when exactly one is present, the relevant
+replacement implication preserves membership.  Hence the transposition
+preserves $\F$ in both directions.
+\end{proof}
+
+The quotient $\N/{\sim_{\F}}$ is ordered by
+\[
+  [i]_{\F}\le [j]_{\F}
+  \quad\Longleftrightarrow\quad i\preccurlyeq_{\F}j.
+  \tag{2.3}\label{eq:quotient-order}
+\]
+This is well defined by Proposition~\ref{prop:preorder} and is a linear order
+when $\F$ is spreading.  More is true: it is a well-order.  Indeed, for any
+nonempty collection of classes, the class containing the least integer in
+their union is its least member.  Equivalently, the replacement classes form
+either a finite interval partition of $\N$ or a sequence of finite consecutive
+intervals indexed by $\N$.
+
+\section{Automorphisms of every spreading family}
+
+\begin{theorem}[Automorphism theorem]\label{thm:aut}
+Let $\F\subseteq[\N]^{<\omega}$ be spreading.  Then
+\[
+  \Aut(\F)
+  =\bigl\{\pi\in\Sym(\N):\pi(C)=C
+       \text{ for every }C\in\Ccal_{\F}\bigr\}
+  \cong\prod_{C\in\Ccal_{\F}}\Sym(C).
+  \tag{3.1}\label{eq:aut-product}
+\]
+In particular, the replacement classes are exactly the orbits of
+$\Aut(\F)$ on $\N$.
+\end{theorem}
+
+\begin{proof}
+Let $\pi\in\Aut(\F)$.  Proposition~\ref{prop:preorder} shows that $\pi$
+preserves the replacement preorder and hence induces an order automorphism
+of the well-ordered quotient $\N/{\sim_{\F}}$.  A well-order has no
+nonidentity order automorphism, so every replacement class is fixed setwise.
+This proves the inclusion from left to right in \eqref{eq:aut-product}.
+
+Conversely, suppose that $\pi(C)=C$ for every replacement class.  Fix a finite
+set $A\subseteq\N$.  For each of the finitely many classes $C$ meeting $A$,
+the finite partial bijection
+\[
+  \pi\big|_{A\cap C}:A\cap C\longrightarrow \pi(A\cap C)
+\]
+extends to a permutation $\sigma_C$ of $C$ with finite support.  One explicit
+construction is to view the partial bijection on the finite set
+$(A\cap C)\cup\pi(A\cap C)$ as a disjoint union of directed paths and cycles
+and close each path into a cycle.  Let $\sigma$ agree with these $\sigma_C$
+and be the identity elsewhere.  Then $\sigma$ has finite support and is a
+finite product of transpositions inside replacement classes.  By
+Proposition~\ref{prop:spreading-structure}(iii), every such transposition is
+an automorphism of $\F$, so $\sigma\in\Aut(\F)$.  Since
+$\sigma(A)=\pi(A)$,
+\[
+  A\in\F\quad\Longleftrightarrow\quad\pi(A)\in\F.
+\]
+This holds for every finite $A$, hence $\pi\in\Aut(\F)$.
+
+Finally, arbitrary permutations inside a class are allowed, so each class is
+one orbit, while the first part shows that no orbit meets two classes.
+\end{proof}
+
+\begin{corollary}[Block-count normal form]\label{cor:block-count}
+Let $\F$ be spreading.  If finite sets $A,B\subseteq\N$ satisfy
+\[
+  |A\cap C|=|B\cap C|\qquad(C\in\Ccal_{\F}),
+\]
+then $A\in\F$ if and only if $B\in\F$.
+\end{corollary}
+
+\begin{proof}
+Choose, independently in each replacement class, a permutation sending
+$A\cap C$ to $B\cap C$, and combine them.  The resulting block-preserving
+permutation is an automorphism by Theorem~\ref{thm:aut}.
+\end{proof}
+
+Thus every spreading family is completely symmetric inside its replacement
+blocks.  All asymmetry is encoded by the ordered list of blocks and by which
+finite block-count vectors are admitted.
+
+\section{Consequences for combinatorial Banach spaces}
+
+We now specialize to regular families and use the signed-permutation theorem
+of Brech--Ferenczi--Tcaciuc.  Their result says that every surjective linear
+isometry between dual combinatorial spaces has the form
+$e_n^*\mapsto\varepsilon_n e_{\pi(n)}^*$, and their corollary says that the
+permutation $\pi$ is admissible exactly when it carries one defining family
+onto the other.  The corresponding assertion for the primal spaces follows
+by adjoints \cite[Theorem~10 and Corollary~12]{BFT}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main-isometry}]
+By the cited theorem, a surjective linear isometry of $X_{\F}$ or
+$X_{\F}^{*}$ is a signed permutation, and its permutation part belongs to
+$\Aut(\F)$.  Theorem~\ref{thm:aut} identifies this automorphism group with
+$\prod_{C\in\Ccal_{\F}}\Sym(C)$.  Conversely, every coordinatewise sign
+change is an isometry because the canonical basis is $1$-unconditional, and
+every block-preserving permutation preserves $\F$, hence the defining norm.
+The displayed semidirect product uses the natural action of coordinate
+permutations on sign sequences.
+\end{proof}
+
+This gives a universal intrinsic answer to the two questions in
+\cite{BFT}: for every regular family, compute the replacement equivalence
+classes, and then permit arbitrary permutations within each class and no
+permutations between classes.
+
+\section{Verification and extension of the threshold-family result}
+\label{sec:threshold}
+
+\begin{proposition}[Threshold families]\label{prop:threshold}
+Let $g:\N\to\N$ be nondecreasing with $g(n)\ge1$, and define
+\[
+  \F_g=\{\varnothing\}\cup
+  \{A\in[\N]^{<\omega}:A\ne\varnothing,
+       \ |A|\le g(\min A)\}.
+\]
+Then $\F_g$ is regular and
+\[
+  \Aut(\F_g)
+  =\{\pi\in\Sym(\N):g(\pi(n))=g(n)\text{ for all }n\}.
+  \tag{5.1}\label{eq:threshold-aut}
+\]
+Its replacement classes are exactly the nonempty level sets
+$L_m=\{n:g(n)=m\}$.
+\end{proposition}
+
+\begin{proof}
+If $B\subseteq A\in\F_g$ is nonempty, then
+$|B|\le |A|\le g(\min A)\le g(\min B)$, so $\F_g$ is hereditary.  If
+$A=\{n_1<\cdots<n_k\}\in\F_g$ and $m_r\ge n_r$ with
+$m_1<\cdots<m_k$, then $k\le g(n_1)\le g(m_1)$, so $\F_g$ is spreading.
+All singletons belong to it.
+
+For compactness, it is enough to prove that $\F_g$ is closed in the compact
+metrizable space $2^{\N}$.  Suppose $A_r\in\F_g$ converges pointwise to
+$A\subseteq\N$.  If $A$ were infinite and $a=\min A$, then eventually $A_r$
+would contain the first $g(a)+1$ members of $A$ (including $a$), while
+containing no integer below $a$.  Hence $\min A_r=a$ and $|A_r|\ge g(a)+1$, a
+contradiction.  Thus $A$ is finite.  If $A\ne\varnothing$ and $a=\min A$,
+then eventually every member of $A$ lies in $A_r$ and no integer below $a$
+does.  Consequently
+$|A|\le |A_r|\le g(a)$, so $A\in\F_g$.  The empty set is already included.
+
+For $n\in\N$, set
+\[
+  h_{\F_g}(n)=\max\{|A|:A\in\F_g,\ n\in A\}.
+\]
+Every member containing $n$ has size at most
+$g(\min A)\le g(n)$, while
+$\{n,n+1,\ldots,n+g(n)-1\}\in\F_g$.  Therefore
+$h_{\F_g}(n)=g(n)$.  Since a family automorphism preserves the cardinalities
+of members containing a given point, every automorphism preserves $g$.
+
+Conversely, suppose $g\circ\pi=g$.  If $A\in\F_g$ is nonempty, let
+$r=\min A$, and choose $s\in A$ with $\pi(s)=\min\pi(A)$.  Since $s\ge r$,
+\[
+  |\pi(A)|=|A|\le g(r)\le g(s)=g(\pi(s))=g(\min\pi(A)).
+\]
+Thus $\pi(A)\in\F_g$, and the same argument for $\pi^{-1}$ gives equality of
+the families.  This proves \eqref{eq:threshold-aut}.
+
+The level sets are the orbits of this automorphism group.  By
+Theorem~\ref{thm:aut}, the orbits are exactly the replacement classes.
+\end{proof}
+
+The proposition strictly contains the step-function example in
+\cite[Example~18]{BFT}: the threshold may have arbitrary finite or infinite
+plateaus and may jump by more than one.  Constant $g$ gives the full symmetric
+permutation group, while $g(n)=n$ gives the first Schreier family and only
+singleton replacement classes.
+
+\section{Exactly which permutation groups occur?}
+
+Call $(I_r)_{r\in R}$ an \emph{interval partition} of $\N$ if $R$ is either
+$\{1,\ldots,q\}$ or $\N$, the sets $I_r$ are nonempty consecutive intervals,
+$I_r<I_s$ for $r<s$, and $\bigcup_r I_r=\N$.
+
+\begin{theorem}[Realization and classification]\label{thm:realization}
+As concrete subgroups of $\Sym(\N)$, the permutation parts of the isometry
+groups of regular combinatorial spaces are exactly the interval Young
+subgroups
+\[
+  \prod_{r\in R}\Sym(I_r)
+  \tag{6.1}\label{eq:interval-young}
+\]
+associated with interval partitions of $\N$.
+\end{theorem}
+
+\begin{proof}
+For every regular family, Proposition~\ref{prop:spreading-structure} and
+Theorem~\ref{thm:aut} show that its automorphism group has the form
+\eqref{eq:interval-young}.
+
+Conversely, fix an interval partition $(I_r)_{r\in R}$ and define
+$g(n)=r$ for $n\in I_r$.  Then $g$ is nondecreasing and at least one.
+Proposition~\ref{prop:threshold} shows that $\F_g$ is regular, its replacement
+classes are precisely the $I_r$, and its automorphism group is exactly
+\eqref{eq:interval-young}.
+\end{proof}
+
+If the partition has finitely many blocks, its last block is necessarily an
+infinite tail.  If it has infinitely many blocks, every block is finite.  The
+full isometry group is obtained from \eqref{eq:interval-young} by adjoining
+all coordinatewise signs as in Theorem~\ref{thm:main-isometry}.
+
+\section{Permutation rigidity of spreading families}
+
+Brech and Pi\~na proved that hereditary spreading families on $\N$ which are
+images of one another under a permutation must be equal
+\cite[Theorem~14]{BP}.  The replacement-class theorem gives a short proof and
+shows that heredity is unnecessary.
+
+\begin{theorem}[Rigidity]\label{thm:rigidity}
+Let $\F,\G\subseteq[\N]^{<\omega}$ be spreading.  If
+$\G=\pi[\F]$ for a permutation $\pi$ of $\N$, then $\F=\G$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:preorder}, $\pi$ transports the replacement preorder
+of $\F$ to that of $\G$.  Hence it maps the first replacement class of $\F$
+onto the first replacement class of $\G$, the second onto the second, and so
+on, preserving the cardinality of each class.
+
+An ordered interval partition of $\N$ is determined by this ordered list of
+cardinalities.  Indeed, the first blocks are initial intervals of the same
+size and hence coincide.  Inductively, after the preceding blocks have been
+identified, the next blocks begin at the same least unused integer and have
+the same size, so they coincide as well.  If one block is infinite, it is the
+final tail and the argument terminates.
+
+Thus $\F$ and $\G$ have the same replacement classes, and $\pi$ preserves
+each of them setwise.  Theorem~\ref{thm:aut} then gives
+$\pi\in\Aut(\F)$.  Therefore $\G=\pi[\F]=\F$.
+\end{proof}
+
+\begin{corollary}
+If $\F$ and $\G$ are regular and $X_{\F}$ is linearly isometric to
+$X_{\G}$ (equivalently, their duals are linearly isometric), then
+$\F=\G$.  After this identification, every isometry has the blockwise signed
+form of Theorem~\ref{thm:main-isometry}.
+\end{corollary}
+
+\begin{proof}
+Brech--Ferenczi--Tcaciuc reduce an isometry to a permutation satisfying
+$\G=\pi[\F]$ \cite[Corollary~12]{BFT}; apply
+Theorem~\ref{thm:rigidity}.  This also recovers the regular-family
+Banach--Stone conclusion of \cite[Corollary~15]{BP}.
+\end{proof}
+
+\section{Literature status and scope}
+
+The replacement relation itself is not new in spirit.  Isbell introduced the
+desirability relation for finite simple games \cite{Isbell}; complete simple
+games are those for which the resulting preorder is total, and their player
+types are its equivalence classes \cite{CarrerasFreixas}.  Carreras and Owen
+studied automorphisms in that setting \cite{CarrerasOwen}.  Klivans used a
+generalized vicinal preorder to characterize finite shifted simplicial
+complexes by totality \cite{Klivans}.  Kalai also proved a finite rigidity
+statement for shifted families in the stronger language of weak isomorphism
+\cite[Proposition~4.2]{Kalai}.
+
+On the Banach-space side, Brech--Ferenczi--Tcaciuc supplied the decisive
+signed-permutation reduction \cite{BFT}; Brech--Pi\~na later established the
+rigidity of hereditary spreading families under permutation
+\cite{BP}; and the 2022 survey still recorded the explicit-isometry-group
+problem \cite{ABsurvey}.
+
+A targeted search of these references, their citation trails, arXiv, and
+recent work through 21 June 2026 did not locate the exact statement of
+Theorems~\ref{thm:aut} and \ref{thm:main-isometry} for countably infinite
+spreading families and combinatorial Banach spaces.  The finite game-theoretic
+and shifted-complex literature is a substantial antecedent, so this search
+result should be read only as a careful status report, not as a guarantee of
+novelty.
+
+\section{Conclusion}
+
+The supplied threshold argument was correct, but its invariant was revealing
+a more general object: the replacement preorder.  Spreading makes that
+preorder total, the well-order of $\N$ prevents automorphisms from moving its
+classes, and mutual replaceability makes every permutation inside a class
+legal.  This yields the complete formula
+\[
+  \Aut(\F)=\prod_{C\in\Ccal_{\F}}\Sym(C)
+\]
+for every spreading family and, after the theorem of
+Brech--Ferenczi--Tcaciuc, the full signed formula for every regular
+combinatorial Banach space and its dual.
+
+\begin{thebibliography}{99}
+
+\bibitem{ABsurvey}
+L. Antunes and K. Beanland,
+\emph{Surjective isometries on Banach sequence spaces: A survey},
+Concrete Operators \textbf{9} (2022), 19--40.
+\href{https://doi.org/10.1515/conop-2022-0125}{doi:10.1515/conop-2022-0125}.
+
+\bibitem{BFT}
+C. Brech, V. Ferenczi, and A. Tcaciuc,
+\emph{Isometries of combinatorial Banach spaces},
+Proc. Amer. Math. Soc. \textbf{148} (2020), 4845--4854.
+\href{https://doi.org/10.1090/proc/15122}{doi:10.1090/proc/15122}.
+
+\bibitem{BP}
+C. Brech and C. Pi\~na,
+\emph{Banach--Stone-like results for combinatorial Banach spaces},
+Ann. Pure Appl. Logic \textbf{172} (2021), 102989.
+\href{https://doi.org/10.1016/j.apal.2021.102989}{doi:10.1016/j.apal.2021.102989}.
+
+\bibitem{CarrerasFreixas}
+F. Carreras and J. Freixas,
+\emph{Complete simple games},
+Math. Social Sci. \textbf{32} (1996), 139--155.
+
+\bibitem{CarrerasOwen}
+F. Carreras and G. Owen,
+\emph{Automorphisms and weighted values},
+Internat. J. Game Theory \textbf{26} (1997), 1--10.
+\href{https://doi.org/10.1007/BF01262508}{doi:10.1007/BF01262508}.
+
+\bibitem{Isbell}
+J. R. Isbell,
+\emph{A class of simple games},
+Duke Math. J. \textbf{25} (1958), 423--439.
+\href{https://doi.org/10.1215/S0012-7094-58-02537-7}{doi:10.1215/S0012-7094-58-02537-7}.
+
+\bibitem{Kalai}
+G. Kalai,
+\emph{Symmetric matroids},
+J. Combin. Theory Ser. B \textbf{50} (1990), 54--64.
+\href{https://doi.org/10.1016/0095-8956(90)90096-I}{doi:10.1016/0095-8956(90)90096-I}.
+
+\bibitem{Klivans}
+C. J. Klivans,
+\emph{Obstructions to shiftedness},
+Discrete Comput. Geom. \textbf{33} (2005), 535--545.
+\href{https://doi.org/10.1007/s00454-004-1103-9}{doi:10.1007/s00454-004-1103-9}.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,431 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\lip}{\operatorname{Lip}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Updated Partial Results and Failed Full-Push Analysis for the Smooth Non-Complete Norm Question}
+\author{Automatic Math Discovery Run fa\_banach\_001}
+\date{June 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet is a corrected bookkeeping and partial-result report for the
+question in Azagra--Dobrowolski--Garcia-Bravo \cite{ADG}.  It should not be
+read as a full solution.  The exact \(C^1\) question remains open in the
+literature searched for this run.
+
+The earlier active packet proved correct partial statements, but its novelty
+claim for the \(c_0(\Gamma)\)-injectable case was too strong.  A supplied
+audit points out that this case is already contained in Dobrowolski's 1979
+paper \cite[Proposition 5.1]{Dobrowolski1979}: his condition (L) is precisely
+the existence of a continuous linear injection into some \(c_0(\Lambda)\), and
+he proves existence of a non-complete \(C^\infty\)-smooth norm under that
+condition.  Thus Theorem \ref{thm:c0} below is retained as a useful
+alternative proof and as a bridge to later reductions, not as a new theorem.
+
+The genuinely useful output of the present investigation is the following:
+
+\begin{itemize}
+\item a verified self-contained proof of the separable case;
+\item a verified self-contained alternative proof of the known
+\(c_0(\Gamma)\)-injectable / Marku\v{s}evi\v{c}-basis case;
+\item a quotient-extension partial theorem;
+\item a likely valid reflexive-subspace partial theorem, whose infimal
+convolution smoothness step is the main item for human review;
+\item a record of why several attempted full-proof routes fail.
+\end{itemize}
+
+\section*{Source Question}
+
+The source paper asks, on page 13 immediately before Lemma 2.10:
+
+\begin{quote}
+It is not known whether every infinite-dimensional Banach space with a
+\(C^1\) equivalent norm possesses a \(C^1\) smooth non-complete norm.
+\end{quote}
+
+The same passage notes that for \(C^k\), \(k\geq 2\), the corresponding answer
+is positive by D'Alessandro--Hajek \cite{DH}.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{Known and Verified Positive Cases}
+
+All Banach spaces are real.  A norm \(p\) on \(X\) is continuous if it is
+continuous for the original Banach norm, and is non-complete if \((X,p)\) is
+not complete.
+
+\begin{theorem}[Separable case]
+\label{thm:separable}
+Let \(X\) be an infinite-dimensional separable Banach space.  Then \(X\)
+admits a continuous \(C^\infty\)-smooth non-complete norm.
+\end{theorem}
+
+\begin{proof}
+Choose a sequence \((u_n)\) dense in the unit sphere of \(X\).  For each \(n\),
+pick \(x_n^*\in S_{X^*}\) with \(x_n^*(u_n)=1\).  The family \((x_n^*)\)
+separates points.  Indeed, if \(x\neq 0\), choose \(n\) such that
+\(\norm{u_n-x/\norm{x}}<1/2\).  Then
+\[
+        x_n^*(x/\norm{x})\geq x_n^*(u_n)-\norm{u_n-x/\norm{x}}>1/2.
+\]
+Define
+\[
+        T:X\longrightarrow \ell_2,\qquad
+        Tx=\bigl(2^{-n}x_n^*(x)\bigr)_{n=1}^{\infty}.
+\]
+Then \(T\) is bounded, injective, and compact, since its finite-rank
+truncations converge to \(T\) in operator norm.  Set
+\[
+        p(x)=\norm{Tx}_{\ell_2}.
+\]
+This is a continuous norm on \(X\), and it is \(C^\infty\)-smooth on
+\(X\setminus\{0\}\) because the Hilbert norm is \(C^\infty\)-smooth away from
+zero and \(T\) is injective.
+
+If \((X,p)\) were complete, then \(T\) would identify \((X,p)\) isometrically
+with a closed subspace of \(\ell_2\).  The open mapping theorem would make
+\(T\), regarded as an operator from the original Banach space \(X\), bounded
+below.  A compact operator bounded below on an infinite-dimensional Banach
+space is impossible.  Hence \(p\) is not complete.
+\end{proof}
+
+\begin{lemma}[Diagonal damping in \(c_0(\Gamma)\)]
+\label{lem:diagonal}
+Let \(Y\) be an infinite-dimensional linear subspace of \(c_0(\Gamma)\).  Then
+there is a bounded injective diagonal operator
+\[
+        D:c_0(\Gamma)\longrightarrow c_0(\Gamma),\qquad
+        (Da)(\gamma)=w_\gamma a(\gamma),
+\]
+with \(0<w_\gamma\leq 1\), such that \(D|_Y\) is not bounded below.
+\end{lemma}
+
+\begin{proof}
+We inductively construct \(y_n\in Y\) and pairwise disjoint finite sets
+\(F_n\subseteq\Gamma\).  Put \(H_0=\emptyset\).  Having chosen
+\(H_{n-1}=F_1\cup\cdots\cup F_{n-1}\), the space
+\[
+        Y\cap\bigcap_{\gamma\in H_{n-1}}\ker\delta_\gamma
+\]
+is still infinite-dimensional, because only finitely many coordinate
+conditions have been imposed.  Choose \(y_n\) in this space with
+\(\norm{y_n}_\infty=1\).  Since \(y_n\in c_0(\Gamma)\), choose a finite set
+\(E_n\subseteq\Gamma\) such that
+\[
+        |y_n(\gamma)|\leq 2^{-n}\qquad(\gamma\notin E_n).
+\]
+Set \(F_n=E_n\setminus H_{n-1}\).  Then \(y_n\) vanishes on the old coordinates
+and satisfies
+\[
+        |y_n(\gamma)|\leq 2^{-n}\qquad(\gamma\notin F_n).
+\]
+Define \(w_\gamma=2^{-n}\) for \(\gamma\in F_n\), and \(w_\gamma=1\) outside
+\(\bigcup_n F_n\).  The associated diagonal operator \(D\) is bounded and
+injective.  For every \(n\), the coordinates in \(F_n\) are damped by
+\(2^{-n}\), while all coordinates outside \(F_n\) already have modulus at most
+\(2^{-n}\).  Hence \(\norm{Dy_n}_\infty\leq 2^{-n}\), proving that \(D|_Y\)
+is not bounded below.
+\end{proof}
+
+\begin{theorem}[Known \(c_0(\Gamma)\)-injectable case]
+\label{thm:c0}
+Let \(X\) be an infinite-dimensional Banach space.  Suppose that there is a
+bounded injective linear operator \(J:X\to c_0(\Gamma)\) for some set
+\(\Gamma\).  Then \(X\) admits a continuous \(C^\infty\)-smooth non-complete
+norm.
+\end{theorem}
+
+\begin{proof}
+Let \(Y=JX\).  By Lemma \ref{lem:diagonal}, choose a bounded injective
+diagonal operator \(D:c_0(\Gamma)\to c_0(\Gamma)\) such that \(D|_Y\) is not
+bounded below.  Then \(DJ:X\to c_0(\Gamma)\) is injective and not bounded
+below.
+
+Let \(\rho\) be a \(C^\infty\)-smooth equivalent norm on \(c_0(\Gamma)\).
+Define \(p(x)=\rho(DJx)\).  Since \(DJ\) is injective, \(p\) is a norm; since
+\(\rho\) is smooth away from the origin, \(p\) is \(C^\infty\)-smooth on
+\(X\setminus\{0\}\).  If \((X,p)\) were complete, the open mapping theorem
+would imply that \(p\) is equivalent to the original norm.  Since \(\rho\) is
+equivalent to \(\norm{\cdot}_\infty\), this would make \(DJ\) bounded below,
+contradicting the construction.
+\end{proof}
+
+\begin{remark}[Novelty correction]
+Theorem \ref{thm:c0} is not claimed as new.  The supplied audit identifies it
+with Dobrowolski's condition (L) in \cite[Proposition 5.1]{Dobrowolski1979}.
+It is kept here because the short diagonal proof is useful for review and for
+the subsequent reductions.
+\end{remark}
+
+\begin{corollary}[Marku\v{s}evi\v{c} bases]
+Every infinite-dimensional Banach space with a Marku\v{s}evi\v{c} basis admits
+a continuous \(C^\infty\)-smooth non-complete norm.
+\end{corollary}
+
+\begin{proof}
+Let \((x_\gamma,x_\gamma^*)_{\gamma\in\Gamma}\) be an M-basis.  After
+normalizing the coordinate functionals, \(f_\gamma=x_\gamma^*/\norm{x_\gamma^*}\),
+the map
+\[
+        x\longmapsto (f_\gamma(x))_{\gamma\in\Gamma}
+\]
+is a bounded linear injection into \(c_0(\Gamma)\).  The \(c_0\)-condition
+follows by approximating \(x\) by finite linear combinations of the basis
+vectors.  Theorem \ref{thm:c0} applies.
+\end{proof}
+
+\section*{A Further Quotient-Extension Partial Result}
+
+\begin{proposition}
+\label{prop:quotient}
+Let \(X\) be an infinite-dimensional Banach space.  Suppose there is a closed,
+infinite-dimensional separable subspace \(Y\subset X\) such that \(X/Y\) admits
+a \(C^1\)-smooth equivalent norm.  Then \(X\) admits a continuous
+\(C^1\)-smooth non-complete norm.
+\end{proposition}
+
+\begin{proof}
+Choose a sequence \((y_n^*)\subset S_{Y^*}\) separating the points of \(Y\),
+and extend each \(y_n^*\) by Hahn--Banach to \(x_n^*\in S_{X^*}\).  Let
+\[
+        T:X\to\ell_2,\qquad
+        Tx=(2^{-n}x_n^*(x))_{n=1}^\infty.
+\]
+Then \(T\) is compact and \(T|_Y\) is injective.  Let \(Q:X\to X/Y\) be the
+quotient map, and put
+\[
+        S:X\to (X/Y)\oplus_2\ell_2,\qquad Sx=(Qx,Tx).
+\]
+If \(Sx=0\), then \(x\in Y\) and \(Tx=0\), hence \(x=0\).  Thus \(S\) is
+injective.  Because \(T|_Y\) is compact on an infinite-dimensional space, it is
+not bounded below, so \(S\) is not bounded below.
+
+Let \(q\) be a \(C^1\)-smooth equivalent norm on \(X/Y\), and define
+\[
+        \rho(z,u)=\bigl(q(z)^2+\norm{u}_2^2\bigr)^{1/2}.
+\]
+This is a \(C^1\)-smooth equivalent norm on \((X/Y)\oplus_2\ell_2\).  The
+pullback \(p(x)=\rho(Sx)\) is a continuous \(C^1\)-smooth norm on \(X\).  If it
+were complete, the open mapping theorem would make \(S\) bounded below, a
+contradiction.
+\end{proof}
+
+\begin{corollary}
+The source question has a positive answer whenever \(X\) contains a
+complemented infinite-dimensional separable subspace.
+\end{corollary}
+
+\begin{proof}
+If \(X=Y\oplus Z\) with \(Y\) separable and infinite-dimensional, then
+\(X/Y\cong Z\).  The restriction of the given \(C^1\)-smooth equivalent norm to
+\(Z\) gives the required smooth norm on the quotient.
+\end{proof}
+
+\section*{Reflexive-Subspace Extension: Likely Valid, Review Carefully}
+
+The strongest additional positive route from the extended audit is the
+following.  It is included as a human-review target rather than as the
+headline theorem of this packet, because the proof uses a smoothness assertion
+for an infimal-convolution norm.
+
+\begin{proposition}[Reflexive subspace route]
+\label{prop:reflexive}
+Let \(X\) admit a \(C^1\)-smooth equivalent norm.  If \(X\) contains an
+infinite-dimensional reflexive subspace, then \(X\) admits a continuous
+\(C^1\)-smooth non-complete norm.
+\end{proposition}
+
+\begin{proof}[Proof sketch for review]
+Choose a separable infinite-dimensional reflexive subspace \(Y\subset X\).
+By Theorem \ref{thm:separable}, \(Y\) has a continuous smooth non-complete norm
+\(s\).  Let \(r\) be the given \(C^1\)-smooth equivalent norm on \(X\), and
+define
+\[
+        p(x)=\inf_{y\in Y}\bigl(r(x-y)^2+s(y)^2\bigr)^{1/2}.
+\]
+This is a norm.  Positivity follows because if \(p(x)=0\), then a minimizing
+sequence forces \(x\in Y\) and \(s(x)=0\).  Reflexivity of \(Y\) gives
+minimizers for the infimum: bounded minimizing sequences have weakly
+convergent subsequences, and both \(r\) and \(s\) are weakly lower
+semicontinuous.
+
+The intended smoothness proof uses the dual formula for this infimal
+convolution and the Smulyan lemma: the dual unit ball is described by the
+quadratic combination of \(r^*\) and the dual norm induced by \(s\) on
+restrictions to \(Y\).  Smoothness of \(r\) and \(s\) gives uniqueness and
+continuous dependence of supporting functionals.  This is the step that should
+be checked by a human expert.
+
+Finally, \(p|_Y\leq s\).  Since \(s\) is non-complete on \(Y\), there are
+vectors in \(Y\) witnessing failure of bounded-below equivalence; hence \(p\)
+is not equivalent to the original norm on \(X\).  If \((X,p)\) were complete,
+the open mapping theorem would force equivalence with the original norm,
+contradiction.
+\end{proof}
+
+\section*{A Universal Non-Complete Norm and the Remaining Smoothing Problem}
+
+Every infinite-dimensional Banach space admits a continuous non-complete norm.
+Indeed, let \((e_n)\) be a normalized basic sequence, let
+\(Y=[e_n]\), let \(Q:X\to X/Y\) be the quotient map, and extend the coordinate
+functionals of \(Y\) to \(X^*\).  Then
+\[
+        p_0(x)=\norm{Qx}+\sum_{n=1}^\infty 2^{-n}|e_n^*(x)|
+\]
+is a continuous norm and satisfies \(p_0(e_n)=2^{-n}\).  Thus the full source
+question can be viewed as a smoothing problem: under the hypothesis of a
+\(C^1\)-smooth equivalent norm, can one smooth such a weaker non-complete norm
+without losing the long directions of its unit ball?
+
+The finite-stage dual regularization route considers
+\[
+        K_m=\left\{f\in X^*:
+        r^*(f)^2+\sum_{n=1}^m c_n|f(e_n)|^2\leq 1\right\},
+        \qquad p_m=h_{K_m}.
+\]
+Each finite-stage norm \(p_m\) has a controlled smoothness argument, and
+\(p_m\downarrow p\) with \(p(e_n)\leq c_n^{-1/2}\to0\).  The missing statement
+is norm convergence, locally uniformly in \(x\), of the unique maximizers
+for \(p_m(x)\).  Weak-star convergence alone is not enough for \(C^1\)
+smoothness of the limit.
+
+\section*{Failed Full-Proof Routes}
+
+\subsection*{Symmetrizing the source paper's asymmetric functional}
+
+The source paper constructs a smooth asymmetric subadditive functional
+\(\omega\) with one-sided non-completeness.  The tempting norm
+\[
+        x\mapsto \omega(x)+\omega(-x)
+\]
+is symmetric and smooth, but the source estimates only control one side.
+The sequence for which \(\sum\omega(y_k)<\infty\) need not satisfy any
+corresponding estimate for \(\omega(-y_k)\).  This route does not prove
+non-completeness.
+
+\subsection*{Trying to manufacture an M-basis from smoothness}
+
+A \(C^1\)-smooth norm gives unique support functionals at nonzero points, but
+it does not make arbitrary growing closed spans proximinal.  The transfinite
+attempt to build an M-basis stalls exactly at the need for norm-attaining
+functionals annihilating previous spans.
+
+\subsection*{The actual-normal lemma is false}
+
+The hoped-for lemma was that finite weighted coordinate energy would force the
+formal Hilbertian normal to be an element of \(X\).  This is false even in the
+simplest coordinate model.  Let \(X=c_0\), choose weights \(c_n\to\infty\), and
+pick a subsequence \((n_k)\) with
+\[
+        \sum_k c_{n_k}^{-1}<\infty.
+\]
+Then
+\[
+        f=\sum_k c_{n_k}^{-1} e_{n_k}^*\in \ell_1=X^*
+\]
+satisfies
+\[
+        \sum_n c_n |f(e_n)|^2=\sum_k c_{n_k}^{-1}<\infty.
+\]
+But the formal normal is
+\[
+        \sum_n c_n f(e_n)e_n=\sum_k e_{n_k},
+\]
+which does not converge in \(c_0\).  Thus finite coordinate energy alone does
+not prevent escape into \(X^{**}\setminus X\).  The extended audit also records
+a sharper maximizer-level obstruction where two bidual normals cancel.
+
+\section*{Literature Status}
+
+The exact \(C^1\) source question is still treated as open in the source paper.
+D'Alessandro--Hajek \cite{DH} prove the corresponding positive result for
+\(C^k\), \(k\geq2\).  The supplied audit reports that D'Alessandro's later
+treatment and Garcia-Bravo's 2022 thesis still record the \(C^1\) problem as
+open.  No later full proof or counterexample was located in this run.
+
+The \(c_0(\Gamma)\)-injectable case is already answered by Dobrowolski
+\cite[Proposition 5.1]{Dobrowolski1979}; it should not be advertised as new.
+The separable proof, quotient-extension result, reflexive-subspace route, and
+failed-route analysis remain useful for human bookkeeping and for future
+attempts.
+
+\section*{Human Review Checklist}
+
+\begin{itemize}
+\item Verify the Dobrowolski condition (L) identification with bounded
+injections into \(c_0(\Lambda)\).
+\item Treat Theorems \ref{thm:separable} and \ref{thm:c0} as correct but
+mostly known/alternative proofs.
+\item Check Proposition \ref{prop:quotient}; this is the cleanest new-looking
+partial extension in this packet.
+\item Check Proposition \ref{prop:reflexive}, especially the
+infimal-convolution smoothness argument.
+\item Do not promote this packet to full: the general \(C^1\) question remains
+open after the recorded push.
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+\bibitem{ADG}
+D. Azagra, T. Dobrowolski, and M. Garcia-Bravo,
+\emph{Smooth approximations without critical points of continuous mappings
+between Banach spaces, and diffeomorphic extractions of sets},
+arXiv:1811.07587.
+
+\bibitem{DH}
+S. D'Alessandro and P. Hajek,
+\emph{Polynomial algebras and smooth functions in Banach spaces},
+J. Funct. Anal. \textbf{266} (2014), 1627--1646.
+
+\bibitem{DGZ}
+R. Deville, G. Godefroy, and V. Zizler,
+\emph{Smoothness and Renormings in Banach Spaces},
+Pitman Monographs and Surveys in Pure and Applied Mathematics, \textbf{64},
+Longman, Essex, 1993.
+
+\bibitem{Dobrowolski1979}
+T. Dobrowolski,
+\emph{Smooth and R-analytic negligibility of subsets and extension of
+homeomorphism in Banach spaces},
+Studia Math. \textbf{65} (1979), 115--139.
+
+\bibitem{DHR}
+S. Dantas, P. Hajek, and T. Russo,
+\emph{Smooth and polyhedral norms via fundamental biorthogonal systems},
+Int. Math. Res. Not. IMRN \textbf{2023} (2023), 13909--13939;
+arXiv:2201.03379.
+
+\bibitem{HRsurvey}
+P. Hajek and T. Russo,
+\emph{Norming Markushevich bases: recent results and open problems},
+arXiv:2402.18442.
+
+\bibitem{HT}
+P. Hajek and J. Talponen,
+\emph{Some remarks on smooth renormings of Banach spaces},
+arXiv:1705.01384.
+
+\end{thebibliography}
+
+\end{document}

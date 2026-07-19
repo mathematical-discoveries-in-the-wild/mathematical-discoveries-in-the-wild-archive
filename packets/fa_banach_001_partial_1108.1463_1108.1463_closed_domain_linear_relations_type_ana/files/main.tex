@@ -1,0 +1,293 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\gra}{\operatorname{gra}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\restr}[1]{\big|_{#1}}
+
+\title{A Boundary Reduction for Type (ANA) Maximally Monotone Linear Relations}
+\author{Automatic math-discovery smoke test}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Bauschke--Borwein--Wang--Yao,
+\emph{Construction of pathological maximally monotone operators on
+non-reflexive Banach spaces}, arXiv:1108.1463. Near the end of the
+paper the authors list four open questions:
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet concerns question (iii):
+\[
+\text{Is every maximally monotone linear relation necessarily of type (ANA)?}
+\]
+Here type (ANA) means ``almost negative alignment''. In the notation of
+Simons \cite[definition labeled \texttt{ANAdef}]{SimonsDensities},
+a maximally monotone subset \(A\subset E\times E^*\) is of type (ANA) if,
+whenever \((w,w^*)\notin A\), there are graph points
+\((s,s^*)\in A\) with \(s\ne w\), \(s^*\ne w^*\), and
+\[
+\frac{\ip{s-w}{s^*-w^*}}{\norm{s-w}\norm{s^*-w^*}}
+\]
+as close to \(-1\) as desired.
+
+\section*{Result Type}
+
+This is a \textbf{partial result}. It proves that any possible failure
+of type (ANA) for a maximally monotone linear relation must occur at a
+boundary point of its domain. In particular, it proves the source
+question for all maximally monotone linear relations with closed domain.
+
+\section*{Idea of the Proof}
+
+Let \(A:X\rightrightarrows X^*\) be a maximally monotone linear relation,
+put \(D=\dom A\), and let \(M=\overline D\). Maximality gives
+\[
+A(0)=M^\perp.
+\]
+Thus the fibers of \(A\), after restriction to \(M\), are single-valued:
+there is a linear monotone operator
+\[
+T:D\subset M\to M^*,\qquad T x=x^*\restr M\quad(x^*\in Ax),
+\]
+and each fiber \(Ax\) consists exactly of all Hahn--Banach extensions of
+\(Tx\) from \(M\) to \(X\).
+
+The ANA construction then splits into two robust cases. If
+\(w\notin M\), the positive quotient distance from \(w\) to \(M\)
+produces a norming annihilator \(n^*\in M^\perp\); adding a large
+multiple of \(n^*\) in the fiber forces the angle to tend to \(-1\). If
+\(w\in D\), a small-scaling argument on the normed space \(D\) gives
+negative alignment for the induced single-valued operator, and
+Hahn--Banach lifts it back to \(X^*\) without changing the numerator or
+the relevant norm.
+
+The only place where both mechanisms disappear is the genuine boundary
+case \(w\in\overline{\dom A}\setminus\dom A\).
+
+\section*{Main Reduction}
+
+\begin{theorem}[Boundary reduction]
+Let \(X\) be a real Banach space and let \(A:X\rightrightarrows X^*\) be
+a maximally monotone linear relation. Put \(D=\dom A\) and
+\(M=\overline D\). Then \(A\) has the type-(ANA) conclusion at every
+\((w,w^*)\in X\times X^*\setminus\gra A\) such that either
+\[
+w\notin M \qquad\text{or}\qquad w\in D.
+\]
+Consequently, any counterexample to the assertion that every maximally
+monotone linear relation is of type (ANA) must fail at a point
+\[
+w\in \overline{\dom A}\setminus\dom A.
+\]
+\end{theorem}
+
+\begin{proof}
+Since \(A\) is a linear relation, monotonicity is equivalent to
+\[
+\ip{x}{x^*}\ge 0\qquad ((x,x^*)\in \gra A).
+\]
+We first identify the multivalued part. If \(u^*\in A(0)\), then for
+each \((x,x^*)\in\gra A\) and every \(t\in\R\),
+\((x,x^*+tu^*)\in\gra A\). Hence
+\[
+0\le \ip{x}{x^*+tu^*}\qquad(t\in\R),
+\]
+which forces \(\ip{x}{u^*}=0\) for all \(x\in D\). Thus
+\(A(0)\subset D^\perp=M^\perp\). Conversely, if \(u^*\in M^\perp\), then
+for every \((x,x^*)\in\gra A\),
+\[
+\ip{0-x}{u^*-x^*}
+=-\ip{x}{u^*}+\ip{x}{x^*}
+=\ip{x}{x^*}\ge 0.
+\]
+Thus \((0,u^*)\) is monotonically related to \(\gra A\), and maximality
+gives \(u^*\in A(0)\). Therefore
+\[
+A(0)=M^\perp. \tag{1}
+\]
+
+Define \(T:D\to M^*\) by
+\[
+T x=x^*\restr M\qquad\text{for any }x^*\in A x.
+\]
+This is well-defined by (1). It is linear and monotone. Moreover, for
+\(x\in D\), the fiber \(Ax\) consists exactly of all extensions of
+\(Tx\) from \(M\) to \(X\): one inclusion is the definition of \(T\), and
+the other follows because two extensions differ by an element of
+\(M^\perp=A(0)\).
+
+The induced operator \(T\) is maximally monotone as a relation in
+\(M\times M^*\). Indeed, suppose \((y,y^*)\in M\times M^*\) is
+monotonically related to \(\gra T\). Choose an extension
+\(x^*\in X^*\) of \(y^*\). Then \((y,x^*)\) is monotonically related to
+\(\gra A\), so maximality of \(A\) gives \((y,x^*)\in\gra A\). Hence
+\(y\in D\) and \(y^*=Ty\).
+
+Fix \((w,w^*)\notin\gra A\) and \(0<\eps<1\).
+
+\medskip
+\noindent\textbf{Case 1: \(w\notin M\).}
+Let \(\delta=\dist(w,M)>0\). By Hahn--Banach in the quotient \(X/M\),
+choose \(n^*\in M^\perp\) with \(\norm{n^*}=1\) and
+\(\ip{w}{n^*}=\delta\). Since \(D\) is dense in \(M\), choose \(s\in D\)
+such that
+\[
+\norm{s-w}<\frac{\delta}{1-\eps/2}.
+\]
+Then \(\ip{s-w}{n^*}=-\delta\). Pick any \(a^*\in A s\). For
+\(\lambda>0\), put \(s^*_\lambda=a^*+\lambda n^*\). By (1),
+\(s^*_\lambda\in A s\). Consequently
+\[
+\frac{\ip{s-w}{s^*_\lambda-w^*}}
+{\norm{s-w}\norm{s^*_\lambda-w^*}}
+=
+\frac{\ip{s-w}{a^*-w^*}-\lambda\delta}
+{\norm{s-w}\norm{a^*-w^*+\lambda n^*}}
+\longrightarrow
+-\frac{\delta}{\norm{s-w}}
+<-1+\frac{\eps}{2}.
+\]
+For large \(\lambda\), this ratio is \(<-1+\eps\).
+
+\medskip
+\noindent\textbf{Case 2: \(w\in D\).}
+Let \(z^*=Tw-w^*\restr M\in M^*\). If \(z^*=0\), then \(w^*\) is an
+extension of \(Tw\), hence \(w^*\in Aw\), contrary to
+\((w,w^*)\notin\gra A\). Thus \(z^*\ne0\).
+
+Because \(D\) is dense in \(M\), the norm of \(z^*\) is computed on
+vectors from \(D\). Choose \(h\in D\) with \(\norm h=1\) and
+\[
+\ip{h}{z^*}<-(1-\eps/2)\norm{z^*}.
+\]
+For \(t>0\), set \(s_t=w+th\in D\). The corresponding functional on
+\(M\) is
+\[
+T s_t-w^*\restr M=z^*+tTh.
+\]
+Choose \(u_t^*\in X^*\) extending \(z^*+tTh\) from \(M\) to \(X\) with
+\[
+\norm{u_t^*}_{X^*}=\norm{z^*+tTh}_{M^*},
+\]
+and put \(s_t^*=w^*+u_t^*\). Then \(s_t^*\) extends \(T s_t\), so
+\(s_t^*\in A s_t\). Also \(s_t\ne w\) and \(s_t^*\ne w^*\) for small
+\(t>0\). Finally,
+\[
+\frac{\ip{s_t-w}{s_t^*-w^*}_{X,X^*}}
+{\norm{s_t-w}\norm{s_t^*-w^*}_{X^*}}
+=
+\frac{\ip{th}{z^*+tTh}_{M,M^*}}
+{t\norm h\,\norm{z^*+tTh}_{M^*}}
+\longrightarrow
+\frac{\ip{h}{z^*}}{\norm{z^*}}
+<-1+\frac{\eps}{2}.
+\]
+For sufficiently small \(t>0\), the ratio is \(<-1+\eps\).
+
+These two cases prove the claimed type-(ANA) conclusion away from the
+boundary \(M\setminus D\). The final statement follows immediately.
+\end{proof}
+
+\begin{corollary}[Closed-domain subcase]
+Let \(A:X\rightrightarrows X^*\) be a maximally monotone linear relation.
+If \(\dom A\) is closed, then \(A\) is of type \((ANA)\).
+\end{corollary}
+
+\begin{proof}
+If \(D=\dom A\) is closed, then \(M=\overline D=D\). Every point
+\((w,w^*)\notin\gra A\) has either \(w\notin M\) or \(w\in D\), so the
+theorem applies.
+\end{proof}
+
+\section*{Relation To Known Literature}
+
+Simons proves that every closed monotone quasidense set is of type (ANA)
+\cite[theorem labeled \texttt{ANAthm}]{SimonsDensities}. For linear
+relations, quasidensity is equivalent to monotonicity of the adjoint in
+the same paper \cite[theorem labeled \texttt{LINMONthm}]{SimonsDensities}.
+The reduction above is different: it does not assume quasidensity, and
+the closed-domain corollary includes non-quasidense full-domain examples
+such as the tail/Gossez-type operators.
+
+The later survey \cite{SimonsSurvey} records that Bauschke--Simons
+proved arbitrary-domain maximally monotone linear operators are strongly
+maximal, and also that convex-graph maximally monotone multifunctions
+are strongly maximal. This is related but does not by itself give the
+type-(ANA) conclusion used here.
+
+\section*{Novelty And Search Notes}
+
+Local run indexes were searched for arXiv:1108.1463, ``type (ANA)'',
+``almost negative alignment'', ``maximally monotone linear relation'',
+``closed domain'', and nonclosed-domain variants. No prior packet or
+attempt for this source question was found beyond the earlier version of
+this packet. Local source search found Simons's quasidensity paper
+arXiv:1407.1100 and the 2017 survey arXiv:1711.06165. A web search for
+exact type-(ANA) linear-relation and boundary-domain phrases did not
+return an exact match.
+
+\section*{Limitations}
+
+This packet does not settle the source question. It reduces the possible
+failure to the case
+\[
+w\in\overline{\dom A}\setminus\dom A.
+\]
+Equivalently, after replacing \(X\) by \(M=\overline{\dom A}\), the
+remaining problem is the dense, non-full-domain case for a single-valued
+maximally monotone linear operator \(T:D\subset M\to M^*\).
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{BauschkeBorweinWangYao}
+H. H. Bauschke, J. M. Borwein, X. Wang, and L. Yao,
+\emph{Construction of pathological maximally monotone operators on
+non-reflexive Banach spaces}, arXiv:1108.1463, Set-Valued Var. Anal.
+20 (2012), 387--415.
+
+\bibitem{BauschkeSimons}
+H. H. Bauschke and S. Simons,
+\emph{Stronger maximal monotonicity properties of linear operators},
+Bull. Austral. Math. Soc. 60 (1999), 163--174.
+
+\bibitem{SimonsDensities}
+S. Simons,
+\emph{``Densities'' and maximal monotonicity I}, arXiv:1407.1100,
+J. Convex Anal. 23 (2016), 1017--1050.
+
+\bibitem{SimonsSurvey}
+S. Simons,
+\emph{Quasidensity: a survey and some examples}, arXiv:1711.06165.
+
+\end{thebibliography}
+
+\section*{Human-Review Recommendation}
+
+Review as a likely valid strengthened partial result for question (iii)
+of arXiv:1108.1463. A full solution should focus on the dense-domain
+boundary case described above.
+
+\end{document}

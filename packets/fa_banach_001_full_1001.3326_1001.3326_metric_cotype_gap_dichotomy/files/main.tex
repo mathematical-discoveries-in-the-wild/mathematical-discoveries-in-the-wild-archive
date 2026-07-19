@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+
+\title{The Metric Cotype Gap Conjecture}
+\author{FA Banach run: \texttt{fa\_banach\_001}}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is:
+\begin{quote}
+E. Veomett and K. Wildrick,
+\emph{Spaces of small metric cotype},
+arXiv:1001.3326.
+\end{quote}
+
+The source defines \(q_X\) to be the infimum of the metric cotype exponents
+supported by a metric space \(X\), allowing arbitrary scaling functions
+\(m_{p,q}(n)\in 2\mathbb N\). Conjecture 1.6 asks:
+\begin{quote}
+There is no metric space \((X,d)\) for which \(1<q_X<2\).
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+\begin{theorem}
+For every metric space \((X,d)\), either
+\[
+q_X=1
+\qquad\text{or}\qquad
+q_X\ge2 .
+\]
+Consequently Conjecture 1.6 of Veomett--Wildrick is true.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The source paper already proves the hard lower-bound side for spaces whose
+snowflake index is exactly \(1\): such spaces have \(q_X\ge2\). Thus the only
+remaining possibility for a gap would be a space whose snowflake index is
+strictly bigger than \(1\).
+
+But if \(d^s\) is a metric for some \(s>1\), then \(d^q\) is a metric for every
+\(1<q\le s\). Once \(d^q\) is a metric, the metric cotype \(q\) inequality is
+almost just the triangle inequality on the discrete torus: a jump by \(m/2\) in
+one coordinate is bounded by a path of \(m/2\) unit jumps. The right-hand side
+of the metric cotype inequality averages over \(\{-1,0,1\}^n\), so it sees a
+given unit coordinate jump only with probability \(3^{-n}\). Choosing the
+scaling parameter \(m(n)\) exponentially large absorbs this loss. This gives
+metric cotype \(q\) for every \(q>1\) below the snowflake exponent, so \(q_X=1\).
+
+\section*{Definitions}
+
+Let \(1\le p\le q<\infty\). A metric space \((X,d)\) supports a
+\((p,q)\)-metric cotype inequality if there are \(\Gamma\ge1\) and a scaling
+function \(m_{p,q}:\mathbb N\to 2\mathbb N\) such that, for every \(n\) and
+every \(f:\Z_m^n\to X\), with \(m=m_{p,q}(n)\),
+\[
+\E_{\epsilon\in\Z_m^n}\sum_{j=1}^n
+d(f(\epsilon),f(\epsilon+(m/2)e_j))^p
+\le
+\Gamma^p m^p n^{1-p/q}
+\E_{\epsilon\in\Z_m^n}\E_{\delta\in\{-1,0,1\}^n}
+d(f(\epsilon),f(\epsilon+\delta))^p .
+\tag{1}
+\]
+The exponent \(q_X\) is the infimum of the \(q\)'s for which \(X\) supports
+some \((p,q)\)-metric cotype inequality with \(1\le p\le q\).
+
+Following the source paper, \(X\) is an \(L^s\)-metric space if \(d^s\) is a
+metric, equivalently
+\[
+d(x,y)\le \bigl(d(x,z)^s+d(z,y)^s\bigr)^{1/s}.
+\]
+Its snowflake index is
+\[
+s_X=\sup\{s:\ X\text{ is bi-Lipschitz equivalent to an }L^s\text{-metric space}\}.
+\]
+
+\section*{The Elementary Torus Lemma}
+
+\begin{lemma}
+Let \(q>1\). If \(\rho=d^q\) is a metric on \(X\), then \((X,d)\) supports a
+\((q,q)\)-metric cotype inequality. In particular \(q_X\le q\).
+\end{lemma}
+
+\begin{proof}
+Fix \(n\). Choose an even integer \(m=m(n)\) such that
+\[
+m^{q-1}\ge \frac{3^n}{2}.
+\tag{2}
+\]
+Let \(f:\Z_m^n\to X\). Since \(\rho=d^q\) is a metric, for each coordinate
+\(j\) and each \(\epsilon\in\Z_m^n\),
+\[
+\rho(f(\epsilon),f(\epsilon+(m/2)e_j))
+\le
+\sum_{k=0}^{m/2-1}
+\rho(f(\epsilon+k e_j),f(\epsilon+(k+1)e_j)).
+\]
+Averaging over \(\epsilon\) and using translation invariance on \(\Z_m^n\)
+gives
+\[
+\E_\epsilon \rho(f(\epsilon),f(\epsilon+(m/2)e_j))
+\le
+\frac m2\,\E_\epsilon \rho(f(\epsilon),f(\epsilon+e_j)).
+\]
+Summing over \(j\), set
+\[
+S=\E_\epsilon\sum_{j=1}^n \rho(f(\epsilon),f(\epsilon+e_j)).
+\]
+Then the left-hand side of (1), with \(p=q\), is at most \((m/2)S\).
+
+On the other hand, the average over \(\delta\in\{-1,0,1\}^n\) includes each
+\(\delta=e_j\) with probability \(3^{-n}\). Therefore
+\[
+\E_\epsilon\E_\delta \rho(f(\epsilon),f(\epsilon+\delta))
+\ge
+3^{-n}S.
+\]
+Combining this with (2),
+\[
+\E_\epsilon\sum_{j=1}^n d(f(\epsilon),f(\epsilon+(m/2)e_j))^q
+\le
+\frac m2 S
+\le
+m^q\,\E_\epsilon\E_\delta d(f(\epsilon),f(\epsilon+\delta))^q.
+\]
+This is (1) for \(p=q\), \(\Gamma=1\), and the scaling function \(m(n)\).
+\end{proof}
+
+\begin{lemma}
+If \(s_X>1\), then \(q_X=1\).
+\end{lemma}
+
+\begin{proof}
+Choose \(s>1\) such that \(X\) is bi-Lipschitz equivalent to an
+\(L^s\)-metric space \((Y,\rho)\). Let \(1<q\le s\). Since \(\rho^s\) is a
+metric and \(q/s\le1\), the function
+\[
+\rho^q=(\rho^s)^{q/s}
+\]
+is also a metric. By the preceding lemma, \(q_Y\le q\). Metric cotype is
+invariant under bi-Lipschitz equivalence, as recorded in Proposition 5.1 of the
+source paper, so \(q_X\le q\). Since this holds for every \(q>1\) sufficiently
+close to \(1\), we get \(q_X=1\).
+\end{proof}
+
+\section*{Proof of the Gap Dichotomy}
+
+Every metric space is an \(L^1\)-metric space, so \(s_X\ge1\). If \(s_X>1\),
+the preceding lemma gives \(q_X=1\). If \(s_X=1\), then \(X\) is a
+\(1\)-snowflake in the terminology of the source paper. Theorem 1.4 of
+Veomett--Wildrick states that every \(1\)-snowflake has \(q_X\ge2\).
+
+Thus each metric space satisfies either \(q_X=1\) or \(q_X\ge2\). In
+particular no metric space satisfies \(1<q_X<2\), proving Conjecture 1.6.
+
+\section*{Verification Notes}
+
+The new ingredient is the elementary torus lemma. Its scaling function is
+exponential in \(n\), for instance one may take any even integer
+\[
+m(n)\ge \left(\frac{3^n}{2}\right)^{1/(q-1)}.
+\]
+This is essential: the source paper's Theorem 1.5 rules out \(q<2\) for
+finite-snowflake-index spaces only when the scaling function has sharp growth
+\(m_{p,q}(n)=O(n^{1/q})\). The proof here uses the freedom in the definition of
+\(q_X\), where arbitrary scaling functions are allowed.
+
+No computation is used. A human reviewer should check the convention that
+\(q_X\) in the source paper allows arbitrary scaling functions, and the
+definition of \(s_X\) that makes \(s_X=1\) exactly the \(1\)-snowflake case.
+
+\section*{Novelty Check}
+
+On 2026-06-28, I checked the lightweight run indexes for arXiv:1001.3326,
+``metric cotype'', ``small metric cotype'', ``q\_X'', and ``snowflake index''.
+There were nearby packets about metric cotype, but no exact packet for
+Conjecture 1.6 or the \(q_X\)-gap dichotomy.
+
+I also searched the web for exact and close variants:
+``Spaces of small metric cotype Conjecture 1.6'', ``q\_X s\_X metric
+cotype'', ``metric cotype snowflake index q\_X'', and ``metric cotype d\^q is
+a metric''. The bounded search found the source paper but no later explicit
+solution of the conjecture.
+
+\section*{Human Review Recommendation}
+
+This is a candidate full solution. The main review point is whether the
+definition of \(q_X\) indeed permits the exponential scaling function used in
+the torus lemma. Under the source paper's Definition 1.1 and the displayed
+definition of \(q_X\), it does.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{VW}
+E. Veomett and K. Wildrick,
+\emph{Spaces of small metric cotype},
+arXiv:1001.3326.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,329 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\SN}{\mathcal{S}_N}
+\newcommand{\dd}{\,\mathrm{d}}
+
+\title{An Exact Dimension Threshold for the Localized\\
+Aubin--Talenti Family in arXiv:2504.15968}
+\author{Candidate full solution produced in run \texttt{fa\_banach\_001}\\
+Model: GPT5.6}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, currently assessed as likely valid and awaiting
+human review. The novelty search described below was bounded, not exhaustive.}}
+\end{center}
+
+\section{Source and open question}
+
+The source is S. Chakraborty, D. Gupta, S. Malhotra, and K. Sreenadh,
+\emph{Global Compactness Result for a Br\'ezis--Nirenberg-Type Problem
+Involving Mixed Local Nonlocal Operator}, arXiv:2504.15968v2 (11 May
+2025)~\cite{source}. On page 7, Remark 1.1(1), the authors ask for the
+threshold dimension beyond which the energy of their localized
+Aubin--Talenti family (1.7) is strictly below $2^{2/N}\SN$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open question in arXiv:2504.15968v2, page 7,
+Remark 1.1(1). The crop retains the full readable page width.}
+\end{figure}
+
+In the paper's notation, the unnormalized Gagliardo seminorm is
+\[
+ [u]_s^2=\iint_{\R^{2N}}
+ \frac{|u(x)-u(y)|^2}{|x-y|^{N+2s}}\dd x\dd y,
+ \qquad 0<s<1,
+\]
+and the mixed Rayleigh quotient is
+\[
+ S(u;\R^N)=
+ \frac{\|\nabla u\|_2^2+[u]_s^2}{\|u\|_{2^*}^2},
+ \qquad 2^*=\frac{2N}{N-2}.
+\]
+The standard bubble is
+\[
+ U_N(x)=(1+|x|^2)^{-(N-2)/2}.
+\]
+
+\section{Proof intuition}
+
+The source estimates $[U_N]_s$ by interpolating between the $L^2$ and
+gradient norms. That is sufficient asymptotically but loses the dimension at
+which the inequality first becomes true. Here the seminorm is evaluated
+exactly. The unitary Fourier transform of $U_N$ is a multiple of
+$|\xi|^{-1}K_1(|\xi|)$, so the fractional energy is a Mellin integral of
+$K_1^2$ and hence a product of Gamma functions. After division by the exact
+gradient energy, the source question becomes one explicit scalar inequality.
+
+The remaining issue is whether success can later revert to failure as $N$
+grows. The quotient between dimensions $N+2$ and $N$ collapses to an
+elementary rational expression. Once normalized by the critical barrier
+$2^{2/N}-1$, this quotient is strictly less than one for $N\geq7$. Thus the
+two parity classes are monotone: two consecutive successful dimensions certify
+every larger dimension and give a finite exact stopping rule.
+
+\section{Exact theorem}
+
+For $N\geq5$ and $0<s<1$, set
+\begin{align}
+ Q_{N,s}
+ &:=\frac{[U_N]_s^2}{\|\nabla U_N\|_2^2} \notag\\
+ &=\frac{
+ 2\pi^{N/2}|\Gamma(-s)|
+ \Gamma(\frac N2+s-1)^2
+ \Gamma(\frac N2+s-2)\Gamma(N)}{
+ N(N-2)\Gamma(\frac N2-1)^2\Gamma(\frac N2)^2
+ \Gamma(N+2s-2)},                                      \label{eq:Q}
+\end{align}
+and
+\[
+ h_N:=2^{2/N}-1,\qquad F_{N,s}:=\frac{Q_{N,s}}{h_N}.
+\]
+
+Let $\mathsf P_N(s)$ denote the precise uniform large-cutoff property used in
+the source's Lemma 4.3: there are $S_1<2^{2/N}\SN$ and $R_0$ such that the
+normalized localized family (1.7) has Rayleigh quotient at most $S_1$ whenever
+$R\geq R_0$, uniformly in $t\in[0,1)$ and $\sigma\in\mathbb S^{N-1}$.
+
+\begin{theorem}[Exact threshold and finite stopping rule]\label{thm:main}
+For each $s\in(0,1)$ the following statements hold.
+\begin{enumerate}
+\item For every $N\geq5$,
+\[
+ \mathsf P_N(s)\quad\Longleftrightarrow\quad
+ Q_{N,s}<2^{2/N}-1
+ \quad\Longleftrightarrow\quad F_{N,s}<1.
+\]
+\item For every $N\geq7$,
+\[
+ F_{N+2,s}<F_{N,s}.
+\]
+Consequently both parity subsequences are strictly decreasing from dimension
+7 onward and tend to zero.
+\item The exact eventual threshold is
+\[
+ N_{\mathrm{th}}(s)
+ =1+\max\{N\geq5:F_{N,s}\geq1\}.                       \label{eq:nth}
+\]
+The set in \eqref{eq:nth} is finite. It is determined by a finite procedure:
+evaluate the explicit formula \eqref{eq:Q} in increasing dimension, retaining
+the earlier failures, and stop after two consecutive successes beginning at
+a dimension at least 7. No later failure is possible, so one plus the last
+retained failure is exactly $N_{\mathrm{th}}(s)$.
+\end{enumerate}
+\end{theorem}
+
+Thus the question is reduced without estimates to a closed Gamma-function
+test, together with a proved finite stopping rule. For illustration, the
+included 80-digit checker gives the following values.
+\begin{center}
+\begin{tabular}{cccccccc}
+\toprule
+$s$ & $0.05$ & $0.10$ & $0.25$ & $0.50$ & $0.75$ & $0.90$ & $0.99$\\
+\midrule
+$N_{\mathrm{th}}(s)$ & 22 & 21 & 19 & 19 & 20 & 22 & 25\\
+\bottomrule
+\end{tabular}
+\end{center}
+These decimal evaluations are checks of the exact criterion, not ingredients
+of the proof.
+
+\section{Proof of Theorem \ref{thm:main}}
+
+\subsection{Exact fractional energy}
+
+Use the unitary Fourier transform
+\[
+ \widehat f(\xi)=(2\pi)^{-N/2}
+ \int_{\R^N}e^{-ix\cdot\xi}f(x)\dd x.
+\]
+Write $B=N/2$ and $A=B+s-1$. The Gamma integral representation of
+$(1+|x|^2)^{-(B-1)}$, followed by the Gaussian Fourier transform, gives
+\begin{equation}
+ \widehat U_N(\xi)=
+ \frac{2^{2-B}}{\Gamma(B-1)}\,
+ \frac{K_1(|\xi|)}{|\xi|}.                             \label{eq:FU}
+\end{equation}
+Indeed the remaining Laplace integral is
+\[
+ \int_0^\infty t^{-2}e^{-t-|\xi|^2/(4t)}\dd t
+ =\frac{4K_1(|\xi|)}{|\xi|}.
+\]
+
+Let
+\[
+ c_{N,s}=\frac{4^s\Gamma(B+s)}{
+ \pi^B|\Gamma(-s)|}.
+\]
+This is the multiplier normalization for the fractional Laplacian, and
+Plancherel gives the raw-seminorm identity
+\begin{equation}
+ [f]_s^2=\frac{2}{c_{N,s}}
+ \int_{\R^N}|\xi|^{2s}|\widehat f(\xi)|^2\dd\xi.
+                                                               \label{eq:raw}
+\end{equation}
+The standard Mellin integral~\cite[Section 10.43]{dlmf}, valid for
+$\Re\mu>2|\Re\nu|$, is
+\begin{equation}
+ \int_0^\infty r^{\mu-1}K_\nu(r)^2\dd r
+ =\frac{2^{\mu-3}}{\Gamma(\mu)}
+ \Gamma\!\left(\frac{\mu}{2}\right)^2
+ \Gamma\!\left(\frac{\mu}{2}+\nu\right)
+ \Gamma\!\left(\frac{\mu}{2}-\nu\right).            \label{eq:Ksquare}
+\end{equation}
+Apply \eqref{eq:Ksquare} with $\mu=N+2s-2=2A$ and $\nu=1$.
+Equations \eqref{eq:FU}--\eqref{eq:raw}, together with
+$\omega_{N-1}=2\pi^B/\Gamma(B)$, yield
+\begin{equation}
+ [U_N]_s^2=
+ \frac{\omega_{N-1}\pi^B|\Gamma(-s)|
+ \Gamma(A)^2\Gamma(A-1)}{
+ \Gamma(B-1)^2\Gamma(2A)}.                              \label{eq:rawU}
+\end{equation}
+All conditions are satisfied for $N\geq5$ and $0<s<1$.
+
+A radial beta integral gives
+\begin{equation}
+ \|\nabla U_N\|_2^2
+ =\frac{\omega_{N-1}N(N-2)}{2}
+ \frac{\Gamma(B)^2}{\Gamma(N)}.                        \label{eq:gradU}
+\end{equation}
+Dividing \eqref{eq:rawU} by \eqref{eq:gradU} proves
+\eqref{eq:Q}.
+
+\subsection{Equivalence with the localized family}
+
+The source proves uniform convergence of its cut-off bubbles to the uncut
+translated/dilated family in the gradient norm, the Gagliardo seminorm, and
+the critical norm~\cite[Section 4]{source}. Translation and critical scaling
+give
+\begin{align*}
+ \|\nabla U[t\sigma,1-t]\|_2^2&=\|\nabla U_N\|_2^2,\\
+ \|U[t\sigma,1-t]\|_{2^*}^2&=\|U_N\|_{2^*}^2,\\
+ [U[t\sigma,1-t]]_s^2&=(1-t)^{2-2s}[U_N]_s^2.
+\end{align*}
+Since $U_N$ attains the sharp classical Sobolev quotient,
+\[
+ S(U[t\sigma,1-t];\R^N)
+ =\SN\bigl(1+(1-t)^{2-2s}Q_{N,s}\bigr).
+\]
+The supremum over $t\in[0,1)$ occurs at $t=0$. Therefore its limiting value
+is below $2^{2/N}\SN$ exactly when $Q_{N,s}<h_N$. A strict inequality leaves a
+positive gap, and uniform cutoff convergence supplies the required $S_1$ and
+$R_0$. Conversely, if $Q_{N,s}\geq h_N$, the $t=0$ cutoffs converge to a value
+at or above the threshold, so no fixed $S_1<2^{2/N}\SN$ can work for all large
+$R$. This proves part 1.
+
+\subsection{Monotonicity in dimension}
+
+Gamma recurrence in \eqref{eq:Q} simplifies completely:
+\begin{equation}
+ \frac{Q_{N+2,s}}{Q_{N,s}}
+ =\frac{2\pi(N+1)(N+2s-2)(N+2s-4)}
+ {(N+2s-1)N(N-2)(N+2)}.                                \label{eq:rec}
+\end{equation}
+For $N\geq7$, the factor
+$x(x-2)/(x+1)$ is increasing at $x=N+2s-2$, hence the right side of
+\eqref{eq:rec} is strictly below its $s\uparrow1$ limit:
+\begin{equation}
+ \frac{Q_{N+2,s}}{Q_{N,s}}<\frac{2\pi}{N+2}.           \label{eq:qbound}
+\end{equation}
+
+It remains to compare the barriers. Put $h_N=2^{2/N}-1$. For $N\geq7$,
+$h_N\leq h_7<11/50$. The latter inequality follows by raising
+$2^{2/7}<61/50$ to the seventh power, since $(61/50)^7>4$.
+The classical rational bounds $\log2>173/250$ and $\pi<22/7$ imply
+$\log2/\pi>11/50$. Consequently
+\[
+ 2\pi h_N<2\log2<(N+2)h_{N+2},
+\]
+where the second inequality uses $e^x-1>x$ at
+$x=2\log2/(N+2)$. Combining this with \eqref{eq:qbound} gives
+\[
+ \frac{F_{N+2,s}}{F_{N,s}}
+ =\frac{Q_{N+2,s}}{Q_{N,s}}\frac{h_N}{h_{N+2}}<1.
+\]
+For completeness, $e^x-1<xe^x$ and $e^y-1>y$ also give
+\[
+ \frac{h_N}{h_{N+2}}<\frac{N+2}{N}\,2^{2/N}<2
+ \qquad(N\geq7).
+\]
+Together with \eqref{eq:qbound}, this makes the quotient
+$F_{N+2,s}/F_{N,s}$ of order $O(1/N)$, so both parity subsequences tend to zero.
+This proves part 2, finiteness in \eqref{eq:nth}, and the stopping rule in
+part 3.
+
+\section{Verification notes}
+
+The included script \texttt{code/threshold\_verifier.py} evaluates
+\eqref{eq:Q} in log-Gamma form, verifies \eqref{eq:rec} against independent
+Gamma evaluations, and checks representative thresholds. With 80 decimal
+digits, the maximum relative recurrence discrepancy over the sampled cases
+was below $2\times10^{-78}$. Direct numerical quadrature of the Bessel
+integral at $(N,s)=(5,1/2),(8,1/4),(19,3/4)$ also agreed with
+\eqref{eq:Q}.
+
+There is a useful normalization check independent of those calculations.
+Taking $s\uparrow1$ in \eqref{eq:rawU} gives
+\[
+ \lim_{s\uparrow1}(1-s)\frac{[U_N]_s^2}{\|\nabla U_N\|_2^2}
+ =\frac{\omega_{N-1}}{2N},
+\]
+which is exactly the Bourgain--Brezis--Mironescu constant for the raw double
+integral used by the source.
+
+\section{Novelty search, scope, and limitations}
+
+A bounded search was performed on 19 July 2026. It covered the exact arXiv id
+2504.15968, the quoted phrase ``precisely determine the threshold dimension'',
+``localized Aubin--Talenti bubbles'', ``mixed local nonlocal'', and the level
+$2^{2/N}\SN$, using arXiv-focused and general web search. The current source
+remains arXiv v2, last revised 11 May 2025~\cite{source}. The search found
+related later work on mixed local--nonlocal critical problems but no paper
+claiming this exact threshold calculation. Thus no known duplicate was found,
+but the search is not an exhaustive bibliographic guarantee.
+
+This result determines the threshold for the specific localized family and
+the uniform fixed-gap statement used in the source. It does not claim that a
+different test family cannot establish the PDE existence theorem in lower
+dimensions, nor does it relax the domain assumptions in Remark 1.1(3).
+
+\section{Human-review recommendation}
+
+The result is suitable for expert review as a candidate full answer to Remark
+1.1(1). The highest-value checks are: (i) the factor $2/c_{N,s}$ in
+\eqref{eq:raw}; (ii) the cancellation leading to \eqref{eq:rawU}; and (iii)
+that the source's uniform cutoff lemma is interpreted with a fixed
+$S_1<2^{2/N}\SN$, so equality at the uncut limit is correctly classified as
+failure.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+S. Chakraborty, D. Gupta, S. Malhotra, and K. Sreenadh,
+\emph{Global Compactness Result for a Br\'ezis--Nirenberg-Type Problem
+Involving Mixed Local Nonlocal Operator}, arXiv:2504.15968v2, 2025.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{Modified Bessel Functions: Integrals}, Section 10.43,
+\url{https://dlmf.nist.gov/10.43}, accessed 19 July 2026.
+\end{thebibliography}
+
+\end{document}

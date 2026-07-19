@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Ttree}{T}
+\newcommand{\Ball}{B}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\wclosedconv}{\overline{\operatorname{conv}}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\vertiii}[1]{\left|\!\left|\!\left| #1 \right|\!\right|\!\right|}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\SCD}{\operatorname{SCD}}
+
+\title{Improving the Unconditional Constant in Loo--Perreau's Non-SCD Renorming}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Question 5.4 from:
+
+\begin{quote}
+Marcus Loo and Yoel Perreau,
+\emph{A Banach space with an unconditional basis which is not slicely
+countably determined}, arXiv:2603.12947.
+\end{quote}
+
+The question appears in Section 5, page 18 of the source paper:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source paper constructs, from the binary tree space $X=X_T$, an
+equivalent norm with a $2$-unconditional basis whose unit ball is not SCD.
+Question 5.4 asks whether the constant can be improved to any
+$k\in(1,2)$.
+
+\section*{Imported Notation and Facts}
+
+We use the notation of the source paper. Thus $X=X_T$ is the binary tree
+space, $(e_t)_{t\in T}$ is its canonical $1$-unconditional basis, $\Ball_X$
+is its original unit ball, and
+\[
+  \Ball_X^+=\{x\in \Ball_X:x(t)\ge 0\ \text{for all }t\in T\},\qquad
+  \Ball_X^-=-\Ball_X^+.
+\]
+The paper defines $\Sigma$ and $\Pi$ inside $\Ball_X$ and writes
+$\Omega=\Sigma\setminus\Pi$. We need two facts proved there:
+
+\begin{enumerate}
+\item $\Omega^+$ is non-empty and contained in $S_X^+$.
+\item No point $x\in\Omega^+$ is an SCD point of $\Ball_X^+$.
+This is Proposition 3.9 of the source paper.
+\end{enumerate}
+
+We also use the standard localized form of the SCD-point criterion: for a
+bounded convex set, countable determining families of non-empty relatively
+weakly open subsets are equivalent to countable determining families of
+slices. This is the pointwise version of the Bourgain-lemma reduction used
+in the source paper for SCD sets.
+
+\section*{Main Claim}
+
+\begin{theorem}
+For every $k\in(1,2)$ there is a Banach space with a $k$-unconditional
+basis whose unit ball is not slicely countably determined.
+\end{theorem}
+
+\begin{proof}
+Fix $t\in(1/2,1)$ and set
+\[
+  C_t=\wclosedconv\bigl(\Ball_X^+\cup \Ball_X^- \cup t\Ball_X\bigr).
+\]
+The set $C_t$ is closed, convex, symmetric, and absorbing; hence it is the
+unit ball of an equivalent norm, which we denote by $\vertiii{\cdot}_t$.
+Moreover
+\[
+  t\Ball_X\subseteq C_t\subseteq \Ball_X.
+\]
+Consequently
+\[
+  \norm{x}\le \vertiii{x}_t\le t^{-1}\norm{x}\qquad (x\in X).
+\]
+
+We first estimate the unconditional constant of the canonical basis in
+$(X,\vertiii{\cdot}_t)$. Let $D_\varepsilon$ be any sign-change operator,
+$D_\varepsilon(\sum a_t e_t)=\sum \varepsilon_t a_t e_t$, where
+$\varepsilon_t\in\{-1,1\}$. Since the original basis of $X$ is
+$1$-unconditional and $C_t\subseteq\Ball_X$, we have
+\[
+  D_\varepsilon(C_t)\subseteq D_\varepsilon(\Ball_X)=\Ball_X.
+\]
+But $t\Ball_X\subseteq C_t$, so $\Ball_X\subseteq t^{-1}C_t$. Hence
+\[
+  D_\varepsilon(C_t)\subseteq t^{-1}C_t.
+\]
+Thus $\|D_\varepsilon\|_{(X,\vertiii{\cdot}_t)\to (X,\vertiii{\cdot}_t)}
+\le t^{-1}$ for every choice of signs, so the basis is
+$t^{-1}$-unconditional.
+
+It remains to show that $C_t$ is not SCD. Choose $x\in\Omega^+$. We will
+show that $x$ is not an SCD point of $C_t$.
+
+Assume toward a contradiction that $(S_n)$ is a countable sequence of
+slices of $C_t$ determining $x$. Let
+\[
+  M=\{n\in\N:S_n\cap \Ball_X^+\neq\varnothing\}.
+\]
+For $n\in M$, put $U_n=S_n\cap\Ball_X^+$. We claim that the family
+$(U_n)_{n\in M}$ determines $x$ inside $\Ball_X^+$.
+
+If $M=\varnothing$, then, arguing as below, choose
+$z_n\in S_n\cap(\Ball_X^-\cup t\Ball_X)$ for every $n$. The determining
+property would give
+$x\in\wclosedconv\{z_n:n\in\N\}$. Applying a branch functional $\beta$
+with $\beta(x)=1$ is impossible, since $\beta(z_n)\le t<1$ for all $n$.
+Thus $M$ is non-empty. If $\N\setminus M=\varnothing$, the claim is
+immediate from the fact that the original slices determine $x$ in $C_t$.
+So assume from now on that both $M$ and $\N\setminus M$ are non-empty.
+
+Take an arbitrary selection $y_n\in U_n$ for $n\in M$. If $n\notin M$,
+then $S_n$ does not meet $\Ball_X^+$. Since
+$C_t=\wclosedconv(\Ball_X^+\cup\Ball_X^-\cup t\Ball_X)$, each such slice
+meets $\Ball_X^-\cup t\Ball_X$; choose $z_n$ there. Because the slices
+$(S_n)$ determine $x$ in $C_t$, the point $x$ belongs to the closed convex
+hull of the selected points $y_n$ and $z_n$.
+
+Let $\varepsilon>0$. We may therefore find
+\[
+  y\in\conv\{y_n:n\in M\},\qquad
+  z\in\conv\{z_n:n\notin M\},\qquad
+  \lambda\in[0,1],
+\]
+such that, in the original norm of $X$,
+\[
+  \norm{x-\bigl(\lambda y+(1-\lambda)z\bigr)}<\varepsilon.
+\]
+Pick a branch $\beta$ of the binary tree for which
+\[
+  \sum_{s\in\beta} x(s)=1.
+\]
+The corresponding branch functional has norm one on $X$. Since
+$y\in\Ball_X^+$, we have $\sum_{s\in\beta}y(s)\le 1$. Since
+$z\in\conv(\Ball_X^-\cup t\Ball_X)$, we have
+$\sum_{s\in\beta}z(s)\le t$. Applying the branch functional gives
+\[
+  (1-\lambda)(1-t)
+  \le
+  1-\lambda\sum_{s\in\beta}y(s)
+    -(1-\lambda)\sum_{s\in\beta}z(s)
+  \le
+  \norm{x-\bigl(\lambda y+(1-\lambda)z\bigr)}
+  < \varepsilon.
+\]
+Therefore $1-\lambda<\varepsilon/(1-t)$. Since $y,z\in\Ball_X$,
+\[
+  \norm{x-y}
+  \le
+  \norm{x-\bigl(\lambda y+(1-\lambda)z\bigr)}
+  +(1-\lambda)\norm{y-z}
+  <
+  \varepsilon+\frac{2\varepsilon}{1-t}.
+\]
+As $\varepsilon$ was arbitrary,
+$x\in\wclosedconv\{y_n:n\in M\}$. Thus the relatively weakly open family
+$(U_n)_{n\in M}$ determines $x$ in $\Ball_X^+$.
+
+By the localized SCD-point criterion, $x$ would be an SCD point of
+$\Ball_X^+$, contradicting Proposition 3.9 of Loo--Perreau. Hence $C_t$ is
+not SCD.
+
+Finally, given $k\in(1,2)$, take $t=1/k$. Then $t\in(1/2,1)$, the canonical
+basis of $(X,\vertiii{\cdot}_t)$ is $k$-unconditional, and its unit ball
+$C_t$ is not SCD.
+\end{proof}
+
+\section*{Verification Notes}
+
+The only numerical parameter check is
+\[
+  k\in(1,2)\quad\Longleftrightarrow\quad t=1/k\in(1/2,1),
+\]
+and the branch-functional estimate loses the factor $(1-t)^{-1}$, which is
+finite precisely because $t<1$. The short script
+\texttt{code/check\_interpolation\_constants.py} verifies these inequalities
+for sample values and records the constant calculation used above.
+
+\begin{remark}
+The result does not address Question 5.5 of the source paper. The
+construction still uses the same family $\Omega^+$ of non-SCD points, but
+it does not show that the whole unit ball has no SCD points.
+\end{remark}
+
+\end{document}

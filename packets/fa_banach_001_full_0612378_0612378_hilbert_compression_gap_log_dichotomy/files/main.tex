@@ -1,0 +1,226 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Hilb}{\mathcal H}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A Logarithmic Hilbert Compression Gap Dichotomy}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Goulnara Arzhantseva, Cornelia Drutu, and Mark Sapir,
+\emph{Compression functions of uniform embeddings of groups into Hilbert and
+Banach spaces}, arXiv:math/0612378.  Its Question 5.22 asks:
+
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+In the terminology of Definition 3.3 of the source paper, a pair \((f,g)\)
+is a Hilbert compression gap for a metric space \(X\) if there is an
+\(f\)-embedding of \(X\) into Hilbert space and every Hilbert lower compression
+function \(\rho\) satisfies \(\rho\ll g\).  The relation \(a\ll b\) is the
+usual large-scale comparison: \(a(t)\le C b(Ct)+C\).
+
+\section*{Answer}
+
+The literal formulation has a small but important convention issue: a group
+which does not uniformly embed into Hilbert space cannot have any proper
+Hilbert compression gap under the strict reading of Definition 3.3.  The
+source paper itself uses logarithmically degraded lower functions in Theorem
+5.5, so the result below is stated in that same large-scale compression-gap
+convention and flags the stricter proper-lower-function reading explicitly.
+
+\begin{theorem}[logarithmic annular compression envelope]
+Let \(G\) be an infinite finitely generated group with a word metric.  If
+\(G\) admits a uniform, equivalently coarse, embedding into Hilbert space, then
+there is a proper nondecreasing function \(f:\R_+\to\R_+\) such that \(G\) has,
+in the source paper's large-scale sense, a Hilbert space compression gap of
+the form
+\[
+        \left(\frac{f}{\log(x+2)}, f\right)
+\]
+The same construction gives a strict Definition 3.3 compression gap whenever
+this lower function \(f/\log(x+2)\) is proper.  Conversely, if a group has a
+strict proper Hilbert compression gap, then it is Hilbert coarsely embeddable.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+For each dyadic annulus \(2^k\le d(x,y)<2^{k+1}\), measure the largest
+separation that a single \(1\)-Lipschitz Hilbert map can force on every pair
+in that annulus.  Call this number \(H_k\).  If the group coarsely embeds,
+then these annular optima go to infinity.
+
+The upper compression function should not be \(H_k\) itself, since annular
+optima may oscillate.  The tail infimum
+\[
+        F_k=\inf_{j\ge k} H_j
+\]
+is monotone and still tends to infinity.  It is a universal upper bound, up to
+large-scale comparison, because any lower control at a given scale must also
+be valid at all larger dyadic scales.
+
+For the lower bound, choose almost optimal maps on all annuli and put them in
+a Hilbert direct sum with coefficient \(1/k\) on the \(k\)-th annulus.  The
+coefficients are square summable, so the sum is Lipschitz, while on the
+\(k\)-th annulus the \(k\)-th coordinate alone gives the lower bound
+\[
+        \frac{H_k}{k}\ge \frac{F_k}{k}\asymp \frac{f}{\log x}.
+\]
+
+\section*{Proof}
+
+We use the source paper's convention that a \(\rho\)-embedding into Hilbert
+space is a Lipschitz map \(\phi:G\to\Hilb\) such that
+\[
+        \|\phi(x)-\phi(y)\|\ge \rho(d(x,y))
+\]
+for all \(x,y\in G\), where \(\rho\) is proper and nondecreasing.
+
+Assume that \(G\) uniformly embeds into Hilbert space.  Fix a word
+metric \(d\).  For each integer \(k\ge1\), define
+\[
+ A_k=\{(x,y)\in G^2:2^k\le d(x,y)<2^{k+1}\}.
+\]
+Let \(H_k\) be the supremum, over all \(1\)-Lipschitz maps
+\(\phi:G\to\Hilb\), of
+\[
+        \inf_{(x,y)\in A_k}\|\phi(x)-\phi(y)\|.
+\]
+The numbers \(H_k\) are finite, since every \(1\)-Lipschitz map separates
+pairs in \(A_k\) by at most \(2^{k+1}\).
+
+Because \(G\) uniformly embeds into Hilbert space, after rescaling there is a
+\(1\)-Lipschitz map \(\psi:G\to\Hilb\) and a proper nondecreasing function
+\(\eta\) such that
+\[
+        \|\psi(x)-\psi(y)\|\ge \eta(d(x,y)).
+\]
+Thus \(H_k\ge \eta(2^k)\), and \(H_k\to\infty\).
+
+Set
+\[
+        F_k=\inf_{j\ge k} H_j .
+\]
+Then \(F_k\) is nondecreasing and \(F_k\to\infty\).  Define a proper
+nondecreasing function \(f:\R_+\to\R_+\) by setting, for large \(t\),
+\[
+        f(t)=F_k \qquad\text{when } 2^k\le t<2^{k+1},
+\]
+and extending arbitrarily on bounded intervals.
+
+\subsection*{Universal upper bound}
+
+Let \(\rho\) be the lower control of any Hilbert \(\rho\)-embedding
+\(\phi:G\to\Hilb\).  Suppose \(\phi\) is \(L\)-Lipschitz.  Then \(L^{-1}\phi\)
+is \(1\)-Lipschitz, so for every \(j\),
+\[
+        L^{-1}\rho(2^j)\le H_j.
+\]
+If \(2^k\le t<2^{k+1}\), then for all \(j\ge k+1\),
+\[
+        \rho(t)\le \rho(2^j)\le L H_j.
+\]
+Taking the infimum over \(j\ge k+1\) gives
+\[
+        \rho(t)\le L F_{k+1}\le L f(2t).
+\]
+Therefore \(\rho\ll f\).  Since \(\rho\) was arbitrary, \(f\) is an upper
+bound for a Hilbert compression gap of \(G\).
+
+\subsection*{Lower bound with one logarithmic loss}
+
+For each \(k\), choose a \(1\)-Lipschitz map
+\(\phi_k:G\to\Hilb_k\) such that
+\[
+        \inf_{(x,y)\in A_k}\|\phi_k(x)-\phi_k(y)\|\ge \frac12 H_k.
+\]
+Fix \(e\in G\), replace \(\phi_k\) by \(\phi_k-\phi_k(e)\), and define
+\[
+        \Phi(x)=\bigoplus_{k=1}^\infty \frac{1}{k}\phi_k(x).
+\]
+For each \(x\), this vector is well-defined because
+\(\|\phi_k(x)\|\le d(x,e)\) and \(\sum k^{-2}<\infty\).  Moreover,
+\[
+        \|\Phi(x)-\Phi(y)\|^2
+        \le d(x,y)^2 \sum_{k=1}^\infty \frac{1}{k^2},
+\]
+so \(\Phi\) is Lipschitz.
+
+If \(d(x,y)\in[2^k,2^{k+1})\), then the \(k\)-th coordinate gives
+\[
+        \|\Phi(x)-\Phi(y)\|
+        \ge \frac{1}{k}\|\phi_k(x)-\phi_k(y)\|
+        \ge \frac{H_k}{2k}
+        \ge \frac{F_k}{2k}.
+\]
+Since \(k\asymp \log(d(x,y)+2)\) and \(f(d(x,y))=F_k\) on this annulus,
+\(\Phi\), after a harmless rescaling, is an
+\[
+        \frac{f(x)}{\log(x+2)}
+\]
+embedding.  Hence \((f/\log(x+2),f)\) is a Hilbert compression gap.
+
+The functions \(\log x\) and \(\log(x+2)\) are equivalent for the source
+paper's large-scale comparison, so this is the requested form.
+
+Finally, if one insists that the lower function in a compression gap be
+proper, then any group with such a gap is Hilbert coarsely embeddable by
+definition.  Thus non-Hilbert-embeddable finitely generated groups, whose
+existence is recalled in the source paper's introduction via Gromov's
+construction, are counterexamples to the literal all-groups reading under that
+strict convention.
+\qed
+
+\section*{Verification and Novelty Search}
+
+The proof is purely metric and uses only Hilbert direct sums and dyadic
+annuli.  The bounded novelty check used the following searches:
+\[
+\begin{gathered}
+\texttt{Hilbert space compression gap f/log},\\
+\texttt{compression gap coarsely embeds Hilbert log},\\
+\texttt{optimal compression function coarse embedding Hilbert log},\\
+\texttt{arXiv:math/0612378 compression gap}.
+\end{gathered}
+\]
+Semantic Scholar metadata for arXiv:math/0612378 showed 35 citations; titles
+and abstracts containing compression, gap, amenability, wreath products, and
+Hilbert compression were inspected, with no direct later answer to Question
+5.22 found.  The result should nevertheless be reviewed for possible folklore
+status, since the dyadic direct-sum argument is natural.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{ADS}
+Goulnara Arzhantseva, Cornelia Drutu, and Mark Sapir,
+\emph{Compression functions of uniform embeddings of groups into Hilbert and
+Banach spaces}, arXiv:math/0612378.
+
+\bibitem{Gromov}
+Mikhail Gromov,
+\emph{Random walk in random groups}, Geom. Funct. Anal. 13 (2003),
+73--146.
+
+\end{thebibliography}
+
+\end{document}

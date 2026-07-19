@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\calL}{\mathcal L}
+
+\title{A Formal Path Dilation for Every Finite-Horizon Evolution Family}
+\author{Run fa\_banach\_001, agent\_lane\_19}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Partial result / clarification, likely valid. The
+source asks which \(C_0\)-semigroups and \(C_0\)-evolution families admit an
+approximate invertible dilation. Read literally, without requiring the dilation
+space to preserve Hilbertianity, \(2\)-smoothness, UMD, or related geometry,
+the answer is: all finite-horizon \(C_0\)-evolution families admit an exact
+invertible dilation. The construction is too large for the stochastic maximal
+inequality theorem in the source, so this is not a solution of the intended
+geometry-preserving problem.
+
+\section*{Source Question}
+
+The source is Jan van Neerven and Mark Veraar, \emph{Maximal estimates for
+stochastic convolutions in \(2\)-smooth Banach spaces and applications to
+stochastic evolution equations}, arXiv:2006.08325. In Section 6, the authors
+ask:
+\begin{quote}
+``Which \(C_0\)-semigroups and \(C_0\)-evolution families admit an
+\((\)approximate\()\) invertible dilation?''
+\end{quote}
+They explain just above and below the question that the useful version for
+maximal inequalities requires the dilation spaces to retain the relevant
+geometry, such as Hilbertianity, \(2\)-smoothness, or UMD.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_question_crop.png}
+\end{center}
+
+\section*{Definition from the Source}
+
+Let \((S(t,s))_{0\leq s\leq t\leq T}\) be a \(C_0\)-evolution family on a
+Banach space \(X\). In the source terminology, it admits an invertible dilation
+on a Banach space \(Y\) if there are strongly continuous functions
+\[
+  J:[0,T]\to\calL(X,Y),
+  \qquad
+  Q:[0,T]\to\calL(Y,X)
+\]
+such that
+\[
+  S(t,s)=Q(t)J(s),\qquad 0\leq s\leq t\leq T.
+\]
+
+\section*{Idea of the Proof}
+
+The factorization can be forced by remembering the future orbit of \(x\) from
+the starting time \(s\). Put this orbit into the path space \(C([0,T];X)\), and
+make it constant before time \(s\) so that the path is continuous at the
+switching point. Evaluation at \(t\) then recovers \(S(t,s)x\). Strong
+continuity of the maps \(J(s)\) follows from the uniform strong continuity of
+the evolution family on the compact time triangle.
+
+\begin{theorem}[Formal path dilation]\label{thm:path}
+Let \(X\) be a Banach space and let
+\((S(t,s))_{0\leq s\leq t\leq T}\) be a \(C_0\)-evolution family on \(X\).
+Then \((S(t,s))\) admits an exact invertible dilation, in the literal sense of
+the source definition, on \(Y=C([0,T];X)\).
+\end{theorem}
+
+\begin{proof}
+Let \(Y=C([0,T];X)\) with the supremum norm. For \(t\in[0,T]\), define
+\[
+  Q(t)f=f(t),\qquad f\in Y.
+\]
+Then \(\|Q(t)\|\leq 1\), and \(t\mapsto Q(t)\) is strongly continuous because
+each \(f\in C([0,T];X)\) is uniformly continuous.
+
+For \(s\in[0,T]\) and \(x\in X\), define \(J(s)x\in Y\) by
+\[
+  (J(s)x)(r)=
+  \begin{cases}
+    x, & 0\leq r\leq s,\\
+    S(r,s)x, & s\leq r\leq T.
+  \end{cases}
+\]
+This is a continuous \(X\)-valued path, since \(S(s,s)=I\). The family
+\(\{S(t,s):0\leq s\leq t\leq T\}\) is pointwise bounded by strong continuity
+on the compact triangle, hence uniformly bounded by the uniform boundedness
+principle. Therefore
+\[
+  \|J(s)x\|_{\infty}\leq
+  \max\left\{1,\sup_{0\leq a\leq b\leq T}\|S(b,a)\|\right\}\|x\|,
+\]
+so \(J(s)\in\calL(X,Y)\) with a bound uniform in \(s\).
+
+It remains to check strong continuity of \(s\mapsto J(s)\). Fix \(x\in X\) and
+let \(s_n\to s\). The map
+\[
+  (r,a)\mapsto S(r,a)x
+\]
+is continuous on the compact triangle \(0\leq a\leq r\leq T\), hence uniformly
+continuous there. If \(r\geq \max\{s_n,s\}\), uniform continuity gives
+\[
+  \|S(r,s_n)x-S(r,s)x\|\to 0
+\]
+uniformly in \(r\). If \(r\leq \min\{s_n,s\}\), the two paths are both equal
+to \(x\). On the remaining interval between \(s_n\) and \(s\), one path is
+equal to \(x\), while the other is \(S(r,a)x\) with \(|r-a|\leq |s_n-s|\);
+uniform continuity at the diagonal, together with \(S(a,a)=I\), gives
+\[
+  \sup_{|r-a|\leq |s_n-s|}\|S(r,a)x-x\|\to 0.
+\]
+Thus \(\|J(s_n)x-J(s)x\|_{\infty}\to0\), proving strong continuity.
+
+Finally, for \(0\leq s\leq t\leq T\),
+\[
+  Q(t)J(s)x=(J(s)x)(t)=S(t,s)x.
+\]
+This is the desired exact dilation.
+\end{proof}
+
+\begin{remark}[Why this does not settle the geometric problem]
+The construction generally destroys the geometry needed in the source's
+dilation theorem. If \(X\neq\{0\}\), choose \(x_0\in X\) with \(\|x_0\|=1\).
+The map \(f\mapsto (r\mapsto f(r)x_0)\) embeds \(C([0,T])\) isometrically into
+\(C([0,T];X)\). Hence \(C([0,T];X)\) is non-reflexive. In particular it cannot
+be \(2\)-smooth or UMD, since those classes are reflexive. It is also not a
+Hilbert space except in the trivial zero-dimensional case.
+
+Thus Theorem~\ref{thm:path} answers the literal non-geometric version of the
+dilation question, but the source's useful question remains: when can such a
+factorization be arranged inside a class preserving Hilbertian, \(2\)-smooth,
+UMD, or other stochastic-integration geometry?
+\end{remark}
+
+\section*{Verification and Novelty Check}
+
+Local indexes were searched for arXiv:2006.08325 and for the phrases
+\emph{invertible dilation}, \emph{approximate invertible dilation},
+\emph{evolution family}, and \emph{stochastic convolution}. No existing packet
+recorded this formal path-space factorization. Web searches on June 20, 2026
+for combinations of \emph{invertible dilation}, \emph{\(C([0,T];X)\)}, and
+\emph{evolution family} did not find a later answer to the source question.
+
+\section*{Human Review Recommendation}
+
+Review should treat this as a clarification packet, not as a full stochastic
+maximal-inequality solution. The proof of the factorization is elementary; the
+main review point is whether the run should record the source question as
+implicitly geometry-preserving. If so, this packet should remain in
+\texttt{partial/}: it identifies the formal obstruction and sharpens the
+remaining problem.
+
+\begin{thebibliography}{9}
+\bibitem{NV}
+J. van Neerven and M. Veraar,
+\emph{Maximal estimates for stochastic convolutions in \(2\)-smooth Banach
+spaces and applications to stochastic evolution equations},
+arXiv:2006.08325, 2020.
+\end{thebibliography}
+
+\end{document}

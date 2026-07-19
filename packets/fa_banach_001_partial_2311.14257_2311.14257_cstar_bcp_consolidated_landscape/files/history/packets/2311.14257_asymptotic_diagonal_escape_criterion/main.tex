@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\M}{\mathcal M}
+\newcommand{\T}{\mathbb T}
+
+\title{An Asymptotic Diagonal Escape Criterion for Quotients}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+In a quotient \(X=Y/J\), the useful local norming maps are often defined on
+the ambient space \(Y\), not on the quotient.  For example, in a multiplier
+corona one tests a multiplier on a far-out annulus; adding an element of the
+ideal changes the annulus, but by a quantity that tends to zero along the
+tail.  The same phenomenon appears in reduced products and Hilbert-module
+coronas.
+
+The criterion below isolates exactly what the diagonal proof needs.  Each
+center is assigned infinitely many local tests.  The assigned tests nearly
+norm that center.  The ideal \(J\) vanishes along those tests.  Finally, one
+global quotient unit has prescribed local behavior, chosen to point away from
+the corresponding local center.  These four properties force the quotient
+unit to avoid every ball \(B(\xi_i,\|\xi_i\|)\).
+
+\section*{Criterion}
+
+Let \(Y\) be a normed space, let \(J\subseteq Y\) be a closed subspace, and
+write
+\[
+        q:Y\longrightarrow X:=Y/J
+\]
+for the quotient map.
+
+\begin{definition}
+\label{def:asymptotic-diagonal}
+The quotient \(X=Y/J\) has the asymptotic diagonal escape property if for
+every sequence \((y_i)_{i\ge1}\subset Y\) there are:
+\begin{itemize}
+\item a map \(\pi:\N\to\N\) such that every fiber \(\pi^{-1}(\{i\})\) is
+infinite;
+\item normed spaces \(E_k\);
+\item contractive linear maps \(L_k:Y\to E_k\);
+\item a null sequence \(\eta_k\downarrow0\);
+\item vectors \(u_k\in E_k\);
+\item a vector \(y\in Y\) with \(q(y)\in S_X\);
+\end{itemize}
+such that the following hold.
+
+\begin{enumerate}
+\item \emph{Assigned near-norming.}
+\[
+        \|L_k y_{\pi(k)}\|
+        \ge
+        \|q(y_{\pi(k)})\|-\eta_k,\qquad k\ge1.
+\]
+
+\item \emph{Ideal vanishing along fibers.}  For every \(c\in J\) and every
+\(i\ge1\),
+\[
+        \lim_{\substack{k\to\infty\\ \pi(k)=i}}\|L_kc\|=0.
+\]
+
+\item \emph{Asymptotic gluing.}
+\[
+        \|L_ky-u_k\|\le \eta_k,\qquad k\ge1.
+\]
+
+\item \emph{Local escape.}
+\[
+        \|u_k-L_k y_{\pi(k)}\|
+        \ge
+        \|L_k y_{\pi(k)}\|-\eta_k,\qquad k\ge1.
+\]
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}
+\label{thm:asymptotic-diagonal}
+If \(X=Y/J\) has the asymptotic diagonal escape property, then \(X\) fails
+BCP.
+\end{theorem}
+
+\begin{proof}
+We use the standard equivalent form of BCP: if \(X\) has BCP, then \(S_X\) is
+covered by countably many open balls \(B(\xi_i,\|\xi_i\|)\).
+
+Let \((\xi_i)_{i\ge1}\subset X\) be an arbitrary countable family of centers,
+and choose representatives \(y_i\in Y\) with \(q(y_i)=\xi_i\).  Apply the
+asymptotic diagonal escape property to \((y_i)\), obtaining the data from
+Definition~\ref{def:asymptotic-diagonal}.  Put
+\[
+        \zeta=q(y)\in S_X.
+\]
+
+Fix \(i\ge1\).  We prove that
+\[
+        \|\zeta-\xi_i\|\ge \|\xi_i\|.
+\]
+Let \(c\in J\).  For each \(k\) with \(\pi(k)=i\), contractivity gives
+\[
+        \|y-y_i-c\|
+        \ge
+        \|L_k(y-y_i-c)\|.
+\]
+Using asymptotic gluing, local escape, and assigned near-norming,
+\begin{align*}
+        \|L_k(y-y_i-c)\|
+        &\ge
+        \|u_k-L_ky_i\|-\|L_ky-u_k\|-\|L_kc\|\\
+        &\ge
+        \|L_ky_i\|-2\eta_k-\|L_kc\|\\
+        &\ge
+        \|\xi_i\|-3\eta_k-\|L_kc\|.
+\end{align*}
+Letting \(k\to\infty\) through the infinite fiber \(\pi^{-1}(\{i\})\), and
+using ideal vanishing, gives
+\[
+        \|y-y_i-c\|\ge \|\xi_i\|.
+\]
+Since \(c\in J\) was arbitrary,
+\[
+        \|\zeta-\xi_i\|
+        =
+        \inf_{c\in J}\|y-y_i-c\|
+        \ge
+        \|\xi_i\|.
+\]
+Thus \(\zeta\in S_X\) is outside every open ball
+\[
+        B(\xi_i,\|\xi_i\|).
+\]
+The countable family of centers was arbitrary, so \(X\) fails BCP.
+\end{proof}
+
+\section*{How to Produce the Local Escape Vectors}
+
+The criterion separates the formal diagonal argument from the local
+construction.  In most applications \(u_k\) is obtained by a Hahn--Banach
+phase or sign choice.
+
+\begin{lemma}[local sign escape]
+\label{lem:local-sign}
+Let \(E\ne\{0\}\) be a real or complex normed space and let \(v\in E\).  There
+is \(u\in S_E\) such that
+\[
+        \|u-v\|\ge \|v\|.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(v=0\), choose any \(u\in S_E\).  If \(v\ne0\), choose \(f\in S_{E^*}\)
+with \(f(v)=\|v\|\).  Choose \(w\in S_E\) with \(|f(w)|>0\), and multiply
+\(w\) by a scalar of modulus one in the complex case, or change sign in the
+real case, so that \(u\in S_E\) satisfies \(\operatorname{Re}f(u)\le0\).
+Then
+\[
+        \|u-v\|\ge \operatorname{Re}f(v-u)\ge \|v\|.
+\]
+\end{proof}
+
+\section*{Relation to the Exact Criterion}
+
+The exact adaptive diagonal criterion from the previous packet is the special
+case \(J=\{0\}\) where the local maps \(L_k\) are genuine quotient maps
+\(R_k:X\to E_k\), the gluing is exact, and \(\eta_k=0\).  In particular, if
+one has a linear isometry
+\[
+        \Gamma:\ell_\infty(E_k)\to X,\qquad R_k\Gamma((u_j))=u_k,
+\]
+and the assigned coordinates nearly norm the centers, then choosing local
+sign escapes \(u_k\) and setting \(y=\Gamma((u_k))\) verifies
+Definition~\ref{def:asymptotic-diagonal}.
+
+\section*{How the Earlier Diagonal Packets Fit}
+
+This section is a guide for applying the criterion; it is not a replacement
+for the full proofs in the earlier packets.
+
+\subsection*{Sigma-Unital Multiplier Coronas}
+
+For a nonunital \(\sigma\)-unital \(C^*\)-algebra \(A\), take
+\[
+        Y=\M(A),\qquad J=A,\qquad X=\M(A)/A.
+\]
+With an increasing approximate unit \((e_n)\) satisfying
+\(e_me_n=e_n\) for \(m\ge n\), the local tests are
+\[
+        L_k(T)=Tg_k,\qquad g_k=e_{m_k}-e_{n_k},
+\]
+where the annuli \(g_k\) are chosen far out.  Finite annulus recovery gives
+assigned near-norming:
+\[
+        \|T_{\pi(k)}g_k\|\approx \|q(T_{\pi(k)})\|.
+\]
+For \(C\in A\), tail convergence gives
+\[
+        \|Cg_k\|\to0,
+\]
+which is ideal vanishing.  The local escape vectors are phased annuli
+\(u_k=\lambda_kg_k\), chosen by the sign trick against
+\(T_{\pi(k)}g_k\).  The global multiplier
+\[
+        z=\sum_k\lambda_kh_k
+\]
+over larger orthogonal annuli satisfies \(zg_k=u_k\), and an auxiliary
+subsequence of annuli verifies \(\|q(z)\|=1\).  These are exactly the
+ingredients of Definition~\ref{def:asymptotic-diagonal}.
+
+\subsection*{Hilbert-Module Coronas}
+
+For a Hilbert module \(E\) with a BCP block system, take
+\[
+        Y=\mathcal L(E),\qquad J=\mathcal K(E),\qquad
+        X=\mathcal L(E)/\mathcal K(E).
+\]
+The local tests are
+\[
+        L_k(T)=Te_{F_k},
+\]
+where \(e_{F_k}\) is a fresh finite block projection.  Tail norm recovery
+gives assigned near-norming, compact-vanishing gives ideal vanishing, fresh
+range escape supplies local \(u_k=v_k\), and strict gluing supplies the global
+operator \(V\) with \(Ve_{F_k}=v_k\).  The previous Hilbert-module packet is
+therefore an instance of the quotient criterion.
+
+\subsection*{Reduced Products}
+
+For reduced products
+\[
+        X=\ell_\infty(E_n)/c_\cI(E_n),
+\]
+the ambient space is \(Y=\ell_\infty(E_n)\) and \(J=c_\cI(E_n)\).  Given
+centers, the proof chooses disjoint \(\cI\)-positive sets \(T_k\) on which
+the assigned center is nearly normed.  The local maps are restrictions
+\[
+        L_k((a_n))
+        =
+        (a_n)_{n\in T_k}
+        +c_{\cI|T_k}(E_n:n\in T_k)
+\]
+viewed in the local reduced quotient
+\[
+        \ell_\infty(E_n:n\in T_k)/c_{\cI|T_k}(E_n:n\in T_k).
+\]
+Thus elements of \(J\) vanish exactly under every \(L_k\).  The glued
+sequence is built by putting the locally escaping representatives on the
+disjoint sets \(T_k\) and zero elsewhere; the reduced-product norm formula
+checks that the resulting quotient class is a unit.  This is the same
+asymptotic diagonal pattern in coordinate form.
+
+\section*{Verification and Search Bounds}
+
+The run indexes were searched for arXiv:2311.14257 together with approximate
+adaptive diagonal, asymptotic diagonal, quotient diagonal, tail error,
+sigma-unital corona, reduced product, Hilbert-module block, and atomless von
+Neumann keywords.  Existing packets contained the exact adaptive criterion
+and several concrete asymptotic diagonal arguments, but no quotient-level
+criterion isolating the common proof.
+
+The proof of Theorem~\ref{thm:asymptotic-diagonal} is formal once the
+definition is verified in an application.  The application sketches above are
+calibrated against the already promoted concrete packets.
+
+\section*{Human Review Focus}
+
+The main point to review is Definition~\ref{def:asymptotic-diagonal}: it
+should be checked against future applications to ensure that the hard local
+construction is not hidden inside the definition.  The theorem itself is a
+short quotient-norm diagonal estimate.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\end{thebibliography}
+
+\end{document}

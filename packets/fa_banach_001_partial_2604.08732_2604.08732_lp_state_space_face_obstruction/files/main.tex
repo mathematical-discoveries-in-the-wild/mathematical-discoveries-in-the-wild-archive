@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{example}{Example}
+
+\title{A Norming-Face Obstruction for \texorpdfstring{$L^p$}{Lp} State Spaces}
+\author{Automatic Math Discovery Smoke Test}
+\date{June 13, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper asks for an analogue, for $1<p<\infty$, of its
+characterization of weakly compact state spaces in $L^1(\mu,X)$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+This packet gives a necessary condition for weak compactness of the state
+space of a constant function. It supplies a simple non-reflexive obstruction
+which is not covered by the reflexive-domain partial answer.
+
+Throughout this note the scalar field is real.
+
+\begin{theorem}
+Let $(\Omega,\Sigma,\mu)$ be a probability space, let $1<p<\infty$, and let
+$q$ be conjugate to $p$. Let $X$ be a Banach space, let $x\in S_X$, and put
+$f(\omega)=x$ for all $\omega\in\Omega$. Define
+\[
+S_f=\left\{g\in B_{L^q(\mu,X^*)}:
+  \int_\Omega g(\omega)(x)\,d\mu(\omega)=1\right\}
+\]
+and
+\[
+F_x=\{x^*\in B_{X^*}:x^*(x)=1\}.
+\]
+If $S_f$ is weakly compact in $L^q(\mu,X^*)$, then $F_x$ is weakly compact in
+$X^*$.
+\end{theorem}
+
+\begin{proof}
+For each $x^*\in F_x$, let $Jx^*$ be the constant function with value
+$x^*$. Since $\mu$ is a probability measure,
+\[
+\|Jx^*\|_{L^q(\mu,X^*)}=\|x^*\|\leq 1
+\]
+and
+\[
+\int_\Omega (Jx^*)(\omega)(x)\,d\mu(\omega)=x^*(x)=1.
+\]
+Thus $J(F_x)\subset S_f$.
+
+Now define the bounded linear operator
+\[
+Q:L^q(\mu,X^*)\longrightarrow X^*,\qquad
+Q(g)=\int_\Omega g(\omega)\,d\mu(\omega),
+\]
+where the integral is the Bochner integral. Holder's inequality gives
+$\|Q(g)\|\leq \|g\|_{L^q(\mu,X^*)}$, and $Q(Jx^*)=x^*$ for every
+$x^*\in F_x$.
+
+If $S_f$ is weakly compact, then $J(F_x)$ is relatively weakly compact as a
+subset of $S_f$. Since $Q$ is weak-to-weak continuous,
+$Q(J(F_x))=F_x$ is relatively weakly compact in $X^*$. Finally, $F_x$ is
+weakly closed: it is the intersection of the weakly closed unit ball
+$B_{X^*}$ with the weakly closed affine hyperplane $\{x^*:x^*(x)=1\}$.
+Therefore $F_x$ is weakly compact.
+\end{proof}
+
+\begin{corollary}
+If $x\in S_X$ has a non-weakly-compact norming face $F_x$, then the state
+space of the constant function $f(\omega)=x$ is not weakly compact in
+$L^q(\mu,X^*)$.
+\end{corollary}
+
+\begin{example}
+Take $X=\ell_1$ and $x=e_1$. Then $X^*=\ell_\infty$ and
+\[
+F_{e_1}=\{a=(a_n)\in B_{\ell_\infty}:a_1=1\}.
+\]
+This face is not weakly compact. Indeed, translating by $(-1,0,0,\ldots)$
+identifies it with $\{0\}\times B_{\ell_\infty}$, which is isometric to the
+closed unit ball of $\ell_\infty$. If $F_{e_1}$ were weakly compact, then
+$B_{\ell_\infty}$ would be weakly compact, forcing $\ell_\infty$ to be
+reflexive, a contradiction.
+
+Hence, for any probability space and every $1<p<\infty$, the state space of
+the constant $e_1$ function in $L^p(\mu,\ell_1)$ is not weakly compact.
+\end{example}
+
+\section*{Verification code}
+
+The script \texttt{code/check\_constant\_face\_obstruction.py} verifies a
+finite-truncation version of the constant-face inclusion: for several vectors
+$a\in B_{\ell_\infty^n}$ with first coordinate $1$, the constant function has
+$L^q$ norm $1$ and pairing $1$ with the constant $e_1$ function.
+
+\section*{Scope}
+
+This is a partial answer to Problem 3.18. It does not characterize all weakly
+compact $L^p$ state spaces. It says that, even for constant functions, weak
+compactness of the state space detects weak compactness of the corresponding
+norming face in $X^*$.
+
+\end{document}

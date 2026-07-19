@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Counterexample}
+\newtheorem*{lemma}{Lemma}
+
+\title{Counterexample: Semi \(w^*\)-Denting Points Need Not Be Extreme}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 16, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source paper is Sudeshna Basu and Susmita Seal,
+\emph{Ball separation characterization of ball dentability and related
+properties}, arXiv:2307.03621, version 4 \cite{BasuSeal2023}.
+
+Definition 4.1 defines semi denting points and their weak-star analogues.
+Remark 4.3 observes that if \(x_0^*\in S_{X^*}\) is a semi \(w^*\)-denting
+point of \(B_{X^*}\), then \(x_0^*\) is a norm limit of extreme points of
+\(B_{X^*}\). The same remark says that it is not known whether every semi
+\(w^*\)-denting point must be extreme. In the parsed source this is
+\texttt{data/parsed/arxiv\_sources/2307.03621/Ball\_sep\_arxiv.tex}, lines
+818--835, and in the PDF it is page 13.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The definition of a semi denting point is deliberately one-sided: for each
+\(\varepsilon>0\) there must be a small slice contained in
+\(B(x,\varepsilon)\), but the slice need not contain \(x\). Therefore every
+norm limit of denting points is automatically semi denting. To disprove the
+extreme-point conclusion, it is enough to build a finite-dimensional dual ball
+with a non-extreme boundary point that is a norm limit of exposed points.
+Finite dimensionality then makes the weak-star and norm topologies coincide.
+
+\section*{Construction}
+
+Work in \(\mathbb R^4\) with coordinates \((s,u,v,t)\). For \(0\le r\le 1\),
+put
+\[
+c(r)=(0,r,r^2,1),\qquad
+a=(-1,0,0,1),\qquad b=(1,0,0,1),
+\]
+and define
+\[
+F=\operatorname{co}\bigl(\{a,b\}\cup\{c(r):0\le r\le 1\}\bigr),\qquad
+K=\operatorname{co}(F\cup(-F)).
+\]
+The set \(K\) is compact, convex, centrally symmetric, and full dimensional.
+Hence \(K\) is the closed unit ball of a four-dimensional real Banach space
+\(Y\). Let
+\[
+p=c(0)=(0,0,0,1).
+\]
+Since \(p=(a+b)/2\) and \(a\ne b\), \(p\) is not an extreme point of \(K\).
+Also \(p\in S_Y\), because the coordinate functional \(t\) satisfies
+\(\sup_K t=1\) and \(t(p)=1\).
+
+\begin{lemma}
+For every \(r_0\in(0,1]\), the point \(c(r_0)\) is an exposed point of \(K\).
+\end{lemma}
+
+\begin{proof}
+Fix \(r_0\in(0,1]\) and set
+\[
+g_{r_0}(s,u,v,t)=2r_0u-v.
+\]
+On the curve \(c(r)\),
+\[
+g_{r_0}(c(r))=2r_0r-r^2=r_0^2-(r-r_0)^2\le r_0^2,
+\]
+with equality only when \(r=r_0\). On the segment \([a,b]\), the value of
+\(g_{r_0}\) is \(0<r_0^2\). By linearity, \(g_{r_0}\) has the unique maximum
+\(r_0^2\) on \(F\) at \(c(r_0)\).
+
+Let \(M=\sup\{|g_{r_0}(y)|:y\in F\}\), and choose
+\(\lambda>0\) so small that \(-1+\lambda M<1\). Consider
+\[
+\Phi(y)=t(y)+\lambda g_{r_0}(y).
+\]
+On \(F\), where \(t=1\), the unique maximum of \(\Phi\) occurs at \(c(r_0)\).
+On \(-F\), where \(t=-1\), we have \(\Phi(y)\le -1+\lambda M<1\), while
+\(\Phi(c(r_0))=1+\lambda r_0^2>1\). Thus \(c(r_0)\) is the unique maximizer of
+\(\Phi\) on \(K\), so it is exposed.
+\end{proof}
+
+\section*{Counterexample}
+
+\begin{theorem}
+There exists a Banach space \(X\) and a point \(p\in S_{X^*}\) such that
+\(p\) is a semi \(w^*\)-denting point of \(B_{X^*}\), but \(p\) is not an
+extreme point of \(B_{X^*}\).
+\end{theorem}
+
+\begin{proof}
+Let \(Y\) be the four-dimensional Banach space whose unit ball is the set
+\(K\) constructed above, and let \(X=Y^*\). Since \(Y\) is finite dimensional,
+we identify \(X^*\) canonically with \(Y\), and the weak-star topology on
+\(X^*=Y\) agrees with the norm topology.
+
+We already observed that \(p=c(0)\in S_Y\) is not extreme in \(K=B_Y\). It
+remains to show that \(p\) is semi denting, hence semi \(w^*\)-denting under
+the identification \(X^*=Y\).
+
+For each \(n\ge 1\), the point \(c(1/n)\) is exposed by the lemma. In a compact
+finite-dimensional convex set, every exposed point is a denting point: if a
+linear functional has a unique maximum at \(y\), compactness implies that the
+slices
+\[
+\{z\in K:\phi(z)>\phi(y)-\alpha\}
+\]
+shrink in norm to \(y\) as \(\alpha\downarrow0\). Hence each \(c(1/n)\) is a
+denting point of \(K\).
+
+The sequence \(c(1/n)\) converges to \(p\) in the Euclidean topology, and
+therefore in the norm of \(Y\). Given \(\varepsilon>0\), choose \(n\) such that
+\(\|c(1/n)-p\|_Y<\varepsilon/2\). Since \(c(1/n)\) is denting, choose a slice
+\(S\) of \(K\) containing \(c(1/n)\) with diameter less than
+\(\varepsilon/2\). Then
+\[
+S\subset B_Y(c(1/n),\varepsilon/2)\subset B_Y(p,\varepsilon).
+\]
+This is exactly the semi denting condition for \(p\). Since weak-star and norm
+topologies coincide in finite dimension, \(p\) is a semi \(w^*\)-denting point
+of \(B_{X^*}\). But \(p\) is not extreme, as \(p=(a+b)/2\) with \(a\ne b\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is finite-dimensional and does not rely on unproved external
+theorems beyond standard compact-convex facts: exposed points of compact
+finite-dimensional convex bodies are denting points, and all Hausdorff vector
+topologies on a finite-dimensional space coincide. The construction is also
+stable under replacing the continuum \(\{c(r):0\le r\le1\}\) by a sufficiently
+rich compact convex curve with exposed points accumulating at \(c(0)\).
+
+\section*{Novelty Search Bounds}
+
+Before promotion, the run registry, solution index, attempt index, and
+proof-gap index were searched for arXiv:2307.03621, ball separation,
+dentability, semi \(w^*\)-denting, extreme point, SCS, and related terms. No
+existing packet for this question was found. A web search on June 16, 2026
+for close phrases including ``semi w* denting'' with ``extreme point'',
+``semi weak* denting'' with ``extreme point'', and ``semi denting point''
+with ``extreme point'' did not reveal an exact prior answer. This is a bounded
+novelty check, not a bibliographic proof of novelty.
+
+\section*{Human Review Recommendation}
+
+The main point for review is the exposure argument for \(c(r_0)\) and the
+interpretation of semi denting as allowing the small slice to lie near \(p\)
+without containing \(p\). If both are accepted, the counterexample directly
+answers the question in Remark 4.3 negatively.
+
+\begin{thebibliography}{9}
+\bibitem{BasuSeal2023}
+S. Basu and S. Seal,
+\emph{Ball separation characterization of ball dentability and related
+properties}, arXiv:2307.03621, version 4, 2025.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{An Equal-Edge Counterexample to the Proposed Monotonicity of \texorpdfstring{$\norm{T_G}$}{||TG||}}
+\author{fa\_banach\_001, agent\_lane\_06}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate counterexample, likely valid.  This packet answers negatively the
+edge-count monotonicity question raised in Section 6 of Santos--Tripathi--Youssef
+\cite{STY}.
+
+\section{Source Question}
+
+For a graph $G$ on $L$ vertices, the source writes
+\[
+   T_G=\frac{1}{\sqrt L}\sum_{i=1}^L s_i,
+\]
+where the $s_i$ are $G$-independent semicircle variables.  Section 6 asks whether
+the following refined monotonicity property holds: if $G,G'$ are graphs on
+$[L]$ with the same clique number and $|E(G)|\le |E(G')|$, must
+$\norm{T_G}\le \norm{T_{G'}}$?
+
+The relevant passage is on page 16 of \cite{STY}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Idea of the Proof}
+
+The proposed monotonicity is already too strong at equal edge count.  If two
+graphs have the same number of edges and the same clique number, the proposed
+statement applies in both directions and therefore predicts equality of
+$\norm{T_G}$.  Complete multipartite graphs give an explicit norm formula:
+the norm is proportional to the sum of square roots of the part sizes.  Edge
+count fixes the sum of the squares of the part sizes, but it does not fix the
+sum of their square roots.  Two complete 4-partite graphs on 10 vertices exploit
+exactly this gap.
+
+\section{Complete Multipartite Norm Formula}
+
+\begin{lemma}\label{lem:multipartite}
+Let $K_{I_1,\ldots,I_r}$ be the complete $r$-partite graph on
+$L=\sum_{k=1}^r |I_k|$ vertices, and let $T_K$ be the normalized operator from
+the source paper.  Then
+\[
+   \norm{T_K}=\frac{2}{\sqrt L}\sum_{k=1}^r \sqrt{|I_k|}.
+\]
+\end{lemma}
+
+\begin{proof}
+In the complete multipartite graph, vertices in distinct parts are adjacent, so
+the corresponding algebras commute and are classically independent.  Vertices in
+the same part are nonadjacent, so within each part the corresponding semicircle
+variables are free.
+
+For each part set
+\[
+   X_k=\sum_{i\in I_k}s_i.
+\]
+The free sum of $|I_k|$ standard semicircle variables is a semicircle variable
+of variance $|I_k|$, hence has spectrum
+$[-2\sqrt{|I_k|},2\sqrt{|I_k|}]$.  The variables $X_1,\ldots,X_r$ live in
+commuting classically independent subalgebras.  In the standard tensor-product
+model, the spectrum of $\sum_k X_k$ is the Minkowski sum of the individual
+spectra.  Therefore
+\[
+  \norm{\sum_{k=1}^r X_k}=2\sum_{k=1}^r\sqrt{|I_k|}.
+\]
+Dividing by $\sqrt L$ gives the formula for $T_K$.
+\end{proof}
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+The Section 6 edge-count monotonicity question in \cite{STY} has a negative
+answer.
+\end{theorem}
+
+\begin{proof}
+Let $G$ be the complete 4-partite graph on 10 vertices with part sizes
+\[
+   (1,1,4,4),
+\]
+and let $H$ be the complete 4-partite graph on 10 vertices with part sizes
+\[
+   (1,2,2,5).
+\]
+Both graphs have clique number $4$.  The number of edges in a complete
+multipartite graph with part sizes $n_1,\ldots,n_r$ is
+\[
+   \frac12\left(L^2-\sum_{k=1}^r n_k^2\right).
+\]
+For both displayed partitions, $L=10$ and
+\[
+   1^2+1^2+4^2+4^2=1^2+2^2+2^2+5^2=34.
+\]
+Thus
+\[
+   |E(G)|=|E(H)|=\frac{100-34}{2}=33.
+\]
+
+By Lemma \ref{lem:multipartite},
+\[
+   \norm{T_G}
+   =\frac{2}{\sqrt{10}}(1+1+2+2)
+   =\frac{12}{\sqrt{10}},
+\]
+whereas
+\[
+   \norm{T_H}
+   =\frac{2}{\sqrt{10}}(1+\sqrt2+\sqrt2+\sqrt5)
+   =\frac{2(1+2\sqrt2+\sqrt5)}{\sqrt{10}}.
+\]
+These values are not equal: equality would imply
+$5=2\sqrt2+\sqrt5$, which is impossible since squaring
+$5-\sqrt5=2\sqrt2$ gives $30-10\sqrt5=8$.
+
+Since $|E(G)|=|E(H)|$, the proposed monotonicity would imply both
+$\norm{T_G}\le\norm{T_H}$ and $\norm{T_H}\le\norm{T_G}$, hence equality.  The
+strict inequality above contradicts this.  Therefore the proposed monotonicity
+property is false.
+\end{proof}
+
+\section{Verification Notes}
+
+The arithmetic can be checked with:
+\[
+\texttt{python code/verify\_partitions.py}.
+\]
+The script confirms that both graphs have 10 vertices, clique number 4, and 33
+edges, and computes the two norm values.
+
+No numerical approximation is used in the proof.  The only structural input is
+the complete multipartite norm formula, proved above and also used in the
+source paper's Section 6 discussion.
+
+\section{Novelty Check and Limitations}
+
+The run's cheap indexes were searched for the arXiv id, title terms,
+``trace monoids'', ``Turan'', ``Khintchine'', and ``monoid''.  No prior packet
+for this target was found.  Local source inspection showed that the first
+Turan extremal question is answered in the same paper, while the Section 6
+edge-count monotonicity question is posed as unclear.  Web searches on
+2026-07-03 for exact phrases from the title and question did not reveal a
+separate later answer.
+
+This counterexample refutes the proposed monotonicity as stated.  It does not
+rule out monotonicity under stronger hypotheses, for example when $G$ is a
+subgraph of $G'$, which is already observed in the source, or within a fixed
+part-size majorization class.
+
+\section{Human Review Recommendation}
+
+Review as a short counterexample.  The main point to check is that the
+normalization in Lemma \ref{lem:multipartite} matches the source definition of
+$T_G=(1/\sqrt L)\sum_i s_i$.
+
+\begin{thebibliography}{9}
+\bibitem{STY}
+Patrick Oliveira Santos, Raghavendra Tripathi, and Pierre Youssef.
+\newblock \emph{Khintchine inequalities, trace monoids and Turan-type problems}.
+\newblock arXiv:2506.02517, 2025.
+\end{thebibliography}
+
+\end{document}

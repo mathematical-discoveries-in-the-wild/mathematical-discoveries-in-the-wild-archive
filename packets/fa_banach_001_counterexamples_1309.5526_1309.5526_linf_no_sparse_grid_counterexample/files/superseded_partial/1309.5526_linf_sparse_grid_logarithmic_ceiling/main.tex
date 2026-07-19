@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem*{theorem}{Partial result}
+
+\title{A logarithmic ceiling for sparse Euclidean grids in the cube}
+\author{Run fa\_banach\_001, lane 1}
+\date{2026-06-14}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper is Daniel J. Fresen, \emph{Euclidean arrangements in Banach
+spaces}, arXiv:1309.5526.  Problem 4 appears across pages 3--4 of the source
+PDF.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Problem 4 asks whether there are a universal constant $C>0$ and a sequence
+$\omega_n\to\infty$ such that every real $n$-dimensional Banach space $X$
+admits a basis $(e_j)_{j=1}^n$ satisfying
+\[
+  \|a\|_2
+  \leq
+  \left\|\sum_{j=1}^n a_j e_j\right\|_X
+  \leq
+  C\|a\|_2
+\]
+whenever $a$ is $\omega_n$-sparse.  It then asks whether one can take
+$\omega_n=c\log n$.
+
+\section*{Proof Intuition}
+
+The cube gives an immediate ceiling on how large $\omega_n$ could ever be.
+Write a candidate basis of $\ell_\infty^n$ as the columns of a matrix $T$.
+The upper sparse estimate says that every row of $T$, restricted to any
+$k$ columns, has Euclidean norm at most $C$.  Now fix any $k$ columns and put
+random signs on them.  For each row, Hoeffding's inequality says the signed
+average is smaller than $1$ with probability at least
+$1-2\exp(-k/(2C^2))$.  If $k$ is much larger than $C^2\log n$, a union bound
+over the $n$ rows gives one sign choice whose image has $\ell_\infty$ norm
+less than $1$, contradicting the required lower estimate.
+
+\begin{theorem}
+Let $T:\mathbb R^n\to\ell_\infty^n$ be linear, let $C\geq 1$, and let
+$1\leq k\leq n$.  Suppose that for every $k$-sparse vector
+$a\in\mathbb R^n$,
+\[
+  \|a\|_2 \leq \|Ta\|_\infty \leq C\|a\|_2.
+\]
+Then
+\[
+  k \leq 2C^2\log(2n).
+\]
+Consequently, in Fresen's Problem 4 no affirmative answer can have
+$\omega_n/\log n\to\infty$; the logarithmic order asked about in the problem
+is the largest possible order, already because of the spaces $\ell_\infty^n$.
+\end{theorem}
+
+\begin{proof}
+Let $r_i=(T_{ij})_{j=1}^n$ be the $i$th row of the matrix of $T$.  The upper
+estimate implies that for every set $S\subset\{1,\ldots,n\}$ with
+$|S|\leq k$,
+\[
+  \|r_i|_S\|_2
+  =
+  \sup_{\operatorname{supp} a\subseteq S,\ \|a\|_2=1}
+  \left|\sum_{j\in S} T_{ij}a_j\right|
+  \leq C
+\]
+for every row $i$.
+
+Fix one set $S$ with $|S|=k$, and let $(\varepsilon_j)_{j\in S}$ be
+independent Rademacher signs.  For row $i$ set
+\[
+  Z_i=\frac{1}{\sqrt{k}}\sum_{j\in S}\varepsilon_j T_{ij}.
+\]
+By Hoeffding's inequality, using
+$\sum_{j\in S}(T_{ij}/\sqrt{k})^2\leq C^2/k$, we have
+\[
+  \mathbb P\{|Z_i|\geq 1\}
+  \leq
+  2\exp\left(-\frac{k}{2C^2}\right).
+\]
+Therefore
+\[
+  \mathbb P\left\{\max_{1\leq i\leq n}|Z_i|\geq 1\right\}
+  \leq
+  2n\exp\left(-\frac{k}{2C^2}\right).
+\]
+If $k>2C^2\log(2n)$, the right-hand side is strictly less than $1$.  Hence
+there is a choice of signs such that all $|Z_i|<1$.
+
+For that choice, define $a_j=\varepsilon_j/\sqrt{k}$ for $j\in S$ and
+$a_j=0$ otherwise.  Then $a$ is $k$-sparse and $\|a\|_2=1$, while
+\[
+  \|Ta\|_\infty=\max_i |Z_i|<1.
+\]
+This contradicts the assumed lower estimate.  Thus
+$k\leq 2C^2\log(2n)$.
+
+If Problem 4 had a positive answer with some sequence
+$\omega_n/\log n\to\infty$, applying it to $X=\ell_\infty^n$ and to
+$k=\lfloor \omega_n\rfloor$ for large $n$ would contradict the bound above.
+\end{proof}
+
+\section*{Verification notes}
+
+The proof uses only Hoeffding's inequality and the literal two-sided sparse
+estimate from Problem 4.  The basis assumption for $\ell_\infty^n$ is encoded
+by writing the basis vectors as columns of $T$; invertibility is not used in
+the obstruction, so the argument applies a fortiori to bases.
+
+A bounded novelty check was performed on 2026-06-14: the run indexes were
+searched for arXiv:1309.5526 and terms including ``Euclidean grid'',
+``ell\_infty'', ``sparse'', and ``logarithmic''; external exact-phrase web
+queries for the source problem did not reveal a duplicate packet.  Novelty
+confidence is low-to-moderate, because the result is close to standard
+entropy lower bounds for embedding Euclidean spaces into $\ell_\infty^n$.
+
+\section*{Limitations}
+
+This is only a ceiling result.  It does not construct bases with
+$k\simeq c\log n$, and it does not disprove the main existence question with
+some slower sequence $\omega_n\to\infty$.  It shows that the second question
+in Problem 4, asking whether $\omega_n=c\log n$ is possible, is sharp in
+order if the first question has any positive solution.
+
+\section*{Human-review recommendation}
+
+Check the constants in the Hoeffding step and decide whether to regard this
+as a new partial result or as a compact proof of standard folklore.  In
+either case, it is useful duplicate memory for the main sparse-basis problem:
+future attempts should not aim for superlogarithmic sparsity.
+
+\begin{thebibliography}{9}
+\bibitem{Fresen2013}
+Daniel J. Fresen,
+\emph{Euclidean arrangements in Banach spaces},
+arXiv:1309.5526, 2013.
+\end{thebibliography}
+
+\end{document}

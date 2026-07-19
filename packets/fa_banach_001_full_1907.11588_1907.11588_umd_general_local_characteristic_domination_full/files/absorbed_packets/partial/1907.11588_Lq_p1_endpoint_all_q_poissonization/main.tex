@@ -1,0 +1,527 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Lq}{L^q(S)}
+\newcommand{\PhiF}{\Phi}
+
+\title{The \(L^q\), \(p=1\) Endpoint via Poissonization}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial solution to Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of
+vector-valued martingales} \cite{Yaroslavtsev2019}.  It is partial relative
+to the source's broad UMD-space problem, but it closes the full \(p=1\)
+endpoint for the concrete class \(L^q(S)\), \(1<q<\infty\).
+
+Earlier packets in this run prove the \(L^q(S)\)-valued case for
+\(1<p,q<\infty\) and prove the \(p=1\) endpoint for \(1<q\le2\) by a
+Bernstein-function argument.  The new contribution here is the missing
+\(q>2\) square-function comparison, proved by a Poissonization equivalence for
+positive \(L^{q/2}\)-valued sums.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source states
+that the general local-martingale case is open and reduces the missing issue
+to an independent-increment comparison.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The continuation states the aggregate-domination formulation and notes that
+even the symmetric case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{Main Results}
+
+For a finite independent family \(x=(x_i)\) of \(L^q(S)\)-valued random
+variables, put
+\[
+  \mathsf{SF}_q(x)
+  =
+  \E\left\|
+      \left(\sum_i |x_i|^2\right)^{1/2}
+    \right\|_{L^q(S)}.
+\]
+Let
+\[
+   \mu_x=\sum_i \mathcal L(x_i)|_{\Lq\setminus\{0\}}
+\]
+be the aggregate occurrence measure.
+
+\begin{theorem}[Endpoint square-function comparison]
+\label{thm:square}
+Let \(1<q<\infty\).  There is a constant \(C_q\) such that for every measure
+space \(S\) and every two finite independent families \(x=(x_i)\),
+\(y=(y_j)\) of \(L^q(S)\)-valued random variables,
+\[
+  \mu_x\le \mu_y
+  \quad\Longrightarrow\quad
+  \mathsf{SF}_q(x)\le C_q\,\mathsf{SF}_q(y).
+\]
+\end{theorem}
+
+\begin{theorem}[General local \(L^q\), \(p=1\)]
+\label{thm:main}
+Let \(1<q<\infty\), let \(S\) be a measure space, and put \(X=L^q(S)\).  If
+\(N\) and \(M\) are \(X\)-valued local martingales and \(N\) is
+characteristically dominated by \(M\) in the sense of
+\cite[Definition 12.9]{Yaroslavtsev2019}, then
+\[
+  \E\sup_{t\ge0}\norm{N_t}_{L^q(S)}
+  \le
+  C_q
+  \E\sup_{t\ge0}\norm{M_t}_{L^q(S)}.
+\]
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+For \(1<q\le2\), the previous packet proves Theorem \ref{thm:square} by a
+positive multivariate Bernstein representation.  For \(q>2\), put
+\[
+  r=q/2>1,\qquad \alpha=1/2.
+\]
+The square-function comparison becomes a comparison for independent positive
+\(L^r(S)\)-valued variables:
+\[
+  \E\norm{\sum_i V_i}_{L^r}^{\alpha}
+  \lesssim_r
+  \E\norm{\sum_j W_j}_{L^r}^{\alpha}
+\]
+under aggregate occurrence-measure domination.
+
+The key new observation is that this expectation is equivalent to the same
+expectation for the compound-Poisson positive sum whose intensity is the
+aggregate occurrence measure.  The compound-Poisson sum depends only on that
+aggregate measure.  Therefore aggregate domination becomes immediate: if
+\(\nu\le\mu\), the Poisson sum with intensity \(\mu\) is the sum of the
+Poisson sum with intensity \(\nu\) and an independent positive remainder.
+
+\section*{Thinning Lemmas}
+
+Throughout this section \(r>1\), \(\alpha=1/2\), and
+\[
+  \PhiF(f)=\norm{f}_{L^r(S)}^\alpha,\qquad f\in L^r(S)_+.
+\]
+The functional \(\PhiF\) is monotone on the positive cone and subadditive.
+
+\begin{lemma}[Scalar positive Rosenthal]
+\label{lem:positive-rosenthal}
+For every \(r>1\) there is a constant \(C_r\) such that for all finite
+independent nonnegative scalar random variables \(Z_1,\ldots,Z_n\),
+\[
+  \E\left(\sum_i Z_i\right)^r
+  \le
+  C_r\left[
+      \left(\sum_i \E Z_i\right)^r
+      +
+      \sum_i \E Z_i^r
+    \right].
+\]
+\end{lemma}
+
+\begin{proof}
+For \(1<r\le2\) this follows from the von Bahr--Esseen inequality applied to
+\(Z_i-\E Z_i\), plus the triangle inequality in \(L^r\).  For \(r>2\), the
+usual scalar Rosenthal inequality gives
+\[
+  \E\left|\sum_i(Z_i-\E Z_i)\right|^r
+  \le
+  C_r\left[
+    \left(\sum_i \E Z_i^2\right)^{r/2}
+    +
+    \sum_i \E Z_i^r
+  \right].
+\]
+Let \(A=\sum_i\E Z_i\) and \(B=\sum_i\E Z_i^r\).  By interpolation,
+\[
+  \E Z_i^2
+  \le
+  (\E Z_i)^{(r-2)/(r-1)}(\E Z_i^r)^{1/(r-1)}.
+\]
+Hölder's inequality gives
+\[
+  \sum_i \E Z_i^2
+  \le
+  A^{(r-2)/(r-1)}B^{1/(r-1)}.
+\]
+Raising to \(r/2\) and using Young's inequality yields
+\[
+  \left(\sum_i \E Z_i^2\right)^{r/2}
+  \le
+  A^r+B.
+\]
+Combining this with
+\(\norm{\sum_i Z_i}_r\le A+\norm{\sum_i(Z_i-\E Z_i)}_r\) proves the lemma.
+\end{proof}
+
+\begin{lemma}[Upper thinning]
+\label{lem:upper-thin}
+Let \(0\le a\le1\).  Let \(f_1,\ldots,f_n\in L^r(S)_+\) be deterministic, and
+let \(R_1,\ldots,R_n\) be independent Bernoulli variables with
+\(\Pp(R_i=1)\le a\).  Then
+\[
+  \E_R\PhiF\left(\sum_i R_i f_i\right)
+  \le
+  K_r\, a^{1/(2r)}
+  \PhiF\left(\sum_i f_i\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(\rho_i=\Pp(R_i=1)\).  By Lemma \ref{lem:positive-rosenthal}, applied
+pointwise in \(s\in S\),
+\[
+  \E_R\left(\sum_i R_i f_i(s)\right)^r
+  \le
+  C_r\left[
+    \left(\sum_i \rho_i f_i(s)\right)^r
+    +
+    \sum_i \rho_i f_i(s)^r
+  \right].
+\]
+Since \(\rho_i\le a\) and \(f_i\ge0\),
+\[
+  \left(\sum_i \rho_i f_i\right)^r\le a^r\left(\sum_i f_i\right)^r,
+  \qquad
+  \sum_i \rho_i f_i^r\le a\sum_i f_i^r\le a\left(\sum_i f_i\right)^r.
+\]
+Integrating and using \(a^r\le a\) gives
+\[
+  \E_R\norm{\sum_i R_i f_i}_{L^r}^r
+  \le
+  C'_r a\norm{\sum_i f_i}_{L^r}^r.
+\]
+Jensen's inequality for the concave map \(t\mapsto t^{\alpha/r}\) yields the
+claim.
+\end{proof}
+
+\begin{lemma}[Lower thinning above one half]
+\label{lem:lower-thin}
+Let \(f_1,\ldots,f_n\in L^r(S)_+\) be deterministic.  Let
+\(R_1,\ldots,R_n\) be independent Bernoulli variables with
+\(\Pp(R_i=1)=c\), where \(1/2\le c\le1\).  Then
+\[
+  \PhiF\left(\sum_i f_i\right)
+  \le
+  2\,\E_R\PhiF\left(\sum_i R_i f_i\right).
+\]
+\end{lemma}
+
+\begin{proof}
+By subadditivity,
+\[
+  \PhiF\left(\sum_i f_i\right)
+  \le
+  \PhiF\left(\sum_i R_i f_i\right)
+  +
+  \PhiF\left(\sum_i (1-R_i)f_i\right).
+\]
+Taking expectations, the second term has the same law as a Bernoulli
+\((1-c)\) thinning.  Since \(1-c\le c\), this thinning can be coupled as a
+sub-thinning of a Bernoulli \(c\) thinning.  Monotonicity of \(\PhiF\) gives
+\[
+  \E\PhiF\left(\sum_i (1-R_i)f_i\right)
+  \le
+  \E\PhiF\left(\sum_i R_i f_i\right),
+\]
+and the result follows.
+\end{proof}
+
+\section*{Poissonization}
+
+Let \(V_1,\ldots,V_n\) be independent \(L^r(S)_+\)-valued variables.  Write
+\[
+  p_i=\Pp(V_i\ne0).
+\]
+When \(p_i>0\), write \(Z_i\) for a random variable with the conditional law
+of \(V_i\) given \(V_i\ne0\); when \(p_i=0\), omit that index.  Let
+\[
+  \Pi_V=\sum_i\sum_{k=1}^{N_i} Z_{i,k},
+\]
+where \(N_i\) are independent Poisson variables with means \(p_i\), and
+\((Z_{i,k})\) are independent copies of \(Z_i\).  Equivalently, \(\Pi_V\) is
+the compound-Poisson positive sum whose intensity measure is
+\[
+  \nu_V=\sum_i\mathcal L(V_i)|_{L^r_+\setminus\{0\}}.
+\]
+
+\begin{proposition}[Positive \(L^r\) Poissonization]
+\label{prop:poisson}
+For every \(r>1\), there is \(A_r<\infty\) such that
+\[
+  A_r^{-1}\,
+  \E\PhiF\left(\sum_i V_i\right)
+  \le
+  \E\PhiF(\Pi_V)
+  \le
+  A_r\,
+  \E\PhiF\left(\sum_i V_i\right).
+\]
+\end{proposition}
+
+\begin{proof}
+First prove the lower bound.  Let \(c=1-e^{-1}>1/2\).  Since
+\[
+  \Pp(N_i\ge1)=1-e^{-p_i}\ge c\,p_i
+  \qquad(0\le p_i\le1),
+\]
+the first nonzero Poisson layer stochastically dominates a \(c\)-thinning of
+the original family.  More explicitly, if \(V_i=B_iZ_i\) with
+\(B_i\) Bernoulli \(p_i\), and if \(R_i\) are independent Bernoulli \(c\)
+variables, then
+\[
+  \sum_i B_iR_iZ_i
+\]
+can be coupled below \(\sum_i \mathbf 1_{\{N_i\ge1\}}Z_{i,1}\), which is
+itself dominated by \(\Pi_V\) in the positive cone.  Conditional on
+\((B_i,Z_i)\), Lemma \ref{lem:lower-thin} gives
+\[
+  \PhiF\left(\sum_i B_iZ_i\right)
+  \le
+  2\,\E_R\PhiF\left(\sum_i B_iR_iZ_i\right).
+\]
+Taking expectations and using monotonicity gives
+\[
+  \E\PhiF\left(\sum_iV_i\right)
+  \le
+  2\,\E\PhiF(\Pi_V).
+\]
+
+For the upper bound, decompose the Poisson sum into layers:
+\[
+  \Pi_V
+  =
+  \sum_{k\ge1} L_k,
+  \qquad
+  L_k=\sum_i \mathbf 1_{\{N_i\ge k\}}Z_{i,k}.
+\]
+By subadditivity,
+\[
+  \E\PhiF(\Pi_V)\le \sum_{k\ge1}\E\PhiF(L_k).
+\]
+For \(0\le p\le1\),
+\[
+  \Pp(\operatorname{Pois}(p)\ge k)
+  \le \frac{p^k}{k!}\le \frac{p}{k!}.
+\]
+The first inequality follows from
+\(\mathbf 1_{\{N\ge k\}}\le \binom{N}{k}\) and
+\(\E\binom{N}{k}=p^k/k!\) for \(N\sim\operatorname{Pois}(p)\).
+Thus \(L_k\) has the law of a thinning of the original nonzero family with
+retention probabilities at most \(a_k=1/k!\).  Applying Lemma
+\ref{lem:upper-thin} conditionally to the original family gives
+\[
+  \E\PhiF(L_k)
+  \le
+  K_r\,(1/k!)^{1/(2r)}
+  \E\PhiF\left(\sum_iV_i\right).
+\]
+Since \(\sum_{k\ge1}(1/k!)^{1/(2r)}<\infty\), summing over \(k\) proves the
+upper bound.
+\end{proof}
+
+\begin{theorem}[Positive aggregate comparison for \(q>2\)]
+\label{thm:positive-qgt2}
+Let \(q>2\), \(r=q/2\).  Let \(V_i,W_j\) be finite independent families of
+positive \(L^r(S)\)-valued random variables.  If
+\[
+  \sum_i\mathcal L(V_i)|_{L^r_+\setminus\{0\}}
+  \le
+  \sum_j\mathcal L(W_j)|_{L^r_+\setminus\{0\}},
+\]
+then
+\[
+  \E\norm{\sum_iV_i}_{L^r}^{1/2}
+  \le
+  C_q
+  \E\norm{\sum_jW_j}_{L^r}^{1/2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(\nu_V\le\nu_W\) be the two aggregate occurrence measures.  Construct
+compound-Poisson sums \(\Pi_V,\Pi_W\).  Since \(\nu_W=\nu_V+(\nu_W-\nu_V)\),
+\(\Pi_W\) has the same law as \(\Pi_V+\Pi'\), where \(\Pi'\) is an independent
+positive compound-Poisson sum.  Monotonicity of \(\PhiF\) gives
+\[
+  \E\PhiF(\Pi_V)\le \E\PhiF(\Pi_W).
+\]
+Apply Proposition \ref{prop:poisson} to both families.
+\end{proof}
+
+\section*{Proof of the Square-Function Theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:square}]
+For \(1<q\le2\), this is exactly the theorem proved in the companion packet
+\[
+\texttt{1907.11588\_Lq\_p1\_endpoint\_qle2\_square\_function}.
+\]
+
+Let \(q>2\) and set \(r=q/2\).  Given \(L^q(S)\)-valued variables \(x_i,y_j\),
+put
+\[
+  V_i=|x_i|^2,\qquad W_j=|y_j|^2.
+\]
+The map \(x\mapsto |x|^2\) is continuous from \(L^q(S)\) to \(L^{q/2}(S)\),
+so aggregate domination \(\mu_x\le\mu_y\) pushes forward to aggregate
+domination of the positive \(L^r\)-valued square magnitudes.  Theorem
+\ref{thm:positive-qgt2} gives
+\[
+  \E\norm{\sum_i |x_i|^2}_{L^r}^{1/2}
+  \le
+  C_q
+  \E\norm{\sum_j |y_j|^2}_{L^r}^{1/2},
+\]
+which is precisely \(\mathsf{SF}_q(x)\le C_q\mathsf{SF}_q(y)\).
+\end{proof}
+
+\section*{Discrete and General-Local Consequences}
+
+\begin{proposition}[Discrete \(p=1\) comparison]
+\label{prop:discrete}
+Let \(1<q<\infty\).  Let \((\xi_i)_{i=1}^n\) and \((\eta_j)_{j=1}^m\) be
+independent mean-zero \(L^q(S)\)-valued random variables.  If
+\[
+   \sum_i \Pp(\xi_i\in B)
+   \le
+   \sum_j \Pp(\eta_j\in B)
+   \qquad(B\in\cB(\Lq),\;0\notin B),
+\]
+then
+\[
+   \E\max_{1\le k\le n}
+      \left\|\sum_{i=1}^k \xi_i\right\|_{L^q(S)}
+   \le
+   C_q
+   \E\max_{1\le k\le m}
+      \left\|\sum_{j=1}^k \eta_j\right\|_{L^q(S)}.
+\]
+\end{proposition}
+
+\begin{proof}
+The aggregate hypothesis is \(\mu_\xi\le\mu_\eta\), so Theorem
+\ref{thm:square} compares the two lattice square functions.  Yaroslavtsev's
+Banach-function-space BDG theorem
+\cite[Theorem 4.32 and Proposition 4.33]{Yaroslavtsev2018} says that for
+every \(L^q(S)\)-valued martingale difference sequence \(d=(d_i)\),
+\[
+  \E\sup_N\left\|\sum_{i=1}^N d_i\right\|_{L^q}
+  \simeq_q
+  \E\left\|
+      \left(\sum_i |d_i|^2\right)^{1/2}
+    \right\|_{L^q}.
+\]
+Both independent mean-zero families are martingale difference sequences in
+any fixed order.  Applying this equivalence to \((\xi_i)\) and \((\eta_j)\)
+proves the maximal comparison.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+The conditional endpoint packet in this run proves that Theorem
+\ref{thm:square}, for a fixed \(q\), implies the full \(L^q(S)\)-valued
+general-local characteristic-domination theorem at \(p=1\).  For completeness
+we recall the reduction.
+
+Yaroslavtsev's decoupled tangent construction and canonical decomposition
+reduce the comparison to continuous parts and purely discontinuous tangent
+jump martingales.  Continuous parts are controlled at \(p=1\) by the source's
+continuous characteristic-domination estimate \cite[Proposition 12.6]{Yaroslavtsev2019}.
+For the jump part, conditional on the local characteristics and after the
+usual truncation of time and jump size, the decoupled tangent jumps are finite
+independent mean-zero families.  Characteristic domination controls the total
+spatial jump compensator,
+\[
+  \nu^N(\R_+\times B)\le \nu^M(\R_+\times B),
+  \qquad B\in\cB(L^q(S)),\ 0\notin B,
+\]
+which is exactly the aggregate occurrence-measure domination in Proposition
+\ref{prop:discrete}.
+
+Apply Proposition \ref{prop:discrete} conditionally and pass through the
+truncation and localization limits.  Combining the discontinuous estimate
+with the continuous part and the \(p=1\) Banach-function-space
+BDG/canonical-decomposition equivalence \cite[Section 4.3]{Yaroslavtsev2018}
+gives the zero-initial-value case.  Nonzero initial values are handled by the
+initial-value domination in Definition 12.9 and the triangle inequality.
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+The new argument is self-contained apart from scalar Rosenthal's inequality
+and Yaroslavtsev's \(p=1\) Banach-function-space BDG theorem.  The
+Montgomery-Smith--Pruss comparison theorem \cite{MontgomerySmithPruss} was
+used as a guide for looking at iid and Poisson aggregate models, but the
+Poissonization proposition above is proved directly for the positive
+\(L^r\)-lattice functional needed here.
+
+Cheap run indexes contained prior packets for \(1<p\) in \(L^q\), Hilbert all
+\(p\), \(\ell_q\) at \(p=q\), the \(1<q\le2\) endpoint, a deterministic
+\(q>2\) subcase, the broad \(c_0\) counterexample, and the conditional
+endpoint reduction.  No packet proved the full \(L^q(S)\), \(p=1\),
+\(1<q<\infty\) endpoint.
+
+\section*{Human Review Recommendation}
+
+Review Proposition \ref{prop:poisson} first.  The lower bound uses only the
+fact that \(1-e^{-p}\ge(1-e^{-1})p\) and the lower thinning lemma.  The upper
+bound is the only delicate step: decompose Poisson counts into layers and use
+the upper thinning lemma with the summable factors \((1/k!)^{1/q}\).  Once
+that proposition is accepted, aggregate domination follows immediately by
+Poisson superposition.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev.
+\newblock Local characteristics and tangency of vector-valued martingales.
+\newblock arXiv:1907.11588, 2019.
+
+\bibitem{Yaroslavtsev2018}
+I. S. Yaroslavtsev.
+\newblock Burkholder--Davis--Gundy inequalities in UMD Banach spaces.
+\newblock arXiv:1807.05573, 2018.
+
+\bibitem{DirksenYaroslavtsev2017}
+S. Dirksen and I. S. Yaroslavtsev.
+\newblock \(L^q\)-valued Burkholder--Rosenthal inequalities.
+\newblock arXiv:1707.00109, 2017.
+
+\bibitem{Rosenthal1970}
+H. P. Rosenthal.
+\newblock On the subspaces of \(L_p\), \(p>2\), spanned by sequences of
+  independent random variables.
+\newblock Israel Journal of Mathematics 8 (1970), 273--303.
+
+\bibitem{MontgomerySmithPruss}
+S. J. Montgomery-Smith and A. R. Pruss.
+\newblock A comparison inequality for sums of independent random variables.
+\newblock arXiv:math/9811124, 1998.
+
+\end{thebibliography}
+
+\end{document}

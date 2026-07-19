@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Dens}{\mathcal D}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+\title{Explicit Gaussian constants for unconditional multiplier rescaling}
+\author{Codex agent lane 11}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Partial result likely valid: an explicit quantitative strengthening of a
+later literature answer.  The original qualitative conjecture is already
+resolved by Tselishchev \cite{Tselishchev}.}}
+\end{center}
+
+\section*{Source conjecture and literature boundary}
+
+Balazs, Freeman, Popescu, and Speckbacher formulate the following finite
+conjecture \cite[Conjecture 1.2, p.~3]{BFPS}.  If finite sequences
+$(x_j)_{j=1}^N,(f_j)_{j=1}^N$ in a finite-dimensional complex Hilbert space
+$H$, symbols $(m_j)_{j=1}^N$, and $C>0$ satisfy
+\begin{equation}\label{eq:unc}
+ \left\|\sum_{j=1}^N \varepsilon_jm_j
+        \langle u,f_j\rangle x_j\right\|
+ \leq C\|u\| \qquad
+ (u\in H,\ |\varepsilon_j|=1),
+\end{equation}
+does there exist a universal $\kappa$ and factorizations
+$c_j\overline{d_j}=m_j$ such that both $(c_jx_j)$ and $(d_jf_j)$ have
+Bessel bound $\kappa C$?
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Tselishchev subsequently proved this conjecture, in the equivalent
+nonzero-vector formulation, and thereby settled the corresponding
+infinite-dimensional rescaling problem \cite[Theorems 2.1--2.3]{Tselishchev}.
+His Rademacher proof gives $\kappa=2$.  Remark 2.6(1) says that replacing the
+Rademacher variables by Gaussian variables gives a better constant, but it
+does not state that constant and leaves evaluation of the best constant
+beyond the paper's scope.  The result below evaluates the Gaussian argument
+and combines it with a direct convex balancing step.
+
+We use the convention that a sequence $(z_j)$ is $B$-Bessel when
+\[
+  \sum_j |\langle u,z_j\rangle|^2\leq B\|u\|^2
+  \qquad(u\in H).
+\]
+
+\section*{Proof intuition}
+
+After absorbing the symbols $m_j$ into the two vector sequences, the phase
+estimate \eqref{eq:unc} says that every scalar matrix coefficient has an
+$\ell_1$ bound.  Test this bound on two independent Gaussian vectors with
+arbitrary covariance density matrices $\rho$ and $\sigma$.  The exact first
+absolute moment of a standard circular complex Gaussian is
+$\sqrt\pi/2$; hence the resulting Hellinger sum is bounded by
+$(4/\pi)C$.
+
+The remaining problem is to select one scalar weight per rank-one term so
+that two global operator norms are simultaneously small.  Write the weights
+as $e^{s_j/2}$ and minimize the sum of those two norms over $s\in\R^N$.
+At a minimizer, the subgradient equation supplies top-eigenspace density
+matrices $\rho,\sigma$ for which the two weighted contributions agree for
+every $j$.  Thus each of the two operator norms becomes exactly the
+Hellinger sum controlled by Gaussian averaging.
+
+\section*{The quantitative result}
+
+\begin{theorem}[Explicit complex Gaussian constant]\label{thm:main}
+Assume \eqref{eq:unc}.  If every term with $m_j\neq0$ has
+$x_j\neq0$ and $f_j\neq0$, then there are scalars $c_j,d_j$ satisfying
+$c_j\overline{d_j}=m_j$ such that both $(c_jx_j)_{j=1}^N$ and
+$(d_jf_j)_{j=1}^N$ are $(4C/\pi)$-Bessel.
+
+Without the nondegeneracy assumption, the same conclusion holds with
+$(4/\pi+\eta)C$ in place of $4C/\pi$ for every $\eta>0$.  In particular,
+Conjecture 1.2 holds for arbitrary finite data with the explicit universal
+constant $\kappa=3/2$.
+\end{theorem}
+
+The proof is split into the mixed Gaussian estimate and the balancing lemma.
+
+\begin{lemma}[Gaussian Hellinger estimate]\label{lem:gaussian}
+Let $(X_j),(Y_j)$ be nonzero vectors in a finite-dimensional complex Hilbert
+space such that
+\begin{equation}\label{eq:reduced}
+ \left\|\sum_{j=1}^N\varepsilon_j
+       \langle u,Y_j\rangle X_j\right\|
+ \leq C\|u\| \qquad(u\in H,\ |\varepsilon_j|=1).
+\end{equation}
+Put $P_j=X_j\otimes X_j$ and $Q_j=Y_j\otimes Y_j$.  For all density
+matrices $\rho,\sigma\in\Dens(H):=\{R\geq0:\Tr R=1\}$,
+\begin{equation}\label{eq:hellinger}
+ \sum_{j=1}^N
+ \sqrt{\Tr(\rho P_j)\Tr(\sigma Q_j)}
+ \leq \frac4\pi C.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Taking a scalar matrix coefficient in \eqref{eq:reduced} and choosing the
+phases to align its summands gives, for all $u,v\in H$,
+\begin{equation}\label{eq:l1}
+ \sum_{j=1}^N
+ |\langle u,Y_j\rangle|\,|\langle X_j,v\rangle|
+ \leq C\|u\|\|v\|.
+\end{equation}
+Let $G_\sigma,G_\rho$ be independent centered circular complex Gaussian
+vectors with covariance matrices $\sigma,\rho$, respectively.  If $\gamma$
+is a scalar circular complex Gaussian normalized by
+$\mathbb E|\gamma|^2=1$, then polar integration gives
+\begin{equation}\label{eq:gaussmoment}
+ \mathbb E|\gamma|=\frac{\sqrt\pi}{2}.
+\end{equation}
+Consequently,
+\[
+ \mathbb E|\langle G_\sigma,Y_j\rangle|
+   =\frac{\sqrt\pi}{2}\sqrt{\Tr(\sigma Q_j)},\qquad
+ \mathbb E|\langle X_j,G_\rho\rangle|
+   =\frac{\sqrt\pi}{2}\sqrt{\Tr(\rho P_j)}.
+\]
+Apply \eqref{eq:l1} to $(G_\sigma,G_\rho)$ and take expectations.
+Independence and the two identities above make the left side
+$\frac\pi4$ times the left side of \eqref{eq:hellinger}.  On the other hand,
+Cauchy--Schwarz gives
+\[
+ \mathbb E\|G_\sigma\|\leq
+ (\mathbb E\|G_\sigma\|^2)^{1/2}=(\Tr\sigma)^{1/2}=1,
+\]
+and likewise for $G_\rho$.  This proves \eqref{eq:hellinger}.
+\end{proof}
+
+\begin{lemma}[Convex balancing]\label{lem:balance}
+Suppose $P_j,Q_j$ are nonzero positive rank-one operators and, for some
+$L>0$,
+\begin{equation}\label{eq:abstracthell}
+ \sum_j\sqrt{\Tr(\rho P_j)\Tr(\sigma Q_j)}\leq L
+ \qquad(\rho,\sigma\in\Dens(H)).
+\end{equation}
+Then there are positive numbers $\alpha_j$ such that
+\begin{equation}\label{eq:balancedbounds}
+ \left\|\sum_j\alpha_j^2P_j\right\|\leq L,
+ \qquad
+ \left\|\sum_j\alpha_j^{-2}Q_j\right\|\leq L.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $s=(s_1,\ldots,s_N)\in\R^N$ define
+\[
+ A(s)=\lambda_{\max}\!\left(\sum_j e^{s_j}P_j\right),\qquad
+ B(s)=\lambda_{\max}\!\left(\sum_j e^{-s_j}Q_j\right).
+\]
+Both functions are convex.  Since every $P_j,Q_j$ is nonzero,
+$A(s)+B(s)$ is coercive: if some $s_j\to+\infty$, then
+$A(s)\geq e^{s_j}\|P_j\|\to\infty$, while if some
+$s_j\to-\infty$, then $B(s)\geq e^{-s_j}\|Q_j\|\to\infty$.
+Thus $A+B$ has a minimizer $s^*$.
+
+The variational formula for the top eigenvalue is
+\begin{equation}\label{eq:densitymax}
+ A(s)=\max_{\rho\in\Dens(H)}
+       \sum_j e^{s_j}\Tr(\rho P_j),
+\end{equation}
+and analogously for $B$.  The subdifferential of $A$ at $s$ consists of
+the convex hull of the vectors
+\[
+ \big(e^{s_j}\Tr(\rho P_j)\big)_{j=1}^N
+\]
+coming from maximizers $\rho$ in \eqref{eq:densitymax}.  A convex
+combination of maximizing density matrices is again a maximizing density
+matrix, so the convex hull is already represented by a single maximizing
+$\rho$.  The corresponding statement for $B$ gives subgradients
+\[
+ \big(-e^{-s_j}\Tr(\sigma Q_j)\big)_{j=1}^N
+\]
+with $\sigma$ maximizing the formula for $B$.
+
+The optimality condition $0\in\partial A(s^*)+\partial B(s^*)$ therefore
+provides maximizing density matrices $\rho,\sigma$ such that, for every $j$,
+\begin{equation}\label{eq:coordinatebalance}
+ e^{s_j^*}\Tr(\rho P_j)
+ =e^{-s_j^*}\Tr(\sigma Q_j).
+\end{equation}
+Put $a_j=\Tr(\rho P_j)$ and $b_j=\Tr(\sigma Q_j)$.  Since $\rho$ and
+$\sigma$ are maximizing, \eqref{eq:coordinatebalance} yields
+\[
+ A(s^*)=\sum_j e^{s_j^*}a_j
+       =\sum_j\sqrt{a_jb_j}\leq L,
+\]
+and identically $B(s^*)=\sum_j\sqrt{a_jb_j}\leq L$.
+Taking $\alpha_j=e^{s_j^*/2}$ proves \eqref{eq:balancedbounds}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+For $m_j\neq0$, write $m_j=|m_j|\omega_j$, $|\omega_j|=1$, and set
+\[
+ X_j=\omega_j\sqrt{|m_j|}\,x_j,\qquad
+ Y_j=\sqrt{|m_j|}\,f_j.
+\]
+Then $\langle u,Y_j\rangle X_j=m_j\langle u,f_j\rangle x_j$, so
+\eqref{eq:unc} becomes \eqref{eq:reduced}.  Terms with $m_j=0$ can be
+discarded temporarily and later assigned $c_j=d_j=0$.
+
+Under the nondegeneracy assumption, Lemma \ref{lem:gaussian} and Lemma
+\ref{lem:balance}, with $L=4C/\pi$, give positive $\alpha_j$ for which
+$(\alpha_jX_j)$ and $(\alpha_j^{-1}Y_j)$ are both $(4C/\pi)$-Bessel.
+Define
+\[
+ c_j=\omega_j\sqrt{|m_j|}\,\alpha_j,\qquad
+ d_j=\sqrt{|m_j|}\,\alpha_j^{-1}.
+\]
+Then $c_j\overline{d_j}=m_j$, and the two scaled sequences are exactly
+$(\alpha_jX_j)$ and $(\alpha_j^{-1}Y_j)$.
+
+For completeness, suppose now that $m_j\neq0$ but one of $x_j,f_j$ is
+zero.  Such an index contributes nothing to the multiplier.  If $x_j=0$
+and $f_j\neq0$, choose $d_j$ arbitrarily small and put
+$c_j=m_j/\overline{d_j}$; only the frame operator on the $f$ side receives
+a nonzero contribution.  If $f_j=0$ and $x_j\neq0$, do the symmetric
+construction.  If both vectors are zero, choose any finite factorization of
+$m_j$.  Since there are finitely many degenerate indices, their
+total positive contributions can be made to have norm at most $\eta C$ on
+each side.  Adding them to the nondegenerate part proves the
+$(4/\pi+\eta)C$ bound.  Since $4/\pi<3/2$, take
+$\eta=3/2-4/\pi$ to obtain the last assertion.
+\end{proof}
+
+\begin{corollary}[Explicit rank-one completely bounded constant]\label{cor:cb}
+Let $H$ be a finite-dimensional complex Hilbert space, and let
+$\Phi:\ell_\infty^N\to B(H)$ be linear with
+$\operatorname{rank}\Phi(e_j)\leq1$ for every coordinate vector $e_j$.
+Then
+\[
+  \|\Phi\|_{\mathrm{cb}}\leq\frac4\pi\|\Phi\|.
+\]
+\end{corollary}
+
+\begin{proof}
+Write
+\[
+  \Phi(a)u=\sum_{k=1}^N a(k)\langle u,Y_k\rangle X_k
+\]
+and put $C=\|\Phi\|$.  As in \eqref{eq:l1}, for all $u,v\in H$,
+\begin{equation}\label{eq:cbscalar}
+ \sum_k |\langle u,Y_k\rangle|\,|\langle X_k,v\rangle|
+ \leq C\|u\|\|v\|.
+\end{equation}
+Fix $m$ and vectors $u_1,\ldots,u_m,v_1,\ldots,v_m\in H$.  Substitute
+$u=\sum_j\gamma_ju_j$ and $v=\sum_i\delta_iv_i$ in
+\eqref{eq:cbscalar}, where the $\gamma_j$ and $\delta_i$ are two independent
+families of standard circular complex Gaussians.  Taking expectations and
+using \eqref{eq:gaussmoment} gives
+\begin{equation}\label{eq:cbtrace}
+ \sum_k
+ \left(\sum_j|\langle u_j,Y_k\rangle|^2\right)^{1/2}
+ \left(\sum_i|\langle X_k,v_i\rangle|^2\right)^{1/2}
+ \leq \frac4\pi C
+ \left(\sum_j\|u_j\|^2\right)^{1/2}
+ \left(\sum_i\|v_i\|^2\right)^{1/2}.
+\end{equation}
+
+An element of $M_m(\ell_\infty^N)$ is a tuple $(A_k)_{k=1}^N$ of
+$m\times m$ matrices, with norm $\max_k\|A_k\|$.  In a matrix coefficient
+of $\Phi_{(m)}((A_k))$, the contribution belonging to $k$ is the trace
+pairing of $A_k$ with the rank-one matrix
+\[
+ B_k=\big(\langle u_j,Y_k\rangle\langle X_k,v_i\rangle\big)_{i,j=1}^m.
+\]
+Its trace norm is
+\[
+ \|B_k\|_1=
+ \left(\sum_j|\langle u_j,Y_k\rangle|^2\right)^{1/2}
+ \left(\sum_i|\langle X_k,v_i\rangle|^2\right)^{1/2}.
+\]
+Therefore trace duality and \eqref{eq:cbtrace} show that
+\[
+ \|\Phi_{(m)}((A_k))\|
+ \leq\frac4\pi C\max_k\|A_k\|.
+\]
+The estimate is independent of $m$, proving the assertion.
+\end{proof}
+
+\begin{corollary}[Real variant]
+Over a real Hilbert space, the same proof gives the exact nondegenerate
+constant $\kappa=\pi/2$, and every $\kappa>\pi/2$ for arbitrary finite
+data.
+\end{corollary}
+
+\begin{proof}
+Use independent real standard Gaussians in Lemma \ref{lem:gaussian}.
+The identity $\mathbb E|g|=\sqrt{2/\pi}$ replaces
+\eqref{eq:gaussmoment}, so the product of the two first moments is
+$2/\pi$ and the Hellinger constant becomes $\pi/2$.  The balancing proof
+is unchanged.
+\end{proof}
+
+\section*{Verification notes and limitations}
+
+\begin{itemize}
+\item The factors $4/\pi$ and $\pi/2$ come from exact first absolute
+Gaussian moments; no numerical approximation is used.
+\item The coercivity assertion is why nonzero $X_j,Y_j$ are separated from
+irrelevant zero-vector terms.  The latter are restored with arbitrarily
+small positive frame-operator contributions, giving every constant strictly
+larger than the displayed infimum.
+\item The subgradient step permits multiple top eigenvalues: convex
+combinations of top-eigenspace vector states are density matrices supported
+on the same top eigenspace, so no differentiability assumption is hidden.
+\item This packet does not determine the optimal universal constant.  The
+one-term example only gives the elementary lower bound $\kappa\geq1$.
+\item The broad conjecture is not new: it was solved in
+arXiv:2508.02802.  The candidate new content is the evaluated constant and
+the direct convex-balancing proof.  Corollary \ref{cor:cb} evaluates the same
+Gaussian refinement for the later paper's equivalent completely bounded-map
+formulation.
+\end{itemize}
+
+\section*{Bounded novelty check}
+
+The run's registry, solution, attempt, and proof-gap indexes were searched
+for arXiv:2212.00947 and the core terms ``unconditional pairs'', ``frame
+multiplier'', ``rescaling'', and ``Bessel''.  The local 2000--present arXiv
+source corpus and forward-title searches identified arXiv:2508.02802 as the
+later solution.  Its Theorem 2.2, proof, and Remark 2.6(1) were checked
+directly.  Exact web searches on July 19, 2026 used combinations of
+``$4/\pi$'', ``$\pi/2$'', ``Gaussian'', ``unconditional Schauder frame'',
+``rank-one completely bounded map'', and both arXiv ids.  No source stating
+either explicit constant for this rescaling problem was found; the decisive
+later paper only says that the Gaussian constant is better than $2$.
+
+Novelty confidence is therefore \emph{moderate}: the explicit computation
+was not found in the checked literature, but it is a natural completion of a
+Gaussian refinement already signposted by Tselishchev.  The recommended
+human review should focus on the convex subdifferential balancing lemma and
+on whether the constants have appeared elsewhere under the equivalent
+completely bounded-map formulation.
+
+\begin{thebibliography}{9}
+\bibitem{BFPS}
+P. Balazs, D. Freeman, R. Popescu, and M. Speckbacher,
+\emph{Quantitative bounds for unconditional pairs of frames},
+arXiv:2212.00947 (2022).
+
+\bibitem{Tselishchev}
+A. Tselishchev,
+\emph{Rescaling of unconditional Schauder frames in Hilbert spaces and
+completely bounded maps}, arXiv:2508.02802 (2025).
+\end{thebibliography}
+
+\end{document}

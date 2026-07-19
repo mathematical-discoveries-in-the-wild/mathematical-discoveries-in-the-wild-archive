@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{verbatim}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\title{A Finite-Coherence Counterexample to a Global Pressure Claim}
+\author{Automatic Math Discovery Smoke Test}
+\date{June 9, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source statement}
+
+This packet concerns arXiv:2509.13121, \emph{On the Fixed Point Property in Reflexive Banach Spaces}, by Faruk Alpay and Hamdi Alakkad.  In Section 4.4, item 2, the paper discusses finite-dimensional certificates for the diametral pressure functional.  The statement spans a page break in the PDF; the stitched screenshot below shows the relevant passage at full page width.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The specific sentence tested here is the assertion that a finite family of unit vectors in a Hilbert space with sufficiently small mutual coherence gives finite-level certificates which force
+\[
+  \mathbf P(C_1,x_\infty)>0.
+\]
+This packet does not address the main reflexive fixed point property conjecture in the paper.  It only refutes this finite-certificate-to-global-pressure implication.
+
+\section*{Definitions}
+
+Following Definition 4.1 of the source paper, for a bounded set \(C_1\), a point \(x_\infty\), and \(\Delta=\operatorname{diam}(C_1)\), set
+\[
+  \Phi_k(C_1,x_\infty)
+  =
+  \sup_{y_1,\ldots,y_k\in C_1}
+  \inf_{\|a\|_1=1}
+  \left\|
+  \sum_{i=1}^k a_i\,\frac{y_i-x_\infty}{\Delta}
+  \right\|.
+\]
+The global pressure is
+\[
+  \mathbf P(C_1,x_\infty)=\inf_{k\ge 1}\Phi_k(C_1,x_\infty).
+\]
+
+\section*{Counterexample}
+
+\begin{theorem}
+Finite low-coherence Hilbert certificates through \(k\le m\) do not force positive global pressure.
+\end{theorem}
+
+\begin{proof}
+Let \(H=\mathbb R^2\) with its Euclidean norm, let \(x_\infty=0\), and let
+\[
+  C_1=\{e_1,e_2\}.
+\]
+The vectors \(e_1,e_2\) are unit vectors and their mutual coherence is
+\[
+  \mu=|\langle e_1,e_2\rangle|=0<1=\frac{1}{2-1}.
+\]
+Also \(\Delta=\operatorname{diam}(C_1)=\|e_1-e_2\|=\sqrt 2\).
+
+For \(k=2\), choosing the tuple \((e_1,e_2)\) gives
+\[
+  \inf_{|a_1|+|a_2|=1}
+  \left\|
+    \frac{a_1e_1+a_2e_2}{\sqrt2}
+  \right\|
+  =
+  \frac{1}{\sqrt2}
+  \inf_{|a_1|+|a_2|=1}(a_1^2+a_2^2)^{1/2}
+  =
+  \frac{1}{2}.
+\]
+Thus the advertised finite-level phenomenon is present: \(\Phi_2(C_1,0)\ge 1/2\), and of course \(\Phi_1(C_1,0)=1/\sqrt2\).
+
+However, for \(k=3\), every 3-tuple chosen from the two-point set \(C_1\) repeats a point.  If \(y_p=y_q\), choose coefficients
+\[
+  a_p=\frac{1}{2},\qquad a_q=-\frac{1}{2},\qquad a_i=0\quad (i\ne p,q).
+\]
+Then \(\|a\|_1=1\) and
+\[
+  \sum_{i=1}^3 a_i\,\frac{y_i-x_\infty}{\Delta}=0.
+\]
+Hence the inner infimum is zero for every 3-tuple, so \(\Phi_3(C_1,0)=0\).  Consequently
+\[
+  \mathbf P(C_1,0)=\inf_{k\ge1}\Phi_k(C_1,0)=0.
+\]
+Therefore the finite low-coherence lower bound for \(k\le m\) does not force positive global pressure.
+\end{proof}
+
+\begin{remark}
+The obstruction is not special to two points.  If \(C_1\) is finite with \(|C_1|=m\), then every \(k\)-tuple with \(k>m\) repeats a point, and the same cancellation gives \(\Phi_k(C_1,x_\infty)=0\).  This is also consistent with Lemma 2.5 of the source paper.  The error is the passage from finite-level certificates to a uniform lower bound over all \(k\).
+\end{remark}
+
+\section*{Verification code}
+
+The packet includes a small exact verifier:
+\[
+\texttt{code/verify\_pressure.py}.
+\]
+It enumerates tuples from \(C_1=\{e_1,e_2\}\) and computes the exact values
+\[
+  \Phi_1=\frac{1}{\sqrt2},\qquad \Phi_2=\frac{1}{2},\qquad \Phi_k=0\quad(k\ge3).
+\]
+Run it with:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_pressure.py
+\end{verbatim}
+
+\section*{Novelty and limitation}
+
+This is a counterexample to a stated implication in the paper's programmatic discussion.  It should not be counted as a solution to the author-labeled open problems in Section 4.6, and it does not disprove the main reflexive fixed point property conjecture.
+
+\end{document}

@@ -1,0 +1,836 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\setlist{nosep,leftmargin=*}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Lp}{L_p[0,1]}
+\newcommand{\Lone}{L_1[0,1]}
+\newcommand{\cph}{C_{\mathrm{ph}}^b}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calR}{\mathcal R}
+\newcommand{\calV}{\mathcal V}
+\newcommand{\calU}{\mathcal U}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\id}{\operatorname{Id}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\dd}{\,\mathrm d}
+
+\title{Countable chain conditions for free quasi-Banach lattices:\\
+verification, a complete endpoint theorem, and further positive cases}
+\author{Research note prepared from the supplied partial solution}
+\date{22 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\small
+\textbf{Status.} This is a mathematical audit and research note, not a peer-reviewed
+paper.  The general case for $0<p<1$ is not settled here.  All claims labelled as
+new below should be independently checked before citation or submission.}}
+\end{center}
+
+\begin{abstract}
+Let $0<p\leq 1$, let $E$ be a $p$-natural quasi-Banach space, put
+$E^\triangle=\calL(E,\Lp)$, and endow $B_{E^\triangle}$ with pointwise
+$\Lp$-norm convergence.  Salguero-Alarc\'on, Tradacete, and Trejo-Arroyo
+asked whether the lattice $\cph(B_{E^\triangle},\Lp)$ always has the
+countable chain condition (CCC).
+
+The supplied solution packet is substantially correct.  Its product theorem for
+$\ell_p$-sums of separable blocks is correct.  Its theorem for bounded separable
+Boolean coordinate decompositions is also correct after one quantitative repair:
+the last error estimate must be made in the metric
+$d_p(u,v)=\norm{u-v}_p^p$, rather than by adding ordinary $\Lp$-norm errors.
+This note gives a corrected proof.
+
+A search completed on 22 June 2026 found no later proof or counterexample to the
+full conjecture.  We then prove an abstract factorization--approximation criterion
+for the relevant ``conic CCC.''  It yields a complete affirmative answer at the
+endpoint $p=1$ (in fact for every quasi-Banach domain $E$), and, for $0<p<1$,
+an affirmative answer whenever $E$ is a Banach space of nontrivial Rademacher
+type.  The remaining nonlocally convex case is isolated, together with precise
+obstructions to the most direct extensions of the argument.
+\end{abstract}
+
+\tableofcontents
+
+\section{The problem and the outcome}
+
+Fix $0<p\leq 1$ and write $Y=\Lp$.  For a quasi-Banach space $E$ let
+\[
+ E^\triangle=\calL(E,Y),\qquad
+ B_{E^\triangle}=\{T\in\calL(E,Y):\norm{T}\leq 1\}.
+\]
+The weak-$\triangle$ topology $\sigma(E^\triangle,E)$ on this ball is the
+initial topology for the evaluation maps
+\[
+ \operatorname{ev}_x:T\longmapsto Tx\in Y\qquad(x\in E),
+\]
+where $Y$ carries its quasi-norm topology.  The source question is:
+
+\begin{question}[Salguero-Alarc\'on--Tradacete--Trejo-Arroyo]
+\label{q:source}
+For every $p$-natural quasi-Banach space $E$, does
+\[
+ \cph(B_{E^\triangle},Y)
+\]
+have lattice CCC?
+\end{question}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Here lattice CCC means that every pairwise disjoint family of nonzero positive
+elements is countable.  The source proves the assertion for $E=\ell_p(\Gamma)$
+and observes that separable $E$ are also covered.
+
+The conclusions of this note are as follows.
+
+\begin{enumerate}[label=\textup{(\Roman*)}]
+\item The supplied $p$-sum theorem is correct.
+\item The supplied Boolean-coordinate theorem is correct after a repair of its
+final $p$-metric estimate.
+\item No full answer or counterexample was located in the literature search
+completed on 22 June 2026.
+\item Question~\ref{q:source} has an affirmative answer for $p=1$, for every
+Banach space $E$; the proof actually works for every quasi-Banach domain.
+\item For $0<p<1$, Question~\ref{q:source} has an affirmative answer whenever
+$E$ is a Banach space with nontrivial Rademacher type.
+\item The general case $0<p<1$ remains open in this note.
+\end{enumerate}
+
+\subsection*{Proof intuition}
+
+The common mechanism is to convert lattice disjointness into topology.  Positive
+homogeneous functions pull a fixed countable directional cone in $L_p^+$ back
+to relatively open cones in the weak-$\triangle$ operator ball.  Thus it is
+enough to rule out uncountably many disjoint open cones.  For coordinate
+decompositions, a $\Delta$-system/root-gluing argument produces one small
+operator lying in two cones once the final estimates are made in the
+$d_p(u,v)=\norm{u-v}_p^p$ metric.  For the endpoint and type results,
+finite-rank approximation through an intermediate space makes cross-evaluations
+fall into finitely many colors, and a finite directed Ramsey pattern again
+forces one operator into two cones.
+
+The endpoint and nontrivial-type results come from Theorem~\ref{thm:factor},
+which may be useful beyond the present problem.
+
+\section{Cones, a countable directional cover, and Ramsey's lemma}
+
+It is helpful to separate the topological property actually used by homogeneous
+functions from ordinary topological CCC.
+
+\begin{definition}
+A subset $U\subseteq B_{E^\triangle}$ is a \emph{relatively open cone} if it is
+relatively open and
+\[
+ T\in U,\quad \lambda>0,\quad \lambda T\in B_{E^\triangle}
+ \quad\Longrightarrow\quad \lambda T\in U.
+\]
+We say that $B_{E^\triangle}$ has \emph{conic CCC} if every pairwise disjoint
+family of nonempty relatively open cones is countable.
+\end{definition}
+
+The following elementary cover replaces the ball construction in the source
+paper and is valid uniformly for all $0<p\leq1$.
+
+\begin{lemma}[Countable directional cone cover]
+\label{lem:cone-cover}
+There is a countable family $\calV=(V_n)_{n\in\N}$ of relatively open cones in
+$Y_+\setminus\{0\}$ such that
+\[
+ Y_+\setminus\{0\}=\bigcup_{n=1}^\infty V_n,
+\]
+and whenever $u,v\in V_n$, one has $u\wedge v\neq0$.
+\end{lemma}
+
+\begin{proof}
+Let $S_+=\{u\in Y_+:\norm{u}_p=1\}$.  It is separable, so choose a countable
+$1/3$-net $(b_n)$ in $S_+$.  Put
+\[
+ V_n=\left\{u\in Y_+\setminus\{0\}:
+ \norm{\frac{u}{\norm{u}_p}-b_n}_p<\frac13\right\}.
+\]
+These sets are open cones and cover $Y_+\setminus\{0\}$.  If $u,v\in V_n$ and
+$u\wedge v=0$, their normalizations $u_0,v_0$ are disjoint positive unit
+vectors, hence
+\[
+ \norm{u_0-v_0}_p^p=\norm{u_0}_p^p+\norm{v_0}_p^p=2.
+\]
+On the other hand,
+\[
+ \norm{u_0-v_0}_p^p
+ \leq \norm{u_0-b_n}_p^p+\norm{b_n-v_0}_p^p
+ <2(1/3)^p<2,
+\]
+a contradiction.
+\end{proof}
+
+\begin{lemma}[Conic CCC lifts to the function lattice]
+\label{lem:conic-lift}
+If $B_{E^\triangle}$ has conic CCC, then
+$\cph(B_{E^\triangle},Y)$ has lattice CCC.
+\end{lemma}
+
+\begin{proof}
+Suppose that $(f_i)_{i\in I}$ is an uncountable family of nonzero positive,
+pairwise disjoint functions.  For each $i$ choose $T_i$ with $f_i(T_i)\neq0$.
+By Lemma~\ref{lem:cone-cover}, after passing to an uncountable subfamily there
+is a fixed $V_n$ such that $f_i(T_i)\in V_n$ for all $i$.  Then
+\[
+ U_i=f_i^{-1}(V_n)
+\]
+is a nonempty relatively open cone.  The $U_i$ are pairwise disjoint: a point
+in $U_i\cap U_j$ would give two values in the same $V_n$, hence with nonzero
+lattice infimum, contrary to $f_i\wedge f_j=0$.  This contradicts conic CCC.
+\end{proof}
+
+For later use we record the finite combinatorial lemma used in the scalar-valued
+free Banach lattice argument of Avil\'es, Plebanek, and Rodr\'iguez Abell\'an.
+
+\begin{lemma}[Finite directed Ramsey pattern]
+\label{lem:ramsey}
+For every positive integer $a$ there is $N=N(a)$ such that every map
+\[
+ c:(N\times N)\setminus\Delta_N\longrightarrow\{1,\ldots,a\}
+\]
+admits $i<j<k$ with
+\[
+ c(i,j)=c(i,k),\qquad c(k,i)=c(k,j).
+\]
+\end{lemma}
+
+\begin{proof}
+Apply the finite Ramsey theorem to triples, with $a^2$ colors, and obtain a
+five-element set on which
+\[
+ \{i<j<k\}\longmapsto(c(i,j),c(k,j))
+\]
+is constant.  If its elements are $b_1<\cdots<b_5$, then
+$(i,j,k)=(b_2,b_3,b_4)$ has the required property: compare the triples
+$\{b_2,b_3,b_4\}$ and $\{b_2,b_4,b_5\}$ for the first equality, and
+$\{b_1,b_3,b_4\}$ and $\{b_1,b_2,b_4\}$ for the second.
+\end{proof}
+
+\section{Audit of the source proof and of the supplied packet}
+
+\subsection{Two repairable gaps in the printed source proof}
+
+The statement proved in the source paper for $E=\ell_p(\Gamma)$ is correct,
+but the printed proof contains two points that should not be reused verbatim
+when $p<1$.
+
+First, the proof of its Lemma~6.9 invokes the ordinary triangle inequality in
+$L_p$; for $p<1$ only the $p$-triangle inequality is available.  This is fixed by
+Lemma~\ref{lem:cone-cover} (or by choosing radii depending on $p$ and working
+with $p$-th powers).
+
+Second, the proof of its Theorem~6.10 colors each pair of indices by one ball
+from a countable family and then extracts an uncountable subfamily with a common
+color.  Such an extraction is not valid for arbitrary countable colorings of
+pairs.  No pair-coloring is needed: for each nonzero function choose one nonzero
+value, use the countable cover to obtain a common cone on an uncountable
+subfamily, and then use the pairwise disjoint preimages exactly as in
+Lemma~\ref{lem:conic-lift}.
+
+The source theorem therefore follows cleanly from its product identification
+\[
+ B_{\ell_p(\Gamma)^\triangle}\cong (B_{\Lp})^\Gamma,
+\]
+the fact that an arbitrary product of separable metrizable spaces has
+(topological) CCC, and the preceding lifting argument.
+
+\subsection{The $p$-sum theorem in the packet}
+
+We now verify the first main mechanism in the supplied packet.
+
+\begin{lemma}[Operator ball of a $p$-sum]
+\label{lem:psum-product}
+Let $(E_\gamma)_{\gamma\in\Gamma}$ be $p$-Banach spaces and
+\[
+ E=\left(\bigoplus_{\gamma\in\Gamma}E_\gamma\right)_p.
+\]
+Then restriction to the summands gives a homeomorphism
+\[
+ \Phi:B_{E^\triangle}\longrightarrow
+ \prod_{\gamma\in\Gamma}B_{E_\gamma^\triangle},
+ \qquad
+ \Phi(T)=(T\circ j_\gamma)_\gamma,
+\]
+where all balls carry their pointwise topologies.
+\end{lemma}
+
+\begin{proof}
+If $(T_\gamma)_\gamma$ belongs to the product and $x=(x_\gamma)\in E$, define
+\[
+ Tx=\sum_{\gamma\in\Gamma}T_\gamma x_\gamma.
+\]
+The support of $x$ is countable and finite partial sums are Cauchy because
+\[
+ \norm{\sum_{\gamma\in F}T_\gamma x_\gamma}_p^p
+ \leq\sum_{\gamma\in F}\norm{x_\gamma}^p.
+\]
+Thus $T$ is a contraction and is the unique operator with the stated
+restrictions.  This proves bijectivity.
+
+Continuity of $\Phi$ is immediate.  For continuity of the inverse, fix
+$x=(x_\gamma)$.  Given $\varepsilon>0$, choose finite $F\subseteq\Gamma$ with
+\[
+ 2\sum_{\gamma\notin F}\norm{x_\gamma}^p<\varepsilon/2.
+\]
+The finite-coordinate sum is continuous.  If it changes by less than
+$\varepsilon/2$ in the metric $d_p(u,v)=\norm{u-v}_p^p$, then the full sum changes
+by less than $\varepsilon$, using the $p$-triangle inequality and the two tail
+estimates.  Hence every evaluation of the inverse is continuous.
+\end{proof}
+
+\begin{lemma}[Separable blocks]
+\label{lem:sep-ball}
+If $E$ is separable, then $B_{E^\triangle}$ is separable and metrizable in the
+pointwise topology.
+\end{lemma}
+
+\begin{proof}
+Let $(x_n)$ be dense in $E$.  On the operator unit ball, convergence at every
+$x_n$ implies convergence at every $x\in E$, uniformly through
+\[
+ \norm{T(x-x_n)}_p\leq\norm{x-x_n}.
+\]
+Thus the ball embeds topologically in the countable product $Y^\N$.  The latter
+is separable metrizable and second countable; every subspace is therefore
+separable metrizable.
+\end{proof}
+
+\begin{theorem}[Verified $p$-sum case]
+\label{thm:psum}
+Let $(E_\gamma)_{\gamma\in\Gamma}$ be separable $p$-natural quasi-Banach spaces
+and put
+\[
+ E=\left(\bigoplus_{\gamma\in\Gamma}E_\gamma\right)_p.
+\]
+Then $E$ is $p$-natural and $\cph(B_{E^\triangle},\Lp)$ has CCC.
+\end{theorem}
+
+\begin{proof}
+The coordinatewise sum of witnessing $p$-convex $p$-Banach lattices witnesses
+that $E$ is $p$-natural.  By Lemmas~\ref{lem:psum-product} and
+\ref{lem:sep-ball}, $B_{E^\triangle}$ is homeomorphic to a product of separable
+metrizable spaces.  Such a product has topological CCC (use the
+$\Delta$-system lemma on the finite supports of basic open sets and countability
+of the bases on the root).  Topological CCC implies conic CCC, and
+Lemma~\ref{lem:conic-lift} finishes the proof.
+\end{proof}
+
+This simultaneously recovers the source case $E=\ell_p(\Gamma)$ and the
+separable case.
+
+\subsection{Corrected Boolean-coordinate theorem}
+
+We use the packet's terminology.  A $p$-Banach space $E$ has a
+\emph{bounded separable Boolean coordinate decomposition} over $\Gamma$ if
+there are projections $(P_A)_{A\subseteq\Gamma}$ with
+\[
+ P_\varnothing=0,\quad P_\Gamma=I,\quad P_AP_B=P_{A\cap B},
+\]
+\[
+ P_{A\cup B}=P_A+P_B\quad(A\cap B=\varnothing),
+\]
+finite-coordinate convergence $P_Fx\to x$, separable one-coordinate ranges,
+and
+\[
+ K=\sup_{A\subseteq\Gamma}\norm{P_A}<\infty.
+\]
+
+\begin{theorem}[Corrected coordinate-decomposition case]
+\label{thm:boolean}
+Let $0<p\leq1$.  If a $p$-natural quasi-Banach space $E$ has a bounded
+separable Boolean coordinate decomposition, then
+$\cph(B_{E^\triangle},\Lp)$ has CCC.
+\end{theorem}
+
+\begin{proof}
+It suffices, by Lemma~\ref{lem:conic-lift}, to prove conic CCC.  Suppose that
+$(U_i)_{i\in I}$ is an uncountable pairwise disjoint family of nonempty relatively
+open cones in $B_{E^\triangle}$.  Choose $\eta>0$ so small that
+\[
+ (2^p+2)(K\eta)^p<1.                                    \tag{3.1}
+\]
+
+\emph{Finite-block centers.}
+For $T\in B_{E^\triangle}$, the operators $K^{-1}TP_F$ belong to the unit ball
+and converge pointwise to $K^{-1}T$.  Since each $U_i$ is an open cone, we can
+therefore choose
+\[
+ S_i\in U_i,\qquad \norm{S_i}<\eta,\qquad S_i=S_iP_{A_i}
+\]
+for some finite $A_i\subseteq\Gamma$.
+Choose a basic neighborhood
+\[
+ N_i=\left\{T\in B_{E^\triangle}:
+ d_p(Tx_{i,k},S_ix_{i,k})<\varepsilon_i,
+ \ 1\leq k\leq m_i\right\}\subseteq U_i,               \tag{3.2}
+\]
+where $d_p(u,v)=\norm{u-v}_p^p$.
+Enlarge $A_i$, without changing $S_i=S_iP_{A_i}$, so that
+\[
+ \norm{P_{\Gamma\setminus A_i}x_{i,k}}^p
+ <\frac{\varepsilon_i}{4(\eta K)^p}
+ \quad(1\leq k\leq m_i).                                \tag{3.3}
+\]
+
+\emph{$\Delta$-system and root operators.}
+After passing to an uncountable subfamily, the finite sets $A_i$ form a
+$\Delta$-system with root $R$: the tails $A_i\setminus R$ are pairwise disjoint.
+The range $E_R=P_RE$ is separable, being a finite sum of separable coordinate
+ranges.  The set
+\[
+ \calR=\{R_0\in\calL(E_R,\Lp):\norm{R_0}<2\eta\},
+\]
+with pointwise convergence on $E_R$, is separable metrizable.
+For each $i$ let $O_i\subseteq\calR$ consist of those $R_0$ satisfying
+\[
+ d_p\bigl((R_0P_R+S_iP_{A_i\setminus R})x_{i,k},
+          S_ix_{i,k}\bigr)<\varepsilon_i/4
+ \quad(1\leq k\leq m_i).                                \tag{3.4}
+\]
+Each $O_i$ is nonempty and relatively open: it contains the restriction of
+$S_i$ to $E_R$.  Hence two of them, say $O_i$ and $O_j$, intersect.  Fix
+$R_0\in O_i\cap O_j$.
+
+\emph{Gluing.}
+Define
+\[
+ S=R_0P_R+S_iP_{A_i\setminus R}+S_jP_{A_j\setminus R}.
+\]
+The three coordinate pieces are disjoint, so for $\norm{x}\leq1$,
+\[
+ \norm{Sx}_p^p
+ \leq (2\eta K)^p+2(\eta K)^p
+ =(2^p+2)(K\eta)^p<1
+\]
+by (3.1).  Thus $S\in B_{E^\triangle}$.
+
+For the $i$-th neighborhood, the root and $i$-tail part has $d_p$-error less
+than $\varepsilon_i/4$ by (3.4).  The only additional term is the $j$-tail.
+Since $A_j\setminus R\subseteq\Gamma\setminus A_i$,
+\[
+ \norm{S_jP_{A_j\setminus R}x_{i,k}}_p
+ \leq \eta K\norm{P_{\Gamma\setminus A_i}x_{i,k}},
+\]
+so its $d_p$-error is less than $\varepsilon_i/4$ by (3.3).  The
+$p$-triangle inequality therefore gives total $d_p$-error less than
+$\varepsilon_i/2<\varepsilon_i$.  Thus $S\in N_i$.  The same argument gives
+$S\in N_j$, contradicting disjointness of $U_i$ and $U_j$.
+\end{proof}
+
+The quantitative issue in the supplied proof occurs precisely in its last line:
+errors bounded by $\varepsilon_i/2$ and $\varepsilon_i/8$ cannot be added as
+ordinary norms when $p<1$.  Equations (3.3)--(3.4) repair this by reserving
+$p$-metric error $\varepsilon_i/4$ for each contribution.
+
+\begin{corollary}
+\label{cor:sums}
+Let $(E_\gamma)_{\gamma\in\Gamma}$ be separable $p$-natural spaces.  If
+$p\leq r<\infty$, then Question~\ref{q:source} has an affirmative answer for
+\[
+ \left(\bigoplus_{\gamma\in\Gamma}E_\gamma\right)_r
+ \quad\text{and}\quad
+ \left(\bigoplus_{\gamma\in\Gamma}E_\gamma\right)_{c_0}.
+\]
+In particular it holds for $\ell_r(\Gamma)$, $p\leq r<\infty$, and for
+$c_0(\Gamma)$.
+\end{corollary}
+
+\begin{proof}
+The usual coordinate projections are contractive and have the required finite
+convergence.  The sums are $p$-natural.  For the finite $r$-sum this follows from
+Minkowski's inequality in $\ell_{r/p}$; for the $c_0$-sum it follows by taking
+coordinatewise suprema.  Apply Theorem~\ref{thm:boolean}.
+\end{proof}
+
+\section{A factorization--approximation criterion}
+
+The next result is the main new mechanism in this note.  It turns a uniform
+factorization through a space with finite-rank approximations into conic CCC.
+The proof combines strong approximation, norm separability of the left factors,
+and Lemma~\ref{lem:ramsey}.
+
+\begin{theorem}[Factorization--approximation criterion]
+\label{thm:factor}
+Let $0<p\leq1$, $Y=\Lp$, and let $E$ be a quasi-Banach space.  Suppose there
+exist a quasi-Banach space $Z$, finite-rank operators $Q_n:Z\to Z$, a set
+$\calA\subseteq\calL(Z,Y)$, and constants $\Lambda,M,C<\infty$ such that:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\sup_n\norm{Q_n}\leq\Lambda$ and $Q_nz\to z$ for every $z\in Z$;
+\item $\calA$ is separable in operator norm and
+      $\sup_{A\in\calA}\norm{A}\leq M$;
+\item every $T\in\calL(E,Y)$ factors as $T=AS$, where
+      $A\in\calA$, $S\in\calL(E,Z)$, and
+      $\norm{S}\leq C\norm{T}$.
+\end{enumerate}
+Then $B_{E^\triangle}$ has conic CCC.  Consequently,
+$\cph(B_{E^\triangle},Y)$ has lattice CCC.
+\end{theorem}
+
+\begin{proof}
+Assume that $(U_i)_{i\in I}$ is an uncountable pairwise disjoint family of
+nonempty relatively open cones.  Discarding at most one member, none contains
+zero.  Choose $\rho>0$ with
+\[
+ 3(M\Lambda C\rho)^p<1.                                  \tag{4.1}
+\]
+By radial invariance, choose $T_i\in U_i$ with
+$0<\norm{T_i}<\rho$.  There is a basic neighborhood
+\[
+ N_i=\{T\in B_{E^\triangle}:
+ d_p(Tx_{i,k},T_ix_{i,k})<\varepsilon_i,
+ \ 1\leq k\leq m_i\}\subseteq U_i.                     \tag{4.2}
+\]
+After normalizing the test vectors, thinning the family, and decreasing the
+radii if necessary, we may suppose
+\[
+ m_i=m,\\ \norm{x_{i,k}}\leq1,
+ \quad\text{and}\quad \varepsilon_i>\varepsilon>0       \tag{4.3}
+\]
+for all $i,k$.
+
+Factor $T_i=A_iS_i$ as in (c).  Hence
+\[
+ \norm{S_i}\leq C\rho.                                   \tag{4.4}
+\]
+Set $\delta=\varepsilon/4$.  By (a), for each $i$ there is $n_i$ such that
+\[
+ d_p(A_iQ_{n_i}S_ix_{i,k},T_ix_{i,k})<\delta
+ \quad(1\leq k\leq m).
+\]
+Passing to an uncountable subfamily, take a common $n$ and put
+\[
+ \widetilde T_i=A_iQ_nS_i.
+\]
+Then
+\[
+ \norm{\widetilde T_i}\leq M\Lambda C\rho.             \tag{4.5}
+\]
+
+We next obtain a finite partition for all cross-evaluations.  Put
+$F=Q_nZ$ and $R=\Lambda C\rho$.  Since $\calA$ is norm separable, choose
+$\theta>0$ and pass to an uncountable subfamily on which
+\[
+ \norm{A_i-A_0}<\theta                                   \tag{4.6}
+\]
+for a fixed $A_0\in\calA$.  Choose $\theta$ so small that
+$\theta^pR^p<\delta/4$.  The set
+\[
+ K_0=A_0\{z\in F:\norm{z}\leq R\}
+\]
+is compact.  Choose a finite $d_p$-net in $K_0$ of radius $\delta/4$.
+For $a\neq b$ and $1\leq k\leq m$, write
+\[
+ y_{a,b,k}=\widetilde T_bx_{a,k}=A_bQ_nS_bx_{a,k}.
+\]
+The vector $z=Q_nS_bx_{a,k}$ lies in $F$ and has norm at most $R$.  By
+(4.6), $d_p(y_{a,b,k},A_0z)<\delta/4$.  Assign $y_{a,b,k}$ to one of the
+finitely many net points within $d_p$-distance $<\delta/2$.  Two values assigned
+to the same point have mutual $d_p$-distance $<\delta$.
+
+Thus every ordered pair $(a,b)$ receives a color $c(a,b)$, namely the
+$m$-tuple of cells containing $(y_{a,b,k})_{k=1}^m$, from a fixed finite set.
+Choose finitely many indices of cardinality $N$ from Lemma~\ref{lem:ramsey}.
+That lemma gives $i<j<k$ with
+\[
+ c(i,j)=c(i,k),\qquad c(k,i)=c(k,j).                      \tag{4.7}
+\]
+Define
+\[
+ R_{ijk}=\widetilde T_i-\widetilde T_j+\widetilde T_k.
+\]
+By (4.1) and (4.5),
+\[
+ \norm{R_{ijk}}^p
+ \leq\sum_{\ell\in\{i,j,k\}}\norm{\widetilde T_\ell}^p
+ <1,
+\]
+so $R_{ijk}\in B_{E^\triangle}$.
+
+For an $i$-test vector, (4.7) and the construction of the cells give
+\[
+ d_p(\widetilde T_kx_{i,r},\widetilde T_jx_{i,r})<\delta.
+\]
+Together with the own-center approximation, this yields
+\[
+ \begin{aligned}
+ d_p(R_{ijk}x_{i,r},T_ix_{i,r})
+ &\leq d_p(\widetilde T_ix_{i,r},T_ix_{i,r})
+     +d_p(\widetilde T_kx_{i,r},\widetilde T_jx_{i,r})\\
+ &<2\delta=\varepsilon/2<\varepsilon_i.
+ \end{aligned}
+\]
+Hence $R_{ijk}\in N_i$.  The second equality in (4.7) gives, identically,
+$R_{ijk}\in N_k$.  This contradicts $N_i\subseteq U_i$, $N_k\subseteq U_k$,
+and disjointness.  Conic CCC follows, and Lemma~\ref{lem:conic-lift} gives
+lattice CCC.
+\end{proof}
+
+\section{Consequences: the endpoint and nontrivial type}
+
+\subsection{A complete affirmative answer for $p=1$}
+
+\begin{theorem}[Complete endpoint theorem]
+\label{thm:p1}
+For every quasi-Banach space $E$,
+\[
+ \cph\bigl(B_{\calL(E,\Lone)},\Lone\bigr)
+\]
+has lattice CCC.  In particular, Question~\ref{q:source} has an affirmative
+answer for $p=1$ and every Banach space $E$.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:factor} with
+\[
+ Z=\Lone,\qquad \calA=\{\id_{\Lone}\},\qquad A=\id,
+ \qquad S=T.
+\]
+Let $Q_n$ be conditional expectation onto the dyadic partition of level $n$.
+Then $Q_n$ has finite-dimensional range, $\norm{Q_n}=1$, and $Q_nf\to f$ in
+$L_1$ for every $f\in L_1$.  Thus all hypotheses hold with
+$\Lambda=M=C=1$.
+\end{proof}
+
+The proof uses no local convexity of the domain.  The endpoint is special because
+$L_1$ has contractive finite-rank approximations.  This feature disappears for
+the atomless $L_p[0,1]$ when $0<p<1$; see Section~\ref{sec:obstructions}.
+
+\subsection{Banach spaces of nontrivial type}
+
+We use Maurey's factorization theorem in the following standard form.  If a
+Banach space $E$ has Rademacher type $q>r$, and $0<p<r$, then every
+$T:E\to L_p(\mu)$ factors
+\[
+ T=M_gS,
+\]
+where $S:E\to L_r(\mu)$ is bounded, $g\geq0$ belongs to $L_s(\mu)$,
+$1/p=1/r+1/s$, $\norm{g}_s=1$, and
+$\norm{S}\leq C\norm{T}$ with $C$ depending only on the parameters and $E$.
+This is the form of Maurey's theorem used in Section~5 of the source paper.
+
+\begin{theorem}[Nontrivial-type Banach domains]
+\label{thm:type}
+Let $0<p<1$.  If $E$ is a Banach space with Rademacher type $q>1$, then
+\[
+ \cph\bigl(B_{\calL(E,\Lp)},\Lp\bigr)
+\]
+has lattice CCC.
+\end{theorem}
+
+\begin{proof}
+Apply Maurey's theorem with $r=1$.  Put $s=p/(1-p)$, so
+$1/p=1+1/s$.  Every $T:E\to\Lp$ factors as
+\[
+ T=M_gS,
+ \qquad S:E\to\Lone,
+ \qquad \norm{S}\leq C\norm{T},
+\]
+where $g\geq0$ and $\norm{g}_s=1$.  Let
+\[
+ \calA=\{M_g:\Lone\to\Lp: g\in L_s,\ g\geq0,\ \norm{g}_s=1\}.
+\]
+Generalized H\"older gives
+\[
+ \norm{M_gf}_p\leq\norm{g}_s\norm{f}_1,
+ \qquad
+ \norm{M_g-M_h}_{\calL(L_1,L_p)}\leq\norm{g-h}_s.
+\]
+Since $L_s[0,1]$ is separable for every finite $s>0$, $\calA$ is bounded and
+operator-norm separable.  Take $Z=L_1$ and the dyadic conditional expectations
+as in Theorem~\ref{thm:p1}.  Theorem~\ref{thm:factor} applies.
+\end{proof}
+
+Every Banach space is $p$-natural for $0<p\leq1$ (embed it isometrically in a
+$C(K)$-space), so Theorem~\ref{thm:type} gives genuine cases of the source
+conjecture.  It includes, for example, Hilbert spaces and $L_r$-spaces for
+$1<r<\infty$, without separability assumptions.
+
+\section{Further reductions and genuine obstructions}
+\label{sec:obstructions}
+
+\subsection{The algebraic operator space is dense and harmless}
+
+Fix a Hamel basis $H$ of a $p$-natural space $E$.  Algebraic linear maps
+$E\to\Lp$ identify with the product $(\Lp)^H$.  The source paper's finite
+interpolation theorem (its Theorem~4.6) says that, for every finite linearly
+independent set in $E$, arbitrary $\Lp$-values are realized by a bounded
+operator.  Hence
+\[
+ E^\triangle=\calL(E,\Lp)
+\]
+is dense, for pointwise convergence, in the full algebraic operator space.
+The product $(\Lp)^H$ has topological CCC.  This does not settle the problem:
+the unit ball is a subspace cut out by a global norm constraint, and topological
+CCC is not hereditary.  The unresolved difficulty is therefore quantitative,
+not finite-algebraic.
+
+\subsection{Why separability of $L_p$ alone is insufficient}
+
+The finite-color hypothesis in Lemma~\ref{lem:ramsey} cannot be replaced by
+``countably many colors.''  Indeed, for each countable ordinal $\beta<\omega_1$
+choose an injection $e_\beta:\beta\to\N$ and define, for $\alpha<\beta$,
+\[
+ c(\beta,\alpha)=e_\beta(\alpha).
+\]
+Define the remaining directed colors arbitrarily.  Then for every
+$i<j<k$,
+\[
+ c(k,i)\neq c(k,j),
+\]
+so the Ramsey pattern fails.
+
+This obstruction can be encoded by actual operators.  Choose a separated
+sequence $(y_n)$ in $B_{\Lp}$ and, on $E=\ell_p(\omega_1)$, prescribe
+\[
+ T_\beta e_\alpha=y_{c(\alpha,\beta)}.
+\]
+The $p$-sum estimate makes each $T_\beta$ a contraction.  Thus an argument that
+only replaces the bounded $L_p$-ball by a countable metric coloring cannot prove
+the conjecture, even in a case where the conjecture is known to hold.  The
+finite-rank step in Theorem~\ref{thm:factor} is exactly what turns the relevant
+cross-values into finitely many small-diameter cells.
+
+\subsection{Why the $p=1$ proof does not directly extend}
+
+For atomless $L_p[0,1]$ with $0<p<1$, the continuous dual is trivial.  Therefore
+every finite-rank continuous endomorphism of $L_p[0,1]$ is zero: the coordinate
+functionals of a finite-rank map would be continuous linear functionals on
+$L_p$.  In particular, there cannot be a nontrivial finite-rank approximation
+of the identity analogous to the dyadic conditional expectations on $L_1$.
+This is the structural reason Theorem~\ref{thm:p1} stops at the endpoint.
+
+Theorem~\ref{thm:factor} bypasses this only when operators factor through a
+different space, such as $L_1$, that does have finite-rank approximations.  For
+general $p$-natural quasi-Banach domains no such uniform factorization is known.
+
+\subsection{What a remaining counterexample would have to avoid}
+
+Combining the source paper, the verified packet, and the new results above, any
+counterexample known to this note must satisfy all of the following:
+\begin{itemize}
+\item $0<p<1$;
+\item $E$ is nonseparable;
+\item $E$ is not covered by a bounded separable Boolean coordinate decomposition;
+\item the relevant operators do not admit the uniform factorization scheme of
+Theorem~\ref{thm:factor}; in particular, in the Banach case the space cannot be
+handled by the nontrivial-type factorization used in Theorem~\ref{thm:type}.
+\end{itemize}
+No construction meeting these requirements and producing uncountably many
+disjoint open cones was found.
+
+\section{Literature status as of 22 June 2026}
+
+The exact-title, arXiv-identifier, author-page, citation, and phrase searches
+performed for this audit found the following.
+
+\begin{itemize}
+\item The source remains arXiv:2512.05273v1, posted 4 December 2025.
+\item Current author publication pages still list it as a preprint.
+\item A February 2026 workshop on free Banach lattices included talks on free
+quasi-Banach lattices and open-problem sessions, but no posted solution to
+Question~\ref{q:source} was located.
+\item A 2026 paper located by citation search merely cites the preprint and does
+not address this question.
+\item The closest earlier result is the scalar-valued theorem of Avil\'es,
+Plebanek, and Rodr\'iguez Abell\'an: $C_{\mathrm{ph}}(B_{E^*})$ satisfies the
+stronger $\sigma$-bounded chain condition for every Banach space $E$.  Its
+finite directed Ramsey lemma is the combinatorial input in
+Theorem~\ref{thm:factor}.
+\end{itemize}
+
+Accordingly, no full published or posted proof or counterexample was found.
+This is a report of the search, not a claim about unpublished work or material
+outside the searched sources.
+
+\section{Final verdict}
+
+\begin{center}
+\begin{tabular}{p{0.35\textwidth}p{0.18\textwidth}p{0.37\textwidth}}
+\toprule
+Claim or argument & Verdict & Required action / comment\\
+\midrule
+Countable cone cover and lifting & Correct & Use $p$-th powers; avoids the source ball-radius issue.\\
+$p$-sum/product homeomorphism & Correct & Infinite-support continuity estimate is valid.\\
+Separable block ball is separable metrizable & Correct & It is a subspace of a countable product of separable metric spaces.\\
+$p$-sums of separable blocks & Correct & Gives topological CCC and hence lattice CCC.\\
+Boolean-coordinate theorem & Correct after repair & Replace the final ordinary-norm error addition by the $d_p$ estimates in (3.3)--(3.4).\\
+$\ell_r$- and $c_0$-sum corollaries & Correct & Coordinate projections are contractive; $p$-naturality is preserved.\\
+General conjecture for $p=1$ & Affirmative here & Theorem~\ref{thm:p1}.\\
+General conjecture for $0<p<1$ & Not settled & No counterexample found; Theorems~\ref{thm:boolean} and \ref{thm:type} give substantial positive classes.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The supplied partial result is therefore worth retaining, but its coordinate
+proof should be replaced by the corrected version above.  The most substantial
+additional conclusion is the complete endpoint theorem $p=1$.  For $0<p<1$,
+the factorization criterion isolates a concrete route to further progress:
+find a uniform factorization of $\calL(E,L_p)$ through a space with finite-rank
+approximations and with an operator-norm separable family of left factors.
+
+\begin{thebibliography}{9}
+
+\bibitem{AvilesPlebanekRodriguez}
+A.~Avil\'es, G.~Plebanek, and J.~D.~Rodr\'iguez Abell\'an,
+\emph{Chain conditions in free Banach lattices},
+J. Math. Anal. Appl. \textbf{465} (2018), no.~2, 1223--1229;
+arXiv:1801.07027.
+
+\bibitem{Engelking}
+R.~Engelking,
+\emph{General Topology},
+Heldermann Verlag, Berlin, 1989.
+
+\bibitem{KPR}
+N.~J.~Kalton, N.~T.~Peck, and J.~W.~Roberts,
+\emph{An F-Space Sampler},
+London Mathematical Society Lecture Note Series 89,
+Cambridge University Press, 1984.
+
+\bibitem{Maurey}
+B.~Maurey,
+\emph{Th\'eor\`emes de factorisation pour les op\'erateurs lin\'eaires \`a valeurs
+dans les espaces $L_p$},
+Ast\'erisque \textbf{11}, Soci\'et\'e Math\'ematique de France, 1974.
+
+\bibitem{Source}
+A.~Salguero-Alarc\'on, P.~Tradacete, and N.~Trejo-Arroyo,
+\emph{Free quasi-Banach lattices},
+arXiv:2512.05273v1, 4 December 2025.
+
+\end{thebibliography}
+
+\end{document}

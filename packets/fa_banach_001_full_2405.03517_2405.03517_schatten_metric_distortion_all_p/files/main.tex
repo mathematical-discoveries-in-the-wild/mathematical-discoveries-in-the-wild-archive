@@ -1,0 +1,467 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black}
+\setlist{nosep,leftmargin=*}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Sp}{S_p}
+\newcommand{\hp}{\widetilde h_{S_p}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Mmap}{\mathcal M}
+
+\title{Sharp Universal Metric Distortion into Every Schatten Class}
+\author{Candidate full solution for arXiv:2405.03517, Question 2}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!55!black}{blue!4}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The argument answers the source question for every $1\le p<\infty$,
+including the trace-class endpoint $p=1$.}}
+\end{center}
+
+\begin{abstract}
+Escudero Gutierrez and Muguruza ask for the worst-case distortion
+$D_{n,S_p}$ of an $n$-point metric space into the Schatten class $S_p$.
+We prove, with universal implicit constants,
+\[
+ D_{n,S_p}\asymp \max\left\{1,\frac{\log n}{p}\right\}
+ \qquad(1\le p<\infty).
+\]
+For $p\ge2$, a lazy-walk interpolation argument gives
+$\widetilde h_{S_p}(G)\ge\delta/(14p)$ for every regular graph with
+normalized adjacency gap $\delta$.  The missing range $1\le p\le2$
+requires a different mechanism.  Translate a Schatten-valued map at a
+well-chosen vertex and apply the noncommutative Mazur map
+$M_{p,2}(x)=u|x|^{p/2}$ into $S_2$.  Ricard's uniform Holder and inverse
+Lipschitz estimates, a weighted averaging lemma, and the Hilbert Poincare
+inequality yield
+\[
+ \widetilde h_{S_p}(G)\ge (\delta/K)^{1/p}\qquad(1\le p\le2)
+\]
+for a universal $K$.  Fixed-gap expanders then give the required lower
+bounds, while the known $\ell_p$ upper bound transfers through the
+diagonal isometry $\ell_p\hookrightarrow S_p$.
+\end{abstract}
+
+\section{Source question}
+
+The source is Francisco Escudero Gutierrez and Garazi Muguruza,
+\emph{All $S_p$ notions of quantum expansion are equivalent},
+arXiv:2405.03517v1 (2024), Question 2 in Section 3.2, PDF pages 4--5
+\cite{source}.  It asks:
+
+\begin{quote}
+Let $p\in[1,\infty)$. What is the minimum distortion $D_{n,S_p}$
+needed, as a function of $n$ and $p$, to embed any $n$-point metric
+space into $S_p$?
+\end{quote}
+
+The following are direct crops from the source PDF.  They include the
+question, the definition of $\widetilde h_{S_p}$, and the proposed
+expander route to a lower bound.
+
+\clearpage
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page4.png}
+
+\vspace{0.5em}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page5.png}
+\end{center}
+
+\section{Proof intuition}
+
+There are two complementary regimes.  For $p\ge2$, the mixed function
+space $L_p(V;S_p)$ is itself a noncommutative $L_p$ space.  Interpolating a
+centered lazy random walk between its Hilbert spectral gap and its
+$L_\infty$ bound makes a $k$-step walk contractive once
+$k=O(p/\delta)$.  Jensen's inequality and a path decomposition then turn
+this into the desired one-step Poincare inequality.
+
+That interpolation necessarily degenerates at $p=1$.  For
+$1\le p\le2$, translate the map at a vertex chosen by averaging and apply
+the noncommutative Mazur map into the Hilbert space $S_2$.  Its inverse
+estimate contains a radial weight $r^{2-p}$.  The chosen origin bounds the
+total radial moment, and a weighted Holder inequality shows that at least
+half of the original pairwise $p$-energy survives after the transformation.
+The ordinary Hilbert Poincare inequality then gives a bound uniform all the
+way to the trace-class endpoint.
+
+\section{Definitions and results}
+
+Let $G=(V,E)$ be a finite undirected $d$-regular graph, $n=|V|$,
+and let $P$ be its normalized adjacency matrix.  Write
+\[
+ \delta=1-\lambda_2(P),
+\]
+where $\lambda_2(P)$ is the largest eigenvalue on the orthogonal
+complement of the constants.  For $1\le p<\infty$, set
+\[
+ \widetilde h_{S_p}(G)=
+ \inf_{f:V\to S_p}
+ \frac{\left(\frac1{|E|}\sum_{\{i,j\}\in E}
+       \|f(i)-f(j)\|_{p}^{p}\right)^{1/p}}
+      {\left(\frac1{n^2}\sum_{i,j\in V}
+       \|f(i)-f(j)\|_{p}^{p}\right)^{1/p}},
+\]
+where constant maps are omitted.
+
+\begin{theorem}[Schatten-valued graph Poincare inequalities]\label{thm:graph}
+There is a universal constant $K\ge1$ such that every finite regular
+graph with $\delta>0$ satisfies
+\[
+ \widetilde h_{S_p}(G)\ge
+ \begin{cases}
+ (\delta/K)^{1/p},&1\le p\le2,\\[4pt]
+ \delta/(14p),&2\le p<\infty.
+ \end{cases}
+\]
+In particular, on any fixed-gap expander family the first bound is uniform
+for $1\le p\le2$, and the second is $\Omega(1/p)$ for $p\ge2$.
+\end{theorem}
+
+The source proposes the stronger graph-by-graph comparison
+$\widetilde h_{S_p}(G)\gtrsim_d\widetilde h_{S_2}(G)/p$.  Since
+$\widetilde h_{S_2}(G)=\sqrt\delta$, our bounds have weaker dependence on
+a gap tending to zero.  They have the precise uniformity needed on
+fixed-gap expanders and hence suffice to answer the metric question.
+
+\begin{corollary}[Full answer to Question 2]\label{cor:distortion}
+There are universal constants $c,C>0$ such that for every $n\ge2$ and
+every $1\le p<\infty$,
+\[
+ c\max\left\{1,\frac{\log n}{p}\right\}
+ \le D_{n,S_p}\le
+ C\max\left\{1,\frac{\log n}{p}\right\}.
+\]
+\end{corollary}
+
+\section{Mazur-map lemmas for the endpoint range}
+
+The lazy-walk interpolation proof for $p>1$ degenerates as $p\downarrow1$.
+The replacement is nonlinear.  The Mazur map sends $S_p$ to the Hilbert
+space $S_2$, but for $p<2$ its inverse Lipschitz estimate carries a
+radial weight.  Choosing the translation point by averaging makes the
+total radial moment no larger than the pairwise energy.  A second Holder
+inequality then absorbs the weight without any loss depending on $p$.
+
+For the polar decomposition $x=u|x|$, define
+\[
+ M_{p,2}(x)=u|x|^{p/2}.
+\]
+The identity $M_{2,p}(M_{p,2}(x))=x$ will transfer quantitative control
+back from $S_2$ to $S_p$.
+
+\begin{lemma}[Uniform Mazur estimates]\label{lem:mazur}
+There is a universal constant $A\ge1$ such that, for every
+$1\le p\le2$ and every $x,y\in S_p$,
+\begin{align}
+ \|M_{p,2}(x)-M_{p,2}(y)\|_2
+ &\le A\|x-y\|_p^{p/2},\label{eq:mazur-forward}\\
+ \|x-y\|_p
+ &\le A\max\{\|x\|_p,\|y\|_p\}^{1-p/2}
+       \|M_{p,2}(x)-M_{p,2}(y)\|_2.\label{eq:mazur-inverse}
+\end{align}
+The usual value $0^0=1$ may be used at $p=2$.
+\end{lemma}
+
+\begin{proof}
+Ricard proved that the noncommutative Mazur map $M_{r,s}$ is
+$\min\{r/s,1\}$-Holder on the unit ball of every noncommutative
+$L_r$-space \cite{ricard}.  The quantitative proof gives a constant
+depending only on the target exponent $s$ when $r<s$, and an absolute
+constant times $r/s$ when $r>s$; see in particular the commutator
+estimate in Lemma 2.6 of \cite{ricard}.  Thus the constants for
+$M_{p,2}$, $1\le p\le2$, and for $M_{2,p}$, $1\le p\le2$, are
+bounded by one universal constant.
+
+The unit-ball estimate for $M_{p,2}$, together with its homogeneity of
+degree $p/2$, gives \eqref{eq:mazur-forward} for arbitrary $x,y$.
+For the inverse estimate, put $a=M_{p,2}(x)$, $b=M_{p,2}(y)$, and
+$R=\max\{\|a\|_2,\|b\|_2\}$.  Homogeneity of $M_{2,p}$ and its
+unit-ball Lipschitz bound give
+\[
+ \|M_{2,p}(a)-M_{2,p}(b)\|_p
+ \le A R^{2/p-1}\|a-b\|_2.
+\]
+Since $\|a\|_2=\|x\|_p^{p/2}$ and $M_{2,p}(a)=x$, this is precisely
+\eqref{eq:mazur-inverse}.  The zero case follows by continuity.  At
+$p=2$, both maps are the identity.
+\end{proof}
+
+The next elementary estimate is the step that removes the radial weight.
+
+\begin{lemma}[Weighted pair averaging]\label{lem:weighted}
+Let $1\le p<2$, $q=2-p$, and let $x_i\in S_p$ for $i\in V$.
+Write
+\[
+ d_{ij}=\|x_i-x_j\|_p,\qquad r_i=\|x_i\|_p,
+ \qquad B=\E_{i,j}d_{ij}^p.
+\]
+If $\E_i r_i^p\le B$, then, with a zero summand when its denominator
+vanishes,
+\[
+ \E_{i,j}\frac{d_{ij}^2}{r_i^q+r_j^q}\ge\frac B2.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $s_{ij}=r_i^q+r_j^q$ and
+$C=\E_{i,j}d_{ij}^2/s_{ij}$.  Holder's inequality with conjugate
+exponents $2/p$ and $2/q$ gives
+\begin{align*}
+ B
+ &=\E_{i,j}
+   \left(\frac{d_{ij}^2}{s_{ij}}\right)^{p/2}s_{ij}^{p/2}\\
+ &\le C^{p/2}\left(\E_{i,j}s_{ij}^{p/q}\right)^{q/2}.
+\end{align*}
+Because $p/q\ge1$,
+\[
+ (r_i^q+r_j^q)^{p/q}
+ \le2^{p/q-1}(r_i^p+r_j^p).
+\]
+Consequently
+\[
+ \E_{i,j}s_{ij}^{p/q}
+ \le2^{p/q}\E_i r_i^p\le2^{p/q}B.
+\]
+It follows that
+\[
+ B\le2^{p/2}C^{p/2}B^{q/2}.
+\]
+If $B>0$, division and raising to the power $2/p$ give $B\le2C$.
+The case $B=0$ is immediate.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:graph} for
+\texorpdfstring{$1\le p\le2$}{1 <= p <= 2}}
+
+Fix $f:V\to S_p$, and abbreviate
+\[
+ d_{ij}=\|f(i)-f(j)\|_p,
+ \qquad B=\E_{i,j}d_{ij}^p.
+\]
+There is a vertex $o\in V$ such that
+\[
+ \E_i d_{io}^p\le B,
+\]
+because the average of the left side over $o$ equals $B$.  Translate
+at this vertex: $x_i=f(i)-f(o)$, $r_i=\|x_i\|_p=d_{io}$, and set
+\[
+ a_i=M_{p,2}(x_i),\qquad h_{ij}=\|a_i-a_j\|_2.
+\]
+
+Suppose first that $p<2$, and put $q=2-p$.  Squaring
+\eqref{eq:mazur-inverse} gives
+\[
+ h_{ij}^2
+ \ge A^{-2}\frac{d_{ij}^2}{\max\{r_i,r_j\}^{q}}
+ \ge A^{-2}\frac{d_{ij}^2}{r_i^q+r_j^q}.
+\]
+Lemma~\ref{lem:weighted} therefore implies
+\begin{equation}\label{eq:pair-lower}
+ \E_{i,j}h_{ij}^2\ge\frac{B}{2A^2}.
+\end{equation}
+On the other hand, \eqref{eq:mazur-forward} gives on every edge
+\begin{equation}\label{eq:edge-upper}
+ h_{ij}^2\le A^2d_{ij}^p.
+\end{equation}
+
+The Hilbert-space Poincare inequality for the normalized adjacency matrix
+is
+\begin{equation}\label{eq:hilbert-poincare}
+ \E_{i,j}\|a_i-a_j\|_2^2
+ \le\frac1\delta\frac1{|E|}
+       \sum_{\{i,j\}\in E}\|a_i-a_j\|_2^2.
+\end{equation}
+Indeed, both sides equal twice the corresponding variance and Dirichlet
+form normalization.  Combining \eqref{eq:pair-lower},
+\eqref{eq:edge-upper}, and \eqref{eq:hilbert-poincare} yields
+\[
+ B\le\frac{2A^4}{\delta}\frac1{|E|}
+       \sum_{\{i,j\}\in E}d_{ij}^p.
+\]
+Thus the first line of Theorem~\ref{thm:graph} holds with $K=2A^4$.
+For $p=2$, it is just \eqref{eq:hilbert-poincare}, so increasing $K$
+if necessary covers the closed interval $1\le p\le2$.  Notice that no
+limiting argument is used at $p=1$.
+
+\section{Proof of Theorem~\ref{thm:graph} for
+\texorpdfstring{$p\ge2$}{p >= 2}}
+
+For completeness, we include the independent interpolation argument that
+has the correct $1/p$ dependence in the high-$p$ range.  Put
+$Q=(I+P)/2$, and let $J$ be averaging over $V$.  All eigenvalues of
+$Q$ lie in $[0,1]$, and on the orthogonal complement of constants,
+\[
+ \alpha:=\|Q-J\|_{\ell_2(V)\to\ell_2(V)}=1-\frac\delta2<1.
+\]
+Moreover, $QJ=JQ=J$, so $Q^k-J=(Q-J)^k$.
+
+Consider the semifinite von Neumann algebra
+\[
+ \mathcal A=\ell_\infty(V)\,\overline\otimes\,B(\ell_2)
+\]
+with normalized trace in the $V$-coordinate.  Then
+$L_r(\mathcal A)=L_r(V;S_r)$ isometrically.  The maps $Q^k$ and $J$
+are contractions on $L_\infty(\mathcal A)$, whereas at the Hilbert
+endpoint
+\[
+ \|Q^k-J\|_{L_2(\mathcal A)\to L_2(\mathcal A)}=\alpha^k.
+\]
+Noncommutative complex interpolation \cite{kosaki} gives, for $p\ge2$,
+\begin{equation}\label{eq:interp-high}
+ \|Q^k-J\|_{L_p(\mathcal A)\to L_p(\mathcal A)}
+ \le2^{1-2/p}\alpha^{2k/p}.
+\end{equation}
+
+Let $L=-\log\alpha$, interpreting $\alpha=0$ by taking $k=1$, and
+choose
+\[
+ k=\max\left\{1,
+ \left\lceil\frac{(p-1)\log2}{L}\right\rceil\right\}.
+\]
+Then \eqref{eq:interp-high} is at most $1/2$.  For $f:V\to S_p$, set
+$\bar f=Jf$ and $z=f-\bar f$.  Centering, the contraction, Jensen's
+inequality, and Minkowski's inequality give
+\begin{align}
+ \left(\E_{i,j}\|f(i)-f(j)\|_p^p\right)^{1/p}
+ &\le2\|z\|_{L_p(V;S_p)}\nonumber\\
+ &\le4\left(\frac1n\sum_{i,j}(Q^k)_{ij}
+       \|f(i)-f(j)\|_p^p\right)^{1/p}.\label{eq:kstep}
+\end{align}
+
+Let $(X_t)_{t=0}^k$ be the stationary lazy random walk with transition
+matrix $Q$.  The triangle inequality and convexity imply
+\[
+ \|f(X_0)-f(X_k)\|_p^p
+ \le k^{p-1}\sum_{t=1}^k
+       \|f(X_{t-1})-f(X_t)\|_p^p.
+\]
+After averaging, stationarity shows that the $k$-step energy in
+\eqref{eq:kstep} is at most $k^p$ times the one-step lazy energy.  Its
+non-loop part is one half of the source edge energy.  Dropping this harmless
+factor gives
+\[
+ \left(\E_{i,j}\|f(i)-f(j)\|_p^p\right)^{1/p}
+ \le4k\left(\frac1{|E|}\sum_{\{i,j\}\in E}
+       \|f(i)-f(j)\|_p^p\right)^{1/p}.
+\]
+Thus $\widetilde h_{S_p}(G)\ge1/(4k)$.  Finally,
+$-\log(1-\delta/2)\ge\delta/2$ and $0<\delta\le2$, so
+\[
+ k\le\frac{(2+2\log2)p}{\delta}.
+\]
+Since $4(2+2\log2)<14$, this proves the second line of
+Theorem~\ref{thm:graph}.
+
+\section{Proof of Corollary~\ref{cor:distortion}}
+
+Fix a constant-degree family of classical expanders with spectral gaps at
+least $\delta_0>0$ \cite{hlw}.  In a $d$-regular $n$-vertex graph, a
+ball of radius $r$ contains at most $1+d+\cdots+d^r$.  Hence a fixed
+positive fraction of ordered vertex pairs have graph distance
+$\Omega_d(\log n)$, and their $p$-root mean distance is
+$\Omega_d(\log n)$, uniformly in $p\ge1$.
+
+Suppose that the graph metric embeds in $S_p$ with distortion $D$, and
+rescale the embedding to be nonexpanding.  The edge-energy root is at most
+$1$, while the all-pairs energy root is at least $c_d\log n/D$.  When
+$1\le p\le2$, Theorem~\ref{thm:graph} bounds the latter by a universal
+constant because $(\delta_0/K)^{1/p}\ge\delta_0/K$.  Thus
+\[
+ D\gtrsim\log n\qquad(1\le p\le2).
+\]
+When $p\ge2$, the high-$p$ graph bound gives
+\[
+ D\gtrsim\frac{\log n}{p}.
+\]
+Together with $D\ge1$, these estimates are
+$D\gtrsim\max\{1,\log n/p\}$ throughout the full range.  Standard
+fixed-degree expanders at all sufficiently large admissible sizes, and the
+monotonicity of worst-case distortion, give the conclusion for every $n$.
+
+For the upper bound, Matousek's extension of Bourgain's construction gives
+distortion $O(\log n/p)$ into $\ell_p$ in the range $p\lesssim\log n$
+\cite{matousek}; the source paper recalls the same estimate \cite{source}.
+The diagonal map $\ell_p\hookrightarrow S_p$ is isometric.  When
+$p\ge\log n$, the Frechet embedding into $\ell_\infty^n$, followed by
+the identity into $\ell_p^n$, has distortion at most
+$n^{1/p}\le e$.  Enlarging the universal constant handles the finitely
+many small cases and proves the matching upper bound.
+
+\section{Verification, limitations, and novelty}
+
+The weighted averaging computation and finite matrix instances of the
+Mazur-energy argument were checked by
+\texttt{code/check\_constants.py}; these checks are consistency tests, not
+proof.  A separate normalization and endpoint audit appears in
+\texttt{verification.md}.  The original source PDF and Ricard's supporting
+paper are included beside this packet.
+
+The conclusion is full relative to Question 2: it determines the sharp
+joint asymptotics in $n$ and $p$ for every $1\le p<\infty$.  It does
+not prove the stronger graph-by-graph comparison suggested in the source;
+for a small spectral gap our displayed dependence on $\delta$ is weaker.
+
+A bounded novelty search was performed on 19 July 2026.  The run indexes
+were searched using arXiv:2405.03517, its exact title, $D_{n,S_p}$,
+Schatten distortion, noncommutative Mazur maps, trace norm, and graph
+Poincare keywords.  Targeted arXiv/web searches used the exact source
+question and close phrases.  Ricard's quantitative Mazur-map paper
+(arXiv:1407.8334), Mendel--Naor's superexpander paper (arXiv:1207.4705),
+and related Schatten nonembedding results were checked.  No later paper
+explicitly settling Question 2, including its $S_1$ endpoint, was found.
+Novelty confidence is moderate because this was a bounded search rather
+than an exhaustive citation review.
+
+The most important human-review point is the uniformity in $p\in[1,2]$
+of Lemma~\ref{lem:mazur}.  It follows from the constants in Ricard's proof,
+not merely from the qualitative statement of his theorem.  The remaining
+new ingredient, Lemma~\ref{lem:weighted}, is proved above with the explicit
+constant $1/2$.
+
+\begin{thebibliography}{9}
+
+\bibitem{source}
+F. Escudero Gutierrez and G. Muguruza,
+\emph{All $S_p$ notions of quantum expansion are equivalent},
+arXiv:2405.03517v1, 2024.
+
+\bibitem{hlw}
+S. Hoory, N. Linial, and A. Wigderson,
+\emph{Expander graphs and their applications},
+Bull. Amer. Math. Soc. 43 (2006), 439--561.
+
+\bibitem{kosaki}
+H. Kosaki,
+\emph{Applications of the complex interpolation method to a von Neumann
+algebra: non-commutative $L^p$-spaces},
+J. Funct. Anal. 56 (1984), 29--78.
+
+\bibitem{matousek}
+J. Matousek,
+\emph{On embedding expanders into $\ell_p$ spaces},
+Israel J. Math. 102 (1997), 189--197.
+
+\bibitem{ricard}
+E. Ricard,
+\emph{Holder estimates for the noncommutative Mazur maps},
+Arch. Math. (Basel) 104 (2015), 37--45; arXiv:1407.8334.
+
+\end{thebibliography}
+
+\end{document}

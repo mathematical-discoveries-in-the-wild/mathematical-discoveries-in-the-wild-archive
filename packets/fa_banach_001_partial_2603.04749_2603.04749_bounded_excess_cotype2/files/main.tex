@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\title{Bounded-Excess Cotype for Gaussian Random Polytopes}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_15}}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Status:} partial result, likely valid.  This solves the bounded
+vertex-excess subcase $N-n\le M$ of the arbitrary-$N$ cotype problem in
+arXiv:2603.04749, with constants depending on $M$.
+
+\section*{Source Problem}
+
+Huang and Tikhomirov prove in \cite{HT} that, when
+$K'\ge N/n\ge K>1$, the Gaussian polytope
+\[
+  P_{N,n}=\operatorname{conv}\{\pm X_i:1\le i\le N\}\subset \mathbb R^n
+\]
+generates, with high probability, a normed space
+$(\mathbb R^n,\|\cdot\|_{P_{N,n}})$ of finite dimension-independent cotype.
+Their Open Problems section asks whether there are universal
+$q,C_q<\infty$ such that the same conclusion holds for every $N\ge n$.
+The same section asks the analogous question for random orthogonal
+projections of the standard cross-polytope.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Partial Result}
+
+\begin{theorem}[bounded excess]
+Let $M\ge 0$ be fixed.  Let $N\ge n$, let $X_1,\ldots,X_N$ span
+$\mathbb R^n$, and assume $N-n\le M$.  Then
+$(\mathbb R^n,\|\cdot\|_{P_{N,n}})$ has cotype $2$ with a constant depending
+only on $M$.  In particular, for Gaussian $X_i$ this holds almost surely.
+\end{theorem}
+
+\begin{corollary}[bounded-codimension projected cross-polytopes]
+Let $M\ge 0$ be fixed.  If $L\subset\mathbb R^N$ is any $n$-dimensional
+subspace with $N-n\le M$, then the orthogonal projection of the standard
+cross-polytope $B_1^N$ onto $L$ defines on $L$ a normed space of cotype $2$
+with constant depending only on $M$.
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+The missing near-square case is not random at bounded excess.  The Gaussian
+polytope is the image of the $\ell_1^N$ unit ball under the map
+$A e_i=X_i$.  Thus the associated normed space is the quotient
+$\ell_1^N/\ker A$.  When $N-n$ is bounded, this quotient is by a
+bounded-dimensional subspace.  Auerbach's lemma gives a projection onto that
+kernel whose norm is controlled by its dimension, so the quotient is uniformly
+isomorphic to a subspace of $\ell_1^N$.  The cotype $2$ of $\ell_1$ then
+transfers to the quotient.
+
+\section*{Proof}
+
+We use two standard facts.  First, $\ell_1$ has cotype $2$; denote one
+admissible cotype constant by $C_{\ell_1}$.  Second, if $Y$ is $D$-isomorphic
+to a subspace of a space of cotype $q$ with constant $C_q$, then $Y$ has
+cotype $q$ with constant at most $D C_q$.
+
+\begin{lemma}[finite-dimensional quotients]
+Let $X$ be a Banach space of cotype $q$ with constant $C_q$, and let
+$F\subset X$ be an $m$-dimensional subspace.  Then $X/F$ has cotype $q$ with
+constant at most $(m+1)C_q$.
+\end{lemma}
+
+\begin{proof}
+If $m=0$ there is nothing to prove.  For $m\ge 1$, choose an Auerbach basis
+$(u_j,u_j^*)_{j=1}^m$ of $F$, so $\|u_j\|=\|u_j^*\|=1$ and
+$u_i^*(u_j)=\delta_{ij}$.  Extend each $u_j^*$ to a norm-one functional
+$\widetilde u_j^*\in X^*$ by Hahn--Banach, and define
+\[
+  P x=\sum_{j=1}^m \widetilde u_j^*(x)u_j .
+\]
+Then $P$ is a projection from $X$ onto $F$ and $\|P\|\le m$.  The map
+\[
+  T:X/F\to \ker P,\qquad T(x+F)=(I-P)x,
+\]
+is well-defined, linear, and bijective.  Moreover
+$\|T\|\le \|I-P\|\le m+1$, while the inverse map $\ker P\to X/F$ has norm at
+most $1$, because the quotient norm never exceeds the norm of a representative.
+Thus $X/F$ is $(m+1)$-isomorphic to the subspace $\ker P$ of $X$.  Cotype
+passes to subspaces and then across this isomorphism with the stated
+distortion loss.
+\end{proof}
+
+Now set $A:\ell_1^N\to\mathbb R^n$ by $Ae_i=X_i$.  Since the $X_i$ span
+$\mathbb R^n$, the map $A$ is onto and
+\[
+  A(B_1^N)=\operatorname{conv}\{\pm X_i:1\le i\le N\}=P_{N,n}.
+\]
+Therefore, for $x\in\mathbb R^n$,
+\[
+  \|x\|_{P_{N,n}}
+  =\inf\{\|a\|_1:a\in\mathbb R^N,\ Aa=x\},
+\]
+which is exactly the quotient norm on $\ell_1^N/\ker A$.  Since
+\[
+  \dim \ker A=N-n\le M,
+\]
+the lemma applied to $X=\ell_1^N$ gives cotype $2$ with constant at most
+$(M+1)C_{\ell_1}$.  For independent standard Gaussian vectors, spanning
+$\mathbb R^n$ holds almost surely when $N\ge n$.
+
+The projected cross-polytope statement is identical: an orthogonal projection
+$Q:\ell_1^N\to L$ maps $B_1^N$ onto the projected cross-polytope, and the
+associated normed space is $\ell_1^N/\ker Q$ with
+$\dim\ker Q=N-n\le M$.
+
+\section*{Limitations}
+
+The constants depend on the excess $M=N-n$.  Hence this does not settle the
+full arbitrary-$N$ problem, which asks for constants uniform over all
+$N\ge n$.  It also does not cover regimes where $N-n\to\infty$, including the
+large-aspect random-projection problem isolated in the source paper and in the
+previous attempt note for this target.
+
+\section*{Novelty and Duplicate Check}
+
+The run indexes contained one previous attempt for arXiv:2603.04749 and no
+solution packet for this bounded-excess subcase.  Web searches on
+2026-06-29 for the exact arXiv id and title, for bounded-codimension/random
+polytope cotype phrases, and for finite-dimensional quotient/cotype variants
+found the arXiv source page and standard Auerbach projection facts, but no
+direct later solution of this subcase.  The proof above is deterministic and
+uses only standard Banach-space facts.
+
+\section*{Human Review Recommendation}
+
+Review the finite-dimensional quotient lemma and the identification of
+$P_{N,n}$ as a quotient image of $B_1^N$.  If those are accepted, the bounded
+excess partial result is complete.
+
+\begin{thebibliography}{9}
+\bibitem{HT}
+H. Huang and K. Tikhomirov,
+\emph{Cotype of random polytopes},
+arXiv:2603.04749, 2026.
+
+\bibitem{MP}
+B. Maurey and G. Pisier,
+\emph{Series de variables aleatoires vectorielles independantes et proprietes
+geometriques des espaces de Banach},
+Studia Math. 58 (1976), 45--90.
+
+\bibitem{LT}
+J. Lindenstrauss and L. Tzafriri,
+\emph{Classical Banach Spaces I and II},
+Springer, 1996.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,173 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{A Closed-Range Subcase of Dense Small Periodic Sets}
+\author{Run \texttt{fa\_banach\_001}, lane 4}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target Question}
+
+The source paper is Rodrigo Cardeccia and Santiago Muro,
+\emph{Arithmetic progressions and chaos in linear dynamics},
+arXiv:2003.07161.  In Question 4.2 the authors ask:
+
+\begin{quote}
+Is any hypercyclic operator with dense small periodic sets necessarily chaotic?
+Or, more generally, does any operator with dense small periodic sets have dense
+periodic points?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The packet proves a positive Banach-space subcase under a closed-range
+hypothesis on the periodic equations.
+
+\section*{Definitions}
+
+Let $T$ be a bounded linear operator on a Banach space $X$. A set
+$Y\subset X$ is a periodic set for $T$ if $T^k(Y)\subset Y$ for some
+$k\geq 1$. The operator $T$ has dense small periodic sets if every nonempty
+open set $U\subset X$ contains a closed periodic set.
+
+We use the equivalent form from Proposition 3.4 of Cardeccia--Muro: for every
+nonempty open set $U$ there are $k\geq 1$ and $x\in U$ such that
+$T^{jk}x\in U$ for every $j\geq 1$.
+
+\section*{Proof Intuition}
+
+The source paper turns small periodic sets into actual periodic points by
+placing the periodic set inside a compact convex hull and applying a fixed
+point theorem. The argument below replaces compactness by a closed-range
+metric estimate.
+
+If an orbit of $S=T^k$ stays forever in a small ball, then the Cesaro averages
+of that orbit stay in the same ball and satisfy
+\[
+  (I-S)z_N = \frac{x-S^N x}{N}.
+\]
+In a Banach space this tends to zero because the orbit is bounded. Thus each
+small ball contains approximate fixed points of $S$. When $I-S$ has closed
+range, approximate fixed points of $S$ must lie close to genuine fixed points
+of $S$. Those fixed points are periodic points for $T$.
+
+\begin{lemma}[Closed-range estimate]
+Let $A:X\to X$ be a bounded linear operator on a Banach space. If $\ran A$ is
+closed, then there is a constant $C>0$ such that
+\[
+  \dist(y,\ker A)\leq C\|Ay\| \qquad (y\in X).
+\]
+\end{lemma}
+
+\begin{proof}
+The operator induced by $A$,
+\[
+  \widetilde A:X/\ker A\longrightarrow \ran A,\qquad
+  \widetilde A(y+\ker A)=Ay,
+\]
+is a bounded bijection between Banach spaces. Since $\ran A$ is closed, the
+open mapping theorem gives a bounded inverse. Hence
+\[
+  \|y+\ker A\|_{X/\ker A}\leq C\|Ay\|.
+\]
+This quotient norm is exactly $\dist(y,\ker A)$.
+\end{proof}
+
+\begin{theorem}
+Let $T\in\mathcal L(X)$ be a bounded linear operator on a Banach space $X$.
+Assume that $T$ has dense small periodic sets and that $\ran(I-T^n)$ is closed
+for every $n\geq 1$. Then $\Per(T)$ is dense in $X$.
+\end{theorem}
+
+\begin{proof}
+Let $U\subset X$ be nonempty and open. Choose $x_0\in X$ and $r>0$ such that
+$B(x_0,r)\subset U$. Apply dense small periodicity to the smaller ball
+$B(x_0,r/2)$. There are $k\geq 1$ and $x\in B(x_0,r/2)$ such that, writing
+$S=T^k$, one has
+\[
+  S^j x\in B(x_0,r/2)\qquad (j=0,1,2,\ldots).
+\]
+
+For $N\geq 1$ set
+\[
+  z_N=\frac1N\sum_{j=0}^{N-1}S^j x .
+\]
+Because the ball $B(x_0,r/2)$ is convex, each $z_N$ belongs to
+$B(x_0,r/2)$. Moreover
+\[
+  (I-S)z_N=\frac{x-S^N x}{N},
+\]
+and therefore
+\[
+  \|(I-S)z_N\|
+  \leq \frac{\|x-x_0\|+\|S^N x-x_0\|}{N}
+  <\frac{r}{N}.
+\]
+
+By hypothesis, $I-S=I-T^k$ has closed range. The closed-range estimate gives
+a constant $C>0$ such that
+\[
+  \dist(z_N,\ker(I-S))\leq C\|(I-S)z_N\|<\frac{Cr}{N}.
+\]
+Choose $N$ so large that $Cr/N<r/2$. Then some $p\in\ker(I-S)$ satisfies
+$\|p-z_N\|<r/2$. Since $z_N\in B(x_0,r/2)$, we get $p\in B(x_0,r)\subset U$.
+Finally $S p=p$, so $T^k p=p$ and $p$ is a periodic point of $T$.
+
+Every nonempty open set contains such a point, hence $\Per(T)$ is dense.
+\end{proof}
+
+\begin{corollary}
+Under the same closed-range hypothesis, every hypercyclic Banach-space
+operator with dense small periodic sets is chaotic.
+\end{corollary}
+
+\begin{proof}
+By the theorem, the periodic points are dense. Adding hypercyclicity is exactly
+Devaney chaos in the linear-dynamics convention used by the source paper.
+\end{proof}
+
+\section*{Verification And Novelty Notes}
+
+This packet is a partial result, not a full solution of Question 4.2. It covers
+operators for which all periodic defect operators $I-T^n$ have closed range.
+The proof gives no conclusion when the relevant $I-T^k$ has nonclosed range;
+indeed, the mechanism then produces only approximate fixed points for $T^k$.
+
+Local duplicate checks were run in the lightweight indexes for arXiv:2003.07161,
+``dense small periodic sets'', ``closed range'', ``approximate periodic'', and
+``Cesaro''. No existing packet for this closed-range subcase was found. The
+source paper itself proves the weak-star compact and weighted-shift cases, but
+does not state this closed-range quotient argument.
+
+The attempted Lipschitz-free counterexample route was checked against
+Abbar--Coine--Petitjean, \emph{On the dynamics of Lipschitz operators},
+arXiv:2011.10800. That route is not promoted here: their examples show that
+linearization may create dense periodic vectors even when the base map has
+non-dense periodic points.
+
+\section*{References}
+
+\begin{enumerate}
+\item R. Cardeccia and S. Muro, \emph{Arithmetic progressions and chaos in
+linear dynamics}, arXiv:2003.07161.
+\item M. Abbar, Q. Coine, and C. Petitjean, \emph{On the dynamics of Lipschitz
+operators}, arXiv:2011.10800.
+\end{enumerate}
+
+\end{document}

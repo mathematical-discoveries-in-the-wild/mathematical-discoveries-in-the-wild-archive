@@ -1,0 +1,646 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\cof}{\operatorname{cof}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\absnorm}[1]{\left\lvert #1\right\rvert}
+\newcommand{\rhobar}{\overline\rho}
+\newcommand{\deltabar}{\overline\delta}
+\newcommand{\deltastar}{\overline\delta^{\,*}}
+\newcommand{\wstar}{w^*}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\asympC}{\mathrel{\lesssim}}
+\newcommand{\asympG}{\mathrel{\gtrsim}}
+
+\title{Simultaneous AUS/AUC Renormings\\
+\large Audit of the proposed averaging argument, a corrected quantitative theorem, and the exact separable endpoint}
+\author{Research note}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We examine the proposed improvement of Lemma~4.3 in
+Dilworth--Kutzarova--Lancien--Randrianarivony.  The proposed tail summation is a
+useful observation, but the smoothness estimate used in the packet has an
+unsupported dependence on the mixing parameter when the AUS exponent
+exceeds~2.
+For the predual of
+\(N^*+\eps M^*\), the generally valid power-type estimate supplied by duality is
+\(\rhobar(t)\lesssim \eps^{-(p-1)}t^p\).  The stronger
+\(\eps^{-1}t^p\) estimate used in the packet does not follow from the
+stated hypotheses when \(p>2\).  Consequently, the claimed theorem for every
+\(r>2q\) is justified by that proof when \(p\le 2\), but not for arbitrary
+\(p\).
+
+We prove a corrected theorem valid for every reflexive Banach space: separate
+\(p\)-AUS and \(q\)-AUC renormings imply a common norm which is
+\(p\)-AUS and \(r\)-AUC for every \(r>pq\).  We also prove that the whole class
+of positive linear Asplund averages built from
+\(N^*+\eps_nM^*\) has an intrinsic \(pq\)-barrier.
+
+Finally, the exact endpoint has a positive answer for separable reflexive
+spaces.  This follows from Proposition~3.3 and Theorem~4.1(e) of
+Odell--Schlumprecht: the two separate norms give exact
+\((q,p)\)-tree estimates (the lower and upper branches are allowed to be
+different), and hence an embedding into a reflexive space with an FDD
+satisfying exact \(1\)-\((q,p)\) estimates.  Restricting the FDD norm gives a
+single \(p\)-AUS, \(q\)-AUC norm on the original space.  I found no published
+resolution or counterexample for the arbitrary nonseparable case posed in the
+source paper.
+\end{abstract}
+
+\section{Question and conclusions}
+
+For a normed Banach space \(X\), write \(\rhobar_X\) and \(\deltabar_X\) for
+the moduli of asymptotic uniform smoothness and convexity.  The question in
+Remark~4.4 of \cite{DKLR} is:
+
+\begin{quote}
+If a reflexive Banach space admits an equivalent norm with
+\(\rhobar(t)\le C t^p\) and, possibly under another equivalent norm, an
+estimate \(\deltabar(t)\ge c t^q\), must it admit one equivalent norm satisfying
+both estimates with the same exponents \(p\) and \(q\)?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The outcome of the audit is summarized below.  Here ``general'' includes
+nonseparable reflexive spaces.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}
+>{\raggedright\arraybackslash}p{0.20\textwidth}X@{}}
+\toprule
+Statement & Verdict & Reason \\
+\midrule
+The submitted claim: common \(p\)-AUS and \(r\)-AUC for every \(r>2q\)
+& Correct for \(p\le2\); gap in general
+& The mixed norm has smoothness constant of order \(n^{p-1}\), not \(n\). \\
+A corrected general averaging result
+& Proved here
+& A common \(p\)-AUS and \(r\)-AUC norm exists for every \(r>pq\). \\
+Exact preservation for separable reflexive spaces
+& Positive; implicit in the literature
+& Odell--Schlumprecht tree estimates and their exact FDD embedding theorem. \\
+Exact preservation for arbitrary nonseparable reflexive spaces
+& No resolution found
+& The separable FDD theorem does not directly cover nonseparable spaces, and the averaging method has a quantitative barrier. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The correction is not cosmetic.  If \(p>2\), the estimate asserted as equation
+(1) in the submitted packet does not follow from AUS/AUC duality with its
+stated dependence on \(n\).  The same scaling issue occurs in the displayed
+argument of Lemma~4.3 in \cite{DKLR}.  This identifies a gap in that particular
+proof for large \(p\); it does not by itself disprove the theorem stated there.
+
+\section{Definitions and elementary facts}
+
+For \(t>0\), the asymptotic moduli of a norm \(\norm{\cdot}\) are
+\begin{align*}
+\rhobar_X(t)
+&=\sup_{x\in S_X}\inf_{Y\in\cof(X)}\sup_{y\in S_Y}
+   \bigl(\norm{x+ty}-1\bigr),\\
+\deltabar_X(t)
+&=\inf_{x\in S_X}\sup_{Y\in\cof(X)}\inf_{y\in S_Y}
+   \bigl(\norm{x+ty}-1\bigr),
+\end{align*}
+where \(\cof(X)\) is the family of closed finite-codimensional subspaces of
+\(X\).  We say that the norm is \(p\)-AUS if
+\(\rhobar_X(t)\le C t^p\) for \(0<t\le1\), and \(q\)-AUC if
+\(\deltabar_X(t)\ge c t^q\) on that interval.
+
+We use two standard facts.
+
+\begin{enumerate}[label=(\roman*)]
+\item If \(X\) is reflexive, a norm on \(X\) is \(p\)-AUS if and only if its
+dual norm is weak-star AUC of power type \(p'=p/(p-1)\), up to universal
+changes of constants.  More quantitatively, the two moduli are equivalent
+through Young duality; see \cite{JLPS,DKLR}.
+\item AUS and AUC estimates pass to closed subspaces.  Equivalent changes of
+norm alter constants, but not a fixed power exponent.
+\end{enumerate}
+
+Throughout the quantitative argument we choose equivalent norms \(N\) and
+\(M\) satisfying
+\begin{equation}\label{eq:NM}
+ N(x)\le M(x)\le C_0N(x),\qquad
+ \deltabar_N(t)\ge a t^q,\qquad
+ \rhobar_M(t)\le b t^p.
+\end{equation}
+Then
+\begin{equation}\label{eq:dual-equivalence}
+ C_0^{-1}N^*(x^*)\le M^*(x^*)\le N^*(x^*).
+\end{equation}
+
+\section{Audit of the submitted argument}
+
+The packet defines, for \(n\ge1\),
+\[
+ L_n^*(x^*)=N^*(x^*)+n^{-1}M^*(x^*)
+\]
+and lets \(L_n\) be the predual norm.  Its key smoothness assertion is
+\begin{equation}\label{eq:claimed}
+ \rhobar_{L_n}(t)\le K n t^p.
+\end{equation}
+The tail summation in the convexity half is sound once a suitable smoothness
+estimate is available.  The problem is the exponent of \(n\) in
+\eqref{eq:claimed}.
+
+\subsection{The correct scaling}
+
+Let \(p'=p/(p-1)\).  Since \(M\) is \(p\)-AUS, \(M^*\) is weak-star AUC of
+power type \(p'\).  For \(0<\eps\le1\), put
+\begin{equation}\label{eq:mixed-dual}
+ L_\eps^*=N^*+\eps M^*,
+\end{equation}
+and denote its predual norm by \(L_\eps\).
+
+\begin{lemma}[Mixed-dual scaling]\label{lem:mixed}
+There are constants \(c,C>0\), depending only on the data in
+\eqref{eq:NM}, such that for all \(0<\eps\le1\),
+\begin{align}
+ \deltastar_{L_\eps^*}(s)&\ge c\eps s^{p'}
+ &&(0<s\le1),\label{eq:dualconvex}\\
+ \rhobar_{L_\eps}(t)&\le C\eps^{-(p-1)}t^p
+ &&(0<t\le1).\label{eq:predualsmooth}
+\end{align}
+Moreover,
+\begin{equation}\label{eq:predual-close}
+ (1+\eps)^{-1}N(x)\le L_\eps(x)\le N(x).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The estimate \eqref{eq:predual-close} follows immediately from
+\(N^*\le L_\eps^*\le(1+\eps)N^*\), which in turn follows from
+\eqref{eq:dual-equivalence}.
+
+We sketch the quantitative point in \eqref{eq:dualconvex}.  Let
+\(L_\eps^*(x^*)=1\).  By \eqref{eq:dual-equivalence}, both \(N^*(x^*)\) and
+\(M^*(x^*)\) are uniformly controlled, and \(M^*(x^*)\) is uniformly bounded
+away from zero.  Use weak-star AUC of \(M^*\) to choose a weak-star closed
+finite-codimensional subspace on which the \(M^*\)-part gains at least a
+constant multiple of \(s^{p'}\).  Since \(X\) is reflexive, choose
+\(u\in X\) which norms \(x^*\) for \(N^*\), and intersect the preceding
+subspace with \(\ker u\).  On this intersection the \(N^*\)-part cannot
+decrease, while the \(M^*\)-part gains \(c_0s^{p'}\).  Multiplication by the
+coefficient \(\eps\) in \eqref{eq:mixed-dual} gives
+\eqref{eq:dualconvex}.
+
+The Young conjugate of \(s\mapsto c\eps s^{p'}\) is, up to a constant,
+\(t\mapsto \eps^{-(p-1)}t^p\).  Quantitative AUS/weak-star-AUC duality
+therefore gives \eqref{eq:predualsmooth}.
+\end{proof}
+
+Putting \(\eps=n^{-1}\) in Lemma~\ref{lem:mixed} gives
+\begin{equation}\label{eq:correct-n}
+ \rhobar_{L_n}(t)\le C n^{p-1}t^p,
+\end{equation}
+whereas the argument in the packet requires \(Cnt^p\).  When \(p\le2\), the weaker bound
+\(n^{p-1}\le n\) recovers the estimate used in the packet.  When \(p>2\),
+the asserted dependence on \(n\) is not supplied by the cited duality
+argument.  Thus the proof has a genuine gap; this observation alone does not
+show that the stronger estimate is false for every possible pair of norms.
+
+\subsection{What survives from the packet}
+
+If the averaging weights are \(n^{-\theta}\), the smoothness sum is
+\[
+ \sum_{n=1}^\infty n^{-\theta}n^{p-1}
+ =\sum_{n=1}^\infty n^{p-1-\theta},
+\]
+so the correct condition is
+\begin{equation}\label{eq:theta-smooth}
+ \theta>p,
+\end{equation}
+not merely \(\theta>2\).  The convexity tail computed in the packet remains
+\[
+ t^q\sum_{n\gtrsim t^{-q}}n^{-\theta}\asymp t^{q\theta}.
+\]
+Thus the same architecture works whenever one can choose
+\(p<\theta<r/q\), namely whenever \(r>pq\).  In particular, the submitted
+\(r>2q\) statement is proved by that argument for \(p\le2\), and more
+generally for an individual \(r\) satisfying \(r>pq\).
+
+\section{A corrected general theorem}
+
+\begin{theorem}\label{thm:corrected}
+Let \(X\) be a reflexive Banach space.  Suppose that \(X\) admits an
+equivalent \(p\)-AUS norm and an equivalent \(q\)-AUC norm, where
+\(1<p,q<\infty\).  Then, for every \(r>pq\), \(X\) admits an equivalent norm
+which is simultaneously \(p\)-AUS and \(r\)-AUC.
+\end{theorem}
+
+\begin{proof}
+Fix \(r>pq\), and choose
+\begin{equation}\label{eq:theta-choice}
+ p<\theta<r/q.
+\end{equation}
+For \(n\ge1\), let \(L_n\) be the predual of
+\(N^*+n^{-1}M^*\), and define
+\begin{equation}\label{eq:averaged-norm}
+ \absnorm{x}=\sum_{n=1}^\infty n^{-\theta}L_n(x).
+\end{equation}
+By \eqref{eq:predual-close}, this is an equivalent norm, and there are
+constants \(A,B>0\) such that, uniformly in \(n\),
+\begin{equation}\label{eq:uniform-equivalence}
+ A\absnorm{x}\le L_n(x)\le B\absnorm{x},\qquad
+ A\absnorm{x}\le N(x)\le B\absnorm{x}.
+\end{equation}
+
+\medskip
+\noindent\emph{Smoothness.}
+Let \(\absnorm{x}=1\) and \(0<t\le1\).  Choose \(m\) so large that
+\begin{equation}\label{eq:tail-choice}
+ Bt\sum_{n>m}n^{-\theta}\le t^p.
+\end{equation}
+For each \(1\le n\le m\), Lemma~\ref{lem:mixed}, homogeneity, and the
+uniform equivalence \eqref{eq:uniform-equivalence} give a
+finite-codimensional subspace \(E_n\) such that
+\begin{equation}\label{eq:individual-aus}
+ L_n(x+y)\le L_n(x)+C_1n^{p-1}t^p
+\end{equation}
+whenever \(y\in E_n\) and \(\absnorm{y}=t\).  The constant \(C_1\) is
+independent of \(n,m,x,t\).  Put \(E=\bigcap_{n\le m}E_n\).  For
+\(y\in E\) with \(\absnorm{y}=t\), use \eqref{eq:individual-aus} on the
+head and the triangle inequality on the tail:
+\begin{align*}
+ \absnorm{x+y}
+ &\le \sum_{n\le m}n^{-\theta}
+       \bigl(L_n(x)+C_1n^{p-1}t^p\bigr)
+      +\sum_{n>m}n^{-\theta}\bigl(L_n(x)+L_n(y)\bigr)\\
+ &\le 1+C_1t^p\sum_{n=1}^\infty n^{p-1-\theta}
+      +Bt\sum_{n>m}n^{-\theta}\\
+ &\le 1+C_2t^p.
+\end{align*}
+The series converges because \(\theta>p\).  Hence \(\absnorm{\cdot}\) is
+\(p\)-AUS.
+
+\medskip
+\noindent\emph{Convexity.}
+Let \(\absnorm{x}=1\) and \(0<t\le1\).  By the \(q\)-AUC estimate for
+\(N\), uniform equivalence, and the standard rescaling of the AUC modulus,
+there are \(\eta>0\) and \(E_0\in\cof(X)\) such that
+\begin{equation}\label{eq:N-gain}
+ N(x+y)\ge N(x)(1+\eta t^q)
+\end{equation}
+for every \(y\in E_0\) with \(\absnorm{y}=t\).  Choose \(\alpha>0\) large
+and an integer \(n_0\) with
+\begin{equation}\label{eq:n0}
+ n_0-1\le \alpha t^{-q}\le n_0.
+\end{equation}
+For \(n\ge n_0\), equations \eqref{eq:predual-close},
+\eqref{eq:N-gain}, and \(L_n(x)\le N(x)\) give
+\begin{align*}
+ L_n(x+y)-L_n(x)
+ &\ge \frac{N(x+y)}{1+n^{-1}}-N(x)\\
+ &\ge N(x)\left(\frac{1+\eta t^q}{1+n^{-1}}-1\right)
+ \ge d t^q,
+\end{align*}
+provided \(\alpha\) is sufficiently large.  Here \(d>0\) is independent of
+\(x,t,n\), using \(N(x)\ge A\).
+
+For each of the finitely many indices \(n<n_0\), choose a norming functional
+\(f_n\) for \(x\) in the norm \(L_n\), and put
+\[
+ E=E_0\cap\bigcap_{n<n_0}\ker f_n.
+\]
+Then \(L_n(x+y)\ge L_n(x)\) for \(n<n_0\) and \(y\in E\).  Therefore,
+for \(y\in E\) with \(\absnorm{y}=t\),
+\begin{align*}
+ \absnorm{x+y}
+ &\ge \absnorm{x}+dt^q\sum_{n\ge n_0}n^{-\theta}\\
+ &\ge 1+d_1t^q n_0^{1-\theta}
+ \ge 1+d_2t^{q\theta}.
+\end{align*}
+Thus the norm is \(q\theta\)-AUC.  Since \(q\theta<r\) and
+\(t^{q\theta}\ge t^r\) for \(0<t\le1\), it is also \(r\)-AUC.
+\end{proof}
+
+\begin{remark}
+For \(p\le2\), Theorem~\ref{thm:corrected} is weaker than the packet's
+valid conclusion \(r>2q\) only when \(p<2\): in that range the packet's use
+of the coarser bound \(n\) imposes \(\theta>2\), whereas the sharp scaling
+allows the better threshold \(r>pq\).  At \(p=2\), the two thresholds agree.
+\end{remark}
+
+\section{A barrier for positive linear Asplund averages}
+
+The preceding proof can be formulated with arbitrary parameters.  Let
+\(\eps_n\downarrow0\), let \(w_n>0\), and let \(L_{\eps_n}\) be the predual
+of \(N^*+\eps_nM^*\).  Consider
+\begin{equation}\label{eq:general-average}
+ \absnorm{x}=\sum_{n=1}^\infty w_nL_{\eps_n}(x).
+\end{equation}
+The termwise smoothness estimate from Lemma~\ref{lem:mixed} suggests the
+necessary summability condition
+\begin{equation}\label{eq:summability-barrier}
+ \sum_{n=1}^\infty w_n\eps_n^{-(p-1)}<\infty.
+\end{equation}
+This condition forces a quantitative loss in the convexity tail.
+
+\begin{proposition}[Averaging barrier]\label{prop:barrier}
+Assume \eqref{eq:summability-barrier}, and define
+\[
+ W(s)=\sum_{\eps_n\le s}w_n.
+\]
+Then
+\begin{equation}\label{eq:little-o}
+ W(s)=o(s^{p-1})\qquad(s\downarrow0).
+\end{equation}
+Consequently, the AUC gain furnished by the tail mechanism at scale
+\(s=t^q\) is
+\begin{equation}\label{eq:barrier-gain}
+ t^qW(t^q)=o(t^{pq}).
+\end{equation}
+In particular, no argument based solely on a positive linear average of the
+mixed norms and on summing their individual tail gains can yield a uniform
+lower bound of order \(t^{pq}\), let alone \(t^q\).
+\end{proposition}
+
+\begin{proof}
+For \(\eps_n\le s\), one has
+\(w_n\le s^{p-1}w_n\eps_n^{-(p-1)}\).  Hence
+\[
+ \frac{W(s)}{s^{p-1}}
+ \le \sum_{\eps_n\le s}w_n\eps_n^{-(p-1)}.
+\]
+The right-hand side tends to zero as \(s\downarrow0\), because it is the
+tail over those \(n\) for which \(\eps_n\) is small of the convergent series
+in \eqref{eq:summability-barrier}.  This proves \eqref{eq:little-o}; setting
+\(s=t^q\) gives \eqref{eq:barrier-gain}.
+\end{proof}
+
+Proposition~\ref{prop:barrier} is a limitation of this particular method, not
+a counterexample to exact simultaneous renorming.  It explains why merely
+optimizing the weights in the submitted construction cannot settle the
+endpoint question.
+
+\section{The exact endpoint for separable reflexive spaces}
+
+The exact separable case is already contained, implicitly, in the tree/FDD
+machinery of Odell and Schlumprecht \cite{OS}.  We spell out the deduction
+because it is very close to the question in Remark~4.4 but does not appear to
+have been stated there in this form.
+
+\subsection{The order of the exponents}
+
+\begin{lemma}\label{lem:p-le-q}
+If an infinite-dimensional reflexive Banach space admits a \(p\)-AUS
+renorming and a \(q\)-AUC renorming, then \(p\le q\).
+\end{lemma}
+
+\begin{proof}
+Choose a normalized weakly null basic sequence.  A \(q\)-AUC norm yields,
+after passage to a subsequence, a lower \(\ell_q\) estimate; a \(p\)-AUS
+norm yields, after a further passage to a subsequence, an upper \(\ell_p\)
+estimate.  These are the sequential special cases of
+\cite[Proposition~3.3]{OS}.  Equivalent norms only change the constants.
+Thus for some \(c,C>0\), the final subsequence \((x_i)\) satisfies
+\[
+ c\left(\sum|a_i|^q\right)^{1/q}
+ \le \norm{\sum a_ix_i}
+ \le C\left(\sum|a_i|^p\right)^{1/p}.
+\]
+Taking \(a_1=\cdots=a_n=1\) gives
+\(cn^{1/q}\le Cn^{1/p}\) for every \(n\), hence \(p\le q\).
+\end{proof}
+
+\subsection{Tree estimates and exact FDD estimates}
+
+Odell--Schlumprecht say that \(X\) satisfies \(C\)-\((P,Q)\)-tree estimates
+if every normalized weakly null tree has one branch with a lower
+\(\ell_P\) estimate and (possibly a different) branch with an upper
+\(\ell_Q\) estimate.  The permission to use two different branches is the
+key point.
+
+Their Proposition~3.3 gives:
+\begin{align*}
+ q\text{-AUC}&\quad\Longrightarrow\quad(q,1)\text{-tree estimates},\\
+ p\text{-AUS}&\quad\Longrightarrow\quad(\infty,p)\text{-tree estimates}.
+\end{align*}
+After fixing either original norm as a reference, normalize the nodes in the
+other norm before applying Proposition~3.3 and then use equivalence of the two
+norms to return to the reference normalization.  Thus the two separate
+renormings give \((q,p)\)-tree estimates in one fixed reference norm.
+Lemma~\ref{lem:p-le-q} supplies the required order
+\(p\le q\).
+
+The exact form of \cite[Theorem~4.1(e)]{OS} says that a separable reflexive
+space with \((P,Q)\)-tree estimates embeds into a reflexive space having an
+FDD with exact \(1\)-\((P,Q)\) estimates.  Applying it with
+\((P,Q)=(q,p)\) gives a space \(Z\) with an FDD \((E_i)\) such that every
+finite block sequence \((z_i)\) satisfies
+\begin{equation}\label{eq:exact-fdd}
+ \left(\sum_i\norm{z_i}^q\right)^{1/q}
+ \le \norm{\sum_i z_i}
+ \le \left(\sum_i\norm{z_i}^p\right)^{1/p}.
+\end{equation}
+
+\begin{lemma}\label{lem:fdd-moduli}
+If a Banach space \(Z\) has an FDD satisfying \eqref{eq:exact-fdd}, then its
+norm is \(p\)-AUS and \(q\)-AUC.
+\end{lemma}
+
+\begin{proof}
+Fix \(x\in S_Z\) and \(0<t\le1\).  Given \(\eta>0\), choose a finitely
+supported vector \(u\) with \(\norm{x-u}<\eta\), and let \(Y\) be the tail
+of the FDD after the support of \(u\).  For \(y\in S_Y\), the two vectors
+\(u\) and \(ty\) form a block sequence, so
+\begin{align*}
+ \norm{x+ty}
+ &\le \eta+\bigl(\norm{u}^p+t^p\bigr)^{1/p},\\
+ \norm{x+ty}
+ &\ge \bigl(\norm{u}^q+t^q\bigr)^{1/q}-\eta.
+\end{align*}
+In the first inequality choose \(\eta\) to be a sufficiently small multiple
+of \(t^p\); in the second choose it to be a sufficiently small multiple of
+\(t^q\).  Since \(1-\eta\le\norm{u}\le1+\eta\), elementary estimates for
+\((a^s+t^s)^{1/s}\) yield constants \(C,c>0\), independent of \(x,t\),
+such that
+\[
+ \sup_{y\in S_Y}\norm{x+ty}\le1+Ct^p,
+ \qquad
+ \inf_{y\in S_Y}\norm{x+ty}\ge1+ct^q.
+\]
+This is precisely \(p\)-AUS and \(q\)-AUC.
+\end{proof}
+
+\begin{theorem}[Exact separable preservation]\label{thm:separable}
+Let \(X\) be a separable reflexive Banach space.  If \(X\) admits separately
+an equivalent \(p\)-AUS norm and an equivalent \(q\)-AUC norm, then \(X\)
+admits one equivalent norm which is simultaneously \(p\)-AUS and
+\(q\)-AUC.
+\end{theorem}
+
+\begin{proof}
+The finite-dimensional case is immediate.  Assume that \(X\) is
+infinite-dimensional.  As above, \(X\) satisfies \((q,p)\)-tree estimates.  By
+\cite[Theorem~4.1(e)]{OS}, it embeds into a reflexive \(Z\) with an FDD
+satisfying exact \(1\)-\((q,p)\) estimates.  Lemma~\ref{lem:fdd-moduli}
+shows that the norm of \(Z\) is \(p\)-AUS and \(q\)-AUC.  Restricting this
+norm to the embedded copy of \(X\) preserves both estimates.
+\end{proof}
+
+\begin{remark}
+The paper \cite{OS} explicitly works with separable Banach spaces.  Thus
+Theorem~\ref{thm:separable} does not by itself answer the nonseparable
+question in \cite{DKLR}.  It does show that any obstruction to the general
+endpoint must be genuinely nonseparable, rather than a phenomenon already
+visible on one separable subspace.
+\end{remark}
+
+\section{Literature search and status of the nonseparable problem}
+
+The literature search used the exact wording of Remark~4.4, variants of
+``preserve both power types,'' citation searches around \cite{DKLR}, and
+recent surveys and renorming papers.  The main findings are:
+
+\begin{enumerate}[label=(\arabic*)]
+\item The exact separable result follows from \cite[Proposition~3.3 and
+Theorem~4.1(e)]{OS}, as proved in Theorem~\ref{thm:separable}.  The crucial
+lines are the exact tree-to-FDD exponent transfer and the fact that lower and
+upper branches need not coincide.
+\item Lancien's 2017 lecture notes still list preservation of both exponents
+as a question and emphasize that the fixed-power conditions are not suitable
+for the elementary Baire-category proof used for qualitative simultaneous
+AUS/AUC renorming \cite{LancienSlides}.
+\item Recent work proves strong one-sided, separably determined renorming
+theorems for power-type AUS properties; see, for example,
+Causey--Fovelle--Lancien \cite{CFL}.  These results do not, as stated, produce
+one global norm simultaneously realizing a prescribed AUS exponent and a
+prescribed AUC exponent.
+\item A 2024 paper of Baudier--Lancien describes the qualitative
+simultaneous AUS/AUC renorming theorem as the current route to property
+\((\beta)\), without providing an exact prescribed-power theorem
+\cite{BLLocalGlobal}.
+\item The 2025 monograph of Baudier--Lancien \cite{BLbook} provides a current
+large-scale account of asymptotic renorming and the qualitative simultaneous
+AUS/AUC problem.  I did not locate in it, or in papers citing \cite{DKLR}, a
+published theorem or counterexample settling the exact endpoint for arbitrary
+nonseparable reflexive spaces.
+\end{enumerate}
+
+The last statement is a report of the search, not a logical proof that no
+resolution exists.  The safe current conclusion is therefore:
+
+\begin{quote}
+The exact endpoint is settled positively for separable reflexive spaces.  For
+the arbitrary nonseparable setting of Remark~4.4, no published full answer or
+counterexample was found in this search.  The positive linear Asplund
+averaging method cannot reach the endpoint, and its correct general output is
+Theorem~\ref{thm:corrected}.
+\end{quote}
+
+\section{Further directions}
+
+The analysis isolates two plausible routes beyond the present result.
+
+First, one could seek a nonseparable analogue of the exact tree-to-FDD
+coordinatization theorem.  The obstacle is that asymptotic moduli in a
+nonseparable space are naturally controlled by weakly null nets and
+finite-codimensional subspaces, while the Odell--Schlumprecht construction is
+sequential and explicitly separable.
+
+Second, a successful averaging construction must be nonlinear in a substantial
+way.  Proposition~\ref{prop:barrier} rules out obtaining the endpoint by merely
+changing the positive weights or the sequence \((\eps_n)\) in a linear sum of
+the predual norms of \(N^*+\eps_nM^*\).  Supremum-type, infimal-convolution,
+or scale-adaptive constructions would have to avoid both the summability
+condition \eqref{eq:summability-barrier} and the loss of AUC caused by a fixed
+mixing parameter.
+
+\section*{Acknowledgment of scope}
+
+This note gives a complete audit of the submitted proof, a rigorous corrected
+quantitative theorem for arbitrary reflexive spaces, a method barrier, and a
+complete positive solution of the exact problem in the separable case.  It does
+not claim to settle the remaining arbitrary nonseparable endpoint.
+
+\begin{thebibliography}{99}
+
+\bibitem{Asplund}
+E. Asplund,
+\newblock Averaged norms,
+\newblock \emph{Israel J. Math.} 5 (1967), 227--233.
+
+\bibitem{BLLocalGlobal}
+F. P. Baudier and G. Lancien,
+\newblock An asymptotic analog of a local-to-global phenomenon for uniformly convex renormings,
+\newblock arXiv:2401.17465, 2024.
+
+\bibitem{BLbook}
+F. P. Baudier and G. Lancien,
+\newblock \emph{Asymptotic and nonlinear geometries of Banach spaces and their interactions},
+\newblock arXiv:2512.00817, 2025.
+
+\bibitem{CFL}
+R. M. Causey, A. Fovelle, and G. Lancien,
+\newblock Asymptotic smoothness in Banach spaces, three space properties and applications,
+\newblock \emph{Trans. Amer. Math. Soc.} 376 (2023), 1895--1928.
+
+\bibitem{DGZ}
+R. Deville, G. Godefroy, and V. Zizler,
+\newblock \emph{Smoothness and Renormings in Banach Spaces},
+\newblock Pitman Monographs and Surveys in Pure and Applied Mathematics 64,
+Longman, 1993.
+
+\bibitem{DKLR}
+S. J. Dilworth, D. Kutzarova, G. Lancien, and N. L. Randrianarivony,
+\newblock Equivalent norms with the property $(\beta)$ of Rolewicz,
+\newblock \emph{Rev. R. Acad. Cienc. Exactas F\'is. Nat. Ser. A Mat. RACSAM}
+111 (2017), 101--113; arXiv:1506.07978.
+
+\bibitem{JLPS}
+W. B. Johnson, J. Lindenstrauss, D. Preiss, and G. Schechtman,
+\newblock Almost Fr\'echet differentiability of Lipschitz mappings between infinite-dimensional Banach spaces,
+\newblock \emph{Proc. London Math. Soc.} 84 (2002), 711--746.
+
+\bibitem{JohnZizler}
+K. John and V. Zizler,
+\newblock A short proof of a version of Asplund averaging theorem,
+\newblock \emph{Proc. Amer. Math. Soc.} 73 (1979), 277--278.
+
+\bibitem{LancienSlides}
+G. Lancien,
+\newblock \emph{A few questions on nonlinear embeddings into Banach spaces},
+\newblock lecture notes, Svratka, January 2017.
+
+\bibitem{OS}
+E. Odell and Th. Schlumprecht,
+\newblock Embedding into Banach spaces with finite dimensional decompositions,
+\newblock \emph{Rev. R. Acad. Cienc. Exactas F\'is. Nat. Ser. A Mat. RACSAM}
+100 (2006), 295--323; arXiv:math/0701324.
+
+\end{thebibliography}
+
+\end{document}

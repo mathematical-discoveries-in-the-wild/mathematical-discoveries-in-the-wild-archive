@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Partial Theorem}
+\newtheorem*{lemma}{Lemma}
+
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\TP}{\operatorname{TP}}
+\newcommand{\TC}{\operatorname{TC}}
+\newcommand{\KR}{\operatorname{KR}}
+
+\title{Partial Result: TC/KR Density for Tight Measures on Arbitrary Metric Spaces}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 16, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Sofiya Ostrovska and Mikhail I. Ostrovskii,
+\emph{Generalized transportation cost spaces}, arXiv:1902.10334
+\cite{OO2019}. Theorem 1.13 proves that if \(M\) is Polish, then
+\((\TP(M),\|\cdot\|_{\TC})\) is dense in the Kantorovich-Rubinstein
+measure space \((\mathcal M,\|\cdot\|_{\KR})\). Remark 1.14 says that the
+authors do not know how to prove an analogue for general metric spaces. In
+the parsed source this is
+\texttt{data/parsed/arxiv\_sources/1902.10334/source.tex}, lines 680--746,
+and in the PDF it is page 11.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The Polish proof uses separability and completeness only through a compact
+approximation step: Ulam's theorem produces a compact set capturing almost all
+of the mass inside a large ball. If the measures are assumed tight, that
+compact set is available in any metric space. The rest of the source proof is
+purely metric: partition the compact set into finitely many small Borel pieces,
+replace the measure on each piece by one atom, and use the Lipschitz bound to
+control all test functions simultaneously.
+
+\section*{Definitions}
+
+Fix a pointed metric space \((M,d,O)\). Let \(\TP(M)\) be the vector space of
+finitely supported real functions \(f\) on \(M\) with \(\sum_x f(x)=0\). For a
+finite signed measure \(\sigma\) with total mass zero and finite first moment,
+write
+\[
+\|\sigma\|_{\Lip}=
+\sup\left\{\left|\int_M l\,d\sigma\right|:\ l(O)=0,\ \Lip(l)\le 1\right\}.
+\]
+For finitely supported \(\sigma=f\), this is the transportation-cost norm.
+
+\section*{Tight-Measure Analogue}
+
+\begin{theorem}
+Let \((M,d,O)\) be an arbitrary metric space. Let \(\mu,\nu\) be tight finite
+positive Borel measures on \(M\), with equal total mass and finite first
+moment. Then for every \(\varepsilon>0\) there is \(f\in \TP(M)\) such that
+\[
+\|\mu-\nu-f\|_{\Lip}<\varepsilon.
+\]
+Consequently, the finite transportation problems are dense in the tight
+finite-measure part of the Kantorovich-Rubinstein space. Equivalently, whenever
+the KR transport norm is identified with the Lipschitz-dual norm on this
+measure class, the density conclusion of Theorem 1.13 remains valid without
+assuming \(M\) is Polish.
+\end{theorem}
+
+\begin{proof}
+Put \(\lambda=\mu+\nu\). If \(\lambda(M)=0\), take \(f=0\), so suppose
+\(\lambda(M)>0\). Let \(\varepsilon>0\). Since \(\mu\) and \(\nu\) have finite
+first moment, choose \(R>1\) such that
+\[
+\int_{M\setminus B(O,R)} d(O,x)\,d\lambda(x)<\varepsilon/3.
+\]
+Since \(\lambda\) is tight, the restriction of \(\lambda\) to the closed ball
+\(B(O,R)\) is tight. Hence there is a compact set \(K\subset B(O,R)\) such
+that
+\[
+\lambda(B(O,R)\setminus K)<\frac{\varepsilon}{3R}.
+\]
+
+Partition the compact metric space \(K\) into finitely many Borel sets
+\(\{K_j\}_{j=1}^N\) of diameter less than
+\(\varepsilon/(3\lambda(M))\). Choose \(t_j\in K_j\), put
+\(a_j=\mu(K_j)-\nu(K_j)\), and define \(f\) by
+\[
+f=\sum_{j=1}^N a_j(\delta_{t_j}-\delta_O).
+\]
+Then \(f\in\TP(M)\), even if one of the selected points \(t_j\) is \(O\).
+
+Let \(l\) be any \(1\)-Lipschitz function on \(M\) with \(l(O)=0\). On each
+piece \(K_j\),
+\[
+\left|\int_{K_j} l\,d(\mu-\nu)-l(t_j)a_j\right|
+\le \int_{K_j}|l(x)-l(t_j)|\,d\lambda(x)
+\le \frac{\varepsilon}{3\lambda(M)}\lambda(K_j).
+\]
+Summing over \(j\) gives a total contribution at most \(\varepsilon/3\). On
+\(B(O,R)\setminus K\), the bound \(|l(x)|\le R\) gives
+\[
+\left|\int_{B(O,R)\setminus K} l\,d(\mu-\nu)\right|
+\le R\lambda(B(O,R)\setminus K)<\varepsilon/3.
+\]
+On \(M\setminus B(O,R)\), the bound \(|l(x)|\le d(O,x)\) gives
+\[
+\left|\int_{M\setminus B(O,R)} l\,d(\mu-\nu)\right|
+\le \int_{M\setminus B(O,R)}d(O,x)\,d\lambda(x)<\varepsilon/3.
+\]
+Combining the three estimates yields
+\[
+\left|\int_M l\,d(\mu-\nu)-\int_M l\,df\right|<\varepsilon
+\]
+uniformly over all such \(l\). This is exactly
+\(\|\mu-\nu-f\|_{\Lip}<\varepsilon\).
+\end{proof}
+
+\section*{KR Norm for Tight Measures}
+
+\begin{lemma}
+For tight finite Borel measures \(\mu,\nu\) as above, the usual \(W_1\) or
+Kantorovich-Rubinstein transport norm equals the Lipschitz-dual norm
+\(\|\mu-\nu\|_{\Lip}\).
+\end{lemma}
+
+\begin{proof}
+Let \(\lambda=\mu+\nu\). Tightness gives compact sets \(C_n\subset M\) with
+\(\lambda(M\setminus C_n)<2^{-n}\). Replacing \(C_n\) by
+\(\bigcup_{k\le n}C_k\), we may assume \(C_n\) is increasing. The set
+\[
+S=\bigcup_{n=1}^\infty C_n
+\]
+is sigma-compact and separable, and \(\lambda(M\setminus S)=0\). Thus both
+measures are supported on the Borel subspace \(S\).
+
+The completion \(\widehat S\) is Polish. The measures extend to finite Borel
+measures on \(\widehat S\) supported on \(S\), with the same first moments.
+The Polish Kantorovich-Rubinstein duality applies on \(\widehat S\). Couplings
+of the extended measures are supported on \(S\times S\), so the transport
+infimum computed in \(M\), in \(S\), or in \(\widehat S\) is the same. Finally,
+every \(1\)-Lipschitz function on \(S\) extends to \(M\), and also to
+\(\widehat S\), by the McShane extension formula. Hence the Lipschitz-dual
+suprema are the same in all three spaces. This proves the claimed
+identification.
+\end{proof}
+
+\section*{Scope and Limitations}
+
+This is a partial result. It proves the general-metric analogue of Theorem
+1.13 for tight finite Borel measures, including finite Radon measures. It does
+not settle the full generality hinted at in Remark 1.14: arbitrary finite
+Borel measures on arbitrary metric spaces may fail to be tight, and the
+compact approximation step above gives no information in that case.
+
+\section*{Novelty Search Bounds}
+
+Before promotion, the run registry, solution index, attempt index, and
+proof-gap index were searched for this arXiv identifier and for the keywords
+``generalized transportation cost spaces'', ``TC/KR'', ``tight measures'', and
+``general metric spaces''. No existing packet for this source remark was found.
+Web searches on June 16, 2026 for close phrases around
+``Kantorovich-Rubinstein tight measures arbitrary metric space'' found standard
+KR-duality material, but no exact later answer to Remark 1.14 in this run's
+packet sense.
+
+\section*{Human Review Recommendation}
+
+Review the separable-support reduction in the KR-norm lemma and the replacement
+of Ulam's theorem by tightness in the density proof. If those two points are
+accepted, the partial theorem is a direct extension of the source proof.
+
+\begin{thebibliography}{9}
+\bibitem{OO2019}
+S. Ostrovska and M. I. Ostrovskii,
+\emph{Generalized transportation cost spaces}, arXiv:1902.10334, 2019.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,269 @@
+\documentclass[11pt]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\CC}{\mathcal{CC}}
+\newcommand{\LLL}{\mathcal{L}}
+\newcommand{\Lmsc}{\mathcal{L}_{msc}}
+\newcommand{\tensorpi}{\widehat{\otimes}_{\pi}}
+
+\begin{document}
+
+\title{A Conditional Reduction for the Hyper-Ideal Question}
+\author{Run fa\_banach\_001}
+\date{2026-06-16}
+\maketitle
+
+\section*{Status}
+
+This packet proves a conditional reduction. It does not prove the external
+Schur tensor-product dependency. Conditional status:
+\[
+  \texttt{conditional\_reduction\_likely\_valid}.
+\]
+
+\section*{Source Question}
+
+Botelho--Torres, \emph{Hyper-ideals of multilinear operators},
+arXiv:1504.00520, define the hyper-ideal \(\Lmsc\) of multilinearly
+sequentially continuous multilinear operators. They prove
+\[
+  \CC\circ\LLL \subseteq \Lmsc,
+\]
+where \(\CC\) is the closed ideal of completely continuous linear operators
+and \(\CC\circ\LLL\) is the composition hyper-ideal.
+
+Their Open Question 2 asks whether this inclusion is proper:
+\[
+  \CC\circ\LLL \subsetneqq \Lmsc.
+\]
+The same discussion relates this question to the long-standing problem of
+whether the Schur property is preserved by projective tensor products.
+
+\section*{Conditional Dependencies}
+
+The only external dependency is the following unproved assumption.
+
+\medskip
+\noindent
+\textbf{Schur tensor counterexample hypothesis.}
+There exist Banach spaces \(E_1,\ldots,E_n\), \(n\geq 2\), each with the
+Schur property, such that
+\[
+  Z=E_1\tensorpi\cdots\tensorpi E_n
+\]
+does not have the Schur property.
+
+\medskip
+Rodriguez, \emph{On weak compactness in projective tensor products},
+arXiv:2206.08651, still records Schur preservation under projective tensor
+products as open. Thus this packet is not a full answer to Open Question 2;
+it proves that any negative answer to that tensor-product problem gives the
+desired proper inclusion.
+
+\section*{Proof Intuition}
+
+The composition ideal \(\CC\circ\LLL\) can be detected on the linearization of
+a multilinear map: an \(n\)-linear operator belongs to \(\CC\circ\LLL\) exactly
+when its associated linear operator on the projective tensor product is
+completely continuous. The canonical tensor map has identity as its
+linearization, so it fails to be in \(\CC\circ\LLL\) precisely when the tensor
+product lacks the Schur property.
+
+The remaining issue is whether the canonical tensor map lies in \(\Lmsc\).
+For Schur factors, weak convergence of elementary tensors is already norm
+convergence. The zero-limit case is forced by a subsequence/functionals
+argument using the Schur property in each factor; the nonzero case is reduced
+to the zero-limit case by splitting the factors into rank-one limit directions
+and complementary kernels.
+
+\section*{Elementary Tensors over Schur Factors}
+
+\begin{lemma}\label{lem:zero}
+Let \(E_1,\ldots,E_n\) have the Schur property. If
+\[
+  z_j=x_j^1\otimes\cdots\otimes x_j^n
+\]
+converges weakly to \(0\) in \(E_1\tensorpi\cdots\tensorpi E_n\), then
+\[
+  \|x_j^1\|\cdots\|x_j^n\|\longrightarrow 0.
+\]
+\end{lemma}
+
+\begin{proof}
+The sequence \((z_j)\) is weakly convergent, hence bounded. Suppose, after
+passing to a subsequence, that
+\[
+  \|x_j^1\|\cdots\|x_j^n\|\geq \delta>0
+\]
+for all \(j\). Terms with a zero factor can be discarded, so put
+\[
+  u_j^k=x_j^k/\|x_j^k\| \qquad (1\leq k\leq n).
+\]
+For every continuous \(n\)-linear form \(B\),
+\[
+  B(u_j^1,\ldots,u_j^n)
+  =
+  \frac{B(x_j^1,\ldots,x_j^n)}
+       {\|x_j^1\|\cdots\|x_j^n\|}
+  \longrightarrow 0.
+\]
+
+Since \(E_1\) has the Schur property and \(\|u_j^1\|=1\), the sequence
+\((u_j^1)\) is not weakly null. Hence some subsequence and some
+\(\varphi_1\in E_1^*\) satisfy \(|\varphi_1(u_j^1)|\geq \epsilon_1>0\) on
+that subsequence. Repeating this argument successively in \(E_2,\ldots,E_n\),
+we obtain a common subsequence and functionals \(\varphi_k\in E_k^*\) such
+that \(|\varphi_k(u_j^k)|\geq \epsilon_k>0\) for every \(k\) along the common
+subsequence. The multilinear form
+\[
+  B(y_1,\ldots,y_n)=\varphi_1(y_1)\cdots\varphi_n(y_n)
+\]
+then does not tend to \(0\) on that subsequence, a contradiction.
+\end{proof}
+
+\begin{lemma}\label{lem:pure-schur}
+Let \(E_1,\ldots,E_n\) have the Schur property. If elementary tensors
+\[
+  z_j=x_j^1\otimes\cdots\otimes x_j^n
+\]
+converge weakly to an elementary tensor
+\[
+  z=x^1\otimes\cdots\otimes x^n
+\]
+in \(E_1\tensorpi\cdots\tensorpi E_n\), then \(z_j\to z\) in projective norm.
+\end{lemma}
+
+\begin{proof}
+If \(z=0\), this is Lemma~\ref{lem:zero}. Suppose \(z\neq 0\), so every
+\(x^k\neq 0\). Choose \(\varphi_k\in E_k^*\) with \(\varphi_k(x^k)=1\).
+Let \(P_k(y)=\varphi_k(y)x^k\) and \(Q_k=I_{E_k}-P_k\). For each subset
+\(S\subseteq\{1,\ldots,n\}\), let
+\[
+  R_S=T_1^S\tensorpi\cdots\tensorpi T_n^S,
+  \qquad
+  T_k^S=
+  \begin{cases}
+    Q_k, & k\in S,\\
+    P_k, & k\notin S.
+  \end{cases}
+\]
+The operators \(R_S\) are bounded and weak-to-weak continuous on the
+projective tensor product. Also \(R_{\varnothing}z=z\) and \(R_S z=0\) for
+\(S\neq\varnothing\).
+
+Since \(z_j\to z\) weakly, \(R_Sz_j\to 0\) weakly for every nonempty \(S\).
+Each \(R_Sz_j\) is an elementary tensor in a projective tensor product of
+closed subspaces of the \(E_k\)'s, hence again in Schur spaces. By
+Lemma~\ref{lem:zero}, \(\|R_Sz_j\|\to 0\) for every nonempty \(S\).
+
+For \(S=\varnothing\),
+\[
+  R_{\varnothing}z_j
+  =
+  \left(\prod_{k=1}^n \varphi_k(x_j^k)\right)
+  x^1\otimes\cdots\otimes x^n
+  \longrightarrow z
+\]
+in norm, because applying the scalar \(n\)-linear form
+\((y_1,\ldots,y_n)\mapsto\prod_k\varphi_k(y_k)\) gives convergence of the
+coefficient to \(1\). The finite decomposition
+\[
+  z_j=\sum_{S\subseteq\{1,\ldots,n\}}R_Sz_j
+\]
+therefore gives \(z_j\to z\) in projective norm.
+\end{proof}
+
+\section*{The Conditional Separation}
+
+\begin{proposition}\label{prop:linearization}
+For \(A\in\LLL(E_1,\ldots,E_n;F)\), let
+\(\widetilde A:E_1\tensorpi\cdots\tensorpi E_n\to F\) be its linearization.
+Then
+\[
+  A\in \CC\circ\LLL(E_1,\ldots,E_n;F)
+\]
+if and only if \(\widetilde A\) is completely continuous.
+\end{proposition}
+
+\begin{proof}
+If \(A=u\circ B\) with \(u:G\to F\) completely continuous and
+\(B:E_1\times\cdots\times E_n\to G\) multilinear, then
+\(\widetilde A=u\circ\widetilde B\). Since \(\widetilde B\) is weak-to-weak
+continuous and \(u\) sends weakly convergent sequences to norm-convergent
+sequences, \(\widetilde A\) is completely continuous.
+
+Conversely, if \(\widetilde A\) is completely continuous, then
+\[
+  A=\widetilde A\circ\sigma,
+  \qquad
+  \sigma(x_1,\ldots,x_n)=x_1\otimes\cdots\otimes x_n,
+\]
+is a \(\CC\circ\LLL\) factorization.
+\end{proof}
+
+\begin{theorem}\label{thm:conditional}
+Assume the Schur tensor counterexample hypothesis. Then
+\[
+  \CC\circ\LLL \subsetneqq \Lmsc.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(E_1,\ldots,E_n\) be Schur spaces such that
+\[
+  Z=E_1\tensorpi\cdots\tensorpi E_n
+\]
+does not have the Schur property. Consider the canonical tensor map
+\[
+  \sigma:E_1\times\cdots\times E_n\to Z,\qquad
+  \sigma(x_1,\ldots,x_n)=x_1\otimes\cdots\otimes x_n.
+\]
+
+If a sequence of tuples converges multilinearly, then the corresponding
+elementary tensors converge weakly in \(Z\). By Lemma~\ref{lem:pure-schur},
+they converge in projective norm. Hence \(\sigma\in\Lmsc(E_1,\ldots,E_n;Z)\).
+
+The linearization of \(\sigma\) is the identity operator \(I_Z\). Since \(Z\)
+lacks the Schur property, \(I_Z\) is not completely continuous. By
+Proposition~\ref{prop:linearization}, \(\sigma\notin
+\CC\circ\LLL(E_1,\ldots,E_n;Z)\). Thus the inclusion is proper.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof above is complete modulo the explicitly stated Schur tensor
+counterexample hypothesis. No computational evidence is used. The most
+important review point is Lemma~\ref{lem:pure-schur}, especially the reduction
+from a nonzero elementary limit to the zero-limit lemma by tensoring the
+rank-one projections \(P_k\) and \(Q_k\).
+
+\section*{Search Bounds}
+
+The run indexes were searched for arXiv:1504.00520, hyper-ideals,
+multilinearly sequentially continuous operators, \(\CC\circ\LLL\), and
+projective tensor Schur phrases. No prior packet for this conditional
+reduction was found. Local parsed arXiv sources and a bounded web search on
+2026-06-16 did not identify a later exact solution of the Schur
+tensor-product preservation problem; Rodriguez arXiv:2206.08651 still records
+it as open in 2022.
+
+\begin{thebibliography}{9}
+\bibitem{BT}
+G. Botelho and E. R. Torres,
+\emph{Hyper-ideals of multilinear operators},
+arXiv:1504.00520.
+
+\bibitem{Rodriguez}
+J. Rodriguez,
+\emph{On weak compactness in projective tensor products},
+arXiv:2206.08651.
+\end{thebibliography}
+
+\end{document}

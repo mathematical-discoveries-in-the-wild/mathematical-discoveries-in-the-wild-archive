@@ -1,0 +1,467 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[margin=0.92in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\dv}{\,dv_g}
+\newcommand{\R}{\mathbb R}
+\newcommand{\calE}{\mathcal E}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\Ltwo}{L^2(M,v_g)}
+
+\title{Joint Smooth Approximation of Compact Weighted Traces\\
+and Convergence of All Variational Eigenvalues}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_14}}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and scope}
+
+Candidate full result, likely valid, for the uniformly positive setting
+explicitly invoked immediately before Remark~1.3 of Vinokurov's
+arXiv:2601.17896v3~\cite{Vinokurov}.  The result removes the continuity and
+upper-boundedness assumptions from the earlier partial argument: the energy
+density may be rough and unbounded.  It proves convergence, not merely the
+requested upper bound, for every eigenvalue at once.
+
+The theorem assumes \(\alpha\geq c>0\), exactly as in the sentence preceding
+the open question.  It does not treat a different, broader interpretation in
+which \(\alpha\) may vanish.  That distinction matters: the source notes that
+for degenerate weights the completed space \(H^1(\alpha)\) can have nonunique
+differentials and even nonzero pure-differential elements.
+
+\section*{Source question}
+
+Vinokurov asks in Remark~1.3, PDF page~4, whether the eigenvalues associated
+with an arbitrary measure inducing a compact identity
+\(H^1(M,\alpha)\to L^2(M,\mu)\) can be approximated, or at least bounded from
+above, by eigenvalues associated with smooth measures~\cite{Vinokurov}.  The
+source passage, including the preceding hypothesis \(\alpha\geq c>0\), is
+reproduced below.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+Let \((M,g)\) be a closed connected Riemannian manifold.  Let
+\(\alpha\in L^1(M)\) satisfy \(\alpha\geq c>0\) almost everywhere, and let
+\(\mu\neq0\) be a finite positive Radon measure.  Write
+\[
+ a_\alpha(u,v)=\int_M\alpha\langle du,dv\rangle_g\dv,
+ \qquad b_\mu(u,v)=\int_M uv\,d\mu.
+\]
+The space \(H_\alpha=H^1(M,1,\alpha)\) is the completion of smooth functions
+for
+\[
+ \|u\|_{H_\alpha}^2=\|u\|_{\Ltwo}^2+a_\alpha(u,u).
+\]
+Uniform positivity makes the function and weak differential components
+unambiguous and gives a continuous injection \(H_\alpha\hookrightarrow
+H^1(M)\).  We assume that the trace
+\[
+ J:H_\alpha\longrightarrow L^2(M,\mu)
+\]
+extends compactly from smooth functions.
+
+The variational eigenvalues are
+\[
+ \lambda_k(\alpha,\mu)=
+ \inf_{\substack{F\subset C^\infty(M)\\ \dim_{L^2(\mu)}F=k+1}}
+ \ \sup_{0\neq u\in F}\frac{a_\alpha(u,u)}{b_\mu(u,u)},
+ \qquad k=0,1,\ldots .
+\]
+Compactness of \(J\), together with the Poincar\'e inequality, gives the usual
+discrete generalized spectrum, with \(\lambda_0=0\).
+
+For \(2<p<\infty\), put \(q=p/(p-2)\).  When
+\(\alpha\in L^q\), Vinokurov's normalization is
+\[
+ \overline\lambda_{k,p}(\alpha,\mu)
+ =\lambda_k(\alpha,\mu)\frac{\mu(M)}{\|\alpha\|_{L^q}}.
+\]
+For \(p=2\), the source fixes \(\alpha\equiv1\).
+
+\section*{Proof intuition}
+
+Smoothing \(\mu\) alone has the wrong one-sided min--max behavior when
+\(\alpha\) is rough.  The key is to smooth the measures \(\alpha v_g\) and
+\(\mu\) by the same small diffeomorphisms.
+
+Compactness of the limiting trace is equivalent to an Ehrling-type estimate
+\[
+ b_\mu(v,v)\leq\varepsilon a_\alpha(v,v)
+       +C_\varepsilon\|v\|_{\Ltwo}^2.
+\]
+Apply it to \(v=u\circ\Phi_z\), then average in the smoothing parameter.
+The averaged mass is exactly the smoothed mass form.  The averaged energy is,
+up to \(1+O(|z|)\), the energy of the simultaneously smoothed scalar density.
+Thus the entire smooth family inherits one uniform compactness estimate.
+
+Meanwhile, the smoothed weights converge strongly in \(L^1\), and their
+energy forms converge in the Mosco sense.  The uniform compactness estimate
+then says that strong \(L^2(v_g)\) convergence plus bounded moving energy
+forces convergence in the moving \(L^2(\mu_n)\) norms.  Finite-dimensional
+recovery spaces give the eigenvalue limsup; limits of the first \(k+1\)
+smooth eigenfunctions give the liminf.
+
+\section*{Main result}
+
+\begin{theorem}[joint smoothing of every compact weighted trace]
+\label{thm:main}
+Let \((M,g)\) be closed and connected, let
+\(\alpha\in L^1(M)\) satisfy \(\alpha\geq c>0\) almost everywhere, and let
+\(\mu\neq0\) be a finite positive Radon measure such that
+\[
+ H^1(M,1,\alpha)\longrightarrow L^2(M,\mu)
+\]
+is compact.  There are \(\alpha_n,\rho_n\in C^\infty(M)\), both strictly
+positive, such that, with \(\mu_n=\rho_n v_g\),
+\begin{align*}
+ &\alpha_n\longrightarrow\alpha &&\text{in }L^1(M),\\
+ &\mu_n\stackrel{*}{\rightharpoonup}\mu,
+   \qquad \mu_n(M)=\mu(M),\\
+ &\lambda_k(\alpha_n,\mu_n)\longrightarrow
+   \lambda_k(\alpha,\mu) &&\text{for every }k\geq0.
+\end{align*}
+If \(\alpha\in L^r(M)\) for some \(1\leq r<\infty\), the construction has
+\(\alpha_n\to\alpha\) in \(L^r\).  Consequently, for \(2<p<\infty\) and
+\(\alpha\in L^{p/(p-2)}\), every normalized eigenvalue also converges.  In
+the \(p=2\) case with \(\alpha=1\), one may take \(\alpha_n\equiv1\).
+\end{theorem}
+
+In particular, for \(2<p\leq m\), every pair in the uniformly positive
+regime of Remark~1.3 satisfies
+\[
+ \overline\lambda_{k,p}(\alpha,\mu)
+ \leq \sup_{\substack{\widetilde\alpha,\widetilde\mu\in C^\infty(M)\\
+                 \widetilde\alpha,\widetilde\mu>0}}
+       \overline\lambda_{k,p}(\widetilde\alpha,
+                              \widetilde\mu v_g),
+\]
+which is the requested smooth upper bound; the theorem gives the stronger
+approximation statement.
+
+\section*{Proof}
+
+\subsection*{1. Compactness gives an Ehrling estimate}
+
+\begin{lemma}\label{lem:ehrling}
+For every \(\varepsilon>0\), there is \(C_\varepsilon<\infty\) such that
+\begin{equation}\label{eq:ehrling}
+ b_\mu(v,v)\leq \varepsilon a_\alpha(v,v)
+      +C_\varepsilon\|v\|_{\Ltwo}^2
+ \qquad(v\in H_\alpha).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If this failed for some \(\varepsilon\), after normalization there would be
+\(v_j\in H_\alpha\) with
+\[
+ b_\mu(v_j,v_j)=1,\qquad
+ a_\alpha(v_j,v_j)\leq\varepsilon^{-1},\qquad
+ \|v_j\|_{\Ltwo}^2\longrightarrow0.
+\]
+The sequence is bounded in \(H_\alpha\), and any weakly convergent
+subsequence has weak limit zero because its \(L^2(v_g)\) norm tends to zero.
+Compactness of \(J\) would then give
+\(b_\mu(v_j,v_j)\to0\), a contradiction.
+\end{proof}
+
+\subsection*{2. A common intrinsic smoothing family}
+
+Choose finitely many smooth global vector fields
+\(X_1,\ldots,X_N\) whose values span \(T_xM\) at every \(x\).  Such a
+family is obtained, for example, by embedding \(M\) in Euclidean space and
+projecting a basis of the ambient space onto \(TM\).  Let
+\[
+ \Phi_z=\operatorname{Fl}^{X_N}_{z_N}\circ\cdots\circ
+          \operatorname{Fl}^{X_1}_{z_1},
+ \qquad z\in\R^N
+\]
+for small \(z\).  Then \(\Phi_0=\mathrm{id}\), the maps are uniformly
+bi-Lipschitz, and
+\begin{equation}\label{eq:metric-close}
+ (1-C|z|)g\leq \Phi_z^*g\leq(1+C|z|)g.
+\end{equation}
+Moreover \(z\mapsto\Phi_z(x)\) is a submersion near \(z=0\), uniformly in
+\(x\); these are standard consequences of smooth flows and the submersion
+theorem~\cite{Lee}.
+
+Let \(\eta_t\) be a nonnegative smooth density on \(\R^N\), supported in
+\(|z|<t\), with integral one.  For a finite measure \(\sigma\) on \(M\), set
+\begin{equation}\label{eq:Pt}
+ P_t\sigma=\int_{\R^N}(\Phi_z)_*\sigma\,\eta_t(z)\,dz.
+\end{equation}
+The submersion theorem and integration along the parameter fibers give a
+smooth kernel \(K_t(x,y)\) such that
+\[
+ d(P_t\sigma)(y)=\left(\int_MK_t(x,y)\,d\sigma(x)\right)dv_g(y).
+\]
+Thus \(P_t\sigma\) has a smooth density even when \(\sigma\) is singular.
+It preserves total mass and converges weak-star to \(\sigma\).  If
+\(d\sigma=f\,dv_g\) with \(f\in L^r\), \(1\leq r<\infty\), strong continuity
+of pullback by a smooth family of diffeomorphisms gives
+\begin{equation}\label{eq:Lr}
+ \frac{dP_t(fv_g)}{dv_g}\longrightarrow f\quad\text{in }L^r(M).
+\end{equation}
+
+Define
+\[
+ \alpha_t\,dv_g=P_t(\alpha v_g),\qquad \nu_t=P_t\mu.
+\]
+The first density is smooth.  Since \(\alpha\geq c\) and the Jacobians of
+\(\Phi_z\) equal \(1+O(t)\) uniformly,
+\begin{equation}\label{eq:lower}
+ \alpha_t\geq c/2
+\end{equation}
+for all sufficiently small \(t\).  To make the mass density strictly positive
+while preserving mass, choose \(\delta_t\downarrow0\) and put
+\begin{equation}\label{eq:positive-mass}
+ \mu_t=(1-\delta_t)\nu_t+
+ \delta_t\frac{\mu(M)}{v_g(M)}v_g.
+\end{equation}
+
+For smooth \(u\), put \(U_zu=u\circ\Phi_z\).  The definitions give
+\begin{align}
+ b_{\nu_t}(u,u)&=\int\!b_\mu(U_zu,U_zu)\eta_t(z)\,dz,
+ \label{eq:mass-average}\\
+ a_{\alpha_t}(u,u)&=\int\!\int_M
+   \alpha(x)|du(\Phi_z(x))|_g^2\dv(x)\eta_t(z)\,dz.
+ \label{eq:energy-scalar}
+\end{align}
+By \eqref{eq:metric-close}, if
+\(A_t(u)=\int a_\alpha(U_zu,U_zu)\eta_t(z)\,dz\), then
+\begin{equation}\label{eq:energy-compare}
+ (1-Ct)a_{\alpha_t}(u,u)\leq A_t(u)
+ \leq(1+Ct)a_{\alpha_t}(u,u).
+\end{equation}
+Also
+\begin{equation}\label{eq:L2-compare}
+ \int\|U_zu\|_{\Ltwo}^2\eta_t(z)\,dz
+ \leq(1+Ct)\|u\|_{\Ltwo}^2.
+\end{equation}
+
+Average \eqref{eq:ehrling} with \(v=U_zu\) and use
+\eqref{eq:mass-average}--\eqref{eq:L2-compare}.  Absorbing the harmless
+volume component in \eqref{eq:positive-mass}, we obtain the central estimate:
+for every \(\varepsilon>0\), there is \(C_\varepsilon'\), independent of all
+sufficiently small \(t\), such that
+\begin{equation}\label{eq:uniform-ehrling}
+ b_{\mu_t}(u,u)\leq
+ \varepsilon a_{\alpha_t}(u,u)
+ +C_\varepsilon'\|u\|_{\Ltwo}^2
+ \qquad(u\in H^1(M)).
+\end{equation}
+The estimate initially holds for smooth \(u\) and extends by density because
+\(\alpha_t\) and the density of \(\mu_t\) are smooth and positive.
+
+For \(p=2\) and \(\alpha=1\), retain \(a_1\) instead of defining
+\(a_{\alpha_t}\).  Equation \eqref{eq:metric-close} compares
+\(\int a_1(U_zu)\eta_t dz\) directly with \(a_1(u)\), so the same estimate
+\eqref{eq:uniform-ehrling} holds with \(\alpha_t=1\).
+
+\subsection*{3. Convergence of the energy and mass forms}
+
+Take any sequence \(t_n\downarrow0\), and abbreviate
+\(a_n=a_{\alpha_{t_n}}\), \(b_n=b_{\mu_{t_n}}\).  By
+\eqref{eq:Lr}, \(\alpha_{t_n}\to\alpha\) in \(L^1\).  The energy forms have
+the following two elementary Mosco properties:
+\begin{enumerate}[label=(\alph*)]
+\item If \(u_n\to u\) in \(\Ltwo\) and
+      \(\sup_n a_n(u_n,u_n)<\infty\), then
+\begin{equation}\label{eq:liminf-energy}
+ a_\alpha(u,u)\leq\liminf_n a_n(u_n,u_n).
+\end{equation}
+\item For every \(u\in H_\alpha\), there are smooth \(u_n\to u\) in
+      \(\Ltwo\) such that
+\begin{equation}\label{eq:recovery-energy}
+ a_n(u_n,u_n)\longrightarrow a_\alpha(u,u).
+\end{equation}
+\end{enumerate}
+For (a), \eqref{eq:lower} bounds \(u_n\) in ordinary \(H^1\).  After taking
+a subsequence, \(du_n\rightharpoonup du\) in \(L^2\), while
+\(\sqrt{\alpha_{t_n}}\to\sqrt\alpha\) in \(L^2\).  The bounded fields
+\(\sqrt{\alpha_{t_n}}du_n\) therefore converge weakly to
+\(\sqrt\alpha,du\); weak lower semicontinuity proves
+\eqref{eq:liminf-energy}.  For (b), approximate \(u\) in \(H_\alpha\) by
+smooth functions and choose a diagonal sequence; for each fixed smooth
+function, \(L^1\)-convergence of the coefficients gives energy convergence.
+The same diagonal argument works simultaneously on any fixed
+finite-dimensional subspace and preserves all polarized energy products.
+
+The uniform estimate upgrades this to convergence of the moving mass forms.
+Precisely, if
+\begin{equation}\label{eq:moving-assumption}
+ u_n\to u\text{ in }\Ltwo,\qquad \sup_n a_n(u_n,u_n)<\infty,
+\end{equation}
+then
+\begin{equation}\label{eq:moving-mass}
+ b_n(u_n,u_n)\longrightarrow b_\mu(u,u).
+\end{equation}
+To see this, choose smooth \(v_j\to u\) in \(H_\alpha\), with their energies
+uniformly bounded.  For fixed \(j\), weak-star convergence gives
+\(b_n(v_j,v_j)\to b_\mu(v_j,v_j)\).  On the other hand,
+\eqref{eq:uniform-ehrling} and
+\(a_n(u_n-v_j)\leq2a_n(u_n)+2a_n(v_j)\) give, for every fixed
+\(\varepsilon>0\),
+\[
+ \limsup_n b_n(u_n-v_j,u_n-v_j)
+ \leq C\varepsilon+C_\varepsilon'\|u-v_j\|_{\Ltwo}^2,
+\]
+where \(C\) is independent of \(j\) for large \(j\).  First choose
+\(\varepsilon\) small and then \(j\) large.  The triangle inequality in
+\(L^2(\mu_n)\), followed by the corresponding limiting argument in
+\(L^2(\mu)\), proves \eqref{eq:moving-mass}.  Polarization gives convergence
+of mixed mass products for finitely many such sequences.
+
+We also need a uniform coercivity estimate.  There is \(C<\infty\) such that
+\begin{equation}\label{eq:coercivity}
+ \|u\|_{\Ltwo}^2\leq C\bigl(a_n(u,u)+b_n(u,u)\bigr)
+\end{equation}
+for all large \(n\).  Indeed, subtract the volume mean \(\bar u\).  The
+ordinary Poincar\'e inequality and \eqref{eq:lower} bound
+\(\|u-\bar u\|_{\Ltwo}^2\) by \(Ca_n(u,u)\).  Estimate
+\eqref{eq:uniform-ehrling} then bounds \(b_n(u-\bar u,u-\bar u)\) by the same
+quantity.  Finally,
+\[
+ \mu(M)^{1/2}|\bar u|
+ =\|\bar u\|_{L^2(\mu_n)}
+ \leq\|u\|_{L^2(\mu_n)}+
+       \|u-\bar u\|_{L^2(\mu_n)},
+\]
+which proves \eqref{eq:coercivity}.
+
+\subsection*{4. Two-sided min--max convergence}
+
+For the limsup, let \(E\subset H_\alpha\) be the span of the first
+\(k+1\) limiting eigenfunctions.  The finite-dimensional version of the
+recovery construction supplies maps \(R_n:E\to C^\infty(M)\) for which all
+energy products converge.  Equations \eqref{eq:moving-mass} and polarization
+give convergence of all mass products as well.  The two Gram matrices thus
+converge uniformly on the unit sphere of \(E\), and the min--max
+principle~\cite{Davies} gives
+\begin{equation}\label{eq:limsup}
+ \limsup_n\lambda_k(\alpha_{t_n},\mu_{t_n})
+ \leq\lambda_k(\alpha,\mu).
+\end{equation}
+
+For the reverse inequality, pass to a subsequence realizing the liminf.  The
+claim is immediate if the liminf is infinite, so assume it is finite.  Let
+\(u_{n,0},\ldots,u_{n,k}\) be first eigenfunctions for the smooth pair,
+chosen \(b_n\)-orthonormal.  Their energies are at most
+\(\lambda_k(\alpha_{t_n},\mu_{t_n})\).  Estimate
+\eqref{eq:coercivity} bounds them in \(L^2(v_g)\), and
+\eqref{eq:lower} bounds them in ordinary \(H^1\).  Rellich compactness and a
+diagonal extraction give
+\[
+ u_{n,j}\longrightarrow u_j\quad\text{in }L^2(v_g),
+ \qquad j=0,\ldots,k.
+\]
+Equation \eqref{eq:moving-mass} and polarization show that the limits are
+\(b_\mu\)-orthonormal.  For every \(c=(c_0,\ldots,c_k)\), energy lower
+semicontinuity gives
+\begin{align*}
+ a_\alpha\left(\sum_jc_ju_j,\sum_jc_ju_j\right)
+ &\leq\liminf_n
+ a_n\left(\sum_jc_ju_{n,j},\sum_jc_ju_{n,j}\right)\\
+ &\leq\left(\liminf_n\lambda_k(\alpha_{t_n},\mu_{t_n})\right)
+       \sum_j|c_j|^2.
+\end{align*}
+The span of the \(u_j\)'s is therefore an admissible \((k+1)\)-dimensional
+space in the limiting min--max problem, and
+\begin{equation}\label{eq:liminf}
+ \lambda_k(\alpha,\mu)
+ \leq\liminf_n\lambda_k(\alpha_{t_n},\mu_{t_n}).
+\end{equation}
+Together, \eqref{eq:limsup} and \eqref{eq:liminf} prove eigenvalue
+convergence.  Property \eqref{eq:Lr}, preservation of \(\mu(M)\), and the
+special \(p=2\) construction prove the remaining assertions of
+Theorem~\ref{thm:main}. \qed
+
+\section*{Verification notes}
+
+The proof was checked against four common failure modes.
+\begin{enumerate}[leftmargin=*]
+\item Weak-star convergence alone gives only the wrong min--max direction.
+      The proof never relies on it alone; \eqref{eq:uniform-ehrling} supplies
+      collective compactness.
+\item Translating only \(\mu\) is not compatible with a rough unbounded
+      \(\alpha\).  Here both measures are averaged by the same maps, and
+      \eqref{eq:energy-compare} is a multiplicative comparison independent of
+      pointwise upper bounds on \(\alpha\).
+\item Strong \(L^1\) convergence of coefficients does not by itself imply
+      operator-norm form convergence.  The proof uses the weaker but adequate
+      Mosco liminf plus finite-dimensional recovery properties.
+\item Averaging spectral inequalities can turn a rank-\(k\) exceptional space
+      into an infinite-rank one.  The argument avoids averaging spectral
+      projectors: it averages the compactness inequality and applies min--max
+      only after compact convergence has been proved.
+\end{enumerate}
+
+The most important points for human review are the smooth-kernel consequence
+of the spanning-flow construction, the uniform estimate
+\eqref{eq:uniform-ehrling}, and the diagonal finite-dimensional recovery used
+in \eqref{eq:limsup}.
+
+\section*{Novelty check and limitations}
+
+A bounded search was performed before promotion.  Local run indexes were
+searched for arXiv:\allowbreak 2601.17896, the exact Remark~1.3 wording,
+compact weighted
+traces, smooth-measure approximation, Mosco convergence, and spectral
+convergence.  The source of Girouard--Karpukhin--Lagac\'e arXiv:2004.10784 was
+also searched.  A web pass used the exact question phrase and combinations of
+``joint mollification'', ``weighted Dirichlet form'', ``compact trace'', and
+``eigenvalue approximation''.  It found general Mosco-convergence literature
+but no theorem matching Theorem~\ref{thm:main}, and no later paper explicitly
+answering Vinokurov's question.  Novelty confidence is therefore moderate,
+not definitive.
+
+The theorem does not include weights that can vanish.  If Remark~1.3 is read
+as asking simultaneously about arbitrary degenerate \(\alpha\), this packet
+should be reclassified as a sharp partial result.  Under the uniformly
+positive hypothesis stated immediately before the question, it is a full
+approximation theorem.
+
+\section*{Human-review recommendation}
+
+Send to an analyst working on weighted Dirichlet forms or spectral geometry.
+The argument is short enough to verify directly and appears to close the
+uniformly positive case, but the interpretation of the source's one-argument
+notation \(H^1(M,\alpha)\) should be confirmed with the author before a
+publication claim.
+
+\begin{thebibliography}{9}
+
+\bibitem{Vinokurov}
+D. Vinokurov,
+\emph{Eigenvalue optimization in higher dimensions and \(p\)-harmonic maps},
+arXiv:2601.17896v3 (2026), especially Remark~1.3 and
+Section~2.6.
+
+\bibitem{Lee}
+J. M. Lee,
+\emph{Introduction to Smooth Manifolds}, 2nd ed.,
+Graduate Texts in Mathematics 218, Springer, 2013.
+
+\bibitem{Davies}
+E. B. Davies,
+\emph{Spectral Theory and Differential Operators},
+Cambridge Studies in Advanced Mathematics 42, Cambridge University Press,
+1995.
+
+\end{thebibliography}
+
+\end{document}

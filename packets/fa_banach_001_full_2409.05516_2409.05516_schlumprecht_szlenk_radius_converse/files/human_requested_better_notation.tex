@@ -1,0 +1,816 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\newcommand{\ph}{\varphi}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Ssp}{\mathcal S}
+\newcommand{\Ball}{B}
+\newcommand{\Bell}[1]{B_{#1}}
+\newcommand{\Delt}[1]{\Delta_{#1}}
+
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem*{remark*}{Remark}
+
+\title{Self-Contained Better-Notation Rewrite of the Schlumprecht Szlenk-Radius Converse}
+\author{Human-requested companion note}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.92\linewidth}
+\textbf{Important note.}
+This document is not the original LLM-generated output.  It is a
+human-requested rewrite, requested by Antonio Acuaviva, of the proposed
+argument with improved notation and with the details made self-contained.
+The mathematical content is intended to be the same as in the original
+solution packet, but the notation has been reorganized to make the proof
+easier to check.
+\end{minipage}}
+\end{center}
+
+\section{Setup}
+
+Let
+\[
+ \ph(n)=\log_2(n+1)
+ \qquad (n\in\N).
+\]
+Schlumprecht's space \(\Ssp\) is the completion of \(c_{00}\) under the norm
+\[
+ \|x\|_{\Ssp}
+ =
+ \max\left\{
+ \|x\|_\infty,
+ \sup_{n\ge 2,\ E_1<\cdots<E_n}
+ \frac{1}{\ph(n)}
+ \sum_{i=1}^n \|E_i x\|_{\Ssp}
+ \right\}.
+\]
+Here \(E x\) denotes the coordinate restriction of \(x\) to the finite set
+\(E\), and \(E_1<\cdots<E_n\) means the sets are successive.
+
+We use the standard facts that the canonical basis of \(\Ssp\) is
+1-unconditional and shrinking, and that \(\Ssp\) is reflexive.  Thus
+\(e_N\to 0\) weakly in \(\Ssp\).
+
+For a weak-star compact set \(K\subset X^*\), the Szlenk derivation is
+\[
+ s_\varepsilon(K)
+ =
+ \{x^*\in K:
+ \operatorname{diam}(K\cap V)>\varepsilon
+ \text{ for every weak-star neighbourhood }V\ni x^*\}.
+\]
+In the present case \(X=\Ssp^*\), so \(X^*=\Ssp\).  The corresponding
+inner Szlenk radius is
+\[
+ r_{\Ssp^*}(\varepsilon)
+ =
+ \sup\{r>0:r\Ball_{\Ssp}\subset s_\varepsilon(\Ball_{\Ssp})\}.
+\]
+
+For \(0<\alpha<1\), define
+\[
+ a_\alpha
+ =
+ \inf_{n\in\N}
+ \frac{\ph(n+1)-\alpha}{\ph(n)}.
+\]
+The known upper bound from the source paper is
+\[
+ r_{\Ssp^*}(\varepsilon)
+ \le
+ a_{\varepsilon/2}.
+\]
+The goal of the proposed argument is to prove the reverse inequality.
+
+\begin{theorem*}
+For \(0<\varepsilon<2\),
+\[
+ r_{\Ssp^*}(\varepsilon)
+ =
+ \inf_{n\in\N}
+ \frac{\ph(n+1)-\varepsilon/2}{\ph(n)}.
+\]
+\end{theorem*}
+
+\section{Logarithmic notation}
+
+For \(i\ge 1\), write
+\[
+ \Bell{i}=\ph(i+1),
+ \qquad
+ \Delt{i}=\ph(i+1)-\ph(i).
+\]
+Thus
+\[
+ \Bell{i}=\log_2(i+2),
+ \qquad
+ \Delt{i}=\log_2\left(1+\frac{1}{i+1}\right).
+\]
+This notation is kept throughout the proof.  In particular, when the
+product lemma is applied later with \(i=k-1\) and \(j=m\), the relevant
+quantities remain visibly
+\[
+ \Delt{k-1},\qquad \Delt{m},\qquad \Bell{\ell},\qquad \Delt{\ell}.
+\]
+
+\section{The product lemma}
+
+We first record the elementary monotonicity fact behind the product lemma.
+
+\begin{lemma*}
+The function
+\[
+ h(u)=\frac{u\log u}{u-1}
+ \qquad (u>1)
+\]
+is increasing.
+\end{lemma*}
+
+\begin{proof}
+Differentiate:
+\[
+ h'(u)
+ =
+ \frac{(u-1)(\log u+1)-u\log u}{(u-1)^2}
+ =
+ \frac{u-1-\log u}{(u-1)^2}.
+\]
+Since \(\log u\le u-1\), we have \(h'(u)\ge 0\).
+\end{proof}
+
+\begin{lemma*}[Product lemma]
+For \(i,j\ge 1\), put
+\[
+ \ell=(i+1)(j+1)-1.
+\]
+Then
+\[
+ \Bell{\ell}\le \Bell{i}\Bell{j},
+ \qquad
+ \Delt{\ell}\le \Delt{i}\Delt{j}.
+\]
+\end{lemma*}
+
+\begin{proof}
+The first inequality is equivalent to
+\[
+ \log_2(pq+1)
+ \le
+ \log_2(p+1)\log_2(q+1)
+ \qquad(p,q\ge 2),
+\]
+where \(p=i+1\) and \(q=j+1\).  For fixed \(p\), consider
+\[
+ F_p(q)=\frac{\log(pq+1)}{\log(q+1)}.
+\]
+A quotient-rule calculation gives
+\[
+ F_p'(q)
+ =
+ \frac{
+ p(q+1)\log(q+1)-(pq+1)\log(pq+1)
+ }{(pq+1)(q+1)(\log(q+1))^2}.
+\]
+The numerator is non-positive because it is the comparison
+\[
+ \frac{(q+1)\log(q+1)}{q}
+ \le
+ \frac{(pq+1)\log(pq+1)}{pq},
+\]
+which follows from the monotonicity of \(h\).  Hence \(F_p\) is decreasing,
+so \(F_p(q)\le F_p(1)\).  This gives
+\[
+ \frac{\log(pq+1)}{\log(q+1)}
+ \le
+ \frac{\log(p+1)}{\log 2},
+\]
+which is the first inequality.
+
+For the increment inequality, put \(a=1/p\) and \(b=1/q\).  It is enough to
+prove
+\[
+ \log_2(1+ab)
+ \le
+ \log_2(1+a)\log_2(1+b)
+ \qquad(0<a,b\le 1).
+\]
+For fixed \(a\), define
+\[
+ G_a(b)=\frac{\log(1+ab)}{\log(1+b)}.
+\]
+Again differentiating,
+\[
+ G_a'(b)
+ =
+ \frac{
+ a(1+b)\log(1+b)-(1+ab)\log(1+ab)
+ }{(1+ab)(1+b)(\log(1+b))^2}.
+\]
+Let \(u=1+b\) and \(v=1+ab\).  Since \(0<a\le 1\), \(v\le u\), and
+\[
+ a(u-1)=v-1.
+\]
+The numerator is
+\[
+ a u\log u-v\log v
+ =
+ (v-1)\left(
+ \frac{u\log u}{u-1}
+ -
+ \frac{v\log v}{v-1}
+ \right)\ge 0
+\]
+by the monotonicity of \(h\).  Hence \(G_a\) is increasing, so
+\[
+ G_a(b)\le G_a(1)=\frac{\log(1+a)}{\log 2}.
+\]
+This proves the increment inequality.
+\end{proof}
+
+\section{The scalar majorant}
+
+First note that \(0<a_\alpha<1\).  For positivity, since
+\(\ph(n+1)>\ph(n)\) and \(\ph(n)\ge 1\),
+\[
+ \frac{\ph(n+1)-\alpha}{\ph(n)}
+ >
+ \frac{\ph(n)-\alpha}{\ph(n)}
+ =
+ 1-\frac{\alpha}{\ph(n)}
+ \ge
+ 1-\alpha>0.
+\]
+Thus \(a_\alpha\ge 1-\alpha>0\).  For the upper bound, use
+\(\ph(n+1)-\ph(n)\to 0\).  Choose \(n\) with
+\[
+ \ph(n+1)-\ph(n)<\alpha.
+\]
+Then
+\[
+ \frac{\ph(n+1)-\alpha}{\ph(n)}<1,
+\]
+so \(a_\alpha<1\).
+
+From the definition of the infimum, for every \(n\in\N\),
+\[
+ a_\alpha
+ \le
+ \frac{\ph(n+1)-\alpha}{\ph(n)}.
+\]
+Equivalently,
+\[
+ \ph(n)a_\alpha+\alpha\le \ph(n+1).
+\]
+
+For \(u\ge 0\), define
+\[
+ M_\alpha(u)
+ =
+ \max\left\{
+ u,\alpha,
+ \sup_{m\in\N}
+ \frac{\ph(m)u+\alpha}{\ph(m+1)}
+ \right\}.
+\]
+This scalar function is designed to dominate the cost of adding one far
+coordinate of size \(\alpha\).
+
+If \(0\le u<a_\alpha\), then \(M_\alpha(u)\le 1\).  Indeed, \(u<1\) and
+\(\alpha<1\), while for every \(m\),
+\[
+ \frac{\ph(m)u+\alpha}{\ph(m+1)}
+ \le
+ \frac{\ph(m)a_\alpha+\alpha}{\ph(m+1)}
+ \le
+ 1.
+\]
+
+\section{Strengthened scalar estimate}
+
+\begin{lemma*}[Strengthened scalar estimate]
+Let \(0<\alpha<1\), \(0\le s\le t\), and \(k\ge 2\). Then
+\[
+ M_\alpha(s)
+ +
+ \min\{\ph(k-1)t,\ph(k)t-s\}
+ \le
+ \ph(k)M_\alpha(t).
+\]
+\end{lemma*}
+
+\begin{proof}
+We prove the estimate separately for each type of term appearing in
+\(M_\alpha(s)\).
+
+First consider the term \(s\).  Since
+\[
+ \min\{\ph(k-1)t,\ph(k)t-s\}\le \ph(k)t-s,
+\]
+we have
+\[
+ s+\min\{\ph(k-1)t,\ph(k)t-s\}
+ \le
+ \ph(k)t
+ \le
+ \ph(k)M_\alpha(t).
+\]
+
+Next consider the term \(\alpha\).  Since
+\[
+ \min\{\ph(k-1)t,\ph(k)t-s\}\le \ph(k-1)t,
+\]
+we get
+\[
+ \alpha+\min\{\ph(k-1)t,\ph(k)t-s\}
+ \le
+ \alpha+\ph(k-1)t.
+\]
+But \(M_\alpha(t)\) contains the affine term indexed by \(k-1\):
+\[
+ M_\alpha(t)
+ \ge
+ \frac{\ph(k-1)t+\alpha}{\ph(k)}.
+\]
+Thus
+\[
+ \alpha+\ph(k-1)t\le \ph(k)M_\alpha(t).
+\]
+
+It remains to consider an affine term indexed by \(m\):
+\[
+ \frac{\ph(m)s+\alpha}{\ph(m+1)}.
+\]
+For fixed \(t\), put
+\[
+ F_m(s)
+ =
+ \frac{\ph(m)s+\alpha}{\ph(m+1)}
+ +
+ \min\{\ph(k-1)t,\ph(k)t-s\}.
+\]
+The two quantities inside the minimum are equal when
+\[
+ \ph(k-1)t=\ph(k)t-s,
+\]
+that is, when
+\[
+ s=(\ph(k)-\ph(k-1))t=\Delt{k-1}t.
+\]
+
+On \(0\le s\le \Delt{k-1}t\), the minimum is \(\ph(k-1)t\), so \(F_m\) is
+increasing.  On \(\Delt{k-1}t\le s\le t\), the minimum is \(\ph(k)t-s\),
+and the slope of \(F_m\) is
+\[
+ \frac{\ph(m)}{\ph(m+1)}-1<0.
+\]
+Hence \(F_m\) is maximized at \(s=\Delt{k-1}t\).
+
+At that point,
+\[
+ F_m(\Delt{k-1}t)
+ =
+ \frac{\ph(m)\Delt{k-1}t+\alpha}{\ph(m+1)}
+ +
+ \ph(k-1)t.
+\]
+Putting this over the denominator \(\ph(m+1)\), we get
+\[
+ F_m(\Delt{k-1}t)
+ =
+ \frac{
+ \alpha
+ +
+ t\bigl(\ph(m)\Delt{k-1}
+       +\ph(k-1)\ph(m+1)\bigr)
+ }{\ph(m+1)}.
+\]
+Using
+\[
+ \ph(k)=\ph(k-1)+\Delt{k-1},
+ \qquad
+ \ph(m+1)=\ph(m)+\Delt{m},
+\]
+one obtains
+\[
+ \ph(m)\Delt{k-1}
+ +\ph(k-1)\ph(m+1)
+ =
+ \ph(k)\ph(m+1)-\Delt{k-1}\Delt{m}.
+\]
+Therefore
+\[
+ F_m(\Delt{k-1}t)
+ =
+ \frac{
+ \alpha
+ +
+ t\bigl(\ph(k)\ph(m+1)-\Delt{k-1}\Delt{m}\bigr)
+ }{\ph(m+1)}.
+\]
+It is enough to prove
+\[
+ M_\alpha(t)
+ \ge
+ t+
+ \frac{\alpha-\Delt{k-1}\Delt{m}t}
+      {\ph(k)\ph(m+1)}.
+\]
+
+Apply the product lemma with \(i=k-1\) and \(j=m\).  Then
+\[
+ \ell=(k-1+1)(m+1)-1=k(m+1)-1,
+\]
+and
+\[
+ \Bell{\ell}\le \Bell{k-1}\Bell{m}
+ =
+ \ph(k)\ph(m+1),
+\]
+while
+\[
+ \Delt{\ell}\le \Delt{k-1}\Delt{m}.
+\]
+The affine term indexed by \(\ell\) in \(M_\alpha(t)\) gives
+\[
+ M_\alpha(t)
+ \ge
+ \frac{\ph(\ell)t+\alpha}{\ph(\ell+1)}.
+\]
+Since
+\[
+ \Bell{\ell}=\ph(\ell+1),
+ \qquad
+ \Delt{\ell}=\ph(\ell+1)-\ph(\ell),
+\]
+we have
+\[
+ \ph(\ell)=\Bell{\ell}-\Delt{\ell}.
+\]
+Hence
+\[
+ M_\alpha(t)
+ \ge
+ t+\frac{\alpha-\Delt{\ell}t}{\Bell{\ell}}.
+\]
+
+If
+\[
+ \alpha-\Delt{k-1}\Delt{m}t<0,
+\]
+then
+\[
+ t+
+ \frac{\alpha-\Delt{k-1}\Delt{m}t}
+      {\ph(k)\ph(m+1)}
+ <t,
+\]
+and the desired inequality follows from \(M_\alpha(t)\ge t\).
+
+If
+\[
+ \alpha-\Delt{k-1}\Delt{m}t\ge 0,
+\]
+then
+\[
+ \alpha-\Delt{\ell}t
+ \ge
+ \alpha-\Delt{k-1}\Delt{m}t
+ \ge 0,
+\]
+and
+\[
+ \Bell{\ell}\le \ph(k)\ph(m+1).
+\]
+Therefore
+\[
+ \frac{\alpha-\Delt{\ell}t}{\Bell{\ell}}
+ \ge
+ \frac{\alpha-\Delt{k-1}\Delt{m}t}
+      {\ph(k)\ph(m+1)}.
+\]
+Thus the affine-term case follows.
+
+The estimate has now been checked for \(s\), for \(\alpha\), and for every
+affine term indexed by \(m\).  Hence it holds for \(M_\alpha(s)\).
+\end{proof}
+
+\section{A comparison lemma for the Schlumprecht norm}
+
+Define iterative norms on \(c_{00}\) by
+\[
+ \|x\|_0=\|x\|_\infty,
+\]
+and
+\[
+ \|x\|_{r+1}
+ =
+ \max\left\{
+ \|x\|_\infty,
+ \sup_{n\ge 2,\ E_1<\cdots<E_n}
+ \frac{1}{\ph(n)}
+ \sum_{i=1}^n \|E_i x\|_r
+ \right\}.
+\]
+Then
+\[
+ \|x\|_{\Ssp}=\sup_{r\ge 0}\|x\|_r.
+\]
+
+\begin{lemma*}[Local comparison]
+Let \(y\in c_{00}\).  Suppose there is a function
+\[
+ \rho:[\N]^{<\omega}\to [0,\infty),
+\]
+where
+\[
+ [\N]^{<\omega}=\{F\subset \N:F\text{ is finite}\},
+\]
+such that, for every finite \(F\subset\N\),
+\[
+ \|Fy\|_\infty\le \rho(F),
+\]
+for every \(G\subset F\),
+\[
+ G\subset F \Longrightarrow \rho(G)\le \rho(F),
+\]
+and, whenever \(k\ge 2\) and \(E_1<\cdots<E_k\subset F\),
+\[
+ \sum_{i=1}^k \rho(E_i)\le \ph(k)\rho(F).
+\]
+Then
+\[
+ \|Fy\|_{\Ssp}\le \rho(F)
+\]
+for every finite \(F\subset\N\).
+\end{lemma*}
+
+\begin{proof}
+We prove by induction on \(r\) that
+\[
+ \|Fy\|_r\le \rho(F)
+\]
+for every finite \(F\).  The case \(r=0\) is exactly the assumption
+\(\|Fy\|_\infty\le \rho(F)\).
+
+Assume the claim holds for \(r\).  For \(E_1<\cdots<E_k\subset F\),
+\[
+ \sum_{i=1}^k \|E_i y\|_r
+ \le
+ \sum_{i=1}^k \rho(E_i)
+ \le
+ \ph(k)\rho(F).
+\]
+Together with \(\|Fy\|_\infty\le\rho(F)\), this gives
+\[
+ \|Fy\|_{r+1}\le \rho(F).
+\]
+Taking the supremum over \(r\) proves the result.
+\end{proof}
+
+\section{Far-coordinate perturbation}
+
+\begin{proposition*}
+Let \(0<\alpha<1\), let \(x\in c_{00}\), and assume
+\[
+ \|x\|_{\Ssp}<a_\alpha.
+\]
+If \(N>\max\operatorname{supp}x\), then
+\[
+ \|x+\alpha e_N\|_{\Ssp}\le 1
+ \qquad\text{and}\qquad
+ \|x-\alpha e_N\|_{\Ssp}\le 1.
+\]
+\end{proposition*}
+
+\begin{proof}
+By 1-unconditionality, it is enough to prove the estimate for
+\(|x|+\alpha e_N\).  Thus assume \(x\ge 0\), and set
+\[
+ y=x+\alpha e_N.
+\]
+
+For each finite \(F\subset\N\), define
+\[
+ \rho(F)
+ =
+ \begin{cases}
+ \|Fx\|_{\Ssp},& N\notin F,\\[2mm]
+ M_\alpha(\|Fx\|_{\Ssp}),& N\in F.
+ \end{cases}
+\]
+The lattice monotonicity of the Schlumprecht norm and the monotonicity of
+\(M_\alpha\) give
+\[
+ G\subset F\Longrightarrow \rho(G)\le \rho(F).
+\]
+Also,
+\[
+ \|Fy\|_\infty\le \rho(F),
+\]
+because \(M_\alpha(u)\ge u\) and \(M_\alpha(u)\ge\alpha\).
+
+It remains to verify the local comparison inequality.  Fix finite
+\(F\subset\N\), and let
+\[
+ E_1<\cdots<E_k\subset F,
+ \qquad k\ge 2.
+\]
+
+If \(N\notin F\), then
+\[
+ \sum_{i=1}^k \rho(E_i)
+ =
+ \sum_{i=1}^k \|E_i x\|_{\Ssp}
+ \le
+ \ph(k)\|Fx\|_{\Ssp}
+ =
+ \ph(k)\rho(F).
+\]
+
+Assume now that \(N\in F\).
+If none of the \(E_i\) contains \(N\), then
+\[
+ \sum_{i=1}^k \rho(E_i)
+ =
+ \sum_{i=1}^k \|E_i x\|_{\Ssp}
+ \le
+ \ph(k)\|Fx\|_{\Ssp}
+ \le
+ \ph(k)M_\alpha(\|Fx\|_{\Ssp})
+ =
+ \ph(k)\rho(F).
+\]
+
+Finally suppose exactly one set \(E_j\) contains \(N\), and fix this \(j\).
+Then
+\[
+ \sum_{i=1}^k \rho(E_i)
+ =
+ M_\alpha(\|E_jx\|_{\Ssp})+\sum_{i\ne j}\|E_i x\|_{\Ssp}.
+\]
+The remaining pieces satisfy two estimates.  First,
+\[
+ \sum_{i\ne j}\|E_i x\|_{\Ssp}\le \ph(k-1)\|Fx\|_{\Ssp}.
+\]
+For \(k=2\), this is just monotonicity, since \(\ph(1)=1\).  For
+\(k>2\), it follows from the Schlumprecht recursive inequality applied to
+the \(k-1\) remaining blocks.  Second, using the full \(k\)-tuple,
+\[
+ \|E_jx\|_{\Ssp}+\sum_{i\ne j}\|E_i x\|_{\Ssp}
+ \le
+ \ph(k)\|Fx\|_{\Ssp},
+\]
+so
+\[
+ \sum_{i\ne j}\|E_i x\|_{\Ssp}
+ \le
+ \ph(k)\|Fx\|_{\Ssp}-\|E_jx\|_{\Ssp}.
+\]
+Therefore
+\[
+ \sum_{i\ne j}\|E_i x\|_{\Ssp}
+ \le
+ \min\{\ph(k-1)\|Fx\|_{\Ssp},
+          \ph(k)\|Fx\|_{\Ssp}-\|E_jx\|_{\Ssp}\}.
+\]
+By the strengthened scalar estimate,
+\[
+\begin{aligned}
+ \sum_{i=1}^k \rho(E_i)
+ &\le
+ M_\alpha(\|E_jx\|_{\Ssp})+
+ \min\{\ph(k-1)\|Fx\|_{\Ssp},
+        \ph(k)\|Fx\|_{\Ssp}-\|E_jx\|_{\Ssp}\} \\
+ &\le
+ \ph(k)M_\alpha(\|Fx\|_{\Ssp})
+ =
+ \ph(k)\rho(F).
+\end{aligned}
+\]
+
+The local comparison lemma gives
+\[
+ \|Fy\|_{\Ssp}\le \rho(F)
+\]
+for every finite \(F\).  Taking \(F=\operatorname{supp}x\cup\{N\}\), we get
+\[
+ \|x+\alpha e_N\|_{\Ssp}
+ \le
+ M_\alpha(\|x\|_{\Ssp})
+ \le 1,
+\]
+because \(\|x\|_{\Ssp}<a_\alpha\).  The estimate for
+\(x-\alpha e_N\) follows by unconditionality.
+\end{proof}
+
+\section{The reverse Szlenk-radius inclusion}
+
+Let \(0<\varepsilon<2\), and put
+\[
+ \beta=\varepsilon/2.
+\]
+We prove
+\[
+ r_{\Ssp^*}(\varepsilon)\ge a_\beta.
+\]
+
+First take \(x\in c_{00}\) with
+\[
+ \|x\|_{\Ssp}<a_\beta.
+\]
+Choose \(\alpha\) such that
+\[
+ \beta<\alpha<1
+ \qquad\text{and}\qquad
+ \|x\|_{\Ssp}<a_\alpha.
+\]
+This is possible because the map \(\alpha\mapsto a_\alpha\) is continuous:
+it is the infimum of affine functions
+\[
+ \alpha\mapsto \frac{\ph(n+1)-\alpha}{\ph(n)}
+\]
+whose slopes have absolute value at most \(1\).
+
+For every sufficiently large \(N\), the far-coordinate perturbation result
+gives
+\[
+ x+\alpha e_N\in \Ball_{\Ssp},
+ \qquad
+ x-\alpha e_N\in \Ball_{\Ssp}.
+\]
+Since \(e_N\to 0\) weakly, both points converge weakly to \(x\).  Their
+distance is
+\[
+ \|(x+\alpha e_N)-(x-\alpha e_N)\|_{\Ssp}
+ =
+ \|2\alpha e_N\|_{\Ssp}
+ =
+ 2\alpha
+ >
+ \varepsilon.
+\]
+Therefore every weak neighbourhood of \(x\) meets \(\Ball_{\Ssp}\) in a set
+of diameter \(>\varepsilon\).  Hence
+\[
+ x\in s_\varepsilon(\Ball_{\Ssp}).
+\]
+
+Now let \(r<a_\beta\).  If \(z\in r\Ball_{\Ssp}\), choose finitely
+supported \(x_n\to z\) in norm with \(\|x_n\|_{\Ssp}<a_\beta\) for all
+large \(n\).  By the finite-support case,
+\[
+ x_n\in s_\varepsilon(\Ball_{\Ssp})
+\]
+eventually.  The set \(s_\varepsilon(\Ball_{\Ssp})\) is weakly closed,
+hence norm closed, so
+\[
+ z\in s_\varepsilon(\Ball_{\Ssp}).
+\]
+Thus
+\[
+ r\Ball_{\Ssp}\subset s_\varepsilon(\Ball_{\Ssp})
+ \qquad(r<a_\beta),
+\]
+and therefore
+\[
+ r_{\Ssp^*}(\varepsilon)\ge a_\beta.
+\]
+Together with the known upper bound, this gives
+\[
+ r_{\Ssp^*}(\varepsilon)
+ =
+ a_{\varepsilon/2}
+ =
+ \inf_{n\in\N}
+ \frac{\ph(n+1)-\varepsilon/2}{\ph(n)}.
+\]
+
+\section*{Comment on notation}
+
+The original proof introduced several temporary letters for quantities such
+as \(\ph(k)\), \(\ph(m+1)\), \(\Delt{k-1}\), \(\Delt{m}\),
+\(\Bell{\ell}\), and \(\Delt{\ell}\).  This rewrite keeps the logarithmic
+weights and increments visible.  In particular, the key use of the product
+lemma in the scalar estimate is simply
+\[
+ \Bell{\ell}\le \ph(k)\ph(m+1),
+ \qquad
+ \Delt{\ell}\le \Delt{k-1}\Delt{m},
+\]
+where
+\[
+ \ell=k(m+1)-1.
+\]
+
+\end{document}

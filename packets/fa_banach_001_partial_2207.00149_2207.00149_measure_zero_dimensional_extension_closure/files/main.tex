@@ -1,0 +1,476 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathsf E}
+\newcommand{\Ed}{\mathsf E_\delta}
+\newcommand{\Szero}{\mathsf S_0}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Bor}{\operatorname{Bor}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+
+\title{Zero-Dimensional Measure Extraction in Compact Spaces}
+\author{Run \texttt{fa\_banach\_001}: consolidated stronger partial packet}
+\date{18 June 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem and Status}
+
+The source paper is Damian Glodkowski, \emph{A Banach space \(C(K)\) reading
+the dimension of \(K\)}, arXiv:2207.00149, later published in
+\emph{Journal of Functional Analysis}.  Problem 7.3 asks:
+
+\begin{quote}
+\textbf{Problem 7.3.} Describe the class of compact Hausdorff spaces \(K\) such
+that for every non-zero Radon measure \(\mu\) on \(K\) there is a
+zero-dimensional compact subset \(L\subseteq K\) such that \(\mu(L)\neq 0\).
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\textbf{Verdict.}  This is a substantially strengthened partial answer, not a
+complete classification of all compact Hausdorff spaces.  The previous packet
+proved finite-product and restricted-extension closure for a property that it
+called ``strong''.  The corrected result below shows that this strong-looking
+approximation property is actually equivalent to the original positive
+extraction property.  It also proves countable closure, removes the unnecessary
+exceptional-set hypothesis from the source-paper extension step, gives ZFC
+nonexamples, and proves an exact characterization for arbitrary products.
+
+\section{Definitions}
+
+All compact spaces are Hausdorff, all measures are finite Radon measures, and
+``zero-dimensional'' means covering dimension zero.  For compact Hausdorff
+spaces this is equivalent to having a base of clopen sets.
+
+\begin{definition}
+A compact space \(K\) belongs to \(\E\) if every nonzero finite positive Radon
+measure \(\mu\) on \(K\) has a compact zero-dimensional subset \(Z\subseteq K\)
+with \(\mu(Z)>0\).
+\end{definition}
+
+\begin{definition}
+A compact space \(K\) belongs to \(\Ed\) if every nonzero finite positive Radon
+measure \(\mu\) on \(K\) has a compact zero-dimensional \(G_\delta\) subset
+\(Z\subseteq K\) with \(\mu(Z)>0\).
+\end{definition}
+
+The class \(\Ed\) is the version relevant to the countable-neighborhood
+extraction used in the metric part of the source paper.  The class \(\E\) is
+the literal formulation of Problem 7.3 for positive measures.
+
+\section{Extraction is Equivalent to Approximation}
+
+\begin{theorem}[Extraction, approximation, and decomposition]
+For a compact space \(K\), the following are equivalent.
+\begin{enumerate}
+\item \(K\in\E\).
+\item For every finite positive Radon measure \(\mu\) on \(K\) and every
+\(\eta>0\), there is a compact zero-dimensional \(Z\subseteq K\) such that
+\[
+  \mu(K\setminus Z)<\eta .
+\]
+\item Every finite positive Radon measure \(\mu\) on \(K\) can be written
+\[
+  \mu=\sum_{n=1}^{\infty}\mu_n
+\]
+as an increasing total-variation sum of positive Radon measures such that
+\(\supp\mu_n\) is zero-dimensional for every \(n\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Assume \(K\in\E\), and fix a finite positive measure \(\mu\).  Let
+\[
+ s=\sup\{\mu(Z):Z\subseteq K\text{ compact and zero-dimensional}\}.
+\]
+Choose compact zero-dimensional \(Z_n\) with \(\mu(Z_n)>s-2^{-n}\), replacing
+\(Z_n\) by \(Z_1\cup\cdots\cup Z_n\).  Finite closed sums of zero-dimensional
+compacta are zero-dimensional, so \(Z_n\) remains compact zero-dimensional and
+the sequence is increasing.  If \(s<\mu(K)\), let \(B=K\setminus\bigcup_n Z_n\)
+and define the positive Radon measure \(\lambda(A)=\mu(A\cap B)\) on Borel
+sets.  By \(\E\), there is compact zero-dimensional \(W\) with
+\(\lambda(W)>0\).  For all sufficiently large \(n\),
+\[
+  \mu(Z_n\cup W)\ge \mu(Z_n)+\lambda(W)>s,
+\]
+contradicting the definition of \(s\).  Thus \(s=\mu(K)\), which proves the
+approximation statement.
+
+Assume the approximation statement.  Choose compact zero-dimensional
+\(W_n\subseteq K\) with \(\mu(K\setminus W_n)<2^{-n}\), and put
+\(Z_n=W_1\cup\cdots\cup W_n\).  With \(Z_0=\emptyset\), \(B_n=Z_n\setminus
+Z_{n-1}\), and \(\mu_n(A)=\mu(A\cap B_n)\), each \(\mu_n\) is a positive Radon
+measure and \(\supp\mu_n\subseteq Z_n\).  Since \(\mu(K\setminus\bigcup_n
+Z_n)=0\), we have \(\mu=\sum_n\mu_n\) in total variation.
+
+Finally, if \(\mu=\sum_n\mu_n\neq0\), then some \(\mu_n\neq0\).  Its support is
+compact zero-dimensional and has positive \(\mu_n\)-measure, hence positive
+\(\mu\)-measure.  This gives \(\E\).
+\end{proof}
+
+\begin{remark}
+The same supremum argument proves the analogous equivalence for \(\Ed\): it is
+enough to replace ``compact zero-dimensional'' by ``compact zero-dimensional
+\(G_\delta\)''.  Finite unions of \(G_\delta\) sets are \(G_\delta\).
+\end{remark}
+
+\begin{proposition}[Signed and complex measures]
+The positive-measure formulation of \(\E\) is equivalent to the original
+Problem 7.3 formulation for real signed Radon measures, and also to the
+analogous formulation for complex Radon measures.
+\end{proposition}
+
+\begin{proof}
+Let \(\nu\) be a nonzero signed measure.  Replacing \(\nu\) by \(-\nu\) if
+necessary, \(\nu^+\neq0\).  Choose a Hahn-positive Borel set \(P\), then by
+inner regularity a compact \(F\subseteq P\) with \(\nu^+(F)>0\).  Applying
+\(\E\) inside \(F\) to \(\nu^+|F\) gives compact zero-dimensional
+\(Z\subseteq F\) with \(\nu^+(Z)>0\), and \(\nu^-(Z)=0\).  Hence
+\(\nu(Z)>0\).  For a complex measure \(\nu\), choose \(\theta\) so that
+\(\operatorname{Re}(e^{-i\theta}\nu)\) is nonzero and apply the real case.
+Here we use the elementary heredity of \(\E\) for compact subspaces, proved
+explicitly in the closure theorem below.
+\end{proof}
+
+\section{Metric Spaces, Closure, and the Source Extensions}
+
+\begin{theorem}[Compact metrizable spaces]
+Every compact metrizable space belongs to \(\Ed\).
+\end{theorem}
+
+\begin{proof}
+Let \(K\) be compact metrizable, let \(\mu\) be a finite positive measure, and
+let \(\eta>0\).  Fix a compatible metric, a countable dense set
+\((d_n)\), and \(D=\operatorname{diam}K\).  For each \(n\), the spheres
+\[
+  S(d_n,r)=\{x:d(x,d_n)=r\},\qquad 0<r<D,
+\]
+are pairwise disjoint, so only countably many have positive \(\mu\)-measure.
+Choose distinct radii \(r_{n,j}\) outside that exceptional set so that every
+tail \(\{r_{n,j}:j\ge k\}\) is dense in \((0,D)\).  Put
+\[
+  Y=K\setminus\bigcup_{n,j} S(d_n,r_{n,j}).
+\]
+Then \(\mu(K\setminus Y)=0\).  The sets \(B(d_n,r_{n,j})\cap Y\) are clopen in
+\(Y\) and form a base: given \(y\in O\), choose \(\rho>0\) with
+\(B(y,\rho)\subseteq O\), choose \(d_n\) within \(\rho/3\) of \(y\), and then
+choose a tail radius in \((d(y,d_n),\rho-d(y,d_n))\).  Thus \(Y\) is
+zero-dimensional.  By inner regularity choose compact \(Z\subseteq Y\) with
+\(\mu(K\setminus Z)<\eta\).  Since \(K\) is metrizable, \(Z\) is a \(G_\delta\)
+subset of \(K\).  Therefore \(K\in\Ed\).
+\end{proof}
+
+\begin{theorem}[Countable closure]
+The following closure properties hold.
+\begin{enumerate}
+\item \(\E\) is hereditary for compact subspaces, closed under countable closed
+covers, and closed under countable products.
+\item \(\Ed\) is hereditary for compact subspaces and closed under countable
+products.
+\item Both \(\E\) and \(\Ed\) are closed under inverse limits indexed by a
+countable set, in particular by a countable ordinal.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For heredity, let \(F\subseteq K\) be compact and extend a measure on \(F\) to
+a measure on \(K\) supported by \(F\).  Intersecting the extracting compactum
+with \(F\) gives the result; in the \(G_\delta\) case the intersection is
+\(G_\delta\) in \(F\).
+
+If \(K=\bigcup_n F_n\), where the \(F_n\) are compact and belong to \(\E\), then
+any nonzero positive measure on \(K\) has \(\mu(F_n)>0\) for some \(n\), so
+extraction inside \(F_n\) proves \(K\in\E\).
+
+Let \(K=\prod_{n\in\N}K_n\), with each \(K_n\in\E\), and let \(\mu\) be a
+positive probability measure on \(K\).  For the marginal
+\(\mu_n=(p_n)_*\mu\), choose compact zero-dimensional \(A_n\subseteq K_n\) with
+\[
+  \mu_n(K_n\setminus A_n)<\eta 2^{-n-1}.
+\]
+Then \(A=\prod_n A_n\) is compact zero-dimensional and
+\[
+  \mu(K\setminus A)\le\sum_n\mu_n(K_n\setminus A_n)<\eta .
+\]
+This gives \(\E\).  If each \(K_n\in\Ed\), choose each \(A_n\) to be \(G_\delta\);
+then \(A=\bigcap_n p_n^{-1}(A_n)\) is \(G_\delta\) in \(K\).
+
+Finally, a countable inverse limit of compact Hausdorff spaces is a closed
+subspace of their countable product.  Apply product closure and heredity.
+\end{proof}
+
+\begin{corollary}[Source-paper extensions]
+Let \(L\) be any extension of \(K\) by a pairwise disjoint sequence of
+\([0,1]\)-valued continuous functions in the sense of the source paper.  Then
+\[
+  K\in\E \Rightarrow L\in\E,\qquad K\in\Ed \Rightarrow L\in\Ed .
+\]
+No strongness assumption and no hypothesis on \(K\setminus D((f_n))\) is needed.
+\end{corollary}
+
+\begin{proof}
+By the definition used in the source paper, \(L\) is a compact subspace, hence a
+closed subspace, of \(K\times[0,1]\).  The interval belongs to \(\Ed\) by the
+metric theorem.  Product closure and heredity give the result.
+\end{proof}
+
+\begin{corollary}
+Starting from a compactum in \(\E\), respectively in \(\Ed\), every countable
+tower formed by source-paper extensions at successor stages and inverse limits
+at countable limit stages remains in \(\E\), respectively in \(\Ed\).
+\end{corollary}
+
+\begin{remark}
+This repairs the earlier packet's \(G_\delta\)/countable-character concern for
+countable stages.  It still does not remove all metric input from the source
+paper's construction: the proof of Proposition 6.2 uses a weak-star convergent
+subsequence of a bounded sequence of measures, and later selection arguments
+also use metric structure.
+\end{remark}
+
+\section{ZFC Nonexamples}
+
+\begin{proposition}[Normal-measure counterexample]
+If a nondegenerate compact connected space \(K\) carries a normal probability
+measure, meaning a measure that vanishes on every Borel set with empty interior,
+then \(K\notin\E\).
+\end{proposition}
+
+\begin{proof}
+Let \(F\subseteq K\) be compact zero-dimensional.  If \(F\) had nonempty
+interior, choose \(x\in\operatorname{int}F\) and \(y\in K\setminus\{x\}\).  A
+clopen base in \(F\) gives a nonempty set \(C\) clopen in \(F\) with
+\[
+ x\in C\subseteq(\operatorname{int}F)\setminus\{y\}.
+\]
+Since \(F\) is closed and \(C\subseteq\operatorname{int}F\), the set \(C\) is
+both closed and open in \(K\), and it is proper.  This contradicts connectedness.
+Thus every compact zero-dimensional \(F\) has empty interior, so a normal
+probability measure assigns measure zero to all such \(F\).
+\end{proof}
+
+Plebanek constructed in ZFC a nondegenerate compact connected space carrying a
+normal probability measure.  Hence not every compact Hausdorff space belongs to
+\(\E\).
+
+\section{Exact Characterization for Arbitrary Products}
+
+\begin{definition}
+A compact space \(K\) belongs to \(\Szero\) if \(\supp\mu\) is zero-dimensional
+for every finite positive Radon measure \(\mu\) on \(K\).
+\end{definition}
+
+\begin{lemma}[Supports]
+For a positive Radon measure \(\mu\) on compact \(K\), \(\supp\mu\) is compact,
+has full \(\mu\)-measure, and every nonempty relatively open subset of
+\(\supp\mu\) has positive \(\mu\)-measure.
+\end{lemma}
+
+\begin{proof}
+Let \(U\) be the union of all open \(\mu\)-null subsets of \(K\).  Every compact
+subset of \(U\) is covered by finitely many open null sets, hence is null; inner
+regularity gives \(\mu(U)=0\).  Thus \(K\setminus U=\supp\mu\) is compact and
+has full measure.  The final assertion is immediate from the definition of
+support.
+\end{proof}
+
+\begin{lemma}
+The class \(\Szero\) is hereditary for compact subspaces and closed under
+arbitrary products.
+\end{lemma}
+
+\begin{proof}
+Heredity follows by extending a measure from a compact subspace to the ambient
+space; the subspace support is a closed subspace of the ambient support.
+
+Let \(K=\prod_{i\in I}K_i\), with each \(K_i\in\Szero\), and let \(\mu\) be a
+positive measure on \(K\).  Put \(\mu_i=(p_i)_*\mu\) and \(S_i=\supp\mu_i\).
+If \(x\in\supp\mu\), then \(x_i\in S_i\) for every \(i\), since an open
+\(\mu_i\)-null neighborhood of \(x_i\) would pull back to an open \(\mu\)-null
+neighborhood of \(x\).  Hence
+\[
+  \supp\mu\subseteq\prod_{i\in I}S_i .
+\]
+Each \(S_i\) is zero-dimensional.  Arbitrary products of compact
+zero-dimensional spaces are zero-dimensional, and closed subspaces preserve
+zero-dimensionality.  Thus \(\supp\mu\) is zero-dimensional.
+\end{proof}
+
+\begin{lemma}[Positive compact subsets contain full tail fibers]
+Let \(X=\prod_{i\in I}X_i\), where each \(X_i\) is nonempty compact and carries a
+strictly positive Radon probability \(\lambda_i\).  Let
+\(\lambda=\bigotimes_{i\in I}\lambda_i\) be the canonical product probability.
+If \(F\subseteq X\) is compact and \(\lambda(F)>0\), then there are a countable
+set \(C\subseteq I\) and a point \(a\in\prod_{i\in C}X_i\) such that
+\[
+  \{a\}\times\prod_{i\in I\setminus C}X_i\subseteq F .
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(U=X\setminus F\).  For each \(n\), choose compact \(H_n\subseteq U\) with
+\(\lambda(H_n)>\lambda(U)-2^{-n}\).  Cover \(H_n\) by finitely many basic open
+cylinders contained in \(U\).  Let \(V\) be the union of all cylinders obtained
+in this way.  Then \(V\subseteq U\), \(V\) depends on only countably many
+coordinates, and \(\lambda(V)=\lambda(U)\).
+
+Thus \(V=p_C^{-1}(B)\) for some countable \(C\subseteq I\) and open
+\(B\subseteq X_C=\prod_{i\in C}X_i\).  Put \(A=X_C\setminus B\) and
+\(P=p_C^{-1}(A)\).  Then \(F\subseteq P\) and \(\lambda(P\setminus F)=0\).
+Writing \(T=I\setminus C\), let \(\lambda_C\) and \(\lambda_T\) be the
+corresponding product measures and let \(\nu=\lambda_C|A\).  Since
+\(\lambda(P)\ge\lambda(F)>0\), \(\nu\neq0\).  Choose \(a\in\supp\nu\).
+
+The measure \(\lambda_T\) is strictly positive, so
+\[
+  \supp(\nu\otimes\lambda_T)=\supp\nu\times X_T .
+\]
+The relatively open set \(P\setminus F\) is null for \(\nu\otimes\lambda_T\),
+hence it misses this support.  Therefore \(\{a\}\times X_T\subseteq F\).
+\end{proof}
+
+\begin{theorem}[Arbitrary product characterization]
+Let \((K_i)_{i\in I}\) be nonempty compact spaces and put
+\[
+  K=\prod_{i\in I}K_i .
+\]
+Then \(K\in\E\) if and only if both conditions hold:
+\begin{enumerate}
+\item \(K_i\in\E\) for every \(i\in I\);
+\item the set \(J=\{i\in I:K_i\notin\Szero\}\) is countable.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Assume the two conditions and let \(\mu\) be a nonzero positive measure on \(K\).
+For each \(i\), put \(\mu_i=(p_i)_*\mu\) and \(S_i=\supp\mu_i\).  By the support
+lemma, \(\supp\mu\) has full measure and
+\[
+  \supp\mu\subseteq P:=\prod_{i\in I}S_i .
+\]
+If \(i\notin J\), then \(S_i\) is zero-dimensional.  If \(i\in J\), then
+\(S_i\in\E\) by heredity from \(K_i\).  Since \(J\) is countable,
+\(\prod_{i\in J}S_i\in\E\).  The product over \(I\setminus J\) is
+zero-dimensional, hence belongs to \(\E\); a finite product with a
+zero-dimensional compactum preserves \(\E\).  Therefore \(P\in\E\).  Applying
+\(\E\) to the restriction of \(\mu\) to the full-measure compact set \(P\) gives
+the required positive-measure zero-dimensional compact subset of \(K\).
+
+Conversely, assume \(K\in\E\).  Each factor \(K_i\) is homeomorphic to a compact
+subspace of \(K\) after fixing base points in the other coordinates, so
+\(K_i\in\E\).  If \(J\) were uncountable, choose for each \(i\in J\) a
+probability \(\mu_i\) on \(K_i\) whose support \(S_i\) is not zero-dimensional.
+Regard \(\mu_i\) as a strictly positive probability on \(S_i\), and form
+\[
+  X=\prod_{i\in J}S_i,\qquad \lambda=\bigotimes_{i\in J}\mu_i .
+\]
+Let \(F\subseteq X\) be compact with \(\lambda(F)>0\).  The tail-fiber lemma
+gives a countable \(C\subseteq J\) and a full tail fiber contained in \(F\).
+Choose \(i\in J\setminus C\).  By fixing all tail coordinates except the
+\(i\)-th one, \(F\) contains a closed copy of \(S_i\).  Since \(S_i\) is not
+zero-dimensional, \(F\) is not zero-dimensional.  Hence \(\lambda\) vanishes on
+every compact zero-dimensional subset of \(X\), so \(X\notin\E\).  After fixing
+one base point in every coordinate \(i\in I\setminus J\), the product \(X\) is
+homeomorphic to a compact subspace of \(K\), contradicting heredity.  Thus \(J\)
+is countable.
+\end{proof}
+
+\begin{corollary}[Products of compact metrizable spaces]
+For nonempty compact metrizable spaces \((M_i)_{i\in I}\),
+\[
+  \prod_{i\in I}M_i\in\E
+  \quad\Longleftrightarrow\quad
+  \{i\in I:\dim M_i>0\}\text{ is countable}.
+\]
+In particular,
+\[
+  [0,1]^I\in\E \quad\Longleftrightarrow\quad I\text{ is countable}.
+\]
+\end{corollary}
+
+\begin{proof}
+Every compact metrizable space belongs to \(\E\).  Also, a compact metrizable
+space \(M\) belongs to \(\Szero\) if and only if it is zero-dimensional: if
+\((x_n)\) is dense in \(M\), then \(\sum_n2^{-n}\delta_{x_n}\) is a strictly
+positive probability measure with support \(M\).  Apply the product
+characterization.
+\end{proof}
+
+\begin{corollary}
+If \(I\) is uncountable, the canonical product Lebesgue probability on
+\([0,1]^I\) assigns measure zero to every compact zero-dimensional subset.
+\end{corollary}
+
+\begin{proof}
+A compact subset of positive product measure would contain a full tail fiber
+outside countably many coordinates.  Since \(I\) is uncountable, that fiber
+contains a closed copy of \([0,1]\), so the compact subset is not
+zero-dimensional.
+\end{proof}
+
+\begin{remark}
+The cube \([0,1]^{\omega_1}\) is a sharp obstruction to replacing countable
+inverse-limit closure by \(\omega_1\)-length closure: it is the inverse limit of
+the compact metrizable cubes \([0,1]^\alpha\) for \(\alpha<\omega_1\), but it
+does not belong to \(\E\).
+\end{remark}
+
+\section*{Novelty and Human Review Notes}
+
+The supplied audit report states that the exact problem is repeated as Problem
+3.5.3 in Glodkowski's 2024 doctoral thesis and that no later complete
+classification was found in searches through 18 June 2026.  A quick check by
+the current agent also located the source paper but not a later public paper
+answering Problem 7.3.  The packet should therefore be reviewed as a likely new
+strong partial answer, with the exact product theorem as the most substantive
+piece.
+
+The highest-value human checks are:
+\begin{enumerate}
+\item the proof that positive extraction implies arbitrary good compact
+zero-dimensional approximation;
+\item the tail-fiber lemma for arbitrary product Radon measures;
+\item the necessity direction of the arbitrary product characterization;
+\item the claim that source-paper extensions are always closed subspaces of
+\(K\times[0,1]\) under Definition 5.1 of the source paper.
+\end{enumerate}
+
+\section*{References}
+
+\begin{enumerate}
+\item M. Dzamonja and K. Kunen, \emph{Properties of the class of measure
+separable compact spaces}, Fund. Math. 147 (1995), 261--277.
+\item R. Engelking, \emph{Theory of Dimensions, Finite and Infinite},
+Heldermann, 1995.
+\item D. Glodkowski, \emph{A Banach space \(C(K)\) reading the dimension of
+\(K\)}, J. Funct. Anal. 285 (2023), Paper No. 109986; arXiv:2207.00149.
+\item D. Glodkowski, \emph{Some Applications of Set Theory in Banach Spaces and
+Operator Algebras}, Ph.D. thesis, Institute of Mathematics of the Polish
+Academy of Sciences, Warsaw, April 2024.
+\item E. Hewitt, \emph{A remark on density characters}, Bull. Amer. Math. Soc.
+52 (1946), 641--643.
+\item G. Plebanek, \emph{A normal measure on a compact connected space},
+preprint, arXiv:1507.02845.
+\item G. Plebanek, \emph{Musing on Kunen's compact L-space}, preprint,
+arXiv:2012.01849.
+\item O. Zindulka, \emph{Dimension zero vs. measure zero}, Proc. Amer. Math.
+Soc. 128 (2000), 1769--1778.
+\end{enumerate}
+
+\end{document}

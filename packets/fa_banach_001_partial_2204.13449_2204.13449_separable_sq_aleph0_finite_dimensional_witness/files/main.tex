@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\dens}{\operatorname{dens}}
+
+\title{A finite-dimensional exact witness for the separable transfinite SQ example}
+\author{Run \texttt{fa\_banach\_001}, lane 10}
+\date{2026-06-18}
+
+\begin{document}
+\maketitle
+
+\section*{Source and target}
+
+The source paper is A. Avilés, S. Ciaci, J. Langemets, A. Lissitsin, and
+A. Rueda Zoca, \emph{Transfinite almost square Banach spaces},
+arXiv:2204.13449.  In Definition 2.1 the paper defines
+\(\mathrm{SQ}_{<\kappa}\): for every \(A\subset S_X\) with \(|A|<\kappa\),
+there is \(y\in S_X\) such that
+\[
+  \norm{x\pm y}\leq 1 \qquad (x\in A).
+\]
+For uncountable \(\kappa\), Proposition 2.2 gives an equivalent formulation in
+terms of subspaces of density \(<\kappa\).  The paper explicitly notes that the
+corresponding \(\kappa=\aleph_0\) version is unclear.  Shortly afterward it
+constructs a separable \(\mathrm{SQ}_{<\aleph_0}\) example as a \(c_0\)-sum of
+odd-function spaces.
+
+This packet proves that this concrete separable example has the stronger
+finite-dimensional exact witness property.
+
+\section*{Definitions}
+
+For \(m\geq 1\), let
+\[
+ E_m=\{f\in C(S_{\R^m}) : f(-s)=-f(s)\ \text{for all }s\in S_{\R^m}\},
+\]
+with the supremum norm.  Let
+\[
+ X=\Big(\bigoplus_{m=1}^{\infty} E_m\Big)_{c_0}.
+\]
+Thus an element \(x\in X\) is a sequence \(x=(x_m)\), \(x_m\in E_m\),
+with \(\norm{x_m}_\infty\to 0\), and
+\(\norm{x}=\sup_m \norm{x_m}_\infty\).
+
+\section*{Proof Intuition}
+
+The finite-set proof in the source works by moving to one high-dimensional odd
+function coordinate and using Borsuk-Ulam to find a point where the relevant
+odd functions all vanish.  For a finite-dimensional subspace \(F\), one should
+not choose a coordinate merely matching the number of listed vectors; instead
+choose \(m>\dim F\).  Then the whole coordinate shadow \(P_mF\) has dimension
+strictly less than \(m\), so all its functions vanish at a common point of
+\(S_{\R^m}\).
+
+At that coordinate, the function
+\[
+  q(s)=\sup\{|(P_m z)(s)|:\ z\in F,\ \norm{z}\leq 1\}
+\]
+measures how much of the unit ball of \(F\) is visible at \(s\).  Since
+\(q(s_0)=0\) at the Borsuk-Ulam point, the odd function
+\((1-q)h\), where \(h(s)=\langle s,s_0\rangle\), has norm one and leaves
+exactly enough pointwise room for every vector in \(F\).
+
+\begin{theorem}
+Let \(X=(\bigoplus_{m=1}^{\infty}E_m)_{c_0}\) be the separable example above.
+For every finite-dimensional subspace \(F\subset X\), there exists \(u\in S_X\)
+such that
+\[
+  \norm{z+t u}\leq \max\{\norm{z}, |t|\}
+  \qquad (z\in F,\ t\in\R).
+\]
+Consequently \(X\) is \(\mathrm{SQ}_{<\aleph_0}\), and in fact satisfies the
+finite-dimensional exact formulation for \(\kappa=\aleph_0\).
+\end{theorem}
+
+\begin{proof}
+Let \(F\subset X\) be finite-dimensional and put \(d=\dim F\).  Choose an
+integer \(m>d\).  Let \(P_m:X\to E_m\) be the \(m\)-th coordinate projection.
+The subspace \(P_mF\subset E_m\) has dimension \(r\leq d<m\).  Choose a basis
+\(f_1,\ldots,f_r\) of \(P_mF\).  The map
+\[
+  \Phi:S_{\R^m}\to \R^r,\qquad
+  \Phi(s)=(f_1(s),\ldots,f_r(s))
+\]
+is continuous and odd.  By the Borsuk-Ulam theorem, since \(r<m\), there is
+\(s_0\in S_{\R^m}\) such that \(\Phi(s_0)=0\).  Hence
+\[
+  f(s_0)=0 \qquad (f\in P_mF).
+\]
+
+Define
+\[
+  q(s)=\sup\{|(P_m z)(s)|:\ z\in F,\ \norm{z}\leq 1\}
+  \qquad (s\in S_{\R^m}).
+\]
+Because the unit ball of \(F\) is compact and the evaluation map is continuous,
+\(q\) is continuous.  Also \(q\) is even, \(0\le q\le 1\), and \(q(s_0)=0\).
+Let \(h(s)=\langle s,s_0\rangle\), an odd norm-one function on \(S_{\R^m}\),
+and set
+\[
+  g(s)=(1-q(s))h(s).
+\]
+Then \(g\in E_m\), \(\norm{g}_\infty=1\), since \(g(s_0)=1\), and
+\(|g(s)|\leq 1-q(s)\) for all \(s\).
+
+Let \(u\in X\) be zero in every coordinate except the \(m\)-th coordinate,
+where \(u_m=g\).  Then \(u\in S_X\).  Fix \(z\in F\), \(t\in\R\), and write
+\(M=\max\{\norm{z},|t|\}\).  For every coordinate \(j\neq m\),
+\[
+  \norm{(z+t u)_j}_\infty=\norm{z_j}_\infty\leq \norm{z}\leq M.
+\]
+For the \(m\)-th coordinate, if \(M=0\) there is nothing to prove.  Otherwise,
+for every \(s\in S_{\R^m}\),
+\[
+\begin{aligned}
+  |z_m(s)+t g(s)|
+  &\leq \norm{z}\,
+     \sup_{\norm{w}\leq 1,\,w\in F}|(P_m w)(s)|
+     + |t|\, |g(s)| \\
+  &\leq \norm{z}\,q(s)+|t|\,(1-q(s))\\
+  &\leq M.
+\end{aligned}
+\]
+Taking the supremum over \(s\) and then over all coordinates gives
+\(\norm{z+t u}\leq M\), as required.
+
+For a finite set \(A\subset S_X\), apply the theorem to
+\(F=\operatorname{span}(A)\) and \(t=\pm1\).  This yields
+\(\norm{x\pm u}\leq1\) for every \(x\in A\), so \(X\) is
+\(\mathrm{SQ}_{<\aleph_0}\).
+\end{proof}
+
+\section*{Verification and limitations}
+
+The only external ingredient is the standard Borsuk-Ulam theorem: every
+continuous odd map \(S^{m-1}\to\R^r\) has a zero when \(r<m\).  The proof is
+otherwise a direct pointwise estimate in the source's \(c_0\)-sum example.
+
+This is a partial result.  It does not prove that every
+\(\mathrm{SQ}_{<\aleph_0}\) space satisfies the finite-dimensional exact
+formulation.  It also does not answer the source question of whether \(c_0\)
+admits an equivalent \(\mathrm{SQ}_{<\aleph_0}\) renorming, nor the general
+\(c_0(\kappa)\)-renorming question.
+
+Novelty check: the run indexes contained only the prior attempt
+\[
+\texttt{2204.13449\_sq\_kappa\_renorming\_density\_barrier.md}.
+\]
+A bounded web
+search on 2026-06-18 for the source title together with
+\(\mathrm{SQ}_{<\kappa}\), \(c_0(\kappa)\), and \(\mathrm{SQ}_{<\aleph_0}\)
+found the source paper but no later exact treatment of this finite-dimensional
+witness strengthening.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{ACL2022}
+A. Avilés, S. Ciaci, J. Langemets, A. Lissitsin, and A. Rueda Zoca,
+\emph{Transfinite almost square Banach spaces}, arXiv:2204.13449.
+
+\bibitem{BU}
+K. Borsuk,
+\emph{Drei Sätze über die \(n\)-dimensionale euklidische Sphäre},
+Fund. Math. 20 (1933), 177--190.
+\end{thebibliography}
+
+\end{document}

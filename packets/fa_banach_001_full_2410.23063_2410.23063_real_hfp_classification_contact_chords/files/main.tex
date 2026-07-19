@@ -1,0 +1,691 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sph}{\mathbb S^1}
+\newcommand{\B}{B_2}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Loew}{\mathcal L}
+\newcommand{\John}{\mathcal J}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\ga}{\gamma_2}
+
+\title[A candidate proof of the real HFP conjecture]{A candidate proof of the real Hilbert space factorization conjecture\\via rotating contact chords}
+\author{Exploratory solution report}
+\date{22 June 2026}
+
+\begin{document}
+
+\begin{abstract}
+Aubrun and M\"uller-Hermes conjectured that a pair $(X,Y)$ of real Banach
+spaces satisfies $\gamma_2(T)=\|T\|$ for every bounded operator $T:X\to Y$
+if and only if one of $X,Y$ is Hilbert.  They reduced the question to an
+ellipse-sandwich problem for two centrally symmetric planar convex bodies.
+
+The supplied automatic-solver result---a common quotient--subspace
+obstruction---is correct, but it addresses only a special configuration.  A
+literature search through 22 June 2026 found no published proof or
+counterexample to the full conjecture.  This report gives a complete candidate proof.
+The geometric argument puts the L\"owner ellipse of the first body and the
+John ellipse of the second body in Euclidean position, sends their contact
+directions through the quadratic double-angle map, and rotates exposed
+contact chords so that they cross.  A separating quadratic form then produces
+an arbitrarily small linear perturbation which is still a contraction but
+cannot admit an intermediate ellipse.  The obstruction is certified by two
+probability measures with identical second moments.
+
+This is a new, unrefereed argument developed in the present exploration.
+\end{abstract}
+
+\maketitle
+
+\section*{Packet status and source evidence}
+
+This is an upgraded full-solution packet for arXiv:2410.23063, Conjecture 5.2
+of Aubrun--M\"uller-Hermes.  The packet promotes the previous common
+quotient--subspace partial result to a candidate full proof of the real
+Hilbert space factorization property classification, via the equivalent
+two-dimensional ellipse-sandwich conjecture.  The proof is presented as
+new and unrefereed, so the registry status is ``full solution, likely valid''
+rather than externally verified.
+
+\begin{itemize}
+\item Previous active partial packet preserved in the dated history folder.
+\item Supplied TeX/PDF report preserved in the dated evidence folder.
+\item Source paper preserved as \path{source_paper.pdf}.
+\end{itemize}
+
+\clearpage
+\begin{center}
+\includegraphics[width=\textwidth,height=0.86\textheight,keepaspectratio]{figures/hfp_conjecture_crop.png}
+\end{center}
+
+\clearpage
+\begin{center}
+\includegraphics[width=\textwidth,height=0.86\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+
+\clearpage
+
+\section{The question and the outcome}
+
+For a bounded operator $T:X\to Y$, its Hilbert space factorization norm is
+\[
+ \ga(T)=\inf\{\|a\|\,\|b\|:T=ba,\ a:X\to H,\ b:H\to Y,\ H\text{ Hilbert}\}.
+\]
+A pair $(X,Y)$ has the \emph{Hilbert space factorization property} (HFP) if
+$\ga(T)=\|T\|$ for every bounded $T:X\to Y$.
+
+The source paper posed the following real classification problem
+\cite[Conjecture 5.2]{AMH-limit}.
+
+\begin{theorem}[Real HFP classification]\label{thm:HFP}
+Let $X,Y$ be real Banach spaces.  The pair $(X,Y)$ has the HFP if and only if
+$X$ or $Y$ is a Hilbert space.
+\end{theorem}
+
+The nontrivial implication follows from the planar result below.  Throughout,
+an ellipse may be taken to be centered at the origin.  This entails no loss:
+if $A=-A$, $L=-L$, and an affine ellipse $E$ satisfies $A\subset E\subset L$,
+then
+\[
+ E_0:=\tfrac12(E-E)
+\]
+is a centered ellipse and $A\subset E_0\subset L$.
+
+\begin{theorem}[Planar ellipse-sandwich theorem]\label{thm:planar}
+Let $K,L\subset\R^2$ be centrally symmetric convex bodies.  Assume that for
+every linear map $T$ satisfying $T(K)\subset L$, there is an ellipse
+$\mathcal E$ such that
+\[
+ T(K)\subset \mathcal E\subset L.
+\]
+Then $K$ or $L$ is an ellipse.  More precisely, if neither body is an
+ellipse, there is an \emph{invertible} linear map $T$ with $T(K)\subset L$
+for which no intermediate ellipse exists.
+\end{theorem}
+
+This is exactly the geometric statement formulated as Conjecture 5.5 in the
+source paper.  Sections~\ref{sec:normal}--\ref{sec:planarproof} prove
+Theorem~\ref{thm:planar}; Section~\ref{sec:banach} then deduces
+Theorem~\ref{thm:HFP}.
+
+\section{Assessment of the supplied partial result}\label{sec:partial}
+
+The automatic solver proved the following conditional obstruction.
+
+\begin{proposition}[Common quotient--subspace obstruction]\label{prop:partial}
+Let $X,Y$ be real Banach spaces.  Suppose that a finite-dimensional,
+non-Hilbert Banach space $E$ is linearly isometric both to a quotient of $X$
+and to a subspace of $Y$.  Then $(X,Y)$ fails the HFP.
+\end{proposition}
+
+\begin{proof}
+For an $n$-dimensional Banach space $E$,
+\begin{equation}\label{eq:idBM}
+ \ga(\Id_E)=d(E,\ell_2^n).
+\end{equation}
+Indeed, if $\Id_E=ba$ through a Hilbert space, then $a$ is injective and
+$b|_{a(E)}=a^{-1}$, whence
+\[
+ \|a\|\,\|b\|\geq \|a\|\,\|a^{-1}:a(E)\to E\|\geq d(E,\ell_2^n).
+\]
+Conversely, every isomorphism $S:E\to\ell_2^n$ gives
+$\Id_E=S^{-1}S$.  This proves \eqref{eq:idBM}.  In finite dimension the
+Banach--Mazur infimum is attained, and distance one means that the unit ball is
+an ellipsoid; hence $d(E,\ell_2^n)>1$ when $E$ is not Hilbert.
+
+Aubrun and M\"uller-Hermes proved that HFP descends to quotients of the domain
+and subspaces of the range \cite[Proposition 5.4]{AMH-limit}.  Thus HFP for
+$(X,Y)$ would imply HFP for $(E,E)$, contradicting
+\[
+ 1=\|\Id_E\|<\ga(\Id_E).
+\]
+\end{proof}
+
+The proof is correct as written.  In particular, there is no hidden
+approximation issue in \eqref{eq:idBM}.  Its limitation is structural: the
+same non-Euclidean space must occur isometrically on both sides.  The planar
+corollary in the supplied packet, concerning linearly equivalent $K$ and $L$,
+is also correct (and follows immediately by applying the sandwich property to
+a map with $T(K)=L$).  Theorem~\ref{thm:planar} removes this common-space
+hypothesis entirely.
+
+\section{Literature status before the new argument}\label{sec:literature}
+
+The conjecture appears in the 2024 preprint and in the 2025 Journal of
+Functional Analysis version of \emph{Limit formulas for norms of tensor power
+operators} \cite{AMH-limit}.  That paper proves, among other partial results,
+that two non-strictly convex real spaces cannot form an HFP pair and reduces
+the general real problem to dimension two.
+
+The preceding paper on asymptotic tensor powers gives additional obstructions:
+a mismatch between John and L\"owner contact points, the classification for
+real $\ell_p^m$--$\ell_q^n$ pairs, and several unresolved smooth examples
+\cite[Section 5.2]{AMH-asymptotic}.  Searches by the exact HFP terminology,
+the two conjecture numbers, the article title and DOI, author publication
+lists, and forward citations revealed no later proof or counterexample through
+22 June 2026.  The only indexed forward citations found were the earlier
+asymptotic-tensor paper (whose final publication cross-references the follow-up)
+and work on Lorentz-cone entanglement; neither resolves the conjecture.
+
+Accordingly, the proof below should be viewed as a new candidate resolution,
+not as a report of a known theorem.  All steps needed for verification are
+included.
+
+\section{John--L\"owner normalization and contact moments}\label{sec:normal}
+
+For a compact convex body $C\subset\R^2$, write
+\[
+ h_C(u)=\sup_{x\in C}\ip{u}{x}
+\]
+for its support function.  Let $\B$ be the Euclidean unit disk and
+$\Sph=\partial\B$.
+
+The sandwich property is invariant under independent invertible changes of
+coordinates in $K$ and $L$.  We may therefore send the L\"owner ellipse of
+$K$ (the minimum-area ellipse containing $K$) to $\B$, and independently send
+the John ellipse of $L$ (the maximum-area ellipse contained in $L$) to $\B$.
+Thus from now on
+\begin{equation}\label{eq:normal}
+ K\subset \B\subset L,
+ \qquad \Loew(K)=\B,
+ \qquad \John(L)=\B.
+\end{equation}
+
+Define the two Euclidean contact sets
+\begin{align*}
+ C_K&:=K\cap\Sph,\\
+ C_L&:=\{u\in\Sph:h_L(u)=1\}.
+\end{align*}
+Because $\B\subset L$, the second set is also $\partial L\cap\Sph$.  Indeed,
+a common boundary point of $L$ and the strictly convex disk has the same
+supporting line.
+
+We use the quadratic double-angle map
+\begin{equation}\label{eq:nu}
+ \nu:\Sph\longrightarrow\Sph,
+ \qquad
+ \nu(u_1,u_2)=(u_1^2-u_2^2,\,2u_1u_2).
+\end{equation}
+It identifies $u$ and $-u$ and satisfies
+\begin{equation}\label{eq:moment-map}
+ uu^{\mathsf T}
+ =\frac12
+ \begin{pmatrix}
+  1+\nu_1(u)&\nu_2(u)\\
+  \nu_2(u)&1-\nu_1(u)
+ \end{pmatrix}.
+\end{equation}
+A physical rotation through angle $\theta$ becomes a rotation through angle
+$2\theta$ after applying $\nu$.
+
+\begin{lemma}[Isotropic contact images]\label{lem:isotropic}
+Under \eqref{eq:normal}, the closed sets
+\[
+ A:=\nu(C_K),\qquad B:=\nu(C_L)
+\]
+satisfy
+\[
+ 0\in\conv A\cap\conv B.
+\]
+Moreover, $A=\Sph$ if and only if $K=\B$, and $B=\Sph$ if and only if
+$L=\B$.
+\end{lemma}
+
+\begin{proof}
+The symmetric John--L\"owner theorem gives contact points $u_i\in C_K$ and
+positive weights $c_i$ such that \cite{John}
+\[
+ \sum_i c_i u_i u_i^{\mathsf T}=I_2.
+\]
+Taking traces gives $\sum_i c_i=2$.  Formula \eqref{eq:moment-map} then gives
+$\sum_i(c_i/2)\nu(u_i)=0$, so $0\in\conv A$.  The John decomposition for
+$\B\subset L$ gives the same conclusion for $B$.
+
+If $A=\Sph$, central symmetry of $C_K$ implies $C_K=\Sph$, hence
+$\B\subset K$ and therefore $K=\B$.  The converse is immediate.  The argument
+for $L$ is analogous, using $h_L(u)=1$ in every direction.
+\end{proof}
+
+The key observation is that equal barycenters after the map $\nu$ are exactly
+equal second moments before the map.
+
+\begin{lemma}[Moment lifting]\label{lem:momentlift}
+Let $\mu,\eta$ be probability measures on $\Sph$.  If
+\[
+ \int\nu(u)\,d\mu(u)=\int\nu(v)\,d\eta(v),
+\]
+then
+\[
+ \int uu^{\mathsf T}\,d\mu(u)
+ =\int vv^{\mathsf T}\,d\eta(v).
+\]
+\end{lemma}
+
+\begin{proof}
+Integrate \eqref{eq:moment-map}.
+\end{proof}
+
+\section{A circle lemma: rotate two missing contact arcs until their chords cross}
+\label{sec:circle}
+
+The following elementary lemma is the topological-geometric core of the proof.
+
+\begin{lemma}[Crossing contact chords]\label{lem:chords}
+Let $A,B\subset\Sph$ be proper closed subsets satisfying
+$0\in\conv A\cap\conv B$.  Then there are a rotation $\rho$ of $\R^2$ and a
+point $p$ such that
+\begin{equation}\label{eq:hull-strict}
+ p\in\conv(\rho A)\cap\conv B,
+ \qquad
+ p\notin\conv(\rho A\cap B).
+\end{equation}
+Here the convex hull of the empty set is understood as empty.
+\end{lemma}
+
+\begin{proof}
+Since $A$ is proper and closed, $\Sph\setminus A$ has a nonempty open arc
+component $I_A$.  Its angular length is at most $\pi$: otherwise $A$ would be
+contained in an open semicircle, contrary to $0\in\conv A$.  Let $a_-,a_+$ be
+the endpoints.  The chord
+\[
+ F_A=[a_-,a_+]
+\]
+is an exposed face of $\conv A$.  More explicitly, there are a unit normal
+$m_A$ and a number $r_A\in[0,1)$ such that
+\[
+ \conv A\subset\{x:\ip{m_A}{x}\le r_A\},
+ \qquad
+ F_A=\conv A\cap\{x:\ip{m_A}{x}=r_A\}.
+\]
+The number $r_A$ is the distance of the chord line from the origin.  Choose
+similarly an exposed gap chord $F_B$ with unit normal $m_B$ and distance
+$r_B\in[0,1)$.
+
+We can rotate $F_A$ so that the relative interiors of $F_A$ and $F_B$ cross.
+For completeness, suppose first that $r_A>r_B$.  Rotate its normal to a unit
+vector $m$ satisfying
+\[
+ \ip{m_B}{m}=r_B/r_A.
+\]
+Then $p=r_A m$ is the midpoint of the rotated $F_A$, lies on the line of
+$F_B$, and has $|p|=r_A<1$; hence it lies in the relative interior of both
+chords.  The case $r_B>r_A$ is symmetric.  If $r_A=r_B=r>0$, take two
+nonparallel normals at a sufficiently small angle $\phi$; their line
+intersection has norm $r/\cos(\phi/2)<1$.  If both distances are zero, use two
+nonparallel diameters, which meet at the origin.  Let $\rho$ be the resulting
+rotation of $A$.
+
+The crossing point $p$ belongs to both convex hulls.  Suppose that
+$p\in\conv(\rho A\cap B)$.  In a convex representation of $p$ by common
+points, the supporting functional of the rotated $F_A$ has average equal to
+its maximum $r_A$, so every point used must lie on $F_A$.  The same argument
+with $F_B$ forces every point used to lie on $F_B$.  The two supporting lines
+are nonparallel and meet only at $p$, while $|p|<1$ and all common points lie
+on $\Sph$.  This is impossible, proving \eqref{eq:hull-strict}.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[scale=2.3]
+  \draw[gray!60] (0,0) circle (1);
+  % fixed exposed chord x=1/2
+  \coordinate (b1) at ({cos(60)},{sin(60)});
+  \coordinate (b2) at ({cos(-60)},{sin(-60)});
+  \draw[blue!70!black,thick] (b1)--(b2);
+  \draw[blue!70!black,line width=1.1pt] plot[domain=60:300,samples=100]
+    ({cos(\x)},{sin(\x)});
+  % rotated exposed chord y=1/5
+  \coordinate (a1) at ({cos(11.537)},{sin(11.537)});
+  \coordinate (a2) at ({cos(168.463)},{sin(168.463)});
+  \draw[red!70!black,thick] (a1)--(a2);
+  \draw[red!70!black,line width=1.1pt] plot[domain=168.463:371.537,samples=100]
+    ({cos(\x)},{sin(\x)});
+  \fill (0.5,0.2) circle (0.025) node[above right] {$p$};
+  \node[blue!70!black] at (1.18,-0.25) {$B$-contact hull};
+  \node[red!70!black] at (-0.68,-1.14) {rotated $A$-contact hull};
+\end{tikzpicture}
+\caption{In the doubled-angle circle, a gap in each proper contact set creates
+an exposed chord.  One chord can be rotated so that the two relative
+interiors cross.  The crossing point belongs to both contact hulls but not to
+the hull of the common contact directions.}
+\label{fig:chords}
+\end{figure}
+
+\section{The perturbation and the equal-moment obstruction}\label{sec:perturb}
+
+We now convert Lemma~\ref{lem:chords} into a linear contraction with no
+ellipse sandwich.
+
+\begin{lemma}[Perturbation obstruction]\label{lem:perturb}
+Assume \eqref{eq:normal}.  Let $R$ be an orthogonal map.  Suppose there are
+probability measures $\mu$ on $R C_K$ and $\eta$ on $C_L$ such that
+\begin{equation}\label{eq:same-moment}
+ M:=\int uu^{\mathsf T}\,d\mu(u)
+ =\int vv^{\mathsf T}\,d\eta(v),
+\end{equation}
+and a symmetric matrix $H$ such that
+\begin{align}
+ \ip{Hu}{u}&<0 &&\text{for every }u\in R C_K\cap C_L,
+ \label{eq:negative-common}\\
+ \int\ip{Hu}{u}\,d\mu(u)&>0.\label{eq:positive-average}
+\end{align}
+Then, for every sufficiently small $t>0$, the map
+\[
+ T_t=(I_2+tH)R
+\]
+satisfies $T_t(K)\subset L$, but there is no ellipse $\mathcal E$ with
+$T_t(K)\subset\mathcal E\subset L$.
+\end{lemma}
+
+\begin{proof}
+We first prove $T_t(K)\subset L$.  If not for arbitrarily small $t$, there
+would be $t_n\downarrow0$, $x_n\in K$, and $u_n\in\Sph$ such that
+\begin{equation}\label{eq:violate}
+ \ip{u_n}{(I_2+t_nH)R x_n}>h_L(u_n).
+\end{equation}
+After taking a subsequence, let $x_n\to x$ and $u_n\to u$.  At $t=0$,
+\[
+ \ip{u_n}{R x_n}\le h_{RK}(u_n)\le1\le h_L(u_n).
+\]
+Consequently \eqref{eq:violate} and $t_n\to0$ force equality throughout in
+the limit.  Equality in the Euclidean Cauchy inequality gives $Rx=u$; also
+$u\in R C_K$ and $h_L(u)=1$, so $u\in R C_K\cap C_L$.  On the other hand,
+\[
+ 0<\ip{u_n}{(I_2+t_nH)R x_n}-h_L(u_n)
+ \le t_n\ip{u_n}{H R x_n}.
+\]
+The last coefficient converges to $\ip{Hu}{u}<0$, a contradiction.  This
+proves the inclusion for all sufficiently small $t$.
+
+Suppose now that a centered ellipse $\mathcal E$ satisfies the sandwich.
+Write
+\[
+ h_{\mathcal E}(w)^2=w^{\mathsf T}Qw
+\]
+for a positive definite matrix $Q$.  For $u\in R C_K$, the point
+$R^{-1}u$ belongs to $K$, so
+\begin{equation}\label{eq:lower-ellipse}
+ h_{\mathcal E}(u)
+ \ge h_{T_tK}(u)
+ \ge \ip{u}{(I_2+tH)u}
+ =1+t\ip{Hu}{u}.
+\end{equation}
+For small $t$ the right side is positive.  For $v\in C_L$, the upper
+inclusion gives
+\begin{equation}\label{eq:upper-ellipse}
+ v^{\mathsf T}Qv=h_{\mathcal E}(v)^2\le h_L(v)^2=1.
+\end{equation}
+Using the common moment matrix \eqref{eq:same-moment}, we obtain
+\begin{align*}
+ 1
+ &\ge \int v^{\mathsf T}Qv\,d\eta(v)
+   =\tr(QM)
+   =\int u^{\mathsf T}Qu\,d\mu(u)\\
+ &\ge \int\bigl(1+t\ip{Hu}{u}\bigr)^2\,d\mu(u)\\
+ &=1+2t\int\ip{Hu}{u}\,d\mu(u)
+   +t^2\int\ip{Hu}{u}^2\,d\mu(u)
+ >1,
+\end{align*}
+where the last inequality follows from \eqref{eq:positive-average}.  This
+contradiction excludes every intermediate ellipse.
+\end{proof}
+
+The hypotheses of Lemma~\ref{lem:perturb} follow automatically from a point
+$p$ as in Lemma~\ref{lem:chords}.
+
+\begin{lemma}[Separation produces the perturbation]\label{lem:separation}
+Let $A=\nu(C_K)$ and $B=\nu(C_L)$.  Suppose a rotation $\rho$ and a point $p$
+satisfy \eqref{eq:hull-strict}.  Let $R$ be a physical rotation inducing
+$\rho$ under $\nu$.  Then there are $\mu,\eta,H$ satisfying
+\eqref{eq:same-moment}--\eqref{eq:positive-average}.
+\end{lemma}
+
+\begin{proof}
+Represent $p$ by probability measures on the two contact sets:
+\[
+ p=\int\nu(u)\,d\mu(u),\qquad \supp\mu\subset R C_K,
+\]
+\[
+ p=\int\nu(v)\,d\eta(v),\qquad \supp\eta\subset C_L.
+\]
+In fact, the two endpoints of each crossing chord suffice.  By
+Lemma~\ref{lem:momentlift}, these measures have the same second moment.
+
+Central symmetry and the fact that $\nu(u)=\nu(v)$ exactly when
+$v=\pm u$ give
+\[
+ \nu(R C_K\cap C_L)=\rho A\cap B.
+\]
+If $R C_K\cap C_L$ is nonempty, strict separation of $p$ from the compact
+convex set
+\[
+ \conv\nu(R C_K\cap C_L)
+ =\conv(\rho A\cap B)
+\]
+gives an affine functional
+\[
+ \ell(z)=\alpha+\beta_1z_1+\beta_2z_2
+\]
+which is strictly negative on that set and satisfies $\ell(p)>0$.  If the
+common contact set is empty, take simply $\ell\equiv1$.  Define
+\[
+ H=\begin{pmatrix}
+  \alpha+\beta_1&\beta_2\\
+  \beta_2&\alpha-\beta_1
+ \end{pmatrix}.
+\]
+Then, by \eqref{eq:nu},
+\[
+ \ip{Hu}{u}=\ell(\nu(u)).
+\]
+It is strictly negative on $R C_K\cap C_L$, while
+\[
+ \int\ip{Hu}{u}\,d\mu(u)
+ =\ell\!\left(\int\nu(u)\,d\mu(u)\right)
+ =\ell(p)>0.
+\]
+\end{proof}
+
+\section{Proof of the planar theorem}\label{sec:planarproof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:planar}]
+Normalize as in \eqref{eq:normal}.  Suppose for contradiction that neither
+$K$ nor $L$ is an ellipse.  Then $K\ne\B$ and $L\ne\B$.  By
+Lemma~\ref{lem:isotropic}, the doubled contact sets
+\[
+ A=\nu(C_K),\qquad B=\nu(C_L)
+\]
+are proper closed subsets of the circle and both have the origin in their
+convex hulls.  Lemma~\ref{lem:chords} supplies a doubled rotation $\rho$ and a
+point $p$ satisfying \eqref{eq:hull-strict}.  Choose the corresponding
+physical rotation $R$.  Lemma~\ref{lem:separation} gives equal-moment measures
+and a symmetric matrix $H$, and Lemma~\ref{lem:perturb} gives, for small
+$t>0$, an invertible linear map $T_t$ such that
+\[
+ T_t(K)\subset L
+\]
+but no ellipse lies between $T_t(K)$ and $L$.  This contradicts the assumed
+sandwich property.  Hence $K$ or $L$ is an ellipse.
+\end{proof}
+
+\begin{remark}[Constructive content]
+The proof gives an explicit finite recipe for a bad operator.  Choose one
+missing arc in each doubled contact set, rotate their exposed chords to cross,
+write the crossing point as a convex combination of each chord's endpoints,
+and separate it from the convex hull of the common contacts.  The separating
+affine functional determines $H$, and every sufficiently small
+$(I_2+tH)R$ is a witness.  Thus the proof is not merely existential at the
+level of operator geometry.
+\end{remark}
+
+\section{Deduction of the Banach-space classification}\label{sec:banach}
+
+We first record the exact factorization--ellipse dictionary needed below.
+
+\begin{lemma}[Factorizations and ellipse sandwiches]\label{lem:dictionary}
+Let $K,L$ be the unit balls of two real two-dimensional normed spaces, and
+let $T$ be invertible.  Then
+\[
+ \gamma_2(T)\leq 1
+\]
+if and only if there is a centered ellipse $\mathcal E$ such that
+\[
+ T(K)\subset \mathcal E\subset L.
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose first that $\mathcal E=b(B_2)$, where $b:\ell_2^2\to\R^2$ is
+invertible.  The two inclusions say that
+\[
+ \|b^{-1}T:K\to B_2\|\leq1,
+ \qquad
+ \|b:B_2\to L\|\leq1,
+\]
+so $T=b(b^{-1}T)$ is a Hilbert factorization of product at most one.
+
+Conversely, in finite dimensions the infimum defining $\gamma_2(T)$ is
+attained through $\ell_2^2$.  Indeed, in every approximate factorization
+$T=ba$ one may restrict the Hilbert space to $a(\R^2)$, identify that
+2-dimensional Hilbert space with $\ell_2^2$, and rescale so that
+$\|a\|=\|b\|$; compactness of bounded sets of matrices then gives a
+minimizing pair.  Thus write $T=ba$ with $\|a\|\,\|b\|\leq1$.  Rescaling the
+two factors once more, we may arrange $\|a\|\leq1$ and $\|b\|\leq1$.
+Since $T$ is invertible, so is $b$, and
+\[
+ \mathcal E:=b(B_2)
+\]
+is an ellipse satisfying $T(K)\subset\mathcal E\subset L$.
+\end{proof}
+
+The source paper states this dictionary as the equivalence between its
+Conjectures 5.2 and 5.5.  Lemma~\ref{lem:dictionary} also shows directly why
+the invertibility supplied by Theorem~\ref{thm:planar} eliminates any issue
+about degenerate ellipses or non-attainment.
+
+\begin{proof}[Proof of Theorem~\ref{thm:HFP}]
+If $X$ is Hilbert, then every $T:X\to Y$ factors through $X$ as
+$T=T\Id_X$, so $\ga(T)\le\|T\|$; the reverse inequality always holds.  The
+same argument applies when $Y$ is Hilbert.
+
+Conversely, suppose $(X,Y)$ has the HFP and neither space is Hilbert.  A
+classical characterization of inner-product spaces says that a real Banach
+space is Hilbert if and only if all of its two-dimensional subspaces are
+Euclidean, and also if and only if all of its two-dimensional quotients are
+Euclidean \cite{Amir}.  Hence $X$ has a non-Euclidean two-dimensional quotient
+$X/F$, and $Y$ has a non-Euclidean two-dimensional subspace $E$.  HFP descends
+to $(X/F,E)$ by \cite[Proposition 5.4]{AMH-limit}.
+
+Let $K,L$ be the unit balls of $X/F$ and $E$.  Neither is an ellipse, so the
+more precise conclusion of Theorem~\ref{thm:planar} gives an invertible map
+$T$ with $T(K)\subset L$ and with no intermediate ellipse.  On the other
+hand, HFP gives
+\[
+ \gamma_2(T)=\|T\|\leq1,
+\]
+and Lemma~\ref{lem:dictionary} produces exactly such an ellipse, a
+contradiction.  Therefore $X$ or $Y$ is Hilbert.
+\end{proof}
+
+\section{Relation to the original partial result and prior obstructions}
+
+The common quotient--subspace argument in Proposition~\ref{prop:partial} is a
+valid special case and remains a useful one-line certificate.  The full proof
+uses a different mechanism.  Rather than seeking a common non-Hilbert space,
+it extracts two \emph{different} contact measures with the same Euclidean
+second moment.  Any intermediate ellipse evaluates those measures identically,
+whereas the carefully chosen perturbation makes the lower evaluation strictly
+larger than the upper one.
+
+The contact-chord step also explains why earlier generic-contact arguments do
+not cover bodies with large contact arcs.  Even when every rotated pair of
+contact sets intersects, properness creates a missing arc in each doubled
+contact set.  Their exposed chords can be made to cross in the interior of the
+disk, and that interior crossing---not absence of common contacts---is the
+required obstruction.  In particular, it covers the smooth or nearly
+Euclidean examples left open in \cite[Section 5.2]{AMH-asymptotic}.
+
+\section{Verification checklist and status}
+
+The proof rests on four exact ingredients:
+\begin{enumerate}[label=(\roman*)]
+ \item the symmetric John--L\"owner contact decomposition;
+ \item the elementary identity \eqref{eq:moment-map};
+ \item the crossing-chord Lemma~\ref{lem:chords};
+ \item the integrated ellipse inequalities in Lemma~\ref{lem:perturb}.
+\end{enumerate}
+No numerical optimization or regularity assumption on $K,L$ is used.  The
+bodies may be nonsmooth and non-strictly convex.  The only limiting argument
+needed for the Banach formulation is finite-dimensional compactness of
+ellipses; the central geometric contradiction itself is quantitative for all
+sufficiently small $t>0$.
+
+The supplied partial proof has been verified.  The literature search did not
+locate an existing full solution.  Theorem~\ref{thm:planar} and its deduction
+of Theorem~\ref{thm:HFP} are therefore presented as a new proof candidate and
+should be checked independently before citation or submission.
+
+\begin{thebibliography}{99}
+
+\bibitem{AMH-limit}
+G.~Aubrun and A.~M\"uller-Hermes,
+\emph{Limit formulas for norms of tensor power operators},
+J. Funct. Anal. \textbf{289} (2025), no.~10, Article 111113;
+arXiv:2410.23063.
+
+\bibitem{AMH-asymptotic}
+G.~Aubrun and A.~M\"uller-Hermes,
+\emph{Asymptotic tensor powers of Banach spaces},
+Ann. Inst. Fourier (Grenoble) (2025), DOI 10.5802/aif.3736;
+arXiv:2110.12828.
+
+\bibitem{Amir}
+D.~Amir,
+\emph{Characterizations of Inner Product Spaces},
+Operator Theory: Advances and Applications, vol.~20,
+Birkh\"auser, 1986.
+
+\bibitem{DJT}
+J.~Diestel, H.~Jarchow, and A.~Tonge,
+\emph{Absolutely Summing Operators},
+Cambridge Studies in Advanced Mathematics, vol.~43,
+Cambridge University Press, 1995.
+
+\bibitem{John}
+F.~John,
+\emph{Extremum problems with inequalities as subsidiary conditions},
+in \emph{Studies and Essays Presented to R. Courant on His 60th Birthday},
+Interscience, 1948, pp.~187--204.
+
+\end{thebibliography}
+
+\end{document}

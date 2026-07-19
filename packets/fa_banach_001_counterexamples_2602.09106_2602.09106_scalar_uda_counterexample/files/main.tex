@@ -1,0 +1,168 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\R}{\mathbb{R}}
+
+\title{A Scalar Counterexample to a Uniform Property \texorpdfstring{$(S)$}{(S)} Modulus Question}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Open Problem (3) from:
+
+\begin{quote}
+William B. Johnson and Tomasz Kania, \emph{Uniform Property (S)},
+arXiv:2602.09106.
+\end{quote}
+
+The source location is Section 5, Open problems, page 19 of the source
+PDF; in the parsed source this is line 1071 of \texttt{main.tex}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Problem (3) asks:
+
+\begin{quote}
+Is $U(d,a)$ always smaller than $da$ (up to a constant)?
+\end{quote}
+
+We give a negative answer to the statement as written, in the real
+Banach-space category, even if one restricts to spaces with uniform
+property $(S)$.
+
+\section*{Definitions}
+
+For a normed space $X$, Johnson and Kania define
+\[
+  U_X(x,y;a)
+  =
+  \sup_{\norm{z}\le a}
+  \left|\,\norm{x+z}-\norm{y+z}\,\right|
+\]
+for $x,y\in S_X$ and $a>0$, and
+\[
+  U_X(d;a)
+  =
+  \inf_{\substack{x,y\in S_X\\ \norm{x-y}\ge d}}
+  U_X(x,y;a).
+\]
+The open question asks whether there is a universal constant $C$ such
+that
+\[
+  U_X(d;a)\le Cda
+\]
+for all relevant spaces $X$, all $0<d<2$, and all $a>0$.
+
+\section*{Counterexample}
+
+\begin{theorem}
+There is no universal constant $C$ such that
+\[
+  U_X(d;a)\le Cda
+\]
+for every real Banach space $X$ with uniform property $(S)$, every
+$0<d<2$, and every $a>0$.
+\end{theorem}
+
+\begin{proof}
+Let $X=\R$ with its usual norm. Then
+\[
+  S_X=\{-1,1\}.
+\]
+Consequently, if $0<d<2$, the only admissible ordered pairs
+$(x,y)\in S_X\times S_X$ with $\norm{x-y}\ge d$ are $(1,-1)$ and
+$(-1,1)$. Therefore
+\[
+  U_{\R}(d;a)=U_{\R}(1,-1;a).
+\]
+
+We compute this quantity. For $z\in\R$,
+\[
+  \left|\,|1+z|-|-1+z|\,\right|\le 2
+\]
+by the reverse triangle inequality. If $0<a\le 1$, then for
+$z\in[-a,a]$ one has $1+z\ge 0$ and $1-z\ge 0$, so
+\[
+  |1+z|-|-1+z|
+  =
+  (1+z)-(1-z)
+  =
+  2z.
+\]
+Taking absolute values and then the supremum over $|z|\le a$ gives
+\[
+  U_{\R}(d;a)=2a
+  \qquad (0<d<2,\; 0<a\le 1).
+\]
+In fact the full scalar formula is
+\[
+  U_{\R}(d;a)=\min\{2a,2\},
+  \qquad 0<d<2,\ a>0.
+\]
+In particular, $U_{\R}(d;a)>0$ for every $0<d<2$ and every $a>0$, so
+$\R$ has uniform property $(S)$.
+
+Now suppose that a universal constant $C$ existed. Applying the proposed
+bound to $X=\R$ and $0<a\le 1$ would give
+\[
+  2a=U_{\R}(d;a)\le Cda
+\]
+for every $0<d<2$. Since $a>0$, this implies
+\[
+  2\le Cd
+\]
+for every $0<d<2$, which is impossible as $d$ tends to zero.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is exact. The script
+\texttt{code/check\_scalar\_modulus.py} numerically compares the formula
+\[
+  U_{\R}(d;a)=\min\{2a,2\}
+\]
+against a fine grid maximization of
+\[
+  \left|\,|1+z|-|-1+z|\,\right|
+  \qquad (|z|\le a)
+\]
+for several values of $a$. This is only a sanity check; the scalar
+calculation above is the proof.
+
+\section*{Limitations and Human Review Guidance}
+
+This is a literal counterexample to Problem (3) as printed. It is also a
+small edge case: the obstruction is that the real one-dimensional unit
+sphere has no pairs at distance $d$ for $0<d<2$ except the antipodal
+pair, whose distance is $2$. Thus the infimum defining $U(d;a)$ cannot
+probe genuinely small-distance geometry.
+
+The result should therefore be read as identifying a missing hypothesis
+in the printed question. A more substantive modified problem might ask
+for the same upper bound in infinite-dimensional spaces, in spaces with
+connected unit sphere, or under a condition guaranteeing admissible
+pairs at every small distance. This packet does not resolve those
+strengthened versions.
+
+\section*{Novelty Check}
+
+No external literature search beyond the source paper and the local
+pipeline corpus was performed. The argument is elementary enough that it
+may be known informally; the claim here is only that it answers the
+printed statement exactly.
+
+\end{document}

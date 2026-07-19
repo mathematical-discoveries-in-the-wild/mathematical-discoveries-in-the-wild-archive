@@ -1,0 +1,375 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\PM}{\left\langle X_0,X_1\right\rangle_{\theta,(0)}}
+\newcommand{\Cplx}{\left[X_0,X_1\right]_\theta}
+\newcommand{\Cal}{X_0^{1-\theta}X_1^\theta}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\one}{\mathbf 1}
+
+\title{Cwikel's Plus-Minus Isometry Conjecture for Banach Lattices}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_04}}
+\date{2026-06-23}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Candidate full result, likely valid.}
+This packet proves the isometry conjectured in Remark 4.1 of Cwikel's
+paper \cite{Cwikel2015}: for a couple of complexified Banach lattices
+of measurable functions on the same measure space, Cwikel's continuous
+plus-minus norm agrees with Calderon's complex interpolation norm.
+
+The earlier order-continuous endpoint result has been moved into the
+packet's \texttt{history/} folder.
+
+\section*{Source Problem}
+
+The source paper is Michael Cwikel, ``Some alternative definitions for
+the `plus-minus' interpolation spaces
+$\left\langle A_0,A_1\right\rangle_\theta$ of Jaak Peetre,''
+arXiv:1502.00986v2 \cite{Cwikel2015}.  The relevant statement is Remark
+4.1 on page 13.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The remark recalls that, for couples of complexified Banach lattices of
+measurable functions on the same measure space, the plus-minus space
+$\left\langle A_0,A_1\right\rangle_\theta$ is known to coincide with
+Calderon's complex interpolation space $[A_0,A_1]_\theta$ up to
+equivalent norms.  It then conjectures that the coincidence is actually
+isometric when the plus-minus side is equipped with the continuous norm
+$\left\langle A_0,A_1\right\rangle_{\theta,(0)}$.
+
+\section*{Idea of the Proof}
+
+Cwikel already proves the norm-one inclusion
+\[
+\norm{x}_{\Cplx}\le \norm{x}_{\PM}.
+\]
+Thus only the reverse inequality is needed.
+
+The direct Calderon-product proof works immediately for elements whose
+pointwise Calderon factorization has bounded logarithmic ratio: put a
+small scalar kernel at that logarithmic ratio and the endpoint
+plus-minus estimates are dominated by the two Calderon factors.  The
+old order-continuous packet removed unbounded logarithmic-ratio tails by
+order continuity.
+
+The full proof uses a sharper observation.  Calderon's complex space for
+Banach lattices is not the whole upper Calderon product in general; by
+Shestakov's theorem it is the closure of $X_0\cap X_1$ in the Calderon
+product norm \cite{Shestakov1974,Yuan2014}.  For elements already in
+$X_0\cap X_1$, the unbounded ratio tails can be killed without order
+continuity: on the positive tail, the $X_1$ norm decays exponentially
+while the $X_0$ norm is bounded; placing that tail at the midpoint
+$t=K/2$ makes both weighted endpoint norms small.  The negative tail is
+symmetric.  Therefore the norm-one estimate first holds on
+$X_0\cap X_1$, and then passes to its Calderon-product closure, which is
+the complex interpolation space.
+
+\section*{Notation and Background}
+
+Let $X_0$ and $X_1$ be complex Banach lattices of measurable functions
+on a common measure space, and let $0<\theta<1$.  We write
+$\PM$ for Cwikel's continuous plus-minus space and norm from
+\cite[Section 3]{Cwikel2015}.  Thus $x\in\PM$ if
+$x=\int_{-\infty}^{\infty}u(t)\,dt$ for an admissible locally piecewise
+continuous $X_0\cap X_1$-valued function $u$, and
+\[
+\norm{u}_{J}
+=\max_{j=0,1}\sup_{\phi}
+\left\|\int_{-\infty}^{\infty} e^{(j-\theta)t}\phi(t)u(t)\,dt
+\right\|_{X_j},
+\]
+where the supremum is over locally piecewise continuous scalar
+$\phi$ with $\norm{\phi}_\infty\le 1$.  The plus-minus norm is the
+infimum of $\norm{u}_J$ over all such representations of $x$.
+
+We use the Calderon product gauge
+\[
+\norm{f}_{\Cal}
+=\inf M,
+\]
+where the infimum is over all measurable $b\ge |f|$ and real measurable
+$s$ such that
+\[
+ b e^{-\theta s}\in X_0,\quad
+ b e^{(1-\theta)s}\in X_1,\quad
+ \norm{b e^{-\theta s}}_{X_0}\le M,\quad
+ \norm{b e^{(1-\theta)s}}_{X_1}\le M .
+\]
+This is the usual Calderon product norm, after balancing the two
+endpoint factors.
+
+We shall use two standard facts.  First, Calderon's embedding is
+contractive:
+\[
+\norm{x}_{\Cal}\le \norm{x}_{\Cplx}.
+\]
+Second, Shestakov's Banach-lattice theorem says that Calderon's complex
+interpolation space is the closure of $X_0\cap X_1$ in the Calderon
+product norm:
+\[
+\Cplx=\overline{X_0\cap X_1}^{\ \norm{\cdot}_{\Cal}}.
+\]
+Yuan's note \cite[p. 2]{Yuan2014} records this classical theorem and
+its relation to the inner complex method.
+
+\section*{Two Elementary Plus-Minus Estimates}
+
+\begin{lemma}[One-point representation]
+\label{lem:point}
+For every $z\in X_0\cap X_1$ and every $a\in\mathbb R$,
+\[
+\norm{z}_{\PM}
+\le
+\max\{e^{-\theta a}\norm{z}_{X_0},
+      e^{(1-\theta)a}\norm{z}_{X_1}\}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $k_\delta$ be the normalized indicator of
+$[-\delta/2,\delta/2]$ and put
+$u_\delta(t)=z\,k_\delta(t-a)$.  Then
+$\int u_\delta(t)\,dt=z$.  For every test function $\phi$ with
+$|\phi|\le1$,
+\[
+\left\|\int e^{-\theta t}\phi(t)u_\delta(t)\,dt\right\|_{X_0}
+\le
+C_{0,\delta}e^{-\theta a}\norm{z}_{X_0},
+\]
+and
+\[
+\left\|\int e^{(1-\theta)t}\phi(t)u_\delta(t)\,dt\right\|_{X_1}
+\le
+C_{1,\delta}e^{(1-\theta)a}\norm{z}_{X_1},
+\]
+where
+$C_{0,\delta}=\int e^{-\theta r}k_\delta(r)\,dr$ and
+$C_{1,\delta}=\int e^{(1-\theta)r}k_\delta(r)\,dr$.  Both constants
+tend to $1$ as $\delta\downarrow0$.
+\end{proof}
+
+\begin{lemma}[Bounded logarithmic-ratio bands]
+\label{lem:finite-band}
+Let $g$ be a measurable function.  Suppose that for some measurable
+$b\ge |g|$ and some real measurable $s$ taking values in a bounded
+interval,
+\[
+y_0:=b e^{-\theta s}\in X_0,\qquad
+y_1:=b e^{(1-\theta)s}\in X_1 .
+\]
+Then
+\[
+\norm{g}_{\PM}\le \max\{\norm{y_0}_{X_0},\norm{y_1}_{X_1}\}.
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose that $s$ takes only finitely many values.  Put
+$\alpha=g/b$ on $\{b>0\}$ and $\alpha=0$ on $\{b=0\}$, so
+$|\alpha|\le1$ and $\alpha b=g$.  Let $k_\delta$ be as in the previous
+lemma and set
+\[
+u_\delta(t,\omega)=\alpha(\omega)b(\omega)k_\delta(t-s(\omega)).
+\]
+Because $s$ has finite range, $u_\delta$ is locally piecewise constant
+as an $X_0\cap X_1$-valued function and has compact $t$-support.  Also
+$\int u_\delta=g$.  For every admissible $\phi$,
+\[
+\left|\int e^{-\theta t}\phi(t)u_\delta(t)\,dt\right|
+\le C_{0,\delta} y_0,
+\qquad
+\left|\int e^{(1-\theta)t}\phi(t)u_\delta(t)\,dt\right|
+\le C_{1,\delta} y_1 .
+\]
+The lattice property gives the corresponding endpoint norm estimates,
+and letting $\delta\downarrow0$ proves the finite-valued case.
+
+If $s$ is merely bounded, choose finite-valued measurable $q$ with
+$|q-s|\le\eta$.  Applying the finite-valued case with $q$ in place of
+$s$ yields
+\[
+\norm{g}_{\PM}
+\le e^\eta\max\{\norm{y_0}_{X_0},\norm{y_1}_{X_1}\}.
+\]
+Let $\eta\downarrow0$.
+\end{proof}
+
+\section*{Norm-One Estimate on the Intersection}
+
+\begin{lemma}
+\label{lem:intersection}
+For every $h\in X_0\cap X_1$,
+\[
+\norm{h}_{\PM}\le \norm{h}_{\Cal}.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix $M>\norm{h}_{\Cal}$.  Choose $b\ge |h|$ and measurable real $s$
+such that
+\[
+y_0=b e^{-\theta s}\in X_0,\qquad
+y_1=b e^{(1-\theta)s}\in X_1,
+\]
+and $\norm{y_0}_{X_0},\norm{y_1}_{X_1}\le M$.
+For $K>0$ put $h_K=h\one_{\{|s|\le K\}}$.  Lemma
+\ref{lem:finite-band} gives
+\[
+\norm{h_K}_{\PM}\le M.
+\]
+
+We claim that $h_K\to h$ in the plus-minus norm.  On the positive tail
+$p_K=h\one_{\{s>K\}}$, we have
+\[
+\norm{p_K}_{X_0}\le\norm{h}_{X_0},\qquad
+\norm{p_K}_{X_1}\le e^{-(1-\theta)K}\norm{y_1}_{X_1}\le e^{-(1-\theta)K}M.
+\]
+Applying Lemma \ref{lem:point} with $a=K/2$ gives
+\[
+\norm{p_K}_{\PM}
+\le
+\max\{e^{-\theta K/2}\norm{h}_{X_0},
+      e^{-(1-\theta)K/2}M\}\to0.
+\]
+On the negative tail $n_K=h\one_{\{s<-K\}}$, we similarly have
+\[
+\norm{n_K}_{X_0}\le e^{-\theta K}M,\qquad
+\norm{n_K}_{X_1}\le \norm{h}_{X_1}.
+\]
+Lemma \ref{lem:point} with $a=-K/2$ gives
+\[
+\norm{n_K}_{\PM}
+\le
+\max\{e^{-\theta K/2}M,
+      e^{-(1-\theta)K/2}\norm{h}_{X_1}\}\to0.
+\]
+Thus $h_K\to h$ in $\PM$.  Since all $h_K$ have plus-minus norm at
+most $M$, completeness of Cwikel's continuous plus-minus space
+\cite[Section 5]{Cwikel2015} gives $\norm{h}_{\PM}\le M$.  Letting
+$M\downarrow\norm{h}_{\Cal}$ proves the lemma.
+\end{proof}
+
+\section*{The Full Isometry}
+
+\begin{theorem}
+\label{thm:full}
+Let $X_0$ and $X_1$ be complex Banach lattices of measurable functions
+on the same measure space.  Then, for every $0<\theta<1$,
+\[
+\left\langle X_0,X_1\right\rangle_{\theta,(0)}
+=
+\left[X_0,X_1\right]_\theta
+\]
+isometrically.
+\end{theorem}
+
+\begin{proof}
+Cwikel's Theorem 4.3 gives the contractive embedding
+\[
+\norm{x}_{\Cplx}\le \norm{x}_{\PM}.
+\]
+It remains to prove $\norm{x}_{\PM}\le\norm{x}_{\Cplx}$.
+
+Let $x\in\Cplx$ and fix $M>\norm{x}_{\Cplx}$.  By Calderon's
+contractive embedding, $\norm{x}_{\Cal}\le\norm{x}_{\Cplx}$.  By
+Shestakov's theorem, choose $h_m\in X_0\cap X_1$ such that
+$\norm{h_m-x}_{\Cal}\to0$ and, after discarding finitely many terms,
+$\norm{h_m}_{\Cal}\le M$ for all $m$.
+
+Lemma \ref{lem:intersection} gives
+\[
+\norm{h_m-h_n}_{\PM}\le\norm{h_m-h_n}_{\Cal}\to0,
+\]
+so $(h_m)$ is Cauchy in $\PM$.  Let $y$ be its plus-minus limit.  The
+contractive embeddings
+\[
+\PM\hookrightarrow \Cplx\hookrightarrow \Cal
+\]
+imply that $h_m\to y$ in the Calderon product norm.  Since also
+$h_m\to x$ in that norm, $y=x$ as a measurable function.  Therefore
+$x\in\PM$, and
+\[
+\norm{x}_{\PM}\le\limsup_m\norm{h_m}_{\PM}
+\le\limsup_m\norm{h_m}_{\Cal}\le M.
+\]
+Letting $M\downarrow\norm{x}_{\Cplx}$ gives the reverse contractive
+embedding.  Together with Cwikel's inequality, this proves equality of
+the two norms.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof separates the only delicate non-order-continuous issue from
+the lattice-complex interpolation theorem.  The weighted
+$\ell_\infty$ model shows why the whole upper Calderon product cannot be
+used directly: unbounded logarithmic-ratio tails need not vanish in
+sup norm.  Shestakov's theorem supplies exactly the missing regularity:
+Calderon's complex space is the closure of $X_0\cap X_1$ inside the
+Calderon product.  On $X_0\cap X_1$ the tails are controlled by placing
+them at midpoint parameters and using their actual endpoint membership.
+
+Bounded novelty/literature check performed on 2026-06-23: the run
+indexes were searched for \texttt{1502.00986}, \texttt{plus-minus},
+\texttt{Peetre}, \texttt{Calderon}, \texttt{lattice}, and isometry
+keywords.  Web searches for exact phrases from Remark 4.1 and for
+``plus-minus interpolation Banach lattices complex interpolation
+isometry'' did not reveal a later exact resolution.  The proof uses
+Shestakov's known identification of complex interpolation with the
+regular Calderon-product closure, as summarized in Yuan \cite{Yuan2014},
+but the norm-one plus-minus estimate supplied here appears not to be
+stated in the located sources.
+
+Recommended verifier focus: check Lemma \ref{lem:intersection},
+especially the positive/negative tail estimates in the plus-minus norm,
+and confirm that the cited Shestakov closure theorem applies to the
+same class of complexified Banach lattices intended in Cwikel's Remark
+4.1.
+
+\begin{thebibliography}{9}
+
+\bibitem{Calderon1964}
+A. P. Calderon,
+Intermediate spaces and interpolation, the complex method,
+\emph{Studia Math.} 24 (1964), 113--190.
+
+\bibitem{CwikelKalton1993}
+M. Cwikel and N. J. Kalton,
+Interpolation of compact operators by the methods of Calderon and
+Gustavsson-Peetre,
+arXiv:math/9210206, 1992.
+
+\bibitem{Cwikel2015}
+M. Cwikel,
+Some alternative definitions for the ``plus-minus'' interpolation spaces
+$\left\langle A_0,A_1\right\rangle_\theta$ of Jaak Peetre,
+arXiv:1502.00986v2, 2015.
+
+\bibitem{Shestakov1974}
+V. A. Shestakov,
+On complex interpolation of Banach spaces of measurable functions,
+\emph{Sibirsk. Mat. Zh.} 15 (1974), 923--933.
+
+\bibitem{Yuan2014}
+W. Yuan,
+A note on complex interpolation and Calderon product of quasi-Banach
+spaces,
+arXiv:1405.5735, 2014.
+
+\end{thebibliography}
+
+\end{document}

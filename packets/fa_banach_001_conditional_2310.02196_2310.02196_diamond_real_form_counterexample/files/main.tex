@@ -1,0 +1,684 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={Conditional Counterexample to the Complex Real-Form Question},
+  pdfauthor={Run fa-banach-001 packet upgrade}
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\spec}{\sigma}
+\newcommand{\Hcheck}{\check H}
+
+\title{\textbf{Conditional Counterexample to the Complex Real-Form Question}\\
+\large Real forms of complemented subspaces of complex Banach lattices}
+\author{Run \texttt{fa\_banach\_001} packet upgrade}
+\date{23 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+De Hevia, Mart\'inez-Cervantes, Salguero-Alarc\'on, and Tradacete asked whether every complemented subspace of a complex Banach lattice is complex-linearly isomorphic to the complexification of a real Banach space. This report audits a proposed partial solution and then develops the problem further.
+
+The finite-codimensional, unconditional-basis, compact-perturbation, and norm-small projection conclusions in the proposed solution are correct. The spectral proofs, however, require a repair: an anti-linear operator conjugates the resolvent parameter, so the relevant identity is
+\[
+ A f(A^2)=f^{\#}(A^2)A,\qquad f^{\#}(z)=\overline{f(\bar z)},
+\]
+not ordinary commutation for arbitrary holomorphic functions. With this correction, the stated spectral results remain valid.
+
+Two further results are obtained. First, if a projection on a complex Banach space with conjugation differs compactly from its conjugate projection, then its range has a real form; no norm-smallness is needed. Second, a vector-bundle obstruction is established for ranges of projections over a real $C(K)$-space with few operators. Combining this obstruction with a cohomology-preserving modification of G\l odkowski's construction gives, under Jensen's diamond principle $\diamondsuit$, a rank-one range which is contractively complemented in a complex Banach lattice but is not even isomorphic to its complex conjugate. Thus $\diamondsuit$ gives a negative answer to the question. The unconditional ZFC problem remains open according to the literature search completed on 22 June 2026.
+\end{abstract}
+
+\section*{Packet status}
+
+\textbf{conditional\_counterexample\_likely\_valid.}  The source paper asks in
+Remark~5.5 whether every complemented subspace of a complex Banach lattice is
+complex-linearly isomorphic to the complexification of a real Banach space.
+The upgraded packet does not claim an unconditional ZFC counterexample.  It
+records a conditional negative answer under Jensen's diamond principle
+\(\diamondsuit\): in \(\mathrm{ZFC}+\diamondsuit\), there is a norm-one
+complemented subspace \(Y\) of a complex Banach lattice with
+\[
+       Y\not\cong_{\C}\overline Y,
+\]
+and therefore \(Y\) has no real form.
+
+\medskip
+
+This does not contradict the warning in the source paper.  The source notes
+that the known non-conjugate complex Banach spaces fail GL-lust and therefore
+cannot serve as complemented subspaces of complex Banach lattices.  The
+conditional construction below avoids that route: \(Y\) is built directly as
+the range of a pointwise Bott projection on \(C(K,\C^2)\), with \(K\) chosen
+under \(\diamondsuit\) so that \(C(K,\R)\) has few operators and retains a
+non-torsion second cohomology class.
+
+\medskip
+
+The supplied TeX/PDF report is archived in
+\path{evidence/supplied_report_2026_06_23_real_form_complemented_subspaces/}.
+The previous positive-subcase packet is preserved in
+\path{history/partial_packet_2026_06_16_complex_real_form_subcases/}.
+
+\tableofcontents
+
+\section{Executive conclusions}
+
+The findings are as follows.
+
+\begin{enumerate}[label=\textbf{(\Alph*)},leftmargin=2.7em]
+\item \textbf{Audit.} The main positive statements in the supplied packet are mathematically correct. The proof of the spectral-normalization theorem and the Riesz-projection argument contain a genuine anti-linearity gap, but the gap is repairable and does not invalidate the conclusions. The informal remark about arbitrary unconditional finite-dimensional decompositions is not established by the argument and should be removed or qualified.
+
+\item \textbf{Literature status.} The source paper states the question in Remark~5.5. Its 2025 survey follow-up still treats the surrounding complex problem as open. Searches of arXiv, journal indexes, citation trails, and exact phrases through 22 June 2026 found no published or preprint ZFC proof or counterexample to this particular real-form question.
+
+\item \textbf{Stronger positive theorem.} Let $Z$ carry a bounded conjugation $J$, let $P$ be a complex-linear projection, and set $Q=JPJ$. If $P-Q$ is compact, then $PZ$ has a real form. This is independent of the size of $\|P-Q\|$ and strengthens the norm-small criterion in the packet in a different direction.
+
+\item \textbf{Conditional negative theorem.} Assuming Jensen's diamond principle $\diamondsuit$, there is a complex Banach space $Y$ which is the range of a norm-one projection on a complex Banach lattice and for which
+\[
+        Y\not\cong_{\C}\overline{Y}.
+\]
+Consequently $Y$ is not the complexification of any real Banach space. The construction uses the Hopf line bundle and a compact connected space $K$ for which $C(K,\R)$ has few operators.
+\end{enumerate}
+
+The conditional theorem is a full counterexample in $\mathrm{ZFC}+\diamondsuit$, but it is not an unconditional ZFC counterexample. The arguments in the final two parts of this report are new deductions from the cited machinery and have not been peer reviewed.
+
+\section{The source question and literature status}
+
+A \emph{complex Banach lattice} is, in the convention of the source paper, the canonical complexification of a real Banach lattice. De Hevia, Mart\'inez-Cervantes, Salguero-Alarc\'on, and Tradacete proved that a complemented subspace of a complex Banach lattice need not itself be isomorphic to a complex Banach lattice \cite{deHeviaEtAl}. They then isolated the following different question.
+
+\begin{question}[De Hevia--Mart\'inez-Cervantes--Salguero-Alarc\'on--Tradacete]
+Is every complemented subspace of a complex Banach lattice complex-linearly isomorphic to the complexification of some real Banach space?
+\end{question}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Source paper, Remark~5.5, where the complex real-form question is stated.}
+\end{figure}
+
+This question is weaker than asking whether the subspace is a complex Banach lattice. The source paper observes that a complexification is necessarily isomorphic to its complex conjugate, whereas the classical examples which are not isomorphic to their conjugates fail Gordon--Lewis local unconditional structure and therefore cannot be complemented subspaces of complex Banach lattices.
+
+The literature search used the exact text of Remark~5.5, combinations of ``complexification'', ``real form'', ``complex conjugate'', and ``complemented subspace of a complex Banach lattice'', the citation graph of the source paper, and recent arXiv searches in functional analysis. The most directly relevant later source found was the 2025 survey by de Hevia and Tradacete \cite{deHeviaTradaceteSurvey}. No later paper located in this search answers the real-form question. Acuaviva's 2026 work on primarity of the class of Banach lattices develops the complemented-subspace counterexamples but does not settle the real-form problem. Accordingly, the ZFC status stated here is: \emph{no full answer was found}, not a claim that no answer can exist.
+
+\section{Real forms and anti-linear operators}
+
+\begin{definition}
+A \emph{conjugation} on a complex Banach space $Y$ is a bounded anti-linear operator $C:Y\to Y$ such that $C^2=I$.
+\end{definition}
+
+\begin{proposition}[Real-form criterion]\label{prop:real-form-criterion}
+For a complex Banach space $Y$, the following are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item $Y$ is complex-linearly isomorphic to the complexification of a real Banach space.
+\item $Y$ admits a bounded conjugation.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+If $T:E_{\C}\to Y$ is a complex isomorphism, transport the canonical conjugation of $E_{\C}$ through $T$.
+
+Conversely, let $C$ be a conjugation and put $E=\Fix(C)$, with its inherited real norm. Every $y\in Y$ has the unique decomposition
+\[
+ y=\frac{y+Cy}{2}+i\frac{y-Cy}{2i},
+\]
+whose two components lie in $E$. The natural complex-linear map $E_{\C}\to Y$ is therefore bijective. With the standard complexification norm
+\[
+ \|e+if\|_{E_{\C}}=\sup_{\theta\in\R}\|e\cos\theta+f\sin\theta\|_E,
+\]
+both this map and its inverse are bounded, using the displayed decomposition and the boundedness of $C$.
+\end{proof}
+
+A complex-linear isomorphism $Y\to\overline{Y}$ is equivalently an invertible anti-linear map $A:Y\to Y$. The existence of such an $A$ is necessary, but not in general sufficient, for a real form: one needs an anti-linear involution, not merely an anti-linear automorphism. Much of the positive theory consists of conditions under which $A$ can be normalized to an involution.
+
+\section{Audit of the proposed partial solution}
+
+\subsection{Finite codimension}
+
+\begin{theorem}\label{thm:finite-codim}
+Let $E$ be a real Banach space, let $Z=E_{\C}$ with canonical conjugation $J$, and let $Y\subseteq Z$ be a closed complex subspace of finite codimension. Then $Y$ has a real form.
+\end{theorem}
+
+\begin{proof}
+Choose a bounded surjection $F:Z\to\C^m$ with kernel $Y$. Since $Z=E+iE$, the complex span of $F(E)$ is all of $\C^m$. Choose $u_1,\dots,u_m\in E$ such that $F(u_1),\dots,F(u_m)$ is a complex basis, and put
+\[
+ M=\operatorname{span}_{\C}\{u_1,\dots,u_m\}.
+\]
+Then $Z=Y\oplus M$ and $M$ is $J$-invariant. Let $R:Z\to Y$ be the projection along $M$, and define $C=RJ|_Y$. If $Jy=Cy+m$ with $m\in M$, applying $J$ and then $R$ gives
+\[
+ y=RJC y=C^2y.
+\]
+Thus $C$ is a conjugation, and \cref{prop:real-form-criterion} applies.
+\end{proof}
+
+This proof is correct. In particular, every finite-codimensional complex subspace of a complex Banach lattice has a real form; complementability is automatic in finite codimension and no lattice argument beyond the ambient conjugation is required.
+
+\subsection{Unconditional Schauder bases}
+
+\begin{theorem}\label{thm:unconditional}
+Every complex Banach space with an unconditional Schauder basis has a real form.
+\end{theorem}
+
+\begin{proof}
+Let $(e_n)$ be an unconditional basis. The coordinate conjugation
+\[
+ C\left(\sum_n a_ne_n\right)=\sum_n\overline{a_n}e_n
+\]
+is bounded: for a fixed vector choose the unimodular multiplier $\lambda_n=\overline{a_n}/a_n$ when $a_n\ne0$. Uniform boundedness of coordinate multipliers gives $\|Cy\|\leq K\|y\|$. Clearly $C$ is anti-linear and $C^2=I$.
+\end{proof}
+
+This argument is correct. It does not by itself cover an arbitrary unconditional finite-dimensional decomposition, because unconditionality of scalar block signs does not uniformly control arbitrary conjugations inside the blocks. The packet's comment invoking Kalton-type twisted sums as an explanation is heuristic rather than a proved extension and should not be presented as a theorem.
+
+\subsection{The spectral arguments}
+
+The statements in the packet are valid, but the proof sentence ``$AL=LA$, hence $A$ commutes with $f(L)$'' is not correct for a general holomorphic $f$. Anti-linearity conjugates scalars:
+\[
+       A(zI-L)=(\bar zI-L)A.
+\]
+The corrected calculus is developed in \cref{sec:functional-calculus}. It validates the principal-square-root theorem, the finite Riesz-splitting theorem, and the compact-perturbation corollary.
+
+\subsection{The norm-small projection criterion}
+
+Let $Z$ carry a conjugation $J$, let $P$ be a projection, put $Q=JPJ$, and set $Y=PZ$. On $Y$ define $A=PJ|_Y$. Then
+\[
+ A^2=PQ|_Y,
+ \qquad
+ \|A^2-I_Y\|\leq \|P\|\,\|Q-P\|.
+\]
+If the last quantity is less than one, the binomial series for $(A^2)^{-1/2}$ has real coefficients and normalizes $A$ to a conjugation. This proof is correct. In \cref{sec:compact-projection} we obtain a separate compact-perturbation result with no smallness assumption.
+
+\section{Correct anti-linear holomorphic functional calculus}\label{sec:functional-calculus}
+
+Let $A:Y\to Y$ be invertible and anti-linear, and put $L=A^2$. Then $L$ is complex-linear and invertible. Its spectrum is invariant under complex conjugation. For a holomorphic function $f$ on a conjugation-invariant neighborhood of $\spec(L)$, define
+\[
+       f^{\#}(z)=\overline{f(\bar z)}.
+\]
+
+\begin{lemma}[Anti-linear functional calculus]\label{lem:sharp-calculus}
+With the notation above,
+\[
+       A f(L)=f^{\#}(L)A.
+\]
+\end{lemma}
+
+\begin{proof}
+The resolvent identity is
+\[
+ A(zI-L)^{-1}=(\bar zI-L)^{-1}A.
+\]
+It implies the claimed relation first for rational functions with poles off the spectrum and then, by the uniqueness and continuity of the holomorphic functional calculus, for every admissible holomorphic $f$. Equivalently, one may apply the Cauchy integral formula on conjugation-symmetric contours, taking account of the conjugation of scalar coefficients by $A$.
+\end{proof}
+
+\begin{theorem}[General normalization]\label{thm:general-normalization}
+Suppose there is a conjugation-invariant open neighborhood $U$ of $\spec(L)$ and a holomorphic function $g:U\to\C$ such that
+\[
+       z\,g(z)g^{\#}(z)=1
+       \qquad (z\in U).
+\]
+Then $C=g(L)A$ is a conjugation on $Y$.
+\end{theorem}
+
+\begin{proof}
+By \cref{lem:sharp-calculus},
+\[
+ C^2=g(L)A g(L)A
+     =g(L)g^{\#}(L)A^2
+     =I.
+\]
+\end{proof}
+
+\begin{corollary}[Principal-square-root criterion]\label{cor:principal-root}
+If
+\[
+       \spec(A^2)\subseteq\C\setminus(-\infty,0],
+\]
+then $Y$ has a real form.
+\end{corollary}
+
+\begin{proof}
+Take the principal branch $g(z)=z^{-1/2}$. It satisfies $g^{\#}=g$ on the slit plane and hence the hypothesis of \cref{thm:general-normalization}.
+\end{proof}
+
+\begin{corollary}[Finite bad spectral set]\label{cor:finite-bad}
+Let
+\[
+ B=\spec(A^2)\cap(-\infty,0].
+\]
+If $B$ is finite and every point of $B$ is isolated with finite-dimensional Riesz spectral subspace, then $Y$ has a real form.
+\end{corollary}
+
+\begin{proof}
+The Riesz projection $P_B$ is invariant under $A$. Indeed, the locally constant holomorphic function which equals one near $B$ and zero near the remaining spectrum satisfies $h^{\#}=h$, so \cref{lem:sharp-calculus} gives $AP_B=P_BA$. Thus
+\[
+ Y=P_BY\oplus(I-P_B)Y
+\]
+is an $A$-invariant decomposition. The first summand is finite-dimensional and therefore has a conjugation; the second satisfies \cref{cor:principal-root}. Take the direct sum of the two conjugations.
+\end{proof}
+
+\begin{corollary}[Compact perturbation]\label{cor:compact-square}
+If $A$ is an invertible anti-linear operator and
+\[
+       A^2=\lambda I+K,
+       \qquad K\text{ compact},\qquad
+       \lambda\notin(-\infty,0],
+\]
+then $Y$ has a real form.
+\end{corollary}
+
+\begin{proof}
+The spectrum of $\lambda I+K$ consists of $\lambda$ together with isolated eigenvalues of finite algebraic multiplicity, accumulating only at $\lambda$. Hence its intersection with $(-\infty,0]$ is finite, and \cref{cor:finite-bad} applies.
+\end{proof}
+
+There is a useful sharpening of the ``quaternionic obstruction'' language.
+
+\begin{proposition}[Scalar part is real]\label{prop:scalar-real}
+Let $Y$ be infinite-dimensional and let $A$ be an invertible anti-linear operator. If
+\[
+ A^2=\lambda I+K
+\]
+with $K$ compact, then $\lambda\in\R\setminus\{0\}$. If $Y$ has no real form, necessarily $\lambda<0$.
+\end{proposition}
+
+\begin{proof}
+The identity $AA^2=A^2A$, with anti-linearity taken into account, gives
+\[
+       (\bar\lambda-\lambda)A=KA-AK.
+\]
+The right-hand side is compact. If $\lambda$ were non-real, the invertible operator $A$ would be compact, impossible in infinite dimension. Also $\lambda=0$ would make the invertible operator $A^2$ compact. If $\lambda>0$, \cref{cor:compact-square} supplies a real form. Thus the only scalar obstruction left is $\lambda<0$.
+\end{proof}
+
+\section{A stronger compact-projection theorem}\label{sec:compact-projection}
+
+\begin{theorem}[Compactly real projections]\label{thm:compactly-real-projection}
+Let $Z$ be a complex Banach space with a bounded conjugation $J$. Let $P:Z\to Z$ be a bounded complex-linear projection, put
+\[
+       Q=JPJ,
+       \qquad Y=PZ.
+\]
+If $P-Q$ is compact, then $Y$ has a real form.
+\end{theorem}
+
+\begin{proof}
+Define $A=PJ|_Y:Y\to Y$. It is bounded and anti-linear, and for $y\in Y$,
+\[
+ A^2y=PQy,
+ \qquad
+ (A^2-I_Y)y=P(Q-P)y.
+\]
+Hence $A^2=I_Y+K$ for a compact complex-linear $K$.
+
+Regard $A$ as a real-linear operator. Its class in the real Calkin algebra has invertible square, hence is itself invertible; therefore $A$ is Fredholm. Moreover
+\[
+ 2\ind_{\R}(A)=\ind_{\R}(A^2)=\ind_{\R}(I_Y+K)=0.
+\]
+Thus $\ind_{\R}(A)=0$. Both $\Ker A$ and $Y/\Ran A$ are complex vector spaces, so they have equal finite complex dimension.
+
+Choose complex decompositions
+\[
+ Y=\Ker A\oplus M,
+ \qquad
+ Y=\Ran A\oplus N,
+\]
+and an anti-linear isomorphism $U:\Ker A\to N$. If $\pi$ is the bounded complex-linear projection onto $\Ker A$, put $F=U\pi$. Then $F$ is finite-rank and anti-linear, and
+\[
+ B=A+F
+\]
+is an invertible anti-linear operator: on $\Ker A\oplus M$ it maps the first summand bijectively to $N$ and the second bijectively to $\Ran A$.
+
+Finally,
+\[
+ B^2=I_Y+K_1
+\]
+for a compact complex-linear $K_1$, because all terms involving $F$ have finite rank. Apply \cref{cor:compact-square} with $\lambda=1$.
+\end{proof}
+
+\begin{remark}
+The norm-small and compact-difference criteria are incomparable. A small difference need not be compact, and a compact difference can have arbitrarily large norm. Together they substantially narrow the possible geometry of a counterexample.
+\end{remark}
+
+\section{Few-operator spaces and vector-bundle obstructions}
+
+We now turn from positive criteria to a mechanism for constructing counterexamples.
+
+\begin{definition}
+A real space $C(K,\R)$ has \emph{few operators} if every bounded real-linear operator on it can be written
+\[
+       T=M_f+W,
+       \qquad f\in C(K,\R),\quad W\in\cW(C(K,\R)),
+\]
+where $M_f$ is multiplication by $f$ and $\cW$ denotes the ideal of weakly compact operators.
+\end{definition}
+
+Assume throughout this section that $K$ is compact and has no isolated points, and put $A=C(K,\R)$. Then $M_f$ is weakly compact only when $f=0$. Consequently
+\[
+       \cB(A)/\cW(A)\cong C(K,\R)
+\]
+as unital real Banach algebras.
+
+\subsection{Matrix and corner quotients}
+
+\begin{lemma}[Matrix quotient]\label{lem:matrix-quotient}
+For each $N<\infty$,
+\[
+ \cB(A^N)/\cW(A^N)\cong M_N(C(K,\R)).
+\]
+\end{lemma}
+
+\begin{proof}
+Write an operator on $A^N$ as an $N\times N$ matrix of operators on $A$. It is weakly compact exactly when every entry is weakly compact. Passing entrywise to the quotient gives the result.
+\end{proof}
+
+Let $p\in M_N(C(K,\R))$ be a continuous idempotent and put $X=pA^N$. Geometrically, $X$ is the section space of the finite-rank real vector bundle
+\[
+       V=p(K\times\R^N).
+\]
+
+\begin{proposition}[Corner quotient]\label{prop:corner-quotient}
+There is a natural unital real-algebra isomorphism
+\[
+ \cB_{\R}(X)/\cW(X)
+     \cong pM_N(C(K,\R))p
+     \cong \Gamma(\End_{\R}V).
+\]
+\end{proposition}
+
+\begin{proof}
+For $T\in\cB(X)$, extend it to $A^N$ as $\widetilde T=iTp$, where $i:X\hookrightarrow A^N$ is inclusion. The class of $\widetilde T$ lies in the corner $pM_N(C(K,\R))p$. This defines the homomorphism. Its kernel is precisely $\cW(X)$, because weak compactness is preserved by restriction and by composition with bounded maps. Every element of the corner acts by pointwise bundle endomorphisms on $X$, so the homomorphism is onto. The second identification is the standard correspondence between corners of matrix-valued functions and continuous endomorphism sections.
+\end{proof}
+
+\subsection{The bundle obstruction}
+
+Let $E\to K$ be a finite-rank complex vector bundle and let $V=E_{\R}$ be its underlying real bundle. Multiplication by $i$ gives a bundle endomorphism $J\in\Gamma(\End_{\R}V)$ with $J^2=-I$. The complex section space $Y=\Gamma(E)$ has underlying real space $X=\Gamma(V)$.
+
+\begin{theorem}[Bundle obstruction]\label{thm:bundle-obstruction}
+Suppose $C(K,\R)$ has few operators. If the complex bundles $E$ and $\overline E$ are not isomorphic, then
+\[
+        \Gamma(E)\not\cong_{\C}\overline{\Gamma(E)}.
+\]
+In particular, $\Gamma(E)$ has no real form.
+\end{theorem}
+
+\begin{proof}
+Suppose, toward a contradiction, that $Y=\Gamma(E)$ admits an invertible anti-linear operator $T:Y\to Y$. Regard $T$ as a real operator on $X=\Gamma(V)$. It satisfies
+\[
+       TJ=-JT.
+\]
+By \cref{prop:corner-quotient}, the class of $T$ is an invertible section
+\[
+       t\in\Gamma(\End_{\R}V).
+\]
+The relation survives in the quotient, so $tJ=-Jt$. Fiberwise, $t(k)$ is an invertible real-linear map which is anti-complex-linear for the complex structure $J(k)$. Hence $t$ is a complex-linear bundle isomorphism
+\[
+       E\longrightarrow\overline E,
+\]
+a contradiction. The last assertion follows from \cref{prop:real-form-criterion}.
+\end{proof}
+
+\begin{corollary}[Chern-class test]\label{cor:chern-test}
+If $E$ is a complex line bundle and
+\[
+       2c_1(E)\ne0\quad\text{in }\Hcheck^2(K;\Z),
+\]
+then $\Gamma(E)$ has no real form.
+\end{corollary}
+
+\begin{proof}
+Complex conjugation reverses the first Chern class:
+\[
+       c_1(\overline E)=-c_1(E).
+\]
+Thus $E\cong\overline E$ would imply $2c_1(E)=0$.
+\end{proof}
+
+\section[A cohomology-preserving few-operator compactum under diamond]{A cohomology-preserving few-operator compactum under $\diamondsuit$}
+
+G\l odkowski proved under Jensen's diamond principle that, for every positive finite covering dimension, there is a compact connected separable $K$ of that dimension for which $C(K)$ has few operators \cite{Glodkowski}. His construction is an inverse system of metrizable compacta whose successor bonding maps are strong extensions. The exceptional set at each successor stage is zero-dimensional.
+
+For the bundle obstruction we need a non-torsion class in $\Hcheck^2(K;\Z)$. This can be retained by starting the construction from $S^2$ rather than from a cube. The following lemma records the cohomological point.
+
+\begin{lemma}[Strong extensions preserve cohomology in degree at least two]\label{lem:cohomology-strong-extension}
+Let $\pi:L\to K$ be the natural projection of a strong extension of a compact metrizable space by pairwise disjoint $[0,1]$-valued functions. Let $D\subseteq K$ be the open set on which the defining sum is continuous and suppose $Z=K\setminus D$ is zero-dimensional. Then
+\[
+       \pi^*:\Hcheck^n(K;\Z)\longrightarrow\Hcheck^n(L;\Z)
+\]
+is an isomorphism for every $n\ge2$.
+\end{lemma}
+
+\begin{proof}
+The projection is a homeomorphism over $D$, and every fiber is a compact subset of $[0,1]$. Hence every fiber has zero \v Cech cohomology in positive degree. For the constant sheaf $\underline{\Z}$, proper base change \cite{Bredon,Iversen} gives
+\[
+       R^q\pi_*\underline{\Z}=0\qquad(q>0).
+\]
+The Leray spectral sequence therefore identifies $H^n(L;\underline{\Z})$ with $H^n(K;\pi_*\underline{\Z})$.
+
+The natural injection
+\[
+       \underline{\Z}\longrightarrow\pi_*\underline{\Z}
+\]
+is an isomorphism over $D$. Its cokernel is consequently supported on the zero-dimensional compact set $Z$. A sheaf supported on a zero-dimensional paracompact space has no cohomology in positive degree. The long exact cohomology sequence therefore shows that
+\[
+       H^n(K;\underline{\Z})\longrightarrow H^n(K;\pi_*\underline{\Z})
+\]
+is an isomorphism for $n\ge2$. On compact metrizable spaces this agrees with \v Cech cohomology, proving the claim.
+\end{proof}
+
+\begin{proposition}[Few operators while retaining the sphere class]\label{prop:diamond-K}
+Assume $\diamondsuit$. There exist a compact connected separable Hausdorff space $K$ and a continuous surjection
+\[
+       q:K\longrightarrow S^2
+\]
+such that
+\begin{enumerate}[label=(\roman*)]
+\item $C(K,\R)$ has few operators;
+\item $q^*:\Hcheck^2(S^2;\Z)\to\Hcheck^2(K;\Z)$ is an isomorphism.
+\end{enumerate}
+In particular, $\Hcheck^2(K;\Z)\cong\Z$.
+\end{proposition}
+
+\begin{proof}
+Embed $S^2$ in a finite cube and rerun Construction~6.6 of G\l odkowski with the initial compactum $K_0=S^2$ and a countable dense subset of $S^2$. The even-stage selection lemma used in that construction requires only compact metrizability; the odd-stage lemma requires compact metrizability and connectedness. Strong extensions preserve connectedness. The diamond bookkeeping, the density bookkeeping, and the proof that the final $C(K)$ has few operators do not use that the initial compactum is a cube. Thus the proof of G\l odkowski's Proposition~6.5 and Theorem~6.8 carries over verbatim after this change of initial stage.
+
+At every nontrivial successor stage the bonding map is a strong extension and its exceptional set is zero-dimensional; at a trivial stage it is a homeomorphism onto a copy of the previous compactum. Hence \cref{lem:cohomology-strong-extension} shows that every successor bonding map induces an isomorphism in degree two. At limit stages, continuity of \v Cech cohomology for inverse limits of compact Hausdorff spaces with surjective bonding maps \cite{Spanier} gives the same conclusion. Therefore the final projection $q:K\to S^2$ induces an isomorphism in degree two.
+\end{proof}
+
+\begin{remark}
+The only modification of the published construction is the initial compactum. The new ingredient needed to justify that modification for the present application is \cref{lem:cohomology-strong-extension}. The published paper itself controls covering dimension, not the second cohomology group.
+\end{remark}
+
+\section{Conditional counterexample}\label{sec:conditional-counterexample}
+
+Let $H\to S^2$ be the Hopf complex line bundle. In coordinates $x=(x_1,x_2,x_3)\in S^2$, it is the range of the Bott projection
+\[
+ b(x)=\frac12
+ \begin{pmatrix}
+ 1+x_3 & x_1-ix_2\\
+ x_1+ix_2 & 1-x_3
+ \end{pmatrix}
+ \in M_2(\C).
+\]
+Its first Chern class is a generator of $\Hcheck^2(S^2;\Z)\cong\Z$ \cite{Spanier}.
+
+\begin{theorem}[Conditional negative answer]\label{thm:diamond-counterexample}
+Assume Jensen's diamond principle $\diamondsuit$. There are a complex Banach lattice $Z$, a norm-one complex-linear projection $P:Z\to Z$, and $Y=PZ$ such that
+\[
+       Y\not\cong_{\C}\overline Y.
+\]
+Consequently $Y$ is not complex-linearly isomorphic to the complexification of any real Banach space.
+\end{theorem}
+
+\begin{proof}
+Take $K$ and $q:K\to S^2$ from \cref{prop:diamond-K}, and let
+\[
+       E=q^*H.
+\]
+Naturality of the first Chern class and the fact that $q^*$ is an isomorphism give
+\[
+       c_1(E)=q^*c_1(H),
+\]
+which is a generator of $\Hcheck^2(K;\Z)\cong\Z$. Therefore
+\[
+       2c_1(E)\ne0,
+       \qquad E\not\cong\overline E.
+\]
+By \cref{thm:bundle-obstruction}, $Y=\Gamma(E)$ is not isomorphic to its conjugate.
+
+For complementability, define the continuous projection
+\[
+       p(k)=b(q(k))\in M_2(\C).
+\]
+Let
+\[
+       Z=C(K,\C^2)
+\]
+with the norm $\|f\|=\sup_{k\in K}\|f(k)\|_2$ and coordinatewise lattice structure. This is a complex Banach lattice. The pointwise operator
+\[
+       (Pf)(k)=p(k)f(k)
+\]
+is a complex-linear projection with range $\Gamma(E)$. Since every $p(k)$ is an orthogonal projection on $\C^2$, $\|P\|=1$.
+
+Finally, a real form would supply a conjugation and hence an anti-linear automorphism of $Y$, contradicting $Y\not\cong\overline Y$.
+\end{proof}
+
+\begin{corollary}[Relative non-provability of the affirmative answer]\label{cor:relative-consistency}
+If ZFC is consistent, then the universal affirmative answer to the source question is not provable in ZFC.
+\end{corollary}
+
+\begin{proof}
+G\"odel's constructible universe gives the relative consistency of $\mathrm{ZFC}+\diamondsuit$ from that of ZFC. In every model of $\mathrm{ZFC}+\diamondsuit$, \cref{thm:diamond-counterexample} refutes the universal affirmative statement. Hence a ZFC proof of that statement would contradict the relative consistency.
+\end{proof}
+
+\begin{remark}
+This is not an independence theorem. It remains possible that ZFC itself proves a negative answer by a different construction. What has been ruled out, relative to consistency, is a ZFC theorem asserting that all such complemented subspaces have real forms.
+\end{remark}
+
+\section{What remains open in ZFC}
+
+The conditional counterexample identifies a concrete bottleneck for an unconditional solution. It would suffice to construct in ZFC a compact $K$ with the following two properties:
+\begin{enumerate}[label=(\roman*)]
+\item $C(K,\R)$ has few operators;
+\item $K$ carries a complex vector bundle $E$ with $E\not\cong\overline E$; for a line bundle, $2c_1(E)\ne0$ suffices.
+\end{enumerate}
+Plebanek constructed a connected few-operator compactum in ZFC \cite{Plebanek}, but the available descriptions do not provide the required non-torsion cohomology class. G\l odkowski explicitly notes that controlling finite covering dimension in the ZFC bookkeeping remains open; the diamond construction permits the cohomology-preserving control used above.
+
+On the positive side, any ZFC counterexample must evade all of the following:
+\begin{itemize}[leftmargin=1.7em]
+\item finite codimension;
+\item an unconditional Schauder basis;
+\item spectral normalization of an anti-linear automorphism, including the compact-perturbation cases in \cref{cor:compact-square,prop:scalar-real};
+\item a defining projection which is norm-close to its conjugate projection;
+\item a defining projection which differs compactly from its conjugate projection, by \cref{thm:compactly-real-projection}.
+\end{itemize}
+
+\section{Final assessment of the supplied packet}
+
+The packet is a useful and mostly correct partial contribution. Its finite-codimensional and unconditional-basis results are clean positive subcases. Its spectral conclusions are also correct after replacing ordinary commutation by the $f\mapsto f^{\#}$ functional calculus. The norm-small projection theorem is valid. The principal mathematical corrections recommended for a revised version are:
+
+\begin{enumerate}[label=\arabic*.,leftmargin=2em]
+\item replace the spectral proof by \cref{lem:sharp-calculus,thm:general-normalization};
+\item use the same $\#$-symmetry to justify invariance of Riesz projections;
+\item remove or qualify the unconditional-FDD remark;
+\item sharpen the scalar-plus-compact discussion using \cref{prop:scalar-real};
+\item add \cref{thm:compactly-real-projection}, which materially enlarges the positive projection class;
+\item distinguish clearly between the open ZFC question and the conditional negative theorem under $\diamondsuit$.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{AliprantisBurkinshaw}
+C.~D. Aliprantis and O.~Burkinshaw,
+\emph{Positive Operators},
+Springer, 2006.
+
+\bibitem{Bredon}
+G.~E. Bredon,
+\emph{Sheaf Theory}, second edition,
+Graduate Texts in Mathematics 170, Springer, 1997.
+
+\bibitem{deHeviaEtAl}
+D.~de Hevia, G.~Mart\'inez-Cervantes, A.~Salguero-Alarc\'on, and P.~Tradacete,
+\emph{A negative solution to the complemented subspace problem for Banach lattices},
+arXiv:2310.02196v2 (2025); accepted for publication in the Journal of the European Mathematical Society.
+
+\bibitem{deHeviaTradaceteSurvey}
+D.~de Hevia and P.~Tradacete,
+\emph{Complemented subspaces of Banach lattices},
+Banach Journal of Mathematical Analysis 19 (2025), Paper No.~60; arXiv:2505.24084.
+
+\bibitem{Ferenczi}
+V.~Ferenczi,
+\emph{Uniqueness of complex structure and real hereditarily indecomposable Banach spaces},
+Advances in Mathematics 213 (2007), 462--488.
+
+\bibitem{Glodkowski}
+D.~G\l odkowski,
+\emph{A Banach space $C(K)$ reading the dimension of $K$},
+Journal of Functional Analysis 285 (2023), Paper No.~109986; arXiv:2207.00149v2.
+
+\bibitem{Iversen}
+B.~Iversen,
+\emph{Cohomology of Sheaves},
+Universitext, Springer, 1986.
+
+\bibitem{Kalton}
+N.~J. Kalton,
+\emph{An elementary example of a Banach space not isomorphic to its complex conjugate},
+Canadian Mathematical Bulletin 38 (1995), 218--222.
+
+\bibitem{KoszmiderSurvey}
+P.~Koszmider,
+\emph{A survey on Banach spaces $C(K)$ with few operators},
+Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales. Serie A. Matem\'aticas 104 (2010), 31--40.
+
+\bibitem{Plebanek}
+G.~Plebanek,
+\emph{A construction of a Banach space $C(K)$ with few operators},
+Topology and its Applications 143 (2004), 217--239.
+
+\bibitem{Spanier}
+E.~H. Spanier,
+\emph{Algebraic Topology},
+McGraw--Hill, 1966.
+
+\bibitem{Swan}
+R.~G. Swan,
+\emph{Vector bundles and projective modules},
+Transactions of the American Mathematical Society 105 (1962), 264--277.
+
+\end{thebibliography}
+
+\end{document}

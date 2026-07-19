@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+
+\title{A Null-Representative Counterexample to the Proposed\\
+Young Convolution on $\R_I^\infty$}
+\author{Run \texttt{fa\_banach\_001}, lane 3}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\texttt{candidate counterexample}; likely valid and ready for human review.
+
+\section{Source conjecture}
+Gill, Pantsulaia, and Zachary \cite{GPZ} define a sigma-finite measure
+$\lambda_\infty$ on the set $\R_I^\infty=\R^\infty$ and state Young's
+inequality for
+\[
+ (f*g)(x)=\int_{\R_I^\infty} f(y)g(x-y)\,d\lambda_\infty(y).
+\]
+After the proof of Theorem 5.10, on page 55 of the 65-page arXiv PDF, they
+write that the constant one is conjecturally sharp on $\R_I^\infty$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The counterexample below shows a prior obstruction: the displayed convolution
+does not descend to the source's $L^p$ spaces, because changing a function on
+a $\lambda_\infty$-null set can change its convolution on a set of positive
+measure.  Hence no sharp constant exists for the stated operation.
+
+\section{Definitions from the source}
+Set $I=[-1/2,1/2]$, $I_n=\prod_{k>n}I$, and
+\[
+ D=\R_I^{\prime\infty}
+   =\bigcup_{n\geq1}(\R^n\times I_n),
+ \qquad N=\R^\infty\setminus D.
+\]
+Thus $D$ consists of sequences whose coordinates lie in $I$ eventually, and
+$N$ consists of sequences having infinitely many coordinates outside $I$.
+The source equips $N$ with the discrete topology, includes $\mathcal P(N)$ in
+its Borel sigma-algebra, and defines the measure of open sets by taking the
+supremum of finite-dimensional compact pieces contained in them.  Consequently
+\begin{equation}\label{eq:nullN}
+ \lambda_\infty(N)=0.
+\end{equation}
+Indeed every positive compact piece used in the definition lies in $D$, so
+none is contained in the disjoint open set $N$.
+
+Let $I_0=I^\N$.  The normalization in the source is
+$\lambda_\infty(I_0)=1$, and the coordinate marginals of
+$\lambda_\infty|_{I_0}$ are normalized Lebesgue measure on $I$.
+Write $\mu=\lambda_\infty|_{I_0}$.
+
+\section{Proof intuition}
+The measure is concentrated on sequences that eventually remain in the tail
+box $I$.  Subtraction destroys that property: for two independent tail-box
+coordinates, the difference exits $I$ with probability $1/4$.  Across
+infinitely many independent coordinates, exits occur infinitely often almost
+surely.  Therefore the difference of two typical points of $I_0$ lies in the
+null complement $N$.
+
+This turns the null-set indicator $\mathbf1_N$ into a decisive witness.  It is
+the zero element of every $L^q$, but the pointwise convolution formula samples
+it at typical differences and returns one on $I_0$.
+
+\section{Formal counterexample}
+\begin{lemma}\label{lem:difference}
+For $\mu\otimes\mu$-almost every $(x,y)\in I_0\times I_0$, one has $x-y\in N$.
+Equivalently,
+\[
+ (\mu\otimes\mu)\{(x,y):x-y\in D\}=0.
+\]
+\end{lemma}
+
+\begin{proof}
+For $k\geq1$ let
+\[
+ B_k=\{(x,y)\in I_0^2:|x_k-y_k|>1/2\}.
+\]
+The sets $B_k$ depend on disjoint coordinate pairs and hence are independent.
+The two triangles outside the diagonal strip of width $1/2$ in the unit square
+$I\times I$ have total area $1/4$, so
+$(\mu\otimes\mu)(B_k)=1/4$.
+
+The condition $x-y\in D$ says that only finitely many $B_k$ occur.  For every
+$m$,
+\[
+ (\mu\otimes\mu)\left(\bigcap_{k>m}B_k^c\right)
+ =\lim_{M\to\infty}\left(\frac34\right)^{M-m}=0.
+\]
+Taking the countable union over $m$ proves the claim.
+\end{proof}
+
+\begin{theorem}\label{thm:counterexample}
+The convolution formula in Theorems 5.10 and 5.13 of \cite{GPZ} is not
+well-defined on almost-everywhere equivalence classes.  More precisely, for
+every admissible exponent triple $p,q,r\in[1,\infty]$, there are measurable
+representatives $f$ and $g$ such that
+\[
+ \|f\|_p=1,\qquad \|g\|_q=0,\qquad \|f*g\|_r\geq1.
+\]
+Consequently the claimed Young inequality, and hence the conjecture that its
+sharp constant is one, is false or ill-posed as stated.
+\end{theorem}
+
+\begin{proof}
+Take
+\[
+ f=\mathbf1_{I_0},\qquad g=\mathbf1_N.
+\]
+Both functions are measurable under the source's sigma-algebra.  The
+normalization $\lambda_\infty(I_0)=1$ gives $\|f\|_p=1$ for every $p$, while
+\eqref{eq:nullN} gives $\|g\|_q=0$ for every $q$, including $q=\infty$ in the
+essential-supremum sense.
+
+Lemma \ref{lem:difference} and Fubini give, for $\mu$-almost every $x\in I_0$,
+\[
+ \mu\{y\in I_0:x-y\in N\}=1.
+\]
+For those $x$ the source's pointwise formula yields
+\[
+ (f*g)(x)
+ =\int_{\R_I^\infty}\mathbf1_{I_0}(y)\mathbf1_N(x-y)
+   \,d\lambda_\infty(y)
+ =1.
+\]
+Thus $\|f*g\|_r\geq1$ for every $r$.  But $g$ and the identically zero
+function are equal $\lambda_\infty$-almost everywhere, whereas convolution
+with the zero representative is identically zero.  The formula therefore
+does not define an operation on $L^p$ equivalence classes, and its asserted
+norm bound has right-hand side zero and left-hand side at least one.
+\end{proof}
+
+\section{Where the source proof fails}
+The proof of Theorem 5.13 changes variables as though
+\[
+ \int g(x-y)\,d\lambda_\infty(x)=\int g(x)\,d\lambda_\infty(x)
+\]
+for the relevant $y$.  However, the source itself identifies $\ell_1$ as the
+maximal group of admissible translations for $\lambda_\infty$.  A typical
+tail-box point is not in $\ell_1$, and Lemma \ref{lem:difference} quantifies
+the resulting singular behavior.  Fubini alone cannot supply the missing
+translation invariance.
+
+\section{Verification, limitations, and novelty}
+The argument is exact and contains no numerical or unproved dependency.  The
+finite-coordinate check is the elementary area computation
+$\Pr(|X-Y|>1/2)=1/4$ for independent uniform $X,Y\in I$; countable additivity
+then gives Lemma \ref{lem:difference}.
+
+The result attacks the convolution and Young inequality exactly as written.
+It does not preclude a different construction using a restricted translation
+group, a different measure, or an explicit representative convention.  Such
+a change would be a reformulation, not a repair of the stated $L^p$ operation.
+
+For novelty, on 19 July 2026 we searched the run's cheap indexes for the arXiv
+id and title, then searched the web for the exact title with the phrases
+\texttt{convolution}, \texttt{Young}, \texttt{sharp constant},
+\texttt{critique}, and \texttt{R\_I\^infty}.  The search found the source and
+citing works but no correction or prior counterexample.  This was a bounded,
+not exhaustive, search.
+
+\paragraph{Human-review recommendation.}
+Review the source's null-complement measure assignment and whether any
+unwritten canonical-representative convention was intended.  Under the
+published definitions the counterexample is complete; an added convention
+would instead expose that the source is defining a different, highly
+degenerate operation.
+
+\begin{thebibliography}{9}
+\bibitem{GPZ}
+T. L. Gill, G. R. Pantsulaia, and W. W. Zachary,
+\emph{Constructive Analysis in Infinitely many variables},
+\href{https://arxiv.org/abs/1206.1764}{arXiv:1206.1764} (2012),
+especially Sections 2 and 5, Theorems 5.10 and 5.13, and PDF page 55.
+\end{thebibliography}
+
+\end{document}
+

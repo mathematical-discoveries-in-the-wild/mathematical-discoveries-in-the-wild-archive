@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathcal N}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\md}{\operatorname{md}}
+
+\title{A Strictly Convex \(c_0\) Half-Space With No Quasihyperbolic Geodesics}
+\author{Run \texttt{fa\_banach\_001}, target \texttt{1301.0900}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Problem}
+
+The source is Rasila--Talponen, \emph{On Quasihyperbolic Geodesics in Banach Spaces}, arXiv:1301.0900 \cite{RT2014}.  The target signal is Conjecture 2.5 on page 7:
+
+\begin{quote}
+We conjecture that a strictly convex Banach space is reflexive if and only if each of its open half spaces is geodesic in the quasihyperbolic metric.
+\end{quote}
+
+The same page notes, without proof, that the preceding \(c_0\) half-space example can be modified so that the ambient Banach space is strictly convex.  The crop below records both the conjecture and that omitted-proof remark.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result Status}
+
+This packet proves the strict-convex \(c_0\) subcase announced in the source remark.  It is a partial result relative to Conjecture 2.5, not a proof of the full conjecture.  In particular, the argument uses the coordinate structure of \(c_0\) and does not show that every nonreflexive strictly convex Banach space has a non-geodesic half-space.
+
+\section*{Definitions}
+
+For a domain \(\Omega\) in a Banach space \(X\), the quasihyperbolic length of a rectifiable curve \(\gamma\) is
+\[
+  \ell_k(\gamma)=\int \frac{\|d\gamma\|}{\dist(\gamma,\partial\Omega)}.
+\]
+The domain is geodesic if every two points in it can be joined by a curve attaining the corresponding infimum.
+
+Let \(w_n=2^{-n}\).  On \(c_0\) define
+\[
+  \N(x)^2=\|x\|_\infty^2+\sum_{n=1}^{\infty}w_n|x_n|^2.
+\]
+This norm is equivalent to the usual \(c_0\)-norm and is strictly convex, because the positive quadratic summand is strictly convex and is added to a convex function.
+
+\section*{Proof Intuition}
+
+The original \(c_0\) proof with the sup norm raises many far coordinates of an alleged geodesic.  Raising coordinates does not increase the sup-norm speed, but it increases the functional \(f\), hence increases the distance to the boundary of the half-space and lowers quasihyperbolic length.
+
+The strict convex perturbation adds a weighted Hilbert term.  A single far-coordinate bump can increase this norm only by a quantity proportional to \(2^{-m}\), while it increases the denominator by a quantity proportional to \(f_m\).  Taking \(m\) with \(f_m/2^{-m}\) very large makes the denominator improvement dominate.  Thus every alleged geodesic can be shortened.
+
+\begin{lemma}[one-coordinate speed estimate]\label{lem:speed}
+Let \(\gamma:[0,1]\to c_0\) be Lipschitz for \(\|\cdot\|_\infty\), parametrized with constant sup-metric speed \(S>0\).  Fix \(m\).  Suppose \(\Gamma\) is obtained from \(\gamma\) by changing only the \(m\)-th coordinate, and the new \(m\)-th coordinate is also \(S\)-Lipschitz.  Then, for almost every \(t\),
+\[
+  \md_{\N}\Gamma(t)\le \md_{\N}\gamma(t)+S w_m.
+\]
+\end{lemma}
+
+\begin{proof}
+The metric derivative exists almost everywhere for Lipschitz curves.  At almost every \(t\), the scalar derivatives of the relevant coordinate functions also exist.  Since \(\gamma\) has constant sup-metric speed \(S\), the modified curve has sup-metric derivative at most \(S\).  All weighted square-coordinate contributions agree with those of \(\gamma\), except possibly the \(m\)-th one, where the new scalar derivative has absolute value at most \(S\).  Hence
+\[
+  \md_{\N}\Gamma(t)^2\le \md_{\N}\gamma(t)^2+w_mS^2.
+\]
+Also \(\md_{\N}\gamma(t)\ge \md_{\infty}\gamma(t)=S\) almost everywhere.  Therefore
+\[
+  \md_{\N}\Gamma(t)
+  \le \sqrt{\md_{\N}\gamma(t)^2+w_mS^2}
+  \le \md_{\N}\gamma(t)+S w_m,
+\]
+using \(0<w_m\le 1\). 
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+There are an equivalent strictly convex norm \(\N\) on \(c_0\) and a continuous linear functional \(f\in (c_0,\N)^*\) such that the open half-space
+\[
+  \Omega=\{x\in c_0: f(x)>0\}
+\]
+is not geodesic in the quasihyperbolic metric induced by \(\N\).  More precisely, no two distinct points of \(\Omega\) are joined by a quasihyperbolic geodesic.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  f(x)=\sum_{n=1}^{\infty}f_nx_n,
+\]
+where \(f_n>0\), \(\sum_n f_n=1\), and \(f_n/w_n\) is unbounded.  For instance, after normalization one may take \(f_n=n^{-2}\).  Since \(\N(x)\ge \|x\|_\infty\), the functional \(f\) is continuous.  For \(x\in\Omega\),
+\[
+  \dist_{\N}(x,\partial\Omega)=\frac{f(x)}{\|f\|_{\N,*}},
+\]
+so the constant factor \(\|f\|_{\N,*}\) is irrelevant for comparing quasihyperbolic lengths.  It is enough to compare
+\[
+  L_f(\sigma)=\int_0^1\frac{\md_{\N}\sigma(t)}{f(\sigma(t))}\,dt.
+\]
+
+Assume toward a contradiction that a quasihyperbolic geodesic \(\gamma\) joins distinct points \(x,y\in\Omega\).  Reparametrize \(\gamma\) on \([0,1]\) by constant \(\|\cdot\|_\infty\)-arclength speed \(S>0\).  The image of \(\gamma\) is compact in \(\Omega\), so
+\[
+  a:=\min_t f(\gamma(t))>0,\qquad A:=\max_t f(\gamma(t))<\infty,
+\]
+and
+\[
+  C:=\int_0^1\frac{dt}{f(\gamma(t))}<\infty.
+\]
+Compactness of \(\gamma([0,1])\subset c_0\) gives uniform tail decay.  Choose \(m\) so large that
+\[
+  \sup_{t\in[0,1]}|\gamma_m(t)|<S/16,\qquad |x_m|<S/16,\qquad |y_m|<S/16,
+\]
+and also
+\[
+  \frac{f_m}{w_m}>\frac{16(A+S)^2C}{S}.
+\]
+
+Set
+\[
+  \alpha(t)=\min(x_m,y_m)+S\min(t,1-t)
+\]
+and define \(\Gamma\) by
+\[
+  \Gamma_n(t)=\gamma_n(t)\quad(n\ne m),\qquad
+  \Gamma_m(t)=\max\{\gamma_m(t),\alpha(t)\}.
+\]
+Then \(\Gamma(0)=x\), \(\Gamma(1)=y\), and \(\Gamma(t)\in c_0\).  Moreover \(q(t):=\Gamma_m(t)-\gamma_m(t)\ge 0\), so \(\Gamma(t)\in\Omega\).  On \(I=[1/4,3/4]\), the tail choice yields
+\[
+  q(t)\ge S/8.
+\]
+Also \(q(t)\le S\) for all \(t\), after increasing \(m\) if necessary within the same tail condition.
+
+By Lemma \ref{lem:speed},
+\[
+\begin{aligned}
+L_f(\Gamma)-L_f(\gamma)
+&\le
+\int_0^1 \md_{\N}\gamma(t)
+\left(\frac{1}{f(\gamma(t))+f_mq(t)}-\frac{1}{f(\gamma(t))}\right)\,dt
+   +S w_m C .
+\end{aligned}
+\]
+The first integrand is nonpositive everywhere.  On \(I\), using \(\md_{\N}\gamma(t)\ge S\), \(q(t)\ge S/8\), and \(f(\gamma(t))+f_mq(t)\le A+S\), it is at most
+\[
+  -\frac{S\cdot f_m(S/8)}{(A+S)^2}.
+\]
+Since \(|I|=1/2\), we get
+\[
+  L_f(\Gamma)-L_f(\gamma)
+  \le S w_m C-\frac{f_mS^2}{16(A+S)^2}<0
+\]
+by the choice of \(m\).  Thus \(\Gamma\) has strictly smaller quasihyperbolic length than \(\gamma\), contradicting the assumption that \(\gamma\) was geodesic.
+
+The endpoints \(x\ne y\) were arbitrary.  Hence no distinct pair of points in \(\Omega\) is joined by a quasihyperbolic geodesic.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses no numerical search.  The only analytic inputs beyond the source definitions are standard facts about metric derivatives of Lipschitz curves and the elementary formula
+\(\dist(x,\ker f)=|f(x)|/\|f\|\) for a continuous nonzero linear functional.
+
+The key inequality to review is Lemma \ref{lem:speed}; it is the place where the strict convex perturbation is controlled.  The argument changes a single far coordinate, so the extra Hilbert-square contribution is \(w_mS^2\), while the half-space denominator gain is \(f_mq(t)\) on a fixed middle interval.
+
+\section*{Limitations and Novelty Check}
+
+This is not a full solution of Conjecture 2.5.  The proof depends on the coordinate lattice structure of \(c_0\) and on choosing \(f_m/2^{-m}\) unbounded.  It does not address arbitrary nonreflexive strictly convex Banach spaces.
+
+Novelty confidence is intentionally modest: the source paper itself states the strict-convex modification without proof.  The contribution of this packet is to make that omitted argument explicit and reviewable.  I searched the run indexes for \texttt{1301.0900}, quasihyperbolic half-spaces, and the strict-convex/reflexive keywords, and checked later quasihyperbolic follow-up material including Rasila--Talponen--Zhang \cite{RTZ2017}.  I found no later local packet or obvious later paper settling the full conjecture; the 2017 follow-up still records a broader reflexivity-converse problem.
+
+\section*{Human Review Recommendation}
+
+Review as a partial packet.  The result is compatible with, but does not settle, Rasila--Talponen Conjecture 2.5.  The main review focus should be the metric-derivative estimate under the one-coordinate max modification and the strict inequality in the final length comparison.
+
+\begin{thebibliography}{9}
+\bibitem{RT2014}
+A. Rasila and J. Talponen,
+\emph{On Quasihyperbolic Geodesics in Banach Spaces},
+Ann. Acad. Sci. Fenn. Math. 39 (2014), 163--173.
+arXiv:1301.0900.
+
+\bibitem{RTZ2017}
+A. Rasila, J. Talponen, and X. Zhang,
+\emph{Observations on quasihyperbolic geometry modeled on Banach spaces},
+arXiv:1708.02240.
+\end{thebibliography}
+
+\end{document}

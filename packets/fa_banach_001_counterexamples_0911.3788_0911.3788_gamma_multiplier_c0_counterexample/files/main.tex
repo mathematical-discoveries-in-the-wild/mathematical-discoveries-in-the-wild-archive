@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem*{theorem}{Counterexample}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ga}{\gamma}
+\newcommand{\ginf}{\gamma_\infty}
+\newcommand{\cL}{\mathcal L}
+
+\title{A \(c_0\) counterexample to the gamma-multiplier strengthening}
+\author{Run fa\_banach\_001, lane 5}
+\date{2026-06-14}
+
+\begin{document}
+\maketitle
+
+\section*{Source problem}
+
+The source paper is Jan van Neerven, \emph{\(\gamma\)-Radonifying operators
+-- a survey}, arXiv:0911.3788 \cite{vanNeerven2009}.  The question appears
+on PDF page 24, immediately after Theorem 5.2, the
+\(\gamma\)-bounded multiplier theorem.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Theorem 5.2 says that if \(M:A\to\mathcal L(E,F)\) is strongly measurable
+with \(\gamma\)-bounded range, then
+\[
+  \widetilde M:\gamma(L^2(A;H),E)\longrightarrow
+  \gamma_\infty(L^2(A;H),F)
+\]
+is bounded.  The paragraph after the proof asks whether \(\widetilde M\)
+actually takes values in the radonifying class \(\gamma\), already for
+\(A=(0,1)\) and \(H=\R\).  The displayed paragraph writes the codomain as
+\(\gamma(L^2(A;H),E)\); in the theorem's notation the evident codomain is
+\(\gamma(L^2(A;H),F)\).  The counterexample below works even in the
+same-space case \(E=F=c_0\).
+
+\section*{Definitions used}
+
+Let \(H\) be a Hilbert space and \(E\) a Banach space.  An operator
+\(T:H\to E\) is \(\gamma\)-summing if
+\[
+  \|T\|_{\gamma_\infty(H,E)}^2
+  =
+  \sup_{(h_k)}
+  \E\Big\|\sum_{k=1}^N \gamma_k T h_k\Big\|_E^2
+  <\infty,
+\]
+where the supremum is over all finite orthonormal systems in \(H\).  It is
+\(\gamma\)-radonifying if the corresponding Gaussian series converges in
+\(L^2(\Omega;E)\) for an orthonormal basis; equivalently
+\(\gamma(H,E)\) is the closed radonifying subspace of
+\(\gamma_\infty(H,E)\).
+
+A family \(\mathcal T\subseteq\mathcal L(E,F)\) is \(\gamma\)-bounded if
+there is \(C\) such that for all finite choices \(T_j\in\mathcal T\) and
+\(x_j\in E\),
+\[
+  \Big(\E\Big\|\sum_j\gamma_jT_jx_j\Big\|_F^2\Big)^{1/2}
+  \le C
+  \Big(\E\Big\|\sum_j\gamma_jx_j\Big\|_E^2\Big)^{1/2}.
+\]
+
+\section*{Proof Intuition}
+
+The source survey already recalls the Linde--Pietsch diagonal operator
+\[
+  D:\ell_2\to c_0,\qquad
+  D(\alpha_n)=\big(\alpha_n/\sqrt{\log(n+1)}\big)_n,
+\]
+which is \(\gamma\)-summing but not \(\gamma\)-radonifying.  The point is to
+realize exactly this diagonal operator as \(T_{M\phi}\) for a multiplier
+whose range is still \(\gamma\)-bounded.  Rademacher functions provide the
+orthonormal coordinates in \(L^2(0,1)\), while the slow weights
+\((\log(n+1))^{-1/2}\) are just small enough for all finite Gaussian maxima
+to be uniformly square-integrable and just large enough that the full
+Gaussian coordinate sequence fails to tend to zero.
+
+\begin{lemma}[A Gaussian maximal estimate]\label{lem:max}
+Let \(a_n=(\log(n+1))^{-1/2}\).  There is an absolute constant \(C\) such
+that, for every finite or countable centred real Gaussian family \((Y_n)\) satisfying
+\(\operatorname{Var}(Y_n)\le \sigma^2\) for all \(n\),
+\[
+  \E\sup_n |a_nY_n|^2 \le C^2\sigma^2 .
+\]
+\end{lemma}
+
+\begin{proof}
+It suffices first to bound finite suprema; the countable case then follows
+by monotone convergence.  By scaling assume \(\sigma=1\).  For \(u\ge 3\), the Gaussian tail estimate
+\(\Prob\{|Y_n|>v\}\le 2e^{-v^2/2}\) and the union bound give
+\[
+  \Prob\{\sup_n |a_nY_n|>u\}
+  \le
+  2\sum_{n\ge1}\exp\{-u^2\log(n+1)/2\}
+  =
+  2\sum_{n\ge1}(n+1)^{-u^2/2}.
+\]
+Since \(u\ge3\),
+\[
+  \sum_{n\ge1}(n+1)^{-u^2/2}
+  \le
+  2^{-(u^2/2-2)}\sum_{n\ge1}(n+1)^{-2}.
+\]
+Therefore
+\[
+  \E\sup_n |a_nY_n|^2
+  =
+  \int_0^\infty 2u\,\Prob\{\sup_n |a_nY_n|>u\}\,du
+  \le
+  9+
+  C_0\int_3^\infty u\,2^{-u^2/2}\,du
+  <\infty,
+\]
+with an absolute constant independent of the finite family.
+\end{proof}
+
+\begin{theorem}
+The multiplier theorem in \cite[Theorem 5.2]{vanNeerven2009} cannot in
+general be strengthened from \(\gamma_\infty\)-valued to
+\(\gamma\)-valued, even for \(A=(0,1)\), \(H=\R\), and \(E=F=c_0\).
+\end{theorem}
+
+\begin{proof}
+Let \((r_n)_{n\ge1}\) be the Rademacher functions on \((0,1)\), viewed as an
+orthonormal sequence in \(L^2(0,1)\), and put
+\[
+  a_n=\frac{1}{\sqrt{\log(n+1)}},\qquad
+  g(t)=(a_nr_n(t))_{n\ge1}\in c_0 .
+\]
+The map \(g:(0,1)\to c_0\) is strongly measurable, since it is the uniform
+limit of its finite-coordinate truncations.
+
+Let \(e_1^*:c_0\to\R\) be the first coordinate functional and define
+\[
+  M(t)x=e_1^*(x)g(t),\qquad x\in c_0.
+\]
+Then \(M:(0,1)\to\mathcal L(c_0,c_0)\) is strongly measurable.  Its range is
+\(\gamma\)-bounded.  Indeed, for finite \(t_j\in(0,1)\) and \(x_j\in c_0\),
+set \(b_j=e_1^*(x_j)\).  For each coordinate \(n\), the Gaussian variable
+\(\sum_j\gamma_j b_j r_n(t_j)\) has variance at most \(\sum_j |b_j|^2\).
+Lemma \ref{lem:max} gives
+\[
+  \E\Big\|\sum_j\gamma_j M(t_j)x_j\Big\|_{c_0}^2
+  =
+  \E\sup_n
+  \Big|a_n\sum_j\gamma_j b_jr_n(t_j)\Big|^2
+  \le
+  C^2\sum_j |b_j|^2 .
+\]
+Since \(e_1^*\) is contractive,
+\[
+  \sum_j |b_j|^2
+  =
+  \E\Big|\sum_j\gamma_j e_1^*(x_j)\Big|^2
+  \le
+  \E\Big\|\sum_j\gamma_jx_j\Big\|_{c_0}^2.
+\]
+Thus \(\{M(t):0<t<1\}\) is \(\gamma\)-bounded.
+
+Now take the constant finite-rank simple function
+\[
+  \phi(t):\R\to c_0,\qquad \phi(t)\lambda=\lambda e_1 .
+\]
+The induced operator \(T_{M\phi}:L^2(0,1)\to c_0\) is
+\[
+  T_{M\phi}f
+  =
+  \int_0^1 f(t)g(t)\,dt
+  =
+  \big(a_n\langle f,r_n\rangle_{L^2}\big)_{n\ge1}.
+\]
+Bessel's inequality implies \((\langle f,r_n\rangle)_n\in\ell_2\), hence
+the displayed sequence is indeed in \(c_0\).
+
+This operator is \(\gamma\)-summing.  If \(h_1,\ldots,h_N\) is an
+orthonormal system in \(L^2(0,1)\), then the \(n\)-th coordinate of
+\(\sum_k\gamma_kT_{M\phi}h_k\) is
+\[
+  a_n\sum_k\gamma_k\langle h_k,r_n\rangle .
+\]
+By Bessel's inequality its variance is at most \(a_n^2\).  Lemma
+\ref{lem:max} therefore bounds
+\[
+  \E\Big\|\sum_k\gamma_kT_{M\phi}h_k\Big\|_{c_0}^2
+\]
+uniformly over all finite orthonormal systems.  Hence
+\(T_{M\phi}\in\gamma_\infty(L^2(0,1),c_0)\), as Theorem 5.2 predicts.
+
+It remains to show that \(T_{M\phi}\notin\gamma(L^2(0,1),c_0)\).  Let
+\(R=\overline{\operatorname{span}}\{r_n:n\ge1\}\subseteq L^2(0,1)\).  If
+\(T_{M\phi}\) were \(\gamma\)-radonifying on \(L^2(0,1)\), then its
+restriction to \(R\) would be \(\gamma\)-radonifying.  Under the
+identification \(R\simeq\ell_2\) sending \(r_n\) to the \(n\)-th unit vector,
+this restriction is the diagonal map
+\[
+  D:\ell_2\to c_0,\qquad D(\alpha_n)=(a_n\alpha_n)_n .
+\]
+Thus the Gaussian series
+\[
+  \sum_{n\ge1}\gamma_n a_ne_n
+\]
+would converge in \(c_0\), and in particular the random sequence
+\((a_n\gamma_n)_n\) would belong to \(c_0\) almost surely.
+
+This is false.  The events
+\[
+  A_n=\{|\gamma_n|>\sqrt{\log(n+1)}\}
+\]
+are independent, and the standard lower Gaussian tail bound
+\(\Prob\{|\gamma|>x\}\ge c e^{-x^2/2}/x\) for \(x\ge1\) yields
+\[
+  \sum_{n\ge1}\Prob(A_n)
+  \ge
+  c\sum_{n\ge1}\frac{1}{\sqrt{(n+1)\log(n+1)}}=\infty .
+\]
+By Borel--Cantelli, \(A_n\) occurs infinitely often almost surely.  Hence
+\(|a_n\gamma_n|>1\) infinitely often almost surely, so
+\((a_n\gamma_n)_n\notin c_0\).  This contradiction proves that
+\(T_{M\phi}\notin\gamma(L^2(0,1),c_0)\).
+\end{proof}
+
+\section*{Verification notes}
+
+The example satisfies the hypotheses of the source multiplier theorem:
+\((0,1)\) is sigma-finite, \(H=\R\), \(E=F=c_0\), \(M\) is strongly
+measurable with \(\gamma\)-bounded range, and \(\phi\) is constant finite
+rank simple.  The induced operator lands in \(\gamma_\infty\) but not in
+\(\gamma\), so it gives a negative answer to the proposed strengthening.
+
+No computational verification is needed.  The script
+\texttt{code/crop\_open\_problem.py} only regenerates the source crop.  A
+bounded novelty check was performed on 2026-06-14: the run indexes were
+searched for arXiv:0911.3788 and core terms including
+\(\gamma\)-multiplier, \(\gamma_\infty\), \(c_0\), and radonifying; the
+source section around Theorem 5.2 was inspected; web searches for the exact
+open-problem phrase and for gamma-multiplier/c0 variants found no direct
+answer.  The source itself contains the Linde--Pietsch diagonal
+\(\gamma_\infty\setminus\gamma\) example; the extra observation here is that
+Rademacher functions turn it into a multiplier with \(\gamma\)-bounded range.
+
+\section*{Limitations}
+
+This packet gives a negative answer in the target space \(c_0\), so it is
+consistent with the positive statement noted in the source for target spaces
+not containing an isomorphic copy of \(c_0\).  The novelty confidence is
+moderate until a specialist checks whether this multiplier realization is
+already folklore or appears implicitly elsewhere.
+
+\section*{Human-review recommendation}
+
+Check the \(\gamma\)-boundedness estimate for the rank-one family
+\(M(t)=g(t)\otimes e_1^*\), and check that restricting a
+\(\gamma\)-radonifying operator to the Rademacher subspace preserves
+\(\gamma\)-radonification.  These are the two substantive steps; the rest is
+the standard Linde--Pietsch \(c_0\) diagonal obstruction.
+
+\begin{thebibliography}{9}
+\bibitem{vanNeerven2009}
+J. van Neerven,
+\emph{\(\gamma\)-Radonifying operators -- a survey},
+arXiv:0911.3788, 2009; revised 2010.
+\end{thebibliography}
+
+\end{document}

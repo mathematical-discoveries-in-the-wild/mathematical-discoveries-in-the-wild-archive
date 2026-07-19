@@ -1,0 +1,465 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem*{sourceproblem}{Problem 4.1}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{C}
+\newcommand{\bomega}{\beta\omega}
+\newcommand{\bN}{\beta\mathbb N}
+\newcommand{\cc}{\mathfrak c}
+\newcommand{\Pp}{\mathcal P}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Kop}{\mathcal K}
+\newcommand{\Id}{I}
+\newcommand{\hookc}{\stackrel{c}{\hookrightarrow}}
+\newcommand{\w}{\operatorname{w}}
+\newcommand{\ext}{\operatorname{ext}}
+
+\title{Convex Reductions and Averaging Obstructions for Complemented Copies in
+\(\C(\bomega\times\bomega)\)}
+\author{Upgraded partial packet for arXiv:2405.19120}
+\date{June 22, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Strong partial result, likely valid, pending human review.}
+This packet upgrades the earlier extension-operator positive subcase for
+source Problem~4.1.  It still does not solve the problem and does not
+give a counterexample.  It records exact reductions of the target class,
+positive closure principles, a concrete obstruction to the Cantor-cube
+averaging route, and a no-go lemma for the most direct operator-space
+projection.
+
+The supplied upgrade report is preserved in the packet's \texttt{evidence/}
+directory.  The previous active packet is preserved in the packet's
+\texttt{history/} directory.
+
+\section{Source Problem}
+
+The source paper is Plebanek--Rondo\v{s}--Sobota,
+\emph{Complemented subspaces of Banach spaces \(\C(K\times L)\)},
+arXiv:2405.19120~\cite{PRS}.  Problem~4.1 asks:
+
+\begin{sourceproblem}[Plebanek--Rondo\v{s}--Sobota]
+Does \(\C(\bomega\times\bomega)\) contain a complemented isomorphic copy of
+\(\C(K)\) for every separable compact space \(K\)?
+\end{sourceproblem}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source paper already proves the metric compact case.  More precisely,
+Corollary~1.4 of~\cite{PRS} gives complemented copies of
+\(\C([0,1]^\kappa)\), and also of \(\C(2^\kappa)\), inside
+\[
+        Z:=\C(\bomega\times\bomega)
+        \qquad (1\leq\kappa\leq\cc).
+\]
+
+\section{Definitions and Proof Intuition}
+
+For Banach spaces \(X,Y\), write \(X\hookc Y\) if there are bounded operators
+\[
+        U:X\to Y,\qquad V:Y\to X,\qquad VU=\Id_X.
+\]
+Equivalently, \(U[X]\) is a complemented subspace of \(Y\) isomorphic to
+\(X\).  The factorization constant is
+\[
+ \gamma_Y(X)=\inf\{\|U\|\|V\|:U:X\to Y,\ V:Y\to X,\ VU=\Id_X\}.
+\]
+
+The main mechanism is transitivity: if a class of compact spaces \(L\) has
+\(\C(L)\hookc Z\), then every compact \(K\) whose \(\C(K)\) is complemented
+in some \(\C(L)\) is also a positive instance.  The previous packet used
+this only for extension operators into cubes.  The upgrade adds three sharper
+uses of the same principle.
+
+First, every \(\C(K)\) is norm-one complemented in the affine functions on
+the probability simplex \(\Pp(K)\), and also in \(\C(B_{\M(K)})\).  Thus the
+full problem is exactly as hard on separable Bauer simplices and separable
+weak-star compact dual balls.  Second, an averaging operator from a Cantor
+cube gives a complemented pullback copy, so all separable almost-Milyutin
+compacta are positive instances.  Third, Blasco and Ivorra give a separable
+dyadic compactum that is not almost Milyutin; hence the positive averaging
+route cannot be the whole story.  Finally, the operator model
+\(Z\cong \Kop(\ell_1,\ell_\infty)\) shows that the naive projection onto
+\(\Kop(\ell_1,\C(K))\) would already imply that \(\C(K)\) is complemented in
+\(\ell_\infty\), so any full positive proof must be more twisted.
+
+\section{Closure Principles}
+
+\begin{lemma}[Transitivity]\label{lem:transitivity}
+If \(X\hookc Y\) and \(Y\hookc W\), then \(X\hookc W\).  Moreover
+\[
+       \gamma_W(X)\leq \gamma_Y(X)\gamma_W(Y).
+\]
+\end{lemma}
+
+\begin{proof}
+Choose \(U_1:X\to Y\), \(V_1:Y\to X\), \(U_2:Y\to W\), and \(V_2:W\to Y\)
+with \(V_iU_i=\Id\).  Then \((V_1V_2)(U_2U_1)=\Id_X\), and the stated norm
+estimate follows.
+\end{proof}
+
+\begin{proposition}[Averaging closure]\label{prop:averaging}
+Let \(q:L\to K\) be a continuous surjection between compact spaces.  Suppose
+there is a bounded operator \(A:\C(L)\to\C(K)\) such that
+\[
+       A q^*=\Id_{\C(K)},\qquad q^*f=f\circ q.
+\]
+If \(\C(L)\hookc Z\), then \(\C(K)\hookc Z\).
+\end{proposition}
+
+\begin{proof}
+The identity \(Aq^*=\Id\) says that \(q^*\C(K)\) is complemented in
+\(\C(L)\), with projection \(q^*A\).  Apply Lemma~\ref{lem:transitivity}.
+\end{proof}
+
+\begin{corollary}[Previous packet as a special case]\label{cor:old}
+If \(K\) is compact and \(\C(K)\) is complemented in
+\(\C([0,1]^\kappa)\) or in \(\C(2^\kappa)\) for some
+\(1\leq\kappa\leq\cc\), then \(\C(K)\hookc Z\).
+\end{corollary}
+
+\begin{proof}
+Combine the source Corollary~1.4 with Lemma~\ref{lem:transitivity}.  The
+extension-operator and retract cases in the previous packet are concrete
+ways to obtain the first complemented embedding.
+\end{proof}
+
+\section{Exact Convex Reductions}
+
+For a compact space \(K\), let \(\Pp(K)\) be the weak-star compact space of
+probability measures on \(K\), and let \(\M(K)=\C(K)^*\).
+
+\begin{theorem}[Canonical convexification]\label{thm:convexification}
+For every compact space \(K\), the Banach space \(\C(K)\) is isometric to a
+norm-one complemented subspace of \(\C(\Pp(K))\).
+\end{theorem}
+
+\begin{proof}
+Define
+\[
+ \mathcal A_K:\C(K)\to\C(\Pp(K)),\qquad
+ (\mathcal A_Kf)(\mu)=\int_K f\,d\mu,
+\]
+and
+\[
+ \mathcal R_K:\C(\Pp(K))\to\C(K),\qquad
+ (\mathcal R_KF)(x)=F(\delta_x).
+\]
+The first map is an isometry because Dirac measures belong to \(\Pp(K)\);
+the second is a contraction; and
+\[
+(\mathcal R_K\mathcal A_Kf)(x)=\int_K f\,d\delta_x=f(x).
+\]
+Thus \(\mathcal A_K\mathcal R_K\) is a norm-one projection onto
+\(\mathcal A_K[\C(K)]\).
+\end{proof}
+
+\begin{lemma}\label{lem:separable-convex}
+If \(K\) is separable compact, then \(\Pp(K)\) and \(B_{\M(K)}\) are
+separable compact spaces of weight at most \(\cc\).
+\end{lemma}
+
+\begin{proof}
+Let \(D\subseteq K\) be countable and dense.  Finite rational convex
+combinations of point masses \(\delta_d\), \(d\in D\), are weak-star dense in
+\(\Pp(K)\): a basic weak-star neighbourhood only sees finitely many
+continuous functions, and their integrals can be approximated by rational
+convex combinations of values on \(D\).  For \(B_{\M(K)}\), use finite
+rational convex combinations of \(\pm\delta_d\).  Since every member of
+\(\C(K)\) is determined by its restriction to \(D\), one has
+\(|\C(K)|\leq\cc\), so the weak-star topologies involved have bases of
+cardinality at most \(\cc\).
+\end{proof}
+
+\begin{theorem}[Exact reduction]\label{thm:exact}
+The following assertions are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(\C(K)\hookc Z\) for every separable compact space \(K\).
+\item \(\C(S)\hookc Z\) for every separable compact convex space \(S\).
+\item \(\C(\Pp(K))\hookc Z\) for every separable compact space \(K\).
+\item \(\C(B_{\M(K)})\hookc Z\) for every separable compact space \(K\).
+\end{enumerate}
+Thus any counterexample may be sought among separable Bauer simplices, or
+among separable symmetric weak-star compact dual balls.
+\end{theorem}
+
+\begin{proof}
+The implications from (i) to (ii)--(iv) are immediate from
+Lemma~\ref{lem:separable-convex}.  For (iii) implies (i), use
+Theorem~\ref{thm:convexification} and transitivity.  For (iv) implies (i),
+define
+\[
+J_K:\C(K)\to\C(B_{\M(K)}),\qquad (J_Kf)(\mu)=\mu(f),
+\]
+and
+\[
+S_K:\C(B_{\M(K)})\to\C(K),\qquad (S_KF)(x)=F(\delta_x).
+\]
+Then \(J_K\) is an isometry, \(\|S_K\|\leq1\), and \(S_KJ_K=\Id\).  Hence
+\(\C(K)\) is norm-one complemented in \(\C(B_{\M(K)})\), and transitivity
+again gives (i).
+\end{proof}
+
+\section{Almost-Milyutin Positive Class}
+
+\begin{definition}
+A compact space \(K\) is \emph{almost Milyutin} if there are a Cantor cube
+\(2^\Gamma\), a continuous surjection \(q:2^\Gamma\to K\), and a bounded
+averaging operator \(A:\C(2^\Gamma)\to\C(K)\) satisfying \(Aq^*=\Id\).
+\end{definition}
+
+\begin{lemma}[Coordinate reduction]\label{lem:coordinate}
+Suppose \(q:2^\Gamma\to K\) is a continuous surjection onto a compact space
+of weight \(\kappa\), and \(q\) admits a bounded averaging operator.  Then
+there is \(\Lambda\subseteq\Gamma\), \(|\Lambda|\leq\kappa\), such that a
+surjection \(q_\Lambda:2^\Lambda\to K\) also admits an averaging operator of
+no larger norm.
+\end{lemma}
+
+\begin{proof}
+Embed \(K\) into \([0,1]^\kappa\).  Each coordinate of the composite
+\(2^\Gamma\to K\to[0,1]^\kappa\) depends on countably many coordinates of
+\(2^\Gamma\).  The union of those coordinate sets has cardinality at most
+\(\kappa\); call it \(\Lambda\).  Then \(q=q_\Lambda\pi_\Lambda\).  If
+\(A\) averages \(q\), define \(A_\Lambda g=A(g\circ\pi_\Lambda)\).  This
+has no larger norm and satisfies \(A_\Lambda q_\Lambda^*=\Id\).
+\end{proof}
+
+\begin{theorem}\label{thm:milyutin-positive}
+If \(K\) is a separable almost-Milyutin compact space, then
+\(\C(K)\hookc Z\).  In particular, Problem~4.1 has a positive
+answer for every separable Dugundji compact space.
+\end{theorem}
+
+\begin{proof}
+A separable compact space has weight at most \(\cc\).  By
+Lemma~\ref{lem:coordinate}, the almost-Milyutin witness can be chosen as a
+surjection from \(2^\Lambda\) with \(|\Lambda|\leq\cc\).  Hence
+\[
+       \C(K)\hookc \C(2^\Lambda)\hookc Z,
+\]
+where the first complemented embedding comes from the averaging operator and
+the second from the source Corollary~1.4.  Haydon proved that every Dugundji
+compactum is Milyutin~\cite{Haydon}, so the final assertion follows.
+\end{proof}
+
+\section{A Separable Obstruction to the Cantor-Cube Route}
+
+Blasco and Ivorra~\cite{BlascoIvorra} constructed a dyadic compact space
+that is not almost Milyutin.  Let \(T\) be the quotient of \(2^{\omega_1}\)
+obtained by identifying two distinct points, and put \(K_*=T^{\mathbb N}\).
+For a compact space \(L\), define
+\[
+ p(L)=\inf\{\|A\|:q:2^\Gamma\twoheadrightarrow L,\;
+ A:\C(2^\Gamma)\to\C(L),\; Aq^*=\Id\},
+\]
+with \(p(L)=+\infty\) if no such pair exists.
+
+\begin{theorem}[Blasco--Ivorra]\label{thm:BI}
+For every positive integer \(n\), \(p(T^n)\geq n+1\), although each finite
+power \(T^n\) is almost Milyutin.  Moreover \(K_*=T^{\mathbb N}\) is dyadic
+but not almost Milyutin; equivalently, \(p(K_*)=+\infty\).
+\end{theorem}
+
+\begin{proposition}\label{prop:Kstar}
+The space \(K_*\) is separable, dyadic, and has weight at most \(\cc\).
+\end{proposition}
+
+\begin{proof}
+The Hewitt--Marczewski--Pondiczery theorem implies that \(2^{\omega_1}\) is
+separable, since \(\omega_1\leq\cc\); see Ross--Stone~\cite{RossStone}.
+The quotient \(T\) is separable, and a countable product of separable spaces
+is separable.  The quotient map \(2^{\omega_1}\to T\) induces an onto map
+\[
+(2^{\omega_1})^{\mathbb N}\cong2^{\omega_1\times\mathbb N}\cong2^{\omega_1}
+\longrightarrow T^{\mathbb N},
+\]
+so \(K_*\) is dyadic.  The weight estimate is immediate.
+\end{proof}
+
+\begin{proposition}[Uniform finite-stage test]\label{prop:finite-stage}
+If \(\C(K_*)\hookc Z\), then
+\[
+       \sup_{n\geq1}\gamma_Z(\C(T^n))<\infty.
+\]
+In fact \(\gamma_Z(\C(T^n))\leq\gamma_Z(\C(K_*))\) for every \(n\).
+\end{proposition}
+
+\begin{proof}
+Fix \(t_0\in T\).  The coordinate projection \(K_*\to T^n\) gives an
+isometric embedding \(J_n:\C(T^n)\to\C(K_*)\).  Evaluation at the tail
+\((t_0,t_0,\ldots)\) gives a contraction \(R_n:\C(K_*)\to\C(T^n)\) with
+\(R_nJ_n=\Id\).  Composing any factorization of \(\Id_{\C(K_*)}\) through
+\(Z\) with \(J_n\) and \(R_n\) gives the asserted bound.
+\end{proof}
+
+Thus a negative answer would follow from a comparison
+\[
+       p(T^n)\leq \Phi(\gamma_Z(\C(T^n)))
+\]
+for a finite-valued function \(\Phi\) independent of \(n\).  Such a
+comparison is not proved here.  This is precisely where the obstruction
+stops short of a counterexample: \(p(T^n)\) measures canonical averaging
+through Cantor cubes, while \(\gamma_Z\) allows arbitrary isomorphic
+complemented copies.
+
+\section{Operator-Space Reformulation and No-Go Lemma}
+
+There are natural isometric identifications
+\[
+ Z
+ \cong \C(\bN,\C(\bN))
+ \cong \C(\bN,\ell_\infty)
+ \cong \Kop(\ell_1,\ell_\infty)
+ \cong \ell_\infty\widehat\otimes_\varepsilon\ell_\infty.
+\]
+For the middle identification, an operator \(S:\ell_1\to\ell_\infty\) is
+represented by the sequence \((Se_n)\); compactness is exactly relative
+norm compactness of this range sequence.
+
+If \(K\) is separable and \((d_n)\) is dense in \(K\), then
+\[
+       E_K:\C(K)\to\ell_\infty,\qquad E_Kf=(f(d_n))_{n\in\mathbb N},
+\]
+is an isometry.  The direct strategy would be to place
+\(\Kop(\ell_1,E_K\C(K))\) inside \(\Kop(\ell_1,\ell_\infty)\) and project
+onto it.  The next lemma shows that this strategy cannot give new cases.
+
+\begin{lemma}[Operator-space no-go]\label{lem:no-go}
+Let \(X\) be a closed subspace of a Banach space \(Y\).  If
+\(\Kop(\ell_1,X)\) is complemented in \(\Kop(\ell_1,Y)\), then \(X\) is
+complemented in \(Y\).  Moreover, a projection of norm \(M\) in the
+operator space produces a projection of norm at most \(M\) in \(Y\).
+\end{lemma}
+
+\begin{proof}
+For \(y\in Y\), let \(R_y:\ell_1\to Y\) be the rank-one operator
+\(R_y(a)=a_1y\).  If \(Q:\Kop(\ell_1,Y)\to\Kop(\ell_1,X)\) is a projection,
+set
+\[
+       P(y)=Q(R_y)e_1.
+\]
+Then \(P:Y\to X\) is bounded with \(\|P\|\leq\|Q\|\).  If \(x\in X\), then
+\(R_x\in\Kop(\ell_1,X)\), so \(Q(R_x)=R_x\) and \(P(x)=x\).  Hence \(P\) is
+a projection onto \(X\).
+\end{proof}
+
+\section{Fibre-Supported Coupling Criterion}
+
+\begin{proposition}\label{prop:coupling}
+Let \(\rho:L\to K\) be a continuous surjection between compact spaces.
+Suppose there is a weak-star continuous map
+\[
+       K\to\Pp(L),\qquad x\mapsto\nu_x,
+\]
+such that \(\operatorname{supp}\nu_x\subseteq\rho^{-1}(x)\) for every
+\(x\in K\).  Then
+\[
+       Af(x)=\int_L f\,d\nu_x
+\]
+defines a norm-one positive averaging operator for \(\rho\).  Consequently,
+if \(\C(L)\hookc Z\), then \(\C(K)\hookc Z\).
+\end{proposition}
+
+\begin{proof}
+Weak-star continuity gives \(Af\in\C(K)\), and \(\|A\|\leq1\).  If
+\(g\in\C(K)\), then
+\[
+A(g\circ\rho)(x)=\int_{\rho^{-1}(x)}g(\rho(y))\,d\nu_x(y)=g(x).
+\]
+Apply Proposition~\ref{prop:averaging}.
+\end{proof}
+
+The source paper's compact-group construction supplies this criterion in a
+highly structured situation.  A general replacement for the group operation
+is not known from the present packet.
+
+\section{Verification Notes and Limitations}
+
+The mathematical classification is partial.  The exact reductions and
+closure principles are operator-theoretic and topological consequences of
+norm-one complemented embeddings.  The positive class is genuinely larger
+than the previous extension-operator packet because it records the full
+almost-Milyutin/Dugundji mechanism, but it still does not cover all separable
+compact spaces.
+
+The Blasco--Ivorra space \(K_*\) is not a counterexample to
+Problem~4.1; it is a counterexample only to the universal
+Cantor-cube averaging route.  The operator-space no-go lemma blocks only the
+direct projection onto \(\Kop(\ell_1,E_K\C(K))\), not arbitrary twisted
+copies of \(\C(K)\) in \(Z\).
+
+Local duplicate checks on June~22, 2026 found the earlier partial packet and
+the full-general no-promotion attempt, but no packet already recording the
+convex reductions, the Blasco--Ivorra finite-stage test, or the no-go lemma.
+The supplied report records an external literature search through
+June~20, 2026 and states that no full answer or counterexample was located;
+this upgrade did not perform a fresh external web search.
+
+\section{Human Review Recommendation}
+
+Reviewers should check:
+\begin{enumerate}
+\item the separability and weight estimates in Lemma~\ref{lem:separable-convex};
+\item the use of Haydon's Milyutin/Dugundji theorem in
+      Theorem~\ref{thm:milyutin-positive};
+\item the precise Blasco--Ivorra statement quoted in Theorem~\ref{thm:BI};
+\item that Lemma~\ref{lem:no-go} is used only as a route obstruction.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{BlascoIvorra}
+J.~L. Blasco and C. Ivorra,
+\emph{On dyadic spaces and almost Milyutin spaces},
+Colloq. Math. \textbf{67} (1994), 241--244.
+
+\bibitem{Haydon}
+R. Haydon,
+\emph{On a problem of Pe\l czy\'nski: Milutin spaces, Dugundji spaces and
+\(AE(0\text{-dim})\)},
+Studia Math. \textbf{52} (1974), 23--31.
+
+\bibitem{Pelczynski}
+A. Pe\l czy\'nski,
+\emph{Linear extensions, linear averagings, and their applications to linear
+topological classification of spaces of continuous functions},
+Dissertationes Math. \textbf{58} (1968), 1--89.
+
+\bibitem{PRS}
+G. Plebanek, J. Rondo\v{s}, and D. Sobota,
+\emph{Complemented subspaces of Banach spaces \(\C(K\times L)\)},
+J. Funct. Anal. \textbf{290} (2026), no.~2, Paper No.~111236; arXiv:2405.19120.
+
+\bibitem{RossStone}
+K.~A. Ross and A.~H. Stone,
+\emph{Products of separable spaces},
+Amer. Math. Monthly \textbf{71} (1964), 398--403.
+
+\end{thebibliography}
+
+\end{document}

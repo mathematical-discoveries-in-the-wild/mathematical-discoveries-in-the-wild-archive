@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\spanop}{\operatorname{span}}
+
+\title{On the Operator Alpha-Ratio and Alpha-Reiter Problems}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problems}
+
+The source paper is N. Monod, \emph{Fixed points in convex cones},
+arXiv:1701.05537.  Near the end of the paper, after discussing
+$\ell^p$-variants of the $f$-ratio and $f$-Reiter properties, the author
+introduces the following Hilbert-space analogues.  A unitary representation
+$\pi$ of a group $G$ on a Hilbert space $V$ has the operator $\alpha$-ratio
+property, for a continuous operator $\alpha\neq 0$, if for every finite
+$S\subseteq G$ and every $\eps>0$ there is $v\in V$ such that
+\[
+  \|\alpha\pi(s)v\| < (1+\eps)\|\alpha v\|\qquad (s\in S).
+\]
+It has the stronger operator $\alpha$-Reiter property if one can choose $v$
+such that
+\[
+  \|\alpha(\pi(s)v-v)\| < \eps\|\alpha v\|\qquad (s\in S).
+\]
+Problems 47 and 48 ask to clarify these properties, especially for projections
+$\alpha$.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The following theorem gives a direct clarification.  The ratio property is
+automatic as stated; the Reiter property is exactly the absence of a relative
+spectral gap for the seminorm induced by $\alpha$.
+
+\section*{Idea of the Proof}
+
+The ratio condition only asks that the $\alpha$-size of finitely many unitary
+translates not exceed the original $\alpha$-size by much.  A vector which
+almost attains the operator norm of $\alpha$ already has this property, because
+unitarity gives $\|\pi(s)v\|=\|v\|$ and hence
+$\|\alpha\pi(s)v\|\leq \|\alpha\|\,\|v\|$.
+
+For Reiter, there is no such norm-attainment trick.  The obstruction is exactly
+a Poincare inequality measured by $\alpha$: a finite set $S$ prevents
+$\alpha$-Reiter vectors precisely when the $\alpha$-movement under $S$ is
+bounded below by the $\alpha$-size of the vector.
+
+\begin{theorem}
+\label{thm:main}
+Let $\pi:G\to \mathcal U(V)$ be a unitary representation on a Hilbert space
+and let $0\neq \alpha\in B(V)$.
+
+\begin{enumerate}
+\item The representation has the operator $\alpha$-ratio property.
+
+\item The representation has the operator $\alpha$-Reiter property if and only
+if, for every finite $S\subseteq G$,
+\[
+  \inf_{\alpha v\neq 0}
+  \frac{\sum_{s\in S}\|\alpha(\pi(s)v-v)\|^2}{\|\alpha v\|^2}=0.
+\]
+Equivalently, for no finite $S\subseteq G$ does there exist a constant
+$c>0$ such that
+\[
+  \sum_{s\in S}\|\alpha(\pi(s)v-v)\|^2
+  \geq c\|\alpha v\|^2
+  \qquad\text{for all }v\in V.
+\]
+\item If $\alpha$ is bounded below, then the operator $\alpha$-Reiter property
+is equivalent to the ordinary existence of almost invariant vectors for
+$\pi$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Fix a finite set $S\subseteq G$ and $\eps>0$.  Since $\alpha\neq 0$, choose a
+unit vector $v$ with
+\[
+  \|\alpha v\|>\frac{\|\alpha\|}{1+\eps}.
+\]
+For every $s\in S$, unitarity gives
+\[
+  \|\alpha\pi(s)v\|\leq \|\alpha\| < (1+\eps)\|\alpha v\|.
+\]
+This proves the operator $\alpha$-ratio property.
+
+For the Reiter assertion, the displayed infimum is zero exactly when, for
+every $\delta>0$, there is $v$ with $\alpha v\neq 0$ and
+\[
+  \sum_{s\in S}\|\alpha(\pi(s)v-v)\|^2 < \delta^2\|\alpha v\|^2.
+\]
+This implies the defining Reiter inequalities for all $s\in S$ after choosing
+$\delta=\eps$.  Conversely, the defining inequalities imply the displayed
+sum estimate with $\delta^2=|S|\eps^2$.  Thus the infimum formulation and the
+original definition are equivalent.  The second formulation is just the
+negation of the existence of a positive lower bound for the same Rayleigh
+quotient.
+
+Finally suppose that $\alpha$ is bounded below: there are constants
+$0<m\leq M<\infty$ such that
+\[
+  m\|w\|\leq \|\alpha w\|\leq M\|w\|\qquad(w\in V).
+\]
+If $\pi$ has almost invariant vectors, then for a given finite $S$ choose
+$v\neq 0$ with
+\[
+  \|\pi(s)v-v\|<\eps m M^{-1}\|v\|\qquad(s\in S).
+\]
+It follows that
+\[
+  \|\alpha(\pi(s)v-v)\|
+  \leq M\|\pi(s)v-v\|
+  < \eps m\|v\|
+  \leq \eps\|\alpha v\|.
+\]
+Thus $\alpha$-Reiter holds.  Conversely, if $\alpha$-Reiter holds, choose
+$v$ with
+\[
+  \|\alpha(\pi(s)v-v)\|<\eps m M^{-1}\|\alpha v\|
+  \qquad(s\in S).
+\]
+Then
+\[
+  m\|\pi(s)v-v\|\leq \|\alpha(\pi(s)v-v)\|
+  < \eps m M^{-1}\|\alpha v\|
+  \leq \eps m\|v\|,
+\]
+so $\|\pi(s)v-v\|<\eps\|v\|$ for all $s\in S$.  Hence $\pi$ has almost
+invariant vectors.
+\end{proof}
+
+It is sometimes useful to write the criterion in operator form.  If
+\[
+  A_S=\sum_{s\in S}(\pi(s)-I)^*\alpha^*\alpha(\pi(s)-I),
+  \qquad B=\alpha^*\alpha,
+\]
+then $\alpha$-Reiter fails exactly when $A_S\geq cB$ for some finite $S$ and
+some $c>0$.
+
+\begin{corollary}[Finite-rank projections]
+\label{cor:finite-rank}
+Let $P$ be an orthogonal projection with finite-dimensional range $W$.  Then
+$\pi$ has the operator $P$-Reiter property if and only if, for every finite
+$S\subseteq G$, there exists $v\in V$ such that
+\[
+  Pv\neq 0
+  \quad\text{and}\quad
+  P(\pi(s)v-v)=0\qquad(s\in S).
+\]
+\end{corollary}
+
+\begin{proof}
+For fixed $S$, consider the linear map
+\[
+  L:V\longrightarrow W\oplus W^S,\qquad
+  L(v)=\big(Pv,\ (P(\pi(s)v-v))_{s\in S}\big).
+\]
+The range of $L$ is a subspace of the finite-dimensional space
+$W\oplus W^S$, hence is closed.
+
+If the exact condition holds, then the $P$-Reiter inequalities hold with
+zero left hand side for this finite $S$.  Conversely, if $P$-Reiter holds,
+choose $v_n$ with $\|Pv_n\|=1$ and
+\[
+  \sum_{s\in S}\|P(\pi(s)v_n-v_n)\|^2\longrightarrow 0.
+\]
+After passing to a subsequence, compactness of the unit sphere of $W$ gives
+$Pv_n\to w$ with $\|w\|=1$.  Hence $(w,0)$ belongs to the closure of
+$L(V)$, and therefore to $L(V)$ itself.  This gives a vector $v$ satisfying
+the exact condition.
+\end{proof}
+
+\begin{corollary}[Rank-one projections]
+Let $P_\xi$ be the orthogonal projection onto the line spanned by a non-zero
+vector $\xi$.  Then $\pi$ has the operator $P_\xi$-Reiter property if and only
+if, for every finite $S\subseteq G$,
+\[
+  \xi\notin
+  \spanop\{\pi(s)^{-1}\xi-\xi:\ s\in S\}.
+\]
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:finite-rank}, for each finite $S$ we need a vector
+$v$ such that $\langle v,\xi\rangle\neq 0$ and
+\[
+  \langle \pi(s)v-v,\xi\rangle=0\qquad(s\in S).
+\]
+The latter equations say exactly that $v$ annihilates the finite-dimensional
+space
+\[
+  M_S=\spanop\{\pi(s)^{-1}\xi-\xi:\ s\in S\}.
+\]
+Such a $v$ with $\langle v,\xi\rangle\neq0$ exists precisely when
+$\xi\notin M_S$.
+\end{proof}
+
+\section*{Consequences and Limitations}
+
+The operator $\alpha$-ratio property, as formulated in the source problem, is
+therefore vacuous for bounded non-zero operators: it holds for every unitary
+representation of every group.
+
+The operator $\alpha$-Reiter property is genuinely representation-theoretic.
+For $\alpha=I$ it is exactly the usual almost-invariant-vector condition.  In
+particular, for the left regular representation it is equivalent to
+amenability of the group.  More generally, when $\alpha$ is bounded below,
+Theorem~\ref{thm:main} shows that no new condition is obtained beyond ordinary
+almost invariance.
+
+For projections with finite-dimensional range, the approximate condition
+collapses to the exact finite-dimensional condition in
+Corollary~\ref{cor:finite-rank}.  This gives a concrete answer to the
+finite-rank projection subcase of Problem 48.  The packet does not claim to
+classify all infinite-rank projections, nor does it address the separate open
+problems about products, supramenability, or finitely generated groups of
+exponential growth with the fixed-point property for cones.
+
+\section*{Novelty Check}
+
+The run indexes were searched for arXiv:1701.05537 and for phrases including
+\texttt{operator alpha-ratio}, \texttt{operator alpha-Reiter},
+\texttt{fixed points in convex cones}, \texttt{conical fixed-point property},
+and \texttt{supramenability}.  No existing packet for these endpoint operator
+questions was found.  Web searches for exact phrases such as
+\texttt{"operator alpha-ratio"}, \texttt{"operator alpha-Reiter"}, and
+variants including \texttt{"Fixed points in convex cones"} did not return a
+later explicit answer to Problems 47 or 48.  The result here is elementary,
+but it appears to clarify a point left open in the source problem statement.
+
+\begin{thebibliography}{9}
+
+\bibitem{Monod}
+N. Monod,
+\emph{Fixed points in convex cones},
+arXiv:1701.05537, 2017.
+
+\end{thebibliography}
+
+\end{document}

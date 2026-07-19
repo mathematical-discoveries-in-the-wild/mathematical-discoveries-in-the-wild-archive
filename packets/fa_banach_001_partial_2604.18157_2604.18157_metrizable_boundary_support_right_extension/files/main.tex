@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ot}{\widehat{\otimes}_{\varepsilon}}
+\newcommand{\BX}{B_{X^*}}
+\newcommand{\ext}{\operatorname{ext}}
+\newcommand{\Borel}{\operatorname{Borel}}
+\newcommand{\ahom}{\operatorname{ahom}}
+\newcommand{\homop}{\operatorname{hom}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+
+\title{A Metrizable-Boundary-Support Partial Answer to Question 6.7 of Ondrej-Spurny}
+\author{fa\_banach\_001, agent\_lane\_15}
+\date{2026-06-28}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+The source paper is Ondrej and Spurny, \emph{Operators on injective tensor products of \(L_1\)-preduals}, arXiv:2604.18157v1 \cite{ondrej-spurny}.  In its notation, \(X\) is an \(L_1\)-predual, \(E,F\) are Banach spaces, \(T:X\ot E\to F\) is a strongly bounded operator with representing measure \(G\), and
+\[
+  S:C(\BX,E)\to F,\qquad Sf=\int_{\BX} f\,dG
+\]
+is the canonical extension.
+
+The source paper proves in Theorem 6.5(b) that, for the classes of pseudo weakly compact and Right completely continuous operators, \(S\) having the property implies \(T\) has it, and the converse is proved when \(X\) is separable.  The paper then asks:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent In text form: Question 6.7 asks whether Theorem 6.5(b) holds without the assumption of separability of \(X\).
+
+\section*{Result}
+
+This packet proves a positive subcase.  The missing implication \(T\Rightarrow S\) holds when the semivariation of the representing measure is tight, up to arbitrarily small error, on compact metrizable homogeneous boundary pieces.
+
+\begin{theorem}[Metrizable boundary support]
+\label{thm:main}
+Let \(X\) be an \(L_1\)-predual and let \(E,F\) be Banach spaces.  Let \(T:X\ot E\to F\) be strongly bounded with representing measure \(G\), and let \(S:C(\BX,E)\to F\) be its canonical extension.
+
+Assume that for every \(\eta>0\) there is a compact metrizable homogeneous set
+\[
+  L_\eta\subset \ext \BX
+\]
+such that
+\[
+  \norm{G}(\BX\setminus L_\eta)<\eta .
+\]
+Then, for each of the following two operator classes,
+\[
+  \text{pseudo weakly compact},\qquad \text{Right completely continuous},
+\]
+\(T\) belongs to the class if and only if \(S\) belongs to the class.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The source proof uses separability to avoid a loss of Right-null or Right-Cauchy behavior when continuous functions on \(\BX\) are approximated by affine homogeneous functions.  The point of the present hypothesis is that the approximation can instead be made directly on a compact metrizable part of the boundary that carries all but an arbitrarily small amount of the semivariation of \(G\).  On such an \(L\), the same affine-selection argument used by Ondrej--Spurny gives an averaging map from \(C(L,E)\) into \(A_{\homop}(\BX,E)\).  Because this averaging map is bounded, it preserves Right-null and Right-Cauchy sequences.  The part of \(G\) outside \(L\) contributes only an arbitrarily small uniform error, so the source proof of Theorem 6.5(b) goes through.
+
+The result remains partial: it does not show that every maximal control measure in the nonseparable case can be approximated by compact metrizable boundary pieces.
+
+\section*{Auxiliary Lemmas}
+
+\begin{lemma}[Bounded maps preserve Right sequences]
+\label{lem:right-functorial}
+Let \(A:U\to V\) be a bounded operator between Banach spaces.  If \((u_n)\) is Right-null, respectively Right-Cauchy, in \(U\), then \((Au_n)\) is Right-null, respectively Right-Cauchy, in \(V\).
+\end{lemma}
+
+\begin{proof}
+The Right topology on a Banach space is the topology of uniform convergence on weakly compact subsets of the dual.  If \(W\subset V^*\) is weakly compact, then \(A^*W\subset U^*\) is weakly compact.  Hence
+\[
+  \sup_{v^*\in W}|v^*(Au_n)|
+  =
+  \sup_{u^*\in A^*W}|u^*(u_n)|\to 0
+\]
+in the Right-null case.  Applying the same argument to differences \(u_n-u_m\) gives the Right-Cauchy case.
+\end{proof}
+
+\begin{lemma}[Metrizable boundary selection]
+\label{lem:selection}
+Let \(X\) be an \(L_1\)-predual and let \(L\subset \ext \BX\) be compact, metrizable, and homogeneous.  Then there is a continuous affine homogeneous map
+\[
+  \varphi:\BX\to B_{M_{\ahom}(L)}
+\]
+such that \(\varphi(t)=\homop\delta_t\) for all \(t\in L\).
+\end{lemma}
+
+\begin{proof}
+This is the proof of Lemma 6.3 in \cite{ondrej-spurny}, with separability of \(X\) replaced by metrizability of \(L\).  Since \(L\) is compact metrizable, \(C(L)\) is separable.  Choose a dense sequence \((g_j)\) in the unit ball of \(C(L)\), and define a weak-star-to-norm continuous one-to-one affine map on bounded subsets of \(M(L)\) by
+\[
+  R\mu=(2^{-j}\mu(g_j))_{j=1}^{\infty}\in \ell_2 .
+\]
+Thus \(R\) is a homeomorphism from the weak-star compact ball \(B_{M_{\ahom}(L)}\) onto its image.
+
+Define a multivalued map on \(\BX\) by
+\[
+  \Phi(t)=
+  \begin{cases}
+    \homop\delta_t, & t\in L,\\
+    B_{M_{\ahom}(L)}, & t\in \BX\setminus L .
+  \end{cases}
+\]
+As in \cite[Lemma 6.3]{ondrej-spurny}, \(\Phi\) is homogeneous, lower semicontinuous, and affine, with nonempty closed convex values.  Therefore \(R\circ\Phi\) is a homogeneous lower semicontinuous affine multimap into the Banach space \(\ell_2\).  The affine selection theorem used in \cite[Lemma 6.3]{ondrej-spurny}, namely Lacey's real selection theorem and Olsen's complex version \cite{lacey,olsen}, gives a homogeneous continuous affine selection \(\psi(t)\in R(\Phi(t))\).  Then \(\varphi(t)=R^{-1}\psi(t)\) is the required selection.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:main}}
+
+\begin{proof}
+The implication \(S\Rightarrow T\) is the one already proved in Theorem 6.5(b) of \cite{ondrej-spurny}: if a sequence in \(A_{\homop}(\BX,E)=X\ot E\) is Right-null or Right-Cauchy, then it is Right-null or Right-Cauchy as a sequence in \(C(\BX,E)\).
+
+It remains to prove \(T\Rightarrow S\).  Fix a compact metrizable homogeneous set \(L\subset \ext\BX\), and let \(\varphi\) be the selection from Lemma \ref{lem:selection}.  Define
+\[
+  J_L:C(L,E)\to A_{\homop}(\BX,E),\qquad
+  (J_L h)(t)=\int_L h\,d\varphi(t).
+\]
+This is a bounded linear operator with \(\norm{J_L}\leq 1\).  If \(R_L:C(\BX,E)\to C(L,E)\) is restriction, then \(J_LR_L\) sends Right-null sequences to Right-null sequences and Right-Cauchy sequences to Right-Cauchy sequences by Lemma \ref{lem:right-functorial}.
+
+For \(f\in C(\BX,E)\), set \(a=J_L(f|_L)\).  Since the scalar representing measures \(G_{y^*}\) are antihomogeneous boundary measures and \(\varphi(t)=\homop\delta_t\) on \(L\), the homogeneous parts of \(f\) and \(a\) agree on \(L\).  Consequently, for \(\norm{f}\leq M\),
+\[
+\begin{aligned}
+  \norm{Sf-Ta}
+  &= \sup_{y^*\in B_{F^*}}
+     \left|\int_{\BX} (f-a)\,dG_{y^*}\right|  \\
+  &\leq 2M\,\norm{G}(\BX\setminus L).
+\end{aligned}
+\]
+Here \(\norm{a}\leq\norm{f}\leq M\), and the integral over \(L\) vanishes by the preceding agreement of homogeneous parts.
+
+Now let \((f_n)\) be Right-null in \(C(\BX,E)\), and let \(M=\sup_n\norm{f_n}\).  Given \(\delta>0\), choose \(L=L_\delta\) so that \(2M\norm{G}(\BX\setminus L)<\delta\), and put \(a_n=J_L(f_n|_L)\).  Then \((a_n)\) is Right-null in \(X\ot E\).  If \(T\) is pseudo weakly compact, \(\norm{Ta_n}\to 0\), and therefore
+\[
+  \limsup_n \norm{Sf_n}\leq \delta .
+\]
+Since \(\delta>0\) is arbitrary, \(\norm{Sf_n}\to 0\).  Thus \(S\) is pseudo weakly compact.
+
+The Right completely continuous case is similar but uses the Right-Cauchy limit argument from the source proof.  Let \((f_n)\) be Right-Cauchy in \(C(\BX,E)\), and let \(M=\sup_n\norm{f_n}\).  For each \(\delta>0\), choose \(L=L_\delta\) as above and set \(a_n^\delta=J_L(f_n|_L)\).  Then \((a_n^\delta)\) is Right-Cauchy in \(X\ot E\), so \(Ta_n^\delta\) Right-converges to some \(z_\delta\in F\).
+
+The sequence \((Sf_n)\) is Right-Cauchy after applying the bounded map \(S\), hence it is weakly Cauchy and has a weak-star limit \(y^{**}\in F^{**}\).  The uniform estimate gives
+\[
+  \norm{y^{**}-z_\delta}\leq 2M\,\norm{G}(\BX\setminus L_\delta).
+\]
+Letting \(\delta\downarrow 0\) shows \(y^{**}\in F\).
+
+Finally, let \(W\subset F^*\) be weakly compact and \(W\subset C B_{F^*}\).  For fixed \(\delta\), the Right convergence of \(Ta_n^\delta\) to \(z_\delta\) gives
+\[
+  \sup_{y^*\in W}|y^*(Ta_n^\delta-z_\delta)|\to 0.
+\]
+Using the same three-term estimate as in \cite[Theorem 6.5(b)]{ondrej-spurny},
+\[
+\limsup_n\sup_{y^*\in W}|y^*(Sf_n-y^{**})|
+\leq
+4CM\,\norm{G}(\BX\setminus L_\delta).
+\]
+Letting \(\delta\downarrow 0\) gives \(Sf_n\to y^{**}\) in the Right topology.  Hence \(S\) is Right completely continuous.
+\end{proof}
+
+\section*{Verification and Limitations}
+
+No numerical verification is involved.  The proof was checked against the source TeX around Lemma 6.4, Theorem 6.5, and Question 6.7.  The local run indexes were searched for the arXiv id, title, `q:metriz`, `pseudo weakly compact`, `Right completely continuous`, and nearby injective tensor-product terms; no existing packet for this question was found.  A web search on 2026-06-28 for the exact title and Right-topology phrases found only the source arXiv paper.
+
+The remaining open part of Question 6.7 is the case where the representing measure cannot be approximated in semivariation by compact metrizable homogeneous subsets of \(\ext\BX\).  The source paper's later scattered-boundary theorem handles a different situation, namely discrete control measures; the present result permits non-atomic metrizable boundary support but assumes the support/tightness condition.
+
+\begin{thebibliography}{9}
+
+\bibitem{ondrej-spurny}
+S. Ondrej and J. Spurny,
+\emph{Operators on injective tensor products of \(L_1\)-preduals},
+arXiv:2604.18157v1, 2026.
+\url{https://arxiv.org/abs/2604.18157}
+
+\bibitem{lacey}
+H. E. Lacey,
+\emph{The Isometric Theory of Classical Banach Spaces},
+Springer-Verlag, New York, 1974.
+
+\bibitem{olsen}
+G. H. Olsen,
+\emph{Edwards' separation theorem for complex Lindenstrauss spaces with application to selection and embedding theorems},
+Mathematica Scandinavica 38 (1976), no. 1, 97--105.
+
+\end{thebibliography}
+
+\end{document}

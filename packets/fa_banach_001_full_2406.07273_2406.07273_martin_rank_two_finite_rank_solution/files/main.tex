@@ -1,0 +1,554 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\NA}{\operatorname{NA}}
+\newcommand{\calL}{\mathcal L}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\X}{\mathfrak X}
+\newcommand{\Xzero}{X_0}
+\newcommand{\Yop}{\mathscr Y}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\sphere}[1]{S_{#1}}
+\newcommand{\ball}[1]{B_{#1}}
+
+\title{Norm-Attaining Operators of Every Finite Rank\\on Mart\'in's Space}
+\author{A verification and solution report}
+\date{June 22, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Packet status}
+
+This packet upgrades the previous partial packet for arXiv:2406.07273.  It is
+classified as:
+\[
+  \texttt{full\_solution\_likely\_valid}.
+\]
+The upgraded claim is a positive solution of Mart\'in's Open Problem 7: the
+space \(\X\) admits rank-two norm-attaining operators into \(\ell_2^2\).  The
+argument proves the stronger finite-rank statement in Theorem \ref{thm:main}.
+
+The earlier active packet proved only a fixed-kernel nowhere-density result and
+explicitly did not settle the existence question.  That packet is preserved in
+the packet history directory.  The submitted TeX and PDF report are preserved
+in the packet evidence directory; the source paper and open-problem crop are
+retained as source evidence.
+
+\begin{abstract}
+Miguel Mart\'in constructed a smooth renorming \(\X\) of \(c_0\) whose set of
+norm-attaining functionals contains no non-trivial cone, and asked whether
+\(\NA(\X,\ell_2^2)\) nevertheless contains an operator of rank two.  We first
+audit a proposed fixed-kernel nowhere-density argument.  Its conclusion is
+correct, but the written proof uses the false general assertion that smoothness
+of a Banach space is equivalent to strict convexity of its dual.  A local
+quotient-smoothness argument repairs the proof.
+
+We then give a positive answer to Mart\'in's question.  In fact, a stronger
+statement follows directly from the architecture of his renorming: for every
+integer \(n\geq 1\) and every real Banach space \(Y\) with
+\(\dim Y\geq n\), there is a norm-attaining operator from \(\X\) to \(Y\) of
+rank \(n\).  The key observation is a general lifting lemma for a graph-sum
+norm
+\[
+       p(x)=\norm{x}_0+\lambda\norm{Rx}.
+\]
+A finite-rank norm-attaining operator for the old norm can be modified by one
+rank-one term in the direction of its norming value.  The triangle inequality
+then gives the upper bound for the new operator norm, while equality holds at
+the same vector.  Mart\'in's injectivity and range-separation properties ensure
+that the rank is preserved.
+\end{abstract}
+
+\section{The question and the literature check}
+
+Throughout, all Banach spaces and operators are real.  For Banach spaces
+\(X,Y\), \(\NA(X,Y)\) denotes the set of norm-attaining bounded operators
+from \(X\) to \(Y\).
+
+Mart\'in's paper constructs a particular renorming \(\X\) of \(c_0\) and ends
+with the following question:
+\begin{quote}
+\emph{Does \(\NA(\X,\ell_2^2)\) contain rank-two operators?}
+\end{quote}
+The source evidence crop from Open Problem 7 is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+
+This is Open Problem 7 in \cite{Martin2025}.  A targeted search through
+June 22, 2026 found no published proof or counterexample.  In particular,
+Mart\'in's May 2025 BIRS handout still states the question as open
+\cite{MartinBIRS}.  Thus the argument below is presented as a new solution and
+has not been peer reviewed.
+
+Our main result is stronger than the requested rank-two assertion.
+
+\begin{theorem}[Main theorem]\label{thm:main}
+Let \(\X\) be the Banach space produced in the proof of
+\cite[Theorem 1]{Martin2025}.  Let \(n\in\mathbb N\), and let \(Y\) be a real
+Banach space with \(\dim Y\geq n\).  Then there exists
+\(T\in\NA(\X,Y)\) with
+\[
+             \rank T=n.
+\]
+In particular, \(\NA(\X,\ell_2^2)\) contains a rank-two operator.
+\end{theorem}
+
+\section{The structural ingredients in Mart\'in's construction}
+
+We isolate only the properties actually used below.  In Steps 1--7 of the
+proof of \cite[Theorem 1]{Martin2025}, the final space \(\X\) is built as
+follows.
+
+The underlying vector space is \(c_0\).  First it is given an equivalent
+smooth norm \(\norm{\cdot}_0\); write
+\[
+             \Xzero=(c_0,\norm{\cdot}_0).
+\]
+The construction has
+\begin{equation}\label{eq:NA-base}
+       \NA(\Xzero,\R)=\NA(c_0,\R)=c_{00}.
+\end{equation}
+Here the dual spaces are identified algebraically with \(\ell_1\).  Recall
+that an element of \(\ell_1=c_0^*\) attains its usual norm on \(c_0\) exactly
+when it has finite support, which proves the second equality in
+\eqref{eq:NA-base}.
+
+There are also a Banach space \(W\), a bounded operator
+\(R:\Xzero\to W\), and a linear subspace \(\Yop\subset \Xzero^*\) such that
+\begin{align}
+       &R \text{ is injective},                                      \label{eq:Rinj}\\
+       &R^*:W^*\longrightarrow \Xzero^* \text{ is injective},         \label{eq:Rstarinj}\\
+       &R^*(W^*)\subseteq \Yop,                                      \label{eq:Rrange}\\
+       &\Yop\cap\NA(\Xzero,\R)=\{0\}.                               \label{eq:separation}
+\end{align}
+Specifically, \eqref{eq:Rrange} and \eqref{eq:Rstarinj} are equations (3)
+and (4) in Step 6 of Mart\'in's proof.  The final norm is
+\begin{equation}\label{eq:final-norm}
+              p(x)=\norm{x}_0+\norm{Rx}_W,
+              \qquad x\in c_0,
+\end{equation}
+and \(\X=(c_0,p)\).  The scaled variants in
+\cite[Remark 2]{Martin2025} have
+\(p_\lambda(x)=\norm{x}_0+\lambda\norm{Rx}\), where \(\lambda>0\); the same
+argument works for all of them.
+
+\section{Two elementary lemmas}
+
+We first record the finite-rank norm-attainment criterion used in
+\cite[Corollary 2.6]{KLMW}.  A short proof is included.
+
+\begin{lemma}[Finite-rank criterion]\label{lem:finite-rank-criterion}
+Let \(X,Y\) be Banach spaces and let \(S:X\to Y\) have finite rank.  If
+\[
+             [\ker S]^\perp=\ran S^*\subseteq \NA(X,\R),
+\]
+then \(S\in\NA(X,Y)\).
+\end{lemma}
+
+\begin{proof}
+Put \(E=\ran S\), and regard \(S\) as a surjection from \(X\) onto the
+finite-dimensional space \(E\).  The unit sphere of \(E^*\) is compact, so
+there is \(e^*\in S_{E^*}\) such that
+\[
+             \norm{S^*e^*}=\norm{S^*}=\norm{S}.
+\]
+The functional \(S^*e^*\) belongs to \([\ker S]^\perp\), hence attains its
+norm at some \(x\in S_X\).  After changing the sign of \(x\) if needed,
+\[
+  \norm{S}
+  =(S^*e^*)(x)
+  =e^*(Sx)
+  \leq \norm{Sx}
+  \leq \norm{S}.
+\]
+Thus \(\norm{Sx}=\norm{S}\).
+\end{proof}
+
+The next lemma is the mechanism that passes from the old norm to the graph-sum
+norm.
+
+\begin{lemma}[Graph-sum lifting]\label{lem:graph-sum}
+Let \((X,\norm{\cdot}_0)\) and \(W\) be Banach spaces, let
+\(R:X\to W\) be bounded, and fix \(\lambda>0\).  Define
+\[
+          p_\lambda(z)=\norm{z}_0+\lambda\norm{Rz}.
+\]
+Suppose that \(S:X\to Y\) has finite rank, \(\norm{S}=1\) for the old norm,
+and attains its norm at \(x\in S_{(X,\norm{\cdot}_0)}\).  Put \(y=Sx\), so
+\(\norm{y}=1\).  Assume that \(Rx\neq0\), and choose
+\(w^*\in S_{W^*}\) with
+\[
+                 w^*(Rx)=\norm{Rx}.
+\]
+If
+\begin{equation}\label{eq:outside-range}
+                 R^*w^*\notin\ran S^*,
+\end{equation}
+then the operator
+\begin{equation}\label{eq:T-general}
+        Tz=Sz+\lambda\,(R^*w^*)(z)y,
+        \qquad z\in X,
+\end{equation}
+viewed from \((X,p_\lambda)\) to \(Y\), satisfies
+\[
+          T\in\NA((X,p_\lambda),Y),
+          \qquad \norm{T}=1,
+          \qquad \rank T=\rank S.
+\]
+It attains its norm at \(x/p_\lambda(x)\).
+\end{lemma}
+
+\begin{proof}
+For every \(z\in X\), the triangle inequality gives
+\begin{align*}
+ \norm{Tz}
+ &\leq \norm{Sz}+\lambda\abs{w^*(Rz)}\norm{y}\\
+ &\leq \norm{z}_0+\lambda\norm{Rz}
+  =p_\lambda(z).
+\end{align*}
+Hence \(\norm{T}\leq1\).  At the norming vector \(x\),
+\[
+     Tx=y+\lambda\norm{Rx}\,y
+       =\bigl(1+\lambda\norm{Rx}\bigr)y,
+\]
+whereas
+\[
+     p_\lambda(x)=1+\lambda\norm{Rx}.
+\]
+Consequently \(\norm{T}=1\), and \(T\) attains its norm at
+\(x/p_\lambda(x)\).
+
+It remains to check the rank.  Let \(E=\ran S\); then \(y\in E\) and
+\(\ran T\subseteq E\).  Regard \(S,T\) as operators into \(E\).  Since
+\(S:X\to E\) is onto, \(S^*:E^*\to X^*\) is injective and
+\(\ran S^*= [\ker S]^\perp\).  If \(T^*e^*=0\) for some \(e^*\in E^*\),
+then
+\[
+       S^*e^*=-\lambda e^*(y)R^*w^*.
+\]
+If \(e^*(y)=0\), injectivity of \(S^*\) gives \(e^*=0\).  If
+\(e^*(y)\neq0\), the displayed identity contradicts
+\eqref{eq:outside-range}.  Thus \(T^*:E^*\to X^*\) is injective, so
+\(T:X\to E\) is onto.  Therefore \(\rank T=\dim E=\rank S\).
+\end{proof}
+
+\section{Proof of the main theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+Fix \(n\in\mathbb N\) and a Banach space \(Y\) with \(\dim Y\geq n\).
+Choose an \(n\)-dimensional subspace \(E\subseteq Y\) and an
+\(n\)-dimensional subspace
+\[
+                  U\subset c_{00}=\NA(\Xzero,\R).
+\]
+Let \(M=U_\perp=\bigcap_{f\in U}\ker f\).  Then \(\Xzero/M\) is
+\(n\)-dimensional and
+\[
+                  M^\perp=U.
+\]
+Choose a linear isomorphism \(A:\Xzero/M\to E\), let
+\(q:\Xzero\to\Xzero/M\) be the quotient map, and define
+\[
+                  S_0=\iota_E A q:\Xzero\longrightarrow Y,
+\]
+where \(\iota_E:E\hookrightarrow Y\) is the inclusion.  Then
+\(\rank S_0=n\), \(\ker S_0=M\), and
+\[
+          \ran S_0^*=M^\perp=U\subseteq\NA(\Xzero,\R).
+\]
+By Lemma \ref{lem:finite-rank-criterion}, \(S_0\) attains its norm.  Replace
+it by \(S=S_0/\norm{S_0}\), choose
+\(x\in S_{\Xzero}\) with \(\norm{Sx}=1\), and put \(y=Sx\).
+
+Since \(R\) is injective and \(x\neq0\), one has \(Rx\neq0\).  Choose
+\(w^*\in S_{W^*}\) satisfying \(w^*(Rx)=\norm{Rx}\), and set
+\[
+                    r=R^*w^*.
+\]
+By \eqref{eq:Rrange}, \(r\in\Yop\).  By injectivity of \(R^*\),
+\(r\neq0\).  If \(r\in\ran S^*=U\), then
+\[
+     r\in \Yop\cap U
+       \subseteq \Yop\cap\NA(\Xzero,\R)
+       =\{0\},
+\]
+a contradiction.  Hence \(r\notin\ran S^*\).
+
+Lemma \ref{lem:graph-sum}, with \(\lambda=1\), now shows that
+\[
+          Tz=Sz+r(z)y.
+\]
+more simply written as
+\[
+          T=S+y\otimes r,
+          \qquad (y\otimes r)(z)=r(z)y,
+\]
+is a norm-one norm-attaining operator from \((c_0,p)=\X\) to \(Y\), and
+\(\rank T=\rank S=n\).  This proves the theorem.
+\end{proof}
+
+\begin{remark}[The rank-two formula]\label{rem:rank-two-formula}
+For \(n=2\) and \(Y=\ell_2^2\), rotate the norm-one base operator so that
+\[
+                S=(f_0,h_0),\qquad Sx=(1,0).
+\]
+Then the resulting operator has the especially transparent form
+\[
+        Tz=\bigl(f_0(z)+(R^*w^*)(z),\ h_0(z)\bigr).
+\]
+Indeed,
+\[
+ \norm{Tz}_2
+ \leq \norm{(f_0(z),h_0(z))}_2+\abs{w^*(Rz)}
+ \leq \norm{z}_0+\norm{Rz}=p(z),
+\]
+with equality at \(x/p(x)\).  The two coordinate functionals are independent
+because \(R^*w^*\notin\operatorname{span}\{f_0,h_0\}\).
+\end{remark}
+
+\begin{corollary}\label{cor:scaled}
+The conclusion of Theorem \ref{thm:main} also holds for every scaled norm
+\[
+              p_\lambda(x)=\norm{x}_0+\lambda\norm{Rx},
+              \qquad \lambda>0,
+\]
+including the arbitrarily small equivalent perturbations described in
+\cite[Remark 2]{Martin2025}.
+\end{corollary}
+
+\begin{proof}
+Use Lemma \ref{lem:graph-sum} with the same \(S,x,y,w^*\) and the specified
+\(\lambda\).
+\end{proof}
+
+\section{Audit and repair of the fixed-kernel partial result}
+
+The proposed partial result asserts that for every fixed two-codimensional
+kernel, norm attainment is nowhere dense in the corresponding four-dimensional
+operator fibre.  The conclusion is correct, but two points in the supplied
+write-up need correction.
+
+First, the finiteness statement for
+\(q(B_\X)\cap S_{\X/M}\) is supplied by Proposition 6(b) of
+\cite{Martin2025}, not by ``Proposition 2.4'' of that paper.  Second, the
+sentence
+\[
+       \text{``\(\X\) is smooth; equivalently, \(\X^*\) is strictly convex''}
+\]
+is false for general Banach spaces.  In infinite dimensions, smoothness of a
+space does not in general imply strict convexity of its dual.  Consequently,
+the global claim that every two-dimensional quotient \(\X/M\) is smooth does
+not follow from the stated reasoning.
+
+Only smoothness at a finite set of quotient points is needed, and that property
+follows directly from smoothness of \(\X\).
+
+\begin{lemma}[Local smoothness passes to a represented quotient point]
+\label{lem:quotient-smooth-point}
+Let \(q:X\to E=X/M\) be a quotient map.  Suppose that \(x\in S_X\), that
+\(e=qx\in S_E\), and that \(X\) is smooth at \(x\).  Then \(E\) is smooth at
+\(e\).
+\end{lemma}
+
+\begin{proof}
+Let \(\phi_1,\phi_2\in S_{E^*}\) satisfy
+\(\phi_1(e)=\phi_2(e)=1\).  The adjoint \(q^*:E^*\to X^*\) is an isometry, and
+\[
+        (q^*\phi_i)(x)=\phi_i(qx)=1\qquad(i=1,2).
+\]
+Thus both \(q^*\phi_1\) and \(q^*\phi_2\) are norming functionals for \(x\).
+Smoothness at \(x\) gives \(q^*\phi_1=q^*\phi_2\).  Since \(q^*\) is
+injective, \(\phi_1=\phi_2\).
+\end{proof}
+
+We now give a corrected proof of the partial theorem.  The finite-dimensional
+perturbation lemma needs smoothness only at the prescribed vector.
+
+\begin{lemma}\label{lem:Fe}
+Let \(E\) be a real two-dimensional Banach space, let \(H=\ell_2^2\), and
+fix \(e\in S_E\).  Assume that \(E\) is smooth at \(e\).  Define
+\[
+        F_e=\{A\in\calL(E,H):\norm{Ae}=\norm{A}\}.
+\]
+Then \(F_e\) is closed and nowhere dense in \(\calL(E,H)\).
+\end{lemma}
+
+\begin{proof}
+Closedness is immediate.  We show that \(F_e\) has empty interior.
+
+Let \(A\in F_e\) and \(\delta>0\).  If \(A=0\), choose a nonzero
+\(B:E\to H\) with \(Be=0\) and \(\norm{B}<\delta\); then \(B\notin F_e\).
+
+Assume \(A\neq0\), put \(y=Ae\), and let \(j\in S_{E^*}\) be the unique
+norming functional for \(e\).  Choose \(d\in\ker j\setminus\{0\}\).  The
+norm of \(E\) is G\^ateaux differentiable at \(e\), so
+\[
+       \frac{d}{dt}\bigg|_{t=0}\norm{e+td}=j(d)=0.
+\]
+Set \(u=y/\norm{y}\).  Since \(\norm{A(e+td)}\leq
+\norm{y}\norm{e+td}\) with equality at \(t=0\), differentiation from both
+sides gives
+\[
+                     \langle u,Ad\rangle=0.
+\]
+Choose \(B\in\calL(E,H)\) with \(Be=0\) and \(Bd=y\), and put
+\(A_\alpha=A+\alpha B\).  Then \(A_\alpha e=y\), while
+\[
+       A_\alpha(e+td)=y+tAd+\alpha t y.
+\]
+The derivative at zero of the numerator in
+\[
+       \frac{\norm{A_\alpha(e+td)}}{\norm{e+td}}
+\]
+is
+\[
+       \langle u,Ad+\alpha y\rangle=\alpha\norm{y}>0,
+\]
+and the derivative of the denominator is zero.  Hence, for all sufficiently
+small \(t>0\),
+\[
+       \frac{\norm{A_\alpha(e+td)}}{\norm{e+td}}
+       >\norm{y}=\norm{A_\alpha e}.
+\]
+Thus \(A_\alpha\notin F_e\).  Taking \(\alpha>0\) so small that
+\(\norm{\alpha B}<\delta\) proves that \(F_e\) has empty interior.
+\end{proof}
+
+\begin{theorem}[Corrected fixed-kernel theorem]\label{thm:fixed-kernel}
+Let \(M\) be a closed subspace of \(\X\) with \(\codim M=2\), let
+\(H=\ell_2^2\), and set
+\[
+       \calL_M=\{T\in\calL(\X,H):M\subseteq\ker T\}.
+\]
+Then \(\NA(\X,H)\cap\calL_M\) is nowhere dense in \(\calL_M\).
+\end{theorem}
+
+\begin{proof}
+Let \(q:\X\to E=\X/M\) be the quotient map.  The map
+\(A\mapsto Aq\) identifies \(\calL(E,H)\) isometrically with \(\calL_M\).
+Set
+\[
+                 C_M=q(B_\X)\cap S_E.
+\]
+By \cite[Proposition 6(b)]{Martin2025}, \(C_M\) contains at most two
+antipodal pairs.
+
+For each \(e\in C_M\), choose \(x\in B_\X\) with \(qx=e\).  Since
+\(\norm{e}=1\), necessarily \(\norm{x}=1\).  The space \(\X\) is smooth, so
+Lemma \ref{lem:quotient-smooth-point} shows that \(E\) is smooth at \(e\).
+Lemma \ref{lem:Fe} therefore applies to every \(e\in C_M\).
+
+We claim that
+\begin{equation}\label{eq:fibre-inclusion}
+ \NA(\X,H)\cap\calL_M
+ \subseteq
+ \{0\}\cup\bigcup_{e\in C_M}F_e.
+\end{equation}
+Indeed, let \(T=Aq\neq0\) attain its norm at \(x\in S_\X\).  Since
+\(\norm{Aq}=\norm{A}\),
+\[
+                \norm{A(qx)}=\norm{A}.
+\]
+Writing \(e=qx\), one cannot have \(\norm{e}<1\), because then
+\[
+       \norm{A(e/\norm{e})}
+       =\frac{\norm{Ae}}{\norm{e}}
+       >\norm{A}.
+\]
+Thus \(e\in q(B_\X)\cap S_E=C_M\), and \(A\in F_e\).  This proves
+\eqref{eq:fibre-inclusion}.  The right-hand side is a finite union of closed
+nowhere dense subsets of the four-dimensional space \(\calL(E,H)\), so the
+left-hand side is nowhere dense.
+\end{proof}
+
+\begin{corollary}\label{cor:fixed-kernel}
+If \(T\in\NA(\X,\ell_2^2)\) has rank two and kernel \(M\), then for every
+\(\varepsilon>0\) there is a rank-two operator
+\(S:\X\to\ell_2^2\) such that
+\[
+       \ker S=M,\qquad \norm{S-T}<\varepsilon,
+       \qquad S\notin\NA(\X,\ell_2^2).
+\]
+\end{corollary}
+
+\begin{proof}
+Write \(T=Aq\), where \(q:\X\to\X/M\) is the quotient map.  Since \(T\)
+has rank two, \(A:\X/M\to\ell_2^2\) is invertible.  Invertible operators form
+an open subset of \(\calL(\X/M,\ell_2^2)\).  Theorem
+\ref{thm:fixed-kernel} therefore supplies, arbitrarily close to \(A\), an
+invertible \(B\) such that \(Bq\) is not norm attaining.  Put \(S=Bq\).
+Then \(\ker S=M\), \(\rank S=2\), and
+\(\norm{S-T}=\norm{B-A}\).
+\end{proof}
+
+\section{How the two conclusions fit together}
+
+Theorem \ref{thm:main} and Theorem \ref{thm:fixed-kernel} are fully
+compatible.  The main theorem proves existence of many finite-rank
+norm-attaining operators, including rank-two ones.  The fixed-kernel theorem
+says that after one fixes the kernel of any such operator, norm attainment is
+still a nowhere dense condition inside that particular four-dimensional
+fibre.  Non-emptiness and nowhere density are not contradictory.
+
+The argument settles only the existence question in Open Problem 7.  It does
+not by itself settle the older density problem asking whether
+\(\NA(X,\ell_2^2)\) is dense in \(\calL(X,\ell_2^2)\) for every Banach space
+\(X\), nor whether every finite-rank operator can be approximated by
+norm-attaining operators.
+
+\section*{Conclusion}
+
+The candidate fixed-kernel result survives audit after replacing an incorrect
+duality assertion by a local quotient-smoothness lemma.  More importantly,
+the graph-sum structure of Mart\'in's norm yields a direct positive solution of
+Open Problem 7, and in fact produces norm-attaining operators of every
+prescribed finite rank into every sufficiently large range space.
+
+\begin{thebibliography}{9}
+
+\bibitem{Martin2025}
+M. Mart\'in,
+\emph{A Banach space whose set of norm-attaining functionals is algebraically
+trivial},
+J. Funct. Anal. \textbf{288} (2025), 110815.
+Preprint: \href{https://arxiv.org/abs/2406.07273}{arXiv:2406.07273}.
+
+\bibitem{KLMW}
+V. Kadets, G. L\'opez, M. Mart\'in, and D. Werner,
+\emph{Norm attaining operators of finite rank},
+in \emph{The Mathematical Legacy of Victor Lomonosov},
+Advances in Analysis and Geometry 2, De Gruyter, 2020, pp. 157--188.
+Preprint: \href{https://arxiv.org/abs/1905.08272}{arXiv:1905.08272}.
+
+\bibitem{MartinBIRS}
+M. Mart\'in,
+\emph{A Banach space whose set of norm-attaining functionals is algebraically
+trivial}, BIRS--IMAG workshop handout, May 2025.
+\href{https://www.ugr.es/~mmartins/Curriculum/Charlas/2025_BIRS_handout.pdf}
+{Author-hosted PDF}.
+
+\end{thebibliography}
+
+\end{document}

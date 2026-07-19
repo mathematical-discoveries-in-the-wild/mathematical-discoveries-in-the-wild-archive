@@ -1,0 +1,474 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\1}{\mathbf 1}
+\sloppy
+
+\title{Finite-Cotype De-Poissonization and the UMD Case of Remark 12.10}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate full solution, subject to human review, to the
+UMD general-local part of Remark 12.10 in Yaroslavtsev's paper
+\emph{Local characteristics and tangency of vector-valued martingales}
+\cite{Yaroslavtsev2019}.  The source proves the quasi-left-continuous case
+for UMD spaces and says that the remaining issue for general local martingales
+is a discrete independent-increment comparison.  We prove the finite
+independent-increment comparison in every Banach space of finite cotype.  This
+is the form needed in the accessible-jump approximation in the source: the
+accessible part is first truncated to finitely many predictable jumps and then
+one lets the truncation parameter tend to infinity.  Since every UMD space has
+finite cotype, this settles the UMD case of the source question.
+
+This does not contradict the previous \(c_0\) counterexample in the run:
+\(c_0\) has no finite cotype and is not UMD.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source states
+that the general local-martingale case is open and reduces the missing issue
+to independent increments.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The continuation states the aggregate-domination formulation and notes that
+even the symmetric case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{Main Results}
+
+\begin{theorem}[Finite-cotype discrete aggregate comparison]
+\label{thm:discrete}
+Let \(X\) be a Banach space of finite cotype, and let \(1\le p<\infty\).
+Let \((\xi_i)_{i=1}^n\) and \((\eta_j)_{j=1}^m\) be independent mean-zero
+\(X\)-valued random variables with finite \(p\)-moments.  Suppose that
+\[
+  \sum_i \Pp(\xi_i\in B)
+  \le
+  \sum_j \Pp(\eta_j\in B)
+  \qquad (B\in\mathcal B(X\setminus\{0\})).
+\]
+Then
+\[
+  \left(\E\norm{\sum_i\xi_i}^p\right)^{1/p}
+  \le
+  C_{p,X}
+  \left(\E\norm{\sum_j\eta_j}^p\right)^{1/p}.
+\]
+\end{theorem}
+
+\begin{theorem}[UMD general local characteristic domination]
+\label{thm:umd}
+Let \(X\) be a UMD Banach space and \(1\le p<\infty\).  If \(N\) and \(M\)
+are \(X\)-valued local martingales and \(N\) is characteristically dominated
+by \(M\) in the sense of \cite[Definition 12.9]{Yaroslavtsev2019}, then
+\[
+  \E\sup_{t\ge0}\norm{N_t}^p
+  \le
+  C_{p,X}
+  \E\sup_{t\ge0}\norm{M_t}^p.
+\]
+\end{theorem}
+
+\section*{Relation to the \(c_0\) Counterexample}
+
+There are two closely related questions in Remark 12.10.  The broad discrete
+aggregate-domination question is phrased for an arbitrary Banach space \(X\).
+That broad question is false: the companion packet
+\[
+\texttt{1907.11588\_discrete\_aggregate\_domination\_c0\_counterexample}
+\]
+constructs independent symmetric \(c_0\)-valued families with equal aggregate
+jump measures but with unbounded comparison constants.  This is not a
+counterexample to the present theorem, because \(c_0\) has no finite cotype and
+is not UMD.
+
+The present packet proves the positive UMD/finite-cotype side.  Thus the two
+packets should be read as complementary boundary information: arbitrary Banach
+spaces are too large, while finite cotype is enough for the discrete comparison
+proved here, and UMD spaces fall inside that positive class.
+
+\section*{Idea of the Proof}
+
+The earlier conditional packet in this run showed that the symmetric
+aggregate-domination problem follows from symmetric de-Poissonization: compare
+the original independent Bernoulli family to the compound-Poisson sum with the
+same aggregate nonzero law.  The new observation is that finite cotype gives
+exactly the missing upper de-Poissonization estimate.
+
+The key input is a Maurey--Pisier contraction principle.  If \(X\) has cotype
+\(q<\infty\), then iid symmetric scalar coefficients \(\theta_i\) satisfy
+\[
+ \left(\E\norm{\sum_i\theta_i x_i}^p\right)^{1/p}
+ \lesssim_{p,q,X}
+ \int_0^\infty \Pp(|\theta_1|>t)^{1/\max(p,q)}\,dt\,
+ \left(\E\norm{\sum_i\eps_i x_i}^p\right)^{1/p}.
+\]
+For Bernoulli selectors of density \(a\), the tail integral is
+\(a^{1/\max(p,q)}\).  Hence an \(a\)-thinning of a symmetric independent
+family costs a summable power of \(a\).  A compound-Poisson sum decomposes into
+layers \(\{\operatorname{Pois}(p_i)\ge k\}\), and the \(k\)-th layer is a
+\(1/k!\)-thinning of the original family.  Summing over \(k\) proves
+de-Poissonization.
+
+\section*{A Finite-Cotype Thinning Lemma}
+
+We use the following standard Maurey--Pisier contraction principle in the
+explicit form stated by Ivanisvili--van Handel--Volberg
+\cite[Theorem 4.1]{IvanisviliVanHandelVolberg2020}.
+
+\begin{theorem}[Maurey--Pisier contraction]
+\label{thm:mp}
+Let \(X\) have cotype \(q<\infty\), let
+\(\theta_1,\ldots,\theta_n\) be iid symmetric scalar random variables, and let
+\(\eps_1,\ldots,\eps_n\) be independent Rademacher signs.  Then for every
+\(1\le p<\infty\) and every \(x_1,\ldots,x_n\in X\),
+\[
+  \left(\E\norm{\sum_i\theta_i x_i}^p\right)^{1/p}
+  \le
+  L_{p,q,X}
+  \int_0^\infty \Pp(|\theta_1|>t)^{1/\max(p,q)}\,dt\,
+  \left(\E\norm{\sum_i\eps_i x_i}^p\right)^{1/p}.
+\]
+\end{theorem}
+
+\begin{lemma}[Thinning in finite cotype]
+\label{lem:thinning}
+Let \(X\) have cotype \(q<\infty\), let \(1\le p<\infty\), and set
+\[
+  \alpha=\frac{1}{\max(p,q)}.
+\]
+Let \(Z_1,\ldots,Z_n\) be independent symmetric \(X\)-valued random
+variables, and let \(R_1,\ldots,R_n\) be independent Bernoulli variables,
+independent of the \(Z_i\), with \(\Pp(R_i=1)\le a\le1\).  Then
+\[
+  \left(\E\norm{\sum_i R_iZ_i}^p\right)^{1/p}
+  \le
+  K_{p,q,X} a^\alpha
+  \left(\E\norm{\sum_i Z_i}^p\right)^{1/p}.
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose \(x_1,\ldots,x_n\in X\) are deterministic and that
+\(R_i\) are iid Bernoulli \(a\).  Apply Theorem \ref{thm:mp} to
+\(\theta_i=R_i\eps_i\).  Since
+\[
+  \Pp(|\theta_1|>t)=
+  \begin{cases}
+  a, &0\le t<1,\\
+  0, &t\ge1,
+  \end{cases}
+\]
+the tail integral equals \(a^\alpha\).  Thus
+\[
+  \left(\E\norm{\sum_i R_i\eps_i x_i}^p\right)^{1/p}
+  \le
+  K_{p,q,X}a^\alpha
+  \left(\E\norm{\sum_i\eps_i x_i}^p\right)^{1/p}.
+\]
+
+If the Bernoulli parameters are \(\rho_i\le a\), realize a Bernoulli \(a\)
+signed selector as the smaller selector plus an independent centered remainder.
+First select \(R_i\) with parameter \(\rho_i\) and sign \(\eps_i\).  If
+\(\rho_i<1\), then on the event \(R_i=0\) add an extra selector \(E_i\) with
+conditional probability \((a-\rho_i)/(1-\rho_i)\), and give this extra selector
+a fresh independent sign \(\delta_i\).  If \(\rho_i=1\), necessarily \(a=1\)
+and no extra selector is needed.  The scalar
+\[
+  \Theta_i=R_i\eps_i+(1-R_i)E_i\delta_i
+\]
+is symmetric and has the Bernoulli \(a\) signed-selector law.  Moreover,
+conditionally on the smaller thinning \((R_i,\eps_i)_i\), the extra sum has
+mean zero.  Jensen's inequality for the convex function
+\(x\mapsto\norm{x}^p\) gives
+\[
+  \left(\E\norm{\sum_i R_i\eps_i x_i}^p\right)^{1/p}
+  \le
+  \left(\E\norm{\sum_i \Theta_i x_i}^p\right)^{1/p},
+\]
+so the same bound holds for arbitrary \(\rho_i\le a\).
+
+For random symmetric \(Z_i\), condition on their values \(z_i\) and insert
+independent Rademacher signs.  Because \(Z_i\) is symmetric,
+\((\eps_i Z_i)_i\) has the same joint law as \((Z_i)_i\), and similarly after
+thinning.  Integrating the deterministic estimate over the \(z_i\)'s proves
+the lemma.
+\end{proof}
+
+\section*{Finite-Cotype De-Poissonization}
+
+For a finite independent symmetric family \(Z_1,\ldots,Z_n\), write
+\[
+  \mu_Z=\sum_i\mathcal L(Z_i)|_{X\setminus\{0\}}.
+\]
+Let \(\Pi_{\mu_Z}\) be the compound-Poisson sum with intensity \(\mu_Z\).
+
+\begin{proposition}[Symmetric de-Poissonization in finite cotype]
+\label{prop:depoisson}
+Let \(X\) have finite cotype and \(1\le p<\infty\).  Then
+\[
+  \left(\E\norm{\Pi_{\mu_Z}}^p\right)^{1/p}
+  \le
+  D_{p,X}
+  \left(\E\norm{\sum_i Z_i}^p\right)^{1/p}
+\]
+for every finite independent symmetric \(X\)-valued family \(Z_i\).
+\end{proposition}
+
+\begin{proof}
+Let \(p_i=\Pp(Z_i\ne0)\).  If \(p_i>0\), write \(U_i\) for the conditional
+law of \(Z_i\) given \(Z_i\ne0\); this conditional law remains symmetric.
+Let \(N_i\) be independent Poisson variables with means \(p_i\), and let
+\((U_{i,k})_{k\ge1}\) be independent copies of \(U_i\).  Then
+\[
+  \Pi_{\mu_Z}=\sum_i\sum_{k=1}^{N_i}U_{i,k}
+  =
+  \sum_{k\ge1} L_k,
+  \qquad
+  L_k=\sum_i \1_{\{N_i\ge k\}}U_{i,k}.
+\]
+By Minkowski's inequality in \(L^p(\Omega;X)\),
+\[
+  \norm{\Pi_{\mu_Z}}_{L^p}
+  \le
+  \sum_{k\ge1}\norm{L_k}_{L^p}.
+\]
+
+For \(0\le s\le1\),
+\[
+  \Pp(\operatorname{Pois}(s)\ge k)
+  \le
+  \E\binom{\operatorname{Pois}(s)}{k}
+  =
+  \frac{s^k}{k!}
+  \le
+  \frac{s}{k!}.
+\]
+Thus, if \(p_i>0\), the \(i\)-th summand in \(L_k\) is distributed as
+\(R_{i,k}Z_i\) with thinning parameter
+\[
+  \rho_{i,k}=\frac{\Pp(\operatorname{Pois}(p_i)\ge k)}{p_i}
+  \le \frac{1}{k!};
+\]
+the terms with \(p_i=0\) are zero.  Lemma \ref{lem:thinning}
+therefore gives
+\[
+  \norm{L_k}_{L^p}
+  \le
+  K_{p,X}(1/k!)^\alpha
+  \left(\E\norm{\sum_i Z_i}^p\right)^{1/p},
+\]
+where \(\alpha=1/\max(p,q)>0\) for some finite cotype \(q\) of \(X\).
+Since \(\sum_{k\ge1}(1/k!)^\alpha<\infty\), summing over \(k\) proves the
+proposition.
+\end{proof}
+
+\section*{Aggregate Domination}
+
+\begin{lemma}[Lower Poissonization]
+\label{lem:lower}
+For every Banach space \(X\), every \(1\le p<\infty\), and every finite
+independent symmetric family \(Z_i\),
+\[
+  \left(\E\norm{\sum_iZ_i}^p\right)^{1/p}
+  \le
+  2\left(\E\norm{\Pi_{\mu_Z}}^p\right)^{1/p}.
+\]
+\end{lemma}
+
+\begin{proof}
+This is the lower Poissonization lemma from the companion conditional packet,
+but we recall the proof.  Write \(Z_i=B_iU_i\), where \(B_i\) is Bernoulli
+\(p_i=\Pp(Z_i\ne0)\) and \(U_i\) has the symmetric conditional law of \(Z_i\)
+given \(Z_i\ne0\).  Let \(R_i\) be iid Bernoulli variables with
+\[
+  c=1-e^{-1}>1/2,
+\]
+independent of everything else, and put \(S=\sum_iB_iU_i\),
+\(S_R=\sum_iR_iB_iU_i\).  The complement
+\(\sum_i(1-R_i)B_iU_i\) is a \((1-c)\)-thinning of the original family.  Since
+\(1-c<c\), it can be obtained as a sub-thinning of a \(c\)-thinning; conditioning
+on the smaller thinning and adding the independent symmetric remainder back
+gives, by Jensen,
+\[
+  \left\|\sum_i(1-R_i)B_iU_i\right\|_{L^p}
+  \le \norm{S_R}_{L^p}.
+\]
+The triangle inequality gives \(\norm{S}_{L^p}\le 2\norm{S_R}_{L^p}\).
+
+Now let \(N_i\) be independent Poisson variables with means \(p_i\).  Since
+\[
+  \Pp(N_i\ge1)=1-e^{-p_i}\ge(1-e^{-1})p_i=cp_i,\qquad 0\le p_i\le1,
+\]
+the first Poisson layer \(\sum_i\mathbf 1_{\{N_i\ge1\}}U_{i,1}\) contains, in
+the same Jensen/sub-thinning sense, a copy of \(S_R\).  Thus
+\[
+  \norm{S_R}_{L^p}
+  \le
+  \left\|\sum_i \mathbf 1_{\{N_i\ge1\}}U_{i,1}\right\|_{L^p}.
+\]
+Finally, the full compound-Poisson sum is this first layer plus further
+conditionally mean-zero symmetric layers, so Jensen gives that the first layer
+is controlled by \(\Pi_{\mu_Z}\).  Combining the estimates proves the claim.
+\end{proof}
+
+\begin{lemma}[Poisson monotonicity]
+\label{lem:monotone}
+Let \(\mu\le\nu\) be finite symmetric Borel measures on \(X\setminus\{0\}\).
+Then
+\[
+  \norm{\Pi_\mu}_{L^p}\le\norm{\Pi_\nu}_{L^p}.
+\]
+\end{lemma}
+
+\begin{proof}
+By Poisson superposition, \(\Pi_\nu\) has the same law as
+\(\Pi_\mu+\Pi_{\nu-\mu}\), with the two terms independent.  Since
+\(\nu-\mu\) is symmetric, \(\Pi_{\nu-\mu}\) is mean zero after truncation.
+Conditioning on \(\Pi_\mu\) and applying Jensen's inequality gives the
+truncated claim, and then monotone convergence removes the truncation.
+\end{proof}
+
+\begin{proposition}[Symmetric aggregate comparison in finite cotype]
+\label{prop:symmetric}
+Theorem \ref{thm:discrete} holds when all \(\xi_i,\eta_j\) are symmetric.
+\end{proposition}
+
+\begin{proof}
+Let \(\mu_\xi=\sum_i\mathcal L(\xi_i)|_{X\setminus\{0\}}\) and
+\(\mu_\eta=\sum_j\mathcal L(\eta_j)|_{X\setminus\{0\}}\).  By assumption
+\(\mu_\xi\le\mu_\eta\).  Lemma \ref{lem:lower}, Lemma \ref{lem:monotone},
+and Proposition \ref{prop:depoisson} give
+\[
+  \norm{\sum_i\xi_i}_{L^p}
+  \le
+  2\norm{\Pi_{\mu_\xi}}_{L^p}
+  \le
+  2\norm{\Pi_{\mu_\eta}}_{L^p}
+  \le
+  2D_{p,X}\norm{\sum_j\eta_j}_{L^p}.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:discrete}]
+Let \(\eps_i,\eps'_j\) be independent Rademacher signs, independent of all
+variables.  Symmetrizing the laws preserves aggregate domination:
+\[
+  \sum_i\mathcal L(\eps_i\xi_i)|_{X\setminus\{0\}}
+  \le
+  \sum_j\mathcal L(\eps'_j\eta_j)|_{X\setminus\{0\}}.
+\]
+By the standard symmetrization inequalities for independent mean-zero
+Banach-valued variables,
+\[
+  \norm{\sum_i\xi_i}_{L^p}
+  \le
+  2\norm{\sum_i\eps_i\xi_i}_{L^p},
+  \qquad
+  \norm{\sum_j\eps'_j\eta_j}_{L^p}
+  \le
+  2\norm{\sum_j\eta_j}_{L^p}.
+\]
+Apply Proposition \ref{prop:symmetric} to the symmetric families
+\((\eps_i\xi_i)\) and \((\eps'_j\eta_j)\), and combine the three estimates.
+\end{proof}
+
+\section*{General Local Martingales}
+
+\begin{proof}[Proof of Theorem \ref{thm:umd}]
+Yaroslavtsev's quasi-left-continuous characteristic-domination theorem
+\cite[Theorem 12.6]{Yaroslavtsev2019} handles the continuous and
+quasi-left-continuous parts in UMD spaces.  In Remark 12.10, using the
+detangling theorem for martingales with accessible jumps and the accessible
+approximation proposition, the source identifies the remaining issue for
+general local martingales as the discrete independent-increment
+aggregate-domination problem stated there.  The finite form proved above is
+the one used at the approximation level: the source's accessible-jump
+approximation truncates a purely discontinuous accessible martingale to
+finitely many predictable jumps \(M^m\), proves the desired finite discrete
+estimate for those jumps, and then lets \(m\to\infty\) in \(L^p\).
+
+Every UMD Banach space has finite cotype.  Therefore Theorem
+\ref{thm:discrete} supplies the missing accessible-jump comparison in \(X\).
+Substituting this comparison into the source reduction gives the maximal
+\(L^p\) estimate for general local martingales.
+\end{proof}
+
+\section*{Verification and Novelty Notes}
+
+The cheap run indexes were searched for \texttt{1907.11588},
+\texttt{Remark 12.10}, \texttt{aggregate domination}, \texttt{UMD},
+\texttt{de-Poissonization}, \texttt{Rademacher}, \texttt{finite cotype}, and
+\texttt{Maurey--Pisier}.  The run already contained the \(c_0\)
+counterexample, Hilbert all-\(p\) packets, \(L^q(S)\) packets, and the
+conditional de-Poissonization reduction.  No prior packet contained the
+finite-cotype thinning argument above.
+
+The decisive external input is the Maurey--Pisier contraction principle as
+quoted in \cite[Theorem 4.1]{IvanisviliVanHandelVolberg2020}; the parsed
+source lines \texttt{2003.06345/source.tex:803--858} state the exact theorem
+used here.  The fact that UMD spaces have finite cotype is standard in
+Banach-space probability, and is also recalled in the local corpus in
+Hyt\"onen--McIntosh--Portal, arXiv:0703012, lines 367--372.
+
+The verification pass checked the following source joins.  The exact
+Maurey--Pisier estimate used in Lemma \ref{lem:thinning} is
+\cite[Theorem 4.1]{IvanisviliVanHandelVolberg2020}.  Yaroslavtsev's
+Remark 12.10 states the open independent-increment aggregate-domination problem
+and explicitly says that the symmetric case was not known; the surrounding
+proof of the accessible-jump estimates uses finite predictable-jump
+approximants and the approximation proposition for accessible martingales.
+
+Human review should focus on Lemma \ref{lem:thinning}, especially the passage
+from iid Bernoulli selectors to non-identical sub-thinnings, and on the final
+appeal to the accessible-jump approximation in Yaroslavtsev's reduction.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev.
+\newblock \emph{Local characteristics and tangency of vector-valued martingales}.
+\newblock arXiv:1907.11588, 2019.
+
+\bibitem{IvanisviliVanHandelVolberg2020}
+P. Ivanisvili, R. van Handel, and A. Volberg.
+\newblock \emph{Rademacher Type and Enflo Type Coincide}.
+\newblock arXiv:2003.06345, 2020.
+
+\bibitem{LedouxTalagrand}
+M. Ledoux and M. Talagrand.
+\newblock \emph{Probability in Banach Spaces}.
+\newblock Springer, 1991.
+
+\bibitem{HytonenMcIntoshPortal}
+T. Hyt\"onen, A. McIntosh, and P. Portal.
+\newblock \emph{Kato's square root problem in Banach spaces}.
+\newblock arXiv:0703012, 2007.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,179 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\Max}{\operatorname{Max}}
+
+\title{A Square-Zero Unitization With Non-Open Multiplication}
+\author{Agent lane 05}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source And Target}
+
+The source paper is Draga--Kania, \emph{When is multiplication in a Banach
+algebra open?}, arXiv:1704.08608 \cite{DK}.  Open Problem 3 on page 14 asks:
+
+\begin{quote}
+Do commutative, unital Banach algebras with zero-dimensional maximal ideal
+space have (uniformly) open multiplication? What if idempotents in the algebra
+are linearly dense?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+The first question has a negative answer as written.  There is a commutative
+unital complex Banach algebra whose maximal ideal space is a singleton, but
+whose multiplication is not open.  Consequently its multiplication is not
+uniformly open.
+
+The example is non-semisimple and has only the trivial idempotents \(0\) and
+\(1\).  Thus it does not answer the stronger follow-up question about linearly
+dense idempotents.
+
+\section*{Proof Intuition}
+
+Take the unitization of a square-zero two-dimensional ideal.  Since every
+element of the ideal is nilpotent, every character vanishes on that ideal, so
+the maximal ideal space is just one point.  Openness fails for a geometric
+reason.  Near a fixed nilpotent vector \(e_1\), both factors have ideal parts
+close to \(e_1\).  To produce a product with scalar coordinate \(0\), one of
+the scalar coordinates must be exactly \(0\).  The ideal part of the product
+then becomes a scalar multiple of a vector still close to \(e_1\), and so it
+cannot equal a small nonzero multiple of a transverse vector \(e_2\).
+
+\begin{theorem}
+There exists a commutative unital complex Banach algebra \(A\) such that
+\(\Max(A)\) is zero-dimensional and multiplication
+\[
+  A\times A\longrightarrow A,\qquad (a,b)\mapsto ab,
+\]
+is not open.
+\end{theorem}
+
+\begin{proof}
+Let \(E=\C^2\), equipped with the norm
+\(\norm{(z_1,z_2)}_\infty=\max\{|z_1|,|z_2|\}\).  Let
+\[
+  A=\C\oplus E
+\]
+with norm \(\norm{(\lambda,x)}=|\lambda|+\norm{x}_\infty\) and multiplication
+\[
+  (\lambda,x)(\mu,y)=(\lambda\mu,\lambda y+\mu x).
+\]
+This is the usual unitization of the square-zero algebra \(E\), where
+\(xy=0\) for all \(x,y\in E\).  The displayed norm is submultiplicative:
+\[
+\begin{aligned}
+\norm{(\lambda,x)(\mu,y)}
+&=|\lambda\mu|+\norm{\lambda y+\mu x}_\infty  \\
+&\le |\lambda||\mu|+|\lambda|\norm y_\infty+|\mu|\norm x_\infty
+ \le \norm{(\lambda,x)}\norm{(\mu,y)}.
+\end{aligned}
+\]
+The algebra is plainly commutative and unital, with identity \((1,0)\).
+
+We first identify the maximal ideal space.  If \(\varphi:A\to\C\) is a
+character and \(x\in E\), then \((0,x)^2=0\), hence
+\[
+  \varphi(0,x)^2=\varphi((0,x)^2)=0.
+\]
+Thus \(\varphi(0,x)=0\) for every \(x\in E\), and since \(\varphi(1,0)=1\),
+\[
+  \varphi(\lambda,x)=\lambda .
+\]
+So \(A\) has exactly one character.  Its maximal ideal space is therefore a
+singleton, hence zero-dimensional.
+
+It remains to prove that multiplication is not open.  Let \(e_1=(1,0)\) and
+\(e_2=(0,1)\) in \(E\), and put
+\[
+  a=(0,e_1)\in A .
+\]
+We show that multiplication is not open at \((a,a)\).  Fix
+\(0<\varepsilon<1\).  We claim that no ball around \(0=a^2\) is contained in
+\[
+  B_A(a,\varepsilon)\cdot B_A(a,\varepsilon).
+\]
+Indeed, let \(\delta>0\) and choose \(0<t<\delta\).  Consider
+\[
+  z=(0,t e_2)\in A.
+\]
+Then \(\norm z=t<\delta\).  Suppose, towards a contradiction, that
+\[
+  z=(\alpha,x)(\beta,y)
+\]
+with \((\alpha,x),(\beta,y)\in B_A(a,\varepsilon)\).  Comparing scalar
+coordinates gives
+\[
+  \alpha\beta=0.
+\]
+Hence \(\alpha=0\) or \(\beta=0\).  If \(\alpha=0\), then the ideal coordinate
+of the product is \(\beta x=t e_2\).  Since \(t\ne0\), we have
+\(\beta\ne0\), and therefore \(x\in\C e_2\).  But every vector in
+\(\C e_2\) has distance at least \(1\) from \(e_1\) in the supremum norm:
+\[
+  \norm{x-e_1}_\infty\ge1.
+\]
+This contradicts
+\[
+  \norm{(\alpha,x)-a}=|\alpha|+\norm{x-e_1}_\infty<\varepsilon<1.
+\]
+The case \(\beta=0\) is identical, using \(y\) instead of \(x\).
+
+Thus every ball around \(0\) contains points not belonging to
+\(B_A(a,\varepsilon)\cdot B_A(a,\varepsilon)\).  Multiplication is not open at
+\((a,a)\), and hence is not an open map.
+\end{proof}
+
+\section*{Verification Notes}
+
+No computational verification is involved.  The key algebraic checks are:
+\begin{itemize}
+\item \(0\oplus E\) is a square-zero ideal, so all characters kill it;
+\item \(\Max(A)\) is the singleton scalar character;
+\item the failure of openness is witnessed by the missing transverse points
+\((0,t e_2)\) in every neighborhood of \(0\).
+\end{itemize}
+
+\section*{Novelty And Search Bounds}
+
+Before promotion, the run's registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:1704.08608, the title, ``zero-dimensional maximal
+ideal space'', ``square-zero'', ``unitization'', and ``open multiplication''.
+No existing packet for this target was found.
+
+External web searches on 2026-06-15 used exact and near-exact phrases
+including ``zero-dimensional maximal ideal space open multiplication Banach
+algebra'', ``square-zero open multiplication Banach algebra'', ``unitization
+zero-dimensional maximal ideal space multiplication open'', and the exact
+printed question from Open Problem 3.  These searches did not find a later
+explicit answer.  Novelty confidence is medium because the example is
+elementary and may be known folklore.
+
+\section*{Human Review Recommendation}
+
+Review as a candidate counterexample to the first clause of Open Problem 3 as
+printed.  The main semantic issue is whether the authors intended an unstated
+semisimplicity assumption.  The dense-idempotent follow-up remains open in
+this packet.
+
+\begin{thebibliography}{9}
+\bibitem{DK}
+S. Draga and T. Kania,
+\emph{When is multiplication in a Banach algebra open?},
+arXiv:1704.08608, 2017.
+\end{thebibliography}
+
+\end{document}

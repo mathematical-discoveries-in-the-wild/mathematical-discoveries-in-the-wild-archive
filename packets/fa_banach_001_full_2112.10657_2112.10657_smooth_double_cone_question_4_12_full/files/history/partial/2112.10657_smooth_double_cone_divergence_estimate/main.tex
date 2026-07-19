@@ -1,0 +1,200 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Div}{\operatorname{Div}}
+\newcommand{\sgn}{\operatorname{sgn}}
+
+\title{A smooth double-cone reduction for Question 4.12 of Guerra--Raita--Schrecker}
+\author{Run \texttt{fa\_banach\_001}, lane 2}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+This is a partial result packet. It proves the smooth double-cone version of
+Question 4.12 from Guerra--Raita--Schrecker, but it does not settle the rough
+\(\mathrm{BV}^{\Div}\) formulation discussed in the same section.
+
+\paragraph{Source.}
+The source paper is Andre Guerra, Bogdan Raita, Matthew Schrecker,
+\emph{Compensation phenomena for concentration effects via nonlinear elliptic
+estimates}, arXiv:2112.10657. Question 4.12 appears on page 28 of the source
+PDF:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Transcription of the target question.}
+The question asks whether the inequalities of the two-dimensional section can
+hold when the fields are constrained to the double cone
+\[
+  \Sym_2\cap\{\det\geq 0\}
+  =\Sym_2^+\cup\Sym_2^- .
+\]
+
+\paragraph{Notation.}
+If \(A=(a_{ij})\) is a \(2\times 2\) matrix field, let \(A_i\) be its \(i\)-th
+row and let
+\[
+  d_i(A)=\operatorname{div} A_i=\partial_1 a_{i1}+\partial_2 a_{i2}.
+\]
+All matrix norms below are equivalent; in the proof we use the Frobenius norm.
+
+\section*{Proof Intuition}
+
+For a smooth field in the double cone, moving from the positive branch
+\(\Sym_2^+\) to the negative branch \(\Sym_2^-\) can only happen through the
+zero matrix, because trace zero inside the double cone forces both eigenvalues
+to be zero. Therefore the branch-flip
+\[
+  B=\sgn(\tr A)A
+\]
+creates a positive semidefinite field without adding an interface divergence
+term. Since \(\det(-A)=\det A\) in dimension two, the determinant is unchanged.
+The source paper's positive-cone determinant inequality then applies to \(B\).
+
+\section*{Main Result}
+
+\begin{theorem}[Smooth double-cone determinant estimate]
+Let \(A\in C_c^\infty(\R^2,\Sym_2^+\cup\Sym_2^-)\). Then
+\[
+  \int_{\R^2}\det A\,dx
+  \leq
+  \|d_1(A)\|_{L^1(\R^2)}\,\|d_2(A)\|_{L^1(\R^2)} .
+\]
+\end{theorem}
+
+\begin{proof}
+Put \(\tau=\tr A\), and define
+\[
+  B(x)=
+  \begin{cases}
+  A(x), & \tau(x)\geq 0,\\
+  -A(x), & \tau(x)<0.
+  \end{cases}
+\]
+Equivalently, \(B=\sgn(\tau)A\), with any value assigned to \(\sgn(0)\), since
+\(\tau=0\) in \(\Sym_2^+\cup\Sym_2^-\) implies \(A=0\).
+Thus \(B(x)\in\Sym_2^+\) for all \(x\), and \(\det B=\det A\).
+
+We first record that \(B\) is Lipschitz. Indeed, the map
+\(\Phi(M)=M\) on \(\Sym_2^+\) and \(\Phi(M)=-M\) on \(\Sym_2^-\) is Lipschitz
+on the double cone. If two matrices lie on the same branch this is immediate.
+If \(M,P\in\Sym_2^+\), then
+\[
+  \|M-P\|_F^2
+  =\|M\|_F^2+\|P\|_F^2-2\operatorname{tr}(MP)
+  \leq
+  \|M\|_F^2+\|P\|_F^2+2\operatorname{tr}(MP)
+  =\|M+P\|_F^2,
+\]
+because \(\operatorname{tr}(MP)\geq0\). This gives the cross-branch Lipschitz
+bound.
+
+It remains to identify the divergence. Let
+\(\eta_\varepsilon(t)=t(t^2+\varepsilon^2)^{-1/2}\) and
+\(B^\varepsilon=\eta_\varepsilon(\tau)A\). Then \(B^\varepsilon\to B\) in
+\(L^1\), and
+\[
+  \partial_j B^\varepsilon_{ij}
+  =
+  \eta_\varepsilon(\tau)\,\partial_j A_{ij}
+  +
+  \eta_\varepsilon'(\tau) A_{ij}\,\partial_j\tau .
+\]
+For matrices in the double cone, \(|A_{ij}|\leq |\tau|\). Hence
+\[
+  |\eta_\varepsilon'(\tau) A_{ij}\partial_j\tau|
+  \leq C|\partial_j\tau|,
+\]
+and the left-hand side tends pointwise to \(0\) wherever \(\tau\neq0\), while it
+is zero where \(\tau=0\) after the factor \(|A_{ij}|\leq|\tau|\). Dominated
+convergence gives
+\[
+  \partial_j B_{ij}=\sgn(\tau)\partial_j A_{ij}
+\]
+in distributions, and therefore
+\[
+  d_i(B)=\sgn(\tau)d_i(A),\qquad
+  \|d_i(B)\|_1\leq \|d_i(A)\|_1 .
+\]
+
+The field \(B\) is compactly supported, Lipschitz, and positive semidefinite.
+Since \(\Sym_2^+\subset\{a_{11},a_{22}\geq0\}\), Theorem 4.1 of the source
+paper, with the rough-field extension in Remark 4.3, yields
+\[
+  \int_{\R^2}\det B\,dx
+  \leq
+  \|d_1(B)\|_1\,\|d_2(B)\|_1 .
+\]
+Using \(\det B=\det A\) and the divergence bound proves the claim.
+\end{proof}
+
+\begin{corollary}[Smooth \(L^2\) consequence]
+Let \(\mathcal C\subset\Sym_2^+\cup\Sym_2^-\) be a closed cone such that
+\[
+  |M|^2\leq K\det M\qquad (M\in\mathcal C)
+\]
+for some \(K<\infty\). Then every
+\(A\in C_c^\infty(\R^2,\mathcal C)\) satisfies
+\[
+  \|A\|_{L^2(\R^2)}
+  \leq C_K \|\Div A\|_{L^1(\R^2)} .
+\]
+\end{corollary}
+
+\begin{proof}
+The cone assumption and the theorem give
+\[
+  \|A\|_2^2
+  \leq K\int_{\R^2}\det A
+  \leq K\|d_1(A)\|_1\|d_2(A)\|_1
+  \leq C_K\|\Div A\|_1^2 .
+\]
+\end{proof}
+
+\section*{Limitations and Review Notes}
+
+The result should be read as a smooth answer. It does not resolve the rough
+\(\mathrm{BV}^{\Div}\) problem discussed near Question 4.12. For a rough field
+with a jump directly from a positive semidefinite value to a negative
+semidefinite value, the transformation \(A\mapsto \sgn(\tr A)A\) creates an
+additional jump term in the divergence. This is precisely the mechanism behind
+the density obstruction in the source paper.
+
+The main point for human review is the distributional identity
+\[
+  \Div(\sgn(\tr A)A)=\sgn(\tr A)\Div A
+\]
+for smooth double-cone-valued \(A\). The approximation by
+\(\eta_\varepsilon(\tr A)\) is included above to make the vanishing of the
+sign-derivative term explicit.
+
+\section*{Novelty Check}
+
+Bounded checks on 2026-07-03 searched the run indexes, the local parsed arXiv
+corpus, and public web search for exact phrases including
+\emph{Question 4.12}, \emph{double cone}, \(\Sym_2^+\cup\Sym_2^-\),
+\emph{constrained Ornstein}, and the source arXiv id. No separate later answer
+was found; exact hits led back to the source paper.
+
+\begin{thebibliography}{9}
+\bibitem{GRS}
+A. Guerra, B. Raita, and M. Schrecker,
+\emph{Compensation phenomena for concentration effects via nonlinear elliptic
+estimates}, Ars Inveniendi Analytica (2024), Paper No. 1; arXiv:2112.10657.
+\end{thebibliography}
+
+\end{document}

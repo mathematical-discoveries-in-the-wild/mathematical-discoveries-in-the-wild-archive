@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\omegaone}{\omega_1}
+\newcommand{\clspan}{\overline{\operatorname{span}}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A countable-block overcomplete set for an ordinal interval space}
+\author{Agent lane 16}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate partial result, likely valid.  This packet proves the first
+countable-block case left open by the earlier lane-16 packet: in ZFC,
+\(C([0,\omega_1\cdot\omega])\) admits an overcomplete set.  It does not claim
+the full \(\xi<\omega_2\) solution to Koszmider's Question 48.
+
+\section{Source question}
+
+The source paper is:
+
+\begin{quote}
+P. Koszmider, \emph{On the existence of overcomplete sets in some classical
+nonseparable Banach spaces}, arXiv:2006.00806.
+\end{quote}
+
+On page 25, Question 48 asks:
+
+\begin{quote}
+Can one prove in ZFC that the Banach spaces \(C([0,\xi])\) for all ordinals
+\(\xi<\omega_2\) admit overcomplete sets?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions and source tools}
+
+\begin{definition}
+Let \(X\) be a Banach space. A set \(D\subseteq X\) is \emph{overcomplete} if
+\(|D|=\operatorname{dens}(X)\) and every subset \(A\subseteq D\) with
+\(|A|=|D|\) has dense linear span in \(X\).
+\end{definition}
+
+We use two standard facts used explicitly in Koszmider's paper.  First,
+because \([0,\omega_1]\) is scattered, every functional on
+\(C([0,\omega_1])\) is an atomic measure with countable support.  Second,
+there are almost coherent injections \(e_\alpha:\alpha\to\N\)
+\((\alpha<\omega_1)\) such that
+\[
+   e_\beta\!\upharpoonright\alpha =^* e_\alpha
+   \qquad(\alpha<\beta<\omega_1),
+\]
+and they may be chosen with \(\N\setminus e_\alpha[\alpha]\) infinite.
+As in the source proof, this implies the following exact stabilization:
+if \(A\subseteq\omega_1\) is uncountable and \(\gamma<\omega_1\), then there
+are an uncountable \(A'\subseteq A\setminus(\gamma+1)\) and an injection
+\(g:\gamma+1\to\N\) such that
+\[
+   e_\alpha\!\upharpoonright(\gamma+1)=g
+   \qquad(\alpha\in A').
+\]
+
+\section{Proof Intuition}
+
+The previous partial packet stopped before \(\omega_1\cdot\omega\) because the
+finite-codimensional countable-support criterion does not survive countably
+many \(\omega_1\)-blocks.  The obstacle is cancellation: a functional on a
+countable \(c_0\)-sum is a summable sequence of block functionals, and the
+block evaluations can cancel each other.
+
+The construction below prevents that cancellation by assigning each block its
+own sparse set of Taylor exponents.  On an uncountable subfamily, the coherent
+injections make the value of each fixed block functional an analytic power
+series in one real parameter \(r_\alpha\).  Since different blocks use
+disjoint exponent sets, an analytic identity forces the coefficients of every
+block separately to vanish.  A small endpoint-detector series with unbounded
+coefficients then kills the endpoint mass in each copy of \(C([0,\omega_1])\),
+just as in the strengthened \(C([0,\omega_1])\) construction from the earlier
+run work.
+
+\section{The countable-block theorem}
+
+\begin{theorem}\label{thm:model}
+Let
+\[
+   Y=C([0,\omega_1]).
+\]
+Then the Banach space
+\[
+   X=\R\oplus \Bigl(\bigoplus_{n<\omega}Y\Bigr)_{c_0}
+\]
+admits a set \(\{x_\alpha:\alpha<\omega_1\}\) such that every nonzero
+functional on \(X\) vanishes on at most countably many \(x_\alpha\)'s.  In
+particular, \(X\) admits an overcomplete set.
+\end{theorem}
+
+\begin{proof}
+Write \(K=[0,\omega_1]\), \(u_\alpha=\one_{[0,\alpha]}\in C(K)\)
+\((\alpha<\omega_1)\), and \(\one=\one_K\).  In this proof
+\(\N=\{0,1,2,\ldots\}\).
+
+Choose pairwise disjoint infinite sets
+\[
+   P_\infty,P_0,P_1,\ldots\subseteq\N
+\]
+and enumerations \(p_j:\N\to P_j\), \(j\in\{\infty,0,1,\ldots\}\), such that
+\[
+   p_j(k)\geq 2k+1\qquad(k<\omega).
+\]
+Put
+\[
+   q_j(t)=\sum_{k=0}^{\infty}2^k t^{p_j(k)}
+   \qquad (|t|<1/\sqrt2).
+\]
+Fix \(0<b<1/2\), and choose pairwise distinct \(r_\alpha\in(b/2,b)\) for
+\(\alpha<\omega_1\).  Also fix positive scalars \(a_n\downarrow0\), for
+instance \(a_n=2^{-n-1}\).
+
+For \(j<\omega\) and \(\alpha<\omega_1\), define \(v_\alpha^{(j)}\in Y\) by
+\[
+ v_\alpha^{(j)}
+   = r_\alpha^{p_j(0)}u_\alpha
+     +\sum_{\beta<\alpha}
+        r_\alpha^{p_j(e_\alpha(\beta)+1)}(u_\beta-u_\alpha)
+     +q_j(r_\alpha)\one .
+\]
+The series converges absolutely in \(Y\), because \(e_\alpha\) is injective and
+\(\sum_k b^{p_j(k)}\leq\sum_k b^{2k+1}<\infty\).  The vectors
+\(v_\alpha^{(j)}\) are uniformly bounded in \(j\) and \(\alpha\).  Hence
+\[
+   x_\alpha
+      =\bigl(q_\infty(r_\alpha), (a_n v_\alpha^{(n)})_{n<\omega}\bigr)
+      \in X
+\]
+is well-defined.  Since \(q_\infty\) has positive coefficients, it is strictly
+increasing on \((0,b)\), so the \(x_\alpha\)'s are pairwise distinct.
+
+We prove the functional separation property.  Let
+\[
+   \Phi=(c,(\mu_n)_{n<\omega})\in
+      \R\oplus\Bigl(\bigoplus_{n<\omega}Y^*\Bigr)_{\ell_1}=X^*
+\]
+and suppose that \(\Phi(x_\alpha)=0\) for all \(\alpha\) in some uncountable
+set \(A\subseteq\omega_1\).  For each \(n\), the measure \(\mu_n\) has
+countable support in \(K\); since there are only countably many \(n\)'s, the
+union of the supports below \(\omega_1\) is bounded.  Choose
+\(\gamma<\omega_1\) such that
+\[
+   \bigcup_{n<\omega}\bigl(\supp(\mu_n)\setminus\{\omega_1\}\bigr)
+       \subseteq [0,\gamma].
+\]
+By exact stabilization, pass to an uncountable
+\(A'\subseteq A\setminus(\gamma+1)\) and an injection \(g:\gamma+1\to\N\) such
+that \(e_\alpha\!\upharpoonright(\gamma+1)=g\) for every \(\alpha\in A'\).
+
+For \(n<\omega\), put
+\[
+   b_{n,\beta}=\mu_n(u_\beta)\quad(\beta\leq\gamma),\qquad
+   d_n=\mu_n(\one),
+\]
+and let \(s_n\) be the eventual value of \(\mu_n(u_\xi)\) for
+\(\xi>\gamma\).  For \(\alpha\in A'\), with \(t=r_\alpha\), the definition of
+\(v_\alpha^{(n)}\) gives
+\[
+ \mu_n(v_\alpha^{(n)})
+   =s_n t^{p_n(0)}
+    +\sum_{\beta\leq\gamma}(b_{n,\beta}-s_n)
+       t^{p_n(g(\beta)+1)}
+    +d_n q_n(t).
+\]
+Consequently the analytic function
+\[
+   F(t)=c\,q_\infty(t)+
+        \sum_{n=0}^{\infty} a_n\left[
+        s_n t^{p_n(0)}
+        +\sum_{\beta\leq\gamma}(b_{n,\beta}-s_n)
+           t^{p_n(g(\beta)+1)}
+        +d_n q_n(t)\right]
+\]
+vanishes at every \(r_\alpha\) with \(\alpha\in A'\).  The series defining
+\(F\) converges normally on compact subdiscs of \(|t|<1/\sqrt2\), because
+\((\|\mu_n\|)_n\in\ell_1\), the \(a_n\)'s are bounded, and the displayed
+series for each block is bounded by a constant depending only on \(b\) times
+\(\|\mu_n\|\).  The set \(\{r_\alpha:\alpha\in A'\}\) has an accumulation
+point in \((b/2,b)\), so the identity theorem gives \(F\equiv0\).
+
+Compare Taylor coefficients.  The sets \(P_\infty,P_0,P_1,\ldots\) are
+pairwise disjoint.  The coefficients on \(P_\infty\) are \(c\,2^k\); hence
+\(c=0\).  Fix \(n<\omega\).  Since \(a_n>0\), the coefficients on \(P_n\)
+vanish.  The range of \(g\) has infinite complement, so there are infinitely
+many \(k\)'s outside
+\[
+   \{0\}\cup\{g(\beta)+1:\beta\leq\gamma\}.
+\]
+For such \(k\), the coefficient of \(t^{p_n(k)}\) is \(a_n d_n2^k\), so
+\(d_n=0\).  The coefficient of \(t^{p_n(0)}\) then gives \(s_n=0\).  Finally,
+for each \(\beta\leq\gamma\), the coefficient of
+\(t^{p_n(g(\beta)+1)}\) gives \(b_{n,\beta}=0\).
+
+Thus \(\mu_n(\one)=0\), \(\mu_n(u_\beta)=0\) for all \(\beta\leq\gamma\), and
+\(\mu_n(u_\xi)=s_n=0\) for all \(\xi>\gamma\).  The linear span of
+\(\one\) and the \(u_\xi\)'s is dense in \(C([0,\omega_1])\): it is a unital
+algebra separating points of the compact ordinal interval.  Therefore
+\(\mu_n=0\).  Since this holds for every \(n\), and \(c=0\), we have
+\(\Phi=0\).
+
+We have proved that any functional vanishing on an uncountable subfamily of
+\(\{x_\alpha:\alpha<\omega_1\}\) must be zero.  Since \(\operatorname{dens}X
+=\omega_1\), it follows that every uncountable subfamily has dense linear
+span by Hahn--Banach.  Hence the family is overcomplete in \(X\).
+\end{proof}
+
+\begin{theorem}\label{thm:ordinal}
+In ZFC, \(C([0,\omega_1\cdot\omega])\) admits an overcomplete set.
+\end{theorem}
+
+\begin{proof}
+Let \(K=[0,\omega_1\cdot\omega]\), and put \(t_\infty=\omega_1\cdot\omega\).
+For \(n<\omega\), let
+\[
+   I_0=[0,\omega_1],
+   \qquad
+   I_n=(\omega_1\cdot n,\omega_1\cdot(n+1)]\quad(n\geq1).
+\]
+Then \(K\setminus\{t_\infty\}\) is the topological disjoint union of the
+compact-open pieces \(I_n\), and each \(I_n\) is homeomorphic to
+\([0,\omega_1]\).  The map
+\[
+   Tf=\Bigl(f(t_\infty),
+       \bigl(f|_{I_n}-f(t_\infty)\one_{I_n}\bigr)_{n<\omega}\Bigr)
+\]
+is a linear isomorphism from \(C(K)\) onto
+\[
+   \R\oplus\Bigl(\bigoplus_{n<\omega} C([0,\omega_1])\Bigr)_{c_0}.
+\]
+Indeed, continuity at \(t_\infty\) is exactly the condition that the displayed
+block sequence tends to zero in norm.  Apply Theorem~\ref{thm:model} and
+pull the overcomplete set back through \(T\).
+\end{proof}
+
+\section{Limitations and novelty check}
+
+This improves the earlier lane-16 packet for ordinal intervals below
+\(\omega_1\cdot\omega\) by adding the first missing countable-block endpoint
+\(\xi=\omega_1\cdot\omega\).
+
+The proof is not yet a full answer to Question 48.  It handles a countable
+\(c_0\)-sum of copies of \(C([0,\omega_1])\) by assigning countably many
+blocks disjoint Taylor supports.  The same simple coefficient separation does
+not directly handle ordinal intervals whose natural block structure involves
+\(\omega_1\)-many interacting \(\omega_1\)-blocks, such as the
+\(\omega_1^2\)-level.
+
+Local indexes were searched for arXiv:2006.00806, ordinal-interval
+overcomplete keywords, and the previous packet slug.  A fresh web/literature
+pass checked the exact Question 48 wording, ordinal \(C([0,\alpha])\)
+classification phrases, Bessaga--Pelczynski/Kislyakov/Gul'ko--Os'kin
+classification references, and \(C([0,\omega_1\cdot\omega])\) isomorphism
+phrases.  This found classification literature and related operator theory on
+ordinal \(C(K)\) spaces, but no later paper explicitly resolving Question 48
+or this countable-block subcase.
+
+\section{Human review recommendation}
+
+Review as a likely valid partial result.  The main points to check are:
+\begin{enumerate}
+\item the coefficient-separation argument using pairwise disjoint Taylor
+      exponent sets \(P_n\);
+\item the normal convergence of the analytic function \(F\);
+\item the use of exact stabilization for one countable bound \(\gamma\) that
+      simultaneously covers all block measures;
+\item the identification of \(C([0,\omega_1\cdot\omega])\) with the scalar
+      plus countable \(c_0\)-sum model.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{Koszmider}
+P. Koszmider,
+\emph{On the existence of overcomplete sets in some classical nonseparable
+Banach spaces},
+J. Funct. Anal. \textbf{281} (2021), no. 9, 109172;
+\href{https://arxiv.org/abs/2006.00806}{arXiv:2006.00806}.
+
+\bibitem{RussoSomaglia}
+T. Russo and J. Somaglia,
+\emph{Overcomplete sets in non-separable Banach spaces},
+Proc. Amer. Math. Soc. \textbf{149} (2021), 701--714;
+\href{https://arxiv.org/abs/1912.08690}{arXiv:1912.08690}.
+
+\end{thebibliography}
+
+\end{document}

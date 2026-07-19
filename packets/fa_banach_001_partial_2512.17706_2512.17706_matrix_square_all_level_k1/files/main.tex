@@ -1,0 +1,187 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\M}{M}
+\newcommand{\sa}{\mathrm{sa}}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cC}{\mathcal C}
+
+\title{The Matrix-Square Case of the All-Level Line-Plus-Simplex Conjecture}
+\author{Run \texttt{fa\_banach\_001}, lane 15}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source is Bluhm--Evert--Klep--Magron--Nechita,
+\emph{Inclusion constants for free spectrahedra with applications to quantum
+incompatibility}, arXiv:2512.17706 \cite{BEKMN}.  The paper proves a level-two
+formula for the direct sum of a real line and a real \(k\)-simplex and then
+conjectures the same value without a level restriction:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/conjecture_5_2_crop.png}
+\end{center}
+
+\noindent
+This packet proves the \(k=1\) case of that all-level conjecture.  Under the
+source definitions, \(k=1\) is the matrix square and its dual matrix diamond.
+
+\section*{Result}
+
+Let
+\[
+  \cC_2(n)=\{(X_1,X_2)\in \M_n(\C)_{\sa}^2:\ -I\le X_i\le I,\ i=1,2\}
+\]
+be the two-variable matrix cube, and let
+\[
+  \cD_2(n)=
+  \{(Y_1,Y_2)\in \M_n(\C)_{\sa}^2:
+       \epsilon_1Y_1+\epsilon_2Y_2\preceq I
+       \text{ for every } \epsilon\in\{\pm1\}^2\}
+\]
+be the matrix diamond.  These are exactly \(\cD_{A(1)}\) and
+\(\cD_{A(1)}^\square\) in Conjecture 5.2 of \cite{BEKMN}.
+
+\begin{theorem}\label{thm:k-one}
+One has
+\[
+  \sup_{X\in\cC_2,\ Y\in\cD_2}
+  \lambda_{\max}\left(X_1\otimes Y_1+X_2\otimes Y_2\right)
+  =\sqrt2.
+\]
+Consequently Conjecture 5.2 of \cite{BEKMN} holds for \(k=1\), since
+\[
+  \gamma(1)=\frac{2}{\sqrt2}=\sqrt2.
+\]
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The \(k=1\) dual constraints have a particularly simple form.  The diamond
+condition is equivalent to saying that \(A=Y_1+Y_2\) and \(B=Y_1-Y_2\) are
+self-adjoint contractions.  On the cube side, the combinations
+\[
+  P=\frac{X_1+X_2}{2},\qquad Q=\frac{X_1-X_2}{2}
+\]
+satisfy \(P^2+Q^2\le I\).  Thus the objective is a product of one row
+contraction and one column with norm at most \(\sqrt2\).  Equality is the
+standard CHSH/Pauli configuration.
+
+\section*{Proof}
+
+\begin{proof}
+Let \(X=(X_1,X_2)\in\cC_2(n)\) and \(Y=(Y_1,Y_2)\in\cD_2(m)\).  Put
+\[
+  A=Y_1+Y_2,\qquad B=Y_1-Y_2.
+\]
+The four sign inequalities defining \(\cD_2\) are exactly
+\[
+  -I\le A\le I,\qquad -I\le B\le I,
+\]
+so \(A\) and \(B\) are self-adjoint contractions.
+
+Next put
+\[
+  P=\frac{X_1+X_2}{2},\qquad Q=\frac{X_1-X_2}{2}.
+\]
+Since \(X_1\) and \(X_2\) are self-adjoint contractions,
+\[
+  P^2+Q^2
+  =\frac{X_1^2+X_2^2}{2}
+  \preceq I.
+\]
+Moreover
+\[
+  X_1\otimes Y_1+X_2\otimes Y_2
+  =P\otimes A+Q\otimes B.
+\]
+Writing this as a row-column product,
+\[
+  P\otimes A+Q\otimes B
+  =
+  \begin{bmatrix}P\otimes I_m & Q\otimes I_m\end{bmatrix}
+  \begin{bmatrix}I_n\otimes A\\ I_n\otimes B\end{bmatrix},
+\]
+we obtain
+\[
+\begin{aligned}
+  \|P\otimes A+Q\otimes B\|
+  &\le
+  \left\|
+  \begin{bmatrix}P\otimes I_m & Q\otimes I_m\end{bmatrix}
+  \right\|
+  \left\|
+  \begin{bmatrix}I_n\otimes A\\ I_n\otimes B\end{bmatrix}
+  \right\|  \\
+  &=\|P^2+Q^2\|^{1/2}\,\|A^2+B^2\|^{1/2}
+  \le \sqrt2,
+\end{aligned}
+\]
+because \(A^2\preceq I\) and \(B^2\preceq I\).  Hence the objective value is at
+most \(\sqrt2\) at all levels.
+
+For equality, take the Pauli matrices
+\[
+  Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
+  \qquad
+  X=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+Set
+\[
+  X_1=Z,\qquad X_2=X,\qquad
+  Y_1=\frac{Z+X}{2},\qquad
+  Y_2=\frac{Z-X}{2}.
+\]
+Then \(X\in\cC_2(2)\).  Also \(Y_1+Y_2=Z\) and \(Y_1-Y_2=X\), so
+\(Y\in\cD_2(2)\).  The corresponding objective is
+\[
+  \frac12\left(Z\otimes Z+Z\otimes X+X\otimes Z-X\otimes X\right),
+\]
+the CHSH operator divided by \(2\), whose spectrum contains \(\pm\sqrt2\).
+Thus the supremum is at least \(\sqrt2\), completing the proof.
+\end{proof}
+
+\section*{Consequences and Scope}
+
+By the source's Theorem 6.1 / Theorem 7.2 dictionary between these inclusion
+constants and measurement incompatibility, this also recovers the all-dimension
+complex value
+\[
+  s_{\C}(d,2,(2,2))=\frac{1}{\sqrt2}
+\]
+for two dichotomic measurements.  The packet does not address \(k\ge2\) in
+Conjecture 5.2 / Conjecture 7.3, nor the separate four-dichotomic-qubit
+conjecture \(s_{\C}(2,4)=2/\sqrt{13}\).
+
+\section*{Novelty Check}
+
+The search on July 18, 2026 found no exact run duplicate for arXiv:2512.17706.
+This is a small subcase and is close to known matrix cube/matrix diamond
+dilation facts and the standard two-observable Tsirelson bound.  Web searches
+for the source arXiv id, the label \texttt{kSimplexPlusLineOptimum}, matrix
+square inclusion constants with \(\sqrt2\), matrix cube/matrix diamond
+phrases, and two-dichotomic compatibility-degree phrases found adjacent known
+literature but no explicit later resolution of the source conjecture.  The
+claim here is therefore scoped only as a modest partial result.
+
+\begin{thebibliography}{9}
+
+\bibitem{BEKMN}
+A. Bluhm, E. Evert, I. Klep, V. Magron, and I. Nechita,
+\emph{Inclusion constants for free spectrahedra with applications to quantum
+incompatibility},
+arXiv:2512.17706.
+
+\end{thebibliography}
+
+\end{document}

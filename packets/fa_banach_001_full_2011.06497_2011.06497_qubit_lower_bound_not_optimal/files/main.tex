@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\DeclareMathOperator{\spanop}{span}
+
+\title{A Full Negative Answer to the Four-Qubit Equality Question}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_13}}
+\date{June 15, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+The source is Andreas Bluhm, Anna Jencova, and Ion Nechita,
+\emph{Incompatibility in general probabilistic theories, generalized spectrahedra, and tensor norms},
+arXiv:2011.06497.  In Section 12.2, the paper discusses the compatibility degree
+\(\gamma(g;\mathrm{QM}_2)\) for \(g\) dichotomic qubit measurements.  It proves
+\[
+  \frac{1}{\sqrt 3}\geq \gamma(g;\mathrm{QM}_2)\geq \frac12
+  \qquad (g\geq 4),
+\]
+and records that
+\[
+\lim_{g\to\infty}\gamma(g;\mathrm{QM}_2)=\inf_{g\geq 1}\gamma(g;\mathrm{QM}_2)
+=\frac{1}{\pi_1(\ell_2^3)}=\frac12.
+\]
+The paper then asks:
+
+\begin{quote}
+\textbf{Question 12.1.} Is the lower bound in Equation (47) optimal, that is,
+\[
+\forall g\geq 4\quad \gamma(g;\mathrm{QM}_2)=\frac12
+\Longleftrightarrow \gamma(4;\mathrm{QM}_2)=\frac12 \ ?
+\]
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/question_12_1_crop.png}
+\end{center}
+
+\section*{Claimed Full Answer}
+
+The lower bound is not attained at \(g=4\):
+\[
+\frac12<\gamma(4;\mathrm{QM}_2)\leq \frac{2}{\sqrt{13}}<\frac1{\sqrt3}.
+\]
+Therefore the finite pointwise equality scenario in Question 12.1 is false.  This packet gives
+a full negative answer to the stated equality question.  It does not prove the exact value of
+\(\gamma(4;\mathrm{QM}_2)\); the explicit upper bound \(2/\sqrt{13}\) is included because it
+appears to be the sharp value in numerical searches.
+
+\section*{Definitions and Reduction Used}
+
+The source paper proves that qubits form the centrally symmetric GPT associated with the
+Bloch ball, i.e. with the Banach space \(\ell_2^3\).  Its Theorem 10.3 gives, for centrally
+symmetric GPTs,
+\[
+\Gamma(g;V,V^+)=
+\left\{s\in[0,1]^g:
+\|s\cdot z\|_{\ell_1^g\otimes_\pi \bar V}\leq 1
+\text{ for all } \|z\|_{\ell_1^g\otimes_\varepsilon \bar V}\leq 1
+\right\}.
+\]
+For \(X=\ell_2^3\), \(z=\sum_{i=1}^4 e_i\otimes z_i\in\ell_1^4\otimes X\), one has
+\[
+\|z\|_{\ell_1^4\otimes_\pi X}=\sum_{i=1}^4 \|z_i\|_2
+\]
+and
+\[
+\|z\|_{\ell_1^4\otimes_\varepsilon X}
+=\max_{\varepsilon_i=\pm1}\left\|\sum_{i=1}^4\varepsilon_i z_i\right\|_2.
+\]
+Consequently
+\[
+\gamma(4;\mathrm{QM}_2)=
+\inf_{(z_i)\ne 0}
+\frac{\max_{\varepsilon_i=\pm1}\|\sum_{i=1}^4\varepsilon_i z_i\|_2}
+{\sum_{i=1}^4\|z_i\|_2},
+\]
+where \(z_1,\dots,z_4\in\mathbb R^3\).
+
+\section*{Proof Intuition}
+
+The source lower bound \(1/2\) comes from a dimension-free \(1\)-summing estimate.  Equality
+at four vectors would be extremely rigid.  After normalizing the sum of the four lengths to
+one, the average squared length of a random signed sum is \(\sum_i\|z_i\|^2\), which is at least
+\(1/4\) by Cauchy's inequality.  If the maximum signed sum had norm only \(1/2\), every
+inequality in this averaging argument would have to be equality.  That forces all four lengths
+to be equal and all signed sums to have the same squared norm.  The signed-square expansion
+then says that every pairwise inner product is zero, which would give four nonzero orthogonal
+vectors in \(\mathbb R^3\).
+
+\section*{Theorem and Proof}
+
+\begin{theorem}
+\[
+\frac12<\gamma(4;\mathrm{QM}_2)\leq \frac{2}{\sqrt{13}}<\frac1{\sqrt3}.
+\]
+In particular, the equality \(\gamma(4;\mathrm{QM}_2)=1/2\) asked about in Question 12.1 is
+false.
+\end{theorem}
+
+\begin{proof}
+Using the reduction above, define
+\[
+R(z_1,z_2,z_3,z_4)=
+\frac{\max_{\varepsilon_i=\pm1}\|\sum_{i=1}^4\varepsilon_i z_i\|_2}
+{\sum_{i=1}^4\|z_i\|_2}
+\]
+for nonzero four-tuples in \((\mathbb R^3)^4\).  The source paper already gives
+\(\gamma(4;\mathrm{QM}_2)\geq 1/2\).  Suppose, for contradiction, that equality holds.
+
+Normalize \(\sum_i\|z_i\|_2=1\).  Since the normalized set of four-tuples is compact and
+the function
+\[
+(z_i)_{i=1}^4\mapsto
+\max_{\varepsilon_i=\pm1}\left\|\sum_{i=1}^4\varepsilon_i z_i\right\|_2
+\]
+is continuous, equality at the infimum is attained by some tuple
+\((z_1,z_2,z_3,z_4)\).  Thus
+\[
+\max_{\varepsilon_i=\pm1}\left\|\sum_{i=1}^4\varepsilon_i z_i\right\|_2=\frac12.
+\]
+Let \(r_i=\|z_i\|_2\).  For independent Rademacher signs \(\varepsilon_i\),
+\[
+\mathbb E\left\|\sum_{i=1}^4\varepsilon_i z_i\right\|_2^2
+=\sum_{i=1}^4\|z_i\|_2^2
+=\sum_{i=1}^4 r_i^2.
+\]
+Because every signed sum has norm at most \(1/2\), this gives
+\[
+\sum_{i=1}^4 r_i^2\leq \frac14.
+\]
+On the other hand, \(\sum_i r_i=1\), so Cauchy's inequality gives
+\[
+\sum_{i=1}^4 r_i^2\geq \frac{1}{4}\left(\sum_{i=1}^4 r_i\right)^2=\frac14.
+\]
+Hence equality holds throughout.  In particular
+\[
+r_1=r_2=r_3=r_4=\frac14,
+\]
+so all four vectors are nonzero, and since the average of the squared signed norms is \(1/4\)
+while each squared signed norm is at most \(1/4\), every signed sum satisfies
+\[
+\left\|\sum_{i=1}^4\varepsilon_i z_i\right\|_2^2=\frac14.
+\]
+Expanding the square gives, for every sign vector \(\varepsilon\in\{\pm1\}^4\),
+\[
+\frac14
+=\sum_{i=1}^4\|z_i\|_2^2
++2\sum_{1\leq i<j\leq 4}\varepsilon_i\varepsilon_j\langle z_i,z_j\rangle.
+\]
+Since \(\sum_i\|z_i\|_2^2=1/4\), this reduces to
+\[
+\sum_{1\leq i<j\leq 4}\varepsilon_i\varepsilon_j\langle z_i,z_j\rangle=0
+\qquad(\varepsilon\in\{\pm1\}^4).
+\]
+The functions \(\varepsilon\mapsto \varepsilon_i\varepsilon_j\) are linearly independent
+characters on the sign cube.  Therefore every coefficient must vanish:
+\[
+\langle z_i,z_j\rangle=0\qquad (i\ne j).
+\]
+This is impossible, because \(\mathbb R^3\) cannot contain four nonzero pairwise orthogonal
+vectors.  The contradiction proves that \(\gamma(4;\mathrm{QM}_2)>1/2\).
+
+It remains to prove the advertised explicit upper bound.  Let
+\[
+a=\frac{3}{2\sqrt{13}},\qquad b=\frac{2}{\sqrt{13}},
+\]
+and take
+\[
+\begin{aligned}
+p_1&=a(1,0,0),\\
+p_2&=a(-1/2,\sqrt3/2,0),\\
+p_3&=a(-1/2,-\sqrt3/2,0),\\
+p_4&=b(0,0,1).
+\end{aligned}
+\]
+Then \(p_1+p_2+p_3=0\), the first three vectors have common length \(a\), and \(p_4\) is
+orthogonal to their plane.  For any signs on \(p_1,p_2,p_3\), their signed sum is either
+zero, if all three signs are equal, or has length \(2a=3/\sqrt{13}\), if the signs are not
+all equal.  Hence every signed sum of \(p_1,p_2,p_3,p_4\) has norm at most
+\[
+\max\left\{b,\sqrt{(2a)^2+b^2}\right\}
+=\max\left\{\frac2{\sqrt{13}},\sqrt{\frac9{13}+\frac4{13}}\right\}=1.
+\]
+The total generator length is
+\[
+\sum_{i=1}^4\|p_i\|_2=3a+b
+=\frac{9}{2\sqrt{13}}+\frac{2}{\sqrt{13}}
+=\frac{\sqrt{13}}{2}.
+\]
+Using the sign-sum formula for \(\gamma(4;\mathrm{QM}_2)\), this four-tuple gives
+\[
+\gamma(4;\mathrm{QM}_2)\leq
+\frac{1}{\sqrt{13}/2}=\frac{2}{\sqrt{13}}.
+\]
+Finally \(2/\sqrt{13}<1/\sqrt3\), since \(12<13\).
+\end{proof}
+
+\section*{Consequences, Exact-Value Candidate, and Limitations}
+
+Question 12.1's proposed finite equality scenario fails at \(g=4\).  The explicit construction
+also improves the source paper's reported numerical examples near \(0.56\) to the exact
+closed-form bound \(2/\sqrt{13}\approx 0.5547001962\).
+
+The exact value is still not proved in this packet.  A direct numerical optimization of the
+equivalent zonotope problem repeatedly returns the same value \(2/\sqrt{13}\), with extremal
+configuration equivalent to the three coplanar \(120^\circ\)-spaced generators plus one
+orthogonal generator above.  Thus the natural remaining conjecture is
+\[
+\gamma(4;\mathrm{QM}_2)=\frac{2}{\sqrt{13}},
+\]
+equivalently: every four-generator centrally symmetric zonotope contained in the Euclidean
+unit ball of \(\mathbb R^3\) has total generator length at most \(\sqrt{13}/2\).
+
+The source paper's asymptotic statement remains compatible with this result:
+\(\gamma(g;\mathrm{QM}_2)\) may still decrease to \(1/2\) as \(g\to\infty\).
+
+\section*{Novelty and Duplicate Checks}
+
+Before promotion I searched the cheap run indexes for arXiv \texttt{2011.06497}, the title,
+\texttt{generalized spectrahedra}, \texttt{tensor norms}, \texttt{QM\_2}, \texttt{gamma(4)},
+\texttt{compatibility degree}, and nearby qubit compatibility phrases.  No exact packet or
+attempt hit was present.
+
+I also ran bounded web and literature searches for exact and near-exact phrases including
+\begin{itemize}
+\item \texttt{"gamma(4; QM\_2)" "1/2"},
+\item \texttt{"compatibility degree" "QM\_2" "1/2" "gamma(4"},
+\item \texttt{"four qubit" "compatibility degree" "1/2"},
+\item \texttt{"joint measurability" "four" "qubit" "1/2"},
+\item \texttt{"four generator zonotope" "Euclidean ball"},
+\item \texttt{"vector balancing" "four vectors" "R3" "signs"},
+\item \texttt{"projective injective tensor norm" "ell1-4" "ell2-3"}.
+\end{itemize}
+The search found standard nearby themes--three-observable qubit compatibility criteria,
+vector balancing, and modern zonotope containment--but did not surface a later explicit
+resolution of Question 12.1 or an exact computation of \(\gamma(4;\mathrm{QM}_2)\).
+The result should nevertheless be reviewed against the quantum-measurement and convex-geometry
+literature.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{BJN}
+A. Bluhm, A. Jencova, and I. Nechita,
+\emph{Incompatibility in general probabilistic theories, generalized spectrahedra, and tensor norms},
+arXiv:2011.06497.
+
+\bibitem{YuOh}
+S. Yu and C. H. Oh,
+\emph{Quantum contextuality and joint measurement of three observables of a qubit},
+arXiv:1312.6470.
+
+\bibitem{ZonotopeContainment}
+F. Eisenbrand, T. Rothvoss, L. Russo, and M. Skorupinski,
+\emph{Nearly-Tight Bounds for Zonotope Containment and Beyond},
+arXiv:2605.04183.
+
+\end{thebibliography}
+
+\section*{Human Review Recommendation}
+
+Review should focus on the reduction of \(\gamma(4;\mathrm{QM}_2)\) to the four-vector
+sign-sum formula.  Once that reduction is accepted from the source paper's centrally symmetric
+GPT theorem, the strictness proof and the explicit \(2/\sqrt{13}\) construction are elementary
+finite-dimensional arguments.  The exact-value conjecture is not claimed as proved here.
+
+\end{document}

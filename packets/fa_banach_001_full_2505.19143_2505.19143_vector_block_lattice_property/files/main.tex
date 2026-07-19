@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Hsp}{\mathcal{H}_{p'}^{t',r'}}
+\newcommand{\HY}{\mathcal{H}_{p'}^{t',r'}(Y)}
+\newcommand{\Hs}{\mathcal{H}_{p'}^{t',r'}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+
+\begin{document}
+
+\begin{center}
+{\Large Full positive answer to Problem 4.9 of arXiv:2505.19143}\\[0.5em]
+{\large Vector-valued Bourgain-Morrey block spaces are norm-solid}\\[0.5em]
+Agent: \texttt{agent\_lane\_15}; run: \texttt{fa\_banach\_001}
+\end{center}
+
+\section*{Source and Question}
+
+The source paper is Tengfei Bai, Pengfei Guo, and Jingshi Xu,
+\emph{The preduals of Banach space valued Bourgain-Morrey spaces},
+arXiv:2505.19143 \cite{BGX}.
+
+Problem 4.9 asks whether the vector-valued block space has the lattice
+property under the pointwise norm order. In the notation of the source, let
+\(X\) be a Banach space with a predual \({}^\ast X\), let \({}^\ast X\) be
+reflexive or \(X\) be separable, and let
+\[
+1<p<t<r<\infty \quad\text{or}\quad 1<p\leq t<r=\infty .
+\]
+If \(g\in \Hsp({}^\ast X)\) and \(f\) is a \({}^\ast X\)-valued function with
+\[
+\norm{f(x)}_{{}^\ast X}\leq \norm{g(x)}_{{}^\ast X}
+\quad\text{for a.e. }x,
+\]
+must \(f\) also belong to \(\Hsp({}^\ast X)\)?
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Answer}
+
+Yes. In fact, the vector-valued block norm is exactly the scalar block norm of
+the pointwise Banach norm:
+\[
+\norm{F}_{\Hsp(Y)}=\norm{\,\norm{F(\cdot)}_Y\,}_{\Hsp}
+\]
+for every Banach space \(Y\) and every strongly measurable \(Y\)-valued
+function \(F\) for which either side is finite. Consequently the desired
+lattice property holds for arbitrary Banach-valued block spaces; no coordinate
+lattice or order structure on \(Y\) is needed.
+
+\section*{Proof Intuition}
+
+The source's block definition measures a vector-valued block only through the
+scalar function \(x\mapsto \norm{b(x)}\). Therefore directions in the Banach
+space should not matter. One direction is obtained by taking norms in any
+vector block decomposition. The reverse direction lifts a scalar decomposition
+of \(\norm{F(\cdot)}\) by multiplying each scalar block by the measurable unit
+direction \(F(x)/\norm{F(x)}\). Solidity then follows by cutting the scalar
+positive decomposition of \(\norm{g(\cdot)}\) down to \(\norm{f(\cdot)}\).
+
+\section*{Definitions}
+
+We use the source's dyadic block notation. A scalar \((p',t')\)-block is a
+measurable scalar function \(a\), supported in a dyadic cube \(Q\), such that
+\[
+\norm{a}_{L^{p'}}\leq |Q|^{1/t-1/p}.
+\]
+For a Banach space \(Y\), a \(Y\)-valued \((p',t',Y)\)-block is a strongly
+measurable \(Y\)-valued function \(b\), supported in a dyadic cube \(Q\), such
+that
+\[
+\norm{\,\norm{b(\cdot)}_Y\,}_{L^{p'}}\leq |Q|^{1/t-1/p}.
+\]
+The block space \(\Hsp(Y)\) consists of those \(Y\)-valued functions admitting
+an almost everywhere convergent representation
+\[
+F=\sum_{(j,k)\in \mathbb Z^{n+1}}\lambda_{j,k} b_{j,k},
+\qquad \{\lambda_{j,k}\}\in \ell^{r'},
+\]
+where \(b_{j,k}\) is a \((p',t',Y)\)-block supported on \(Q_{j,k}\). Its norm is
+the infimum of \(\norm{\lambda}_{\ell^{r'}}\) over all such representations.
+The scalar space \(\Hsp\) is the case \(Y=\R\).
+
+\section*{Scalar Solidity}
+
+\begin{lemma}[Scalar solidity]
+Let \(0\leq u\leq v\) almost everywhere and \(v\in\Hsp\). Then
+\[
+u\in\Hsp,\qquad \norm{u}_{\Hsp}\leq \norm{v}_{\Hsp}.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix \(\varepsilon>0\). Choose an admissible scalar block representation
+\[
+v=\sum_i \lambda_i a_i,\qquad
+\norm{(\lambda_i)}_{\ell^{r'}}\leq \norm{v}_{\Hsp}+\varepsilon .
+\]
+Here the index \(i\) abbreviates \((j,k)\). Put
+\[
+A(x)=\sum_i |\lambda_i|\, |a_i(x)|.
+\]
+By the same block-summability argument used in the source for admissible block
+sums, \(A\) is finite almost everywhere and belongs to \(\Hsp\) with norm at
+most \(\norm{(\lambda_i)}_{\ell^{r'}}\). Since \(v\geq0\) and
+\(v=\sum_i\lambda_i a_i\), the triangle inequality gives the pointwise
+majorization \(0\leq u\leq v=|v|\leq A\).
+
+Define
+\[
+c_i(x)=
+\begin{cases}
+\dfrac{u(x)}{A(x)}\, |a_i(x)|, & A(x)>0,\\[0.8em]
+0, & A(x)=0.
+\end{cases}
+\]
+Then \(0\leq c_i\leq |a_i|\), so each \(c_i\) is a scalar block supported on
+the same cube as \(a_i\). Also,
+\[
+u(x)=\sum_i |\lambda_i| c_i(x)
+\]
+for almost every \(x\). Hence \(u\) has an admissible block representation with
+coefficient sequence \((|\lambda_i|)\), and
+\[
+\norm{u}_{\Hsp}\leq \norm{(\lambda_i)}_{\ell^{r'}}
+\leq \norm{v}_{\Hsp}+\varepsilon .
+\]
+Letting \(\varepsilon\downarrow0\) proves the claim.
+\end{proof}
+
+\section*{Norm Reduction}
+
+\begin{lemma}[Pointwise norm reduction]
+Let \(Y\) be a Banach space and let \(F\) be a strongly measurable
+\(Y\)-valued function. Then
+\[
+F\in\Hsp(Y)
+\quad\Longleftrightarrow\quad
+\norm{F(\cdot)}_Y\in\Hsp,
+\]
+and in this case
+\[
+\norm{F}_{\Hsp(Y)}=\norm{\,\norm{F(\cdot)}_Y\,}_{\Hsp}.
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose \(F\in\Hsp(Y)\). Fix \(\varepsilon>0\) and choose
+\[
+F=\sum_i \lambda_i b_i,\qquad
+\norm{(\lambda_i)}_{\ell^{r'}}\leq \norm{F}_{\Hsp(Y)}+\varepsilon,
+\]
+with \(Y\)-valued blocks \(b_i\). Set
+\[
+A(x)=\sum_i |\lambda_i|\,\norm{b_i(x)}_Y .
+\]
+The scalar functions \(\norm{b_i(\cdot)}_Y\) are scalar blocks, so \(A\in\Hsp\)
+with
+\[
+\norm{A}_{\Hsp}\leq \norm{(\lambda_i)}_{\ell^{r'}}.
+\]
+Moreover \(\norm{F(x)}_Y\leq A(x)\) almost everywhere. By scalar solidity,
+\[
+\norm{\,\norm{F(\cdot)}_Y\,}_{\Hsp}
+\leq \norm{(\lambda_i)}_{\ell^{r'}}
+\leq \norm{F}_{\Hsp(Y)}+\varepsilon .
+\]
+Letting \(\varepsilon\downarrow0\) gives
+\[
+\norm{\,\norm{F(\cdot)}_Y\,}_{\Hsp}\leq \norm{F}_{\Hsp(Y)}.
+\]
+
+Conversely assume \(\phi=\norm{F(\cdot)}_Y\in\Hsp\). Define the strongly
+measurable direction
+\[
+u(x)=
+\begin{cases}
+F(x)/\phi(x), & \phi(x)>0,\\
+0, & \phi(x)=0 .
+\end{cases}
+\]
+Then \(\norm{u(x)}_Y\leq1\) and \(F(x)=\phi(x)u(x)\) almost everywhere. Choose
+an admissible scalar representation
+\[
+\phi=\sum_i \mu_i a_i,\qquad
+\norm{(\mu_i)}_{\ell^{r'}}\leq \norm{\phi}_{\Hsp}+\varepsilon.
+\]
+For each \(i\), put \(B_i(x)=a_i(x)u(x)\). Since
+\[
+\norm{B_i(x)}_Y\leq |a_i(x)|,
+\]
+each \(B_i\) is a \(Y\)-valued block supported on the same cube as \(a_i\).
+The scalar convergence of \(\sum_i\mu_i a_i\) to \(\phi\) implies convergence
+of \(\sum_i\mu_i B_i\) to \(\phi u=F\) in \(Y\) almost everywhere. Therefore
+\[
+\norm{F}_{\Hsp(Y)}\leq \norm{(\mu_i)}_{\ell^{r'}}
+\leq \norm{\phi}_{\Hsp}+\varepsilon .
+\]
+Letting \(\varepsilon\downarrow0\) gives the reverse inequality and hence the
+norm identity.
+\end{proof}
+
+\section*{Main Theorem}
+
+\begin{theorem}[Affirmative answer to Problem 4.9]
+Let \(X\) be a Banach space such that \(({}^\ast X)^\ast=X\). Assume
+\({}^\ast X\) is reflexive or \(X\) is separable, and let
+\[
+1<p<t<r<\infty \quad\text{or}\quad 1<p\leq t<r=\infty .
+\]
+If \(g\in \Hsp({}^\ast X)\) and \(f\) is a \({}^\ast X\)-valued measurable
+function satisfying
+\[
+\norm{f(x)}_{{}^\ast X}\leq\norm{g(x)}_{{}^\ast X}
+\quad\text{for almost every }x\in\R^n,
+\]
+then \(f\in \Hsp({}^\ast X)\). More precisely,
+\[
+\norm{f}_{\Hsp({}^\ast X)}
+\leq
+\norm{g}_{\Hsp({}^\ast X)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the pointwise norm reduction lemma to \(g\). It gives
+\[
+\norm{g(\cdot)}_{{}^\ast X}\in\Hsp
+\quad\text{and}\quad
+\norm{\,\norm{g(\cdot)}_{{}^\ast X}\,}_{\Hsp}
+=\norm{g}_{\Hsp({}^\ast X)} .
+\]
+Since
+\[
+0\leq \norm{f(\cdot)}_{{}^\ast X}
+\leq \norm{g(\cdot)}_{{}^\ast X}
+\]
+almost everywhere, scalar solidity gives
+\[
+\norm{f(\cdot)}_{{}^\ast X}\in\Hsp,\qquad
+\norm{\,\norm{f(\cdot)}_{{}^\ast X}\,}_{\Hsp}
+\leq
+\norm{\,\norm{g(\cdot)}_{{}^\ast X}\,}_{\Hsp}.
+\]
+Applying the pointwise norm reduction lemma again, now to \(f\), yields
+\[
+f\in\Hsp({}^\ast X)
+\]
+and the asserted norm inequality.
+\end{proof}
+
+\section*{Verification Notes and Limitations}
+
+The proof uses only the block definition from the source paper and does not
+use an order or coordinate lattice on \({}^\ast X\). Thus it proves the source
+problem in the stated range and in fact applies to arbitrary Banach targets
+\(Y\), whenever the corresponding block space is defined with the same
+pointwise-norm block condition.
+
+No computational verification is needed. The main technical points for human
+review are:
+\begin{itemize}
+\item the scalar cut-down construction in the scalar solidity lemma;
+\item measurability of the direction \(F/\norm{F}\), which follows from strong
+      measurability of \(F\);
+\item preservation of block bounds under \(a_i\mapsto a_i u\).
+\end{itemize}
+
+\section*{Novelty Check}
+
+Before promotion, the run indexes were searched for arXiv:2505.19143, the
+paper title, Bourgain-Morrey block spaces, and lattice-property keywords. No
+prior packet or attempt was found. The local parsed arXiv corpus was searched
+for exact phrases from Problem 4.9, including vector-valued Bourgain-Morrey
+block-space lattice-property phrases; only the source paper surfaced as a
+direct hit. Web searches on 2026-06-28 for exact phrases including
+``Problem 4.9 Bourgain-Morrey lattice property'' and
+``Banach space valued Bourgain-Morrey lattice property'' returned the source
+arXiv record and no separate answer in this bounded pass.
+
+\begin{thebibliography}{9}
+
+\bibitem{BGX}
+T. Bai, P. Guo, and J. Xu,
+\emph{The preduals of Banach space valued Bourgain-Morrey spaces},
+arXiv:2505.19143, 2025.
+
+\end{thebibliography}
+
+\end{document}

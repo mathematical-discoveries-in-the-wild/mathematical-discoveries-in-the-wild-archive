@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathcal T}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\TV}[1]{\|#1\|_{M}}
+
+\title{A Sharp Measure Obstruction for Blei's \(Q_A^{(t)}\) Riesz Products}
+\author{FA Banach run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_17}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate counterexample, likely valid.  It answers the
+measure-existence part of Question 5.14 in Ron Blei's
+\emph{From Parseval to Grothendieck and a little beyond, part I}
+\cite{BleiParseval}.  The result is slightly stronger than a single
+counterexample: for \(2<t\le \infty\), \(Q_A^{(t)}(y)\) represents a finite
+measure exactly for the square-summable vectors \(y\in \ell^2(A)\).
+
+\section*{Source Passage}
+
+Blei's Remark 5.13 explains that, outside the case \(s=t=2\), the third
+Parseval-type expression involving \(Q_A^{(t)}\) is defined by the sums on the
+right, rather than by a bona fide integral.  The following question is then
+posed on PDF page 49.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent
+In the source notation, the question asks: what can be said about
+\(Q_A^{(t)}(y)\) for \(y\in \ell^t_{\R}(A)\) and \(t\in(2,\infty]\)?  In
+particular, does \(Q_A^{(t)}(y)\) represent a measure?
+
+\section*{Definitions}
+
+Let \(A\) be an index set and let
+\[
+  \Omega_A=\{-1,1\}^A
+\]
+with product Haar probability measure \(\mathbb P_A\).  For
+\(\alpha\in A\), write \(r_\alpha(\omega)=\omega(\alpha)\), and for a finite
+set \(F\subset A\), write
+\[
+  r_F=\prod_{\alpha\in F} r_\alpha .
+\]
+These \(r_F\)'s are the Walsh characters of \(\Omega_A\).
+
+For \(2<t\le\infty\) and a non-zero real vector \(y\in \ell^t(A)\), put
+\[
+  R=\|y\|_t,\qquad b_\alpha=\frac{y(\alpha)}{R}.
+\]
+Blei's \(Q_A^{(t)}(y)\), with the paper's default parameter \(\epsilon=1\),
+is the formal Walsh series
+\[
+  Q_A^{(t)}(y)
+  =
+  R\,\operatorname{Im}\prod_{\alpha\in A}(1+i b_\alpha r_\alpha).
+\]
+Equivalently, its Walsh coefficients are
+\[
+  \widehat{Q_A^{(t)}(y)}(r_F)
+  =
+  \begin{cases}
+    (-1)^k R^{1-(2k+1)}\prod_{\alpha\in F} y(\alpha),
+      & |F|=2k+1,\\
+    0, & |F|\text{ even}.
+  \end{cases}
+\]
+We say that \(Q_A^{(t)}(y)\) represents a measure if there is a finite complex
+Borel measure \(\mu\in M(\Omega_A)\) whose Fourier-Stieltjes coefficients
+agree with these numbers on all Walsh characters.
+
+\section*{Theorem}
+
+\begin{theorem}
+Let \(2<t\le\infty\), let \(A\) be any set, and let
+\(y\in \ell^t_{\R}(A)\).  Then \(Q_A^{(t)}(y)\) represents a finite complex
+measure on \(\Omega_A\) if and only if \(y\in \ell^2(A)\).
+
+Consequently, if \(A\) is infinite and contains a countably infinite subset,
+there are vectors \(y\in \ell^t_{\R}(A)\) for which \(Q_A^{(t)}(y)\) does not
+represent a measure.  For instance, on a countable subset take
+\[
+  y_n=n^{-1/2}\qquad(n\ge1),
+\]
+and set \(y=0\) off that subset.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The positive direction is the familiar Riesz-product threshold.  If
+\(y\in\ell^2\), then the finite complex products
+\(\prod(1+i b_\alpha r_\alpha)\) have total variation bounded by
+\(\prod(1+b_\alpha^2)^{1/2}<\infty\), so a weak-* cluster point supplies a
+measure with the prescribed Walsh coefficients.
+
+The obstruction when \(y\notin\ell^2\) is already visible on finite coordinate
+sets.  If a global representing measure existed, integrating the normalized
+odd part of the finite product against it would be bounded by the total
+variation of that measure.  But the same integral is exactly the squared
+\(\ell^2\)-mass of the odd Walsh coefficients, divided by the sup norm of the
+test polynomial.  This lower bound grows like
+\(\prod(1+b_\alpha^2)^{1/2}\), which diverges precisely when
+\(\sum b_\alpha^2=\infty\).
+
+\begin{proof}
+The case \(y=0\) is trivial, so assume \(y\ne0\), and write
+\(R=\|y\|_t\) and \(b_\alpha=y(\alpha)/R\).  Since \(t>2\) or \(t=\infty\),
+we have \(|b_\alpha|\le1\) for all \(\alpha\).
+
+First assume \(y\in\ell^2(A)\).  For a finite set \(B\subset A\), define the
+absolutely continuous complex measure
+\[
+  d\nu_B
+  =
+  \prod_{\alpha\in B}(1+i b_\alpha r_\alpha)\,d\mathbb P_A .
+\]
+Its total variation satisfies
+\[
+  \TV{\nu_B}
+  =
+  \int_{\Omega_A}\prod_{\alpha\in B}|1+i b_\alpha r_\alpha|\,d\mathbb P_A
+  =
+  \prod_{\alpha\in B}(1+b_\alpha^2)^{1/2}
+  \le
+  \exp\left(\frac12\sum_{\alpha\in A} b_\alpha^2\right)<\infty .
+\]
+Thus the net \((\nu_B)\), indexed by finite subsets of \(A\), is bounded in
+\(M(\Omega_A)=C(\Omega_A)^*\).  By weak-* compactness it has a cluster point
+\(\nu\).  For each fixed finite \(F\subset A\), the coefficient
+\(\widehat{\nu_B}(r_F)\) is eventually equal to
+\[
+  i^{|F|}\prod_{\alpha\in F} b_\alpha .
+\]
+Hence
+\[
+  \widehat{\nu}(r_F)=i^{|F|}\prod_{\alpha\in F} b_\alpha .
+\]
+The measure
+\[
+  \mu=R\,\operatorname{Im}\nu
+\]
+therefore has exactly the Walsh coefficients of \(Q_A^{(t)}(y)\).  This proves
+the positive direction.
+
+Conversely, assume that \(Q_A^{(t)}(y)\) is represented by a finite measure
+\(\mu\).  For a finite \(B\subset A\), put
+\[
+  P_B=\operatorname{Im}\prod_{\alpha\in B}(1+i b_\alpha r_\alpha).
+\]
+Write
+\[
+  P_B=\sum_{\substack{F\subset B\\ |F|\ \mathrm{odd}}}
+       p_F r_F,
+  \qquad
+  p_F=(-1)^{(|F|-1)/2}\prod_{\alpha\in F}b_\alpha .
+\]
+If \(P_B\ne0\), then \(f_B=P_B/\|P_B\|_\infty\) is a continuous function with
+\(\|f_B\|_\infty\le1\).  Since the Walsh coefficients of \(\mu\) on odd
+\(F\subset B\) equal \(R p_F\), finite-dimensional Fourier duality gives
+\[
+  \TV{\mu}
+  \ge
+  \left|\int_{\Omega_A} f_B\,d\mu\right|
+  =
+  \frac{R}{\|P_B\|_\infty}
+  \sum_{\substack{F\subset B\\ |F|\ \mathrm{odd}}} p_F^2 .
+\]
+Now
+\[
+  \|P_B\|_\infty
+  \le
+  \prod_{\alpha\in B}(1+b_\alpha^2)^{1/2},
+\]
+and
+\[
+  \sum_{\substack{F\subset B\\ |F|\ \mathrm{odd}}}p_F^2
+  =
+  \frac12\left(
+    \prod_{\alpha\in B}(1+b_\alpha^2)
+    -
+    \prod_{\alpha\in B}(1-b_\alpha^2)
+  \right).
+\]
+Set
+\[
+  A_B=\prod_{\alpha\in B}(1+b_\alpha^2),
+  \qquad
+  C_B=\prod_{\alpha\in B}(1-b_\alpha^2).
+\]
+The preceding estimates imply
+\[
+  \TV{\mu}
+  \ge
+  \frac{R}{2}\frac{A_B-C_B}{A_B^{1/2}}
+  =
+  \frac{R}{2} A_B^{1/2}\left(1-\frac{C_B}{A_B}\right).
+\]
+If \(y\notin\ell^2(A)\), then
+\[
+  \sup_{B\subset A\ \mathrm{finite}}\sum_{\alpha\in B}b_\alpha^2=\infty,
+\]
+and hence
+\[
+  \sup_{B\subset A\ \mathrm{finite}} A_B=\infty.
+\]
+Moreover,
+\[
+  0\le \frac{C_B}{A_B}
+  =
+  \prod_{\alpha\in B}\frac{1-b_\alpha^2}{1+b_\alpha^2}
+  \le
+  \exp\left(-\sum_{\alpha\in B}b_\alpha^2\right),
+\]
+with the convention that the left side is \(0\) if some \(|b_\alpha|=1\).
+Along finite sets \(B\) with \(\sum_{\alpha\in B}b_\alpha^2\to\infty\), the
+right side tends to \(0\), while \(A_B^{1/2}\to\infty\).  The displayed lower
+bound for \(\TV{\mu}\) is therefore unbounded, contradicting the finiteness of
+\(\TV{\mu}\).  Thus every representing measure forces \(y\in\ell^2(A)\).
+
+Finally, if \(A\) contains a countably infinite subset \(\{\alpha_n:n\ge1\}\),
+the vector \(y(\alpha_n)=n^{-1/2}\), \(y=0\) elsewhere, belongs to
+\(\ell^t(A)\) for every \(t>2\) and to \(\ell^\infty(A)\), but not to
+\(\ell^2(A)\).  The characterization above gives the advertised
+counterexamples.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is analytic.  The included script
+\texttt{code/check\_lower\_bounds.py} evaluates the finite lower bound
+\[
+  \frac{R}{2}A_B^{1/2}\left(1-\frac{C_B}{A_B}\right)
+\]
+for the sample vector \(y_n=n^{-1/2}\) and increasing finite sets
+\(B=\{1,\ldots,N\}\).  The numerical growth is a sanity check only; it is not
+used as proof.
+
+\section*{Novelty and Literature Check}
+
+The run indexes were searched for arXiv:1812.05412, \(Q_A^{(t)}\), ``represent
+a measure'', ``bona fide integrals'', and nearby \(S(p)\), \(L(p)\), Sidon, and
+\(\Lambda(2)\) terminology.  No existing solution, attempt, or proof-gap packet
+covering Question 5.14 was found.
+
+External exact-phrase searches were run for close variants around Blei's
+terminal questions, including ``Does q-Sidon S(q*)'', ``q-Sidon S(p) Blei'',
+``Does Lambda(2) L(p) Blei'', and ``Lambda(2)-uniformizable''.  These searches
+did not surface a later answer to Question 5.14.  Novelty confidence is
+moderate: the obstruction is elementary once the finite Walsh test is written
+down, but the bounded search did not reveal a known statement of this exact
+threshold.
+
+\section*{Limitations}
+
+This packet answers the measure-existence example in Question 5.14.  It does
+not address the other broad thin-set questions in the source paper, such as
+\(\Lambda(2)\)-uniformizability, the \(\Lambda(2)\)-set problem, the finite
+union problem for \(\Lambda(2)\)-sets, or the \(q\)-Sidon versus \(S(q^*)\)
+question.
+
+\section*{Human Review Recommendation}
+
+Reviewers should first check the finite-dimensional duality estimate in the
+negative direction:
+\[
+  \left|\int f_B\,d\mu\right|
+  =
+  \frac{R}{\|P_B\|_\infty}\sum_{|F|\ \mathrm{odd}}p_F^2.
+\]
+The second point to check is the positive direction's weak-* compactness
+argument for the bounded complex Riesz products when \(y\in\ell^2\).
+
+\begin{thebibliography}{9}
+
+\bibitem{BleiParseval}
+R. Blei,
+\emph{From Parseval to Grothendieck and a little beyond, part I},
+arXiv:1812.05412, 2018.
+
+\end{thebibliography}
+
+\end{document}

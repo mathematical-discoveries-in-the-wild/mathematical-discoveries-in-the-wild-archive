@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\kerop}{\operatorname{ker}}
+
+\begin{document}
+
+\begin{center}
+{\Large A full answer to the odd-dimensional case in arXiv:1905.12257}\\[3mm]
+{\large Candidate solution packet for \texttt{fa\_banach\_001}}\\[2mm]
+\today
+\end{center}
+
+\section*{Source and Target}
+
+The source paper is Kadets, Martin, Meri, Perez, and Quero,
+\emph{On the numerical index with respect to an operator}, arXiv:1905.12257
+\cite{KMMPQ}.  After Theorem 4.7 the authors prove the desired zero-value
+result for $\cL(H)$ and $\mathcal K(H)$ when the real Hilbert space $H$ is
+infinite-dimensional or even-dimensional, and then leave the finite odd case
+open.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question in context is whether, for a finite-dimensional real Hilbert
+space $H$ of odd dimension at least $3$,
+\[
+  n_G(\cL(H),Y)=0
+\]
+holds for every Banach space $Y$ and every norm-one operator
+$G\in \cL(\cL(H),Y)$.  Dimension $1$ is outside the context of Theorem 4.7 and
+would be exceptional.
+
+\section*{Idea of the Proof}
+
+The even-dimensional proof in the source paper uses a surjective isometry
+of $H$ with numerical radius zero, then transports it by left multiplication
+to $\cL(H)$.  Such an invertible skew isometry cannot exist in odd real
+dimension.  The replacement is to use two-sided infinitesimal isometries on
+$\cL(H)$:
+\[
+  X\longmapsto AX+XB,
+\]
+where $A$ and $B$ are skew-adjoint on $H$.  These maps have numerical radius
+zero because they generate the isometry group
+$X\mapsto e^{tA}Xe^{tB}$.  By choosing the one-dimensional kernels of $A$ and
+$B$ to match a single Hilbert-Schmidt orthogonality condition, every prescribed
+operator $C\in\cL(H)$ lies in the range of one such zero-radius map.  This gives
+exactly the range-covering hypothesis in Proposition 3.10(c) of the source
+paper.
+
+\section*{Theorem}
+
+\begin{theorem}
+Let $H$ be a real Hilbert space of odd dimension $n\geq 3$, and put
+$W=\cL(H)$ with its operator norm.  Then
+\[
+  n_G(W,Y)=0
+\]
+for every Banach space $Y$ and every norm-one operator $G\in\cL(W,Y)$.
+Consequently the question after Theorem 4.7 of \cite{KMMPQ} has an
+affirmative answer.
+\end{theorem}
+
+\begin{proof}
+By Proposition 3.10(c) of \cite{KMMPQ}, it is enough to prove that
+\[
+  \bigcup\{R(W): R\in\cL(W),\ v(R)=0\}
+\]
+is dense in $W$.  We prove the stronger statement that this union is all of
+$W$.
+
+Fix $C\in W$.  Choose a unit vector $b\in H$.  Since $n\geq 3$, we may choose
+a unit vector $a\in H$ such that
+\[
+  \langle Cb,a\rangle=0;
+\]
+if $Cb=0$, choose any unit $a$.  Write $n=2m+1$.
+
+Choose skew-adjoint operators $A,B\in\cL(H)$ such that
+\[
+  \kerop A=\R a,\qquad \kerop B=\R b,
+\]
+and such that the nonzero rotation frequencies of $A$ and $B$ are disjoint.
+Concretely, decompose $H=\R a\oplus E_A$ and $H=\R b\oplus E_B$, split each
+even-dimensional complement into orthogonal $2$-planes, let $A$ be block
+rotation by positive frequencies $\alpha_1,\ldots,\alpha_m$ on $E_A$, let $B$
+be block rotation by positive frequencies $\beta_1,\ldots,\beta_m$ on $E_B$,
+and choose the two finite sets $\{\alpha_i\}$ and $\{\beta_j\}$ disjoint.
+
+Define the Sylvester operator $R\in\cL(W)$ by
+\[
+  R(X)=AX+XB\qquad (X\in W).
+\]
+First, $v(R)=0$.  Indeed, because $A$ and $B$ are skew-adjoint,
+$e^{tA}$ and $e^{tB}$ are orthogonal for every real $t$, and hence
+\[
+  U_t(X)=e^{tA}Xe^{tB}
+\]
+is a surjective isometry of $W$.  The left and right multiplication parts
+commute, so $U_t=e^{tR}$.  The derivative formula for the numerical range
+used in Lemma 2.4 of \cite{KMMPQ} gives
+\[
+ \sup \operatorname{Re} V(\cL(W),\Id_W,R)
+ =\lim_{t\downarrow 0}\frac{\|\Id_W+tR\|-1}{t}.
+\]
+Since $e^{tR}$ is an isometry and $\Id_W+tR=e^{tR}+O(t^2)$ in operator norm,
+the right-hand side is at most $0$.  Applying the same argument to $-R$ shows
+that the real numerical range of $R$ is contained in $\{0\}$.  Therefore
+$v(R)=0$.
+
+It remains to show that $C\in R(W)$.  Use the Hilbert-Schmidt inner product
+on the finite-dimensional real vector space $W$.  Because $A^*=-A$ and
+$B^*=-B$, the Hilbert-Schmidt adjoint of $R$ is $R^*=-R$.  Thus
+\[
+  \im R=(\kerop R^*)^\perp=(\kerop R)^\perp .
+\]
+We now compute $\kerop R$.  After complexifying, the eigenvalues of $A$ are
+$0,\pm i\alpha_1,\ldots,\pm i\alpha_m$, and the eigenvalues of $B$ are
+$0,\pm i\beta_1,\ldots,\pm i\beta_m$.  On a rank-one map carrying a
+$B$-eigenvector with eigenvalue $\mu$ to an $A$-eigenvector with eigenvalue
+$\lambda$, the complexified Sylvester map has eigenvalue $\lambda+\mu$.
+Since the nonzero frequency sets are disjoint, the only way to have
+$\lambda+\mu=0$ is $\lambda=\mu=0$.  Hence
+\[
+  \kerop R=\R K,\qquad K(h)=\langle h,b\rangle a.
+\]
+The Hilbert-Schmidt orthogonality condition for $C$ is
+\[
+  \langle C,K\rangle_{\mathrm{HS}}=\tr(K^*C)=\langle Cb,a\rangle=0.
+\]
+Therefore $C\in(\kerop R)^\perp=\im R$.  Since $C\in W$ was arbitrary, every
+element of $W$ lies in the range of some zero-numerical-radius operator on
+$W$.  Proposition 3.10(c) of \cite{KMMPQ} now yields
+$n_G(W,Y)=0$ for every Banach space $Y$ and every norm-one
+$G\in\cL(W,Y)$.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof above is exact finite-dimensional linear algebra.  The included
+script \path{code/verify_sylvester_cover.py} only sanity-checks the
+Sylvester range computation numerically.  The command
+\begin{verbatim}
+cd runs/fa_banach_001/solutions/full/\
+  1905.12257_odd_dim_operator_space_zero_index
+conda run --no-capture-output -n sandbox python \
+  code/verify_sylvester_cover.py --dims 3 5 7 --trials 20
+\end{verbatim}
+returned ranks $8,24,48$, i.e. $n^2-1$, with residuals below $1.2\cdot 10^{-13}$.
+This is consistent with the proof that the only obstruction is the line
+spanned by $a\otimes b^*$, but the computation is not used as evidence in
+place of the proof.
+
+\section*{Novelty and Scope}
+
+Bounded local and web checks were performed on 2026-06-26.  The local run
+indexes were searched for arXiv:1905.12257, ``numerical index with respect'',
+``odd dimension'', and the operator-space phrasing.  Web/arXiv searches used
+the exact phrases ``When H has odd dimension'', ``numerical index with respect
+to an operator'' with ``odd dimension'' and ``L(H)'', the source title with
+``odd dimension'', and the displayed expression
+$n_G(\mathcal L(H),Y)=0$.  No later paper or existing packet answering this
+exact question was found; the only direct web hit was the source arXiv record.
+
+The packet answers only the odd-dimensional Hilbert-operator-space question
+after Theorem 4.7.  The other questions in the same source paper, such as the
+countability questions for $\mathcal N(Z)$, are not addressed here.
+
+\begin{thebibliography}{9}
+\bibitem{KMMPQ}
+V. Kadets, M. Martin, J. Meri, A. Perez, and A. Quero,
+\emph{On the numerical index with respect to an operator},
+arXiv:1905.12257, 2019.
+\end{thebibliography}
+
+\end{document}

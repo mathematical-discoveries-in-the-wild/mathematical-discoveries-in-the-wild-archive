@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\Sphere}{\mathbb{S}}
+
+\title{The Symmetric Banach-Sphere Entropy Estimate Extends To The Endpoint Window}
+\author{Automatic math-discovery smoke test}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Aicke Hinrichs and Sebastian Mayer,
+\emph{Entropy Numbers of Spheres in Banach and quasi-Banach spaces},
+arXiv:1501.03680; later published in \emph{Journal of Approximation Theory}
+200 (2015), 144--152, DOI: 10.1016/j.jat.2015.05.004
+\cite{HinrichsMayer2015}.  The relevant signal is Remark 14 on page 9 of the
+arXiv PDF, immediately after Corollary 13.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In text form, the remark says that, unlike the concrete \(\ell_p\)-sphere
+result in Theorem 7, Corollary 13 is not extended to \(k\ge d\) because the
+authors do not know how \(e_d(\Sphere_X^{d-1},Y)\) behaves.
+
+\section*{Result Type}
+
+This packet gives a \textbf{candidate full endpoint extension} of Corollary
+13 for the symmetric Banach-space setting considered in the remark.
+
+\section*{Definitions And Source Inputs}
+
+Entropy numbers are dyadic: \(e_k(A,Y)\) is the infimum of radii
+\(\eps>0\) such that \(A\) is covered by \(2^{k-1}\) translates of
+\(\eps B_Y\).
+
+Let \(X\) and \(Y\) be \(d\)-dimensional Banach spaces on \(\R^d\), with
+normalized canonical bases, whose norms are symmetric with respect to
+permutations and sign changes of the coordinates.  Write
+\[
+  \Sphere_X=\{x\in\R^d:\norm{x}_X=1\}
+\]
+and
+\[
+  \lambda_E(m)=\norm{\sum_{i=1}^m e_i}_E
+  \qquad (1\le m\le d)
+\]
+for a symmetric \(d\)-dimensional space \(E\).
+
+We use two source inputs from Hinrichs--Mayer \cite{HinrichsMayer2015}.  First,
+their Theorem 9 gives, for the coordinate hyperplanes \(H_i\),
+\[
+  e_k(\Sphere_X,Y)\ge \max_i e_k(B_{X^i},Y^i).
+\]
+Second, their proof of Corollary 13 invokes Schuett's entropy estimates for
+balls in symmetric Banach spaces \cite[Theorem 5]{Schuett1984}.  In the form
+needed here, if \(E,F\) are \(n\)-dimensional symmetric Banach spaces with
+normalized bases, then for \(k\ge n\)
+\[
+  e_k(B_E,F)\ge \frac{1}{e} 2^{-k/n}\frac{\lambda_F(n)}{\lambda_E(n)}
+\]
+and, with an absolute constant \(c_S\),
+\[
+  e_k(B_E,\ell_\infty^n)\le c_S 2^{-k/n}\frac{1}{\lambda_E(n)}.
+\]
+These are exactly the lower and upper estimates used in equations (2) and (3)
+of the source proof, with the dimension changed as appropriate.
+
+\section*{Proof Intuition}
+
+The source proof already contains the hard lower bound: project the sphere
+onto a coordinate hyperplane and apply Schuett's lower estimate for the
+\((d-1)\)-dimensional ball.  This works for all \(k\ge d\), not just the large
+\(k\) range printed in Corollary 13.
+
+For the upper bound, the only missing interval is finite:
+\[
+  d\le k<2d+\lceil\log d\rceil-1.
+\]
+In that interval monotonicity reduces everything to \(e_d(\Sphere_X,Y)\), and
+\(\Sphere_X\subset B_X\).  The whole ball \(B_X\) can be covered in the
+\(\ell_\infty^d\) metric at entropy level \(d\) by Schuett's ball estimate, and
+then transported into \(Y\) through the identity map
+\(\ell_\infty^d\to Y\), whose norm is \(\lambda_Y(d)\).  Symmetry and
+normalization compare \(\lambda_Y(d)\) and \(\lambda_X(d)\) back to the
+\((d-1)\)-level quantities in Corollary 13.  The factor
+\(2^{-k/(d-1)}\) is bounded below by an absolute constant throughout this
+finite endpoint window, so the same asymptotic form follows.
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:endpoint}
+Let \(d\ge2\), and let \(X\) and \(Y\) be symmetric Banach spaces on
+\(\R^d\) with normalized canonical bases.  Then there is an absolute constant
+\(C>0\) such that, for every \(k\ge d\),
+\[
+  \frac{1}{e}\,2^{-k/(d-1)}
+  \frac{\lambda_Y(d-1)}{\lambda_X(d-1)}
+  \le
+  e_k(\Sphere_X,Y)
+  \le
+  C\,2^{-k/(d-1)}
+  \frac{\lambda_Y(d-1)}{\lambda_X(d-1)}.
+\]
+Consequently, the two-sided estimate of Corollary 13 in the source paper
+extends from \(k\ge 2d+\lceil\log d\rceil-1\) down to all \(k\ge d\).
+\end{theorem}
+
+\begin{proof}
+We first record two elementary consequences of symmetry.  The canonical basis
+is \(1\)-unconditional.  Indeed, a coordinate projection is obtained by
+averaging sign changes over the deleted coordinates, so convexity of the norm
+gives \(\norm{P_A x}_E\le\norm{x}_E\) for every coordinate subset \(A\).
+Hence \(\lambda_E(m)\) is nondecreasing in \(m\), and
+\(\lambda_E(m)\ge1\) for \(m\ge1\).  Also,
+\[
+  \lambda_E(d)\le \lambda_E(d-1)+\lambda_E(1)\le 2\lambda_E(d-1).
+\]
+Finally,
+\[
+  \norm{\id:\ell_\infty^d\to E}=\lambda_E(d),
+\]
+because the maximum of a convex symmetric norm on the cube
+\([-1,1]^d\) is attained at a sign vector, and every sign vector has
+\(E\)-norm \(\lambda_E(d)\).
+
+For the lower bound, fix a coordinate hyperplane, say \(H_1\).  Since the
+coordinate projection is contractive, \(X^1=X_1\) and \(Y^1=Y_1\) isometrically
+in the notation of the source paper.  The hyperplane spaces \(X_1,Y_1\) are
+\((d-1)\)-dimensional symmetric Banach spaces, and
+\[
+  \lambda_{X_1}(m)=\lambda_X(m),\qquad
+  \lambda_{Y_1}(m)=\lambda_Y(m)
+  \quad (1\le m\le d-1).
+\]
+Theorem 9 of the source paper and Schuett's lower estimate in dimension
+\(d-1\) yield, for every \(k\ge d\) and therefore for every \(k\ge d-1\),
+\[
+  e_k(\Sphere_X,Y)
+  \ge e_k(B_{X_1},Y_1)
+  \ge \frac{1}{e}2^{-k/(d-1)}
+      \frac{\lambda_Y(d-1)}{\lambda_X(d-1)}.
+\]
+
+It remains to prove the upper bound.  For
+\[
+  k\ge 2d+\lceil\log d\rceil-1,
+\]
+this is precisely the upper estimate already proved in Corollary 13 of the
+source paper, with constant \(32c\).
+
+Now assume
+\[
+  d\le k<2d+\lceil\log d\rceil-1.
+\]
+By monotonicity of entropy numbers and by \(\Sphere_X\subset B_X\),
+\[
+  e_k(\Sphere_X,Y)\le e_d(\Sphere_X,Y)\le e_d(B_X,Y).
+\]
+Factor the identity through \(\ell_\infty^d\):
+\[
+  e_d(B_X,Y)
+  \le
+  \norm{\id:\ell_\infty^d\to Y}\,
+  e_d(B_X,\ell_\infty^d).
+\]
+By the preceding observation,
+\(\norm{\id:\ell_\infty^d\to Y}=\lambda_Y(d)\), while Schuett's upper estimate
+for the \(d\)-dimensional ball gives
+\[
+  e_d(B_X,\ell_\infty^d)
+  \le c_S 2^{-1}\frac{1}{\lambda_X(d)}
+  \le c_S \frac{1}{\lambda_X(d)}.
+\]
+Therefore
+\[
+  e_k(\Sphere_X,Y)
+  \le c_S \frac{\lambda_Y(d)}{\lambda_X(d)}
+  \le 2c_S \frac{\lambda_Y(d-1)}{\lambda_X(d-1)}.
+\]
+The same elementary estimate used in the proof of Theorem 7 of the source
+paper gives
+\[
+  2^{-k/(d-1)}\ge 2^{-6}
+\]
+throughout this finite window.  Hence
+\[
+  e_k(\Sphere_X,Y)
+  \le 128c_S\,2^{-k/(d-1)}
+      \frac{\lambda_Y(d-1)}{\lambda_X(d-1)}.
+\]
+Combining this with the already-known large-\(k\) upper bound proves the
+claim, for example with \(C=\max\{32c,128c_S\}\).
+\end{proof}
+
+\section*{Verification Notes}
+
+No numerical computation is used.  The proof depends on three checkable points.
+First, normalized symmetric Banach bases are \(1\)-unconditional, so coordinate
+projections are contractions.  Second, the factorization norm needed in the
+finite-window estimate is \(\norm{\id:\ell_\infty^d\to Y}=\lambda_Y(d)\).
+This is the orientation used explicitly in the proof above.  Third, Schuett's
+ball estimate is applied at entropy level \(d\) in dimension \(d\), which is
+inside its \(k\ge n\) range.
+
+The source paper has a small notational inconsistency around the factorization
+orientation in Theorem 12/Corollary 13: the displayed norm is written in one
+place as \(Y\to\ell_\infty^d\), while the proof line and the use of
+\(\lambda_Y(d)\) correspond to \(\ell_\infty^d\to Y\).  The endpoint argument
+above uses only the latter, direct factorization.
+
+\section*{Novelty And Literature Check}
+
+Before promotion, the local run indexes
+\[
+\begin{gathered}
+\texttt{registry\_index.tsv},\quad
+\texttt{solutions/index.tsv},\\
+\texttt{attempts/index.tsv},\quad
+\texttt{proof\_gaps/index.tsv}
+\end{gathered}
+\]
+were searched for arXiv:1501.03680, the title, ``entropy numbers of spheres'',
+``symmetric Banach spaces'', and endpoint phrases around \(e_d(\Sphere_X,Y)\).
+No duplicate solution, prior attempt, or proof-gap packet for this endpoint was
+found.
+
+A bounded web search on July 19, 2026 for exact phrases from Remark 14 and
+close variants such as ``\(e_d(\Sphere_X,Y)\)'', ``Entropy numbers of spheres
+symmetric Banach spaces'', and the paper title found bibliographic pages for
+the source article, including its Journal of Approximation Theory DOI page, but
+no separate later paper explicitly resolving the endpoint extension.
+
+\section*{Limitations}
+
+This proves the endpoint extension only in the symmetric Banach-space setting
+of Corollary 13.  It does not address possible extensions for arbitrary
+quasi-Banach spaces or for non-symmetric monotone spaces beyond the hypotheses
+of that corollary.
+
+\section*{Human Review Recommendation}
+
+Send for human review as a candidate full endpoint solution.  The recommended
+review focus is the finite-window upper bound
+\[
+  e_d(B_X,Y)\lesssim \frac{\lambda_Y(d-1)}{\lambda_X(d-1)}
+\]
+and the exact invocation of Schuett's Theorem 5(2) at dimension \(d\).
+
+\begin{thebibliography}{9}
+
+\bibitem{HinrichsMayer2015}
+A.~Hinrichs and S.~Mayer,
+\emph{Entropy Numbers of Spheres in Banach and quasi-Banach spaces},
+arXiv:1501.03680; \emph{Journal of Approximation Theory} 200 (2015),
+144--152, DOI: 10.1016/j.jat.2015.05.004.
+
+\bibitem{Schuett1984}
+C.~Schuett,
+\emph{Entropy numbers of diagonal operators between symmetric Banach spaces},
+\emph{Journal of Approximation Theory} 40 (1984), 121--128.
+
+\end{thebibliography}
+
+\end{document}

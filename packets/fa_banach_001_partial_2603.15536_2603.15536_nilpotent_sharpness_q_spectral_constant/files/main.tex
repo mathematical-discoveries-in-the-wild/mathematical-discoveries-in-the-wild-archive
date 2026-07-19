@@ -1,0 +1,229 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\diag}{diag}
+
+\title{Nilpotent Sharpness for the Scaled \(q\)-Numerical Spectral Constant}
+\author{Run \texttt{fa\_banach\_001}, lane 0}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+\textbf{Partial result, likely valid.}  This packet proves that the constant
+conjectured in Conjecture 4.2 of O'Loughlin--Rani \cite{oloughlin-rani}
+is globally sharp.  It does not prove the conjecture for arbitrary matrices.
+It proves the conjectured inequality for the \(2\times2\) nilpotent Jordan
+block and shows that this example already forces the nontrivial branch of the
+constant.
+
+\section*{Source Problem}
+
+The source paper is Ryan O'Loughlin and Jyoti Rani, ``\(q\)-Numerical Ranges
+and Spectral Sets'', arXiv:2603.15536.  It defines
+\[
+W_q(A)=\{\langle Ax,y\rangle:\|x\|=\|y\|=1,\ \langle x,y\rangle=q\},
+\qquad
+\Omega_q(A)=W_q(A)/q ,
+\]
+for \(0<|q|\le1\).  Conjecture 4.2 asks whether, for every \(n\times n\)
+matrix \(A\) and every polynomial \(p\),
+\[
+\|p(A)\|
+\le
+\max\!\left(1,\frac{2|q|}{1+\sqrt{1-|q|^2}}\right)
+\sup_{z\in\Omega_q(A)}|p(z)|.
+\]
+The source also notes that the term \(1\) is forced by the constant polynomial.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+The source paper gives a support-function formula for \(\Omega_q(A)\).  For a
+rank-one nilpotent, this formula becomes a one-variable trigonometric
+optimization.  The optimization has a constant value in every direction, so
+\(\Omega_q(J)\) is a disk.  Its radius is exactly the reciprocal of the
+conjectured nontrivial constant:
+\[
+D(q)=\frac{1+\sqrt{1-|q|^2}}{2|q|}, \qquad
+\frac1{D(q)}=\frac{2|q|}{1+\sqrt{1-|q|^2}}.
+\]
+Thus the polynomial \(p(z)=z\) gives
+\[
+\|J\|=1
+  =\frac1{D(q)}\sup_{|z|\le D(q)}|z|
+\]
+whenever this reciprocal is the larger branch of the conjectured maximum.  The
+branch switch occurs at \(D(q)=1\), equivalently \(|q|=4/5\).
+
+\section*{Main Result}
+
+\begin{theorem}
+Let
+\[
+J=\begin{pmatrix}0&1\\0&0\end{pmatrix}
+\quad\text{on }\mathbb C^2,
+\qquad 0<|q|\le1,
+\]
+and put \(r=|q|\), \(s=\sqrt{1-r^2}\).  Then
+\[
+\Omega_q(J)=\left\{z\in\mathbb C: |z|\le D_r\right\},
+\qquad
+D_r=\frac{1+s}{2r}.
+\]
+Consequently the conjectured inequality of O'Loughlin--Rani holds for \(J\).
+Moreover, the conjectured universal constant is sharp: the lower branch \(1\)
+is forced by constant polynomials, and for \(r\ge4/5\) the polynomial \(p(z)=z\)
+forces the branch
+\[
+\frac{2r}{1+\sqrt{1-r^2}}.
+\]
+\end{theorem}
+
+\begin{proof}
+The source paper observes that \(\Omega_q=\Omega_{|q|}\), so we may take
+\(q=r>0\).  Its support-function formula specializes to
+\[
+h_{\Omega_r(A)}(e^{i\theta})
+=
+\sup_{\|x\|=1}\left(
+  \Re\langle e^{-i\theta}Ax,x\rangle
+  +\frac{s}{r}\|P_{x^\perp}(e^{-i\theta}Ax)\|
+\right),
+\]
+where \(s=\sqrt{1-r^2}\).
+
+Now take \(A=J\).  Write a unit vector as
+\[
+x=(\cos t,e^{i\phi}\sin t),\qquad 0\le t\le \pi/2 .
+\]
+The phase \(\phi\) can be chosen, for each \(\theta\), to make
+\(\Re\langle e^{-i\theta}Jx,x\rangle=|\langle Jx,x\rangle|\).  Also
+\[
+|\langle Jx,x\rangle|=\sin t\cos t,\qquad
+\|P_{x^\perp}Jx\|
+=\sqrt{\|Jx\|^2-|\langle Jx,x\rangle|^2}
+=\sin^2 t .
+\]
+Therefore the support function is independent of \(\theta\) and equals
+\[
+\sup_{0\le t\le\pi/2}
+\left(\sin t\cos t+\frac{s}{r}\sin^2 t\right).
+\]
+Using \(\sin t\cos t=\frac12\sin 2t\) and
+\(\sin^2t=\frac12(1-\cos2t)\), this supremum is
+\[
+\frac{s}{2r}
++\frac12\sup_u\left(\sin u-\frac{s}{r}\cos u\right)
+=
+\frac{s}{2r}
++\frac12\sqrt{1+\frac{s^2}{r^2}}
+=
+\frac{s}{2r}+\frac1{2r}
+=D_r .
+\]
+Hence the support function is the constant \(D_r\), which proves that
+\(\Omega_r(J)\), and therefore \(\Omega_q(J)\), is the closed disk of radius
+\(D_r\).
+
+It remains to check the functional-calculus inequality for this model.  Since
+\(J^2=0\), every polynomial satisfies
+\[
+p(J)=aI+bJ,\qquad a=p(0),\quad b=p'(0).
+\]
+Thus
+\[
+\|p(J)\|\le |a|+|b|.
+\]
+On the disk \(|z|\le D_r\),
+\[
+\sup_{|z|\le D_r}|a+bz|=|a|+D_r|b|.
+\]
+If \(D_r\ge1\), equivalently \(r\le4/5\), the conjectured constant is \(1\), and
+\[
+\|p(J)\|\le |a|+|b|\le |a|+D_r|b|
+=\sup_{z\in\Omega_q(J)}|p(z)|.
+\]
+If \(D_r\le1\), equivalently \(r\ge4/5\), the conjectured constant is
+\(1/D_r\), and
+\[
+\|p(J)\|\le |a|+|b|
+\le \frac1{D_r}(|a|+D_r|b|)
+=\frac1{D_r}\sup_{z\in\Omega_q(J)}|p(z)|.
+\]
+This proves the conjectured inequality for \(J\).
+
+Finally, constant polynomials force every spectral constant to be at least
+\(1\), as already noted in the source paper.  For \(p(z)=z\), one has
+\(\|p(J)\|=\|J\|=1\) and
+\[
+\sup_{z\in\Omega_q(J)}|p(z)|=D_r .
+\]
+Thus any universal constant valid for all matrices must be at least \(1/D_r\).
+For \(r\ge4/5\), \(D_r\le1\), so \(1/D_r\) is exactly the nontrivial branch
+\[
+\frac{2r}{1+\sqrt{1-r^2}}.
+\]
+The conjectured constant is therefore sharp.
+\end{proof}
+
+\section*{Verification Notes}
+
+The scalar threshold is
+\[
+D_r=1
+\quad\Longleftrightarrow\quad
+1+\sqrt{1-r^2}=2r
+\quad\Longleftrightarrow\quad
+r=\frac45 .
+\]
+The included script \texttt{code/verify\_nilpotent\_radius.py} checks the
+identity \(C(r)D_r\ge1\), with equality on the nontrivial branch \(r\ge4/5\),
+for a dense grid of \(r\)-values.
+
+\section*{Novelty and Literature Check}
+
+The lightweight run indexes were searched for arXiv:2603.15536, the exact
+title, \(q\)-numerical range, scaled \(q\)-numerical range, spectral set, and
+Crouzeix keywords.  No existing packet for this source paper was found.
+External web search on July 3, 2026 used the exact title and phrases
+``scaled q-numerical range Crouzeix conjecture'', ``q-numerical range spectral
+set \(2|q|\)'', and ``\(W_q(A)/q\) Crouzeix''.  This found the source paper but
+no later explicit solution or sharpness note for Conjecture 4.2.  This is a
+bounded novelty check, not a publication-level literature review.
+
+\section*{Limitations}
+
+This packet does not settle Conjecture 4.2 for general matrices.  It identifies
+a sharp extremal model and proves the conjectured inequality in that model.
+The main value is that it proves the constant in the conjecture cannot be
+lowered.
+
+\section*{Human-Review Recommendation}
+
+Review as a likely valid partial result and sharpness lemma.  The key step to
+check is the support-function calculation for the \(2\times2\) nilpotent
+Jordan block; it is a direct specialization of the source paper's formula.
+
+\begin{thebibliography}{9}
+\bibitem{oloughlin-rani}
+Ryan O'Loughlin and Jyoti Rani,
+\emph{\(q\)-Numerical Ranges and Spectral Sets},
+arXiv:2603.15536, 2026.
+\url{https://arxiv.org/abs/2603.15536}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Partial Theorem}
+\newtheorem*{corollary}{Corollary}
+
+\title{Partial Result: Complemented \(\ell_p\) Subspaces Give Singular Extensions}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Spiros A. Argyros, Antonis Manoussakis, and Pavlos
+Motakis, \emph{The HI extension of the standard HI spaces},
+arXiv:2407.20030 \cite{AMM2024}. In its final discussion, the paper states
+W. B. Johnson's singular-extension problem. In the parsed source this is
+\path{data/parsed/arxiv_sources/2407.20030/source.tex}, lines 2026--2037.
+On PDF page 25, Definition 10.1 defines a singular extension, and Problem 3
+asks whether every infinite-dimensional separable Banach space not isomorphic
+to \(c_0\) admits one.
+
+\begin{center}
+\includegraphics[width=0.92\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions}
+
+Let \(X\) be a Banach space and let \(Y\) be a superspace of \(X\). Following
+the source paper, \(Y\) is a \emph{singular extension} of \(X\) if \(Y/X\) is
+infinite dimensional and the quotient map
+\[
+Q:Y\to Y/X
+\]
+is strictly singular. Equivalently, \(Q\) is not an isomorphism on any
+infinite-dimensional subspace of \(Y\).
+
+A subspace \(E\) of a Banach space \(X\) is complemented if
+\(X=E\oplus F\) for some closed subspace \(F\), or equivalently if there is a
+bounded projection from \(X\) onto \(E\).
+
+\section*{Idea of the Proof}
+
+Singular extensions are stable under adding an external complemented summand.
+If \(E\) already has a singular extension \(0\to E\to Z\to V\to0\), then
+\(X=E\oplus F\) is extended by \(Y=Z\oplus F\). The quotient still only sees
+the \(Z\)-coordinate. Thus, any infinite-dimensional subspace on which the new
+quotient map is bounded below would project injectively to an
+infinite-dimensional subspace of \(Z\), where the old quotient map is also
+bounded below. That contradicts the singularity of the original extension.
+
+\section*{Complemented-Summand Permanence}
+
+\begin{theorem}
+Let \(X\) be a Banach space containing a complemented subspace \(E\). If
+\(E\) admits a singular extension, then \(X\) admits a singular extension.
+\end{theorem}
+
+\begin{proof}
+Choose a closed complement \(F\) so that \(X=E\oplus F\). Let
+\[
+0\longrightarrow E \xrightarrow{\iota} Z \xrightarrow{q} V
+\longrightarrow 0
+\]
+be a singular extension of \(E\). Thus \(V\) is infinite dimensional,
+\(\ker q=\iota(E)\), and \(q\) is strictly singular.
+
+Let \(Y=Z\oplus_1 F\). Embed \(X=E\oplus F\) into \(Y\) by
+\[
+J(e+f)=(\iota e,f).
+\]
+Define
+\[
+\widetilde q:Y\to V,\qquad \widetilde q(z,f)=qz.
+\]
+Then \(\widetilde q\) is a bounded surjection and
+\(\ker \widetilde q=J(X)\). Hence \(Y/J(X)\) is isomorphic to \(V\), so the
+quotient is infinite dimensional.
+
+It remains to show that \(\widetilde q\) is strictly singular. Suppose not.
+Then there is an infinite-dimensional subspace \(M\subset Y\) and a constant
+\(c>0\) such that
+\[
+\|\widetilde q y\|\ge c\|y\| \qquad (y\in M).
+\]
+Let \(P_Z:Y\to Z\) be the coordinate projection. If \(y\in M\) and
+\(P_Zy=0\), then \(\widetilde qy=0\), hence \(y=0\). Thus \(P_Z|_M\) is
+injective, and \(P_ZM\) is infinite dimensional. For \(z=P_Zy\in P_ZM\),
+\[
+\|qz\|=\|\widetilde qy\|\ge c\|y\|\ge c\|P_Zy\|=c\|z\|,
+\]
+where the inequality \(\|y\|\ge \|P_Zy\|\) uses the \(\ell_1\)-sum norm.
+Therefore \(q\) is
+bounded below on the infinite-dimensional subspace \(P_ZM\), contradicting
+that \(q\) is strictly singular. Hence \(\widetilde q\) is strictly singular,
+and \(Y\) is a singular extension of \(X\).
+\end{proof}
+
+\begin{corollary}
+Let \(X\) be a separable Banach space. If \(X\) contains a complemented copy
+of \(\ell_p\) for some \(1<p<\infty\), then \(X\) admits a separable singular
+extension.
+\end{corollary}
+
+\begin{proof}
+Kalton and Peck proved that \(\ell_p\), \(1<p<\infty\), admits a singular
+extension \(Z_p\) \cite[Theorem 6.4]{KP1979}; the source paper recalls this
+example immediately after Johnson's Problem 3. Transport this extension across
+the isomorphism between the complemented subspace of \(X\) and \(\ell_p\), and
+apply the theorem. Separability is preserved because \(X\), the complement,
+and the Kalton--Peck extension \(Z_p\) are separable.
+\end{proof}
+
+\section*{Scope and Limitations}
+
+This gives a positive answer to Johnson's Problem 3 for the concrete class of
+separable Banach spaces containing a complemented copy of \(\ell_p\),
+\(1<p<\infty\). It is not a solution of Johnson's full problem, since it does
+not cover arbitrary separable spaces not isomorphic to \(c_0\). It is also not
+a solution of Pelczynski's HI-extension problem, because HI spaces do not
+decompose into nontrivial complemented infinite-dimensional summands.
+
+\section*{Novelty and Search Bounds}
+
+The run indexes were searched for arXiv:2407.20030, HI extension, singular
+extension, Kalton--Peck, \(Z_p\), pushout, pullback, twisted sum, and strictly
+singular quotient-map terminology. No prior packet for this source paper or
+for this complemented-summand permanence lemma was found. The result is a
+small but useful permanence observation, not a claimed new construction of
+singular extensions beyond the complemented-subspace mechanism.
+
+\section*{Human Review Recommendation}
+
+Check the permanence lemma against the exact convention for singular twisted
+sums. The proof uses the quotient-map definition from the source paper and the
+\(\ell_1\)-direct sum only to make the projection estimate immediate.
+
+\begin{thebibliography}{9}
+\bibitem{AMM2024}
+S. A. Argyros, A. Manoussakis, and P. Motakis,
+\emph{The HI extension of the standard HI spaces}, arXiv:2407.20030, 2024.
+
+\bibitem{KP1979}
+N. J. Kalton and N. T. Peck,
+\emph{Twisted sums of sequence spaces and the three space problem},
+Trans. Amer. Math. Soc. 255 (1979), 1--30.
+\end{thebibliography}
+
+\end{document}

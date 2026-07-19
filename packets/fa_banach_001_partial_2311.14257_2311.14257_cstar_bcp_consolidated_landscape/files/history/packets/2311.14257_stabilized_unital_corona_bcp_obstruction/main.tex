@@ -1,0 +1,302 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\B}{\mathcal B}
+\newcommand{\K}{\mathcal K}
+\newcommand{\C}{\mathbb C}
+
+\title{Stabilized Unital Coronas Fail the Ball-Covering Property}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Jinghao Huang, Karimbergenov Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving that a commutative unital
+\(C^*\)-algebra \(C(K)\) has BCP/UBCP exactly when \(K\) has a countable
+\(\pi\)-basis, the authors ask for a noncommutative version:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+Let \(H\) be an infinite-dimensional separable Hilbert space.  Write
+\(\B(H)\) for the bounded operators and \(\K(H)\) for the compact operators.
+All tensor products below are minimal/spatial tensor products.
+
+\begin{theorem}
+\label{thm:stabilized-corona}
+Let \(D\) be a nonzero unital \(C^*\)-algebra.  Then the \(C^*\)-algebra
+\[
+        \bigl(\B(H)\otimes D\bigr)\big/\bigl(\K(H)\otimes D\bigr)
+\]
+fails BCP.
+\end{theorem}
+
+\begin{corollary}
+For every nonzero unital \(C^*\)-algebra \(D\), the multiplier corona of the
+stable algebra \(\K(H)\otimes D\) fails BCP.
+\end{corollary}
+
+\begin{proof}
+For unital \(D\), the standard multiplier identification gives
+\[
+        M(\K(H)\otimes D)\cong \B(H)\otimes D,
+\]
+so the multiplier corona is exactly the quotient in
+Theorem~\ref{thm:stabilized-corona}.
+\end{proof}
+
+\section*{Idea of the Proof}
+
+The Calkin quotient norm is an essential norm: it is seen on right tails after
+removing finite-dimensional pieces of \(H\).  The same is true with unital
+coefficients \(D\).  Given a countable family of proposed centers, recursively
+choose finite-dimensional domain projections \(q_k\) on which the assigned
+center nearly realizes its quotient norm.
+
+Since \(Tq_k\) is a finite-column compact-coefficient operator, its range can
+be almost captured by some finite-dimensional projection.  Choose a fresh
+finite-dimensional range projection \(p_k\) orthogonal to that captured range,
+and a partial isometry \(v_k:q_kH\to p_kH\).  Then \(v_k\otimes1_D\) is almost
+as far from \(Tq_k\) as \(Tq_k\) is large.  The strong sum \(V=\sum_k v_k\) is
+a norm-one partial isometry.  Its corona class has norm one and escapes every
+ball \(B(\xi,\|\xi\|)\) in the proposed countable cover.
+
+\section*{Proof}
+
+Let
+\[
+        \mathcal A=\B(H)\otimes D,\qquad
+        \mathcal J=\K(H)\otimes D,
+\]
+and let \(Q:\mathcal A\to \mathcal A/\mathcal J\) be the quotient map.  If
+\(e\) is a finite-rank projection on \(H\), we write \(e\) also for
+\(e\otimes 1_D\).
+
+\begin{lemma}[quotient norm on right tails]
+\label{lem:quotient-tail}
+If \(P_n\) is any increasing sequence of finite-rank projections on \(H\) with
+\(P_n\to I\) strongly, then for every \(T\in\mathcal A\),
+\[
+        \|Q(T)\|=\lim_{n\to\infty}\|T(1-P_n)\|.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(TP_n\in\mathcal J\), we have
+\[
+        \|Q(T)\|\le \|T(1-P_n)\|
+\]
+for every \(n\).  Conversely, if \(C\in\mathcal J\), then
+\(\|C(1-P_n)\|\to0\), and hence
+\[
+        \limsup_n\|T(1-P_n)\|
+        \le
+        \limsup_n\|(T+C)(1-P_n)\|+\limsup_n\|C(1-P_n)\|
+        \le \|T+C\|.
+\]
+Taking the infimum over \(C\in\mathcal J\) gives the reverse inequality.
+\end{proof}
+
+\begin{lemma}[finite right-tail recovery]
+\label{lem:finite-tail}
+Let \(T\in\mathcal A\), let \(r=\|Q(T)\|\), let \(f\) be a finite-rank
+projection on \(H\), and let \(\varepsilon>0\).  There is a nonzero
+finite-rank projection \(q\le1-f\) such that
+\[
+        \|Tq\|>r-\varepsilon.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(Tf\in\mathcal J\), \(r\le \|T(1-f)\|\).  Represent \(D\)
+faithfully on a Hilbert space \(K_D\), so \(\mathcal A\) acts on
+\(H\otimes K_D\).  Choose a unit vector
+\(\xi\in (1-f)H\otimes K_D\) with
+\[
+        \|T(1-f)\xi\|>r-\varepsilon/2.
+\]
+Vectors with finite \(H\)-support are dense in \((1-f)H\otimes K_D\), so
+\(\xi\) may be chosen with finite \(H\)-support after a perturbation small
+enough to preserve the weaker lower bound \(r-\varepsilon\).
+Let \(q\le1-f\) be the projection onto that finite-dimensional \(H\)-support.
+Then \(q\xi=\xi\), and therefore \(\|Tq\|>r-\varepsilon\).
+\end{proof}
+
+\begin{lemma}[fresh range escape]
+\label{lem:fresh-range}
+Let \(q\) be a nonzero finite-rank projection on \(H\), let
+\(X\in\mathcal A q\), let \(g\) be a finite-rank projection on \(H\), and let
+\(\varepsilon>0\).  There are a finite-rank projection \(p\perp g\) and a
+partial isometry \(v\in\B(H)\) such that
+\[
+        v^*v=q,\qquad vv^*=p,
+\]
+and
+\[
+        \|(v\otimes1_D)-X\|\ge \|X\|-\varepsilon.
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(q\) is finite rank and \(X=Xq\), we have \(X\in\K(H)\otimes D\).
+Choose a
+finite-rank projection \(s\) on \(H\) such that
+\[
+        \|(1-s)X\|<\varepsilon.
+\]
+Because \(H\) is infinite dimensional, choose a finite-rank projection
+\(p\) orthogonal to the span of the ranges of \(g\) and \(s\), with
+\(\operatorname{rank}p=\operatorname{rank}q\), and
+choose a partial isometry \(v\in\B(H)\) with \(v^*v=q\) and \(vv^*=p\).
+Then \(pX=p(1-s)X\), so \(\|pX\|<\varepsilon\).  Since
+\((1-p)(v\otimes1_D)=0\),
+\[
+        \|(v\otimes1_D)-X\|
+        \ge
+        \|(1-p)((v\otimes1_D)-X)\|
+        =
+        \|(1-p)X\|
+        \ge
+        \|X\|-\|pX\|
+        >
+        \|X\|-\varepsilon.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:stabilized-corona}]
+Let \(\xi_i=Q(T_i)\), \(i\ge1\), be an arbitrary countable family of centers
+in \(\mathcal A/\mathcal J\), with \(T_i\in\mathcal A\).  Put
+\[
+        r_i=\|\xi_i\|.
+\]
+Choose a map \(\pi:\mathbb N\to\mathbb N\) such that every value occurs
+infinitely often.
+
+We recursively choose finite-rank domain projections \(q_k\), finite-rank
+range projections \(p_k\), and partial isometries \(v_k\in\B(H)\).  Suppose the
+previous choices have been made, and let \(g_{k-1}\) be a finite-rank
+projection dominating all previous \(q_j\)'s and \(p_j\)'s.  Put
+\(i=\pi(k)\).  By Lemma~\ref{lem:finite-tail}, choose a nonzero finite-rank
+projection \(q_k\le1-g_{k-1}\) such that
+\[
+        \|T_iq_k\|>r_i-\frac1k.
+\]
+Apply Lemma~\ref{lem:fresh-range} to \(q=q_k\), \(X=T_iq_k\), and
+\(g=g_{k-1}\vee q_k\), obtaining a projection \(p_k\perp(g_{k-1}\vee q_k)\)
+and a partial isometry \(v_k\) with
+\[
+        v_k^*v_k=q_k,\qquad v_kv_k^*=p_k,
+\]
+such that
+\[
+        \|(v_k\otimes1_D)-T_iq_k\|>r_i-\frac2k.
+\]
+This makes the \(q_k\)'s pairwise orthogonal, the \(p_k\)'s pairwise
+orthogonal, and every \(p_k\) orthogonal to every \(q_j\).
+
+Let \(V\in\B(H)\) be the strong sum of the partial isometries \(v_k\).  Since
+the initial projections \(q_k\) are pairwise orthogonal and the final
+projections \(p_k\) are pairwise orthogonal, \(V\) is a partial isometry of
+norm one.  Set
+\[
+        B=V\otimes1_D\in\mathcal A.
+\]
+The projections \(q_k\) converge strongly to \(0\), so for every
+\(C\in\mathcal J\),
+\[
+        \|Cq_k\|\longrightarrow0.
+\]
+Indeed, this is immediate for elementary tensors \(C_0\otimes d\) with
+\(C_0\in\K(H)\), and then follows for all \(C\in\K(H)\otimes D\) by norm
+approximation.
+Therefore \(\|Q(B)\|=1\), because \(\|B\|\le1\) and
+\[
+        \|B-C\|\ge \|(B-C)q_k\|\ge \|Bq_k\|-\|Cq_k\|
+        =1-\|Cq_k\|
+\]
+for all \(k\).
+
+Fix \(i\).  If \(r_i=0\), then \(\|Q(B)-\xi_i\|\ge0=r_i\).  If \(r_i>0\),
+take \(k\to\infty\) along the infinite set \(\{k:\pi(k)=i\}\).  For any
+\(C\in\mathcal J\),
+\[
+        \|B-T_i-C\|
+        \ge
+        \|(B-T_i-C)q_k\|
+        \ge
+        \|Bq_k-T_iq_k\|-\|Cq_k\|
+        >
+        r_i-\frac2k-\|Cq_k\|.
+\]
+Letting \(k\to\infty\) along this subsequence gives
+\[
+        \|B-T_i-C\|\ge r_i.
+\]
+Taking the infimum over \(C\in\mathcal J\) yields
+\[
+        \|Q(B)-\xi_i\|\ge r_i=\|\xi_i\|.
+\]
+Thus \(Q(B)\) is a unit vector outside every open ball
+\[
+        B(\xi_i,\|\xi_i\|).
+\]
+Since the countable family of centers was arbitrary, the quotient fails BCP.
+\end{proof}
+
+\section*{Scope and Relation to Earlier Packets}
+
+For \(D=\C\), Theorem~\ref{thm:stabilized-corona} recovers the Calkin-algebra
+obstruction.  The point of the present packet is that the same proof works
+with arbitrary nonzero unital coefficient algebra \(D\).  This is different
+from the product and reduced-product packets: the quotient is a genuine
+operator-algebra corona, and the proof uses finite-rank right-tail recovery
+instead of coordinatewise reduced-product norms.
+
+The theorem does not characterize arbitrary \(C^*\)-algebras with BCP.  It
+places a broad stabilized corona family on the negative side and supplies a
+concrete model for future multiplier-corona attacks.
+
+\section*{Verification and Search Bounds}
+
+The run indexes were searched for arXiv:2311.14257 together with stabilized
+corona, \(B(H)\otimes D\), \(K(H)\otimes D\), Calkin, multiplier, and
+partial-isometry keywords.  No existing packet for this coefficient-stabilized
+corona obstruction was found.  The proof is self-contained modulo standard
+facts about compact-operator tensor ideals and the multiplier identification
+for \(\K(H)\otimes D\) when \(D\) is unital.
+
+\section*{Human Review Focus}
+
+Check Lemma~\ref{lem:finite-tail}, especially the finite \(H\)-support
+approximation after representing \(D\) faithfully, and Lemma~\ref{lem:fresh-range},
+where the fresh range projection is chosen away from the finite-column image.
+The final diagonal argument then follows the same shape as the previous
+product-quotient obstruction.
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergenov Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\end{thebibliography}
+
+\end{document}

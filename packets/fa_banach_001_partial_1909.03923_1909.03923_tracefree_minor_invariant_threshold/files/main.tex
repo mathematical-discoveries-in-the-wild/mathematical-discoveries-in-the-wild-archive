@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\dd}{\,\mathrm d}
+
+\title{A Trace-Free Slice of the Minor-Invariant Projection Question}
+\author{Run fa\_banach\_001, lane 19}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Question}
+
+Guerra and Raita ask in Question 5.17 of arXiv:1909.03923 for conditions on a
+projection
+\[
+  T:\R^{m\times n}\to V\subseteq \R^{m\times n}
+\]
+under which one can find a nonzero linear combination $H_s$ of $s$-minors,
+$2\le s<\min\{m,n\}$, satisfying
+\[
+  H_s(X)=H_s(X+Y)
+  \quad\text{for every }X\text{ and every }Y\text{ with }T(Y)=0.
+\]
+Equivalently, $H_s$ is a linear combination of $s$-minors depending only on the
+coordinates of $V$. The source passage is shown in Figure~\ref{fig:source}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[height=.77\textheight,keepaspectratio]{figures/open_question_page.png}
+\caption{Question 5.17 in the source paper, printed page 24.}
+\label{fig:source}
+\end{figure}
+
+This packet solves the natural trace-free square-matrix slice of the question.
+
+\section*{Definitions}
+
+For subsets $I,J\subset\{1,\dots,n\}$ with $|I|=|J|=s$, write
+\[
+  M_{I,J}(X)=\det X_{I,J},
+\]
+where $X_{I,J}$ is the submatrix with rows $I$ and columns $J$, both listed in
+increasing order. Every linear combination of $s$-minors on $\R^{n\times n}$
+has the form
+\[
+  H(X)=\sum_{|I|=|J|=s}c_{I,J}M_{I,J}(X).
+\]
+
+Let
+\[
+  T(X)=X-\frac{\tr X}{n}I_n.
+\]
+Then $T$ is the orthogonal projection onto the trace-free matrices and
+$\ker T=\R I_n$. Thus the source condition becomes
+\[
+  H(X+tI_n)=H(X)\quad\text{for all }X\in\R^{n\times n},\ t\in\R.
+\]
+
+\section*{Proof Intuition}
+
+If $2s\le n$, there are disjoint row and column sets $I,J$ of size $s$; the
+minor $M_{I,J}$ does not involve any diagonal entry, so adding $tI_n$ leaves it
+unchanged.
+
+The converse is the useful part. If $2s>n$, every two $s$-subsets $I,J$ meet.
+Differentiating the identity $H(X+tI_n)=H(X)$ in $t$ gives a linear relation
+among $(s-1)$-minors. The coefficient of a fixed $(s-1)$-minor is a signed sum
+of the coefficients of the $s$-minors obtained by adding the same index to the
+row and column sets. A descending induction on $|I\cup J|$ then isolates and
+kills all coefficients.
+
+\section*{Main Partial Theorem}
+
+\begin{theorem}[Trace-free scalar-shift threshold]
+\label{thm:main}
+Let $n\ge3$ and $2\le s<n$. Let $T:\R^{n\times n}\to\{X:\tr X=0\}$ be
+\[
+  T(X)=X-\frac{\tr X}{n}I_n.
+\]
+There is a nonzero linear combination $H$ of $s$-minors such that
+\[
+  H(X)=H(X+Y)\quad\text{whenever }T(Y)=0
+\]
+if and only if
+\[
+  2s\le n.
+\]
+\end{theorem}
+
+\begin{proof}
+Since $\ker T=\R I_n$, the invariance condition is exactly
+\[
+  H(X+tI_n)=H(X)\quad\text{for all }X,t.
+\]
+
+If $2s\le n$, choose disjoint subsets $I,J\subset\{1,\dots,n\}$ with
+$|I|=|J|=s$. For $i\in I$ and $j\in J$ we have $i\ne j$, so the entries of the
+submatrix $X_{I,J}$ are unchanged by adding $tI_n$. Hence
+$H=M_{I,J}$ is a nonzero invariant linear combination of $s$-minors.
+
+Conversely, assume $2s>n$ and let
+\[
+  H(X)=\sum_{|I|=|J|=s}c_{I,J}M_{I,J}(X)
+\]
+be invariant. Differentiating at $t=0$ gives
+\[
+  0=\left.\frac{\dd}{\dd t}\right|_{t=0}H(X+tI_n)
+\]
+as a polynomial identity in $X$. For a single minor,
+\[
+  \left.\frac{\dd}{\dd t}\right|_{t=0}M_{I,J}(X+tI_n)
+  =
+  \sum_{a\in I\cap J}\varepsilon(a;I,J)M_{I\setminus\{a\},J\setminus\{a\}}(X),
+\]
+where each $\varepsilon(a;I,J)$ is $1$ or $-1$. The precise sign will not
+matter.
+
+The minors of a fixed order are linearly independent as polynomials, since a
+monomial occurring in $M_{A,B}$ uses exactly the row set $A$ and the column set
+$B$. Therefore, for every pair $A,B$ of $(s-1)$-subsets, the coefficient of
+$M_{A,B}$ in the differentiated identity is zero:
+\[
+  \sum_{a\notin A\cup B}
+  \varepsilon(a;A\cup\{a\},B\cup\{a\})
+  c_{A\cup\{a\},B\cup\{a\}}=0.
+  \tag{1}
+\]
+
+We prove that all coefficients $c_{I,J}$ vanish by descending induction on
+$N=|I\cup J|$. Since $2s>n$, every pair of $s$-sets $I,J$ has
+$I\cap J\ne\emptyset$.
+
+Start with $N=n$. Pick $a\in I\cap J$ and set
+$A=I\setminus\{a\}$, $B=J\setminus\{a\}$. Then
+$A\cup B=(I\cup J)\setminus\{a\}$ has complement exactly $\{a\}$. Thus (1)
+contains only the coefficient $c_{I,J}$, up to a nonzero sign, and so
+$c_{I,J}=0$.
+
+Now suppose all coefficients with union size larger than $N$ vanish, and take
+$I,J$ with $|I\cup J|=N$. Choose $a\in I\cap J$ and set
+$A=I\setminus\{a\}$, $B=J\setminus\{a\}$. In (1), the term with the added index
+$a$ is precisely $c_{I,J}$, up to sign. Any other possible added index
+$b\notin A\cup B$ lies outside $I\cup J$, and the corresponding coefficient
+$c_{A\cup\{b\},B\cup\{b\}}$ has union size $N+1$; it is zero by the induction
+hypothesis. Hence $c_{I,J}=0$.
+
+The descending induction reaches every pair $I,J$, so all coefficients vanish.
+Thus no nonzero invariant combination exists when $2s>n$.
+\end{proof}
+
+\section*{Scope and Novelty Check}
+
+The theorem gives an exact existence threshold for the projection onto
+trace-free square matrices. It is a partial answer to Question 5.17, not a
+classification for arbitrary projections $T$. In the positive range
+$2s\le n$, the theorem gives explicit invariants but does not describe the
+entire invariant subspace.
+
+Cheap run indexes were searched for arXiv:1909.03923, trace-free, traceless,
+scalar-shift, identity direction, minors, and the source question keywords. No
+duplicate packet was found. A bounded web search on July 19, 2026 found the
+source paper and preprint records but no exact answer to this trace-free slice.
+
+\section*{Computational Sanity Check}
+
+The script \texttt{code/check\_tracefree\_threshold.py} builds the exact
+rational matrix of the identity-direction derivative on $s$-minors and checks
+the kernel dimensions for $3\le n\le7$. It confirms the threshold above for the
+tested cases. This computation is only a verification aid; the proof above is
+independent.
+
+\section*{References}
+
+\begin{enumerate}
+\item A. Guerra and B. Raita,
+\emph{Quasiconvexity, null Lagrangians, and Hardy space integrability under
+constant rank constraints}, arXiv:1909.03923; Archive for Rational Mechanics
+and Analysis 245 (2022), 279--320.
+\end{enumerate}
+
+\end{document}

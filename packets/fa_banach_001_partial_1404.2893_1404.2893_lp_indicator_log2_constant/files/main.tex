@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\PhiX}{\Phi_X}
+\newcommand{\DeltaPhi}{\Delta_{\Phi}}
+\newcommand{\1}{\mathbf 1}
+
+\title{The Indicator Constant on the \(L_p\) Scale}
+\author{FA Banach run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate partial result, likely valid. It answers one
+standard family inside item (9) of the ``Looking Forward'' section of
+Cwikel--Milman--Rochberg, arXiv:1404.2893. It does not characterize all
+K\"othe spaces whose indicator constant is \(\log 2\).
+
+\section*{Source Context}
+
+The source note summarizes Kalton's indicator formalism. For an
+indicator-like functional \(\Phi\), it writes
+\[
+  \Delta_\Phi(f,g)=\Phi(f)+\Phi(g)-\Phi(f+g),
+\]
+and requires a constant \(\delta(\Phi)\) such that
+\[
+  0\leq \Delta_\Phi(f,g)
+  \leq \delta(\Phi)\bigl(\|f\|_{1}+\|g\|_{1}\bigr).
+\]
+The note observes that for indicators of K\"othe spaces one always has
+\(\delta(\Phi)\leq \log 2\), that equality holds for \(L^1\), and then asks
+for what other spaces equality holds.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+For \(L_p\), the optimizing vector in the indicator definition is forced by a
+one-line Lagrange multiplier calculation: \(x^p\) is proportional to \(f\).
+Thus the \(L_p\) indicator is exactly \(1/p\) times the \(L_1\) entropy
+indicator. The defect \(\Delta_\Phi\) is therefore also scaled by \(1/p\).
+Kalton's universal \(\log 2\) bound is just the binary entropy bound, and
+disjoint equal-mass functions make this bound sharp.
+
+\section*{Result}
+
+Let \((S,\Sigma,\mu)\) be a measure space. For \(f\geq0\), set
+\[
+  \Lambda(f)
+  = \int_S f\log f\,d\mu-\|f\|_1\log\|f\|_1,
+\]
+with the usual conventions \(0\log0=0\) and \(\Lambda(0)=0\).
+
+\begin{theorem}[Exact \(L_p\) indicator constants]
+\label{thm:lp}
+Let \(1\leq p<\infty\). On the natural finite-entropy domain of the
+indicator for \(L_p(S,\mu)\),
+\[
+  \Phi_{L_p}(f)=\frac1p\Lambda(f).
+\]
+Consequently,
+\[
+  0\leq \Delta_{\Phi_{L_p}}(f,g)
+  \leq \frac{\log 2}{p}\bigl(\|f\|_1+\|g\|_1\bigr).
+\]
+If the measure algebra contains two disjoint sets of finite positive measure,
+then the optimal constant is exactly \((\log 2)/p\). For \(L_\infty\), the
+optimal constant is \(0\).
+\end{theorem}
+
+\begin{proof}
+Fix \(1\leq p<\infty\) and \(f\geq0\), \(f\neq0\), with finite entropy.
+Writing \(m=\|f\|_1\), the indicator is
+\[
+  \Phi_{L_p}(f)=
+  \sup_{\|x\|_p\leq1}\int_S f\log|x|\,d\mu.
+\]
+The strict concavity of \(x\mapsto \log x\) and the constraint
+\(\int |x|^p\,d\mu\leq1\) give the maximizer
+\[
+  x_f=\left(\frac{f}{m}\right)^{1/p}
+\]
+on the support of \(f\). Therefore
+\[
+  \Phi_{L_p}(f)
+  =\frac1p\int_S f\log\frac{f}{m}\,d\mu
+  =\frac1p\Lambda(f).
+\]
+The case \(f=0\) is immediate.
+
+It remains to recall the sharp entropy-defect bound for \(\Lambda\). Let
+\(a=\|f\|_1\), \(b=\|g\|_1\), \(h=f+g\), and \(m=a+b\). On the set where
+\(h>0\), put \(u=f/h\), and define the binary entropy
+\[
+  H(t)=-t\log t-(1-t)\log(1-t).
+\]
+A direct expansion gives
+\[
+  \Delta_{\Lambda}(f,g)
+  = m H(a/m)-\int_S h\,H(u)\,d\mu .
+\]
+Since \(H\) is concave and \(\int h u\,d\mu=a\), Jensen's inequality gives
+\(\int hH(u)\,d\mu\leq mH(a/m)\). Hence \(\Delta_\Lambda(f,g)\geq0\).
+Also \(H(a/m)\leq \log 2\), so
+\[
+  \Delta_{\Lambda}(f,g)\leq m\log2.
+\]
+Multiplying by \(1/p\) proves the displayed upper bound.
+
+If \(E,F\) are disjoint measurable sets with \(0<\mu(E),\mu(F)<\infty\), take
+\[
+  f=\mu(E)^{-1}\1_E,\qquad g=\mu(F)^{-1}\1_F.
+\]
+Then \(a=b=1\), \(u\in\{0,1\}\) almost everywhere on the support of \(h\), so
+\(\int hH(u)=0\) and \(\Delta_\Lambda(f,g)=2\log2\). The ratio
+\(\Delta_{\Phi_{L_p}}(f,g)/(\|f\|_1+\|g\|_1)\) is therefore
+\((\log2)/p\), proving optimality.
+
+For \(L_\infty\), the constraint \(\|x\|_\infty\leq1\) gives
+\(\log |x|\leq0\), while \(x=1\) gives value \(0\). Thus
+\(\Phi_{L_\infty}=0\) and the optimal defect constant is \(0\).
+\end{proof}
+
+\begin{corollary}[Weighted \(L_p\) spaces]
+\label{cor:weighted}
+Let \(w>0\) a.e. and \(1\leq p<\infty\). For \(L_p(w\,d\mu)\),
+\[
+  \Phi_{L_p(w)}(f)
+  =\frac1p\Lambda(f)-\frac1p\int_S f\log w\,d\mu
+\]
+whenever the right-hand side is finite. Hence the same defect bound and the
+same sharp constant \((\log2)/p\) hold whenever the measure space admits the
+disjoint equal-mass test functions in the indicator domain.
+\end{corollary}
+
+\begin{proof}
+The constrained maximizer is now
+\[
+  x_f=\left(\frac{f}{\|f\|_1 w}\right)^{1/p}.
+\]
+Substitution gives the displayed formula. The additional weight term is
+linear in \(f\), so it cancels from
+\(\Phi(f)+\Phi(g)-\Phi(f+g)\). The rest is Theorem~\ref{thm:lp}.
+\end{proof}
+
+\section*{Implication for the Source Question}
+
+The \(L_p\) scale does not provide new equality cases beyond the \(L^1\)
+endpoint. In every nondegenerate measure space covered by the theorem,
+\[
+  \delta(\Phi_{L_p})=\frac{\log2}{p},
+\]
+so equality with Kalton's universal upper bound \(\log2\) occurs exactly at
+\(p=1\) in this scale. Weighted \(L_1\) spaces have the same extremal constant,
+as expected from the cancellation of linear weight terms.
+
+\section*{Limitations and Novelty Check}
+
+This is only a partial result. It does not rule out non-\(L_1\) K\"othe spaces
+with \(\delta(\Phi)=\log2\), and it does not address the limiting-case
+questions about Kalton's Theorems 1.1 and 6.6 that immediately precede the
+indicator-constant question in the source.
+
+Local run indexes were searched for arXiv:1404.2893, Kalton, K\"othe,
+centralizer, indicator, \(\delta(\Phi)\), and \(\log2\). No duplicate packet
+for this exact calculation was found. A bounded web search for the exact
+phrases around ``delta(Phi)'', ``log 2'', ``Kothe'', and ``indicator'' found
+the source paper but no exact preexisting answer to this subcase. The
+calculation is elementary and may be folklore; the packet records it because it
+gives a clean, reviewable partial answer to item (9).
+
+\section*{Human Review Recommendation}
+
+Likely valid. Review should check the conventions in Kalton's indicator
+domain and the nondegeneracy assumptions needed for sharpness on the chosen
+measure space. The proof of the formula and the upper bound is independent of
+those sharpness assumptions.
+
+\begin{thebibliography}{9}
+
+\bibitem{CMR}
+M. Cwikel, M. Milman, and R. Rochberg,
+\emph{An introduction to Nigel Kalton's work on differentials of complex
+interpolation processes for Kothe spaces},
+arXiv:1404.2893, 2014.
+
+\bibitem{Kalton}
+N. J. Kalton,
+\emph{Differentials of complex interpolation processes for Kothe function
+spaces},
+Trans. Amer. Math. Soc. 333 (1992), no. 2, 479--529.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\calG}{\mathcal G}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A harmonic counterexample for the power-profile \(f\)-greedy question}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{2026-06-21}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+The source paper is Pablo M. Berna and Hung Viet Chu,
+\emph{On Some Characterizations of Greedy-type Bases}, arXiv:2201.12029.
+For \(f:\N\to\mathbb R\) and a finite set
+\(A=\{a_1<\cdots<a_m\}\), define
+\[
+        1_{f,A}=\sum_{r=1}^m f(r)e_{a_r},
+        \qquad
+        \calD_m^f(x)=
+        \inf_{\substack{|A|=m\\ \alpha\in\mathbb R}}
+        \|x-\alpha 1_{f,A}\|.
+\]
+A basis is called \(f\)-greedy if there is \(C_f\) such that
+\[
+        \|x-\calG_m(x)\|\le C_f \calD_m^f(x)
+        \qquad (x\in X,\ m\in\N).
+        \tag{1}
+\]
+The first future-research question in the source asks for a characterization
+of the functions \(f\) for which (1) is equivalent to ordinary greediness.
+The source proves the equivalence for regular \(f\), constructs non-greedy
+examples for sparse \(f\), and explicitly points to
+\[
+        f(n)=n^{-p},\qquad p>0,
+\]
+as a class outside both results.
+
+\section*{Counterexample theorem}
+
+\begin{theorem}\label{thm:counterexample}
+For every \(p>0\), there is a normalized Schauder basis which is
+\(f_p\)-greedy for \(f_p(n)=n^{-p}\) but is not greedy.  In fact the same
+basis works for every \(p>0\).
+\end{theorem}
+
+\section*{Idea of the proof}
+
+Use the harmonic norm
+\[
+        \|x\|_h=\max\left\{\|x\|_\infty,\sum_{n=1}^\infty \frac{|x_n|}{n}\right\}.
+\]
+Initial intervals have norm \(1+1/2+\cdots+1/m\), while \(m\) coordinates far
+out have norm \(1\), so the unit vector basis is not democratic.  The reason
+it is still \(n^{-p}\)-greedy is that the weighted tail
+\[
+        \sum_{r\ge q}\frac{r^{-p}}{r}
+\]
+is comparable to \(q^{-p}\).  Thus the first missed \(f_p\)-coefficient pays
+for the whole remaining harmonic tail.
+
+\section*{Proof}
+
+Let
+\[
+        X=\left\{x=(x_n)\in c_0:
+        \sum_{n=1}^\infty \frac{|x_n|}{n}<\infty\right\}
+\]
+with norm
+\[
+        \|x\|=\max\left\{\sup_n |x_n|,
+        \sum_{n=1}^\infty \frac{|x_n|}{n}\right\}.
+        \tag{2}
+\]
+The canonical unit vectors \((e_n)\) form a normalized, \(1\)-unconditional
+Schauder basis.  Indeed, the coordinate projections are contractive, and
+partial sums converge in both the \(c_0\) and weighted \(\ell_1\) parts of
+(2).
+
+The basis is not democratic.  If \(A_m=\{1,\ldots,m\}\), then
+\[
+        \|1_{A_m}\|=\sum_{n=1}^m \frac{1}{n}.
+\]
+On the other hand, for each \(m\) one may choose \(N\) so large that
+\(\sum_{n=N+1}^{N+m}1/n\le 1\).  Then
+\[
+        \left\|\sum_{n=N+1}^{N+m}e_n\right\|=1.
+\]
+The democracy constants therefore tend to infinity.  Since the basis is
+unconditional, the Konyagin--Temlyakov characterization implies that it is not
+greedy.
+
+It remains to prove \(f_p\)-greediness.  Fix \(p>0\) and write
+\[
+        f(r)=r^{-p}.
+\]
+Let \(x\in X\), let \(\Lambda\) be the natural order-\(m\) greedy set of \(x\),
+and put \(y=x-P_\Lambda x\).  We shall show that for every \(m\)-point set
+\(A=\{a_1<\cdots<a_m\}\) and every scalar \(\alpha\),
+\[
+        \|y\|\le \left(3+\frac{2}{p}\right)
+        \|x-\alpha 1_{f,A}\|.
+        \tag{3}
+\]
+Taking the infimum over \(A\) and \(\alpha\) proves (1).
+
+Set
+\[
+        z=x-\alpha 1_{f,A},\qquad \delta=\|z\|.
+\]
+First, \(\|y\|_\infty\le \delta\).  Indeed, let \(i\notin\Lambda\).  If
+\(i\notin A\), then \(y_i=x_i=z_i\).  If \(i\in A\setminus\Lambda\), then
+because \(|A|=|\Lambda|\), there is \(j\in\Lambda\setminus A\).  Since
+\(\Lambda\) is greedy, \(|x_j|\ge |x_i|\), and \(z_j=x_j\); hence
+\(|y_i|=|x_i|\le\delta\).
+
+For the harmonic part, write
+\[
+        R=\{r\in\{1,\ldots,m\}: a_r\notin\Lambda\}.
+\]
+Then
+\begin{equation}
+\begin{aligned}
+        \sum_{i\notin\Lambda}\frac{|x_i|}{i}
+        &\le
+        \sum_{i\notin\Lambda}\frac{|z_i|}{i}
+        +|\alpha|\sum_{r\in R}\frac{r^{-p}}{a_r}  \\
+        &\le \delta+
+        |\alpha|\sum_{r\in R}\frac{r^{-p}}{a_r}.
+\end{aligned}
+\tag{4}
+\end{equation}
+If \(R=\varnothing\), (4) already gives the desired estimate.  Otherwise let
+\(q=\min R\).  Since \(a_q\in A\setminus\Lambda\), choose
+\(j\in\Lambda\setminus A\).  Then \(|x_j|\ge |x_{a_q}|\), while
+\[
+        z_{a_q}=x_{a_q}-\alpha q^{-p},
+        \qquad z_j=x_j.
+\]
+Consequently
+\[
+        \delta\ge
+        \max\{|x_{a_q}|,\ |x_{a_q}-\alpha q^{-p}|\}
+        \ge \frac{|\alpha|q^{-p}}{2}.
+        \tag{5}
+\]
+Also \(a_r\ge r\) for every \(r\), so
+\[
+        \sum_{r\in R}\frac{r^{-p}}{a_r}
+        \le
+        \sum_{r=q}^\infty \frac{1}{r^{p+1}}
+        \le \left(1+\frac{1}{p}\right)q^{-p}.
+        \tag{6}
+\]
+Combining (5) and (6) gives
+\[
+        |\alpha|\sum_{r\in R}\frac{r^{-p}}{a_r}
+        \le 2\left(1+\frac{1}{p}\right)\delta.
+\]
+Together with (4),
+\[
+        \sum_{i\notin\Lambda}\frac{|x_i|}{i}
+        \le \left(3+\frac{2}{p}\right)\delta.
+\]
+The supremum estimate and the weighted estimate prove (3), so the basis is
+\(f_p\)-greedy.  This completes the counterexample.
+
+\section*{Verification notes}
+
+The proof is direct and does not use computation.  The only source-paper input
+needed for context is the definition of \(f\)-greediness and the
+Konyagin--Temlyakov characterization of greedy bases as unconditional plus
+democratic.
+
+The earlier partial packet
+\[
+\texttt{solutions/partial/2201.12029\_power\_profile\_log\_democracy/}
+\]
+is consistent with this counterexample: the present basis has precisely the
+harmonic logarithmic democracy growth that the partial theorem allowed.
+
+\section*{Novelty check}
+
+The run indexes were searched for arXiv:2201.12029, \(f\)-greedy,
+\(\calD_m^f\), power-profile terminology, \(1/n^p\), and the earlier partial
+packet.  Web searches on 2026-06-21 for exact phrases around
+``f-greedy \(n^{-p}\) counterexample'', ``\(D_m^f\) harmonic greedy basis'',
+and the source title with ``\(1/n^p\)'' found no later matching answer.
+
+\section*{References}
+
+\begin{enumerate}[label={[\arabic*]}]
+\item P. M. Berna and H. V. Chu,
+      \emph{On Some Characterizations of Greedy-type Bases},
+      arXiv:2201.12029.
+\item S. V. Konyagin and V. N. Temlyakov,
+      A remark on greedy approximation in Banach spaces,
+      East J. Approx. 5 (1999), 365--379.
+\end{enumerate}
+
+\end{document}

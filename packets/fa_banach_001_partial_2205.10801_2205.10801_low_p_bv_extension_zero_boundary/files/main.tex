@@ -1,0 +1,406 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Om}{\Omega}
+\newcommand{\dd}{\,d}
+\newcommand{\BV}{BV}
+\newcommand{\capOmega}{\cap\Omega}
+\newcommand{\onecrit}{1^\ast}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A Low-\(p\) Zero-Boundary Result for Sobolev-to-\(BV\) Extension Domains}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_08}}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+Rajala and Zhu ask whether the boundary of a
+\((W^{1,p},BV)\)-extension domain must have Lebesgue measure zero in the
+remaining range \(1<p\le (n-1)/(n-2)\) \cite[Question 1.3]{RZ}.
+The question appears on PDF page 3 of arXiv:2205.10801 and in the parsed
+source at \texttt{main.tex:308--312}.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_page.png}
+\end{center}
+
+\section*{Result}
+
+This packet proves the zero-boundary conclusion in a strict low-\(p\) subrange
+of the open interval, without the \(1\)-fatness assumption used in the source
+paper.
+
+\begin{theorem}\label{thm:main}
+Let \(n\ge 2\), let \(\Om\subset\R^n\) be a bounded
+\((W^{1,p},BV)\)-extension domain, and assume
+\[
+  1<p<\onecrit:=\frac{n}{n-1}.
+\]
+Then \(|\partial\Om|=0\).
+\end{theorem}
+
+For \(n\ge3\), this covers a genuine subrange of Rajala--Zhu's Question 1.3,
+because
+\[
+  \frac{n}{n-1}<\frac{n-1}{n-2}.
+\]
+For \(n=2\), Rajala--Zhu already prove the stronger planar statement for every
+\(1\le p<\infty\).
+
+\section*{Definitions and Imported Facts}
+
+A domain \(\Om\subset\R^n\) is a \((W^{1,p},BV)\)-extension domain if there is
+an operator \(E:W^{1,p}(\Om)\to BV(\R^n)\) such that \(E(u)=u\) on \(\Om\) and
+\[
+  \|E(u)\|_{BV(\R^n)}\le C_E\|u\|_{W^{1,p}(\Om)}
+\]
+for all \(u\in W^{1,p}(\Om)\). Linearity is not assumed.
+
+We use three standard ingredients. First, the global Sobolev embedding for
+functions of bounded variation gives
+\[
+  \|w\|_{L^{\onecrit}(\R^n)}\le C_n\|w\|_{BV(\R^n)}.
+\]
+Second, the local \(BV\) Sobolev-Poincare inequality on balls gives
+\[
+  \inf_{a\in\R}\|w-a\|_{L^{\onecrit}(B)}
+       \le C_n\|Dw\|(B)
+       \qquad (w\in BV(B)).
+\]
+Third, Rajala--Zhu define a bounded quasiadditive set function \(\Phi\) for
+\((W^{1,p},BV)\)-extension domains \cite[Lemmas 3.2--3.4]{RZ}. For open
+\(U\subset\R^n\), set
+\[
+  W^p_0(U,\Om)
+   =\{u\in W^{1,p}(\Om)\cap C(\Om):u=0\text{ on }\Om\setminus U\},
+\]
+\[
+  \Gamma(u)=\inf\{\|Dv\|(U): v\in BV(\R^n),\ v|_\Om=u\},
+\]
+and
+\[
+  \Phi(U)
+    =\sup_{u\in W^p_0(U,\Om)}
+       \left(\frac{\Gamma(u)}
+       {\|u\|_{W^{1,p}(U\cap\Om)}}\right)^k,
+  \qquad \frac1k=1-\frac1p .
+\]
+Then \(\overline{D\Phi}(x)<\infty\) for almost every \(x\in\R^n\), where
+\[
+  \overline{D\Phi}(x)
+     =\limsup_{r\downarrow0}\frac{\Phi(B(x,r))}{|B(x,r)|}.
+\]
+Moreover, for every ball \(B(x,r)\) and every \(u\in W^p_0(B(x,r),\Om)\) there
+is \(v\in BV(B(x,r))\) with \(v=u\) on \(B(x,r)\cap\Om\) and
+\[
+  \|Dv\|(B(x,r))
+       \le 2\Phi(B(x,r))^{1/k}
+             \|u\|_{W^{1,p}(B(x,r)\cap\Om)}.
+\]
+
+\section*{Proof Intuition}
+
+Koskela and Mishra prove that a bounded \((W^{1,p},W^{1,q})\)-extension domain
+has zero boundary measure when \(1\le q<p<q^\ast=qn/(n-q)\) \cite{KM}. Their
+argument has two parts: a lower density bound obtained from the global Sobolev
+embedding, and an upper decay iteration at boundary density points obtained
+from a local set-function extension estimate.
+
+For \(BV\), the role of \(q^\ast\) is played by the critical \(BV\) exponent
+\(\onecrit=n/(n-1)\). The Rajala--Zhu set function gives exactly the local
+variation estimate needed for the upper decay half of the argument. Thus the
+Koskela--Mishra iteration adapts when \(p<\onecrit\). The strict inequality is
+essential in this method: it is what makes small boundary-density volume
+absorb the right side of the BV Sobolev-Poincare estimate.
+
+\section*{Proof}
+
+Put
+\[
+  m_x(r)=|B(x,r)\cap\Om|.
+\]
+
+\begin{lemma}[Lower content bound]\label{lem:lower}
+Assume \(1<p<\onecrit\). There are constants \(\delta>0\) and
+\[
+  s=\left(\frac1p-\frac1{\onecrit}\right)^{-1}\ge n
+\]
+such that
+\[
+  m_x(r)\ge \delta r^s
+\]
+for every \(x\in\partial\Om\) and all sufficiently small \(r>0\).
+\end{lemma}
+
+\begin{proof}
+The proof is the \(BV\) analogue of the first density lemma of
+Koskela--Mishra \cite[Lemma 3.1]{KM}. Let \(x\in\partial\Om\) and fix a small
+\(r>0\). Choose radii
+\[
+  r=r_0>r_1>r_2>\cdots\downarrow0
+\]
+so that
+\[
+  m_x(r_j)=2^{-j}m_x(r).
+\]
+If necessary, one chooses continuity radii for \(m_x\) and then passes to the
+limit; this does not change the estimate.
+
+For \(j\ge1\), let \(u_j\) be the Lipschitz cutoff on \(\Om\) which equals
+\(1\) on \(B(x,r_j)\cap\Om\), vanishes outside \(B(x,r_{j-1})\cap\Om\), and
+has Lipschitz constant at most \((r_{j-1}-r_j)^{-1}\). Since \(r\) is small,
+\[
+  \|u_j\|_{W^{1,p}(\Om)}
+     \le C(r_{j-1}-r_j)^{-1}m_x(r_{j-1})^{1/p}.
+\]
+Let \(Eu_j\) be a global \(BV\) extension. By the \(BV\) Sobolev embedding and
+the boundedness of the extension operator,
+\[
+  m_x(r_j)^{1/\onecrit}
+      \le \|Eu_j\|_{L^{\onecrit}(\R^n)}
+      \le C\|Eu_j\|_{BV(\R^n)}
+      \le C(r_{j-1}-r_j)^{-1}m_x(r_{j-1})^{1/p}.
+\]
+Using \(m_x(r_j)=2^{-j}m_x(r)\), this gives
+\[
+  r_{j-1}-r_j
+      \le C\,m_x(r)^{1/p-1/\onecrit}
+             2^{-j(1/p-1/\onecrit)}.
+\]
+Since \(p<\onecrit\), the geometric series converges, and summing in \(j\)
+yields
+\[
+  r\le C\,m_x(r)^{1/p-1/\onecrit}.
+\]
+Equivalently \(m_x(r)\ge\delta r^s\), with
+\(s=(1/p-1/\onecrit)^{-1}\).
+\end{proof}
+
+For \(x\in\partial\Om\), define the annulus
+\[
+  A_{r_1,r_2,\Om}
+     =\{y\in\Om:r_1<|y-x|<r_2\}.
+\]
+
+\begin{lemma}[Small-density annular estimate]\label{lem:min}
+Let \(x\in\partial\Om\) satisfy
+\[
+  \limsup_{r\downarrow0}\frac{m_x(r)}{r^n}=0
+  \qquad\text{and}\qquad
+  \overline{D\Phi}(x)<\infty .
+\]
+Then for every \(c>0\) there is \(r_{x,c}>0\) such that, whenever
+\(0<r<r_{x,c}\),
+\[
+  \min\{|A_{r,2r,\Om}|,\ m_x(r/2)\}\le c\,m_x(r).
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(a=\onecrit=n/(n-1)\). Since \(\overline{D\Phi}(x)<\infty\), for all
+small \(r\),
+\[
+  \Phi(B(x,2r))^{1/k}\le C_x r^{n/k}
+      =C_x r^{\,n-n/p}.
+\]
+Let \(u\in W^p_0(B(x,2r),\Om)\) be the radial cutoff satisfying
+\[
+ u=1\text{ on }B(x,r/2)\cap\Om,\qquad
+ u=0\text{ on }\Om\setminus B(x,r),\qquad
+ |\nabla u|\le 2/r.
+\]
+Rajala--Zhu's local extension lemma gives \(v\in BV(B(x,2r))\), equal to \(u\)
+on \(B(x,2r)\cap\Om\), with
+\[
+  \|Dv\|(B(x,2r))
+      \le C_x r^{\,n-n/p}
+          \left(m_x(r)^{1/p}
+          +r^{-1}|A_{r/2,r,\Om}|^{1/p}\right).
+\]
+
+The function \(v\) equals \(1\) on \(B(x,r/2)\cap\Om\) and \(0\) on
+\(A_{r,2r,\Om}\). Applying the \(BV\) Sobolev-Poincare inequality to
+\(v-v_{B(x,2r)}\) gives
+\[
+\begin{aligned}
+  \min\{|A_{r,2r,\Om}|^{1/a},m_x(r/2)^{1/a}\}
+   &\le C\|Dv\|(B(x,2r))  \\
+   &\le C_x\left(
+        r^{\,n-n/p}m_x(r)^{1/p}
+       +r^{\,n-n/p-1}|A_{r/2,r,\Om}|^{1/p}\right).
+\end{aligned}
+\]
+Set \(Y=\min\{|A_{r,2r,\Om}|,m_x(r/2)\}\). Since
+\(|A_{r/2,r,\Om}|\le m_x(r)\), raising the last inequality to the power \(a\)
+gives
+\[
+  Y\le C_x\left(
+        r^{(n-n/p)a}m_x(r)^{a/p}
+       +r^{(n-n/p-1)a}m_x(r)^{a/p}\right).
+\]
+The density assumption says that for every \(\eta>0\), after decreasing
+\(r_{x,\eta}\) we have \(m_x(r)\le\eta r^n\). Because \(p<a\),
+\[
+  r^{(n-n/p)a}m_x(r)^{a/p}
+      \le C\eta^{a/p-1}m_x(r)
+\]
+for \(r<1\), and the critical exponent identity \(a=n/(n-1)\) gives
+\[
+  r^{(n-n/p-1)a}m_x(r)^{a/p}
+      \le C\eta^{a/p-1}m_x(r).
+\]
+Choosing \(\eta\) so small that \(C_x\eta^{a/p-1}<c\) proves the claim.
+\end{proof}
+
+\begin{lemma}[Annular iteration]\label{lem:upper}
+Under the hypotheses of Lemma \ref{lem:min}, for every \(0<c<1/2\) there is
+\(r_{x,c}>0\) such that
+\[
+  m_x(r/2)\le c\,m_x(r)
+\]
+whenever \(0<r<r_{x,c}\).
+\end{lemma}
+
+\begin{proof}
+This is the purely measure-theoretic annular iteration of
+Koskela--Mishra \cite[Lemma 3.3]{KM}, applied after Lemma \ref{lem:min}. We
+recall the short argument. If the minimum in Lemma \ref{lem:min} is
+\(m_x(r/2)\), there is nothing to prove. Otherwise
+\[
+  |A_{r,2r,\Om}|\le c\,m_x(r).
+\]
+Repeating Lemma \ref{lem:min} at radii \(2r,4r,\ldots\), one inductively
+forces the minimum to be the corresponding annular term; if at some step it
+were the inner ball term, the inequality
+\[
+  m_x(2^{j-1}r)\le c\bigl(m_x(2^{j-1}r)+|A_{2^{j-1}r,2^jr,\Om}|\bigr)
+\]
+together with the previous annular bounds would contradict \(c<1/2\). Hence
+\[
+  |A_{2^{j-1}r,2^jr,\Om}|\le (1+c)^j m_x(r)
+\]
+for all \(j\) with \(2^jr\) below a fixed small radius \(R\).
+
+Choose \(j\) with \(R/2\le 2^{j-1}r\le R\). Since \(\Om\) is connected and
+\(x\in\partial\Om\), after taking \(R<\diam(\Om)/6\) the annuli
+\(A_{s/2,s,\Om}\), \(R\le s\le2R\), all have positive measure; by continuity
+in \(s\) their measures have a positive lower bound \(\sigma\). On the other
+hand, the displayed upper bound and \(m_x(r)\le C_nr^n\) imply
+\[
+  \sigma\le (1+c)^j C_nr^n\le C_NR\,r^{\,n-1},
+\]
+which is impossible for sufficiently small \(r\). Thus the alternative in
+which the minimum is the annulus cannot occur at small scales, and the desired
+decay \(m_x(r/2)\le c\,m_x(r)\) follows.
+\end{proof}
+
+We now prove Theorem \ref{thm:main}. Suppose, for contradiction, that
+\(|\partial\Om|>0\). By the Lebesgue density theorem and the almost-everywhere
+finiteness of \(\overline{D\Phi}\), there is
+\[
+  x\in\partial\Om
+\]
+such that \(x\) is a Lebesgue density point of \(\partial\Om\) and
+\(\overline{D\Phi}(x)<\infty\). At such a point,
+\[
+  \frac{m_x(r)}{r^n}\to0.
+\]
+
+Let \(s=(1/p-1/\onecrit)^{-1}\) be the exponent from Lemma \ref{lem:lower},
+and choose \(c<2^{-s}\). By Lemma \ref{lem:upper}, for all small \(r\),
+\[
+  m_x(r/2)\le c\,m_x(r).
+\]
+Iterating gives
+\[
+  m_x(2^{-j}r)\le c^j m_x(r).
+\]
+The lower content bound gives, for all large \(j\),
+\[
+  \delta(2^{-j}r)^s\le m_x(2^{-j}r)\le c^j m_x(r).
+\]
+Equivalently,
+\[
+  \frac{\delta r^s}{m_x(r)}\le (2^s c)^j.
+\]
+The left side is fixed and positive, while \(2^s c<1\), so the right side
+tends to \(0\), a contradiction. Therefore \(|\partial\Om|=0\).
+
+\section*{Verification Notes}
+
+The proof uses the Rajala--Zhu local \(BV\) extension lemma exactly in the
+form stated in their Lemma 3.4. The only adaptation point is replacing the
+\(W^{1,q}\) Sobolev-Poincare step in Koskela--Mishra by the critical
+\(BV\) Sobolev-Poincare inequality. The exponent arithmetic is:
+\[
+  (n-n/p-1)\onecrit+n(\onecrit/p-1)=0,
+\]
+so the annular term is absorbed precisely because \(\onecrit/p-1>0\), i.e.
+\(p<\onecrit\).
+
+\section*{Limitations and Novelty Check}
+
+This is not a full answer to Rajala--Zhu Question 1.3. It leaves open
+\[
+  \frac{n}{n-1}\le p\le \frac{n-1}{n-2}
+  \qquad (n\ge3).
+\]
+The endpoint \(p=\onecrit\) is not reached by this route because the
+small-density absorption exponent \(\onecrit/p-1\) becomes zero.
+
+The run indexes were searched for arXiv:2205.10801 and for close phrases
+involving \((W^{1,p},BV)\)-extension domains, zero-volume boundary, Sobolev to
+\(BV\), and Question 1.3. A web search on 2026-07-18 found the source paper
+\cite{RZ}, the 2025 Koskela--Mishra theorem for \((W^{1,p},W^{1,q})\)-extension
+domains \cite{KM}, and the earlier Koskela--Ukhlov--Zhu examples/theorem
+\cite{KUZ}, but no exact statement of the \((W^{1,p},BV)\) low-\(p\) theorem
+above. Since the proof is a close adaptation of \cite{KM}, the novelty claim
+should be read conservatively: it is plausibly new as an explicit BV corollary,
+or at minimum a useful recorded implication not currently indexed in the run.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid partial theorem. The most important checks are the
+local \(BV\) Sobolev-Poincare min-estimate in Lemma \ref{lem:min}, the
+annular iteration import from Koskela--Mishra, and the endpoint obstruction
+at \(p=n/(n-1)\). If a later literature source already states this exact
+\((W^{1,p},BV)\) subcase, reclassify the packet as a literature-implied answer.
+
+\begin{thebibliography}{9}
+
+\bibitem{RZ}
+T. Rajala and Z. Zhu,
+\emph{Zero volume boundary for extension domains from Sobolev to \(BV\)},
+arXiv:2205.10801; Revista Matematica Complutense, published online 2024,
+DOI \href{https://doi.org/10.1007/s13163-024-00485-6}{10.1007/s13163-024-00485-6}.
+
+\bibitem{KM}
+P. Koskela and R. Mishra,
+\emph{The volume of the boundary of a Sobolev \((p,q)\)-extension domain II},
+arXiv:2409.01170; Calculus of Variations and Partial Differential Equations
+\textbf{64} (2025), Article 84,
+DOI \href{https://doi.org/10.1007/s00526-025-02934-6}{10.1007/s00526-025-02934-6}.
+
+\bibitem{KUZ}
+P. Koskela, A. Ukhlov, and Z. Zhu,
+\emph{The volume of the boundary of a Sobolev \((p,q)\)-extension domain},
+Journal of Functional Analysis \textbf{283} (2022), Article 109703,
+DOI \href{https://doi.org/10.1016/j.jfa.2022.109703}{10.1016/j.jfa.2022.109703}.
+
+\end{thebibliography}
+
+\end{document}

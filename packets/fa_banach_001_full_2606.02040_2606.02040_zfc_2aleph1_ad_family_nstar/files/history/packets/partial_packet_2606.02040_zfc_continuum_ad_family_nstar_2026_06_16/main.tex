@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\clop}[1]{N_{#1}}
+\newcommand{\restr}{\upharpoonright}
+
+\title{A ZFC Continuum-Sized Almost Disjoint Family on \(\mathbb N^*\)}
+\author{Run \texttt{fa\_banach\_001}, lane 13}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Candidate partial result, likely valid. The packet gives a ZFC lower bound for
+Question 4.3 of Lambie-Hanson--Schrittesser \cite{LHS2026}. It does not settle
+the full requested cardinalities \(2^{\aleph_1}\) or \(2^{2^{\aleph_0}}\) in
+all models.
+
+\section*{Source Question}
+
+The source paper defines an almost disjoint family on a topological space \(X\)
+to be a family of noncompact regular open subsets of \(X\) whose pairwise
+intersections are compact. Question 4.3 asks:
+
+\begin{quote}
+Is it provable in ZFC that there exists an almost disjoint family on
+\(\mathbb N^*\) of cardinality \(2^{\aleph_1}\), or even of cardinality
+\(2^{2^{\aleph_0}}\)?
+\end{quote}
+
+The source crop from page 10 is:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+The construction embeds the ordinary almost disjoint-family trick into
+\(\mathbb N^*\), but each ordinary almost disjoint set is expanded into a
+noncompact regular open set. A branch \(A_x\subseteq\omega\) is split into
+infinitely many infinite blocks. The finite initial unions of these blocks give
+an increasing sequence of clopen subsets of \(\mathbb N^*\); their union is
+open and noncompact. Regularity is the only point to check. If an ultrafilter
+is outside the union, then every basic neighborhood of it can be thinned either
+outside the branch \(A_x\), or to one point in infinitely many tail blocks, and
+the resulting basic clopen set misses the union.
+
+\begin{theorem}
+In ZFC, there is an almost disjoint family on \(\mathbb N^*\), in the sense of
+Definition 2.1 of \cite{LHS2026}, of cardinality \(2^{\aleph_0}\).
+\end{theorem}
+
+\begin{proof}
+Identify \(2^{<\omega}\) with \(\omega\). For each branch \(x\in 2^\omega\),
+let
+\[
+  A_x=\{x\restr n:n<\omega\}\subseteq 2^{<\omega}\cong \omega.
+\]
+Then \(\{A_x:x\in 2^\omega\}\) is a classical almost disjoint family on
+\(\omega\) of size \(2^{\aleph_0}\).
+
+For each \(x\in 2^\omega\), fix a partition
+\[
+  A_x=\bigsqcup_{n<\omega} A_{x,n}
+\]
+into infinite sets, and for \(n\geq 1\) set
+\[
+  b_{x,n}=\bigcup_{m<n} A_{x,m}.
+\]
+For an infinite \(a\subseteq\omega\), write
+\[
+  N_a=\{p\in\mathbb N^*:a\in p\}
+\]
+for the corresponding basic clopen subset of \(\mathbb N^*\). Define
+\[
+  U_x=\bigcup_{n\geq 1}N_{b_{x,n}}.
+\]
+Each \(U_x\) is open.
+
+We first show that \(U_x\) is regular open. It is enough to prove that every
+point outside \(U_x\) is outside the interior of \(\overline{U_x}\). Fix
+\(p\in\mathbb N^*\setminus U_x\), and let \(N_y\) be a basic neighborhood of
+\(p\), so \(y\in p\) is infinite. Since \(p\notin U_x\), we have
+\(b_{x,n}\notin p\) for every \(n\geq 1\). Therefore \(y\setminus b_{x,n}\)
+is infinite for every \(n\); otherwise \(y\subseteq^* b_{x,n}\), which would
+force \(b_{x,n}\in p\).
+
+If \(y\setminus A_x\) is infinite, choose an infinite
+\(z\subseteq y\setminus A_x\). Then \(z\cap b_{x,n}=\emptyset\) for all \(n\),
+so \(N_z\subseteq N_y\) is disjoint from \(U_x\).
+
+Otherwise \(y\setminus A_x\) is finite. Since \(y\setminus b_{x,n}\) is
+infinite for every \(n\), the set \(y\) meets infinitely many blocks
+\(A_{x,k}\). Choose an infinite \(z\subseteq y\cap A_x\) containing at most
+one point from each block \(A_{x,k}\). Then \(z\cap b_{x,n}\) is finite for
+every \(n\). Hence \(N_z\cap N_{b_{x,n}}=\emptyset\) inside \(\mathbb N^*\)
+for every \(n\), and again \(N_z\subseteq N_y\) is disjoint from \(U_x\).
+
+Thus no point of \(\mathbb N^*\setminus U_x\) lies in the interior of
+\(\overline{U_x}\). Since \(U_x\) is open, \(U_x=\operatorname{int}
+\overline{U_x}\), so \(U_x\) is regular open.
+
+Next, \(U_x\) is not compact. Indeed, it is covered by the increasing open
+cover \(\{N_{b_{x,n}}:n\geq 1\}\). No finite subfamily covers \(U_x\), because
+\(N_{b_{x,n+1}}\not\subseteq N_{b_{x,n}}\): the infinite set
+\(A_{x,n}=b_{x,n+1}\setminus b_{x,n}\) yields nonprincipal ultrafilters in
+\(N_{b_{x,n+1}}\setminus N_{b_{x,n}}\). Therefore \(U_x\) is noncompact.
+
+Finally, if \(x\neq y\), then \(A_x\cap A_y\) is finite. Hence
+\(b_{x,n}\cap b_{y,m}\) is finite for all \(n,m\), so
+\[
+  N_{b_{x,n}}\cap N_{b_{y,m}}=\emptyset
+\]
+inside \(\mathbb N^*\). It follows that \(U_x\cap U_y=\emptyset\), which is
+compact. Therefore \(\{U_x:x\in2^\omega\}\) is an almost disjoint family on
+\(\mathbb N^*\) of cardinality \(2^{\aleph_0}\).
+\end{proof}
+
+\section*{Scope and Limitations}
+
+This is a partial answer to Question 4.3. It proves the ZFC lower bound
+\(2^{\aleph_0}\). It does not prove in ZFC that there is such a family of
+cardinality \(2^{\aleph_1}\), nor of cardinality \(2^{2^{\aleph_0}}\). In
+models satisfying \(2^{\aleph_0}=2^{\aleph_1}\), the theorem reaches the first
+cardinal target in Question 4.3, but the general case where
+\(2^{\aleph_0}<2^{\aleph_1}\) remains outside this packet.
+
+\section*{Novelty and Search Notes}
+
+The local run indexes were searched for arXiv id 2606.02040, the title, and
+core phrases around generalized almost disjoint families on \(\mathbb N^*\).
+External web search was performed for the exact source question and close
+phrases including ``Ext\({}^2(c_0(\omega_1),c_0)\)'', ``injective dimension
+\(c_0\)'', and ``almost disjoint family on \(N^*\) \(2^{\aleph_1}\)''. The
+search surfaced the source paper itself but no separate later answer. The
+construction above is elementary and should be reviewed as a direct ZFC
+partial result rather than as a claimed literature resolution of Question 4.3.
+
+\section*{Human Review Recommendation}
+
+The key point for review is the regular-open verification. In particular,
+check the thinning argument for a basic neighborhood \(N_y\) of an ultrafilter
+outside \(U_x\). Once regularity is confirmed, noncompactness and pairwise
+compact intersections are immediate.
+
+\begin{thebibliography}{9}
+
+\bibitem{LHS2026}
+C. Lambie-Hanson and D. Schrittesser,
+\emph{Generalized almost disjoint families and injective Banach spaces},
+arXiv:2606.02040, 2026.
+\url{https://arxiv.org/abs/2606.02040}
+
+\end{thebibliography}
+
+\end{document}
+

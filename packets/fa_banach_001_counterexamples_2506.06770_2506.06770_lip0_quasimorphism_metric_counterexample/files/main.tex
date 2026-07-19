@@ -1,0 +1,220 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand{\Lipz}{\operatorname{Lip}_0}
+\newcommand{\defect}{\operatorname{def}}
+\newcommand{\PSL}{\operatorname{PSL}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+\title{A quasimorphism-metric counterexample to the Lip0 almost-invariant approximation question}
+\author{agent\_lane\_02}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate counterexample, likely valid.
+
+\noindent\textbf{Source paper.}
+Tomas Raunig, \emph{Almost-invariant elements of group actions on
+$\Lipz$ spaces}, arXiv:2506.06770, v1, submitted 7 June 2025
+\cite{Raunig2025}.
+
+\section{Source question}
+
+The target is Question 1.3 of \cite{Raunig2025}, on page 2.  It asks
+whether, for an isometric action of a discrete group $G$ on a pointed
+metric space $(M,d,0)$, every norm-one $f\in \Lipz(M)$ that is
+$\delta/10$-invariant for the induced action
+\[
+  \alpha(g,f)(x)=f(g^{-1}x)-f(g^{-1}0)
+\]
+must be within distance $\delta$ of an invariant element of $\Lipz(M)$.
+
+\begin{center}
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Proof Intuition}
+
+For a group acting on itself by left translations, Raunig proves that
+the invariant elements of $\Lipz(G)$ are exactly the real homomorphisms
+$G\to\mathbb R$.  So we choose a group with no nonzero real
+homomorphisms but with a nonzero homogeneous quasimorphism $q$.
+
+The defect of $q$ says that
+\[
+  q(a^{-1}x)-q(a^{-1})-q(x)
+\]
+is uniformly bounded in $x$.  If we put a large discrete term into a
+left-invariant metric, every such bounded defect function has very small
+Lipschitz constant.  At the same time, including the term
+$\abs{q(x^{-1}y)}$ in the metric keeps $q$ itself at Lipschitz norm one.
+Thus $q$ is almost invariant but cannot be close to any invariant
+function, because the invariant functions are all zero.
+
+\section{Counterexample}
+
+\begin{theorem}
+Question 1.3 of \cite{Raunig2025} has a negative answer.  More
+precisely, there are a discrete group $G$, a pointed metric space
+$(M,d,0)$ on which $G$ acts by isometries, a number $\delta_0=1/2$, and
+an element $f\in \Lipz(M)$ with $L(f)=1$ such that
+\[
+  \sup_{a\in G}\norm{\alpha(a,f)-f}\leq \frac{\delta_0}{10},
+\]
+but no invariant $\bar f\in\Lipz(M)$ satisfies
+$\norm{f-\bar f}\leq \delta_0$.
+\end{theorem}
+
+\begin{proof}
+Let $G=\PSL(2,\mathbb Z)$.  This group is isomorphic to
+$C_2*C_3$, so its abelianization is finite; hence
+\[
+  \Hom(G,\mathbb R)=0.
+\]
+It is also a non-elementary hyperbolic group.  By the standard
+Epstein--Fujiwara/Bestvina--Fujiwara quasimorphism theorem, in the
+form recorded for non-elementary hyperbolic groups in
+\cite[Theorem B]{FournierFacioWade2023}, $G$ admits a nonzero
+homogeneous quasimorphism $q:G\to\mathbb R$.  Put
+\[
+  D=\sup_{u,v\in G}\abs{q(uv)-q(u)-q(v)}.
+\]
+Since $G$ has no nonzero real homomorphism, this $q$ is not a
+homomorphism, and therefore $D>0$.
+
+Set $B=100D$.  Define $\rho:G\to[0,\infty)$ by
+\[
+  \rho(e)=0,\qquad
+  \rho(t)=B+\abs{q(t)}+D \quad (t\neq e),
+\]
+and define $d(x,y)=\rho(x^{-1}y)$.  We first check that this is a
+left-invariant metric.  Positivity and left invariance are immediate.
+Since $q$ is homogeneous, $q(t^{-1})=-q(t)$, so $\rho(t^{-1})=\rho(t)$
+and $d$ is symmetric.  For the triangle inequality, only the case
+$a,b,ab\neq e$ needs attention:
+\[
+  \rho(ab)
+   =B+\abs{q(ab)}+D
+   \leq B+\abs{q(a)}+\abs{q(b)}+2D
+   \leq \rho(a)+\rho(b).
+\]
+All cases where one of $a,b,ab$ is the identity are trivial.
+
+Now take the pointed metric space $M=(G,d,e)$, with $G$ acting on $M$
+by left translations.  This action is by isometries because $d$ is
+left invariant.  We claim that $q\in\Lipz(M)$ and $L(q)=1$.  If
+$x\neq y$ and $a=x^{-1}y$, then the quasimorphism defect gives
+\[
+  \abs{q(y)-q(x)}
+  = \abs{q(xa)-q(x)}
+  \leq \abs{q(a)}+D
+  \leq \rho(a)
+  =d(x,y),
+\]
+so $L(q)\leq 1$.  Since $q$ is nonzero, choose $g\in G$ with
+$q(g)\neq 0$.  Homogeneity gives
+\[
+  \frac{\abs{q(g^n)-q(e)}}{d(e,g^n)}
+   =\frac{n\abs{q(g)}}{B+n\abs{q(g)}+D}
+   \longrightarrow 1,
+\]
+and hence $L(q)=1$.
+
+For $a\in G$, let
+\[
+  \psi_a(x)=\alpha(a,q)(x)-q(x)
+   =q(a^{-1}x)-q(a^{-1})-q(x).
+\]
+By the definition of $D$, $\abs{\psi_a(x)}\leq D$ for all $x$.
+Thus, for $x\neq y$,
+\[
+  \abs{\psi_a(x)-\psi_a(y)}
+  \leq 2D
+  \leq \frac{2D}{B+D}\,d(x,y)
+  =\frac{2}{101}\,d(x,y).
+\]
+Therefore
+\[
+  \norm{\alpha(a,q)-q}\leq \frac{2}{101}<\frac1{20}
+  =\frac{\delta_0}{10}
+\]
+for every $a\in G$.
+
+Finally, Raunig's Corollary 2.3 says that for left translations on a
+group with a left-invariant metric, the invariant elements of
+$\Lipz(G)$ are exactly the homomorphisms $G\to\mathbb R$
+\cite[Corollary 2.3]{Raunig2025}.  Since $\Hom(G,\mathbb R)=0$, the
+only invariant element is $0$.  But
+\[
+  \norm{q-0}=L(q)=1>\frac12=\delta_0.
+\]
+Thus the conclusion of Question 1.3 fails.
+\end{proof}
+
+\section{Verification Notes}
+
+No computational search is used.  The proof is symbolic.  The numerical
+constant check is
+\[
+  \frac{2D}{100D+D}=\frac2{101}<\frac1{20}.
+\]
+
+The construction does not contradict the positive cases in
+\cite{Raunig2025}: the metric is not a word metric, and the group is not
+amenable.  The result only refutes the arbitrary pointed-metric-space
+formulation of Question 1.3.
+
+\section{Novelty Check}
+
+The local run indexes were searched on 2026-07-18 for the exact arXiv id
+`2506.06770' and for the phrases ``almost invariant'', ``Lip0'',
+``Lipschitz-free'', ``Kazhdan'', ``Yom Din'', ``quasimorphism'',
+``amenability'', and related fixed-point terminology.  No exact packet or
+close duplicate of this construction was found.  Nearby entries concern
+the original Glasner question, fixed point properties, invariant means,
+amenability, property (T), and other Lipschitz-free questions.
+
+External web search on 2026-07-18 checked the exact title and arXiv id,
+``Question 1.3 Lip0 invariant quasimorphism'', ``Lip0 almost invariant
+quasimorphism'', and counterexample variants.  I found the source
+preprint \cite{Raunig2025}, the Glasner background paper \cite{Glasner2022},
+and general homogeneous-quasimorphism literature \cite{FournierFacioWade2023},
+but no later work explicitly answering the Lip0 question.
+
+\section{Human Review Recommendation}
+
+Review as a likely valid counterexample.  The main points to check are:
+the left-invariant metric triangle inequality, the defect estimate for
+$\alpha(a,q)-q$, and the cited existence of a nonzero homogeneous
+quasimorphism on a group with no real characters.
+
+\begin{thebibliography}{9}
+
+\bibitem{Raunig2025}
+T. Raunig,
+\emph{Almost-invariant elements of group actions on $\Lipz$ spaces},
+arXiv:2506.06770, 2025.
+
+\bibitem{Glasner2022}
+E. Glasner,
+\emph{On a question of Kazhdan and Yom Din: With an appendix by Nicolas Monod},
+Israel Journal of Mathematics 251 (2022), 467--493.
+
+\bibitem{FournierFacioWade2023}
+F. Fournier-Facio and R. D. Wade,
+\emph{Aut-invariant quasimorphisms on groups},
+arXiv:2211.00800, to appear in Transactions of the American Mathematical Society.
+
+\end{thebibliography}
+
+\end{document}

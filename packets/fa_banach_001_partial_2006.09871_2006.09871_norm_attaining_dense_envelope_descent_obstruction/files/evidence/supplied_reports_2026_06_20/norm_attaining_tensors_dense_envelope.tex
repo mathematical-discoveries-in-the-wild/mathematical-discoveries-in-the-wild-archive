@@ -1,0 +1,693 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{aliascnt}
+\usepackage[nameinlink,capitalise]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Question}
+\aliascntresetthe{question}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\whot}{\widehat\otimes_\pi}
+\newcommand{\NA}{\operatorname{NA}_\pi}
+\newcommand{\FNA}{\operatorname{FNA}_\pi}
+\newcommand{\INA}{\operatorname{INA}_\pi}
+\newcommand{\Lin}{\mathcal L}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\id}{\operatorname{Id}}
+\newcommand{\Cpi}{\mathscr C_\pi}
+\newcommand{\U}{\mathcal U}
+\newcommand{\cl}{\overline}
+
+\title{Norm-Attaining Projective Tensors\\
+\large A dense-envelope theorem, failure of projection descent, and the exact reflexive bottleneck}
+\author{Research memorandum}
+\date{June 20, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For reflexive Banach spaces $X$ and $Y$, it remains open whether projective norm-attaining tensors are dense in $X\whot Y$.  This memorandum does not claim a full solution.  It proves, however, a new structural theorem that sharply changes the projection-based approach.
+
+For every pair $X,Y$ we construct a Banach space $Y_\infty$ containing $Y$ isometrically as a $1$-complemented subspace such that norm-attaining tensors are dense in $X\whot Y_\infty$.  Consequently, density of projective norm-attaining tensors does not in general descend to $1$-complemented tensor subspaces.  Combining the construction with the known non-density example of Dantas, Jung, Rold\'an, and Rueda Zoca gives a counterexample to the density-descent statement appearing as Lemma~4.1 in a 2025 paper, and therefore also to a 2026 corollary deduced from it, as those statements are printed.
+
+The construction is based on a trace-face correction theorem and a universal graph stabilization: every tensor becomes ambiently approximable by finitely norm-attaining tensors after a single isometric, $1$-complemented graph embedding of the second factor.  Iterating this embedding produces the dense envelope.  Finally, we prove that the original reflexive problem is equivalent to density descent for a very special class of reflexive graph projections.  Thus the remaining difficulty is not arbitrary projection theory, which is false, but a precise reflexive common-support correction problem.
+\end{abstract}
+
+\tableofcontents
+
+\section{The question and notation}
+
+All Banach spaces are over $\K\in\{\mathbb R,\mathbb C\}$.  A tensor $u\in X\whot Y$ is said to attain its projective norm if it has a representation
+\[
+ u=\sum_{n=1}^\infty \lambda_n x_n\otimes y_n,
+ \qquad
+ \lambda_n>0,\quad x_n\in S_X,\quad y_n\in S_Y,
+\]
+with
+\[
+ \|u\|_\pi=\sum_{n=1}^\infty\lambda_n.
+\]
+We denote the set of such tensors by $\NA(X\whot Y)$.  We write $\FNA(X\whot Y)$ for the tensors admitting an optimal representation with only finitely many summands, and put
+\[
+ \Cpi(X,Y):=\cl{\FNA(X\whot Y)}^{\|\cdot\|_\pi}.
+\]
+
+The source problem is the following.
+
+\begin{question}[Dantas--Jung--Rold\'an--Rueda Zoca]\label{q:main}
+If $X$ and $Y$ are reflexive Banach spaces, is
+\[
+ \cl{\NA(X\whot Y)}^{\|\cdot\|_\pi}=X\whot Y?
+\]
+\end{question}
+
+The most recent paper located in the literature search, posted in February 2026, proves that integral projective norm-attaining tensors are approximable by tensors with finite optimal representations, and that classical and integral density are equivalent.  It proves a positive result for separable reflexive pairs when one factor has the approximation property, but does not settle \cref{q:main} in general \cite{AliagaEtAl2026}.  The original question appears in \cite[Question 6.1]{DantasEtAl2022}.
+
+\begin{lemma}\label{lem:closures}
+For every pair $X,Y$,
+\[
+ \cl{\NA(X\whot Y)}=\cl{\FNA(X\whot Y)}=\Cpi(X,Y).
+\]
+\end{lemma}
+
+\begin{proof}
+It is enough to show that every norm-attaining tensor is a norm limit of finitely norm-attaining tensors.  Let
+\[
+ u=\sum_{n=1}^\infty\lambda_nx_n\otimes y_n,
+ \qquad \sum_n\lambda_n=\|u\|_\pi,
+\]
+be optimal.  Choose $B\in S_{(X\whot Y)^*}=S_{\Lin(X,Y^*)}$ with $\Rea B(u)=\|u\|_\pi$.  Equality in
+\[
+ \|u\|_\pi
+ =\sum_n\lambda_n\Rea B(x_n,y_n)
+ \leq \sum_n\lambda_n
+\]
+forces $\Rea B(x_n,y_n)=1$ for every $n$.  Hence each partial sum is supported by the same $B$ and has projective norm equal to the sum of its coefficients.  The partial sums belong to $\FNA$ and converge to $u$.
+\end{proof}
+
+\section{A canonical trace face}
+
+The basic correction mechanism is a trace face in a tensor product of the form
+\[
+ E\whot(E^*\oplus_\infty H).
+\]
+Define the norm-one bilinear form
+\[
+ \tau_E\bigl(e,(e^*,h)\bigr)=e^*(e).
+\]
+
+We use the scalar Bishop--Phelps--Bollob\'as theorem in the following standard form: for every $\varepsilon>0$ there is $\eta>0$ such that, whenever $e\in S_E$, $e^*\in B_{E^*}$ and $\Rea e^*(e)>1-\eta$, there are $\widetilde e\in S_E$ and $\widetilde e^*\in S_{E^*}$ satisfying
+\[
+ \widetilde e^*(\widetilde e)=1,
+ \qquad
+ \|e-\widetilde e\|<\varepsilon,
+ \qquad
+ \|e^*-\widetilde e^*\|<\varepsilon.
+\]
+
+\begin{theorem}[Trace-face correction]\label{thm:trace}
+Let $E,H$ be Banach spaces and let
+\[
+ G=E^*\oplus_\infty H.
+\]
+If $u\in E\whot G$ satisfies
+\[
+ \Rea\tau_E(u)=\|u\|_\pi,
+\]
+then
+\[
+ u\in\Cpi(E,G).
+\]
+More precisely, $u$ is approximable by finite tensors having optimal representations supported by $\tau_E$.
+\end{theorem}
+
+\begin{proof}
+We may assume $\|u\|_\pi=1$.  For every $k\in\N$, choose a Bishop--Phelps--Bollob\'as threshold $\eta_k\in(0,1)$ corresponding to the error $1/k$.  Choose a normalized projective representation
+\[
+ u=\sum_{n=1}^\infty\lambda_{k,n}e_{k,n}\otimes(f_{k,n},h_{k,n}),
+\]
+where
+\[
+ e_{k,n}\in S_E,
+ \qquad
+ (f_{k,n},h_{k,n})\in S_G,
+ \qquad
+ \sum_n\lambda_{k,n}<1+\frac{\eta_k}{k}.
+\]
+Since $\Rea\tau_E(u)=1$,
+\[
+ \sum_n\lambda_{k,n}
+ \bigl(1-\Rea f_{k,n}(e_{k,n})\bigr)
+ <\frac{\eta_k}{k}.
+\]
+Let
+\[
+ A_k=\{n:\Rea f_{k,n}(e_{k,n})>1-\eta_k\}.
+\]
+Then
+\[
+ \sum_{n\notin A_k}\lambda_{k,n}<\frac1k.
+\]
+For $n\in A_k$, choose $\widetilde e_{k,n}\in S_E$ and $\widetilde f_{k,n}\in S_{E^*}$ such that
+\[
+ \widetilde f_{k,n}(\widetilde e_{k,n})=1,
+ \qquad
+ \|e_{k,n}-\widetilde e_{k,n}\|<\frac1k,
+ \qquad
+ \|f_{k,n}-\widetilde f_{k,n}\|<\frac1k.
+\]
+Because $\|h_{k,n}\|\leq1$, we have
+\[
+ \|(\widetilde f_{k,n},h_{k,n})\|=1.
+\]
+Set
+\[
+ v_k=\sum_{n\in A_k}\lambda_{k,n}
+ \widetilde e_{k,n}\otimes(\widetilde f_{k,n},h_{k,n}).
+\]
+Every atom in this series is normed by $\tau_E$, so
+\[
+ \|v_k\|_\pi=\sum_{n\in A_k}\lambda_{k,n};
+\]
+thus $v_k$ is norm-attaining.  Moreover,
+\begin{align*}
+ \|u-v_k\|_\pi
+ &\leq \sum_{n\notin A_k}\lambda_{k,n}
+ +\sum_{n\in A_k}\lambda_{k,n}
+ \bigl(\|e_{k,n}-\widetilde e_{k,n}\|
+       +\|f_{k,n}-\widetilde f_{k,n}\|\bigr)\\
+ &<\frac1k+\frac{2}{k}\left(1+\frac{\eta_k}{k}\right)
+ \longrightarrow0.
+\end{align*}
+Finally, the finite partial sums of $v_k$ are finitely norm-attaining, again supported by $\tau_E$.  A diagonal choice proves $u\in\Cpi(E,G)$.
+\end{proof}
+
+\section{What projections do and do not preserve}
+
+Let $Z$ be a $1$-complemented subspace of $Y$, with norm-one projection $P:Y\to Z$.  The induced copy of $X\whot Z$ in $X\whot Y$ is isometric because $\id_X\otimes P$ is a contractive left inverse.
+
+\begin{proposition}[Correct pointwise descent]\label{prop:pointwise}
+If $u\in X\whot Z$ and $u$ is norm-attaining when regarded as an element of $X\whot Y$, then $u$ is norm-attaining in $X\whot Z$.  The analogous assertion holds for finite norm attainment.
+\end{proposition}
+
+\begin{proof}
+Take an optimal ambient representation
+\[
+ u=\sum_nx_n\otimes y_n,
+ \qquad
+ \sum_n\|x_n\|\,\|y_n\|=\|u\|_{X\whot Y}.
+\]
+Since $u=(\id_X\otimes P)u$,
+\[
+ u=\sum_nx_n\otimes P y_n
+\]
+in $X\whot Z$, and
+\[
+ \sum_n\|x_n\|\,\|Py_n\|
+ \leq\sum_n\|x_n\|\,\|y_n\|
+ =\|u\|_{X\whot Y}
+ =\|u\|_{X\whot Z}.
+\]
+The reverse inequality is the definition of the projective norm, so equality holds.  Finiteness is preserved if the original representation is finite.
+\end{proof}
+
+The condition that the tensor itself lie in the projected range is essential.
+
+\begin{theorem}[Universal unfolding]\label{thm:unfolding}
+Let $z\in X\whot Y$, and choose any representation
+\[
+ z=\sum_{n=1}^\infty x_n\otimes y_n,
+ \qquad
+ \sum_n\|x_n\|\,\|y_n\|<\infty.
+\]
+Put
+\[
+ v=\sum_{n=1}^\infty e_n(x_n)\otimes y_n
+ \in\ell_1(X)\whot Y,
+\]
+where $e_n:X\to\ell_1(X)$ is the $n$th coordinate embedding.  Then $v$ is norm-attaining.  The operator
+\[
+ P((u_n)_{n\geq1})=
+ \left(\sum_{n=1}^\infty u_n,0,0,\ldots\right)
+\]
+is a norm-one projection on $\ell_1(X)$ and
+\[
+ (P\otimes\id_Y)v=e_1(z).
+\]
+Consequently, an arbitrary tensor is the image of a norm-attaining tensor under a norm-one product projection.
+\end{theorem}
+
+\begin{proof}
+The canonical isometry
+\[
+ \ell_1(X)\whot Y\cong\ell_1(X\whot Y)
+\]
+sends $v$ to $(x_n\otimes y_n)_n$.  Therefore
+\[
+ \|v\|_\pi
+ =\sum_n\|x_n\otimes y_n\|_\pi
+ =\sum_n\|x_n\|\,\|y_n\|,
+\]
+which proves norm attainment.  The assertions about $P$ follow from
+\[
+ \left\|\sum_nu_n\right\|\leq\sum_n\|u_n\|
+\]
+and direct calculation.
+\end{proof}
+
+Thus a proof of \cref{q:main} cannot rest on a general statement that norm-one projections preserve norm-attaining approximants.
+
+\section{Universal graph stabilization}
+
+For fixed $X,Y$, let
+\[
+ \Gamma_Y=B_{\Lin(X,Y^*)}
+\]
+and define
+\[
+ \U_X(Y)
+ :=Y\oplus_\infty\ell_\infty(\Gamma_Y,X^*).
+\]
+For $B\in\Gamma_Y$, write $B^{\mathsf t}:Y\to X^*$ for
+\[
+ (B^{\mathsf t}y)(x)=B(x)(y).
+\]
+Define
+\[
+ \jmath_Y:Y\longrightarrow\U_X(Y),
+ \qquad
+ \jmath_Y(y)=\bigl(y,(B^{\mathsf t}y)_{B\in\Gamma_Y}\bigr).
+\]
+
+\begin{lemma}\label{lem:graph-complemented}
+The map $\jmath_Y$ is an isometry, and its range is $1$-complemented in $\U_X(Y)$.
+\end{lemma}
+
+\begin{proof}
+For every $y\in Y$,
+\[
+ \sup_{B\in\Gamma_Y}\|B^{\mathsf t}y\|\leq\|y\|,
+\]
+so $\|\jmath_Y(y)\|=\|y\|$.  The map
+\[
+ Q_Y\bigl(y,(f_B)_{B\in\Gamma_Y}\bigr)=\jmath_Y(y)
+\]
+is a projection onto $\jmath_Y(Y)$, and
+\[
+ \|Q_Y(y,(f_B))\|=\|y\|
+ \leq\max\left\{\|y\|,\sup_B\|f_B\|\right\}.
+\]
+Hence $\|Q_Y\|=1$.
+\end{proof}
+
+Let
+\[
+ J_Y=\id_X\otimes\jmath_Y:X\whot Y\longrightarrow X\whot\U_X(Y).
+\]
+Since $\jmath_Y$ has a contractive left inverse, $J_Y$ is an isometry.
+
+\begin{theorem}[Universal graph stabilization]\label{thm:universal-graph}
+For every pair of Banach spaces $X,Y$,
+\[
+ J_Y(X\whot Y)\subseteq\Cpi\bigl(X,\U_X(Y)\bigr).
+\]
+Thus every tensor in the entire $1$-complemented graph copy becomes ambiently approximable by finitely norm-attaining tensors after one universal embedding, independent of the tensor.
+\end{theorem}
+
+\begin{proof}
+Let $u\in X\whot Y$, and assume $u\neq0$.  Choose
+\[
+ B_0\in S_{\Lin(X,Y^*)}
+\]
+with
+\[
+ \Rea B_0(u)=\|u\|_\pi.
+\]
+On $X\whot\U_X(Y)$ define the coordinate trace
+\[
+ \tau_{B_0}\left(x,\bigl(y,(f_B)_{B\in\Gamma_Y}\bigr)\right)
+ =f_{B_0}(x).
+\]
+After reordering coordinates, $\U_X(Y)$ is isometric to
+\[
+ X^*\oplus_\infty H_{B_0}
+\]
+for a suitable Banach space $H_{B_0}$, and $\tau_{B_0}$ is the canonical trace from \cref{thm:trace}.  Moreover,
+\[
+ \Rea\tau_{B_0}(J_Yu)
+ =\Rea B_0(u)
+ =\|u\|_\pi
+ =\|J_Yu\|_\pi.
+\]
+The conclusion follows from \cref{thm:trace}.
+\end{proof}
+
+\begin{corollary}[Local closure descent fails]\label{cor:local-fails}
+If $\Cpi(X,Y)\neq X\whot Y$, then
+\[
+ \Cpi\bigl(X,\U_X(Y)\bigr)
+ \cap J_Y(X\whot Y)
+ \supsetneq J_Y\bigl(\Cpi(X,Y)\bigr).
+\]
+In particular, ambient approximability of every tensor in a $1$-complemented tensor copy does not imply intrinsic approximability in that copy.
+\end{corollary}
+
+\begin{proof}
+Choose $u\notin\Cpi(X,Y)$.  By \cref{thm:universal-graph}, $J_Yu$ belongs to the left-hand side.  Since $J_Y$ is an isometric tensor isomorphism onto $X\whot\jmath_Y(Y)$, it maps $\Cpi(X,Y)$ onto the intrinsic closure $\Cpi(X,\jmath_Y(Y))$.  Hence $J_Yu$ does not belong to the right-hand side.
+\end{proof}
+
+\section{A dense norm-attaining envelope}
+
+The previous construction can be iterated.
+
+\begin{theorem}[Dense-envelope theorem]\label{thm:envelope}
+For every pair of Banach spaces $X,Y$, there are a Banach space $Y_\infty$ and an isometric embedding
+\[
+ \iota:Y\longrightarrow Y_\infty
+\]
+such that:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\iota(Y)$ is $1$-complemented in $Y_\infty$;
+\item
+\[
+ \Cpi(X,Y_\infty)=X\whot Y_\infty.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Set $Y_0=Y$.  Inductively let
+\[
+ Y_{n+1}=\U_X(Y_n)
+\]
+and embed $Y_n$ into $Y_{n+1}$ by the graph isometry $\jmath_n:=\jmath_{Y_n}$.  Let
+\[
+ p_n:Y_{n+1}\longrightarrow Y_n
+\]
+be the contractive left inverse given by the first coordinate, so that
+\[
+ p_n\jmath_n=\id_{Y_n}.
+\]
+Identify each $Y_n$ with its image in $Y_{n+1}$ and let $Y_\infty$ be the completion of the resulting increasing union.
+
+For $m>n$, put
+\[
+ p_{n,m}=p_n p_{n+1}\cdots p_{m-1}:Y_m\to Y_n.
+\]
+The relations $p_m\jmath_m=\id$ make these retractions compatible with the identifications.  Hence they define a contractive projection from the algebraic union onto $Y_n$, and this projection extends to $Y_\infty$.  Thus every $Y_n$, in particular $Y_0$, is $1$-complemented in $Y_\infty$.
+
+Now take $u\in X\whot Y_n$.  Under the identification of $Y_n$ with its graph image in $Y_{n+1}$, \cref{thm:universal-graph} gives
+\[
+ u\in\Cpi(X,Y_{n+1}).
+\]
+Since $Y_{n+1}$ is $1$-complemented in $Y_\infty$, the induced inclusion
+\[
+ X\whot Y_{n+1}\longrightarrow X\whot Y_\infty
+\]
+is isometric.  Every finite optimal representation in $X\whot Y_{n+1}$ remains optimal in $X\whot Y_\infty$.  Therefore
+\[
+ X\whot Y_n\subseteq\Cpi(X,Y_\infty)
+\qquad(n\in\N).
+\]
+The union of these tensor subspaces is dense in $X\whot Y_\infty$, because $\bigcup_nY_n$ is dense in $Y_\infty$ and algebraic tensors are dense in the projective tensor product.  Since $\Cpi(X,Y_\infty)$ is closed, it is the whole space.
+\end{proof}
+
+\begin{corollary}[Density does not descend to $1$-complemented subspaces]\label{cor:density-descent-false}
+There exist Banach spaces $X,Y,Z$ such that $Y$ is isometric to a $1$-complemented subspace of $Z$,
+\[
+ \Cpi(X,Z)=X\whot Z,
+\]
+but
+\[
+ \Cpi(X,Y)\neq X\whot Y.
+\]
+\end{corollary}
+
+\begin{proof}
+Dantas, Jung, Rold\'an, and Rueda Zoca constructed Banach spaces $X,Y$ for which norm-attaining tensors are not dense in $X\whot Y$ \cite[Theorem 5.1]{DantasEtAl2022}.  Apply \cref{thm:envelope} to that pair and take $Z=Y_\infty$.
+\end{proof}
+
+\subsection{Consequence for two printed descent statements}
+
+Lemma~4.1 of \cite{GarciaLirolaEtAl2025} states that, if norm-attaining tensors are dense in $X\whot Y$ and $Z\subseteq Y$ is $1$-complemented, then norm-attaining tensors are dense in $X\whot Z$.  Its proof chooses an ambient norm-attaining approximant $z'$ and asserts that $(\id\otimes P)z'$ is norm-attaining ``as in Lemma~3.1.''  Lemma~3.1 applies when the tensor being represented already lies in the projected range, as in \cref{prop:pointwise}; it does not apply to an arbitrary approximant $z'$.  The universal unfolding theorem shows directly that projection can destroy norm attainment, and \cref{cor:density-descent-false} gives a counterexample to the density statement itself.
+
+\begin{corollary}\label{cor:printed-lemma}
+The density-descent assertion in \cite[Lemma 4.1]{GarciaLirolaEtAl2025}, as printed, is false in general.
+\end{corollary}
+
+The 2026 integral-representation preprint deduces its Corollary~2.14 from that lemma and from the equivalence between classical and integral density \cite[Corollaries 2.12 and 2.14]{AliagaEtAl2026}.  Therefore the same dense-envelope example also contradicts Corollary~2.14 as printed: integral norm-attaining tensors are dense in the envelope, but not in the complemented bad subspace.
+
+This observation does not affect results whose proofs do not use the faulty density descent.  It does mean that downstream applications relying on that step require re-examination.
+
+\section{A separable version}
+
+The universal envelope uses a large $\ell_\infty$-sum.  When $X^*$ and $Y$ are separable, a diagonal construction produces a separable envelope.
+
+\begin{theorem}[Separable dense envelope]\label{thm:separable-envelope}
+Assume that $X^*$ and $Y$ are separable.  Then the space $Y_\infty$ in \cref{thm:envelope} may be chosen separable.
+\end{theorem}
+
+\begin{proof}
+We construct separable spaces $Y_n$ inductively.  Start with $Y_0=Y$.  Once $Y_n$ has been constructed, choose a countable dense set
+\[
+ D_n=\{u_{n,1},u_{n,2},\ldots\}
+ \subset X\whot Y_n.
+\]
+Such a set exists because separability of $X^*$ implies separability of $X$, and hence $X\whot Y_n$ is separable.
+
+At stage $n$, view the finitely many tensors
+\[
+ u_{k,j},
+ \qquad 0\leq k\leq n,
+ \quad 1\leq j\leq n,
+\]
+in $X\whot Y_n$ through the preceding embeddings.  For every nonzero tensor $v$ in this finite set choose a support
+\[
+ B_v\in S_{\Lin(X,Y_n^*)},
+ \qquad
+ \Rea B_v(v)=\|v\|_\pi.
+\]
+Let $F_n$ be the resulting finite family and put
+\[
+ Y_{n+1}=Y_n\oplus_\infty (X^*)^{F_n}_{\ell_\infty}.
+\]
+Embed $Y_n$ by
+\[
+ y\longmapsto
+ \bigl(y,(B_v^{\mathsf t}y)_{v\in F_n}\bigr).
+\]
+This is an isometry with a contractive first-coordinate retraction.  For each selected $v$, its image is normed by the coordinate trace belonging to $B_v$, and therefore belongs to $\Cpi(X,Y_{n+1})$ by \cref{thm:trace}.
+
+Take the completion of the increasing union.  Every $u_{k,j}$ is selected at some later stage, so its final image belongs to $\Cpi(X,Y_\infty)$.  Since $D_k$ is dense in $X\whot Y_k$, the entire image of $X\whot Y_k$ lies in the closed set $\Cpi(X,Y_\infty)$.  The union over $k$ is dense, proving density in the limit.  Every $Y_n$ is separable because only finitely many copies of the separable space $X^*$ are added at each step; hence the limit is separable.
+\end{proof}
+
+In the non-density example of \cite[Theorem 5.1]{DantasEtAl2022}, the first factor is a subspace of $c_0$ and therefore has separable dual, while the second tensor factor may also be taken separable.  Thus the counterexample in \cref{cor:density-descent-false} can be realized with a separable ambient space.
+
+\section{The exact reflexive bottleneck}
+
+The dense-envelope construction is highly nonreflexive.  This is not incidental: it shows that reflexivity is doing all the remaining work.
+
+Consider the following property.
+
+\begin{definition}[Reflexive descent property]\label{def:RD}
+We say that \emph{reflexive closure descent} holds if, whenever $X,F$ are reflexive and $Z\subseteq F$ is a reflexive $1$-complemented subspace,
+\[
+ \Cpi(X,F)\cap(X\whot Z)=\Cpi(X,Z),
+\]
+where $X\whot Z$ is identified with its canonical isometric copy in $X\whot F$.
+\end{definition}
+
+\begin{theorem}[Equivalence with the original problem]\label{thm:equivalence}
+The following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every pair of reflexive Banach spaces $X,Y$,
+\[
+ \Cpi(X,Y)=X\whot Y.
+\]
+\item Reflexive closure descent from \cref{def:RD} holds.
+\item Closure descent holds for the following special graph embeddings: whenever $X,Y$ are reflexive, $a\in X\whot Y$, and
+\[
+ B\in S_{\Lin(X,Y^*)},
+ \qquad
+ \Rea B(a)=\|a\|_\pi,
+\]
+the graph map
+\[
+ j_B:Y\to X^*\oplus_\infty Y,
+ \qquad
+ j_B(y)=(B^{\mathsf t}y,y),
+\]
+satisfies
+\[
+ (\id_X\otimes j_B)a
+ \in\Cpi\bigl(X,j_B(Y)\bigr)
+\]
+when the graph range is considered intrinsically.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The implication (i)$\Rightarrow$(ii) is immediate: all three tensor spaces in question have full closure.
+
+The implication (ii)$\Rightarrow$(iii) follows because $X^*\oplus_\infty Y$ is reflexive and $j_B(Y)$ is $1$-complemented.  Indeed, the projection
+\[
+ Q_B(f,y)=(B^{\mathsf t}y,y)
+\]
+has norm one.  The trace form
+\[
+ \tau_X(x,(f,y))=f(x)
+\]
+satisfies
+\[
+ \Rea\tau_X\bigl((\id_X\otimes j_B)a\bigr)
+ =\Rea B(a)
+ =\|a\|_\pi.
+\]
+By \cref{thm:trace}, the graph image belongs to
+\[
+ \Cpi\bigl(X,X^*\oplus_\infty Y\bigr).
+\]
+Reflexive descent then places it in the intrinsic closure of the graph range.
+
+Finally, (iii)$\Rightarrow$(i): for arbitrary $a\in X\whot Y$, choose a supporting $B$ as above.  The map $\id_X\otimes j_B$ is an isometric tensor isomorphism from $X\whot Y$ onto $X\whot j_B(Y)$ and carries finitely norm-attaining tensors to finitely norm-attaining tensors in both directions.  Hence intrinsic approximability of the graph image implies $a\in\Cpi(X,Y)$.
+\end{proof}
+
+Thus \cref{q:main} is exactly a very special reflexive graph-descent problem.  Arbitrary descent is false by \cref{cor:density-descent-false}; the open issue is whether the extra reflexive geometry prevents the failure.
+
+\section{A fixed-support correction formulation}
+
+The graph proof also gives a concrete sequence of almost maximizing atoms.
+
+\begin{proposition}[Weighted fixed-support approximation]\label{prop:weighted}
+Let $a\in S_{X\whot Y}$ and let
+\[
+ B\in S_{\Lin(X,Y^*)},
+ \qquad
+ \Rea B(a)=1.
+\]
+There are finite tensors
+\[
+ w_n=\sum_{j=1}^{m_n}\lambda_{n,j}x_{n,j}\otimes y_{n,j}
+ \longrightarrow a
+\]
+with $\lambda_{n,j}>0$, $x_{n,j}\in S_X$, $y_{n,j}\in B_Y$, such that
+\[
+ \sup_n\sum_j\lambda_{n,j}<\infty
+\]
+and
+\[
+ \sum_{j=1}^{m_n}\lambda_{n,j}
+ \bigl(1-\Rea B(x_{n,j},y_{n,j})\bigr)
+ \longrightarrow0.
+\]
+Moreover, the atoms arise as the second-coordinate projections of finite optimal tensors in the trace face of
+\[
+ X\whot(X^*\oplus_\infty Y).
+\]
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+ j_B(y)=(B^{\mathsf t}y,y),
+ \qquad
+ \widetilde a=(\id_X\otimes j_B)a.
+\]
+By \cref{thm:trace}, choose finite optimal tensors
+\[
+ u_n=\sum_{j=1}^{m_n}\lambda_{n,j}
+ x_{n,j}\otimes(f_{n,j},y_{n,j})
+ \longrightarrow\widetilde a
+\]
+with
+\[
+ f_{n,j}(x_{n,j})=1,
+ \qquad
+ x_{n,j}\in S_X,
+ \qquad
+ \|(f_{n,j},y_{n,j})\|=1,
+\]
+and
+\[
+ \sum_j\lambda_{n,j}=\|u_n\|_\pi.
+\]
+Projecting onto the $Y$ coordinate gives $w_n\to a$.  Also,
+\begin{align*}
+ \sum_j\lambda_{n,j}
+ \bigl(1-\Rea B(x_{n,j},y_{n,j})\bigr)
+ &=\tau_X(u_n)-\Rea B(w_n)\\
+ &\longrightarrow \tau_X(\widetilde a)-\Rea B(a)=0.
+\end{align*}
+The coefficient sums converge to $\|\widetilde a\|_\pi=1$.
+\end{proof}
+
+A full positive answer would follow from a simultaneous correction principle converting the atoms in \cref{prop:weighted} into exact maximizers of one common nearby bilinear form while changing their weighted barycentre by $o(1)$.  Ordinary Bishop--Phelps--Bollob\'as correction is insufficient because it permits the supporting functional to vary from atom to atom.  The common-support constraint is precisely what makes a corrected finite representation optimal.
+
+This is closely analogous to the approximate hyperplane series philosophy, but now for elementary tensors and a common bilinear support.  Proving such a principle for reflexive pairs would settle \cref{q:main}; constructing a reflexive supported tensor for which it fails uniformly would yield a counterexample.
+
+\section{Conclusions}
+
+The original reflexive question remains unresolved in this memorandum.  The additional push nevertheless produced three concrete advances.
+
+First, the universal graph stabilization and its iteration give the dense-envelope theorem: every tensor pair embeds, with the second factor $1$-complemented, into a pair having dense norm-attaining tensors.  Second, this construction proves that density does not descend through arbitrary $1$-complemented subspaces and identifies a gap in a 2025 printed proof and a dependent 2026 corollary.  Third, the reflexive problem is now equivalent to descent for a sharply prescribed family of reflexive graph projections, or equivalently to a fixed-support simultaneous correction principle.
+
+The next decisive step must use reflexivity in a way unavailable to the dense-envelope construction.  The most promising targets are weak compactness of the graph maximizing face, fragmentation or dentability of the associated barycentric measures, and a common-support version of the approximate hyperplane series property.  None of these has yet been proved in sufficient generality, and no reflexive counterexample was found.
+
+\begin{thebibliography}{9}
+
+\bibitem{AliagaEtAl2026}
+R.~J. Aliaga, S.~Dantas, J.~Guerrero-Viu, M.~Jung, and O.~Rold\'an,
+\emph{Integral representations of projective norm-attaining tensors},
+arXiv:2602.23796, 2026.
+
+\bibitem{BishopPhelpsBollobas}
+B.~Bollob\'as,
+\emph{An extension to the theorem of Bishop and Phelps},
+Bull. London Math. Soc. 2 (1970), 181--182.
+
+\bibitem{DantasEtAl2022}
+S.~Dantas, M.~Jung, O.~Rold\'an, and A.~Rueda Zoca,
+\emph{Norm-attaining tensors and nuclear operators},
+Mediterr. J. Math. 19 (2022), article 38; arXiv:2006.09871.
+
+\bibitem{GarciaLirolaEtAl2025}
+L.~C. Garc\'ia-Lirola, J.~Guerrero-Viu, and A.~Rueda Zoca,
+\emph{Projective tensor products where every element is norm-attaining},
+Banach J. Math. Anal. 19 (2025), article 19; arXiv:2407.10710.
+
+\bibitem{Ryan}
+R.~A. Ryan,
+\emph{Introduction to Tensor Products of Banach Spaces},
+Springer Monographs in Mathematics, Springer, 2002.
+
+\end{thebibliography}
+
+\end{document}

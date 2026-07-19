@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\linf}{\ell_\infty}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{A Closed Bounded Radius Counterexample for \texorpdfstring{$c_0\subset \ell_\infty$}{c0 in ell-infinity}}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+This packet concerns the closed-bounded version of Problem 1.1 discussed in:
+
+\begin{quote}\raggedright
+Syamantak Das and Tanmoy Paul,
+\emph{A study on various generalizations of Generalized centers $(GC)$ in
+Banach spaces}, arXiv:2311.15818.
+\end{quote}
+
+The paper answers the finite-subset version of Problem 1.1. In the observations
+section, the authors say that the corresponding question for closed bounded
+subsets is not known except in some trivial cases. The source location is page
+6 of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Counterexample}
+
+Let $X=\ell_\infty$ and let $Y=c_0$ be its canonical closed subspace. For a
+bounded nonempty set $A$ in a normed space $E$, write
+\[
+  \rad_E(A)=\inf_{x\in E}\sup_{a\in A}\norm{x-a}.
+\]
+
+\begin{theorem}
+The pair $c_0\subset\ell_\infty$ has
+\[
+  \rad_{c_0}(F)=\rad_{\ell_\infty}(F)
+\]
+for every finite subset $F\subset c_0$. Nevertheless there is a closed bounded
+subset $A\subset c_0$ such that
+\[
+  \rad_{c_0}(A)\ne\rad_{\ell_\infty}(A).
+\]
+In fact one may take $A=\{e_n:n\in\N\}$, for which
+\[
+  \rad_{\ell_\infty}(A)=\frac12,
+  \qquad
+  \rad_{c_0}(A)=1.
+\]
+\end{theorem}
+
+\begin{proof}
+We first prove the finite-subset equality. The inequality
+$\rad_{\ell_\infty}(F)\le\rad_{c_0}(F)$ is immediate because
+$c_0\subset\ell_\infty$. Conversely, let $F\subset c_0$ be finite and let
+$r>\rad_{\ell_\infty}(F)$. Choose $z\in\ell_\infty$ such that
+\[
+  \sup_{a\in F}\norm{z-a}_\infty<r.
+\]
+Since $F$ is finite and each $a\in F$ tends to zero coordinatewise, there is
+$N$ such that
+\[
+  \sup_{a\in F}\sup_{n>N}|a_n|<r.
+\]
+Define $y\in c_0$ by
+\[
+  y_n=
+  \begin{cases}
+    z_n, & n\le N,\\
+    0, & n>N.
+  \end{cases}
+\]
+For $n\le N$ the coordinate errors $|y_n-a_n|$ are the same as for $z$, and
+for $n>N$ they are $|a_n|<r$. Hence
+\[
+  \sup_{a\in F}\norm{y-a}_\infty\le r.
+\]
+Letting $r\downarrow\rad_{\ell_\infty}(F)$ gives
+$\rad_{c_0}(F)\le\rad_{\ell_\infty}(F)$, and the finite-subset equality
+follows.
+
+Now set $A=\{e_n:n\in\N\}$. This set is bounded in $c_0$ and is closed, since
+distinct elements of $A$ are pairwise distance $1$ apart.
+
+In $\ell_\infty$, the constant sequence $u=(1/2,1/2,\ldots)$ satisfies
+\[
+  \norm{u-e_n}_\infty=\frac12
+  \qquad(n\in\N),
+\]
+so $\rad_{\ell_\infty}(A)\le1/2$. For the reverse inequality, let
+$z\in\ell_\infty$ and suppose
+\[
+  \sup_n\norm{z-e_n}_\infty\le R.
+\]
+Fix $k\in\N$. From the distance to $e_k$ we get $|1-z_k|\le R$. From the
+distance to any $e_m$ with $m\ne k$ we get $|z_k|\le R$. Thus
+\[
+  R\ge\max\{|z_k|,|1-z_k|\}\ge\frac12.
+\]
+Since $k$ was arbitrary, $\rad_{\ell_\infty}(A)\ge1/2$, and therefore
+$\rad_{\ell_\infty}(A)=1/2$.
+
+In $c_0$, let $y\in c_0$. Since $y_n\to0$,
+\[
+  \sup_n\norm{y-e_n}_\infty
+  \ge
+  \sup_n |1-y_n|
+  \ge
+  \limsup_n |1-y_n|
+  =
+  1.
+\]
+Thus $\rad_{c_0}(A)\ge1$. The center $0\in c_0$ gives
+$\sup_n\norm{0-e_n}_\infty=1$, so $\rad_{c_0}(A)=1$.
+\end{proof}
+
+\section*{Interpretation}
+
+The example shows that the finite criterion in Problem 1.1, and equivalently
+the finite intersection behavior captured by $n.X.I.P.$ for all $n$, does not
+control Chebyshev radii of arbitrary closed bounded subsets. The obstruction is
+not finite-dimensional: every finite part of $\{e_n\}$ has an
+$\ell_\infty$-center that can be truncated into $c_0$, but the limiting center
+$(1/2,1/2,\ldots)$ is not in $c_0$.
+
+\section*{Sanity Check Script}
+
+The file \texttt{code/check\_radii.py} prints finite-prefix radius checks and
+illustrates how $c_0$-like centers approach radius $1$ on longer prefixes. The
+mathematical proof above is exact and does not depend on the script.
+
+\end{document}
+

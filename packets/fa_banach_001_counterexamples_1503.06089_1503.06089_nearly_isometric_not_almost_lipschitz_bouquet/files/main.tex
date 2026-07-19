@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=5em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\R}{\mathbb R}
+\newcommand{\rhoF}{\mathcal P}
+\newcommand{\omegaF}{\Omega}
+
+\title{A Metric Counterexample: Nearly Isometric Embeddability Need Not Imply Almost Lipschitz Embeddability}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_01}}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+This packet addresses Problem 4 in Section 5 of:
+
+\begin{quote}
+Florent Baudier and Gilles Lancien, \emph{Tight embeddability of proper and stable metric spaces}, arXiv:1503.06089.
+\end{quote}
+
+The source problem, on PDF page 17, asks:
+
+\begin{quote}
+Exhibit two metric spaces \(X\) and \(Y\) such that \(X\) nearly isometrically embeds into \(Y\), but \(X\) does not almost Lipschitz embed into \(Y\).
+\end{quote}
+
+\section*{Definitions Used}
+
+We use the definitions from the source paper.  A metric space \(X\) almost
+Lipschitz embeds into \(Y\) if there are constants \(r>0\), \(D\ge 1\), such
+that for every continuous \(\varphi:[0,\infty)\to[0,1)\) with
+\(\varphi(0)=0\) and \(\varphi(t)>0\) for \(t>0\), there is a map
+\(f_\varphi:X\to Y\) satisfying
+\[
+ r\,d_X(x,y)\varphi(d_X(x,y))
+ \le d_Y(f_\varphi(x),f_\varphi(y))
+ \le D r\, d_X(x,y).
+\]
+
+For nearly isometric embeddability, the admissible compressions \(\rho\in\rhoF\)
+are continuous functions with \(\rho(t)=t\) on \([0,1]\),
+\(\rho(t)\le t\) for \(t\ge 1\), and \(\rho(t)/t\to0\).  The admissible
+expansions \(\omega\in\omegaF\) satisfy \(\omega(0)=0\), \(t\le\omega(t)\) on
+\([0,1]\), \(\omega(t)=t\) for \(t\ge1\), and \(\omega(t)/t\to\infty\) as
+\(t\downarrow0\).  The space \(X\) nearly isometrically embeds into \(Y\) if
+for every such pair \((\rho,\omega)\) there is \(f:X\to Y\) with
+\[
+\rho(d_X(x,y))\le d_Y(f(x),f(y))\le \omega(d_X(x,y)).
+\]
+
+\section*{Proof Intuition}
+
+The source definition of nearly isometric embeddability permits the embedding
+to depend on the requested sublinear compression \(\rho\).  We exploit this by
+building a target \(Y\) with one ray for each admissible \(\rho\).  The
+\(\rho\)-ray is metrically distorted by a sublinear function \(g_\rho\) that
+still dominates \(\rho\), so the usual ray \(\Nzero\) can satisfy that
+particular nearly isometric request by entering that component.
+
+The obstruction to almost Lipschitz embeddability is global.  An almost
+Lipschitz embedding of the integer ray would become a bi-Lipschitz embedding
+after choosing a test function \(\varphi\) bounded below on all integer
+distances.  But the bouquet target has no bi-Lipschitz ray.  A Lipschitz image
+with linear lower growth must eventually be far from the common basepoint; at
+that height it cannot switch components, because switching costs the sum of
+the two heights.  Once trapped in one component, distances grow only
+sublinearly, contradicting linear compression.
+
+\section*{Auxiliary Concave Majorants}
+
+\begin{lemma}
+\label{lem:majorant}
+Let \(\rho:[0,\infty)\to[0,\infty)\) be continuous, satisfy
+\(\rho(t)=t\) on \([0,1]\), \(\rho(t)\le t\) for \(t\ge1\), and
+\(\rho(t)/t\to0\) as \(t\to\infty\).  Then there is a continuous,
+nondecreasing, concave, unbounded function \(g:[0,\infty)\to[0,\infty)\)
+such that
+\[
+g(0)=0,\qquad g(t)=t\ (0\le t\le1),\qquad
+\rho(t)\le g(t)\le t,\qquad \frac{g(t)}{t}\to0.
+\]
+Consequently \(d_g(m,n)=g(|m-n|)\) is a metric on \(\Nzero\).
+\end{lemma}
+
+\begin{proof}
+Let \(h(t)=t\) for \(0\le t\le1\), and \(h(t)=1+\log t\) for \(t\ge1\).
+Then \(h\) is continuous, nondecreasing, concave, unbounded,
+\(h(t)\le t\), and \(h(t)/t\to0\).  Put \(\rho_0(t)=\max\{\rho(t),h(t)\}\).
+Then \(\rho_0(t)\le t\), \(\rho_0(t)=t\) on \([0,1]\), and
+\(\rho_0(t)/t\to0\).
+
+Choose a sequence \(\varepsilon_j\downarrow0\).  Since
+\(\rho_0(t)/t\to0\), for each \(j\) the number
+\[
+A_j=\sup_{t\ge0}\bigl(\rho_0(t)-\varepsilon_j t\bigr)
+\]
+is finite.  Define
+\[
+g(t)=\inf\Bigl(\{t\}\cup \{A_j+\varepsilon_j t:j\ge1\}\Bigr).
+\]
+Every affine function in the infimum dominates \(\rho_0\), and the function
+\(t\mapsto t\) also dominates \(\rho_0\).  Hence \(g\ge\rho_0\ge\rho\).
+Also \(g\le t\).  Because \(g\le t\) and \(g\ge\rho_0=t\) on \([0,1]\),
+we have \(g(t)=t\) on \([0,1]\).
+
+The pointwise infimum of increasing affine functions is concave and
+nondecreasing.  For each fixed \(j\),
+\[
+\limsup_{t\to\infty}\frac{g(t)}{t}
+\le \limsup_{t\to\infty}\frac{A_j+\varepsilon_j t}{t}
+=\varepsilon_j,
+\]
+and therefore \(g(t)/t\to0\).  Finally, \(g\ge h\), so \(g\) is unbounded.
+
+A nondecreasing concave function with \(g(0)=0\) is subadditive: concavity
+implies \(g(s)/s\ge g(s+t)/(s+t)\) and \(g(t)/t\ge g(s+t)/(s+t)\) for
+\(s,t>0\), whence \(g(s)+g(t)\ge g(s+t)\).  Thus \(g(|m-n|)\) satisfies the
+triangle inequality on \(\Nzero\).
+\end{proof}
+
+\section*{The Counterexample}
+
+\begin{theorem}
+There are metric spaces \(X\) and \(Y\) such that \(X\) nearly isometrically
+embeds into \(Y\), but \(X\) does not almost Lipschitz embed into \(Y\).
+\end{theorem}
+
+\begin{proof}
+Let \(X=\Nzero\) with its usual metric \(d_X(m,n)=|m-n|\).
+For every admissible \(\rho\in\rhoF\), choose a function \(g_\rho\) supplied by
+Lemma~\ref{lem:majorant}.  Let \(Y_\rho=\Nzero\) with metric
+\[
+d_\rho(m,n)=g_\rho(|m-n|).
+\]
+Now form the metric wedge \(Y\) of the family \((Y_\rho)_{\rho\in\rhoF}\) by
+identifying all zero points as a common basepoint \(o\).  If \(a\in Y_\rho\)
+and \(b\in Y_\sigma\), set
+\[
+d_Y(a,b)=
+\begin{cases}
+g_\rho(|a-b|),& \rho=\sigma,\\
+g_\rho(a)+g_\sigma(b),& \rho\ne\sigma.
+\end{cases}
+\]
+This is the usual wedge metric: inside each component we use \(d_\rho\), and
+between different components we travel through \(o\).
+
+We first show that \(X\) nearly isometrically embeds into \(Y\).  Fix
+\(\rho\in\rhoF\) and \(\omega\in\omegaF\).  Define \(F_{\rho,\omega}:X\to Y\)
+by \(F_{\rho,\omega}(n)=n\) in the \(\rho\)-component.  If \(m,n\in\Nzero\)
+and \(k=|m-n|\), then for \(k=0\) there is nothing to check.  For \(k\ge1\),
+the defining properties of \(g_\rho\) and the fact that \(\omega(k)=k\) give
+\[
+\rho(k)\le g_\rho(k)
+=d_Y(F_{\rho,\omega}(m),F_{\rho,\omega}(n))
+\le k=\omega(k).
+\]
+Thus \(X\) nearly isometrically embeds into \(Y\).
+
+It remains to show that \(X\) does not almost Lipschitz embed into \(Y\).
+We first prove that \(Y\) contains no bi-Lipschitz copy of the usual ray.
+Suppose, toward a contradiction, that \(F:\Nzero\to Y\) and constants
+\(c,C>0\) satisfy
+\[
+c|m-n|\le d_Y(F(m),F(n))\le C|m-n|
+\qquad(m,n\in\Nzero).
+\]
+Let \(R_n=d_Y(F(n),o)\).  Since
+\[
+R_n\ge d_Y(F(n),F(0))-R_0\ge cn-R_0,
+\]
+the heights \(R_n\) grow at least linearly.  On the other hand,
+\(d_Y(F(n+1),F(n))\le C\).  If \(F(n)\) and \(F(n+1)\) lie in different
+components, then
+\[
+d_Y(F(n+1),F(n))=R_{n+1}+R_n,
+\]
+which is eventually larger than \(C\).  Hence, for all sufficiently large
+\(n\), consecutive points \(F(n)\) and \(F(n+1)\) lie in the same component.
+The tail of the sequence \(F(n)\) is therefore contained in a single
+component \(Y_{\rho_0}\).
+
+Write \(F(n)=a_n\in Y_{\rho_0}\) for all \(n\ge N\).  Since
+\[
+g_{\rho_0}(|a_{n+1}-a_n|)=d_Y(F(n+1),F(n))\le C
+\]
+and \(g_{\rho_0}\) is nondecreasing and unbounded, there is \(B<\infty\) such
+that \(|a_{n+1}-a_n|\le B\) for all \(n\ge N\).  Therefore
+\[
+|a_m-a_n|\le B|m-n| \qquad(m,n\ge N).
+\]
+For \(m,n\ge N\),
+\[
+d_Y(F(m),F(n))=g_{\rho_0}(|a_m-a_n|)
+\le g_{\rho_0}(B|m-n|).
+\]
+Dividing by \(|m-n|\) and letting \(|m-n|\to\infty\), the right-hand side has
+ratio tending to \(0\) because \(g_{\rho_0}(t)/t\to0\).  This contradicts the
+lower bound \(d_Y(F(m),F(n))\ge c|m-n|\).  Thus no bi-Lipschitz embedding
+\(\Nzero\to Y\) exists.
+
+Finally suppose that \(X\) almost Lipschitz embedded into \(Y\).  Take
+\[
+\varphi(t)=
+\begin{cases}
+t/2,&0\le t\le1,\\
+1/2,&t\ge1.
+\end{cases}
+\]
+This \(\varphi\) is admissible in the almost Lipschitz definition.  Since all
+nonzero distances in \(X=\Nzero\) are at least \(1\), the corresponding map
+would satisfy
+\[
+\frac r2 |m-n|
+\le d_Y(f_\varphi(m),f_\varphi(n))
+\le Dr |m-n|
+\qquad(m\ne n),
+\]
+which is a bi-Lipschitz embedding of the ray into \(Y\).  This contradicts the
+previous paragraph.  Hence \(X\) does not almost Lipschitz embed into \(Y\).
+\end{proof}
+
+\section*{Verification Notes}
+
+The construction is intentionally nonseparable in general, since it uses one
+component for every admissible compression function \(\rho\).  The source
+problem only asks for metric spaces, so no separability or Banach structure is
+being claimed.  The proof uses no external theorem beyond elementary facts
+about concave metric transforms and wedge metrics.
+
+\section*{Bounded Novelty Check}
+
+On 2026-06-15, the run indexes were searched for \texttt{1503.06089},
+\texttt{nearly isometric}, and \texttt{almost Lipschitz}; no duplicate packet
+or attempt for this metric problem was found.  Local parsed-source search for
+phrases such as \texttt{nearly isometrically embeds} and
+\texttt{does not almost Lipschitz} found the source paper but no separate
+answer.  Web searches for exact phrases including
+\texttt{"nearly isometrically embeds" "almost Lipschitz"},
+\texttt{"Exhibit two metric spaces" "nearly isometrically" "almost Lipschitz"},
+and \texttt{site:arxiv.org "almost Lipschitz" "nearly isometric"} returned
+the source paper and no later answer.  The novelty claim is therefore
+bounded by these searches.
+
+\section*{References}
+
+\begin{itemize}[leftmargin=*]
+\item F. Baudier and G. Lancien, \emph{Tight embeddability of proper and stable metric spaces}, arXiv:1503.06089.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\W}{\mathcal W}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A No-Small-Alias Subcase of the Calderon Sum Formula for Wavelet Systems}
+\author{agent\_lane\_02}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Ulrik Enstad and Jordy Timo van Velthoven,
+\emph{On the Calderon sum formula for wavelet systems}, arXiv:2602.10766.
+Its introduction records the following conjecture of Bownik--Lemvig and
+Speegle: if an affine wavelet system associated with matrices
+$A,P\in \operatorname{GL}(d,\R)$ and $\psi\in L^2(\R^d)$ is an orthonormal
+basis, or more generally a Parseval frame, then
+\[
+  \sum_{j\in\Z} |\widehat\psi((A^t)^j\xi)|^2=|\det P|
+  \quad\text{for a.e. }\xi\in\R^d.
+\]
+The source proves this under the additional regularity hypothesis
+$\psi\in\mathcal B_\pi$.  The result below gives a different subcase which
+does not assume $\psi\in\mathcal B_\pi$.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Statement}
+
+We use the quasi-regular representation notation of Section 4 of the source:
+\[
+  \pi(x,A^j)f(t)=|\det A|^{-j/2} f(A^{-j}(t-x)).
+\]
+Thus
+\[
+  \widehat{\pi(A^jPk,A^j)\psi}(\xi)
+  =|\det A|^{j/2} e^{-2\pi i\,\xi\cdot A^jPk}
+    \widehat\psi((A^t)^j\xi).
+\]
+
+\begin{theorem}[No-small-alias subcase]\label{thm:main}
+Let $A,P\in\operatorname{GL}(d,\R)$ and $\psi\in L^2(\R^d)$.  Assume
+\[
+  \delta(A,P):=
+  \inf_{\substack{j\in\Z\\ m\in\Z^d\setminus\{0\}}}
+  \|(A^jP)^{-t}m\|>0.
+\]
+If
+\[
+  \W(\psi,A,P):=
+  \{\pi(A^jPk,A^j)\psi: j\in\Z,\ k\in\Z^d\}
+\]
+is a Parseval frame for $L^2(\R^d)$, then
+\[
+  \sum_{j\in\Z} |\widehat\psi((A^t)^j\xi)|^2=|\det P|
+  \quad\text{for a.e. }\xi\in\R^d.
+\]
+More generally, if $\W(\psi,A,P)$ has frame bounds $0<C_1\le C_2<\infty$,
+then
+\[
+  C_1|\det P|
+  \le
+  \sum_{j\in\Z} |\widehat\psi((A^t)^j\xi)|^2
+  \le
+  C_2|\det P|
+  \quad\text{for a.e. }\xi\in\R^d.
+\]
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The obstruction in the full conjecture is aliasing.  At scale $j$, summing the
+translation coefficients over $k\in\Z^d$ periodizes in frequency along the dual
+lattice $(A^jP)^{-t}\Z^d$.  If dual lattice vectors from different scales can
+be arbitrarily small, then no tiny Fourier neighborhood is alias-free at every
+scale; this is exactly where the source paper needs the coefficient-tail
+condition $\psi\in\mathcal B_\pi$.
+
+Under the no-small-alias hypothesis, we can choose Fourier supports with
+diameter below $\delta(A,P)$.  On such supports every scale has only its
+diagonal alias.  The Parseval frame identity then reads locally as integration
+against the Calderon sum.  Since small cubes cover frequency space, the local
+identity forces the Calderon sum formula almost everywhere.
+
+\section*{Proof}
+
+We first record the elementary lattice calculation used at each scale.
+
+\begin{lemma}[Alias-free lattice summation]\label{lem:lattice}
+Let $B\in\operatorname{GL}(d,\R)$, let $E\subset\R^d$ be measurable, and assume
+\[
+  (E-E)\cap \bigl(B^{-t}\Z^d\setminus\{0\}\bigr)=\emptyset.
+\]
+If $G\in L^2(\R^d)$ is supported in $E$, then
+\[
+  \sum_{k\in\Z^d}
+  \left|\int_{\R^d} G(\xi)e^{2\pi i\,\xi\cdot Bk}\,d\xi\right|^2
+  =
+  |\det B|^{-1}\int_E |G(\xi)|^2\,d\xi .
+\]
+\end{lemma}
+
+\begin{proof}
+Let $Q$ be a measurable fundamental domain for the dual lattice
+$B^{-t}\Z^d$.  Periodize
+\[
+  G_B(\eta)=\sum_{\ell\in B^{-t}\Z^d}G(\eta+\ell),
+  \qquad \eta\in Q.
+\]
+The assumption on $E-E$ implies that at most one summand is nonzero for a.e.
+$\eta\in Q$, hence
+\[
+  \int_Q |G_B(\eta)|^2\,d\eta=\int_E |G(\xi)|^2\,d\xi.
+\]
+Moreover
+\[
+  \int_{\R^d}G(\xi)e^{2\pi i\,\xi\cdot Bk}\,d\xi
+  =
+  \int_Q G_B(\eta)e^{2\pi i\,\eta\cdot Bk}\,d\eta .
+\]
+The functions $|\det B|^{1/2}e^{2\pi i\,\eta\cdot Bk}$, $k\in\Z^d$, form an
+orthonormal basis of $L^2(Q)$.  Parseval's identity on $Q$ gives the claim.
+\end{proof}
+
+We now prove the theorem.  Put
+\[
+  h_j(\xi):=|\det A|^{j/2}\widehat\psi((A^t)^j\xi),
+  \qquad B_j:=A^jP .
+\]
+Then
+\[
+  \widehat{\pi(A^jPk,A^j)\psi}(\xi)
+  =e^{-2\pi i\,\xi\cdot B_jk}h_j(\xi).
+\]
+
+Let $E\subset\R^d$ have diameter strictly smaller than $\delta(A,P)$, and let
+$f\in L^2(\R^d)$ be such that $\widehat f$ is bounded and supported in $E$.
+For every $j$, the no-small-alias condition gives
+\[
+  (E-E)\cap \bigl(B_j^{-t}\Z^d\setminus\{0\}\bigr)=\emptyset.
+\]
+Applying Lemma~\ref{lem:lattice} with
+$G(\xi)=\widehat f(\xi)\overline{h_j(\xi)}$ yields
+\[
+\begin{aligned}
+  \sum_{k\in\Z^d}
+  |\langle f,\pi(A^jPk,A^j)\psi\rangle|^2
+  &=
+  |\det B_j|^{-1}\int_E |\widehat f(\xi)|^2 |h_j(\xi)|^2\,d\xi  \\
+  &=
+  |\det P|^{-1}\int_E |\widehat f(\xi)|^2
+      |\widehat\psi((A^t)^j\xi)|^2\,d\xi .
+\end{aligned}
+\]
+Summing over $j$ and using Tonelli's theorem, the frame inequalities for
+$\W(\psi,A,P)$ give
+\[
+  C_1\int_E|\widehat f(\xi)|^2\,d\xi
+  \le
+  |\det P|^{-1}\int_E|\widehat f(\xi)|^2
+       \sum_{j\in\Z}|\widehat\psi((A^t)^j\xi)|^2\,d\xi
+  \le
+  C_2\int_E|\widehat f(\xi)|^2\,d\xi .
+\]
+Since this holds for all bounded $\widehat f$ supported in $E$, it follows
+that
+\[
+  C_1|\det P|
+  \le
+  \sum_{j\in\Z}|\widehat\psi((A^t)^j\xi)|^2
+  \le
+  C_2|\det P|
+  \quad\text{for a.e. }\xi\in E.
+\]
+Finally, $\R^d$ is a countable union of cubes of diameter less than
+$\delta(A,P)$.  Applying the preceding conclusion to each cube proves the
+global a.e. statement.  In the Parseval case $C_1=C_2=1$, this is precisely
+the Calderon sum formula.
+\qed
+
+\section*{Examples And Scope}
+
+The condition $\delta(A,P)>0$ is an arithmetic separation condition on the
+reciprocal translation lattices.  It holds, for example, whenever the lattices
+$(A^jP)^{-t}\Z^d$ range over a uniformly discrete family.  A concrete class is
+given by lattice automorphism regimes: after conjugating by $P$, if $A^{-t}$
+acts as an automorphism of a fixed lattice, then all reciprocal lattices are
+the same lattice and $\delta(A,P)>0$.
+
+The result does not cover the usual expansive case.  If $A$ is expansive, then
+nonzero vectors of $(A^jP)^{-t}\Z^d$ typically approach zero as $j\to+\infty$,
+so the alias-free localization argument cannot start.  That is consistent with
+the source paper's use of a different mechanism, namely the coefficient-space
+condition $\psi\in\mathcal B_\pi$.
+
+\section*{Novelty And Verification Notes}
+
+Local run indexes were searched for arXiv:2602.10766 and for Calderon/wavelet
+keywords; no existing exact packet was found.  Web searches for the exact
+Calderon-sum conjecture and Bownik--Lemvig problem located the source arXiv
+paper but no later resolution.  This packet claims only the no-small-alias
+subcase, not the full conjecture.
+
+The proof uses only Plancherel/Parseval on the dual lattice and the frame
+identity.  No computational verification is involved.
+
+\section*{References}
+
+\begin{enumerate}
+\item U. Enstad and J. T. van Velthoven,
+\emph{On the Calderon sum formula for wavelet systems}, arXiv:2602.10766.
+\item M. Bownik and J. Lemvig, references cited in the source as the origin of
+the Calderon-sum conjecture/open problem.
+\item D. Speegle, reference cited in the source as an earlier implicit
+formulation of the same problem.
+\end{enumerate}
+
+\section*{Human Review Recommendation}
+
+Recommended review focus: check the normalization convention between the
+source's displayed affine system and its Section 4 representation notation,
+and verify the determinant factor in Lemma~\ref{lem:lattice}.  The mathematical
+mechanism is otherwise compact: the no-small-alias condition removes every
+off-diagonal alias term.
+
+\end{document}

@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem*{theorem}{Theorem}
+
+\title{Finite Levels of the Weak-Compactness Index}
+\author{FA/Banach run \texttt{fa\_banach\_001}}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a partial answer to Question 9.3 of Beanland--Causey--Freeman--Wallis,
+arXiv:1507.06285.  The source asks for which ordinals $\xi$ the class of
+operators $A:X\to Y$ satisfying
+\[
+  \mathbf{WC}(A,X,Y)\leq \xi
+\]
+is an ideal.  This packet settles the finite ordinal cutoffs.
+
+\section*{Source Question}
+
+The source defines the weak-compactness index using the summing basis
+$(s_i)$ of $c_0$:
+\[
+  \mathbf{WC}(A,X,Y,K)
+  =
+  \{\varnothing\}\cup
+  \{(x_i)_{i=1}^n\in B_X^{<\mathbb N}:
+    (s_i)_{i=1}^n \lesssim_K (Ax_i)_{i=1}^n\},
+\]
+and
+\[
+  \mathbf{WC}(A,X,Y)=\sup_{K\geq 1} o(\mathbf{WC}(A,X,Y,K)).
+\]
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Question 9.3 is:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/question_crop.png}
+\end{center}
+
+\section*{Theorem}
+
+\begin{theorem}
+Let $A:X\to Y$ be a bounded operator.  For every finite integer $n\geq 1$,
+\[
+  \mathbf{WC}(A,X,Y)\leq n
+  \quad\Longleftrightarrow\quad
+  \operatorname{rank}(A)\leq n-1.
+\]
+Equivalently, if $\operatorname{rank}(A)=r<\infty$, then
+\[
+  \mathbf{WC}(A,X,Y)=r+1,
+\]
+while if $A$ has infinite rank, then
+\[
+  \mathbf{WC}(A,X,Y)\geq \omega.
+\]
+\end{theorem}
+
+\section*{Proof Intuition}
+
+A finite node in the $\mathbf{WC}$ tree requires the image vectors to dominate
+the same number of summing-basis vectors.  Domination of a basis forces linear
+independence of the image vectors.  Thus a rank-$r$ range cannot support a
+node of length $r+1$.  Conversely, any $m$ independent vectors in the range of
+$A$ can be lifted to $A(B_X)$ after scaling, and finite-dimensional basis
+equivalence gives some constant $K$ for which they dominate the first $m$
+summing-basis vectors.
+
+\section*{Proof}
+
+First suppose $\operatorname{rank}(A)=r<\infty$.  If
+$(x_i)_{i=1}^m\in \mathbf{WC}(A,X,Y,K)$, then
+$(Ax_i)_{i=1}^m$ $K$-dominates $(s_i)_{i=1}^m$.  Since
+$(s_i)_{i=1}^m$ is linearly independent, the vectors
+$Ax_1,\ldots,Ax_m$ must also be linearly independent: otherwise some
+nonzero scalar vector $(a_i)_{i=1}^m$ would satisfy
+\[
+  \sum_{i=1}^m a_i Ax_i=0,
+\]
+while
+\[
+  \left\|\sum_{i=1}^m a_i s_i\right\|>0,
+\]
+contradicting domination.  Therefore every node has length at most $r$, and
+so
+\[
+  o(\mathbf{WC}(A,X,Y,K))\leq r+1
+\]
+for every $K\geq1$.
+
+For the reverse inequality, choose linearly independent vectors
+$y_1,\ldots,y_r$ in $A(B_X)$; if $r=0$ there is nothing to choose.  Pick
+$x_i\in B_X$ with $Ax_i=y_i$.  Since $(y_i)_{i=1}^r$ and
+$(s_i)_{i=1}^r$ are bases of $r$-dimensional spaces, there exists
+$K\geq1$ such that
+\[
+  (s_i)_{i=1}^r \lesssim_K (y_i)_{i=1}^r.
+\]
+Thus $(x_i)_{i=1}^r$ is a node of $\mathbf{WC}(A,X,Y,K)$.  A tree whose
+maximum node length is $r$ and which has a node of length $r$ has order
+$r+1$.  Hence $\mathbf{WC}(A,X,Y)=r+1$.
+
+If $A$ has infinite rank, then for every $m$ one can choose
+$m$ linearly independent vectors in $A(B_X)$.  The same finite-dimensional
+basis-equivalence argument gives a constant $K_m$ such that
+$\mathbf{WC}(A,X,Y,K_m)$ has a node of length $m$.  Consequently
+\[
+  \mathbf{WC}(A,X,Y)
+  =\sup_{K\geq1}o(\mathbf{WC}(A,X,Y,K))
+  \geq \sup_m (m+1)
+  =\omega.
+\]
+This proves the theorem.
+
+\section*{Consequence for Question 9.3}
+
+For finite $n\geq1$,
+\[
+  \{A:X\to Y:\mathbf{WC}(A,X,Y)\leq n\}
+  =
+  \{A:X\to Y:\operatorname{rank}(A)\leq n-1\}.
+\]
+For every $n\geq2$, this class is not closed under sums.  On an
+$n$-dimensional space, let $P$ be a projection of rank $n-1$ and $Q$ the
+complementary rank-one projection.  Then
+\[
+  \mathbf{WC}(P)\leq n,\qquad \mathbf{WC}(Q)\leq n,
+\]
+but
+\[
+  P+Q=I
+\]
+has rank $n$, and hence $\mathbf{WC}(I)=n+1>n$.
+
+For $n=1$, the class is just the zero-operator class.  It is closed under sums
+and composition, but it is not an operator ideal under conventions requiring
+all finite-rank operators to be included.
+
+\section*{Verification Notes}
+
+The only finite-dimensional input is that any two bases of an
+$m$-dimensional normed space are equivalent, with a constant depending on the
+chosen bases.  The proof permits this constant to depend on $m$, which is
+allowed because the definition of $\mathbf{WC}(A,X,Y)$ takes the supremum over
+all $K\geq1$.
+
+\section*{Search Bounds}
+
+The local registry, solution index, attempt index, and proof-gap index were
+searched for the source arXiv id, weak compactness index,
+$\mathbf{WC}(A,X,Y)$, finite rank, summing basis, and operator-index
+terminology.  Web searches for the source title and arXiv id together with
+$\mathbf{WC}(A,X,Y)$, finite rank, and ideal phrasing found no direct later
+answer to this finite-cutoff observation.
+
+\section*{Limitations}
+
+This packet only settles finite ordinal cutoffs in Question 9.3.  It does not
+classify infinite countable ordinals.  The source already proves that the
+cutoff $\mathbf{WC}\leq\omega$ is the ideal of super weakly compact operators
+and that $\mathbf{WC}<\omega_1$ is an ideal.
+
+\section*{Reference}
+
+K. Beanland, R. Causey, D. Freeman, B. Wallis,
+\emph{Classes of operators determined by ordinal indices}, arXiv:1507.06285.
+
+\end{document}

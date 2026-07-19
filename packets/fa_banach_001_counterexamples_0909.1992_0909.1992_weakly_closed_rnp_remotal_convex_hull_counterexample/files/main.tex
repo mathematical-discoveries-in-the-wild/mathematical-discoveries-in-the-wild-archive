@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\clco}{\overline{\operatorname{co}}}
+
+\title{A weakly closed counterexample for remotality of convex hulls}
+\author{arXiv automatic math run \texttt{fa\_banach\_001}, agent \texttt{agent\_super\_01}}
+\date{July 1, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a candidate counterexample, likely valid, to a question in
+Martin--Rao \cite{MR}.  The source paper asks whether, for a weakly closed and
+bounded set \(E\), remotality of \(K=\clco(E)\) from a point forces remotality
+of \(E\) from that point.  It also asks whether the answer is positive for RNP
+sets.  The construction below gives a negative answer to both versions.
+
+\section*{Source question}
+
+The question appears in Remark 8 of \cite{MR}, immediately after an example
+showing that norm closedness is not enough:
+\begin{quote}
+Let \(X\) be a Banach space and let \(E \subset X\) be a weakly closed and
+bounded set. We do not know if remotality of \(K=\clco(E)\) from a point always
+implies that of \(E\). [...] We may also ask whether the above question has a
+positive answer for RNP sets.
+\end{quote}
+
+The source paper's main theorem solves the headline problem of existence of
+closed bounded convex non-remotal sets in every infinite-dimensional Banach
+space; the remark above is a separate residual question about passing
+remotality from a closed convex hull back to its generating set.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=.88\textwidth]{figures/open_problem_crop.png}
+\caption{The source page containing Remark 8 of arXiv:0909.1992.}
+\end{figure}
+
+\section*{Definitions}
+
+A bounded set \(A\subset X\) is \emph{remotal from \(x\in X\)} if there is
+\(a_0\in A\) such that
+\[
+  \|x-a_0\|=\sup\{\|x-a\|:a\in A\}.
+\]
+It is enough to consider \(x=0\), since the general case is obtained by
+translation.
+
+We use \(K=\clco(E)\) for the norm-closed convex hull.  A closed bounded convex
+set is an RNP set if it has the Radon--Nikodym property in the standard convex
+set sense; in particular every closed bounded convex subset of a Banach space
+with the Radon--Nikodym property is an RNP set.
+
+\section*{Proof intuition}
+
+Martin--Rao's norm-closed example fails to be weakly closed because its Hilbert
+basis coordinate converges weakly to zero, and the missing weak limit is
+exactly the farthest point created in the convex hull.  The fix is to attach a
+second, smaller ``tag'' coordinate which prevents weak convergence of the
+individual generators, but which can still be cancelled by taking signed
+midpoints.
+
+The summing basis \(s_n=(1,\ldots,1,0,\ldots)\) in \(c_0\) has precisely this
+behavior: it has no weak limit in \(c_0\), since coordinate functionals would
+force any limit to be the constant sequence \(1\), but a signed pair
+\(\pm s_n\) cancels exactly.  Pairing this tag with the usual Hilbert basis
+coordinate gives a weakly closed set \(E\); averaging each signed pair gives
+\((a_n,0,0)\), and these averages converge in norm to a unit vector in
+\(\clco(E)\).
+
+\section*{The counterexample}
+
+\begin{theorem}
+There is a Banach space \(X\), a weakly closed bounded set \(E\subset X\), and
+\(K=\clco(E)\), such that \(K\) is remotal from \(0\) but \(E\) is not remotal
+from \(0\).  Moreover, \(K\) may be chosen to be an RNP set.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+  X=\R\oplus_\infty \ell_2\oplus_\infty c_0
+\]
+with norm
+\[
+  \|(t,h,z)\|=\max\{|t|,\|h\|_2,\|z\|_\infty\}.
+\]
+Let \((e_n)\) be the canonical orthonormal basis of \(\ell_2\), and let
+\[
+  s_n=(\underbrace{1,\ldots,1}_{n\text{ times}},0,0,\ldots)\in c_0
+\]
+be the summing basis of \(c_0\).  Put \(a_n=n/(n+1)\) and fix \(c=1/2\).  Define
+\[
+  x_n^+=(a_n,a_ne_n,cs_n),\qquad
+  x_n^-=(a_n,-a_ne_n,-cs_n)
+\]
+and
+\[
+  E=\{x_n^+,x_n^-:n\in\N\}.
+\]
+
+The set \(E\) is bounded and every element of \(E\) has norm
+\[
+  \|x_n^\pm\|=\max\{a_n,a_n,c\}=a_n<1.
+\]
+Hence \(E\) has no vector of maximal norm, while
+\[
+  \sup_{x\in E}\|x\|=\sup_n a_n=1.
+\]
+Thus \(E\) is not remotal from \(0\).
+
+We next prove that \(E\) is weakly closed.  Suppose a net
+\((x_{n_i}^{\sigma_i})_i\), with \(\sigma_i\in\{+,-\}\), converges weakly in
+\(X\) to some point \(x\).  If the indices \(n_i\) are eventually contained in
+a finite subset of \(\N\), then a subnet is eventually constant and the weak
+limit belongs to the finite set \(E\).  So it remains to rule out the case in
+which \(n_i\) tends to infinity along a subnet.
+
+Passing to this subnet, the \(c_0\)-coordinates
+\[
+  \sigma_i c s_{n_i}
+\]
+would converge weakly in \(c_0\).  Evaluating at the first coordinate
+functional \(\delta_1\in \ell_1=c_0^*\), the scalars
+\(\delta_1(\sigma_i c s_{n_i})=\sigma_i c\) must converge.  Since they take
+only the two values \(\pm c\), they are eventually constant; write the eventual
+sign as \(\sigma\).  For every fixed \(k\), once \(n_i\geq k\) we have
+\[
+  \delta_k(\sigma_i c s_{n_i})=\sigma c.
+\]
+Therefore a weak limit \(z\in c_0\) would satisfy \(z_k=\sigma c\) for every
+\(k\), impossible because \(c>0\) and the constant nonzero sequence is not in
+\(c_0\).  Thus no such subnet exists, and \(E\) is weakly closed.
+
+Now let \(K=\clco(E)\).  For each \(n\),
+\[
+  \frac{x_n^++x_n^-}{2}=(a_n,0,0)\in \operatorname{co}(E).
+\]
+Since \(a_n\to 1\), the point
+\[
+  u=(1,0,0)
+\]
+belongs to \(K\).  Also \(E\subset B_X\), so \(K\subset B_X\).  Hence
+\[
+  \sup_{y\in K}\|y\|=1=\|u\|,
+\]
+and \(K\) is remotal from \(0\).
+
+Finally, \(X^*=\R\oplus_1\ell_2\oplus_1\ell_1\) is separable.  Therefore \(X\)
+has the Radon--Nikodym property.  Since \(K\) is a closed bounded convex subset
+of \(X\), it is an RNP set.  This gives the asserted negative answer even for
+RNP sets.
+\end{proof}
+
+\section*{Verification and novelty checks}
+
+The proof is deterministic and uses only elementary properties of
+\(\ell_2\), \(c_0\), and the Radon--Nikodym property.  The key point is
+weak closedness of \(E\), supplied by the summing-basis tag in \(c_0\).
+
+Before promotion, the following bounded novelty checks were performed.
+The run indexes
+\[
+\texttt{registry\_index.tsv},\quad \texttt{solutions/index.tsv},\quad
+\texttt{attempts/index.tsv},\quad \texttt{proof\_gaps/index.tsv}
+\]
+were searched for arXiv:0909.1992, remotality, remotal sets, farthest points,
+closed convex hulls, weakly closed bounded sets, and RNP-set variants.  No
+existing answer to this source question was found.  The local parsed arXiv
+corpus was searched for remotality, farthest point, weakly closed, closed
+convex hull, and Martin--Rao/Sababheh--Khalil phrases; the visible later
+material referenced the main Martin--Rao theorem but did not answer Remark 8.
+External web searches used exact phrases such as ``We do not know if
+remotality'' with ``cconv(E)'', ``remotality'' with ``weakly closed'' and
+``closed convex hull'', and ``remotal'' with ``RNP'' and ``closed convex
+hull''.  These searches
+found no later solution to the specific weakly closed/RNP convex-hull question.
+
+\section*{Human-review recommendation}
+
+Review as a likely valid counterexample.  The two points most worth checking
+are:
+\begin{enumerate}
+  \item the net argument proving that \(E\) is weakly closed;
+  \item the interpretation of the source phrase ``for RNP sets''.  The packet
+  proves the stronger-looking formulation where \(K=\clco(E)\) is a closed
+  bounded convex subset of a Banach space with the Radon--Nikodym property.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{MR}
+M. Martin and T. S. S. R. K. Rao,
+\emph{On remotality for convex sets in Banach spaces},
+Journal of Approximation Theory 162 (2010), 392--396;
+arXiv:0909.1992.
+
+\end{thebibliography}
+
+\end{document}

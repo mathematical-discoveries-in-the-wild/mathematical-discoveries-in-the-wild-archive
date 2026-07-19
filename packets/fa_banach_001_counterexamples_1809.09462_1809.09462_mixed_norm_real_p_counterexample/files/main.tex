@@ -1,0 +1,168 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathsf T}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Counterexample to a Real-\(p\) Mixed Matrix Norm Extension}
+\author{fa\_banach\_001 counterexample packet}
+\date{2026-07-03}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet records a counterexample to a question in Sah--Sawhney--Stoner--Zhao,
+\emph{A reverse Sidorenko inequality}, arXiv:1809.09462.  In Section 3.1,
+after Lemma 3.1, they define
+\[
+  \norm{M}_{L_{p,q}}
+  =
+  \left(\sum_i \left(\sum_j |m_{ij}|^p\right)^{q/p}\right)^{1/q}
+\]
+and ask whether, for nonnegative matrices \(A,B\), the inequality
+\[
+  \norm{A^\T B}_{L_{p,q}}^2
+  \le
+  \norm{A^\T A}_{L_{q,q}}\,\norm{B^\T B}_{L_{p,p}}
+\tag{1}
+\]
+extends from positive integer \(p\) to all real \(1\le p\le q\).
+
+\begin{center}
+\includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Idea of the Proof}
+
+When \(p=q\), the mixed norm is just the entrywise \(\ell_p\)-norm.  For
+integer \(p\), the kernel \(\langle x,y\rangle^p\) is positive semidefinite
+because it is the inner product of tensor powers.  The natural place to look
+for a non-integer obstruction is therefore a small positive-measure
+configuration for the kernel \(\langle x,y\rangle^p\) on the positive cone.
+Two directions in \(\R_+^2\), with reciprocal weights, already break the
+Cauchy--Schwarz-type inequality at \(p=3/2\).
+
+\section*{Counterexample}
+
+Set
+\[
+  p=q=\frac32,\qquad t=\frac14,\qquad r=1-t^p=\frac78,\qquad
+  \alpha=r^{1/p}=r^{2/3}.
+\]
+Let
+\[
+  A=\begin{pmatrix}
+      0 & 1\\
+      \alpha & t
+    \end{pmatrix},
+  \qquad
+  B=\begin{pmatrix}
+      t & \alpha\\
+      1 & 0
+    \end{pmatrix}.
+\]
+These are nonnegative real \(2\times2\) matrices.
+
+\section*{Proof}
+
+Since \(p=q\), write \(\norm{M}_p=(\sum_{ij}|m_{ij}|^p)^{1/p}\).  The proposed
+inequality (1) becomes
+\[
+  \norm{A^\T B}_p^2 \le \norm{A^\T A}_p\,\norm{B^\T B}_p.
+\]
+The columns of \(A\) are \(\alpha e_2\) and \((1,t)\), while the columns of
+\(B\) are \((t,1)\) and \(\alpha e_1\).  Thus
+\[
+  \norm{A^\T B}_p^p
+  =
+  (\alpha)^p + (2t)^p + (\alpha)^p
+  =
+  2r+(2t)^p=:S.
+\]
+Similarly,
+\[
+  \norm{A^\T A}_p^p
+  =
+  \alpha^{2p}+2(\alpha t)^p+(1+t^2)^p
+  =
+  r^2+2rt^p+(1+t^2)^p=:X.
+\]
+By symmetry \(\norm{B^\T B}_p^p=X\).  Therefore (1) is equivalent to
+\[
+  S^{2/p}\le X^{2/p},
+\]
+or simply \(S\le X\).
+
+For \(t=1/4\) and \(p=3/2\),
+\[
+  S=2\cdot\frac78+\left(\frac12\right)^{3/2}
+   =\frac{7+\sqrt2}{4},
+\]
+whereas
+\[
+  X=\left(\frac78\right)^2
+     +2\cdot\frac78\cdot\frac18
+     +\left(\frac{17}{16}\right)^{3/2}
+   =\frac{63+17\sqrt{17}}{64}.
+\]
+It remains only to compare these two numbers.  Multiplying by \(64\), the
+claim \(S>X\) is
+\[
+  112+16\sqrt2 > 63+17\sqrt{17},
+\]
+or
+\[
+  49+16\sqrt2>17\sqrt{17}.
+\]
+This holds because
+\[
+  (49+16\sqrt2)^2-(17\sqrt{17})^2
+  =
+  1568\sqrt2-2000>0,
+\]
+and the final inequality follows from \(\sqrt2>125/98\).  Hence \(S>X\), so
+\[
+  \norm{A^\T B}_{L_{3/2,3/2}}^2
+  >
+  \norm{A^\T A}_{L_{3/2,3/2}}\,
+  \norm{B^\T B}_{L_{3/2,3/2}}.
+\]
+This disproves the proposed real-\(p\) extension.
+
+\section*{Verification Notes}
+
+The script \texttt{code/verify\_counterexample.py} evaluates the same example
+numerically and prints the ratio
+\[
+  \frac{\norm{A^\T B}_{L_{3/2,3/2}}^2}
+       {\norm{A^\T A}_{L_{3/2,3/2}}\norm{B^\T B}_{L_{3/2,3/2}}},
+\]
+which is approximately \(1.0154>1\).  The proof above is exact; the script is
+only a check against transcription errors.
+
+\section*{Novelty and Limitations}
+
+Cheap run indexes were searched for arXiv:1809.09462, ``reverse Sidorenko'',
+``mixed norm'', and the exact matrix inequality; no prior run packet or
+attempt was found.  Local parsed-source search found the exact inequality only
+in the source paper and generated target-pool extracts.  Web searches on
+2026-07-03 for exact phrases from the inequality and the source sentence found
+no visible later answer.  This is a bounded novelty check, not a publication
+claim.
+
+The counterexample only disproves the proposed extension to all real \(p\). It
+does not contradict the source paper's \(p=1\) lemma, the positive-integer
+cases obtained by tensor powers, or any of the reverse Sidorenko theorems.
+
+\section*{Reference}
+
+A. Sah, M. Sawhney, D. Stoner, and Y. Zhao,
+\emph{A reverse Sidorenko inequality}, arXiv:1809.09462.
+
+\end{document}

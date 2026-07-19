@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Gr}{\operatorname{Gr}}
+
+\title{The Greedy Rearrangement SOT Subspace in Hamm--Hayes--Petrosyan is \(L^\infty\)}
+\author{Run \texttt{fa\_banach\_001}, lane 16}
+\date{July 18, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a likely-valid full solution to Problem 8 of Hamm--Hayes--Petrosyan \cite{HHP}, which asks for the largest subspace on which the greedy rearrangement of the Fourier series converges in strong operator topology for every continuous function. The answer is \(L^\infty(\T)\).
+
+\section*{Source Question}
+
+The source paper is Keaton Hamm, Ben Hayes, and Armenak Petrosyan, \emph{An Operator theoretic approach to the convergence of rearranged Fourier series}, arXiv:1809.08217. Problem 8 appears on page 15, immediately after Corollary 6.10.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+Transcription of Problem 8:
+
+\begin{quote}
+What is the largest subspace on which the Greedy rearrangement of the Fourier series (rearranging by decreasing order of the absolute value of the Fourier coefficients) converges in SOT for every continuous function?
+\end{quote}
+
+\section*{Definitions}
+
+We use normalized Haar measure on \(\T\), and write \(e_n(t)=e^{2\pi i n t}\). If \(f\in C(\T)\), a \emph{greedy ordering} of its Fourier series is an ordering of the nonzero Fourier coefficients, followed by the zero coefficients if desired, such that the moduli \(\abs{\widehat f(n)}\) are nonincreasing. The \(m\)-th greedy partial sum is
+\[
+  \Gr_m f=\sum_{j=1}^m \widehat f(\rho(j)) e_{\rho(j)}.
+\]
+When coefficients have equal moduli, any tie-breaking rule compatible with this condition is allowed.
+
+Define
+\[
+  \mathcal V_{\rm gr}
+  =
+  \left\{g\in L^2(\T):
+  \norm{(\Gr_m f-f)g}_2\to 0
+  \text{ for every } f\in C(\T) \text{ and every greedy ordering}\right\}.
+\]
+Equivalently, \(\mathcal V_{\rm gr}\) is the largest subspace of \(L^2(\T)\) on which the multiplication operators induced by greedy Fourier partial sums converge strongly to \(M_f\) for every \(f\in C(\T)\).
+
+\section*{Proof Intuition}
+
+The inclusion \(L^\infty\subseteq \mathcal V_{\rm gr}\) is immediate from ordinary \(L^2\)-convergence: the Fourier coefficients of a continuous function are square summable, and any rearrangement of an \(\ell^2\) series converges in \(L^2\).
+
+The reverse inclusion is the interesting part. The source paper proves a flat-polynomial lemma: on every positive-measure set \(E\), one can find a bounded continuous trigonometric polynomial \(p\) and a sign transform \(q\) with \(\norm{q\one_E}_2\ge c\), where \(c>0\) is absolute. Split the flat coefficients of \(p\) according to the signs used to form \(q\). After a tiny perturbation of the coefficient magnitudes, the greedy algorithm is forced to take one sign class first. At that intermediate greedy time, the other sign class is omitted; this omitted part has a fixed amount of \(L^2\)-mass on \(E\).
+
+For an unbounded \(g\), choose the sets \(E_k\) inside higher and higher level sets of \(\abs g\). Scale the corresponding blocks so their uniform norms are summable, but choose the level sets so far out that the weighted \(L^2(|g|^2)\)-error from the omitted half of the block is still large. Separating the coefficient sizes block by block makes the greedy order process the blocks in the intended order.
+
+\section*{The Result}
+
+\begin{theorem}
+\[
+  \mathcal V_{\rm gr}=L^\infty(\T).
+\]
+More precisely, if \(g\in L^2(\T)\setminus L^\infty(\T)\), then there is an \(F\in C(\T)\) such that, for every greedy ordering of the Fourier coefficients of \(F\),
+\[
+  \norm{(\Gr_m F-F)g}_2
+\]
+does not tend to \(0\). In fact, these norms are unbounded along a subsequence of greedy times.
+\end{theorem}
+
+\begin{proof}
+First let \(g\in L^\infty(\T)\), and let \(f\in C(\T)\). Since \((\widehat f(n))_{n\in\Z}\in \ell^2(\Z)\), the sums \(\Gr_m f\) converge to \(f\) in the ordinary \(L^2\)-norm for every ordering of the coefficients, hence for every greedy ordering. Therefore
+\[
+  \norm{(\Gr_m f-f)g}_2
+  \le \norm{g}_\infty \norm{\Gr_m f-f}_2
+  \longrightarrow 0.
+\]
+Thus \(L^\infty(\T)\subseteq \mathcal V_{\rm gr}\).
+
+We now prove the converse. We first record the precise block consequence of Corollary 6.10 and its proof in \cite{HHP}. There is an absolute constant \(c_0>0\) such that for every measurable \(E\subseteq \T\) with positive measure there are a finite set \(\Lambda\subset\Z\), complex numbers \(u_n\) with a common modulus \(\alpha>0\), and signs \(\eps_n\in\{-1,1\}\) such that
+\[
+  p=\sum_{n\in\Lambda}\eps_n u_n e_n,\qquad
+  q=\sum_{n\in\Lambda}u_n e_n
+\]
+satisfy
+\[
+  \norm{p}_\infty\le 1,
+  \qquad
+  \norm{q\one_E}_2\ge c_0.
+\]
+Indeed, the proof of Corollary 6.10 chooses a flat Littlewood polynomial and, after a translation to a Lebesgue density point of \(E\), obtains exactly such a pair. We may take the degree large enough that both signs occur.
+
+We shall use the following elementary greedy block form. If \(E\) also satisfies \(\abs{E}\le c_0^2/64\), then there is a trigonometric polynomial \(r\), a partition \(\Lambda=A\cup B\), and a number \(\gamma>0\), independent of \(E\), such that:
+\[
+  \norm{r}_\infty\le 2,
+\]
+all Fourier coefficients of \(r\) on \(A\) have one common modulus, all Fourier coefficients on \(B\) have one common smaller modulus, and
+\[
+  \norm{\left(\sum_{n\in B}\widehat r(n)e_n\right)\one_E}_2\ge \gamma.
+\]
+To see this, take \(p,q\) as above and set \(A=\{n:\eps_n=1\}\), \(B=\{n:\eps_n=-1\}\). Choose \(0<\eta\le 1/2\) so small that \(\eta\norm{q}_\infty\le 1\), and put
+\[
+  r=p+\eta q.
+\]
+Then \(\norm{r}_\infty\le 2\). On \(A\), the coefficients of \(r\) are \((1+\eta)u_n\), while on \(B\) they are \(-(1-\eta)u_n\), so the \(A\)-coefficients have strictly larger modulus than the \(B\)-coefficients. The \(B\)-part is
+\[
+  \sum_{n\in B}\widehat r(n)e_n
+  =
+  \frac{1-\eta}{2}(p-q).
+\]
+Since \(\norm{p\one_E}_2\le \abs E^{1/2}\le c_0/8\), we get
+\[
+  \norm{\left(\sum_{n\in B}\widehat r(n)e_n\right)\one_E}_2
+  \ge
+  \frac{1-\eta}{2}\bigl(\norm{q\one_E}_2-\norm{p\one_E}_2\bigr)
+  \ge \frac{7c_0}{32}.
+\]
+We fix \(\gamma=c_0/8\).
+
+Now fix \(g\in L^2(\T)\setminus L^\infty(\T)\). We construct a uniformly convergent series
+\[
+  F=\sum_{k=1}^\infty s_k r_k
+\]
+of frequency-disjoint blocks. During the construction, write
+\[
+  h_k=\sum_{n\in B_k}\widehat{r_k}(n)e_n
+\]
+for the lower-coefficient part of the \(k\)-th block.
+
+Assume blocks \(1,\ldots,k-1\) have been chosen, and let \(\theta_{k-1}\) be the smallest modulus of a nonzero coefficient in the scaled block \(s_{k-1}r_{k-1}\), with \(\theta_0=\infty\). Choose \(s_k>0\) small enough that \(s_k\le 2^{-k}\), \(2s_k<\theta_{k-1}\), and, for every \(i<k\),
+\[
+  2s_k\norm{g\one_{E_i}}_2\le 2^{-k-i}.
+\]
+The inequality \(2s_k<\theta_{k-1}\) is enough for coefficient separation because every unscaled block produced above has all Fourier coefficient moduli at most \(\norm{r_k}_\infty\le 2\).
+Then choose \(M_k>0\) so large that
+\[
+  s_k M_k\gamma\ge k+2.
+\]
+Since \(g\notin L^\infty\), the set \(\{\abs g>M_k\}\) has positive measure. Pick a measurable subset
+\[
+  E_k\subseteq \{\abs g>M_k\}
+\]
+with \(0<\abs{E_k}\le c_0^2/64\). Applying the preceding block construction to \(E_k\), and then modulating by a sufficiently large integer, gives a polynomial \(r_k\) whose spectrum is disjoint from the previous spectra and whose coefficients have the required internal split \(A_k\cup B_k\). The modulation does not change any \(L^\infty\)- or \(L^2(E_k)\)-norms. Define \(\theta_k\) to be the smallest modulus of a nonzero coefficient in \(s_kr_k\). This completes the recursive construction.
+
+The uniform convergence of \(F=\sum_k s_k r_k\) follows from
+\[
+  \sum_k \norm{s_k r_k}_\infty
+  \le 2\sum_k s_k
+  <\infty,
+\]
+so \(F\in C(\T)\). The recursive coefficient separation has two consequences. First, every coefficient in block \(j\) has larger modulus than every coefficient in block \(k\) whenever \(j<k\). Second, inside block \(k\), every coefficient in \(A_k\) has larger modulus than every coefficient in \(B_k\), and every coefficient in \(B_k\) has larger modulus than all coefficients in later blocks.
+
+Therefore, for each \(k\), at the greedy time \(m_k\) after all earlier blocks and exactly the \(A_k\)-part of block \(k\) have been selected, the greedy approximant satisfies
+\[
+  F-\Gr_{m_k}F
+  =
+  s_k h_k+\sum_{j>k}s_j r_j.
+\]
+Restricting to \(E_k\) and using \(\abs g>M_k\) on \(E_k\), we obtain
+\[
+\begin{aligned}
+  \norm{(F-\Gr_{m_k}F)g}_2
+  &\ge
+  s_k\norm{h_k g\one_{E_k}}_2
+  -
+  \sum_{j>k}s_j\norm{r_j g\one_{E_k}}_2 \\
+  &\ge
+  s_k M_k\norm{h_k\one_{E_k}}_2
+  -
+  2\sum_{j>k}s_j\norm{g\one_{E_k}}_2 \\
+  &\ge
+  s_k M_k\gamma
+  -
+  \sum_{j>k}2^{-j-k}
+  \ge k+1.
+\end{aligned}
+\]
+Thus the greedy errors are unbounded along the subsequence \((m_k)\), so the greedy partial sums do not converge to \(F\) in \(L^2(|g|^2)\). Hence no unbounded \(g\) belongs to \(\mathcal V_{\rm gr}\), and \(\mathcal V_{\rm gr}\subseteq L^\infty(\T)\).
+
+Combining both inclusions proves the theorem.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is analytic and uses no computational verification. The key check is that the coefficient perturbation \(r=p+\eta q\) simultaneously keeps the whole block uniformly bounded and strictly separates the two sign classes, so any greedy tie-breaking rule must pass through the intermediate partial sum in which the \(B\)-part is omitted. The block scales are then chosen recursively so that later blocks cannot destroy the previously forced weighted lower bounds.
+
+\section*{Limitations and Novelty Check}
+
+This packet solves only the one-dimensional greedy-SOT question as stated on page 15 of \cite{HHP}. The source paper also asks broader questions about Ulyanov rearrangements, bounded rearrangement properties, constants \(C_0,C_1\), and multivariate variants; those are not settled here.
+
+The local run indexes were searched for arXiv:1809.08217, the title, Ulyanov/rearranged Fourier keywords, bounded rearrangement, and greedy rearrangement keywords, with no existing packet for this target. Web searches for the exact problem and nearby phrases found related greedy Fourier and quasi-greedy basis literature, including classical divergence results for decreasing Fourier rearrangements, but no exact operator-SOT largest-subspace characterization. The proof above relies only on the source paper's Corollary 6.10 and its flat-polynomial construction.
+
+\section*{Human Review Recommendation}
+
+Recommended review focus: verify the extraction of the equal-modulus block from the proof of Corollary 6.10 in \cite{HHP}, then check the greedy-order bookkeeping in the recursive construction. If those two points pass, the theorem appears to be a full answer to Problem 8.
+
+\begin{thebibliography}{9}
+
+\bibitem{HHP}
+K. Hamm, B. Hayes, and A. Petrosyan,
+\emph{An Operator theoretic approach to the convergence of rearranged Fourier series},
+arXiv:1809.08217, 2019.
+\url{https://arxiv.org/abs/1809.08217}
+
+\end{thebibliography}
+
+\end{document}

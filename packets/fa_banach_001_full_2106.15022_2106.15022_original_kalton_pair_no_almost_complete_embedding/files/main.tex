@@ -1,0 +1,438 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\MIN}{\mathrm{MIN}}
+\newcommand{\MAX}{\mathrm{MAX}}
+\newcommand{\cZ}{\mathcal Z}
+\newcommand{\M}{\mathrm M}
+\newcommand{\oplusone}{\mathop{\oplus}\limits_{1}}
+
+\title{No almost complete embedding for the original\\
+Kalton operator-space pair of arXiv:2106.15022}
+\author{Automated mathematics run \texttt{fa\_banach\_001}}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Claimed full solution, likely valid, pending human
+review.  The proof also gives a stronger obstruction for arbitrary
+$\ell_1$-sums of minimal operator spaces.
+
+\section{Source question}
+
+Braga's Theorem 1.8 constructs operator spaces $X$ and $Y$ such that $X$
+embeds linearly isomorphically, but not completely isomorphically, into $Y$,
+while the bounded subsets of $X$ and $Y$ are almost completely coarsely
+equivalent \cite{Braga2021}.  The paragraph immediately following the theorem
+asks whether the \emph{specific} spaces constructed there also satisfy that
+$X$ does not almost completely isomorphically embed into $Y$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Theorem 1.8 and the source question on PDF page 4 of
+  \cite{Braga2021}.}
+\end{figure}
+
+For the explicit construction, put $H=R\cap C$.  Let
+$Q:L_\infty[0,1]\to H$ be the complete quotient adjoint to the standard
+complete embedding $R+C\to L_1[0,1]$.  On the vector space
+$L_\infty[0,1]$, let
+\[
+ \|y\|_{Y_j}=\max\{2^{-j}\|y\|_\infty,\|Qy\|_H\},
+ \qquad
+ \cZ(Q)=\Big(\bigoplus_{j\geq1}Y_j\Big)_{\ell_1}.
+\]
+The source pair is
+\[
+ Y=\cZ(Q),\qquad X=H\oplus\ker\widetilde Q.
+\]
+An almost complete isomorphic embedding of an operator space $E$ into $F$
+means a sequence $T_n:E\to F$ and constants $a,b>0$ such that
+\[
+ a\|z\|_{\M_n(E)}\leq\|(T_n)_n z\|_{\M_n(F)}
+ \leq b\|z\|_{\M_n(E)}
+ \tag{1}\label{eq:almost}
+\]
+for every $n$ and $z\in\M_n(E)$.
+
+\section{Proof intuition}
+
+There are two steps.  First, the quotient coordinates of every bounded map
+$H\to\cZ(Q)$ form a compact operator into $\ell_1(H)$.  Therefore, on a
+suitable infinite-dimensional Hilbert subspace, those coordinates are as
+small as desired.  This reduces a hypothetical almost complete embedding into
+$\cZ(Q)$ to one into
+\[
+ W=\Big(\bigoplus_{j\geq1}\MIN(L_\infty[0,1])\Big)_{\ell_1}.
+\]
+
+Second, fix one map $T_n:H\to W$.  Weak compactness gives a finite coordinate
+head whose scalar-norm tail is tiny.  On that finite head, concentration on
+high-dimensional Euclidean spheres supplies an $n$-dimensional Hilbert
+subspace $F$ on which all coordinate norms are nearly constant
+simultaneously.  Their operator norms on $F$ then have bounded sum.  For an
+orthonormal basis $x_1,\ldots,x_n$ of $F$, the row matrix
+$z=\sum_k e_{1k}\otimes x_k$ has norm $\sqrt n$ in $R\cap C$, whereas its
+image in the finite minimal head has uniformly bounded norm.  The tiny tail
+stays bounded after amplification.  This contradicts the lower estimate in
+\eqref{eq:almost}.
+
+\section{Three auxiliary lemmas}
+
+\begin{lemma}[Uniform tails]\label{lem:tails}
+Let $(E_j)$ be Banach spaces and
+$Z=(\bigoplus_jE_j)_{\ell_1}$.  Every relatively weakly compact subset
+$K\subset Z$ has uniformly small coordinate tails.  Consequently, if $G$ is
+reflexive and $T:G\to Z$ is bounded, then
+\[
+ \|(I-P_N)T\|\longrightarrow0,
+\]
+where $P_N$ is the projection onto the first $N$ coordinates.
+\end{lemma}
+
+\begin{proof}
+Suppose uniform tails fail.  A gliding-hump selection gives $\varepsilon>0$,
+pairwise successive finite intervals $I_m\subset\mathbb N$, and $z^{(m)}\in K$
+such that
+\[
+ \sum_{j\in I_m}\|z^{(m)}_j\|>\varepsilon.
+\]
+Choose $f_{m,j}\in B_{E_j^*}$, adjusting complex phases if necessary, so that
+\[
+ \left|\sum_{j\in I_m}f_{m,j}(z^{(m)}_j)\right|>\varepsilon.
+\]
+The map
+\[
+ A:Z\to\ell_1,
+ \qquad
+ (Az)_m=\sum_{j\in I_m}f_{m,j}(z_j),
+\]
+is contractive because the intervals are disjoint.  Thus $A(K)$ is relatively
+weakly compact.  By the Schur property of $\ell_1$, it is relatively norm
+compact and hence has uniformly small scalar coordinate tails.  This
+contradicts $|(Az^{(m)})_m|>\varepsilon$.  The last assertion follows because
+$T(B_G)$ is relatively weakly compact.
+\end{proof}
+
+\begin{lemma}[Simultaneous Hilbertian stabilization]\label{lem:stabilize}
+Let $G$ be an infinite-dimensional Hilbert space and let
+$p_1,\ldots,p_N$ be continuous seminorms on $G$ satisfying
+\[
+ \sum_{j=1}^Np_j(x)\leq C\|x\|_2\qquad(x\in G).
+ \tag{2}\label{eq:seminormbound}
+\]
+For every $d\in\mathbb N$ and $\varepsilon>0$, there is a $d$-dimensional
+subspace $F\subset G$ such that
+\[
+ \sum_{j=1}^N\sup_{x\in S_F}p_j(x)\leq C+\varepsilon.
+ \tag{3}\label{eq:stabilized}
+\]
+\end{lemma}
+
+\begin{proof}
+We first recall the following additive form of Euclidean-sphere
+stabilization.  Given $d$, $L$ and $\delta>0$, there is $D$ such that, whenever
+$E$ is a Euclidean space of dimension at least $D$ and $p$ is a seminorm with
+$p(x)\leq L\|x\|_2$, some $d$-dimensional $F\subset E$ satisfies
+\[
+ \sup_{S_F}p-\inf_{S_F}p<\delta. \tag{4}\label{eq:onep}
+\]
+Indeed, $p$ is $L$-Lipschitz on $S_E$.  L\'evy's concentration lemma says
+that it is exponentially concentrated about a median.  For a random
+isometric copy of $\ell_2^d$ in $E$, take a $\rho$-net of $S^{d-1}$ of
+cardinality at most $(1+2/\rho)^d$.  If $L>0$, set
+$t=\delta/4$ and $\rho=\delta/(4L)$ (decreasing $\rho$ to at most $1$ causes
+no problem).  L\'evy's estimate and a union bound show, once $\dim E$ is large
+enough in terms of $d,L,\delta$, that every net value differs from the median
+by at most $t$.  Every sphere point then differs from the median by at most
+$t+L\rho\leq\delta/2$, so the oscillation is at most $\delta$.  The case
+$L=0$ is immediate.  This is the standard concentration proof of the additive
+Dvoretzky lemma \cite[Chapter 2]{Ledoux}.
+
+Choose positive $\delta_j$ with $\sum_j\delta_j<\varepsilon$.  Starting with
+a sufficiently large finite-dimensional subspace of $G$, apply
+\eqref{eq:onep} successively to $p_1,\ldots,p_N$, choosing the intermediate
+dimensions backwards so that the final dimension is $d$.  Previously obtained
+oscillation estimates persist on further subspaces.  On the resulting $F$,
+put $a_j=\inf_{x\in S_F}p_j(x)$.  Then
+\[
+ \sup_{S_F}p_j\leq a_j+\delta_j.
+\]
+For any fixed $x\in S_F$, \eqref{eq:seminormbound} gives
+$\sum_ja_j\leq\sum_jp_j(x)\leq C$.  Summing the preceding inequalities proves
+\eqref{eq:stabilized}.
+\end{proof}
+
+\begin{lemma}[The minimal row identity]\label{lem:minrow}
+Let $E$ be a Banach space, $S:F\to E$ a bounded map on an
+$n$-dimensional Hilbert space, and $x_1,\ldots,x_n$ an orthonormal basis of
+$F$.  Then
+\[
+ \left\|\sum_{k=1}^ne_{1k}\otimes Sx_k\right\|_{
+ \M_n(\MIN(E))}=\|S\|.
+ \tag{5}\label{eq:minrow}
+\]
+For the same orthonormal family regarded in $H=R\cap C$,
+\[
+ \left\|\sum_{k=1}^ne_{1k}\otimes x_k\right\|_{M_n(H)}=\sqrt n.
+ \tag{6}\label{eq:rcrow}
+\]
+\end{lemma}
+
+\begin{proof}
+By the definition of the minimal operator-space structure, the left side of
+\eqref{eq:minrow} is
+\[
+ \sup_{\phi\in B_{E^*}}
+ \left(\sum_{k=1}^n|\phi(Sx_k)|^2\right)^{1/2}
+ =\|(S|_F)^*\|=\|S\|.
+\]
+For \eqref{eq:rcrow}, unitary homogeneity lets us take $x_k$ to be the first
+$n$ standard basis vectors of $\ell_2$.  The row component of the displayed
+matrix has norm $\sqrt n$, while its column component has norm $1$.  The
+$R\cap C$ norm is their maximum.
+\end{proof}
+
+\section{The minimal-sum obstruction}
+
+\begin{theorem}\label{thm:minsum}
+For every sequence of Banach spaces $(E_j)$, the operator space
+\[
+ W_E=\Big(\bigoplus_{j\geq1}\MIN(E_j)\Big)_{\ell_1}
+\]
+does not admit an almost complete isomorphic embedding of $R\cap C$.
+\end{theorem}
+
+\begin{proof}
+Suppose that maps $T_n:H=R\cap C\to W_E$ satisfy \eqref{eq:almost} for fixed
+$a,b>0$.  Fix $\eta>0$ and then a large $n$.  At scalar level,
+$\|T_n\|\leq b$.  Since $H$ is reflexive, Lemma \ref{lem:tails} gives $N$ such
+that
+\[
+ \|(I-P_N)T_n\|\leq\eta n^{-3/2}. \tag{7}\label{eq:tailchoice}
+\]
+Write $S_j:H\to E_j$ for the $j$th coordinate of $T_n$.  The underlying
+Banach norm of $W_E$ is the $\ell_1$ norm, so
+\[
+ \sum_{j=1}^N\|S_jx\|\leq b\|x\|_2.
+\]
+Apply Lemma \ref{lem:stabilize} to $p_j(x)=\|S_jx\|$.  We obtain an
+$n$-dimensional $F\subset H$ such that
+\[
+ \sum_{j=1}^N\|S_j|_F\|\leq b+\eta. \tag{8}\label{eq:headbound}
+\]
+
+Let $x_1,\ldots,x_n$ be an orthonormal basis of $F$ and set
+\[
+ z_F=\sum_{k=1}^ne_{1k}\otimes x_k\in\M_n(H).
+\]
+By Lemma \ref{lem:minrow}, $\|z_F\|=\sqrt n$.  The complete isometry of each
+coordinate inclusion into the operator-space $\ell_1$ sum, the triangle
+inequality, \eqref{eq:minrow}, and \eqref{eq:headbound} give
+\[
+ \|(P_NT_n)_n z_F\|
+ \leq\sum_{j=1}^N\|(S_j)_n z_F\|
+ =\sum_{j=1}^N\|S_j|_F\|
+ \leq b+\eta. \tag{9}\label{eq:headmatrix}
+\]
+
+For every bounded map $A$ between operator spaces,
+$\|A_n\|\leq n\|A\|$.  (Represent the target concretely and use that the norm
+of an $n$ by $n$ operator matrix is at most $n$ times its largest entry
+norm.)  Hence \eqref{eq:tailchoice} and \eqref{eq:rcrow} imply
+\[
+ \|((I-P_N)T_n)_n z_F\|
+ \leq n\,\eta n^{-3/2}\sqrt n=\eta. \tag{10}\label{eq:tailmatrix}
+\]
+Combining \eqref{eq:headmatrix} and \eqref{eq:tailmatrix},
+\[
+ \|(T_n)_n z_F\|\leq b+2\eta.
+\]
+But the lower estimate in \eqref{eq:almost} gives
+$\|(T_n)_n z_F\|\geq a\sqrt n$, a contradiction for large $n$.
+\end{proof}
+
+\section{Compact quotient coordinates and the original pair}
+
+Set
+\[
+ W=\Big(\bigoplus_{j\geq1}\MIN(L_\infty[0,1])\Big)_{\ell_1},
+ \qquad
+ U=\Big(\bigoplus_{j\geq1}H\Big)_{\ell_1}.
+\]
+Here the canonical operator-space structure of the commutative
+$C^*$-algebra $L_\infty[0,1]$ is its minimal operator-space structure.
+For $y=(y_j)\in\cZ(Q)$, define
+\[
+ P_1y=(2^{-j}y_j)_j\in W,
+ \qquad
+ P_2y=(Qy_j)_j\in U.
+\]
+The map $\Gamma=(P_1,P_2):\cZ(Q)\to W\oplus_\infty U$ is a complete
+isomorphic embedding with
+\[
+ \|\Gamma\|_{\rm cb}\leq1,
+ \qquad
+ \|\Gamma^{-1}:\Gamma(\cZ(Q))\to\cZ(Q)\|_{\rm cb}\leq2.
+ \tag{11}\label{eq:gamma}
+\]
+Indeed, coordinatewise this is the defining maximum norm of $Y_j$.
+Regrouping the two $\ell_1$ sums is completely contractive; the reverse map
+is the sum of its two coordinate maps, each completely contractive, and so
+has cb-norm at most $2$.
+
+\begin{lemma}\label{lem:quotcompact}
+For every bounded $u:H\to\cZ(Q)$, the quotient-coordinate operator
+\[
+ V_u:H\to U,\qquad V_ux=(Qu_jx)_j=P_2u(x),
+\]
+is compact.
+\end{lemma}
+
+\begin{proof}
+First consider a bounded $T:H\to L_\infty[0,1]$.  We claim that $QT:H\to H$
+is compact.  Otherwise, since its domain and range are Hilbert spaces, there
+is an infinite-dimensional closed $E\subset H$ on which $A=QT$ is bounded
+below.  The range $A(E)$ is closed and
+\[
+ \Pi=T|_E\,(A|_E)^{-1}P_{A(E)}Q:L_\infty[0,1]\to T(E)
+\]
+is a bounded projection onto a copy of $\ell_2$.  This contradicts the
+classical complemented-subspace theorem for $L_\infty$ used in Braga's proof
+of Proposition 4.6 \cite{Braga2021,AlbiacKalton}.  Thus each coordinate
+$Qu_j$ is compact.
+
+The map $V_u:H\to\ell_1(H)$ is bounded by the definition of $\cZ(Q)$.  Since
+$H$ is reflexive, it is weakly compact.  Lemma \ref{lem:tails} shows that its
+coordinate tails converge to zero in operator norm.  Its finite coordinate
+heads are compact, so $V_u$ is a norm limit of compact operators.
+\end{proof}
+
+\begin{theorem}\label{thm:originalH}
+The operator space $H=R\cap C$ does not almost completely isomorphically
+embed into the original $\cZ(Q)$ of Theorem 1.8 in \cite{Braga2021}.
+\end{theorem}
+
+\begin{proof}
+Suppose maps $u^{(n)}:H\to\cZ(Q)$ satisfy \eqref{eq:almost}.  Fix $n$.
+By Lemma \ref{lem:quotcompact}, $P_2u^{(n)}$ is compact.  Approximate it in
+operator norm by a finite-rank map and pass to the infinite-dimensional
+kernel of that approximant.  We obtain an infinite-dimensional $F_n\subset H$
+on which
+\[
+ \|P_2u^{(n)}|_{F_n}\|<\frac{a}{4n}.
+\]
+Every infinite-dimensional Hilbert subspace of $R\cap C$ is the range of a
+complete isometry $J_n:H\to F_n$, because row and column norms are invariant
+under Hilbert-space unitaries.
+
+Put $T_n=P_1u^{(n)}J_n:H\to W$.  From \eqref{eq:almost} and
+\eqref{eq:gamma},
+\[
+ \|\Gamma_nu^{(n)}_nJ_{n,n}z\|\geq\frac a2\|z\|.
+\]
+The $P_2$ component has $n$th amplification norm less than $a/4$.  Therefore
+\[
+ \|(T_n)_nz\|\geq\frac a2\|z\|,
+ \qquad
+ \|(T_n)_nz\|\leq b\|z\|
+\]
+for all $z\in\M_n(H)$.  Thus $(T_n)$ would almost completely embed $H$ into
+$W$, contradicting Theorem \ref{thm:minsum}.
+\end{proof}
+
+\begin{corollary}[Answer to the source question]\label{cor:answer}
+For the exact operator spaces
+\[
+ X=(R\cap C)\oplus\ker\widetilde Q,
+ \qquad Y=\cZ(Q)
+\]
+constructed in Theorem 1.8 of \cite{Braga2021}, $X$ does not almost
+completely isomorphically embed into $Y$.
+\end{corollary}
+
+\begin{proof}
+The canonical $R\cap C$ summand of $X$ is completely isometric.  Restricting
+any hypothetical almost complete embedding $X\to Y$ to this summand would
+contradict Theorem \ref{thm:originalH}.
+\end{proof}
+
+\section{Verification notes and novelty scope}
+
+The proof is qualitative; no computation is used.  The main points checked
+independently in the proof are:
+\begin{itemize}
+\item Lemma \ref{lem:tails} is proved for arbitrary Banach-valued $\ell_1$
+sums, so no hidden reflexivity of the coordinate spaces is assumed.
+\item Lemma \ref{lem:stabilize} uses only finite families.  Intermediate
+dimensions may be enormous, but the domain Hilbert space is infinite
+dimensional and the final required dimension is exactly $n$.
+\item The equality in Lemma \ref{lem:minrow} follows directly from the
+definition of $\MIN(E)$; it does not rely on a special representation of
+$L_\infty$.
+\item The tail exponent $n^{-3/2}$ exactly compensates the general loss
+$\|A_n\|\leq n\|A\|$ and the input row norm $\sqrt n$.
+\item The quotient-coordinate reduction uses only compactness and the
+complete distortion bound $2$ in (11); all constants have strict slack.
+\end{itemize}
+
+The required bounded novelty search was performed on 19 July 2026.  The four
+local run indexes and the locally stored arXiv sources 2106.15022 and
+2211.11854 were searched for the arXiv id, the exact question phrase,
+``$R\cap C$'', ``almost complete isomorphic embedding'', ``minimal'', and
+``$\ell_1$-sum''.  Bounded external searches used the same phrases, the title,
+and the authors Braga and Oikhberg, restricted in the technical search to
+primary arXiv records.  The search found the source paper, Braga--Oikhberg's
+different-space existential strengthening \cite{BragaOikhberg2022}, and the
+later small-scale nonlinear paper, but no proof for the exact original
+$L_\infty\to R\cap C$ pair and no statement of Theorem \ref{thm:minsum}.
+This is evidence only, not a guarantee of novelty.
+
+Braga--Oikhberg say that their existential theorem addresses the motivation
+of the question after Theorem 1.8, but their construction uses the different
+quotient $\MAX(L_1)\to\MIN(\ell_2)$ and different spaces.  It does not settle
+the exact-space assertion in Corollary \ref{cor:answer}.
+
+\medskip
+\noindent\textbf{Human-review recommendation.}  Review first the simultaneous
+stabilization lemma and the minimal row identity, then the factor-$2$
+regrouping estimate (11).  If these three points are accepted, the remaining
+argument is a direct compactness-and-amplification contradiction.
+
+\begin{thebibliography}{9}
+\bibitem{Braga2021}
+B. M. Braga,
+\emph{Towards a theory of coarse geometry of operator spaces},
+arXiv:2106.15022; Israel J. Math. 259 (2024), 527--558.
+
+\bibitem{BragaOikhberg2022}
+B. M. Braga and T. Oikhberg,
+\emph{Coarse geometry of operator spaces and complete isomorphic embeddings
+into $\ell_1$ and $c_0$-sums of operator spaces},
+arXiv:2211.11854; Math. Z. 304 (2023), Article 52.
+
+\bibitem{Pisier}
+G. Pisier,
+\emph{Introduction to Operator Space Theory},
+Cambridge University Press, 2003.
+
+\bibitem{AlbiacKalton}
+F. Albiac and N. J. Kalton,
+\emph{Topics in Banach Space Theory}, 2nd ed., Springer, 2016.
+
+\bibitem{Ledoux}
+M. Ledoux,
+\emph{The Concentration of Measure Phenomenon},
+American Mathematical Society, 2001.
+\end{thebibliography}
+
+\end{document}

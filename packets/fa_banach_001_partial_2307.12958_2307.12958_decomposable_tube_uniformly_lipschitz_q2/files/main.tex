@@ -1,0 +1,437 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Id}{\operatorname{Id}}
+
+\title{A Tube Construction for the Uniformly Lipschitz Unit-Ball Question in Decomposable Banach Spaces}
+\author{Smoke-test packet for arXiv:2307.12958}
+\date{June 12, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Paper}
+
+This packet concerns the paper
+\[
+\textit{Retraction methods and fixed point free maps with null minimal
+displacements on unit balls}
+\]
+by Cleon S. Barroso and Valdir Ferreira, arXiv:2307.12958v2
+(3 September 2024).  The stored source PDF is this arXiv v2, whose abstract
+already uses the unit-ball/null-displacement framing.
+
+The arXiv source paper asks the following questions after recalling the
+Lin--Sternfeld positive minimal displacement theorem.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The review thread also supplied the following screenshot of a
+journal/published formulation.  This packet keeps the arXiv v2 PDF as the
+source paper and includes the screenshot to document the exact stronger
+unit-ball wording seen in review.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/journal_question_crop.png}
+\end{center}
+
+\section*{Target}
+
+We focus on the stronger unit-ball version suggested by the journal
+screenshot:
+\begin{quote}
+For an infinite-dimensional Banach space \(X\), is there a uniformly
+Lipschitz mapping \(T:B_X\to B_X\) satisfying
+\(\mathrm d(T,B_X)=0\) and \(\Fix(T)=\varnothing\)?
+\end{quote}
+
+The result below answers this question for Banach spaces that split as a
+topological direct sum of two infinite-dimensional closed subspaces.  This is
+a partial result only; it does not settle the arbitrary Banach-space question.
+
+\section*{Auxiliary Lipschitz Facts}
+
+\begin{lemma}[Radial clipping]
+For a normed space \(E\), the map
+\[
+\kappa_E(x)=
+\begin{cases}
+x, & \|x\|\le 1,\\
+x/\|x\|, & \|x\|>1,
+\end{cases}
+\]
+is \(2\)-Lipschitz from \(E\) onto \(B_E\).
+\end{lemma}
+
+\begin{proof}
+Let \(\|x\|\le \|y\|\).  If both points are in \(B_E\), the assertion is
+immediate.  If \(\|x\|\le1<\|y\|\), then
+\[
+\|x-y/\|y\|\|\le \|x-y\|+\|y-y/\|y\|\|
+=\|x-y\|+\|y\|-1
+\le 2\|x-y\|.
+\]
+If \(1<\|x\|\le\|y\|\), then
+\[
+\begin{aligned}
+\left\|{\frac{x}{\|x\|}}-{\frac{y}{\|y\|}}\right\|
+&\le \frac{1}{\|x\|}\|x-y\|
+  +\|y\|\left|\frac{1}{\|x\|}-\frac{1}{\|y\|}\right|\\
+&= \frac{1}{\|x\|}\|x-y\|
+  +\frac{\|y\|-\|x\|}{\|x\|}
+\le 2\|x-y\|.
+\end{aligned}
+\]
+\end{proof}
+
+\begin{lemma}[Variable-radius sphere selection]
+Let \(Z\) be an infinite-dimensional Banach space, and let
+\(R_Z:B_Z\to S_Z\) be a Lipschitz retraction.  Define, for \(r>0\),
+\[
+H(r,q)=r\,R_Z\bigl(\kappa_Z(q/r)\bigr),\qquad q\in Z.
+\]
+Then \(H\) is Lipschitz in the following uniform sense:
+\[
+\|H(r,q)-H(s,p)\|
+\le 2\Lip(R_Z)\|q-p\|+(1+\Lip(R_Z))|r-s|
+\]
+for all \(p,q\in Z\) and \(r,s>0\).
+\end{lemma}
+
+\begin{proof}
+For fixed \(r\),
+\[
+\|H(r,q)-H(r,p)\|
+\le r\Lip(R_Z)\|\kappa_Z(q/r)-\kappa_Z(p/r)\|
+\le 2\Lip(R_Z)\|q-p\|.
+\]
+It remains to compare the radii.  Assume \(0<r\le s\).  For fixed \(q\),
+\[
+\|H(r,q)-H(s,q)\|
+\le |s-r|+r\Lip(R_Z)\|\kappa_Z(q/r)-\kappa_Z(q/s)\|.
+\]
+Let \(a=\|q\|\).  Since \(q/r\) and \(q/s\) lie on the same ray, a direct
+case distinction gives
+\[
+r\|\kappa_Z(q/r)-\kappa_Z(q/s)\|\le s-r.
+\]
+Indeed the expression is \(0\) if \(a\ge s\), it is
+\(a(s-r)/s\le s-r\) if \(a\le r\), and it is
+\(r(1-a/s)\le r(1-r/s)\le s-r\) if \(r<a<s\).  This proves the stated
+estimate.
+\end{proof}
+
+\begin{lemma}[Positive Lipschitz gauge with zero infimum]
+If \(Y\) is infinite-dimensional, then there is a Lipschitz function
+\(\eta:S_Y\to(0,1]\) such that \(\inf_{S_Y}\eta=0\).
+\end{lemma}
+
+\begin{proof}
+By Riesz' lemma choose a sequence \((u_n)\subset S_Y\) and a number
+\(\delta>0\) such that \(\|u_n-u_m\|\ge\delta\) whenever \(n\ne m\).  Let
+\(\varepsilon_n\downarrow0\) with \(\varepsilon_n>0\), and fix
+\(\lambda>0\).  Set
+\[
+\eta(u)=\min\left(1,\inf_n\{\varepsilon_n+\lambda\|u-u_n\|\}\right).
+\]
+This function is \(\lambda\)-Lipschitz and satisfies
+\(\eta(u_n)\le\varepsilon_n\), hence its infimum is zero.  It is positive at
+each point \(u\): at most one \(u_n\) can lie within \(\delta/2\) of \(u\),
+while all the remaining terms are at least \(\lambda\delta/2\), and the
+exceptional term, if present, is still strictly positive.
+\end{proof}
+
+\section*{Main Partial Result}
+
+\begin{theorem}
+Let \(X\) be an infinite-dimensional Banach space.  Suppose that
+\[
+X=Y\oplus Z
+\]
+as a topological direct sum, where \(Y\) and \(Z\) are both
+infinite-dimensional closed subspaces.  Then there is a mapping
+\(T:B_X\to B_X\) such that
+\[
+\Fix(T)=\varnothing,\qquad
+\mathrm d(T,B_X)=0,\qquad
+\sup_{n\ge1}\Lip(T^n)<\infty .
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(P:X\to Y\) and \(Q:X\to Z\) be the associated bounded projections.
+Choose constants \(a,b>0\) with \(a+b\le1\).  For instance one may take
+\(a=1/2\) and \(b=1/4\).
+
+By the Benyamini--Sternfeld theorem, the unit sphere of every
+infinite-dimensional Banach space is a Lipschitz retract of its unit ball.
+Let
+\[
+R_Y:B_Y\to S_Y,\qquad R_Z:B_Z\to S_Z
+\]
+be Lipschitz retractions.  Define a Lipschitz retraction
+\[
+A:Y\to aS_Y
+\]
+by
+\[
+A(y)=a\,R_Y\bigl(\kappa_Y(y/a)\bigr).
+\]
+It fixes \(aS_Y\), because if \(y=au\) with \(u\in S_Y\), then
+\(\kappa_Y(y/a)=u\) and \(R_Y(u)=u\).
+
+Let \(\eta:S_Y\to(0,1]\) be the positive Lipschitz gauge from the preceding
+lemma.  For \(y\in aS_Y\), write \(u=y/a\in S_Y\) and set
+\[
+r(y)=b\,\eta(u).
+\]
+Then \(0<r(y)\le b\), \(r\) is Lipschitz on \(aS_Y\), and
+\(\inf_{aS_Y}r=0\).
+
+For \(x\in B_X\), put
+\[
+y(x)=A(Px),\qquad \rho(x)=r(y(x)),
+\]
+and define
+\[
+\Phi(x)=H(\rho(x),Qx)
+=\rho(x)R_Z\bigl(\kappa_Z(Qx/\rho(x))\bigr).
+\]
+Finally set
+\[
+T(x)=y(x)-\Phi(x).
+\]
+The estimates above show that \(T\) is Lipschitz: \(x\mapsto y(x)\) is
+Lipschitz, \(x\mapsto\rho(x)\) is Lipschitz, and the variable-radius lemma
+controls \((\rho(x),Qx)\mapsto\Phi(x)\).
+
+Since \(\|\Phi(x)\|=\rho(x)\le b\) and \(\|y(x)\|=a\), we have
+\[
+\|T(x)\|\le a+b\le1.
+\]
+Thus \(T\) maps \(B_X\) into \(B_X\).
+
+Let also
+\[
+S(x)=y(x)+\Phi(x).
+\]
+We claim that
+\[
+T^2=S,\qquad T^3=T.
+\]
+Indeed, write \(y=y(x)\), \(\rho=\rho(x)\), and
+\(\Phi(x)=\rho z\) with \(z\in S_Z\).  Since \(P(y-\rho z)=y\) and
+\(A(y)=y\), the base and radius are unchanged after applying \(T\).  Moreover
+\[
+Q(y-\rho z)/\rho=-z\in S_Z,
+\]
+so \(\kappa_Z(-z)=-z\) and \(R_Z(-z)=-z\).  Hence
+\[
+T(Tx)=y+\rho z=S(x).
+\]
+The same calculation applied to \(S(x)=y+\rho z\) gives \(T(Sx)=y-\rho z\).
+Thus the iterates of \(T\) alternate between the two Lipschitz maps \(T\) and
+\(S\) for all \(n\ge1\), and consequently
+\[
+\sup_{n\ge1}\Lip(T^n)<\infty .
+\]
+
+There is no fixed point.  If \(T(x)=x\), then the calculation above gives
+\[
+x=T(x)=y-\rho z
+\quad\text{and}\quad
+T^2(x)=y+\rho z.
+\]
+But \(T^2(x)=T(x)\) would follow from \(T(x)=x\), so \(2\rho z=0\), impossible
+because \(\rho>0\) and \(z\in S_Z\).
+
+Finally, choose the separated sequence \((u_n)\subset S_Y\) used in the
+construction of \(\eta\), and fix \(z_0\in S_Z\).  Put
+\[
+x_n=a u_n+b\eta(u_n)z_0.
+\]
+Then \(x_n\in B_X\), and the defining formula gives
+\[
+T(x_n)=a u_n-b\eta(u_n)z_0.
+\]
+Therefore
+\[
+\|T(x_n)-x_n\|=2b\eta(u_n)\le2b\varepsilon_n\to0.
+\]
+This proves \(\mathrm d(T,B_X)=0\).
+\end{proof}
+
+\section*{Interpretation}
+
+This gives a new partial answer to the journal-style Q2 for every Banach
+space that decomposes into two complemented infinite-dimensional pieces.  The
+proof does not use a basis, unconditionality, rotations, uniform convexity,
+or Hilbertian structure.  It uses only:
+\begin{itemize}
+\item a complemented splitting \(X=Y\oplus Z\);
+\item the Benyamini--Sternfeld Lipschitz retraction from a unit ball onto its
+unit sphere in each infinite-dimensional summand;
+\item a variable-radius tube whose fiber map is period two after the first
+iterate.
+\end{itemize}
+
+\section*{Why This Is Still Partial}
+
+The complemented splitting is essential in the proof.  It supplies stable
+base and fiber coordinates: the base point \(y(x)\) must remain unchanged
+after the first iterate, while the \(Z\)-fiber changes sign.  Without a
+projection or a Lipschitz section of a quotient map, there is no evident way
+to recover the base coordinate from a point in the tube.  Thus the argument
+does not cover hereditarily indecomposable spaces or arbitrary Banach spaces
+with no infinite-dimensional complemented decomposition.
+
+\section*{Addendum: A Universal \(\eta\)-Approximation}
+
+There is also a useful universal observation in the opposite direction.  It
+does not solve Q2, because the map depends on \(\eta\), but it shows that the
+minimal displacement obstruction can always be made arbitrarily small while
+retaining uniformly Lipschitz iterates.
+
+\begin{proposition}
+Let \(X\) be an infinite-dimensional Banach space.  For every \(\eta>0\) there
+is a fixed-point-free mapping \(T_\eta:B_X\to B_X\) such that
+\[
+\sup_{n\ge1}\Lip(T_\eta^n)<\infty
+\qquad\text{and}\qquad
+\mathrm d(T_\eta,B_X)<\eta .
+\]
+\end{proposition}
+
+\begin{proof}
+Choose \(e\in S_X\) and \(f\in S_{X^*}\) with \(f(e)=1\), and put
+\(Y=\ker f\).  Let \(0<\rho<1\).  Define
+\[
+\Phi:\rho B_Y\to S_X,\qquad
+\Phi(y)=\frac{e+y}{\|e+y\|}.
+\]
+Its image is a small spherical cap \(C_\rho\).  Since
+\(1\le\|e+y\|\le1+\rho\) for \(y\in\rho B_Y\), the map \(\Phi\) is
+bi-Lipschitz onto \(C_\rho\), with constants bounded for small \(\rho\).
+Moreover \(\operatorname{diam}(C_\rho)\to0\) as \(\rho\downarrow0\).
+
+By Benyamini--Sternfeld, choose a Lipschitz retraction
+\[
+R_Y:B_Y\to S_Y.
+\]
+On \(\rho B_Y\), define
+\[
+W(y)=-\rho\,R_Y(y/\rho).
+\]
+Then \(W(\rho B_Y)\subset \rho S_Y\).  Once \(y\in\rho S_Y\), the retraction
+identity gives \(W(y)=-y\).  Hence the iterates of \(W\) alternate between the
+two Lipschitz maps
+\[
+y\mapsto -\rho R_Y(y/\rho),
+\qquad
+y\mapsto \rho R_Y(y/\rho),
+\]
+so \(\sup_n\Lip(W^n)<\infty\).  Also \(W\) has no fixed point: if
+\(W(y)=y\), then \(\|y\|=\rho\), and consequently \(y=-y\), impossible.
+
+Conjugate \(W\) to the cap:
+\[
+V=\Phi W\Phi^{-1}:C_\rho\to C_\rho .
+\]
+Then \(V\) is fixed-point free and uniformly Lipschitz under iteration.
+
+It remains to retract \(B_X\) onto \(C_\rho\).  Choose
+\[
+a=\frac{1}{2(1+\rho)}.
+\]
+For \(x\in B_X\), set
+\[
+z(x)=\frac{x-f(x)e}{\max\{f(x),a\}}\in Y,
+\]
+and let \(Q_\rho:Y\to\rho B_Y\) be radial clipping:
+\[
+Q_\rho(z)=
+\begin{cases}
+z, & \|z\|\le\rho,\\
+\rho z/\|z\|, & \|z\|>\rho.
+\end{cases}
+\]
+The denominator in \(z(x)\) is bounded below by \(a\), and radial clipping is
+Lipschitz, so
+\[
+P(x)=\Phi(Q_\rho(z(x)))
+\]
+defines a Lipschitz map \(P:B_X\to C_\rho\).  If \(x=\Phi(y)\in C_\rho\), then
+\[
+f(x)=\frac{1}{\|e+y\|}\ge\frac{1}{1+\rho}>a,
+\qquad
+\frac{x-f(x)e}{f(x)}=y,
+\]
+so \(P(x)=x\).  Thus \(P\) is a Lipschitz retraction.
+
+Finally set
+\[
+T_\eta=V P
+\]
+after choosing \(\rho\) so small that \(\operatorname{diam}(C_\rho)<\eta\).
+Since \(P|_{C_\rho}=I\), we have
+\[
+T_\eta^n=V^nP\qquad(n\ge1),
+\]
+and therefore the iterates are uniformly Lipschitz.  If \(T_\eta(x)=x\), then
+\(x\in C_\rho\) and \(V(x)=x\), a contradiction.  Lastly,
+\[
+\mathrm d(T_\eta,B_X)
+\le \sup_{x\in C_\rho}\|Vx-x\|
+\le \operatorname{diam}(C_\rho)
+<\eta .
+\]
+\end{proof}
+
+\begin{remark}
+This addendum is not a replacement for Q2.  It proves that for every positive
+threshold \(\eta\) one may choose a fixed-point-free uniformly Lipschitz
+dynamical system whose minimal displacement is below \(\eta\).  Q2 asks for
+one single map with minimal displacement equal to zero.  The missing step is
+still a countable gluing or invariant-skeleton construction that places
+arbitrarily small caps inside one uniformly controlled map.
+\end{remark}
+
+\section*{Verification Notes}
+
+No computational verification was used.  The proof is analytic.  The main
+human-review points are:
+\begin{itemize}
+\item the \(2\)-Lipschitz estimate for radial clipping;
+\item the uniform variable-radius estimate for
+  \(H(r,q)=rR_Z(\kappa_Z(q/r))\);
+\item the iterate identity \(T^2=S\), \(T^3=T\);
+\item the fixed-point-free argument using \(\rho(x)>0\);
+\item the sequence \(a u_n+b\eta(u_n)z_0\) witnessing null minimal
+  displacement.
+\end{itemize}
+
+\section*{References Used}
+
+The transfer and construction use Benyamini--Sternfeld's theorem that the
+unit sphere of every infinite-dimensional Banach space is a Lipschitz retract
+of its unit ball:
+\[
+\text{Y. Benyamini and Y. Sternfeld, Proc. Amer. Math. Soc. 88 (1983),
+389--391.}
+\]
+
+\end{document}

@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Free}{\mathcal F}
+\newcommand{\Ball}{B}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{Finite Metric Spaces in a Lipschitz-Free Uniform Property \texorpdfstring{$(S)$}{(S)} Question}
+\author{Automated Math Discovery Smoke Test}
+\date{June 7, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns the Lipschitz-free item in the open-problem section
+of:
+
+\begin{quote}
+William B. Johnson and Tomasz Kania, \emph{Uniform Property (S)},
+arXiv:2602.09106.
+\end{quote}
+
+The source location is page 19 of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The paper defines property $(S)$ as follows: a normed space $X$ has
+property $(S)$ if for every distinct $x,y\in S_X$ and every $a>0$ there is
+$z\in X$ with $\norm{z}<a$ such that
+\[
+  \norm{x+z}\neq \norm{y+z}.
+\]
+Uniform property $(S)$ is the corresponding quantitative strengthening
+using the modulus
+\[
+  U_X(d;a)=
+  \inf_{\substack{x,y\in S_X\\ \norm{x-y}\ge d}}
+  \sup_{\norm{z}\le a}
+  \left|\norm{x+z}-\norm{y+z}\right|.
+\]
+Uniform property $(S)$ implies property $(S)$.
+
+\section*{Candidate Partial Result}
+
+\begin{theorem}
+Let $M$ be a finite pointed metric space. If $|M|\ge 3$, then the
+Lipschitz-free Banach space $\Free(M)$ fails property $(S)$, and therefore
+fails uniform property $(S)$.
+
+If $|M|=2$, then $\Free(M)$ has uniform property $(S)$. If $|M|=1$, the
+space $\Free(M)$ is the zero space, so the usual unit-sphere formulation
+is vacuous.
+\end{theorem}
+
+\begin{proof}
+We use the standard description of finite Lipschitz-free spaces:
+\[
+  \Ball_{\Free(M)}
+  =
+  \operatorname{conv}
+  \left\{
+  \frac{\delta_u-\delta_v}{d(u,v)}:
+  u,v\in M,\ u\neq v
+  \right\}.
+\]
+Thus, when $M$ is finite, $\Ball_{\Free(M)}$ is a centrally symmetric
+polytope. Also $\dim \Free(M)=|M|-1$.
+
+Assume first that $|M|\ge 3$. Then $\dim\Free(M)\ge 2$, so the polytope
+$\Ball_{\Free(M)}$ has a facet $F$ of positive dimension. Choose two
+distinct points $x,y$ in the relative interior of $F$. Let $\varphi$ be a
+norm-one functional exposing this facet, so that
+\[
+  F=\{u\in \Ball_{\Free(M)}:\varphi(u)=1\}.
+\]
+
+We claim that the norm is locally equal to $\varphi$ near both $x$ and
+$y$. Indeed, because the ball is a polytope, there are finitely many
+norm-one functionals $\varphi_1,\ldots,\varphi_N$ such that
+\[
+  \norm{u}=\max_{1\le j\le N}\varphi_j(u)
+  \quad (u\in \Free(M)),
+\]
+and one of them is $\varphi$. Since $x$ and $y$ lie in the relative
+interior of the facet exposed by $\varphi$, all the other facet
+functionals are strictly smaller than $\varphi$ at both $x$ and $y$.
+By finiteness, there is $\eta>0$ such that whenever $\norm{z}<\eta$,
+\[
+  \norm{x+z}=\varphi(x+z)
+  \quad\text{and}\quad
+  \norm{y+z}=\varphi(y+z).
+\]
+Consequently, for all $\norm{z}<\eta$,
+\[
+  \norm{x+z}-\norm{y+z}
+  =
+  \varphi(x+z)-\varphi(y+z)
+  =
+  \varphi(x)-\varphi(y)
+  =
+  0.
+\]
+The distinct unit vectors $x,y$ therefore violate property $(S)$ with
+$a=\eta$.
+
+If $|M|=2$, then $\Free(M)$ is one-dimensional. Its unit sphere consists
+of two opposite points, say $\{\xi,-\xi\}$. For every $0<d<2$ and $a>0$,
+the only admissible pair is $\xi,-\xi$, and choosing
+$z=t\xi$ with $0<t<\min\{a,1\}$ gives
+\[
+  |\norm{\xi+z}-\norm{-\xi+z}|=2t>0.
+\]
+Hence the one-dimensional space has property $(S)$; moreover the
+quantitative modulus is positive for each $d,a$, so it has uniform
+property $(S)$.
+\end{proof}
+
+\section*{Verification Notes}
+
+No computational verifier was used for this packet. The proof is a
+finite-dimensional convex-geometric argument. The main review points are:
+
+\begin{itemize}
+\item the standard molecule description of the unit ball of $\Free(M)$
+for finite $M$;
+\item the fact that a polyhedral norm is locally represented by a single
+facet functional at relative interior points of a facet;
+\item the one-dimensional endpoint case $|M|=2$.
+\end{itemize}
+
+\section*{Limitations and Novelty Check}
+
+This proves only the finite pointed metric-space subcase of the
+Lipschitz-free open problem. It does not characterize infinite metric
+spaces. The result is likely folklore-level once the finite free-space
+unit ball is recalled, but it is a clean deterministic subcase suitable
+for the pipeline's first Banach-space smoke test.
+
+\end{document}

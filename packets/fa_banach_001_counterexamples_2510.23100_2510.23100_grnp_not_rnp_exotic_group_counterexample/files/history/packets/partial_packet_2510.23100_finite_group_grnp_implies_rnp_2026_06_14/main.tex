@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\RNP}{\mathrm{RNP}}
+\newcommand{\GRNP}{G\text{-}\mathrm{RNP}}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+\title{Finite Groups: \texorpdfstring{$G$}{G}-RNP Implies RNP}
+\author{Automated Math Discovery Smoke Test}
+\date{June 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Problem 8.2 from:
+
+\begin{quote}
+Sheldon Dantas, Michal Doucha, Mingu Jung, Tomas Raunig,
+\emph{Group equivariant Radon-Nikodym Property and its characterizations},
+arXiv:2510.23100.
+\end{quote}
+
+The source paper asks whether all dotted implications in its summary diagram
+hold. One dotted implication is
+\[
+  G\text{-}\mathrm{RNP} \Longrightarrow \mathrm{RNP}.
+\]
+The exact source location is page 34 of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions Used}
+
+Let a topological group $G$ act continuously by linear isometries on a Banach
+space $X$. Following the source paper, $X$ has the $G$-Radon--Nikodym property
+if for every finite measure space $(\Omega,\Sigma,\mu)$ with a continuous
+action of $G$ by regular set isomorphisms, every $G$-quasi-invariant
+$X$-valued vector measure $m$ on $\Sigma$ satisfying $\abs{m}\ll \mu$ has a
+Bochner integrable density.
+
+When the action on the measure space preserves the measure, the
+$G$-quasi-invariance condition reduces to
+\[
+  m(gA)=g\,m(A) \qquad (g\in G,\ A\in \Sigma).
+\]
+
+\section*{Proof Intuition}
+
+For a finite group, one can encode an arbitrary vector measure as an
+equivariant one by placing its copies on the finitely many sheets
+$\{g\}\times \Omega$. The group acts freely by permuting the sheets, while the
+target action twists the copied measure. If the induced equivariant measure
+has a Radon--Nikodym derivative, then restricting that derivative to any one
+sheet recovers a derivative for the original vector measure.
+
+\section*{Candidate Partial Result}
+
+\begin{theorem}
+Let $G$ be a finite Hausdorff topological group and let $X$ be a
+$G$-Banach space. If $X$ has the $G$-RNP, then $X$ has the classical RNP.
+\end{theorem}
+
+\begin{proof}
+Since finite Hausdorff groups are discrete, the action below is continuous.
+Let $(\Omega,\Sigma,\mu)$ be a finite measure space and let
+$m:\Sigma\to X$ be a countably additive vector measure with $\abs{m}\ll\mu$.
+It is enough to prove that $m$ has a Bochner integrable density.
+
+Write $n=\abs{G}$ and equip
+\[
+  \widetilde\Omega=G\times \Omega,\qquad
+  \widetilde\Sigma=\mathcal P(G)\otimes \Sigma,\qquad
+  \widetilde\mu=\frac{1}{n}\sum_{g\in G}\delta_g\otimes\mu
+\]
+with the measure-preserving left-translation action
+\[
+  h\cdot(g,\omega)=(hg,\omega).
+\]
+For $E\in\widetilde\Sigma$, let
+\[
+  E_g=\{\omega\in\Omega:(g,\omega)\in E\}.
+\]
+Define an $X$-valued vector measure $M$ on $\widetilde\Sigma$ by
+\[
+  M(E)=\frac{1}{n}\sum_{g\in G} g\,m(E_g).
+\]
+This is countably additive because it is a finite sum of countably additive
+vector measures. Moreover,
+\[
+  \abs{M}(E)\leq \frac{1}{n}\sum_{g\in G}\abs{m}(E_g),
+\]
+so $\abs{M}\ll\widetilde\mu$.
+
+We now check equivariance. For $h\in G$,
+\[
+  (hE)_g=E_{h^{-1}g}.
+\]
+Therefore
+\[
+  M(hE)
+  =\frac{1}{n}\sum_{g\in G}g\,m(E_{h^{-1}g})
+  =\frac{1}{n}\sum_{k\in G}hk\,m(E_k)
+  =h\,M(E).
+\]
+Because the action on $\widetilde\Omega$ is measure preserving, this says that
+$M$ is $G$-quasi-invariant in the sense of the source paper.
+
+By the $G$-RNP of $X$, there exists
+$F\in L_1(\widetilde\Omega,\widetilde\Sigma,\widetilde\mu;X)$ such that
+\[
+  M(E)=\int_E F\,d\widetilde\mu
+  \qquad(E\in\widetilde\Sigma).
+\]
+Fix $g_0\in G$. For every $A\in\Sigma$,
+\[
+  M(\{g_0\}\times A)=\frac1n g_0\,m(A)
+\]
+while
+\[
+  \int_{\{g_0\}\times A} F\,d\widetilde\mu
+  =\frac1n\int_A F(g_0,\omega)\,d\mu(\omega).
+\]
+Thus
+\[
+  m(A)=\int_A g_0^{-1}F(g_0,\omega)\,d\mu(\omega)
+  \qquad(A\in\Sigma).
+\]
+The function $\omega\mapsto g_0^{-1}F(g_0,\omega)$ is Bochner integrable
+because $G$ is finite and $F\in L_1(\widetilde\mu;X)$. Hence $m$ has a
+Radon--Nikodym derivative. Since $(\Omega,\Sigma,\mu)$ and $m$ were arbitrary,
+$X$ has the classical RNP.
+\end{proof}
+
+\section*{Why This Is Partial}
+
+The theorem resolves the dotted implication $G$-RNP $\Rightarrow$ RNP only
+when the acting group is finite. The argument uses positive-measure singleton
+sheets $\{g\}\times\Omega$; it does not directly extend to infinite compact
+groups, where Haar-measure singletons are null. The general dotted implication
+from the source paper remains open in this packet.
+
+\section*{Verification Notes}
+
+The proof is self-contained. The key points for review are:
+\begin{itemize}
+\item the induced measure $M(E)=n^{-1}\sum_g g\,m(E_g)$ has finite variation
+  and is absolutely continuous with respect to $\widetilde\mu$;
+\item the left-translation action makes $M$ equivariant, hence
+  $G$-quasi-invariant in the measure-preserving case;
+\item because $G$ is finite, the derivative on one sheet is an honest
+  $L_1(\mu;X)$ function and recovers the original vector measure.
+\end{itemize}
+
+No computational checks were needed.
+
+\section*{Novelty and Literature Check}
+
+The run's lightweight registry, solution, attempt, and proof-gap indexes were
+searched for arXiv:2510.23100 and for the phrases ``Group equivariant
+Radon'', ``G-RNP'', ``RNP'', ``dotted arrows'', and related dentability/BP
+keywords. No prior packet or attempt for this paper was found. The source
+paper itself does not answer the $G$-RNP $\Rightarrow$ RNP dotted arrow near
+Problem 8.2. No external literature search was performed for this partial
+finite-group subcase.
+
+\section*{References}
+
+\begin{itemize}
+\item Sheldon Dantas, Michal Doucha, Mingu Jung, Tomas Raunig,
+  \emph{Group equivariant Radon-Nikodym Property and its characterizations},
+  arXiv:2510.23100.
+\end{itemize}
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid partial result. It is a small but exact subcase of
+one dotted implication in the summary diagram, not a full solution of
+Problem 8.2.
+
+\end{document}

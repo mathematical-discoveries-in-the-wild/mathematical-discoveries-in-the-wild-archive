@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\elltwo}{\ell_2}
+
+\title{A Radial-Twist Counterexample to a Coarse-Sum Coordinate Problem}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Problem 5.7 from:
+
+\begin{quote}
+Bruno de Mendonca Braga, \emph{Asymptotic structure and coarse Lipschitz
+geometry of Banach spaces}, arXiv:1604.08661; Studia Mathematica 237
+(2017), 71--97.
+\end{quote}
+
+The source location is page 20 of the arXiv PDF. In the parsed source,
+the problem appears at lines 980--984 of \texttt{source.tex}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Problem 5.7 asks whether, for every coarse Lipschitz embedding
+\[
+  f=(f_1,f_2):X\to Y_1\oplus Y_2,
+\]
+there is an infinite-dimensional subspace $X_0\subset X$ such that
+either $f_1|_{X_0}:X_0\to Y_1$ or $f_2|_{X_0}:X_0\to Y_2$ is a coarse
+Lipschitz embedding.
+
+\section*{Answer}
+
+The answer is negative. We construct a bi-Lipschitz embedding
+\[
+  F=(F_1,F_2):\ell_2\to \ell_2\oplus_2\ell_2
+\]
+such that neither coordinate is a coarse embedding on any
+infinite-dimensional subspace of $\ell_2$.
+
+\section*{Construction}
+
+Let $H=\ell_2$ be a real Hilbert space. Define
+\[
+  d_4(t)=\operatorname{dist}(t,4\mathbb Z),\qquad
+  \varphi(t)=\frac{\pi}{4}\min\{d_4(t),2\}\qquad (t\ge 0),
+\]
+and
+\[
+  \theta(r)=\varphi(\log(1+r))\qquad (r\ge 0).
+\]
+Then $\varphi$ is $\pi/4$-Lipschitz, takes values in $[0,\pi/2]$, and
+\[
+  \theta(e^{4k}-1)=0,\qquad
+  \theta(e^{4k+2}-1)=\frac{\pi}{2}
+\]
+for all $k\in\N\cup\{0\}$.
+
+For $x\in H$, set
+\[
+  F(x)=
+  \big(\cos(\theta(\norm{x}))x,\ \sin(\theta(\norm{x}))x\big)
+  \in H\oplus_2 H.
+\]
+Write $F=(F_1,F_2)$ for its two coordinate maps.
+
+\section*{The Full Map is Bi-Lipschitz}
+
+\begin{theorem}
+For all $x,y\in H$,
+\[
+  \frac{1}{\sqrt 2}\norm{x-y}
+  \le
+  \norm{F(x)-F(y)}_{H\oplus_2H}
+  \le
+  \left(1+\frac{\pi}{4}\right)\norm{x-y}.
+\]
+In particular, $F$ is a coarse Lipschitz embedding.
+\end{theorem}
+
+\begin{proof}
+For $t\in[0,\pi/2]$, define the isometry
+\[
+  J_t:H\to H\oplus_2 H,\qquad J_t z=(\cos t\,z,\sin t\,z).
+\]
+Then $F(x)=J_{\theta(\norm{x})}x$.
+
+Let $r=\norm{x}$ and $s=\norm{y}$. If both $x$ and $y$ are nonzero, write
+$u=x/r$, $v=y/s$, $a=\langle u,v\rangle$, and
+$c=\cos(\theta(r)-\theta(s))$. Since $\theta$ takes values in
+$[0,\pi/2]$, we have $c\in[0,1]$. A direct calculation gives
+\[
+  \norm{F(x)-F(y)}^2
+  =
+  r^2+s^2-2rsca,
+\]
+whereas
+\[
+  \norm{x-y}^2=r^2+s^2-2rsa.
+\]
+If $a\ge 0$, then $ca\le a$, so
+\[
+  \norm{F(x)-F(y)}\ge \norm{x-y}.
+\]
+If $a<0$, then
+\[
+  \norm{F(x)-F(y)}^2\ge r^2+s^2
+  \ge \frac12 \norm{x-y}^2.
+\]
+The same lower estimate is immediate if one of $x,y$ is zero. Hence
+\[
+  \norm{F(x)-F(y)}\ge 2^{-1/2}\norm{x-y}.
+\]
+
+For the upper estimate, assume without loss of generality that $r\ge s$.
+Then
+\[
+\begin{aligned}
+  \norm{F(x)-F(y)}
+  &\le
+  \norm{J_{\theta(r)}(x-y)}
+  +
+  \norm{(J_{\theta(r)}-J_{\theta(s)})y} \\
+  &\le
+  \norm{x-y}+s|\theta(r)-\theta(s)|.
+\end{aligned}
+\]
+Since $\varphi$ is $\pi/4$-Lipschitz,
+\[
+  |\theta(r)-\theta(s)|
+  \le
+  \frac{\pi}{4}\log\frac{1+r}{1+s}.
+\]
+Using $\log(1+u)\le u$ with $u=(r-s)/(1+s)$, we get
+\[
+  s\log\frac{1+r}{1+s}
+  \le
+  \frac{s}{1+s}(r-s)
+  \le r-s
+  \le \norm{x-y}.
+\]
+Therefore
+\[
+  \norm{F(x)-F(y)}
+  \le
+  \left(1+\frac{\pi}{4}\right)\norm{x-y}.
+\]
+\end{proof}
+
+\section*{The Coordinate Maps Fail on Every Infinite-Dimensional Subspace}
+
+\begin{theorem}
+Let $X_0\subset H$ be any nonzero linear subspace. Then neither
+$F_1|_{X_0}$ nor $F_2|_{X_0}$ is a coarse embedding. Consequently, the
+conclusion asked for in Problem 5.7 fails for every infinite-dimensional
+subspace $X_0\subset H$.
+\end{theorem}
+
+\begin{proof}
+Choose $u\in X_0$ with $\norm{u}=1$.
+
+For $F_1$, set
+\[
+  R_k=e^{4k+2}-1,\qquad x_k=R_k u.
+\]
+Then $\theta(R_k)=\pi/2$, so
+\[
+  F_1(x_k)=F_1(-x_k)=0.
+\]
+However,
+\[
+  \norm{x_k-(-x_k)}=2R_k\to\infty.
+\]
+Thus the compression modulus of $F_1|_{X_0}$ is zero at arbitrarily
+large scales, so $F_1|_{X_0}$ is not a coarse embedding.
+
+For $F_2$, set
+\[
+  S_k=e^{4k}-1,\qquad y_k=S_k u.
+\]
+Then $\theta(S_k)=0$, so
+\[
+  F_2(y_k)=F_2(-y_k)=0,
+\]
+while
+\[
+  \norm{y_k-(-y_k)}=2S_k\to\infty.
+\]
+Therefore $F_2|_{X_0}$ is not a coarse embedding either.
+\end{proof}
+
+\section*{Conclusion}
+
+Taking $X=Y_1=Y_2=\ell_2$ and using the map $F=(F_1,F_2)$ above gives a
+coarse Lipschitz embedding into the two-coordinate direct sum, but no
+coordinate map is a coarse Lipschitz embedding on any infinite-dimensional
+subspace. This gives a negative answer to Problem 5.7.
+
+\begin{remark}
+The proof was written for the Hilbert two-sum $Y_1\oplus_2Y_2$. If the
+direct sum in the problem is read with the $\ell_1$ norm, the same
+example still works: on $Y_1\times Y_2$ the $\ell_1$ and $\ell_2$ norms
+are equivalent, so the full map remains a coarse Lipschitz embedding,
+and the coordinate-collapse argument is unchanged.
+\end{remark}
+
+\section*{Verification Notes}
+
+The verification script in the \texttt{code} folder samples the same
+construction in finite-dimensional Hilbert space. It checks that the
+sampled distance ratios lie within the proved constants
+\[
+  2^{-1/2}
+  \quad\text{and}\quad
+  1+\pi/4,
+\]
+and verifies the exact coordinate collapses at the radii
+$e^{4k+2}-1$ and $e^{4k}-1$.
+
+\section*{Novelty Check}
+
+I searched for the exact text of Problem 5.7 and for later papers using
+the phrases ``coarse Lipschitz embedding'', ``$Y_1\oplus Y_2$'', and
+``strictly singular''. The search found the source paper and related
+coarse-Lipschitz geometry papers, but no later paper explicitly answering
+this problem. This packet should still be treated as a candidate result
+until a human checks the surrounding literature more thoroughly.
+
+\end{document}

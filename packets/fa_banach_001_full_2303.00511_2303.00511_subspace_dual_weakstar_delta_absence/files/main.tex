@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\ball}{B}
+\newcommand{\id}{I}
+
+\title{Weak-star Delta-points Do Not Appear In Duals Of Subspaces Of Small Unconditional Basis Spaces}
+\author{Automatic math-discovery smoke test}
+\date{June 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Trond A. Abrahamsen, Ramon J. Aliaga, Vegard Lima,
+Andre Martiny, Yoel Perreau, Antonin Prochazka, and Triinu Veeorg,
+\emph{Delta-points and their implications for the geometry of Banach spaces},
+arXiv:2303.00511 \cite{AALMPPV2023}.  The relevant question appears as
+Question 5.18 on page 23 of the arXiv PDF, after Corollary 5.17.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In text form, the question is:
+\begin{quote}
+Can we conclude that \(X^*\) contains no weak* \(\Delta\)-points if \(X\) is
+a subspace of a Banach space with a shrinking \(k\)-unconditional basis for
+\(k<2\)?
+\end{quote}
+
+\section*{Result Type}
+
+This packet gives a \textbf{candidate full affirmative answer} to Question
+5.18.  It proves the statement as asked, with the weak-star topology on
+\(X^*\) coming from the predual \(X\).
+
+\section*{Definitions And Source Inputs}
+
+For a Banach space \(E\), write \(\ball_E\) for its closed unit ball.  A point
+\(x^*\in S_{E^*}\) is a weak-star \(\Delta\)-point if every weak-star slice of
+\(\ball_{E^*}\) containing \(x^*\) has points arbitrarily close to distance
+\(2\) from \(x^*\).  It is a weak-star super \(\Delta\)-point if the same
+condition holds for every relatively weak-star open subset of \(\ball_{E^*}\)
+containing \(x^*\).
+
+We use the following theorem from the source paper \cite[Theorem 5.6]{AALMPPV2023}:
+if \(E^*\) contains a weak-star \(\Delta\)-point, then \(E^*\) contains a
+weak-star super \(\Delta\)-point.
+
+We will also use the standard fact that if \(T:E\to E\) is compact, then
+\(T^*:(\ball_{E^*},w^*)\to(E^*,\norm{\cdot})\) is continuous.  This is the
+compact-adjoint continuity used in the proof of \cite[Theorem 5.12]{AALMPPV2023}.
+
+\section*{Proof Intuition}
+
+The source paper already proves a no-weak-star-\(\Delta\) theorem when the
+space itself has a shrinking \(k\)-unconditional basis.  The only obstacle in
+Question 5.18 is that a subspace \(X\subset Y\) need not inherit the finite-rank
+coordinate projections of \(Y\).  Passing to the dual removes this obstacle:
+\(X^*\) is the quotient of \(Y^*\) by restriction.  A weak-star convergent net
+in the quotient unit ball can be lifted to the ambient dual unit ball, and
+weak-star compactness gives a convergent subnet.  The ambient shrinking
+unconditional basis supplies a uniform distance bound strictly below \(2\) on
+that subnet.  Since quotient distance is no larger than ambient distance, the
+same obstruction holds in \(X^*\).
+
+\section*{A Quotient Stability Lemma}
+
+\begin{lemma}\label{lem:ambient-bound}
+Let \(E\) be a Banach space.  Suppose there is a family
+\((T_\lambda)_{\lambda\in\Lambda}\) of compact operators on \(E\) such that
+\[
+  r:=\sup_{\lambda\in\Lambda}\norm{\id_E-T_\lambda}<2
+  \quad\text{and}\quad
+  T_\lambda^*x^*\to x^*
+  \quad\text{in norm for every }x^*\in E^*.
+\]
+Then there is a constant \(c<2\) such that every weak-star convergent net
+\((x_\alpha^*)\subset \ball_{E^*}\), say \(x_\alpha^*\to x^*\), has the
+following cofinal closeness property: for every index \(\alpha_0\), there is
+\(\alpha\succeq\alpha_0\) with
+\[
+  \norm{x_\alpha^*-x^*}\le c .
+\]
+\end{lemma}
+
+\begin{proof}
+Choose \(\eps>0\) so that \(c:=r+2\eps<2\).  Fix a weak-star convergent net
+\((x_\alpha^*)\subset \ball_{E^*}\), with limit \(x^*\), and fix an index
+\(\alpha_0\).  Pick \(\lambda\) such that
+\[
+  \norm{x^*-T_\lambda^*x^*}\le \eps.
+\]
+Since \(T_\lambda\) is compact, \(T_\lambda^*x_\alpha^*\to T_\lambda^*x^*\)
+in norm.  Hence there is an index \(\beta\) such that
+\(\norm{T_\lambda^*(x_\alpha^*-x^*)}\le\eps\) whenever
+\(\alpha\succeq\beta\).  Choose \(\alpha\succeq\alpha_0,\beta\).  Then
+\[
+\begin{aligned}
+\norm{x_\alpha^*-x^*}
+&\le
+\norm{x^*-T_\lambda^*x^*}
++\norm{T_\lambda^*(x_\alpha^*-x^*)}
++\norm{x_\alpha^*-T_\lambda^*x_\alpha^*}  \\
+&\le \eps+\eps+\norm{\id_E-T_\lambda}
+\le r+2\eps
+=c<2 .
+\end{aligned}
+\]
+\end{proof}
+
+\begin{lemma}\label{lem:quotient-transfer}
+Let \(X\) be a closed subspace of a Banach space \(Y\).  Assume that \(Y\)
+satisfies the conclusion of Lemma \ref{lem:ambient-bound}; that is, there is
+\(c<2\) such that every weak-star convergent net in \(\ball_{Y^*}\) has a
+cofinal point within distance \(c\) of its limit.  Then \(X^*\) has no
+weak-star super \(\Delta\)-points.
+\end{lemma}
+
+\begin{proof}
+Let \(Q:Y^*\to X^*\) be the restriction map.  It is weak-star to weak-star
+continuous and, by Hahn--Banach, \(Q(\ball_{Y^*})=\ball_{X^*}\).
+
+First we prove the same cofinal closeness property in \(\ball_{X^*}\).
+Let \((u_\alpha^*)\subset\ball_{X^*}\) be a weak-star convergent net with
+limit \(u^*\), and fix \(\alpha_0\).  Restrict to the tail
+\(\{\alpha:\alpha\succeq\alpha_0\}\).  For each \(\alpha\) in this tail,
+choose \(v_\alpha^*\in\ball_{Y^*}\) with \(Qv_\alpha^*=u_\alpha^*\).  By
+weak-star compactness of \(\ball_{Y^*}\), the net \((v_\alpha^*)\) has a
+weak-star convergent subnet \((v_\beta^*)\), with limit \(v^*\in\ball_{Y^*}\).
+Continuity of \(Q\) gives \(Qv^*=u^*\).  By the assumed ambient property,
+there is a subnet index \(\beta\) such that
+\[
+  \norm{v_\beta^*-v^*}\le c.
+\]
+Therefore
+\[
+  \norm{u_\beta^*-u^*}
+  =\norm{Q(v_\beta^*-v^*)}
+  \le \norm{v_\beta^*-v^*}
+  \le c.
+\]
+This proves the cofinal closeness property in \(\ball_{X^*}\).
+
+Now suppose, for contradiction, that \(u^*\in S_{X^*}\) is a weak-star super
+\(\Delta\)-point.  Direct the set of pairs \((U,n)\), where \(U\) is a
+relatively weak-star open neighborhood of \(u^*\) in \(\ball_{X^*}\) and
+\(n\in\mathbb{N}\), by reverse inclusion in \(U\) and increasing \(n\).  Since
+\(u^*\) is weak-star super \(\Delta\), for every \((U,n)\) we may choose
+\(u_{U,n}^*\in U\) with
+\[
+  \norm{u_{U,n}^*-u^*}>2-\frac1n .
+\]
+This net converges weak-star to \(u^*\), and eventually its distance from
+\(u^*\) is larger than \(c\), because \(c<2\).  This contradicts the cofinal
+closeness property just proved.  Thus \(X^*\) has no weak-star super
+\(\Delta\)-points.
+\end{proof}
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let \(X\) be a closed subspace of a Banach space \(Y\).  If \(Y\) has a
+shrinking \(k\)-unconditional basis for some \(k<2\), then \(X^*\), equipped
+with the weak-star topology induced by \(X\), contains no weak-star
+\(\Delta\)-points.
+\end{theorem}
+
+\begin{proof}
+Let \((e_n)\) be the shrinking \(k\)-unconditional basis of \(Y\), and let
+\(P_n:Y\to Y\) be the \(n\)-th partial sum projection.  The operators \(P_n\)
+are finite-rank, hence compact.  Since the basis is shrinking, \(P_n^*y^*\to
+y^*\) in norm for every \(y^*\in Y^*\).  Since the basis is
+\(k\)-unconditional, the tail projections satisfy
+\[
+  \norm{\id_Y-P_n}\le k
+  \quad\text{for every }n.
+\]
+Thus Lemma \ref{lem:ambient-bound} applies to \(E=Y\), with \(r\le k<2\).
+Lemma \ref{lem:quotient-transfer} then shows that \(X^*\) contains no
+weak-star super \(\Delta\)-points.
+
+Finally, by \cite[Theorem 5.6]{AALMPPV2023}, the existence of a weak-star
+\(\Delta\)-point in \(X^*\) would imply the existence of a weak-star super
+\(\Delta\)-point in \(X^*\).  This is impossible by the previous paragraph.
+Therefore \(X^*\) contains no weak-star \(\Delta\)-points.
+\end{proof}
+
+\begin{corollary}
+Question 5.18 of Abrahamsen--Aliaga--Lima--Martiny--Perreau--Prochazka--Veeorg
+has an affirmative answer.
+\end{corollary}
+
+\section*{Verification Notes}
+
+The main point to verify is Lemma \ref{lem:quotient-transfer}.  The lift
+\((v_\alpha^*)\) is taken only on an arbitrary tail of the original net in
+\(\ball_{X^*}\), so the weak-star compact subnet still corresponds to indices
+cofinal beyond the prescribed starting point.  Since the restriction map
+\(Q:Y^*\to X^*\) is weak-star continuous, the lifted subnet limit restricts to
+the original quotient limit.  The quotient norm inequality
+\(\norm{Qz^*}\le\norm{z^*}\) then transfers the strict \(<2\) distance bound.
+
+No numerical computation is used.  The proof is independent of separability
+except for the standard countable-basis setting in the source question.
+
+\section*{Novelty And Literature Check}
+
+Before promotion, the run indexes
+\[
+\texttt{registry\_index.tsv},\quad
+\texttt{solutions/index.tsv},\quad
+\texttt{attempts/index.tsv},\quad
+\texttt{proof\_gaps/index.tsv}
+\]
+were searched for arXiv:2303.00511, the title, and core phrases including
+\(\Delta\)-points, Daugavet points, weak-star \(\Delta\)-points, subspaces,
+and shrinking \(k\)-unconditional bases.  No duplicate packet, prior attempt,
+or proof-gap entry was found.
+
+A bounded web search on June 14, 2026 for exact and close variants of Question
+5.18, including phrases such as ``weak* Delta-points'', ``subspace'',
+``shrinking k-unconditional basis'', and ``2303.00511'', found the source paper
+but no separate later paper explicitly resolving this question.  A local corpus
+search across the parsed arXiv sources and run target-pool indexes likewise
+found the source question and background mentions of the source paper, but no
+explicit later answer to Question 5.18.
+
+\section*{Human Review Recommendation}
+
+Send for human review as a candidate full solution.  The recommended review
+focus is the subnet/quotient step in Lemma \ref{lem:quotient-transfer}; once
+that lemma is accepted, the specialization to shrinking \(k\)-unconditional
+bases is exactly the compact-approximation mechanism used in the source paper.
+
+\begin{thebibliography}{9}
+
+\bibitem{AALMPPV2023}
+T.~A. Abrahamsen, R.~J. Aliaga, V.~Lima, A.~Martiny, Y.~Perreau,
+A.~Prochazka, and T.~Veeorg,
+\emph{Delta-points and their implications for the geometry of Banach spaces},
+arXiv:2303.00511, 2023.
+
+\bibitem{BowersKalton2014}
+A.~Bowers and N.~J. Kalton,
+\emph{An introductory course in functional analysis},
+Universitext, Springer, 2014.
+
+\end{thebibliography}
+
+\end{document}

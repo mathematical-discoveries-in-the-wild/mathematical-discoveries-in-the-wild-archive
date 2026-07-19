@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Id}{I}
+\newcommand{\spb}{s}
+\newcommand{\spec}{\sigma}
+\newcommand{\per}{\mathrm{per}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{A Counterexample to a Resolvent-to-Semigroup Eventual Positivity Question}
+\author{fa\_banach\_001, lane 19}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\paragraph{Source.}
+Daniel Daners, Jochen Gl\"uck, and James B. Kennedy,
+\emph{Eventually and asymptotically positive semigroups on Banach lattices},
+arXiv:1511.05294v2.
+
+\paragraph{Target question.}
+The relevant source question is Open Problem (d) in Section 10. In the notation
+of the source, it asks whether a $C_0$-semigroup whose generator has dominant
+spectral value $\spb(A)$ must be individually eventually positive if the
+resolvent is individually eventually positive at $\spb(A)$, perhaps after
+adding regularity assumptions.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Answer.}
+The implication is false in its base form, even for a bounded matrix on
+finite-dimensional Euclidean space with the standard cone. Thus finite
+dimensionality, boundedness, uniform continuity, and analyticity are not enough
+as additional regularity assumptions.
+
+\section*{Definitions Used}
+
+On $\C^n$ we use the standard Banach lattice structure: a vector is positive if
+all of its coordinates are real and non-negative. A semigroup $(e^{tA})_{t\geq
+0}$ is individually eventually positive if for every $0\leq f$ there is
+$t_f\geq 0$ such that $e^{tA}f\geq 0$ for all $t\geq t_f$.
+
+For a real spectral value $\lambda_0$, the resolvent is individually eventually
+positive at $\lambda_0$ if, for every $0\leq f$, $R(\lambda,A)f\geq 0$ for all
+real $\lambda>\lambda_0$ sufficiently close to $\lambda_0$. The example below
+satisfies a stronger property: $R(\lambda,A)$ is a positive operator for every
+$0<\lambda\leq 1$.
+
+\section*{Proof Intuition}
+
+The construction separates the Laplace-average behaviour of the resolvent from
+the pointwise-in-time behaviour of the semigroup. A stable three-dimensional
+block is chosen to be $e^{-t}$ times a rotation around the positive vector
+$(1,1,1)$. The semigroup therefore keeps acquiring negative diagonal entries
+at arbitrarily large times, although their size decays. The resolvent, however,
+integrates this oscillation against $e^{-\lambda t}$; choosing the rotation
+frequency large enough makes this averaged operator positive near $\lambda=0$.
+Adding one independent zero eigenvalue makes the spectral bound equal to the
+dominant spectral value $0$ without changing the sign-changing stable block.
+
+\begin{theorem}
+There is a bounded real operator $A$ on the Banach lattice $\C^4$ such that:
+\begin{enumerate}
+\item $\spb(A)=0$ is a dominant spectral value of $A$;
+\item $R(\lambda,A)$ is positive for every $0<\lambda\leq 1$;
+\item the semigroup $(e^{tA})_{t\geq 0}$ is not individually eventually
+positive.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+K=\frac1{\sqrt3}
+\begin{pmatrix}
+0&-1&1\\
+1&0&-1\\
+-1&1&0
+\end{pmatrix}
+\quad\text{on }\R^3.
+\]
+Let $P=\frac13 \one\one^T$, where $\one=(1,1,1)^T$, and let $H=I-P$.
+Then $P$ is the projection onto $\mathrm{span}\{\one\}$, and direct
+calculation gives
+\[
+  KP=PK=0,\qquad K^2=-H.
+\]
+In particular, $K$ has eigenvalues $0,i,-i$.
+
+Set
+\[
+  B=-I_3+4K
+\quad\text{and}\quad
+  A=0\oplus B
+\]
+on $\R\oplus\R^3$ and then complexify to $\C^4$. Since the spectrum of
+$B$ is $\{-1,-1+4i,-1-4i\}$, we have
+\[
+  \spec(A)=\{0,-1,-1+4i,-1-4i\}.
+\]
+Thus $\spb(A)=0$ and the peripheral spectrum is just $\{0\}$, so $0$ is
+a dominant spectral value.
+
+We next prove positivity of the resolvent near $0$. Let $0<\lambda\leq 1$ and
+write $r=1+\lambda$, so $1<r\leq 2$. Since $K^2=-H$ and $PK=0$, we have
+\[
+  R(\lambda,B)=(rI-4K)^{-1}
+  =\frac1r P+\frac{r}{r^2+16}H+\frac4{r^2+16}K.
+\]
+The diagonal entries of this matrix are
+\[
+  \frac1{3r}+\frac{2r}{3(r^2+16)}>0.
+\]
+For an off-diagonal entry where the corresponding entry of $K$ is
+$+1/\sqrt3$, the entry is
+\[
+  \frac1{3r}-\frac{r}{3(r^2+16)}+\frac4{\sqrt3(r^2+16)}>0.
+\]
+For an off-diagonal entry where the corresponding entry of $K$ is
+$-1/\sqrt3$, the entry is
+\[
+  \frac1{3r}-\frac{r}{3(r^2+16)}-\frac4{\sqrt3(r^2+16)}.
+\]
+Multiplying this last expression by the positive number $3r(r^2+16)$ gives
+\[
+  16-4\sqrt3\,r \geq 16-8\sqrt3>0.
+\]
+Hence every entry of $R(\lambda,B)$ is positive for $0<\lambda\leq 1$.
+Consequently
+\[
+  R(\lambda,A)=\diag\bigl(1/\lambda,\,R(\lambda,B)\bigr)
+\]
+is a positive operator for every $0<\lambda\leq 1$. This is stronger than
+individual eventual positivity of the resolvent at $\spb(A)=0$.
+
+It remains to show that the semigroup is not individually eventually positive.
+The same identities for $K$ give
+\[
+  e^{tB}=e^{-t}e^{4tK}
+  =e^{-t}\left(P+\cos(4t)H+\sin(4t)K\right).
+\]
+Let $e_1=(1,0,0)^T$. For
+\[
+  t_n=\frac{(2n+1)\pi}{4}\qquad(n\in\mathbb N)
+\]
+we have $\cos(4t_n)=-1$ and $\sin(4t_n)=0$. Therefore the first coordinate of
+$e^{t_nB}e_1$ is
+\[
+  e^{-t_n}\left(\frac13-\frac23\right)=-\frac13e^{-t_n}<0.
+\]
+The positive vector $f=(0,e_1)\in\R\oplus\R^3$ is thus mapped outside the
+positive cone at the arbitrarily large times $t_n$. Hence there is no
+$t_f$ after which $e^{tA}f$ is always positive, and the semigroup is not
+individually eventually positive.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof above is exact. The script
+\texttt{code/verify\_counterexample.py} performs a numerical sanity check of
+the displayed identities: it samples $\lambda\in(0,1]$ to confirm positivity of
+the resolvent matrix and samples the times $t_n=(2n+1)\pi/4$ to confirm the
+negative first coordinate of $e^{tB}e_1$.
+
+The bounded literature check used the run indexes for arXiv:1511.05294 and
+keywords including ``individual eventual positivity'', ``resolvent'',
+``dominant spectral value'', and ``eventually positive semigroup''. It also
+checked locally cached later papers citing the source, including arXiv:2210.06135
+and arXiv:2405.16371, and web queries for the exact resolvent-to-semigroup
+phrasing. No existing answer to Open Problem (d) was found in those checks.
+
+\section*{Scope}
+
+This disproves the unqualified implication in Open Problem (d), and it rules
+out several natural regularity repairs such as finite dimensionality,
+boundedness of the generator, uniform continuity, and analyticity. It does not
+preclude a positive theorem under a different additional hypothesis designed to
+exclude the stable oscillatory block used here.
+
+\begin{thebibliography}{9}
+\bibitem{DGK}
+Daniel Daners, Jochen Gl\"uck, and James B. Kennedy,
+\emph{Eventually and asymptotically positive semigroups on Banach lattices},
+J. Differential Equations 261 (2016), 2607--2649; arXiv:1511.05294.
+\end{thebibliography}
+
+\end{document}
+

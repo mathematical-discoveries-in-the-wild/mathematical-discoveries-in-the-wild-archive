@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\distmax}{\delta}
+
+\title{The infinite-sum converse for statistically maximizing sequences fails}
+\author{Codex agent lane 3 (GPT-5.6)}
+\date{July 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status and Source Question}
+
+\noindent\textbf{Status:} counterexample likely valid, pending human review.
+
+Seal--Som--Basu--Dey study farthest-point maximizing sequences and
+$M$-compactness in normed spaces \cite{SSBD}.  If $M$ is a nonempty bounded
+subset of a normed space and $y$ is in the ambient space, write
+\[
+ \distmax(y,M)=\sup_{m\in M}\|y-m\|.
+\]
+A sequence $(x_n)$ in $M$ is \emph{statistically maximizing} when, for some
+$y$, the scalar sequence $\|x_n-y\|$ converges statistically to
+$\distmax(y,M)$.
+
+Corollary 3.6 of the source says that statistical maximality in an infinite
+$\ell_p$-sum implies statistical maximality in every coordinate.  Remark 3.7
+asks whether the converse is true for $1\leq p<\infty$.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is negative for every $1\leq p<\infty$.  The counterexample uses
+only three-point subsets of two-dimensional Hilbert spaces.  In fact, every
+coordinate sequence below is maximizing in the ordinary sense, while the
+global sequence is not even statistically maximizing.
+
+\section*{Definitions and Construction}
+
+For a scalar sequence $(r_n)$, statistical convergence to $r$ means
+\[
+ \lim_{N\to\infty}\frac1N
+ \bigl|\{n\leq N:|r_n-r|\geq\varepsilon\}\bigr|=0
+ \qquad(\varepsilon>0).
+\]
+Fix $1\leq p<\infty$.  For $i\in\N$, set
+\[
+ \alpha_i=2^{-i},\qquad X_i=\R^2
+\]
+with the Euclidean norm, and define
+\[
+ A_i=\left(-\frac{\alpha_i}{2},0\right),\qquad
+ B_i=\left( \frac{\alpha_i}{2},0\right),\qquad
+ C_i=(\alpha_i,\alpha_i^2),
+ \qquad M_i=\{A_i,B_i,C_i\}.
+\]
+Let
+\[
+ X=\left(\bigoplus_{i=1}^{\infty}X_i\right)_{\ell_p},
+ \qquad
+ M=\left(\bigoplus_{i=1}^{\infty}M_i\right)_{\ell_p}
+   =\{(m_i)\in X:m_i\in M_i\text{ for every }i\}.
+\]
+This is a bounded nonempty subset of $X$: since $\alpha_i\leq1/2$,
+\[
+ \max_{m\in M_i}\|m\|_2
+ =\|C_i\|_2
+ =\alpha_i\sqrt{1+\alpha_i^2}
+ \leq\frac{\sqrt5}{2}\alpha_i,
+\]
+and $(\alpha_i)\in\ell_p$.
+
+Put $A=(A_i)_{i\geq1}$ and $B=(B_i)_{i\geq1}$, both elements of $M$, and
+define
+\[
+ x_n=\begin{cases}
+ A,&n\text{ even},\\
+ B,&n\text{ odd}.
+ \end{cases}
+\]
+
+\section*{Proof Intuition}
+
+In coordinate $i$, the two alternating points $A_i,B_i$ are both farthest
+from the harmless witness $(0,1)$.  Thus each coordinate sequence is as
+strongly maximizing as possible: its distance to a witness is constantly
+equal to the farthest distance.
+
+The third point $C_i$ prevents these coordinate witnesses from being replaced
+by a summable family.  If $A_i$ and $B_i$ are both farthest from a center
+$(s_i,t_i)$, their equal distances force $s_i=0$.  Comparing either one with
+$C_i$ then forces
+\[
+ t_i\geq\frac38+\frac{\alpha_i^2}{2}.
+\]
+Every simultaneous witness therefore has coordinate norm at least $3/8$.
+Such a family cannot belong to an $\ell_p$-sum.
+
+If the alternating global sequence were statistically maximizing, its even
+and odd distances, each occurring on a set of density $1/2$, would both have
+to equal the global farthest distance.  Coordinatewise additivity of the
+$p$th power of the norm would then make every $A_i$ and $B_i$ simultaneously
+farthest from the corresponding coordinate of one global witness.  The lower
+bound above gives the contradiction.
+
+\section*{Formal Counterexample}
+
+\begin{lemma}[The coordinate obstruction]
+\label{lem:coordinate}
+For every $i$, the sequence alternating between $A_i$ and $B_i$ is an
+ordinary maximizing sequence in $M_i$.  Moreover, if both $A_i$ and $B_i$
+are farthest points of $M_i$ from $z_i=(s_i,t_i)$, then
+\[
+ s_i=0,
+ \qquad
+ t_i\geq\frac38+\frac{\alpha_i^2}{2},
+ \qquad
+ \|z_i\|_2\geq\frac38.
+\]
+\end{lemma}
+
+\begin{proof}
+Take $y_i=(0,1)$.  Direct calculation gives
+\begin{align*}
+ \|A_i-y_i\|_2^2=\|B_i-y_i\|_2^2
+ &=1+\frac{\alpha_i^2}{4},\\
+ \|C_i-y_i\|_2^2
+ &=\alpha_i^2+(1-\alpha_i^2)^2
+   =1-\alpha_i^2+\alpha_i^4.
+\end{align*}
+Their difference is
+\[
+ \alpha_i^2\left(\frac54-\alpha_i^2\right)>0
+\]
+because $0<\alpha_i\leq1/2$.  Hence $A_i$ and $B_i$ are both farthest from
+$y_i$, and the alternating sequence has constant distance
+$\distmax(y_i,M_i)$.
+
+Now suppose that both $A_i$ and $B_i$ are farthest from
+$z_i=(s_i,t_i)$.  They must be equidistant.  Since
+\[
+ \|z_i-A_i\|_2^2-\|z_i-B_i\|_2^2=2\alpha_i s_i,
+\]
+we obtain $s_i=0$.  Farthestness relative to $C_i$ gives
+\begin{align*}
+ t_i^2+\frac{\alpha_i^2}{4}
+   =\|z_i-A_i\|_2^2
+ &\geq \|z_i-C_i\|_2^2\\
+ &=\alpha_i^2+(t_i-\alpha_i^2)^2.
+\end{align*}
+After cancellation and division by $2\alpha_i^2>0$, this is exactly
+\[
+ t_i\geq\frac38+\frac{\alpha_i^2}{2}.
+\]
+The norm bound follows.
+\end{proof}
+
+\begin{lemma}[Farthest distance in the bounded product]
+\label{lem:product}
+For every $z=(z_i)\in X$,
+\[
+ \distmax(z,M)^p
+ =\sum_{i=1}^{\infty}\distmax(z_i,M_i)^p.
+\]
+If $u=(u_i)\in M$ is farthest from $z$, then each $u_i$ is farthest from
+$z_i$ in $M_i$.
+\end{lemma}
+
+\begin{proof}
+Every $M_i$ is finite, so choose $m_i\in M_i$ attaining
+$\distmax(z_i,M_i)$.  The uniform coordinate bound used above implies
+$(m_i)\in M$.  Therefore the coordinatewise upper bound for
+$\|z-m\|_p^p$ is attained, proving the formula.
+
+If $u$ is globally farthest, then
+\[
+ 0=\distmax(z,M)^p-\|z-u\|_p^p
+  =\sum_{i=1}^{\infty}
+   \left(\distmax(z_i,M_i)^p-\|z_i-u_i\|_2^p\right).
+\]
+Every summand is nonnegative, so every summand is zero.
+\end{proof}
+
+\begin{theorem}[Negative answer to Remark 3.7]
+\label{thm:counterexample}
+For every $1\leq p<\infty$, there exist finite bounded sets
+$M_i\subset\R^2$ and a sequence $(x_n)$ in their bounded $\ell_p$-sum such
+that every coordinate sequence $(x_n^{(i)})$ is maximizing, hence
+statistically maximizing, in $M_i$, but $(x_n)$ is not statistically
+maximizing in the $\ell_p$-sum.
+\end{theorem}
+
+\begin{proof}
+Use the construction above.  Lemma~\ref{lem:coordinate} proves that every
+coordinate sequence is ordinary maximizing.
+
+Suppose, toward a contradiction, that $(x_n)$ is statistically maximizing in
+$M$.  There is then a $z\in X$ such that
+\[
+ \|x_n-z\|_p\longrightarrow_{\mathrm{stat}}\distmax(z,M).
+\]
+The scalar sequence on the left alternates between the two constants
+$\|A-z\|_p$ and $\|B-z\|_p$.  The even and odd integers both have natural
+density $1/2$.  Statistical convergence is therefore possible only if
+\[
+ \|A-z\|_p=\|B-z\|_p=\distmax(z,M).
+\]
+Thus both $A$ and $B$ are farthest points of $M$ from $z$.
+Lemma~\ref{lem:product} implies that, for every $i$, both $A_i$ and $B_i$
+are farthest from $z_i$ in $M_i$.  Lemma~\ref{lem:coordinate} now yields
+\[
+ \|z_i\|_2\geq\frac38\qquad(i\in\N).
+\]
+Consequently $\sum_i\|z_i\|_2^p=\infty$, contradicting $z\in X$.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof is symbolic and uses no external theorem beyond the definitions in
+the source.  The reusable script \texttt{code/check\_geometry.py} checks with
+exact rational arithmetic, for $i=1,\dots,40$, both displayed coordinate
+identities and the equality case at
+$t_i=3/8+\alpha_i^2/2$.  It also prints finite-truncation lower bounds on a
+putative witness norm for $p\in\{1,1.5,2,4,10\}$.  These calculations are a
+sanity check, not part of the proof.
+
+The most important review points are:
+\begin{enumerate}
+ \item the product formula in Lemma~\ref{lem:product}, including attainment
+       by a coordinatewise selector in the bounded product $M$;
+ \item the density-$1/2$ argument forcing both alternating global points to
+       be farthest; and
+ \item the sign and constant in the threshold
+       $t_i\geq3/8+\alpha_i^2/2$.
+\end{enumerate}
+
+\section*{Novelty Audit and Limitations}
+
+On July 19, 2026, the local run indexes were searched for arXiv:2008.08491,
+$M$-compactness, statistical maximality, and infinite $\ell_p$-sums.  Web and
+arXiv searches used the exact phrase from Remark 3.7, the exact source title
+with citation/year variants, and close variants such as ``statistically
+maximizing'' with ``direct sum'' or ``Banach.''  They returned the source
+paper and source-adjacent earlier work on statistical convergence and
+farthest points, but no later primary source answering this infinite-sum
+converse.  This is a bounded novelty check, not an exhaustive citation audit.
+
+The theorem answers exactly the statistical converse in Remark 3.7 and does
+so simultaneously for every finite $p$.  It does not concern $p=\infty$, and
+it makes no assertion about additional structural hypotheses on the sets
+$M_i$ (for example, convexity) that might restore a converse.
+
+\section*{Human-Review Recommendation}
+
+Promote as a negative answer to Remark 3.7 if the three review points above
+check out.  The construction is elementary, finite in every coordinate, and
+the global obstruction is a direct nonsummability argument.
+
+\begin{thebibliography}{9}
+\bibitem{SSBD}
+S. Seal, S. Som, S. Basu, and L. K. Dey,
+\emph{Characterization of $M$-compact sets via statistically convergent
+sequences}, arXiv:2008.08491v1, 2020.
+\end{thebibliography}
+
+\end{document}

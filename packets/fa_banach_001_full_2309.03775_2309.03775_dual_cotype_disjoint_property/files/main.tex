@@ -1,0 +1,186 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\E}{E}
+\newcommand{\F}{F}
+\newcommand{\sol}{\operatorname{sol}}
+\newcommand{\eps}{\varepsilon}
+
+\title{Dual cotype forces the disjoint property}
+\author{Run \texttt{fa\_banach\_001}, lane 7}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Botelho, Garcia, and Miranda ask in Remark 2.8 of
+\cite{botelho-garcia-miranda} whether there can be a Banach lattice \(E\)
+such that \(E^*\) has cotype \(p\), \(2\le p<\infty\), while \(E\) fails the
+disjoint property of order \(p\).  The answer is negative.  If \(E^*\) has
+cotype \(p\), then every bounded disjoint sequence in \(E\) is weakly
+\(p\)-summable.  Hence no such counterexample exists.
+\end{abstract}
+
+\section{Source question}
+
+The source is G. Botelho, L. A. Garcia, and V. C. C. Miranda,
+\emph{Disjoint \(p\)-convergent operators and their adjoints},
+arXiv:2309.03775.
+
+The relevant passage is Remark 2.8 on page 5 of the source PDF:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+In paraphrase, the authors ask whether dual cotype \(p\) can hold while the
+underlying Banach lattice fails the disjoint property of order \(p\).  Their
+Definition 2.5 says that \(E\) has the disjoint property of order \(p\) when
+every bounded disjoint \(E\)-valued sequence is weakly \(p\)-summable.
+
+\section{Proof intuition}
+
+The only missing bridge is order continuity.  A Banach lattice with finite
+cotype cannot contain an order-bounded disjoint sequence whose norms stay
+away from zero: all signed finite sums are dominated in modulus by the same
+positive order bound, but the cotype inequality would force the \(\ell_p\)
+sum of the norms to grow like \(N^{1/p}\).  Applied to \(E^*\), this gives
+order-continuity of the dual norm.
+
+Once \(E^*\) has order-continuous norm, every bounded disjoint sequence in
+\(E\) is weakly null.  Such a sequence, together with its weak limit \(0\), is
+relatively weakly compact.  The source paper's Lemma 2.4 then applies because
+the sequence lies in the solid hull of this weakly compact set.
+
+\section{The result}
+
+\begin{lemma}[Finite cotype forces order-continuity]\label{lem:cotype-oc}
+Let \(F\) be a Banach lattice.  If \(F\) has cotype \(p<\infty\), then the
+norm of \(F\) is order continuous.
+\end{lemma}
+
+\begin{proof}
+Let \(C\) be a cotype \(p\) constant for \(F\).  Suppose that the norm of
+\(F\) is not order continuous.  By the standard order-continuity criterion for
+Banach lattices, there are \(0\le y_n\le y\) with the \(y_n\)'s pairwise
+disjoint and, after passing to a subsequence, \(\|y_n\|\ge \delta>0\) for all
+\(n\).
+
+For every finite set \(\{1,\dots,N\}\) and every choice of signs
+\(\varepsilon_n=\pm1\), disjointness gives
+\[
+  \left|\sum_{n=1}^N \varepsilon_n y_n\right|
+  =\sum_{n=1}^N y_n
+  \le y,
+\]
+and therefore \(\|\sum_{n=1}^N \varepsilon_n y_n\|\le \|y\|\).  Applying the
+cotype inequality to \(y_1,\dots,y_N\) yields
+\[
+  \delta N^{1/p}
+  \le \left(\sum_{n=1}^N \|y_n\|^p\right)^{1/p}
+  \le C\left(\int_0^1
+        \left\|\sum_{n=1}^N r_n(t)y_n\right\|^2\,dt
+      \right)^{1/2}
+  \le C\|y\|.
+\]
+Letting \(N\to\infty\) gives a contradiction.
+\end{proof}
+
+\begin{theorem}\label{thm:dual-cotype-disjoint-property}
+Let \(E\) be a Banach lattice and let \(2\le p<\infty\).  If \(E^*\) has
+cotype \(p\), then \(E\) has the disjoint property of order \(p\).
+\end{theorem}
+
+\begin{proof}
+By Lemma \ref{lem:cotype-oc}, the Banach lattice \(E^*\) has order-continuous
+norm.  A standard characterization of order-continuity of the dual norm says
+that every norm-bounded disjoint sequence in \(E\) is weakly null; this is the
+criterion cited as Theorem 2.4.14 of Meyer-Nieberg in the source paper.
+
+Let \((x_n)\) be any bounded disjoint sequence in \(E\).  The preceding
+paragraph gives \(x_n\to0\) weakly.  Hence
+\[
+  W=\{0\}\cup\{x_n:n\in\mathbb N\}
+\]
+is weakly compact.  The sequence \((x_n)\) is contained in the solid hull
+\(\sol(W)\), and it is disjoint.  Lemma 2.4 of
+\cite{botelho-garcia-miranda} states that, when \(E^*\) has cotype \(p\),
+every disjoint sequence contained in the solid hull of a relatively weakly
+compact subset of \(E\) is weakly \(p\)-summable in \(E\).  Therefore
+\((x_n)\) is weakly \(p\)-summable.
+
+Since \((x_n)\) was an arbitrary bounded disjoint sequence, \(E\) has the
+disjoint property of order \(p\).
+\end{proof}
+
+\begin{corollary}[Answer to Remark 2.8]\label{cor:answer}
+There is no Banach lattice \(E\) such that \(E^*\) has cotype
+\(2\le p<\infty\) and \(E\) fails the disjoint property of order \(p\).
+\end{corollary}
+
+\begin{proof}
+This is exactly Theorem \ref{thm:dual-cotype-disjoint-property}.
+\end{proof}
+
+\section{Verification and novelty check}
+
+The proof has no computational dependency.  The crop was rendered from the
+arXiv PDF with \texttt{code/crop\_open\_problem.py}.
+
+For duplicate and novelty checking, the run indexes were searched for
+\texttt{2309.03775}, the source title, \texttt{disjoint property of order},
+\texttt{dual cotype}, and \texttt{weakly p-summable}.  No previous run packet
+for this question was found.  Web searches on 2026-06-20 for the source
+question, for \texttt{E* has cotype} together with \texttt{disjoint property
+of order p}, and for close phrases involving bounded disjoint weakly
+\(p\)-summable sequences did not locate a separate later resolution.  The
+proof above is a short consequence of the source paper's Lemma 2.4 together
+with the standard finite-cotype/order-continuity observation proved in
+Lemma \ref{lem:cotype-oc}; human review should decide whether to describe the
+result as a new observation or as an implicit consequence of already available
+tools.
+
+\section{Human review recommendation}
+
+Recommended review focus:
+\begin{itemize}
+\item Check that the non-order-continuity criterion used in
+  Lemma \ref{lem:cotype-oc} is the intended Banach-lattice norm criterion.
+\item Check that Lemma 2.4 of \cite{botelho-garcia-miranda} is applied with
+  exactly the same cotype exponent \(p\).
+\item Check that the weakly null sequence plus its limit is accepted as a
+  weakly compact set in the weak topology.
+\end{itemize}
+
+If these standard points are accepted, the source question is fully settled
+with a negative answer.
+
+\begin{thebibliography}{9}
+
+\bibitem{botelho-garcia-miranda}
+G. Botelho, L. A. Garcia, and V. C. C. Miranda,
+\emph{Disjoint \(p\)-convergent operators and their adjoints},
+arXiv:2309.03775, 2023.
+
+\bibitem{aliprantis-burkinshaw}
+C. D. Aliprantis and O. Burkinshaw,
+\emph{Positive Operators},
+Springer, Dordrecht, 2006.
+
+\bibitem{meyer-nieberg}
+P. Meyer-Nieberg,
+\emph{Banach Lattices},
+Springer-Verlag, Berlin, 1991.
+
+\end{thebibliography}
+
+\end{document}

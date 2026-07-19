@@ -1,0 +1,377 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1.1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\Pcal}{\mathcal P}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A Cube-Null Contrapositive for the Aronszajn-Null Game}
+\author{Candidate solution packet for arXiv:math/0601556}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+Candidate full solution, likely valid, for human review.  The packet proves the
+contrapositive
+\[
+  \text{Player I wins the Aronszajn-null game on } A
+  \quad\Longrightarrow\quad
+  A \text{ is not cube-null}.
+\]
+For Borel subsets of separable real Banach spaces, Csornyei's theorem identifies
+cube-null and Aronszajn-null sets.  Thus this gives an affirmative answer to
+Duda--Tsaban's Conjecture 2.4.
+
+This is the single canonical packet for arXiv:math/0601556 in the run.  The
+earlier finite-dimensional and cylindrical-pullback partial packets are retained
+inside this packet as superseded provenance only; they are no longer separate
+current solution packets for this target.
+
+\section*{Source question}
+
+The source paper is Jakub Duda and Boaz Tsaban, \emph{Null sets and games in
+Banach spaces}, arXiv:math/0601556, later published in \emph{Topology and its
+Applications} 156 (2008), 56--60.
+
+Duda and Tsaban define, for a nonzero vector \(v\in X\), \(\Acal(v)\) to be the
+family of Borel sets whose intersection with every affine line parallel to
+\(v\) has one-dimensional Lebesgue measure zero.  A Borel set \(A\subset X\) is
+Aronszajn-null if for every dense sequence \((v_n)\) in \(X\) there are
+\(A_n\in\Acal(v_n)\) with \(A\subset\bigcup_n A_n\).
+
+In the game \(\mathsf G_{\Acal}(A)\), Player I plays directions \(v_n\) so that
+the resulting sequence is dense in \(X\), Player II answers with
+\(B_n\in\Acal(v_n)\), and Player II wins if \(A\subset\bigcup_n B_n\).  The
+authors prove that if Player I has no winning strategy, then \(A\) is
+Aronszajn-null, and ask for the converse.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof intuition}
+
+The missing point in the source conjecture is adaptivity: Aronszajn-nullness
+defeats every fixed dense direction sequence, while a Player I strategy chooses
+directions after seeing Player II's previous null sets.  The proof below turns
+this adaptivity against Player I.
+
+Against a supposed winning strategy for Player I, Player II makes one special
+legal play.  At inning \(n\), Player II does not choose one prospective
+Csornyei cube-construction obstruction; instead, Player II plays the countable
+union of all bad sets associated with all finite rational cube prefixes already
+available.  Each bad set is null on the current family of parallel lines, so
+the countable union is a legal move.  Since Player I's strategy is assumed to
+win, there is a point \(a\in A\) outside all these bad sets.  Being outside all
+bad sets lets \(a\) thread an infinite sequence of rational cube widths and
+Borel approximation indices.  The resulting translated cube measure gives
+positive mass to \(A\), so \(A\) is not cube-null.
+
+\section*{Preliminaries}
+
+We use the following standard descriptive-set-theoretic decomposition of a
+Borel set.  It is the same device used in Csornyei's cube-measure construction
+and in later streamlined presentations of the Aronszajn-null/cube-null
+equivalence.
+
+\begin{lemma}[Borel approximation tree]\label{lem:borel-tree}
+Let \(E\) be a Borel subset of a Polish space.  There are Borel sets
+\[
+  E_s\qquad (s\in\N^{<\N})
+\]
+such that:
+\begin{enumerate}
+\item \(E_{\emptyset}=E\);
+\item \(E_{s0}\subset E_{s1}\subset\cdots\subset E_s\) and
+  \(E_s=\bigcup_{k=0}^{\infty}E_{s^\frown k}\) for every finite sequence \(s\);
+\item for every \(\alpha\in\N^\N\),
+  \[
+    \bigcap_{n=0}^{\infty}\overline{E_{\alpha|n}}\subset E.
+  \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Realize \(E\) as the injective continuous image \(\phi(C)\) of a closed
+subspace \(C\) of the Baire space \(\N^\N\).  For
+\(s=(s_1,\ldots,s_m)\), let
+\[
+  Z_s=\{\alpha\in\N^\N:\alpha_i\le s_i\text{ for }1\le i\le m\},
+  \qquad E_s=\phi(C\cap Z_s).
+\]
+The first two assertions are immediate.  For the last, if
+\(x\in\bigcap_m\overline{E_{\alpha|m}}\), choose
+\(x_m=\phi(\beta_m)\in E_{\alpha|m}\) with \(x_m\to x\).  Replacing the tail of
+\(\beta_m\) by zero puts the sequence in the compact product
+\(\prod_i\{0,\ldots,\alpha_i\}\), so a subsequence converges pointwise to some
+\(\beta\in C\).  Continuity gives \(x=\phi(\beta)\in E\).
+\end{proof}
+
+For a nonzero \(u\in X\) and \(q>0\), write \(\lambda_{u,q}\) for the uniform
+probability measure on the segment \(\{tu:-q\le t\le q\}\).
+
+\begin{lemma}[One-step bad sets are legal]\label{lem:bad-legal}
+Let \(E_s\) be as in Lemma \ref{lem:borel-tree}.  Fix a finite sequence
+\(s\), a Borel probability measure \(\mu\) on \(X\), a nonzero vector \(u\), a
+constant \(0<c<1\), and a number \(\rho>0\).  Define
+\[
+  G=\{y\in X:(\delta_y*\mu)(E_s)>c\}
+\]
+and
+\[
+  B=G\setminus
+  \bigcup_{\substack{k\in\N\\q\in\Q,\ 0<q<\rho}}
+  \{y\in X:(\delta_y*\lambda_{u,q}*\mu)(E_{s^\frown k})>c\}.
+\]
+Then \(B\in\Acal(u)\).
+\end{lemma}
+
+\begin{proof}
+The set \(B\) is Borel because \(y\mapsto(\delta_y*\nu)(D)\) is Borel for each
+Borel \(D\) and Borel probability \(\nu\).
+
+Assume that an affine line \(L=a+\R u\) has \(B\cap L\) of positive
+one-dimensional measure.  Let
+\[
+  f(a+tu)=(\delta_{a+tu}*\mu)(E_s).
+\]
+Since \(f>c\) on \(B\), there is \(\eta>0\) such that
+\[
+  D=\{t:a+tu\in B\text{ and }f(a+tu)>c+\eta\}
+\]
+has positive measure.  Pick a Lebesgue density point \(t_0\) of \(D\).  For a
+sufficiently small rational \(q\in(0,\rho)\),
+\[
+  \lambda\{r\in[-q,q]:t_0+r\in D\}/(2q)>\frac{c}{c+\eta}.
+\]
+Hence
+\[
+\begin{aligned}
+(\delta_{a+t_0u}*\lambda_{u,q}*\mu)(E_s)
+  &= \int_{-q}^{q} f(a+(t_0+r)u)\,\frac{dr}{2q}  \\
+  &> (c+\eta)\frac{c}{c+\eta}=c.
+\end{aligned}
+\]
+Because \(E_s=\bigcup_k E_{s^\frown k}\) increasingly, some \(k\) satisfies
+\[
+  (\delta_{a+t_0u}*\lambda_{u,q}*\mu)(E_{s^\frown k})>c.
+\]
+This contradicts \(a+t_0u\in B\).  Therefore every line parallel to \(u\)
+meets \(B\) in a null set.
+\end{proof}
+
+\section*{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let \(X\) be a separable real Banach space and let \(A\subset X\) be Borel.  If
+Player I has a winning strategy in \(\mathsf G_{\Acal}(A)\), then \(A\) is not
+cube-null.  Consequently, by Csornyei's theorem, if \(A\) is Aronszajn-null then
+Player I has no winning strategy in \(\mathsf G_{\Acal}(A)\).
+\end{theorem}
+
+\begin{proof}
+Assume that \(\sigma\) is a winning strategy for Player I on \(A\).  Fix
+\(0<c<1\), for instance \(c=1/2\).  Let \(A_s\), \(s\in\N^{<\N}\), be a Borel
+approximation tree for \(A\) as in Lemma \ref{lem:borel-tree}.
+
+We define one legal counterplay by Player II.  Suppose that the first \(m\)
+responses \(C_0,\ldots,C_{m-1}\) have already been defined, and let
+\[
+  x_{m+1}=\sigma(C_0,\ldots,C_{m-1})
+\]
+be Player I's next direction.  Put \(u_{m+1}=x_{m+1}/\|x_{m+1}\|\).  Player I's
+legal moves are nonzero; scaling does not change the family \(\Acal(x_{m+1})\).
+
+Let \(\Pcal_m\) be the countable set of all prefixes
+\[
+  p=((q_1,k_1),\ldots,(q_m,k_m))
+\]
+with \(k_i\in\N\) and rational \(0<q_i<2^{-i}\).  For such \(p\), write
+\[
+  s(p)=(k_1,\ldots,k_m),\qquad
+  \mu_p=\lambda_{u_m,q_m}*\cdots *\lambda_{u_1,q_1},
+\]
+with the convention that for the empty prefix \(p=\emptyset\),
+\(s(p)=\emptyset\) and \(\mu_p=\delta_0\).
+
+For each \(p\in\Pcal_m\), define
+\[
+  G_p=\{y:(\delta_y*\mu_p)(A_{s(p)})>c\},
+\]
+and
+\[
+  B_p=G_p\setminus
+  \bigcup_{\substack{k\in\N\\q\in\Q,\ 0<q<2^{-(m+1)}}}
+  \{y:(\delta_y*\lambda_{u_{m+1},q}*\mu_p)(A_{s(p)^\frown k})>c\}.
+\]
+By Lemma \ref{lem:bad-legal}, \(B_p\in\Acal(u_{m+1})=\Acal(x_{m+1})\).  Set
+\[
+  C_m=\bigcup_{p\in\Pcal_m} B_p.
+\]
+Since \(\Acal(x_{m+1})\) is closed under countable unions, \(C_m\) is a legal
+response for Player II.
+
+This recursively defines a legal play against \(\sigma\).  Since \(\sigma\) is
+winning for Player I, the resulting direction sequence is dense and
+\[
+  A\not\subset \bigcup_{m=0}^{\infty} C_m.
+\]
+Choose
+\[
+  a\in A\setminus\bigcup_{m=0}^{\infty}C_m.
+\]
+
+We now thread a cube through \(a\).  Start with the empty prefix \(p_0\).  Since
+\((\delta_a*\delta_0)(A)=1>c\), we have \(a\in G_{p_0}\).  Suppose inductively
+that \(p_m\in\Pcal_m\) and \(a\in G_{p_m}\).  Because \(a\notin C_m\), and
+\(B_{p_m}\subset C_m\), we have \(a\notin B_{p_m}\).  By the definition of
+\(B_{p_m}\), there are \(k_{m+1}\in\N\) and rational
+\(0<q_{m+1}<2^{-(m+1)}\) such that, for
+\[
+  p_{m+1}=p_m^\frown(q_{m+1},k_{m+1}),
+\]
+we have \(a\in G_{p_{m+1}}\).  Thus for every \(m\),
+\[
+  (\delta_a*\mu_{p_m})(A_{s(p_m)})>c. \tag{1}
+\]
+
+Let \(v_i=q_i u_i\).  Then \(\sum_i\|v_i\|<\infty\).  If \(T_i\) are
+independent uniform random variables on \([-1,1]\), the series
+\(\sum_i T_i v_i\) converges almost surely in \(X\).  Let \(\mu\) be its law.
+Equivalently, \(\mu_{p_m}\) converges weakly to \(\mu\).  The span of
+\(\{v_i:i\in\N\}\) is dense because it is the same linear span as
+\(\{x_i:i\in\N\}\), and the actual play generated by \(\sigma\) is legal for
+Player I, so the sequence \((x_i)\) is dense in \(X\).
+Therefore \(\delta_a*\mu\) is a nondegenerate cube measure.
+
+Fix \(r\).  For all \(m\ge r\), the approximation-tree nesting gives
+\[
+  A_{s(p_m)}\subset A_{s(p_r)}.
+\]
+By (1),
+\[
+  (\delta_a*\mu_{p_m})(A_{s(p_r)})>c\qquad (m\ge r).
+\]
+Passing to the weak limit and using the portmanteau theorem,
+\[
+  (\delta_a*\mu)(\overline{A_{s(p_r)}})\ge c.
+\]
+The closed sets \(\overline{A_{s(p_r)}}\) are decreasing in \(r\), and Lemma
+\ref{lem:borel-tree} gives
+\[
+  \bigcap_{r=0}^{\infty}\overline{A_{s(p_r)}}\subset A.
+\]
+By continuity from above for probability measures,
+\[
+  (\delta_a*\mu)(A)
+  \ge
+  (\delta_a*\mu)\left(\bigcap_{r=0}^{\infty}\overline{A_{s(p_r)}}\right)
+  =
+  \lim_{r\to\infty}(\delta_a*\mu)(\overline{A_{s(p_r)}})
+  \ge c>0.
+\]
+Thus a nondegenerate cube measure gives positive mass to \(A\).  Hence \(A\)
+is not cube-null.
+
+Csornyei proved that, for Borel subsets of separable real Banach spaces,
+Aronszajn-null and cube-null are the same ideal.  Therefore an Aronszajn-null
+Borel set cannot admit a winning strategy for Player I.
+\end{proof}
+
+\begin{corollary}
+For every Borel subset \(A\) of a separable real Banach space, Duda--Tsaban's
+Conjecture 2.4 holds:
+\[
+  A\text{ is Aronszajn-null}
+  \quad\Longrightarrow\quad
+  \text{Player I has no winning strategy in }\mathsf G_{\Acal}(A).
+\]
+Together with Duda--Tsaban's easy implication, this characterizes
+Aronszajn-null Borel sets as exactly those for which Player I has no winning
+strategy in the Aronszajn-null game.
+\end{corollary}
+
+\section*{Verification notes}
+
+The proof is non-computational.  The main points for human review are:
+\begin{itemize}
+\item Lemma \ref{lem:bad-legal}: the density-point argument must be checked
+  carefully.  The strict gap \(f>c+\eta\) on a positive-measure subset is what
+  turns almost-invariance under a short segment convolution into a contradiction.
+\item In the main proof, Player II's inning \(m\) move is the countable union of
+  bad sets over every rational finite cube prefix.  This is why the later point
+  \(a\) can choose its prefix after the play has been generated.
+\item The actual direction sequence used in the cube measure is the one
+  produced by the supposed winning strategy against this single legal play, so
+  it is dense by the legality requirement on Player I.
+\item The Borel approximation tree is used only at the final portmanteau step,
+  to pass from positive mass on nested approximants to positive mass on the
+  original Borel set.
+\end{itemize}
+
+\section*{Novelty check}
+
+Before promotion, the run indexes were searched for arXiv id `0601556',
+`Aronszajn-null game', `Duda Tsaban', `Conjecture 2.4', `cube null',
+`Pawlikowski', and `Rothberger'.  The only local hits for this target were the
+two earlier lane-0 partial packets, covering the finite-dimensional case and
+finite-dimensional cylindrical pullbacks, plus the prior unfinished attempt.
+
+External searches on 2026-06-15 for `Aronszajn-null game Duda Tsaban
+conjecture', `Null sets and games in Banach spaces Conjecture 2.4',
+`Aronszajn-null Player I winning strategy', and related selection-principle
+phrases found the source paper but no later paper claiming to solve the game
+conjecture.  The proof uses Csornyei's known equivalence of Aronszajn-null and
+cube-null sets, and the Borel/cube-measure construction is in the same family
+as Csornyei's argument and the later exposition by Eldredge--Gordina--Le
+Donne--Li, but the online countable-prefix fusion against a Player I strategy
+appears not to be recorded in the searched sources.
+
+\section*{Human review recommendation}
+
+Review as a candidate full solution of Duda--Tsaban Conjecture 2.4.  The most
+important line to audit is the transition from the supposed winning strategy to
+the single legal Player II play \(C_m=\bigcup_{p\in\Pcal_m}B_p\).  If that
+fusion is correct, the rest is a standard cube-measure compactness argument.
+
+\begin{thebibliography}{9}
+
+\bibitem{DudaTsaban}
+J. Duda and B. Tsaban,
+\emph{Null sets and games in Banach spaces},
+Topology and its Applications 156 (2008), 56--60.
+arXiv:math/0601556.
+
+\bibitem{Csornyei}
+M. Csornyei,
+\emph{Aronszajn null and Gaussian null sets coincide},
+Israel Journal of Mathematics 111 (1999), 191--201.
+
+\bibitem{EldredgeGordinaLeDonneLi}
+N. Eldredge, M. Gordina, E. Le Donne, and S. Li,
+\emph{Notions of null sets in infinite-dimensional Carnot groups},
+arXiv:2304.14524.
+
+\bibitem{Srivastava}
+S. M. Srivastava,
+\emph{A Course on Borel Sets},
+Graduate Texts in Mathematics 180, Springer, 1998.
+
+\end{thebibliography}
+
+\end{document}

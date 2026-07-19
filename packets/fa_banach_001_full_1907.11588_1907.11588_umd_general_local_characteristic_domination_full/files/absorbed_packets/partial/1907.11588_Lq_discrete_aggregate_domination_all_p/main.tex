@@ -1,0 +1,330 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\simequiv}{\simeq}
+
+\title{Discrete Aggregate Domination in \(L^q\)-Spaces}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial result, likely valid, for Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of vector-valued
+martingales} \cite{Yaroslavtsev2019}.  It proves the discrete
+independent-increment aggregate-domination comparison in every \(L^q\)-space
+for \(1<p,q<\infty\).
+
+It is partial relative to the full source problem because it does not yet
+package the full general-local-martingale extension, and it does not cover the
+endpoint \(p=1\).
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source crop
+below states that the general-local-martingale case is open and reduces the
+missing accessible-jump issue to a discrete independent-increment comparison.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The next page adds that, by symmetrization, one may assume the variables are
+symmetric, and that even this symmetric discrete case was not known to the
+author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:Lq-discrete}
+Let \(1<p,q<\infty\), let \((S,\Sigma,\rho)\) be a measure space, and put
+\(X=L^q(S)\).  Let \((\xi_i)_{i=1}^n\) and \((\eta_i)_{i=1}^m\) be finite
+families of independent mean-zero \(X\)-valued random variables.  Assume that
+\[
+   \sum_i \Pp(\xi_i\in B)
+   \leq
+   \sum_j \Pp(\eta_j\in B)
+   \qquad
+   (B\in\cB(X),\;0\notin B).
+\]
+Then
+\[
+   \E\norm{\sum_i\xi_i}_{L^q(S)}^p
+   \leq
+   C_{p,q}\,
+   \E\norm{\sum_j\eta_j}_{L^q(S)}^p .
+\]
+\end{theorem}
+
+\begin{corollary}\label{cor:maximal}
+Under the assumptions of Theorem \ref{thm:Lq-discrete},
+\[
+   \E\max_{1\leq k\leq n}\norm{\sum_{i=1}^k\xi_i}_{L^q(S)}^p
+   \leq
+   C_{p,q}\,
+   \E\max_{1\leq k\leq m}\norm{\sum_{j=1}^k\eta_j}_{L^q(S)}^p .
+\]
+\end{corollary}
+
+\section*{Idea of the Proof}
+
+The previous \(\ell_q\) packet worked at \(p=q\) because the \(q\)-moment of
+the lattice square function is additive across coordinates.  Off the natural
+exponent, that additivity disappears.  The correct replacement is the sharp
+\(L^q\)-valued Rosenthal theorem of Dirksen and Yaroslavtsev
+\cite{DirksenYaroslavtsev2017}.
+
+For independent mean-zero \(L^q\)-valued variables \(z_i\), their theorem says
+that
+\[
+   \left(\E\norm{\sum_i z_i}_{L^q}^p\right)^{1/p}
+   \simequiv_{p,q}
+   \norm{(z_i)}_{s_{p,q}},
+\]
+where \(s_{p,q}\) is built, by sums and intersections, from three gauges:
+\[
+  S_q(z)=\left\|\left(\sum_i\E |z_i|^2\right)^{1/2}\right\|_{L^q},
+  \quad
+  D_{q,q}(z)=\left(\sum_i\E\norm{z_i}_{L^q}^q\right)^{1/q},
+  \quad
+  D_{p,q}(z)=\left(\sum_i\E\norm{z_i}_{L^q}^p\right)^{1/p}.
+\]
+These gauges depend only on the aggregate occurrence measure
+\(\sum_i\mathcal L(z_i)\).
+
+The only point that is not completely formal is the presence of sum spaces,
+such as \(S_q+D_{q,q}\).  A near-optimal decomposition of the dominating
+variables induces a measure on split triples \((x,y_1,\ldots,y_r)\), where
+\(x=\sum_\ell y_\ell\).  If the aggregate law of \((\xi_i)\) is dominated by
+that of \((\eta_j)\), we restrict this split measure by the Radon-Nikodym
+derivative of the smaller aggregate law.  This transports the decomposition to
+the \(\xi_i\)'s and decreases every basic gauge.  Thus the full Rosenthal norm
+is monotone under aggregate domination.
+
+\section*{The Rosenthal Norms}
+
+Let \(X=L^q(S)\), \(1<p,q<\infty\).  For a finite sequence
+\(z=(z_i)\) of \(X\)-valued random variables define
+\[
+  S_q(z)=\left\|\left(\sum_i\E |z_i|^2\right)^{1/2}\right\|_{L^q(S)},
+\]
+\[
+  D_{r,q}(z)=\left(\sum_i\E\norm{z_i}_{L^q(S)}^r\right)^{1/r},
+  \qquad r\in\{p,q\}.
+\]
+The Dirksen-Yaroslavtsev independent Rosenthal theorem
+\cite[Theorem 2.1]{DirksenYaroslavtsev2017} says that for independent
+mean-zero \(z_i\),
+\[
+   \left(\E\norm{\sum_i z_i}_{L^q(S)}^p\right)^{1/p}
+   \simequiv_{p,q}
+   \norm{z}_{s_{p,q}},
+\]
+where \(s_{p,q}\) is one of the following six sum/intersection spaces:
+\[
+\begin{array}{ll}
+S_q\cap D_{q,q}\cap D_{p,q}, & 2\le q\le p<\infty,\\
+S_q\cap(D_{q,q}+D_{p,q}), & 2\le p\le q<\infty,\\
+(S_q\cap D_{q,q})+D_{p,q}, & 1<p<2\le q<\infty,\\
+(S_q+D_{q,q})\cap D_{p,q}, & 1<q<2\le p<\infty,\\
+S_q+(D_{q,q}\cap D_{p,q}), & 1<q\le p\le2,\\
+S_q+D_{q,q}+D_{p,q}, & 1<p\le q\le2.
+\end{array}
+\]
+Intersections carry the maximum norm and sums carry the usual infimum norm.
+
+\section*{Aggregate Monotonicity}
+
+For a finite sequence \(z=(z_i)\), let
+\[
+   \mu_z=\sum_i\mathcal L(z_i)|_{X\setminus\{0\}}
+\]
+be its aggregate occurrence measure.  The next lemma is the key point.
+
+\begin{lemma}\label{lem:monotone}
+Let \(a=(a_i)\) and \(b=(b_j)\) be finite sequences of \(X\)-valued random
+variables with \(\mu_a\leq\mu_b\).  Then
+\[
+   \norm{a}_{s_{p,q}}\leq \norm{b}_{s_{p,q}} .
+\]
+\end{lemma}
+
+\begin{proof}
+First consider the three basic gauges.  Since \(\mu_a\leq\mu_b\),
+\[
+  \int_X |x|^2\,d\mu_a(x)
+  \leq
+  \int_X |x|^2\,d\mu_b(x)
+\]
+pointwise on \(S\), and therefore \(S_q(a)\leq S_q(b)\).  Similarly,
+\[
+  D_{r,q}(a)^r
+  =
+  \int_X\norm{x}_{L^q}^r\,d\mu_a(x)
+  \leq
+  \int_X\norm{x}_{L^q}^r\,d\mu_b(x)
+  =
+  D_{r,q}(b)^r
+\]
+for \(r=p,q\).
+
+This proves the assertion for every expression involving only intersections.
+It remains to handle sums.  We prove the required monotonicity recursively for
+any expression built from the three basic gauges using \(\cap\) and \(+\).
+The intersection step is immediate from the maximum norm.  For the sum step,
+write the expression as \(E+F\).  Fix \(\varepsilon>0\), and choose a
+decomposition \(b=u+v\) such that
+\[
+   \norm{u}_{E}+\norm{v}_{F}
+   \leq
+   \norm{b}_{E+F}+\varepsilon .
+\]
+Here \(u=(u_j)\), \(v=(v_j)\), and \(b_j=u_j+v_j\).
+
+The decomposition induces a finite measure \(\lambda\) on
+\[
+   \{(x,y,z)\in X^3:\ x=y+z\}
+\]
+by
+\[
+   \lambda=\sum_j\mathcal L(b_j,u_j,v_j)|_{X\setminus\{0\}\times X\times X}.
+\]
+Its \(x\)-marginal is \(\mu_b\).  Let \(h=d\mu_a/d\mu_b\), \(0\leq h\leq1\),
+and replace \(\lambda\) by \(h(x)\lambda(dx,dy,dz)\).  Disintegrating this
+restricted measure over its \(x\)-marginal \(\mu_a\), and enlarging the
+probability spaces of the \(a_i\)'s if necessary, we obtain random variables
+\(a_i^E,a_i^F\) such that
+\[
+   a_i=a_i^E+a_i^F
+\]
+and the aggregate occurrence measures of \((a_i^E)\) and \((a_i^F)\) are
+dominated by those of \(u\) and \(v\), respectively.  By the induction
+hypothesis,
+\[
+   \norm{(a_i^E)}_E\leq\norm{u}_E,
+   \qquad
+   \norm{(a_i^F)}_F\leq\norm{v}_F .
+\]
+Thus
+\[
+   \norm{a}_{E+F}
+   \leq
+   \norm{(a_i^E)}_E+\norm{(a_i^F)}_F
+   \leq
+   \norm{b}_{E+F}+\varepsilon .
+\]
+Letting \(\varepsilon\downarrow0\) completes the recursive proof.
+
+The above disintegration is first applied on the separable closed subspace
+generated by the essentially separable ranges of the finite family involved;
+standard approximation then removes boundedness or simplicity restrictions.
+\end{proof}
+
+\section*{Proof of the Main Result}
+
+Let \(\mu_\xi=\sum_i\mathcal L(\xi_i)|_{X\setminus\{0\}}\) and
+\(\mu_\eta=\sum_j\mathcal L(\eta_j)|_{X\setminus\{0\}}\).  The hypothesis is
+exactly \(\mu_\xi\leq\mu_\eta\).  By Lemma \ref{lem:monotone},
+\[
+   \norm{(\xi_i)}_{s_{p,q}}
+   \leq
+   \norm{(\eta_j)}_{s_{p,q}} .
+\]
+The independent \(L^q\)-valued Rosenthal theorem gives
+\[
+\begin{aligned}
+  \left(\E\norm{\sum_i\xi_i}_{L^q}^p\right)^{1/p}
+  &\lesssim_{p,q}
+  \norm{(\xi_i)}_{s_{p,q}} \\
+  &\leq
+  \norm{(\eta_j)}_{s_{p,q}} \\
+  &\lesssim_{p,q}
+  \left(\E\norm{\sum_j\eta_j}_{L^q}^p\right)^{1/p}.
+\end{aligned}
+\]
+Raising to the \(p\)-th power proves Theorem \ref{thm:Lq-discrete}.
+
+For Corollary \ref{cor:maximal}, apply Doob's \(L^p\) maximal inequality to
+the martingale \(\sum_{i\leq k}\xi_i\), use Theorem \ref{thm:Lq-discrete}, and
+then bound the terminal \(\eta\)-sum by the \(\eta\)-maximum.
+
+\section*{Verification and Limitations}
+
+The proof uses the lower and upper bounds in the Dirksen-Yaroslavtsev
+Rosenthal theorem, so it is restricted to \(1<p<\infty\).  Their paper records
+some endpoint upper bounds, but the two-sided norm identification needed here
+is not available in this packet at \(p=1\).
+
+This packet proves the discrete independent-increment bottleneck from Remark
+12.10 in \(L^q\)-spaces.  A full general-local-martingale \(L^q\) theorem
+should now be within reach, but it requires a separate audit combining this
+jump comparison with continuous Gaussian covariance domination and the source
+paper's decoupled-tangent reduction.  The present packet deliberately does not
+claim that final step.
+
+The code file \texttt{code/grouping\_simulation.py} is only a finite sanity
+check.  It compares several groupings of the same aggregate coordinate jump
+law in \(\ell_q^N\).  The tested ratios remain dimension-stable, supporting
+the monotonicity proof but not serving as evidence in place of it.
+
+\section*{Novelty Check}
+
+Cheap run indexes contained the previous \(c_0\) counterexample, Hilbert
+positive packets, and the \(\ell_q\) natural-exponent packet, but no
+\(L^q\) all-\(p>1\) aggregate-domination packet for arXiv:1907.11588.  Web
+searches for exact phrases around \texttt{characteristically dominated},
+\(\ell_q\), \(L^q\), and \texttt{aggregate domination} did not locate an
+existing statement of this consequence.  The decisive external input is the
+Dirksen-Yaroslavtsev \(L^q\)-valued Burkholder-Rosenthal theorem
+\cite{DirksenYaroslavtsev2017}; the monotonicity lemma above is the additional
+identification that connects that theorem to Remark 12.10.
+
+\section*{Human Review Recommendation}
+
+Review Lemma \ref{lem:monotone} first, especially the transfer of
+near-optimal sum-space decompositions by disintegration and
+Radon-Nikodym restriction.  If that lemma is accepted, the rest of the proof is
+an immediate application of the cited Rosenthal theorem.
+
+The next target is to combine this packet with the full decoupled-tangent
+reduction in \cite{Yaroslavtsev2019}.  The jump part should follow from the
+present theorem; the continuous part should follow from Gaussian covariance
+domination, but it should be audited separately before promoting a full
+\(L^q\) general-local-martingale result.
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev,
+\emph{Local characteristics and tangency of vector-valued martingales},
+arXiv:1907.11588.
+
+\bibitem{DirksenYaroslavtsev2017}
+S. Dirksen and I. S. Yaroslavtsev,
+\emph{\(L^q\)-valued Burkholder-Rosenthal inequalities and sharp estimates for
+stochastic integrals},
+arXiv:1707.00109.
+
+\end{thebibliography}
+
+\end{document}

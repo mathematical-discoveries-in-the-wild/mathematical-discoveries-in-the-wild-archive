@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\dual}[1]{#1^*}
+\newcommand{\weakp}{\mu_{p,n}}
+
+\title{Schur, WSC, and \(c_0\) Classes for Almost Multi-Boundedness}
+\author{fa\_banach\_001, lane 17}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Target}
+
+The source paper is Hung Le Pham, \emph{A combinatorial characterisation of
+amenable locally compact groups}, arXiv:2310.19178.  Problem 4.8 asks:
+\begin{quote}
+Determine those classes of Banach spaces in which relative weak compactness
+implies and/or is implied by almost \((p,q)\)-multi-boundedness.
+\end{quote}
+The paper proves the equivalence for \(\mathfrak L^1\)-spaces and gives
+examples showing that neither implication holds in arbitrary Banach spaces.
+The result below gives additional positive and negative classes for every
+\(1\le p,q<\infty\).
+
+\section*{Definitions}
+
+For a Banach space \(E\), \(x=(x_1,\ldots,x_n)\in E^n\), and
+\(1\le p,q<\infty\), Pham defines
+\[
+  \norm{x}^{(p,q)}_n =
+  \sup\left\{\left(\sum_{j=1}^n |\lambda_j(x_j)|^q\right)^{1/q}:
+  \lambda_1,\ldots,\lambda_n\in E^*,\
+  \sup_{\norm{u}\le 1}\left(\sum_{j=1}^n|\lambda_j(u)|^p\right)^{1/p}\le 1
+  \right\}.
+\]
+For \(B\subset E\), write \(c_{p,q}(B)\) for the common quantity in Pham's
+Proposition 3.4:
+\[
+  c_{p,q}(B)=
+  \lim_{n\to\infty}
+  \sup_{x_1,\ldots,x_n\in B}
+  \frac{\norm{(x_1,\ldots,x_n)}^{(p,q)}_n}{n^{1/q}}.
+\]
+The set \(B\) is almost \((p,q)\)-multi-bounded when \(c_{p,q}(B)=0\).
+
+\section*{Proof Intuition}
+
+The tuple norms are strong enough to detect separated \(\ell_1\)-structure,
+but weak enough that finite sets disappear after normalization by \(n^{1/q}\).
+A norm-compact set is approximated by a finite set, so it is automatically
+almost multi-bounded.  For the implication from almost multi-boundedness to
+weak compactness, Rosenthal's dichotomy is decisive: in weakly sequentially
+complete spaces a bounded non-weakly compact set must contain an \(\ell_1\)
+basic sequence, and such a sequence is seen by the tuple norms.  On the other
+hand, the summing basis in \(c_0\), already isolated in Pham's examples, gives
+an almost multi-bounded set that is not weakly compact; this obstruction passes
+to every space containing \(c_0\).
+
+\section*{Lemmas}
+
+\begin{lemma}[Finite sets vanish asymptotically]
+\label{lem:finite}
+Let \(A\) be a finite subset of a Banach space \(E\).  Then
+\(c_{p,q}(A)=0\) for every \(1\le p,q<\infty\).
+\end{lemma}
+
+\begin{proof}
+Write \(A=\{a_1,\ldots,a_m\}\).  Let \(x_1,\ldots,x_n\in A\), and for each
+\(r\) put \(I_r=\{j:x_j=a_r\}\).  If
+\(\lambda_1,\ldots,\lambda_n\in E^*\) satisfy
+\[
+  \sup_{\norm{u}\le 1}\left(\sum_{j=1}^n|\lambda_j(u)|^p\right)^{1/p}\le 1,
+\]
+then
+\[
+  \left(\sum_{j\in I_r}|\lambda_j(a_r)|^p\right)^{1/p}\le \norm{a_r}.
+\]
+If \(q\ge p\), the corresponding \(q\)-norm is at most \(\norm{a_r}\).  If
+\(q<p\), it is at most
+\(n^{1/q-1/p}\norm{a_r}\).  Hence
+\[
+  \norm{(x_1,\ldots,x_n)}^{(p,q)}_n
+  \le
+  \left(\sum_{r=1}^m \norm{a_r}\right)n^{\max\{0,1/q-1/p\}}.
+\]
+After division by \(n^{1/q}\), this tends to \(0\).
+\end{proof}
+
+\begin{lemma}[Norm-compact sets are almost multi-bounded]
+\label{lem:compact}
+Let \(B\) be norm relatively compact in a Banach space \(E\).  Then
+\(c_{p,q}(B)=0\) for every \(1\le p,q<\infty\).
+\end{lemma}
+
+\begin{proof}
+Fix \(\eta>0\), and choose a finite \(\eta\)-net \(A\) for \(B\).  For
+\(x_1,\ldots,x_n\in B\), choose \(a_j\in A\) with \(\norm{x_j-a_j}\le \eta\).
+Every admissible tuple \((\lambda_j)\) in the definition of
+\(\norm{\cdot}^{(p,q)}_n\) satisfies \(\norm{\lambda_j}\le 1\) for each \(j\).
+Thus
+\[
+  \norm{(x_1-a_1,\ldots,x_n-a_n)}^{(p,q)}_n\le \eta n^{1/q}.
+\]
+By Lemma \ref{lem:finite},
+\[
+  \limsup_{n\to\infty}\sup_{x_1,\ldots,x_n\in B}
+  \frac{\norm{(x_1,\ldots,x_n)}^{(p,q)}_n}{n^{1/q}}\le \eta.
+\]
+Letting \(\eta\downarrow 0\) proves the claim.
+\end{proof}
+
+\begin{lemma}[\(\ell_1\)-basic obstruction]
+\label{lem:l1}
+If \(B\subset E\) contains a sequence equivalent to the unit vector basis of
+\(\ell_1\), then \(B\) is not almost \((p,q)\)-multi-bounded for any
+\(1\le p,q<\infty\).
+\end{lemma}
+
+\begin{proof}
+Pass to a sequence \((x_j)\subset B\) and choose \(\kappa>0\) such that
+\[
+  \norm{\sum_{j=1}^n \alpha_j x_j}\ge
+  \kappa\sum_{j=1}^n |\alpha_j|
+\]
+for all finite scalar families \((\alpha_j)\).  The coordinate map
+\(\sum \alpha_jx_j\mapsto(\alpha_j)\) from \([x_j]\) into \(\ell_1\) has norm
+at most \(\kappa^{-1}\).  Let \(\lambda_j\in E^*\) be Hahn--Banach extensions
+of its coordinates.  For every \(u\in E\),
+\[
+  \left(\sum_{j=1}^n |\lambda_j(u)|^p\right)^{1/p}
+  \le \sum_{j=1}^n |\lambda_j(u)|
+  \le \kappa^{-1}\norm{u}.
+\]
+Therefore \((\kappa\lambda_1,\ldots,\kappa\lambda_n)\) is admissible in the
+definition of the \((p,q)\)-multi-norm, and
+\[
+  \norm{(x_1,\ldots,x_n)}^{(p,q)}_n
+  \ge
+  \left(\sum_{j=1}^n|\kappa\lambda_j(x_j)|^q\right)^{1/q}
+  =\kappa n^{1/q}.
+\]
+Hence \(c_{p,q}(B)\ge \kappa>0\).
+\end{proof}
+
+\begin{lemma}[Functoriality]
+\label{lem:operator}
+Let \(T:E\to F\) be a bounded linear operator.  If \(B\subset E\) is almost
+\((p,q)\)-multi-bounded, then \(T(B)\subset F\) is almost
+\((p,q)\)-multi-bounded.
+\end{lemma}
+
+\begin{proof}
+For every \(x_1,\ldots,x_n\in E\) and every admissible tuple
+\((\lambda_1,\ldots,\lambda_n)\in (F^*)^n\), the tuple
+\((T^*\lambda_1,\ldots,T^*\lambda_n)\) has weak \(p\)-summing norm at most
+\(\norm{T}\).  Therefore
+\[
+  \norm{(Tx_1,\ldots,Tx_n)}^{(p,q)}_n
+  \le \norm{T}\,\norm{(x_1,\ldots,x_n)}^{(p,q)}_n.
+\]
+After taking suprema and normalizing by \(n^{1/q}\), the assertion follows.
+\end{proof}
+
+\section*{Theorem}
+
+\begin{theorem}
+\label{thm:main}
+Let \(1\le p,q<\infty\).
+\begin{enumerate}[label=\rm(\alph*)]
+\item In every Banach space, norm relatively compact subsets are almost
+\((p,q)\)-multi-bounded.
+\item If \(E\) has the Schur property, then a subset \(B\subset E\) is
+relatively weakly compact if and only if it is almost
+\((p,q)\)-multi-bounded.
+\item If \(E\) is weakly sequentially complete, then every almost
+\((p,q)\)-multi-bounded subset of \(E\) is relatively weakly compact.
+\item If \(E\) contains an isomorphic copy of \(c_0\), then the implication
+``almost \((p,q)\)-multi-bounded implies relatively weakly compact'' fails in
+\(E\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (a) is Lemma \ref{lem:compact}.
+
+Assume now that \(E\) has the Schur property.  If \(B\) is relatively weakly
+compact, then \(B\) is norm relatively compact by Eberlein--Smulian and the
+Schur property; part (a) gives almost \((p,q)\)-multi-boundedness.
+
+Conversely, suppose \(B\) is almost \((p,q)\)-multi-bounded.  Pham observes
+after Definition 3.5 that unbounded sets have \(c_{p,q}(B)=\infty\), so \(B\)
+is bounded.  Since Schur spaces are weakly sequentially complete, the argument
+in the next paragraph shows that \(B\) is relatively weakly compact.  This
+proves the equivalence in Schur spaces.
+
+Assume more generally that \(E\) is weakly sequentially complete, and let
+\(B\) be almost \((p,q)\)-multi-bounded.  Again \(B\) is bounded.  If \(B\)
+were not relatively weakly compact, Eberlein--Smulian would give a sequence in
+\(B\) with no weakly convergent subsequence.  Rosenthal's \(\ell_1\) theorem
+gives either an \(\ell_1\)-basic subsequence or a weakly Cauchy subsequence.
+The first possibility contradicts Lemma \ref{lem:l1}.  The second contradicts
+weak sequential completeness.  Hence \(B\) is relatively weakly compact.
+
+Finally suppose that \(E\) contains a closed subspace \(Y\) isomorphic to
+\(c_0\).  In the examples following Theorem 4.4, Pham records that the summing
+basis
+\[
+  s_n=e_1+\cdots+e_n\qquad(n\in\N)
+\]
+forms a subset \(S=\{s_n:n\in\N\}\) of \(c_0\) that is almost
+\((p,q)\)-multi-bounded for every \(p,q\), but is not relatively weakly
+compact.  If \(J:c_0\to Y\subset E\) is an isomorphism, Lemma
+\ref{lem:operator} shows that \(J(S)\) is almost \((p,q)\)-multi-bounded in
+\(E\).  It is not relatively weakly compact: weak compactness of \(J(S)\) in
+\(E\) would imply weak compactness in the closed subspace \(Y\), and then weak
+compactness of \(S\) in \(c_0\) after applying \(J^{-1}\).
+\end{proof}
+
+\begin{corollary}
+Every finite-dimensional Banach space has the full equivalence:
+\[
+  B\text{ is relatively weakly compact}
+  \quad\Longleftrightarrow\quad
+  B\text{ is almost }(p,q)\text{-multi-bounded}.
+\]
+\end{corollary}
+
+\begin{proof}
+Finite-dimensional spaces are reflexive, hence weakly sequentially complete,
+and have the Schur property.
+\end{proof}
+
+\begin{corollary}
+Every reflexive Banach space satisfies the implication from almost
+\((p,q)\)-multi-boundedness to relative weak compactness.
+\end{corollary}
+
+\begin{proof}
+Reflexive spaces are weakly sequentially complete.
+\end{proof}
+
+\section*{Verification Notes and Limitations}
+
+This is a partial answer to Problem 4.8, not a classification.  It adds exact
+families to the landscape: Schur spaces for the two-sided equivalence, weakly
+sequentially complete spaces for the almost-implies-weak-compactness direction,
+and spaces containing \(c_0\) as a broad negative class for that same
+direction.  It is consistent with Pham's examples: infinite-dimensional
+reflexive unit balls can fail to be almost multi-bounded for some parameters,
+so the reverse implication does not follow from reflexivity alone.  The
+remaining frontier for the almost-implies-weak-compactness direction includes
+the classical non-weakly-sequentially-complete spaces that do not contain
+\(c_0\), where Rosenthal's strongly summing alternative can occur.
+
+Bounded novelty search on 2026-06-20 checked exact phrases around almost
+\((p,q)\)-multi-boundedness, Schur spaces, weak sequential completeness,
+\(c_0\), weak compactness, \(c_{p,q}(B)\), and arXiv:2310.19178.  No exact
+existing Schur/WSC/\(c_0\) statement was found.  The result should be reviewed
+as a partial landscape theorem rather than as a full solution of the source
+problem.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{Pham}
+H. L. Pham,
+\emph{A combinatorial characterisation of amenable locally compact groups},
+arXiv:2310.19178.
+
+\bibitem{Rosenthal}
+H. P. Rosenthal,
+\emph{A characterization of Banach spaces containing \(\ell^1\)},
+Proceedings of the National Academy of Sciences of the United States of America
+71 (1974), 2411--2413.
+
+\bibitem{Diestel}
+J. Diestel,
+\emph{Sequences and Series in Banach Spaces},
+Graduate Texts in Mathematics 92, Springer, 1984.
+\end{thebibliography}
+
+\end{document}

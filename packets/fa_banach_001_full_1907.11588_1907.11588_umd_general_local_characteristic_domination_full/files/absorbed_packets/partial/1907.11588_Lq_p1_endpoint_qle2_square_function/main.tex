@@ -1,0 +1,494 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Lq}{L^q(S)}
+\newcommand{\sfq}{\mathsf{SF}_q}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{The \(L^q\), \(p=1\) Endpoint for \(1<q\le 2\)}
+\author{Agent \texttt{agent\_lane\_19}}
+\date{2026-06-16}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate partial solution to Remark 12.10 of
+Yaroslavtsev's paper \emph{Local characteristics and tangency of
+vector-valued martingales} \cite{Yaroslavtsev2019}.  The source asks whether
+characteristic domination implies maximal \(L^p\) comparison for general
+local martingales.  Earlier packets in this run prove the \(L^q(S)\)-valued
+case for \(1<p,q<\infty\), the Hilbert case for all finite \(p\), and a
+conditional reduction of the remaining \(L^q(S)\), \(p=1\) endpoint to one
+square-function comparison.
+
+The new result here proves that square-function comparison for \(1<q\le 2\).
+Consequently the full \(L^q(S)\)-valued characteristic-domination conclusion
+holds at \(p=1\) for \(1<q\le 2\).  The result remains partial relative to the
+source problem: \(q>2\) and arbitrary UMD spaces are not settled here.
+
+\section*{Source Problem}
+
+The source is arXiv:1907.11588, PDF page 105, Remark 12.10.  The source states
+that the general local-martingale case is open and reduces the missing issue
+to an independent-increment comparison.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The continuation states the aggregate-domination formulation and notes that
+even the symmetric case was not known to the author.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_continuation_crop.png}
+\end{center}
+
+\section*{Main Result}
+
+For a finite independent family \(x=(x_i)\) of \(L^q(S)\)-valued random
+variables, define
+\[
+  \sfq(x)
+  =
+  \E\left\|
+      \left(\sum_i |x_i|^2\right)^{1/2}
+    \right\|_{L^q(S)}.
+\]
+Let
+\[
+   \mu_x=\sum_i \mathcal L(x_i)|_{\Lq\setminus\{0\}}
+\]
+be the aggregate occurrence measure.
+
+\begin{theorem}[Endpoint square-function comparison, \(1<q\le2\)]
+\label{thm:square}
+Let \(1<q\le2\).  There is an absolute constant \(K\le e/(e-1)\) such that
+for every measure space \(S\) and every two finite independent families
+\(x=(x_i)\), \(y=(y_j)\) of \(L^q(S)\)-valued random variables,
+\[
+  \mu_x\le \mu_y
+  \quad\Longrightarrow\quad
+  \sfq(x)\le K\,\sfq(y).
+\]
+\end{theorem}
+
+\begin{theorem}[General local \(L^q\), \(p=1\), \(1<q\le2\)]
+\label{thm:main}
+Let \(1<q\le2\), let \(S\) be a measure space, and put \(X=L^q(S)\).  If
+\(N\) and \(M\) are \(X\)-valued local martingales and \(N\) is
+characteristically dominated by \(M\) in the sense of
+\cite[Definition 12.9]{Yaroslavtsev2019}, then
+\[
+  \E\sup_{t\ge0}\norm{N_t}_{L^q(S)}
+  \le
+  C_q
+  \E\sup_{t\ge0}\norm{M_t}_{L^q(S)}.
+\]
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+The point of the endpoint \(p=1\) is that Yaroslavtsev's Banach-function-space
+BDG theorem compares martingale maximal functions with lattice square
+functions even at \(p=1\) \cite{Yaroslavtsev2018}.  Thus the remaining
+question is whether
+\[
+  \E\left\|\left(\sum_i |x_i|^2\right)^{1/2}\right\|_q
+\]
+is monotone, up to an absolute constant, under aggregate domination of the
+individual jump laws.
+
+For \(1<q\le2\) this square-function norm has exactly the right Laplace
+structure.  On a finite weighted \(\ell_q^d\) sublattice, put
+\[
+  r=q/2,\qquad
+  \Phi(v)=\left(\sum_{k=1}^d a_k v_k^r\right)^{1/q},
+  \qquad v\in\R_+^d.
+\]
+Since \(r\le1\), each \(v_k^r\) is the Laplace exponent of a stable
+subordinator.  Since \(1/q<1\), the outer power is again a Bernstein
+operation.  Therefore
+\[
+  \Phi(v)=\int_{\R_+^d\setminus\{0\}}
+           \left(1-e^{-\langle t,v\rangle}\right)\,\Pi(dt)
+\]
+for a positive measure \(\Pi\).  For independent positive vectors \(V_i\),
+the expectation of the kernel is
+\[
+  1-\prod_i \E e^{-\langle t,V_i\rangle}.
+\]
+Writing \(u_i(t)=\E(1-e^{-\langle t,V_i\rangle})\), this quantity is trapped
+between constants times \(\min(1,\sum_i u_i(t))\).  The sum
+\(\sum_i u_i(t)\) depends only monotonically on the aggregate occurrence
+measure.  This is the whole mechanism.
+
+\section*{The Finite-Dimensional Laplace Lemma}
+
+\begin{lemma}[Bernstein representation]
+\label{lem:bernstein}
+Let \(1<q\le2\), let \(r=q/2\), let \(a_1,\ldots,a_d>0\), and set
+\[
+  \Phi(v)=\left(\sum_{k=1}^d a_k v_k^r\right)^{1/q},
+  \qquad v\in\R_+^d.
+\]
+There exists a positive measure \(\Pi\) on
+\(\R_+^d\setminus\{0\}\) such that, for all \(v\in\R_+^d\),
+\[
+  \Phi(v)=
+  \int_{\R_+^d\setminus\{0\}}
+     \left(1-e^{-\langle t,v\rangle}\right)\,\Pi(dt).
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(\alpha=1/q\in(0,1)\) and
+\(H(v)=\sum_{k=1}^d a_k v_k^r\).  The scalar identity
+\[
+  s^\alpha
+  =
+  c_\alpha\int_0^\infty (1-e^{-\lambda s})\lambda^{-1-\alpha}\,d\lambda,
+  \qquad s\ge0,
+\]
+holds for \(0<\alpha<1\).  Hence
+\[
+  \Phi(v)
+  =
+  c_\alpha\int_0^\infty
+       \left(1-e^{-\lambda H(v)}\right)
+       \lambda^{-1-\alpha}\,d\lambda.
+\]
+For \(0<r<1\), \(e^{-\lambda a_k v_k^r}\) is the Laplace transform of the
+positive \(r\)-stable subordinator at time \(\lambda a_k\); for \(r=1\) it is
+the Laplace transform of the point mass at \(\lambda a_k\).  Therefore, for
+each \(\lambda>0\), there is a probability measure \(\rho_\lambda\) on
+\(\R_+^d\) such that
+\[
+  e^{-\lambda H(v)}
+  =
+  \int_{\R_+^d} e^{-\langle t,v\rangle}\,\rho_\lambda(dt).
+\]
+Thus
+\[
+  1-e^{-\lambda H(v)}
+  =
+  \int_{\R_+^d}
+      \left(1-e^{-\langle t,v\rangle}\right)\,\rho_\lambda(dt).
+\]
+Integrating the measures \(c_\alpha\lambda^{-1-\alpha}\rho_\lambda\,d\lambda\)
+over \(\lambda>0\) gives the required positive measure \(\Pi\).  The origin
+may be discarded because the kernel vanishes at \(t=0\).
+\end{proof}
+
+\begin{lemma}[Finite-dimensional aggregate comparison]
+\label{lem:finite}
+Let \(1<q\le2\).  Let \(V_i,W_j\) be independent \(\R_+^d\)-valued random
+vectors.  Suppose that their aggregate occurrence measures satisfy
+\[
+  \sum_i \Pp(V_i\in A)
+  \le
+  \sum_j \Pp(W_j\in A),
+  \qquad A\in\cB(\R_+^d),\ 0\notin A.
+\]
+Then, for \(\Phi\) as in Lemma \ref{lem:bernstein},
+\[
+  \E\Phi\left(\sum_i V_i\right)
+  \le
+  \frac{e}{e-1}
+  \E\Phi\left(\sum_j W_j\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Using Lemma \ref{lem:bernstein} and Tonelli's theorem,
+\[
+  \E\Phi\left(\sum_i V_i\right)
+  =
+  \int
+  \left[
+    1-\prod_i \E e^{-\langle t,V_i\rangle}
+  \right]\Pi(dt).
+\]
+For fixed \(t\), define
+\[
+  u_i(t)=\E\left(1-e^{-\langle t,V_i\rangle}\right),
+  \qquad
+  U_V(t)=\sum_i u_i(t),
+\]
+and define \(U_W(t)\) similarly.  Since \(0\le u_i(t)\le1\),
+\[
+  1-\prod_i(1-u_i(t))
+  \le
+  \min(1,U_V(t)).
+\]
+Also \(\prod_i(1-u_i(t))\le e^{-U_V(t)}\), so
+\[
+  1-\prod_i(1-u_i(t))
+  \ge
+  1-e^{-U_V(t)}
+  \ge
+  (1-e^{-1})\min(1,U_V(t)).
+\]
+Aggregate domination gives
+\[
+  U_V(t)
+  =
+  \int_{\R_+^d\setminus\{0\}}
+      (1-e^{-\langle t,v\rangle})\,d\nu_V(v)
+  \le
+  \int_{\R_+^d\setminus\{0\}}
+      (1-e^{-\langle t,v\rangle})\,d\nu_W(v)
+  =
+  U_W(t).
+\]
+Consequently the integrand for the \(V_i\)'s is at most
+\((1-e^{-1})^{-1}\) times the integrand for the \(W_j\)'s.  Integrating with
+respect to \(\Pi\) proves the claim.
+\end{proof}
+
+\section*{Proof of the Square-Function Theorem}
+
+\begin{proof}[Proof of Theorem \ref{thm:square}]
+First assume that \(L^q(S)\) is a finite weighted \(\ell_q^d\) space with
+weights \(a_k>0\).  For \(z\in\ell_q^d\), set
+\[
+  Tz=(|z_1|^2,\ldots,|z_d|^2)\in\R_+^d.
+\]
+The aggregate domination \(\mu_x\le\mu_y\) pushes forward under \(T\), so the
+positive vectors \(V_i=T x_i\) and \(W_j=T y_j\) satisfy the hypothesis of
+Lemma \ref{lem:finite}.  Moreover
+\[
+  \left\|
+      \left(\sum_i |x_i|^2\right)^{1/2}
+  \right\|_{\ell_q(a)}
+  =
+  \Phi\left(\sum_i V_i\right),
+\]
+with \(\Phi(v)=(\sum_k a_k v_k^{q/2})^{1/q}\).  Lemma \ref{lem:finite}
+therefore proves the finite-dimensional claim.
+
+For general \(L^q(S)\), use the standard finite-conditional-expectation
+approximation.  Since the finite random families are Bochner measurable, their
+essential ranges are separable.  After restricting to the sigma-finite
+support generated by a countable dense subset of these ranges, choose positive
+finite-rank conditional expectations \(P_n\) onto finite measurable
+partitions such that \(P_n z\to z\) in \(L^q(S)\) for every vector in those
+essential ranges.
+
+The deterministic map \(P_n:L^q(S)\to P_nL^q(S)\) preserves aggregate
+domination:
+\[
+  \sum_i\Pp(P_nx_i\in B)
+  =
+  \mu_x(P_n^{-1}B)
+  \le
+  \mu_y(P_n^{-1}B)
+  =
+  \sum_j\Pp(P_ny_j\in B)
+\]
+for every Borel \(B\subset P_nL^q(S)\setminus\{0\}\).  Hence the
+finite-dimensional result gives
+\[
+  \E\left\|
+      \left(\sum_i |P_nx_i|^2\right)^{1/2}
+    \right\|_q
+  \le
+  \frac{e}{e-1}
+  \E\left\|
+      \left(\sum_j |P_ny_j|^2\right)^{1/2}
+    \right\|_q.
+\]
+For every deterministic finite family \((z_i)\),
+\[
+  \left(\sum_i |P_nz_i|^2\right)^{1/2}
+  \le
+  P_n\left(\left(\sum_i |z_i|^2\right)^{1/2}\right)
+\]
+pointwise, by Jensen's inequality for the Hilbert norm.  Thus the right-hand
+side is bounded by
+\[
+  \frac{e}{e-1}
+  \E\left\|
+      \left(\sum_j |y_j|^2\right)^{1/2}
+    \right\|_q.
+\]
+On the other hand, \(P_nx_i\to x_i\) in \(L^q\) almost surely along the chosen
+essential ranges, so the corresponding square functions converge almost
+surely in \(L^q\).  Fatou's lemma gives the desired inequality after letting
+\(n\to\infty\).
+\end{proof}
+
+\section*{Discrete Martingale Consequence}
+
+\begin{proposition}[Discrete \(p=1\) comparison for \(1<q\le2\)]
+\label{prop:discrete}
+Let \(1<q\le2\).  Let \((\xi_i)_{i=1}^n\) and \((\eta_j)_{j=1}^m\) be
+independent mean-zero \(L^q(S)\)-valued random variables.  If
+\[
+   \sum_i \Pp(\xi_i\in B)
+   \le
+   \sum_j \Pp(\eta_j\in B)
+   \qquad(B\in\cB(\Lq),\;0\notin B),
+\]
+then
+\[
+   \E\max_{1\le k\le n}
+      \left\|\sum_{i=1}^k \xi_i\right\|_{L^q(S)}
+   \le
+   C_q
+   \E\max_{1\le k\le m}
+      \left\|\sum_{j=1}^k \eta_j\right\|_{L^q(S)}.
+\]
+\end{proposition}
+
+\begin{proof}
+The aggregate hypothesis is exactly \(\mu_\xi\le\mu_\eta\).  Therefore
+Theorem \ref{thm:square} gives
+\[
+  \E\left\|\left(\sum_i|\xi_i|^2\right)^{1/2}\right\|_{L^q}
+  \le
+  \frac{e}{e-1}
+  \E\left\|\left(\sum_j|\eta_j|^2\right)^{1/2}\right\|_{L^q}.
+\]
+Yaroslavtsev's Banach-function-space BDG theorem
+\cite[Theorem 4.32 and Proposition 4.33]{Yaroslavtsev2018} says that for
+every \(L^q(S)\)-valued martingale difference sequence \(d=(d_i)\),
+\[
+  \E\sup_N\left\|\sum_{i=1}^N d_i\right\|_{L^q}
+  \simeq_q
+  \E\left\|
+      \left(\sum_i |d_i|^2\right)^{1/2}
+    \right\|_{L^q}.
+\]
+Both independent mean-zero families are martingale difference sequences in
+any fixed order.  Applying this equivalence to \((\xi_i)\) and \((\eta_j)\)
+proves the maximal comparison.
+\end{proof}
+
+\section*{General Local Martingales}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+The conditional endpoint packet in this run proves the following reduction:
+for a fixed \(1<q<\infty\), if the endpoint square-function aggregate
+comparison of Theorem \ref{thm:square} holds in \(L^q(S)\), then the full
+\(L^q(S)\)-valued general-local characteristic-domination theorem holds at
+\(p=1\).  We recall the argument.
+
+Yaroslavtsev's decoupled tangent construction and canonical decomposition
+reduce the comparison to continuous parts and purely discontinuous tangent
+jump martingales.  Continuous parts are controlled at \(p=1\) by the source's
+continuous characteristic-domination estimate \cite[Proposition 12.6]{Yaroslavtsev2019}.
+For the jump part, conditional on the local characteristics and after the
+usual truncation of time and jump size, the decoupled tangent jumps are finite
+independent mean-zero families.  Characteristic domination controls the total
+spatial jump compensator,
+\[
+  \nu^N(\R_+\times B)\le \nu^M(\R_+\times B),
+  \qquad B\in\cB(L^q(S)),\ 0\notin B,
+\]
+which is exactly the aggregate occurrence-measure domination used in
+Proposition \ref{prop:discrete}.
+
+Applying Proposition \ref{prop:discrete} conditionally, then passing through
+the truncation and localization limits, gives the \(L^1\) maximal comparison
+for the discontinuous tangent martingales.  Combining this with the continuous
+part and the \(p=1\) Banach-function-space BDG/canonical-decomposition
+equivalence \cite[Section 4.3]{Yaroslavtsev2018} yields the zero-initial-value
+case.  If the martingales have nonzero initial values, characteristic
+domination gives \(\norm{N_0}_{L^q}\le\norm{M_0}_{L^q}\); applying the
+zero-start estimate to \(N-N_0\) and \(M-M_0\) finishes the proof.
+\end{proof}
+
+\section*{Why the Argument Stops at \(q=2\)}
+
+The proof is not merely missing a cosmetic extension.  Its central positive
+Laplace representation relies on \(r=q/2\le1\).  For \(q>2\), the candidate
+\[
+  v\mapsto \left(v_1^{q/2}+v_2^{q/2}\right)^{1/q}
+\]
+is no longer a Bernstein function on the positive cone.  For example at
+\(q=4\), \(\partial_{v_1}(v_1^2+v_2^2)^{1/4}\) increases from \(0\) as
+\(v_1\) leaves \(0\) with \(v_2>0\) fixed, whereas a Bernstein-function
+partial derivative would be completely monotone.  Thus the current proof
+cannot simply be pushed past \(q=2\).
+
+Other routes tried during the push also appear to need a new idea for
+\(q>2\).  Dualizing
+\[
+  \left\|\sum_i |x_i|^2\right\|_{q/2}
+\]
+introduces a random supremum over \(L^{q/(q-2)}\) weights, while scalar
+Laplace comparison only handles each fixed weight.  Stable-type
+representations of \(\ell_r\) norms for \(1<r\le2\) introduce signed scalar
+sums; aggregate domination is not enough to compare signed fractional moments
+because cancellation can make the dominating family smaller.  These failures
+are recorded as limitations, not as counterexamples.
+
+\section*{Verification and Novelty Notes}
+
+The finite-dimensional proof is a direct positive-kernel calculation and
+works in extended expectation values.  The passage to general \(L^q(S)\) uses
+only positive finite-rank conditional expectations and Fatou's lemma.
+
+Cheap run indexes contained earlier packets for the \(p>1\) \(L^q\) case,
+Hilbert all-\(p\) case, \(\ell_q\) natural-exponent case, \(c_0\)
+counterexamples, and the conditional \(p=1\) reduction.
+No packet proved the \(L^q(S)\), \(p=1\), \(1<q\le2\) endpoint.  Web searches
+for exact phrases around Remark 12.10, \(p=1\), \(L^q\), characteristic
+domination, aggregate domination, and square functions did not reveal a later
+paper settling this endpoint.
+
+\section*{Human Review Recommendation}
+
+Review Lemmas \ref{lem:bernstein} and \ref{lem:finite} first.  If the
+multivariate Bernstein representation is accepted, the square-function
+comparison is immediate.  Then check the finite-conditional-expectation
+approximation in Theorem \ref{thm:square}; the martingale consequence is the
+previous conditional reduction with its conditional square-function lemma now
+proved for \(1<q\le2\).
+
+\begin{thebibliography}{9}
+
+\bibitem{Yaroslavtsev2019}
+I. S. Yaroslavtsev.
+\newblock Local characteristics and tangency of vector-valued martingales.
+\newblock arXiv:1907.11588, 2019.
+
+\bibitem{Yaroslavtsev2018}
+I. S. Yaroslavtsev.
+\newblock Burkholder--Davis--Gundy inequalities in UMD Banach spaces.
+\newblock arXiv:1807.05573, 2018.
+
+\bibitem{DirksenYaroslavtsev2017}
+S. Dirksen and I. S. Yaroslavtsev.
+\newblock \(L^q\)-valued Burkholder--Rosenthal inequalities.
+\newblock arXiv:1707.00109, 2017.
+
+\bibitem{SchillingSongVondracek}
+R. L. Schilling, R. Song, and Z. Vondracek.
+\newblock \emph{Bernstein Functions: Theory and Applications}.
+\newblock De Gruyter, 2010.
+
+\bibitem{Feller}
+W. Feller.
+\newblock \emph{An Introduction to Probability Theory and Its Applications,
+  Vol. II}.
+\newblock Wiley, 1971.
+
+\end{thebibliography}
+
+\end{document}

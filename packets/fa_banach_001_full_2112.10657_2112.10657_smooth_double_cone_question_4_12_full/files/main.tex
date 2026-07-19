@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Div}{\operatorname{Div}}
+\newcommand{\curl}{\operatorname{curl}}
+
+\title{A smooth double-cone answer to Question 4.12 of Guerra--Raita--Schrecker}
+\author{Run \texttt{fa\_banach\_001}, lane 2}
+\date{2026-07-18}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+This is a full solution packet for the exact smooth form of Question 4.12 from
+Guerra--Raita--Schrecker. It does not claim to solve the separate rough
+\(\mathrm{BV}^{\Div}\) problem discussed near that question.
+
+\paragraph{Source.}
+The source paper is Andre Guerra, Bogdan Raita, Matthew Schrecker,
+\emph{Compensation phenomena for concentration effects via nonlinear elliptic
+estimates}, arXiv:2112.10657. Question 4.12 appears on page 28 of the source
+PDF:
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Transcription of the target question.}
+Question 4.12 asks whether the inequalities of the two-dimensional section can
+hold when the fields are constrained to the double cone
+\[
+  \Sym_2\cap\{\det\geq 0\}
+  =\Sym_2^+\cup\Sym_2^- .
+\]
+The inequalities in that section include the row-divergence determinant
+estimate of Theorem 4.1, its \(L^2\) consequence, and the row-curl determinant
+estimate of Corollary 4.7.
+
+\paragraph{Notation.}
+If \(A=(a_{ij})\) is a \(2\times2\) matrix field, let \(A_i\) be its \(i\)-th
+row and define
+\[
+  d_i(A)=\operatorname{div} A_i=\partial_1 a_{i1}+\partial_2 a_{i2},
+  \qquad
+  r_i(A)=\curl A_i=\partial_1 a_{i2}-\partial_2 a_{i1}.
+\]
+We use the Frobenius matrix norm in the proof.
+
+\section*{Proof Intuition}
+
+A smooth field valued in \(\Sym_2^+\cup\Sym_2^-\) can change branches only by
+passing through the zero matrix: if a matrix in the double cone has trace zero,
+then both eigenvalues vanish. Therefore the sign of \(\tr A\) can be used to
+flip the negative branch into the positive one without creating a hidden
+first-order term. To keep the proof smooth, use
+\[
+  B_\varepsilon
+  =
+  \frac{\tr A}{\sqrt{(\tr A)^2+\varepsilon^2}}\,A .
+\]
+Each \(B_\varepsilon\) is positive semidefinite, so the source paper's
+positive-cone estimates apply. The determinant converges to \(\det A\), and the
+extra terms coming from differentiating the scalar factor vanish in \(L^1\)
+because \(|A|\leq |\tr A|\) on the double cone.
+
+\section*{Main Result}
+
+\begin{theorem}[Smooth double-cone estimates]
+Let \(A\in C_c^\infty(\R^2,\Sym_2^+\cup\Sym_2^-)\). Then
+\[
+  \int_{\R^2}\det A\,dx
+  \leq
+  \|d_1(A)\|_{L^1(\R^2)}\,\|d_2(A)\|_{L^1(\R^2)}
+\]
+and
+\[
+  \int_{\R^2}\det A\,dx
+  \leq
+  \|r_1(A)\|_{L^1(\R^2)}\,\|r_2(A)\|_{L^1(\R^2)} .
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(\tau=\tr A\), and for \(\varepsilon>0\) define
+\[
+  \eta_\varepsilon(t)=\frac{t}{\sqrt{t^2+\varepsilon^2}},
+  \qquad
+  B_\varepsilon=\eta_\varepsilon(\tau)A .
+\]
+Since \(A(x)\) is either positive semidefinite or negative semidefinite, the
+scalar \(\eta_\varepsilon(\tau(x))\) has the sign needed to make
+\(B_\varepsilon(x)\in\Sym_2^+\). Thus \(B_\varepsilon\in
+C_c^\infty(\R^2,\Sym_2^+)\). Also
+\[
+  \det B_\varepsilon
+  =
+  \eta_\varepsilon(\tau)^2 \det A
+  \to
+  \det A
+\]
+pointwise and in \(L^1\), since \(A\) is smooth and compactly supported.
+
+We record the elementary bound used to control the derivative of
+\(\eta_\varepsilon(\tau)\). If \(M\in\Sym_2^+\cup\Sym_2^-\), then
+\[
+  |M|_F\leq |\tr M|.
+\]
+Indeed, on either branch the eigenvalues have the same sign, so
+\((\lambda_1^2+\lambda_2^2)^{1/2}\leq |\lambda_1+\lambda_2|\).
+In particular, \(|A_{ij}|\leq |\tau|\).
+
+For a row divergence we have
+\[
+  d_i(B_\varepsilon)
+  =
+  \eta_\varepsilon(\tau)d_i(A)
+  +
+  \eta_\varepsilon'(\tau)\bigl(A_{i1}\partial_1\tau
+  +A_{i2}\partial_2\tau\bigr).
+\]
+For a row curl,
+\[
+  r_i(B_\varepsilon)
+  =
+  \eta_\varepsilon(\tau)r_i(A)
+  +
+  \eta_\varepsilon'(\tau)\bigl(A_{i2}\partial_1\tau
+  -A_{i1}\partial_2\tau\bigr).
+\]
+Here
+\[
+  \eta_\varepsilon'(t)=\frac{\varepsilon^2}{(t^2+\varepsilon^2)^{3/2}},
+  \qquad
+  |t\,\eta_\varepsilon'(t)|\leq 1,
+  \qquad
+  t\,\eta_\varepsilon'(t)\to0 .
+\]
+Using \(|A_{ij}|\leq|\tau|\), the error terms above are dominated by an
+integrable multiple of \(|\nabla\tau|\) and converge pointwise to zero.
+Dominated convergence gives
+\[
+  \limsup_{\varepsilon\downarrow0}\|d_i(B_\varepsilon)\|_1
+  \leq \|d_i(A)\|_1,
+  \qquad
+  \limsup_{\varepsilon\downarrow0}\|r_i(B_\varepsilon)\|_1
+  \leq \|r_i(A)\|_1 .
+\]
+
+Since \(\Sym_2^+\subset\{a_{11},a_{22}\geq0\}\), Theorem 4.1 of the source
+paper applies to each \(B_\varepsilon\):
+\[
+  \int_{\R^2}\det B_\varepsilon\,dx
+  \leq
+  \|d_1(B_\varepsilon)\|_1\|d_2(B_\varepsilon)\|_1 .
+\]
+Letting \(\varepsilon\downarrow0\) gives the first estimate. Likewise,
+Corollary 4.7 of the source paper gives
+\[
+  \int_{\R^2}\det B_\varepsilon\,dx
+  \leq
+  \|r_1(B_\varepsilon)\|_1\|r_2(B_\varepsilon)\|_1 ,
+\]
+and the same limit gives the row-curl estimate.
+\end{proof}
+
+\begin{corollary}[Smooth \(L^2\) consequences]
+Let \(\mathcal C\subset\Sym_2^+\cup\Sym_2^-\) be a closed cone such that
+\[
+  |M|^2\leq K\det M\qquad(M\in\mathcal C)
+\]
+for some \(K<\infty\). Then every
+\(A\in C_c^\infty(\R^2,\mathcal C)\) satisfies
+\[
+  \|A\|_{L^2(\R^2)}
+  \leq C_K\|\Div A\|_{L^1(\R^2)}
+\]
+and
+\[
+  \|A\|_{L^2(\R^2)}
+  \leq C_K\bigl(\|r_1(A)\|_{L^1(\R^2)}+\|r_2(A)\|_{L^1(\R^2)}\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+The cone assumption and the theorem give
+\[
+  \|A\|_2^2
+  \leq
+  K\int_{\R^2}\det A
+  \leq
+  K\|d_1(A)\|_1\|d_2(A)\|_1
+  \leq
+  C_K\|\Div A\|_1^2 .
+\]
+The curl estimate is identical, using
+\(\|r_1(A)\|_1\|r_2(A)\|_1
+\leq(\|r_1(A)\|_1+\|r_2(A)\|_1)^2/4\).
+\end{proof}
+
+\section*{Scope and Limitations}
+
+This resolves Question 4.12 for the smooth compactly supported estimates in
+Section 4. The paper separately discusses rough fields in
+\(\mathrm{BV}^{\Div}\), where the usual convex-cone mollification argument
+fails. The theorem above does not solve that rough problem. For a rough field
+with a jump directly from a positive semidefinite value to a negative
+semidefinite value, a branch flip can introduce a new jump contribution in the
+divergence measure.
+
+\section*{Novelty Check}
+
+Bounded checks on 2026-07-18 searched the run indexes, the local parsed arXiv
+corpus, and public web search for exact phrases including
+\emph{Question 4.12}, \emph{double cone}, \(\Sym_2^+\cup\Sym_2^-\),
+\emph{Can the inequalities of this section hold}, and the source arXiv id.
+No separate later answer was found; exact hits led back to the source paper.
+
+\begin{thebibliography}{9}
+\bibitem{GRS}
+A. Guerra, B. Raita, and M. Schrecker,
+\emph{Compensation phenomena for concentration effects via nonlinear elliptic
+estimates}, Ars Inveniendi Analytica (2024), Paper No. 1; arXiv:2112.10657.
+\end{thebibliography}
+
+\end{document}

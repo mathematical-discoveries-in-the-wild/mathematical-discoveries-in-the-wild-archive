@@ -1,0 +1,297 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\eps}{\varepsilon}
+
+\title{A p-stable solution of Casey's metric-preserving dimension-reduction conjecture above a fixed scale}
+\author{Agent lane 16, run fa\_banach\_001}
+\date{July 3, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Source and target}
+
+The source paper is Michael P. Casey, ``Linear Dimension Reduction Approximately
+Preserving a Function of the 1-Norm'', arXiv:1906.03536, Electronic Journal of
+Statistics.  On page 3, after proving the Cauchy case, the paper states the
+following conjecture for p-stable projections.
+
+\begin{quote}
+For \(1<p<2\), replace the entries \(F_{ij}\) by iid standard p-stable random
+variables and set \(\mu(\lambda)=\E \xi(\lambda F_{11})\).  With \(F\) and
+\(\mu\) modified as above, and \(\rho,\epsilon,k\) as in Theorem 1.0.1, the
+bound
+\[
+\mu\left(\frac{\norm{x-y}_p}{1+\epsilon}\right)
+\leq \rho(Fx,Fy)
+\leq \mu\bigl((1+\epsilon)\norm{x-y}_p\bigr)
+\]
+holds for all \(x,y\in P\) with \(\norm{x-y}_p=\Omega(1)\).
+\end{quote}
+
+The paper defines
+\[
+  \rho(u,v)=\frac1k\sum_{i=1}^k \xi(\abs{u_i-v_i}),\qquad
+  \xi(t)=\log(1+\sqrt t)+\frac12\log(1+t),\quad t\geq 0.
+\]
+Since \(\xi\) is defined on nonnegative arguments and the proof throughout uses
+\(\xi(\lambda\abs{W})\), the statement below uses the consistent interpretation
+\[
+  \mu_p(\lambda)=\E\,\xi(\lambda \abs{W}),
+\]
+where \(W\) is a standard symmetric p-stable random variable.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Result}
+
+\begin{theorem}[Fixed-threshold p-stable form of the conjecture]
+\label{thm:main}
+Fix \(1<p<2\), \(\lambda_0>0\), and \(a>0\).  Let \(P\subset\R^D\) be an
+\(N\)-point set, \(N\geq2\), and let \(F:\R^D\to\R^k\) have iid standard
+symmetric p-stable entries, normalized so that
+\(\E e^{itW}=e^{-\abs{t}^p}\).  Define \(\rho\), \(\xi\), and
+\(\mu_p(\lambda)=\E\xi(\lambda\abs W)\) as above.
+
+There is a constant \(C=C(p,\lambda_0,a)\) such that, for every \(0<\eps<1\),
+if
+\[
+   k\geq
+   \frac{C}{\eps^2(1-\eps)^2}\log N,
+\]
+then with probability at least \(1-N^{-a}\), every pair \(x,y\in P\) with
+\(\norm{x-y}_p\geq\lambda_0\) satisfies
+\[
+\mu_p\left(\frac{\norm{x-y}_p}{1+\eps}\right)
+\leq \rho(Fx,Fy)
+\leq \mu_p\bigl((1+\eps)\norm{x-y}_p\bigr).
+\]
+\end{theorem}
+
+Thus the conjecture is proved under the standard interpretation of
+\(\norm{x-y}_p=\Omega(1)\) as a fixed positive lower bound.  The proof does not
+claim uniformity when that hidden lower bound is allowed to tend to zero with
+\(N\), \(\eps\), or \(p\).
+
+\section{Proof intuition}
+
+The Cauchy proof in the source paper computes first and second moments of
+\(\xi(\lambda\abs X)\) explicitly.  For general p-stable \(W\), those explicit
+formulas are not available, but the special form of \(\xi\) gives a simpler
+uniform route.  Put
+\[
+   \phi(s)=\xi(e^s)
+      =\log(1+e^{s/2})+\frac12\log(1+e^s).
+\]
+Then \(0\leq\phi'(s)\leq1\), so changing \(\lambda\) only translates a
+1-Lipschitz function of \(S=\log\abs W\).  The variable \(S\) has exponential
+tails in both directions: positive tails follow from finite \(q\)-moments of
+p-stable variables, and negative tails follow from boundedness of the stable
+density near zero.  Therefore the centered variables
+\(\xi(\lambda\abs W)-\mu_p(\lambda)\) obey a Bernstein inequality uniformly in
+\(\lambda\).
+
+The remaining point is deterministic.  Above a fixed scale \(\lambda_0\), the
+increase of \(\mu_p\) from \(\lambda/(1+\eps)\) to \(\lambda\), and from
+\(\lambda\) to \((1+\eps)\lambda\), is at least a positive constant times
+\(\eps\).  Uniform concentration within that gap for all pairs proves the
+conjectured inequalities.
+
+\section{Proof}
+
+\begin{lemma}[Uniform sub-exponential concentration]
+\label{lem:concentration}
+For every \(1<p<2\) there are constants \(K_p,c_p>0\) such that, for all
+\(\lambda>0\), all \(0<t\leq1\), and iid copies \(W_1,\ldots,W_k\) of \(W\),
+\[
+\Prob\left\{
+\left|\frac1k\sum_{j=1}^k
+\bigl(\xi(\lambda\abs{W_j})-\mu_p(\lambda)\bigr)\right|>t
+\right\}
+\leq 2\exp(-c_p k t^2).
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(S=\log\abs W\) and \(\phi(s)=\xi(e^s)\).  Since
+\[
+ \phi'(s)=
+ \frac12\frac{e^{s/2}}{1+e^{s/2}}
+ +\frac12\frac{e^s}{1+e^s},
+\]
+\(\phi\) is 1-Lipschitz.  For \(b=\log\lambda\),
+\[
+\abs{\phi(b+S)-\E\phi(b+S)}
+\leq \abs{\phi(b+S)-\phi(b)}
+     +\E\abs{\phi(b+S)-\phi(b)}
+\leq \abs S+\E\abs S .
+\]
+Choose any \(0<q<1\).  A standard symmetric p-stable variable has
+\(\E\abs W^q<\infty\), since \(q<p\), and has a bounded continuous density near
+zero, hence \(\E\abs W^{-q}<\infty\).  Consequently
+\[
+  \E e^{q\abs S}=\E\max(\abs W^q,\abs W^{-q})<\infty .
+\]
+Thus the centered variables
+\(\phi(b+S)-\E\phi(b+S)\) have sub-exponential norm bounded by a constant
+depending only on \(p\), uniformly over \(b\in\R\).  Bernstein's inequality for
+averages of centered sub-exponential variables gives
+\[
+\Prob\left\{\left|\frac1k\sum_{j=1}^k
+\bigl(\xi(\lambda\abs{W_j})-\mu_p(\lambda)\bigr)\right|>t\right\}
+\leq
+2\exp\{-c k\min(t^2/K_p^2,t/K_p)\}.
+\]
+Absorbing constants and using \(0<t\leq1\) proves the lemma.
+\end{proof}
+
+\begin{lemma}[A fixed-scale gap for \(\mu_p\)]
+\label{lem:gap}
+For every \(1<p<2\) and \(\lambda_0>0\), there is
+\(\gamma=\gamma(p,\lambda_0)>0\) such that, for all
+\(\lambda\geq\lambda_0\) and \(0<\eps<1\),
+\[
+ \mu_p((1+\eps)\lambda)-\mu_p(\lambda)\geq \gamma\eps
+\quad\text{and}\quad
+ \mu_p(\lambda)-\mu_p\!\left(\frac{\lambda}{1+\eps}\right)\geq \gamma\eps .
+\]
+\end{lemma}
+
+\begin{proof}
+For \(t>0\), set
+\[
+  h(t)=t\xi'(t)
+  =\frac12\frac{\sqrt t}{1+\sqrt t}
+   +\frac12\frac{t}{1+t}.
+\]
+The function \(h\) is increasing, bounded, and positive on \((0,\infty)\).
+For \(r>0\) and \(A>B>0\),
+\[
+  \xi(Ar)-\xi(Br)=\int_B^A h(ur)\,\frac{du}{u}.
+\]
+By boundedness of \(h\), Fubini applies.  With \(A=1+\eps\),
+\[
+\mu_p(A\lambda)-\mu_p(\lambda)
+=\int_1^A \E h(u\lambda\abs W)\,\frac{du}{u}
+\geq \log A\,\E h(\lambda_0\abs W/2),
+\]
+where the last lower bound is deliberately weakened for later symmetry.
+Likewise,
+\[
+\mu_p(\lambda)-\mu_p(\lambda/A)
+=\int_{1/A}^1 \E h(u\lambda\abs W)\,\frac{du}{u}
+\geq \log A\,\E h(\lambda_0\abs W/2),
+\]
+because \(A<2\), \(u\geq 1/A\), and \(\lambda\geq\lambda_0\).  Since
+\(\log(1+\eps)\geq \eps/2\) for \(0<\eps<1\), the result follows with
+\[
+  \gamma=\frac12\,\E h(\lambda_0\abs W/2)>0 .
+\]
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix a pair \(x,y\in P\), put \(v=x-y\), and let
+\(\lambda=\norm v_p\).  By p-stability, each coordinate of \(Fv\) has the same
+law as \(\lambda W\), independently over the \(k\) coordinates.  Hence
+\[
+  \rho(Fx,Fy)
+  \stackrel{d}{=}
+  \frac1k\sum_{j=1}^k \xi(\lambda\abs{W_j}).
+\]
+Assume \(\lambda\geq\lambda_0\).  Lemma~\ref{lem:gap} gives a gap
+\(\gamma\eps\) from \(\mu_p(\lambda)\) to each of the two desired boundary
+values.  Therefore the event
+\[
+ \left|\rho(Fx,Fy)-\mu_p(\lambda)\right|\leq\gamma\eps
+\]
+implies
+\[
+\mu_p\left(\frac{\lambda}{1+\eps}\right)
+\leq \rho(Fx,Fy)
+\leq \mu_p((1+\eps)\lambda).
+\]
+Since \(0<\gamma\eps\leq1\), after reducing the concentration constant if
+necessary, Lemma~\ref{lem:concentration} gives for this fixed pair
+\[
+\Prob\{\text{the desired inequality fails for }x,y\}
+\leq 2\exp(-c_p\gamma^2 k\eps^2).
+\]
+There are fewer than \(N^2/2\) unordered pairs.  Choosing
+\[
+  k\geq C(p,\lambda_0,a)\eps^{-2}\log N
+\]
+with \(C\) large enough makes the union bound at most \(N^{-a}\).  Since
+\((1-\eps)^{-2}\geq1\), the displayed dimension bound in the theorem is a
+slightly weaker sufficient condition with the same dependence as Casey's
+Theorem 1.0.1.  This proves the simultaneous assertion.
+\end{proof}
+
+\section{Verification and novelty notes}
+
+The proof uses only standard p-stable facts: the scaling identity
+\(\sum_j v_j W_j\stackrel{d}{=}\norm v_p W\), finite moments
+\(\E\abs W^q<\infty\) for \(q<p\), and boundedness of the p-stable density near
+zero.  These are the same stable-distribution background facts invoked by the
+source paper and by standard references on p-stable projections.
+
+Bounded novelty search performed before promotion:
+\begin{itemize}
+\item local run indexes were searched for arXiv:1906.03536, the exact title,
+  ``p-stable'', ``metric preserving'', and ``Conjecture 1.0.2'';
+\item the parsed source TeX and bibliography for arXiv:1906.03536 were
+  inspected;
+\item web/arXiv searches were run for exact-title and close-variant phrases,
+  including ``p-stable metric preserving dimension reduction'', ``Casey
+  p-stable conjecture'', and ``Cauchy projections metric preserving
+  function''.
+\end{itemize}
+No exact later answer or duplicate packet was found in these bounded searches.
+
+Human-review recommendation: review as a likely valid full solution to the
+fixed-threshold reading of Conjecture 1.0.2.  The main points to check are the
+uniform sub-exponential domination by \(\abs{\log\abs W}\), the gap estimate in
+Lemma~\ref{lem:gap}, and the interpretation of \(\Omega(1)\).
+
+\begin{thebibliography}{9}
+\bibitem{Casey}
+Michael P. Casey.
+\newblock Linear dimension reduction approximately preserving a function of the
+1-norm.
+\newblock \emph{Electronic Journal of Statistics}; arXiv:1906.03536.
+
+\bibitem{Indyk}
+Piotr Indyk.
+\newblock Stable distributions, pseudorandom generators, embeddings, and data
+stream computation.
+\newblock \emph{Journal of the ACM} 53 (2006), 307--323.
+
+\bibitem{LedouxTalagrand}
+Michel Ledoux and Michel Talagrand.
+\newblock \emph{Probability in Banach Spaces}.
+\newblock Springer, 1991.
+
+\bibitem{Pisier}
+Gilles Pisier.
+\newblock On the dimension of the \(\ell_p^n\)-subspaces of Banach spaces, for
+\(1\leq p<2\).
+\newblock \emph{Transactions of the American Mathematical Society} 276 (1983),
+201--211.
+\end{thebibliography}
+
+\end{document}

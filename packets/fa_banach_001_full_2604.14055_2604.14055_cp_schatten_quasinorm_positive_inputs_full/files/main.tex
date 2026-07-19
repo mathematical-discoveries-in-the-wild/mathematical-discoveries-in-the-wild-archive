@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Md}{M_d(\mathbb C)}
+\newcommand{\Mm}{M_m(\mathbb C)}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Positive inputs suffice for induced Schatten quasi-norms\\
+\large A full answer to an open question in arXiv:2604.14055}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 2, candidate for human review}
+\date{19 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full solution, likely valid.}
+For every completely positive map between finite-dimensional matrix algebras
+and every pair of positive Schatten exponents, the induced quasi-norm equals
+its restriction to positive semidefinite inputs.  This fully answers the
+ordinary $q\mathbin{\to}p$ question posed in the source, but not its separate
+completely bounded mixed-quasi-norm counterpart.}}
+\end{center}
+
+\section{Source question}
+
+Kochanowski, Fawzi and Rouz\'e introduce two-indexed Schatten quasi-norms and
+their completely bounded variants \cite{KFR}.  In their Summary and Outlook,
+on page 49, they ask whether a completely positive (CP) map satisfies
+\[
+             \norm{\Phi}_{q\to p}=\norm{\Phi}^{+}_{q\to p}
+             \qquad (0<p,q<1),
+\]
+where the superscript $+$ restricts the input to positive semidefinite
+operators.  They note that the equality was known in the norm range
+$p,q\geq1$ \cite{Watrous}.
+
+\begin{center}
+\includegraphics[
+  width=0.98\textwidth,
+  trim=60bp 400bp 60bp 290bp,
+  clip
+]{code/source_page_49.png}
+\end{center}
+
+We prove the equality for all positive exponents.  The argument does not use
+duality or the triangle inequality, and so crosses the quasi-norm boundary
+without modification.
+
+\section{Statement}
+
+For $0<r<\infty$, write
+\[
+  \norm{X}_r=\bigl(\operatorname{Tr}|X|^r\bigr)^{1/r},
+  \qquad
+  \norm{X}_\infty=\norm{X}_{\mathrm{op}}.
+\]
+For a linear map $\Phi:\Md\to\Mm$, set
+\begin{align*}
+ \norm{\Phi}_{q\to p}
+   &=\sup_{X\ne0}\frac{\norm{\Phi(X)}_p}{\norm{X}_q},\\
+ \norm{\Phi}^{+}_{q\to p}
+   &=\sup_{0\ne A\ge0}\frac{\norm{\Phi(A)}_p}{\norm{A}_q}.
+\end{align*}
+
+\begin{theorem}[Positive-input principle]\label{thm:main}
+Let $\Phi:\Md\to\Mm$ be completely positive.  For every
+$0<p,q\leq\infty$,
+\[
+                    \boxed{
+                    \norm{\Phi}_{q\to p}
+                    =\norm{\Phi}^{+}_{q\to p}.}
+\]
+Both suprema are maxima.  In fact, complete positivity can be weakened to
+$2$-positivity.
+\end{theorem}
+
+Thus Theorem~\ref{thm:main} includes, and fully answers, the source's open
+range $0<p,q<1$.
+
+\section{Proof intuition}
+
+The polar decomposition of an arbitrary input $X$ places it in the
+off-diagonal corner of a positive $2\times2$ block matrix whose diagonal
+corners are $|X^*|$ and $|X|$.  Two-positivity sends that matrix to another
+positive block matrix.  Positivity forces its off-diagonal corner
+$\Phi(X)$ to factor through the geometric mean of the two positive diagonal
+corners.  Generalized Schatten H\"older then bounds $\norm{\Phi(X)}_p$ by the
+geometric mean of the output quasi-norms at the two positive inputs
+$|X^*|$ and $|X|$.  Those inputs have exactly the same Schatten $q$-quasi-norm
+as $X$, so one of the two positive-input ratios is at least as good as the
+ratio at $X$.
+
+The key point is that generalized Schatten H\"older is valid for every
+positive exponent, including $p<1$; it is Lemma 2.1 of the source \cite{KFR}.
+
+\section{Two block-matrix lemmas}
+
+\begin{lemma}[Canonical positive block]\label{lem:canonical}
+For every $X\in\Md$,
+\[
+             \begin{pmatrix}|X^*|&X\\X^*&|X|\end{pmatrix}\ge0.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $X=U|X|$ be the polar decomposition.  Since
+$|X^*|=U|X|U^*$, one has the Gram factorization
+\[
+ \begin{pmatrix}|X^*|&X\\X^*&|X|\end{pmatrix}
+ =\begin{pmatrix}U\\I\end{pmatrix}|X|
+  \begin{pmatrix}U^*&I\end{pmatrix},
+\]
+which is positive semidefinite.
+\end{proof}
+
+\begin{lemma}[Off-diagonal estimate]\label{lem:block}
+If
+\[
+                  \begin{pmatrix}A&B\\B^*&D\end{pmatrix}\ge0,
+                  \qquad A,D\ge0,
+\]
+then there is a contraction $K$ such that
+\[
+                         B=A^{1/2}KD^{1/2}.
+\]
+Consequently, for every $0<p\leq\infty$,
+\begin{equation}\label{eq:blockholder}
+                 \norm{B}_p
+                 \leq \norm{A}_p^{1/2}\norm{D}_p^{1/2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For $\varepsilon>0$, the block matrix remains positive after adding
+$\varepsilon I$ to both diagonal corners.  The Schur complement therefore
+shows that
+\[
+ K_\varepsilon=(A+\varepsilon I)^{-1/2}
+                 B(D+\varepsilon I)^{-1/2}
+\]
+is a contraction.  In finite dimensions, a subsequence converges to a
+contraction $K$.  Passing to the limit in
+\[
+ B=(A+\varepsilon I)^{1/2}K_\varepsilon
+   (D+\varepsilon I)^{1/2}
+\]
+gives $B=A^{1/2}KD^{1/2}$, including when $A$ or $D$ is singular.
+
+Generalized Schatten H\"older, first for the product of
+$A^{1/2}$ and $KD^{1/2}$ and then with the operator norm of $K$, gives
+\begin{align*}
+ \norm{B}_p
+ &\leq \norm{A^{1/2}}_{2p}
+          \norm{KD^{1/2}}_{2p}\\
+ &\leq \norm{A^{1/2}}_{2p}\norm{K}_\infty
+          \norm{D^{1/2}}_{2p}\\
+ &\leq \norm{A}_p^{1/2}\norm{D}_p^{1/2}.
+\end{align*}
+Here $2p=\infty$ when $p=\infty$.  Generalized H\"older holds for
+$0<p<1$ as well as for the norm range, so no convexity is being used.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Fix $X\in\Md$.  Applying the $2$-positive map
+$\operatorname{id}_{M_2}\otimes\Phi$ to the positive matrix in
+Lemma~\ref{lem:canonical} yields
+\[
+ \begin{pmatrix}
+  \Phi(|X^*|)&\Phi(X)\\
+  \Phi(X)^*&\Phi(|X|)
+ \end{pmatrix}\ge0.
+\]
+We used here that every positive linear map is adjoint preserving.  By
+Lemma~\ref{lem:block},
+\begin{equation}\label{eq:mainestimate}
+ \norm{\Phi(X)}_p
+ \leq
+ \norm{\Phi(|X^*|)}_p^{1/2}
+ \norm{\Phi(|X|)}_p^{1/2}.
+\end{equation}
+
+The three matrices $X$, $|X|$, and $|X^*|$ have the same singular values.
+Hence
+\[
+             \norm{X}_q=\norm{|X|}_q=\norm{|X^*|}_q
+             \qquad(0<q\leq\infty).
+\]
+Dividing \eqref{eq:mainestimate} by this common value gives
+\begin{align*}
+ \frac{\norm{\Phi(X)}_p}{\norm{X}_q}
+ &\leq
+ \left(
+  \frac{\norm{\Phi(|X^*|)}_p}{\norm{|X^*|}_q}
+ \right)^{1/2}
+ \left(
+  \frac{\norm{\Phi(|X|)}_p}{\norm{|X|}_q}
+ \right)^{1/2}\\
+ &\leq \norm{\Phi}^{+}_{q\to p}.
+\end{align*}
+Taking the supremum over $X\ne0$ proves
+$\norm{\Phi}_{q\to p}\leq\norm{\Phi}^{+}_{q\to p}$.  The reverse
+inequality is immediate because positive inputs are a subset of all inputs.
+
+Finally, in finite dimensions the unit Schatten $q$-sphere and its positive
+part are compact, while the objective is continuous.  Thus the suprema are
+attained.  Only $2$-positivity was used.
+
+\section{Scope and novelty check}
+
+This is a full answer to the ordinary induced Schatten $q\to p$ question in
+the Summary and Outlook of \cite{KFR}, and it strengthens the requested range
+from $0<p,q<1$ to all $0<p,q\leq\infty$.  It does \emph{not} settle the
+separate question about the source's completely bounded mixed two-indexed
+quasi-norms.  It also does not address the interpolation conjecture on the
+same source page or infinite-dimensional extensions.
+
+The run's cheap indexes were searched by arXiv identifier, exact title, and
+the core phrases ``completely positive map'', ``Schatten quasi-norm'', and
+``positive input''.  A bounded primary-source search located the source and
+the norm-range result \cite{Watrous}, but no paper recording the $p,q<1$
+extension or this two-by-two proof.  This is not an exhaustive novelty
+certification.
+
+\begin{thebibliography}{9}
+\bibitem{KFR}
+J. Kochanowski, O. Fawzi and C. Rouz\'e,
+\emph{Two-Indexed Schatten Quasi-Norms with Applications to Quantum
+Information Theory}, arXiv:2604.14055 (2026).
+
+\bibitem{Watrous}
+J. Watrous,
+\emph{Notes on super-operator norms induced by Schatten norms},
+arXiv:quant-ph/0411077 (2004).
+\end{thebibliography}
+
+\end{document}

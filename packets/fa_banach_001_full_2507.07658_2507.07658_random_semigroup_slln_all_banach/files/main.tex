@@ -1,0 +1,328 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\title{Candidate Full Result: The Random-Semigroup SLLN Holds on Every Banach Space}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{2026-06-26}
+
+\newcommand{\X}{\mathcal X}
+\newcommand{\Lcal}{\mathcal L}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\barA}{\overline A}
+\emergencystretch=2em
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\textbf{Candidate full solution, likely valid, needs human review.}
+This packet proves Conjecture 2.6 of Dzhenzher--Sakbaev
+\cite{DzhenzherSakbaev2025}: the strong-operator strong law for bounded
+i.i.d. random semigroup generators does not require uniform smoothness of the
+Banach space.
+
+\section*{Source Conjecture}
+
+The source paper proves the result in strong operator topology when \(\X\) is
+uniformly smooth, and in weak operator topology for arbitrary Banach spaces.
+On page 4, after noting the \(\ell_1\) consequence, it states Conjecture 2.6:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Transcribed, the conjecture says:
+
+\begin{quote}
+Let \(\X\) be a Banach space. Then under the assumptions of Theorem 2.4,
+\(e^{A_1t/n}\cdots e^{A_nt/n}\) converges a.s. in SOT of
+\(\norm{\cdot}_{\X}\) to \(e^{\EE A t}\) uniformly for \(t>0\) in any segment.
+\end{quote}
+
+Here \(A,A_1,A_2,\ldots\) are i.i.d. bounded random elements of
+\(\Lcal(\X)\), and \(\EE A\) is the Bochner expectation.
+
+\section*{Proof Intuition}
+
+The source proof uses uniform smoothness to obtain summable martingale moment
+estimates for the random product.  For bounded generators there is a more
+direct pathwise route.  First replace each exponential
+\(e^{A_jt/n}\) by the Euler factor \(I+(t/n)A_j\); the accumulated replacement
+error is \(O(1/n)\), uniformly for \(t\) in a compact interval.  The Euler
+product is then compared with the deterministic Euler product for
+\(\bar A=\EE A\).
+
+For a fixed \(t\), the accumulated error solves a linear recursion driven by
+mean-zero increments
+\[
+  \frac{t}{n}(A_j-\bar A)y_{n,j},
+\]
+where \(y_{n,j}\) lies on the deterministic Euler orbit of \(x\).  That orbit
+is contained in a compact curve.  A finite partition of the curve reduces the
+noise estimate to finitely many ordinary Banach-valued strong laws of large
+numbers, applied on intervals of indices.  A discrete summation-by-parts
+estimate then converts small partial sums of the noise into small product
+error.  Finally, a uniform Lipschitz bound in \(t\) upgrades convergence on
+rational \(t\)'s to uniform convergence on every compact interval.
+
+\section*{Statement}
+
+\begin{theorem}
+\label{thm:all-banach-slln}
+Let \(\X\) be a Banach space. Let
+\(A,A_1,A_2,\ldots\) be i.i.d. Bochner-measurable random elements of
+\(\Lcal(\X)\), and assume that \(\norm{A}\le \rho\) almost surely for some
+\(\rho<\infty\).  Put \(\bar A=\EE A\).  Then for every \(x\in \X\) and every
+\(T>0\),
+\[
+  \lim_{n\to\infty}
+  \sup_{0\le t\le T}
+  \norm{\left(e^{A_1t/n}\cdots e^{A_nt/n}-e^{\bar A t}\right)x}
+  =0
+\]
+almost surely.
+\end{theorem}
+
+\section*{Proof}
+
+We use the following elementary form of the Banach-valued strong law.  It is a
+standard consequence of the usual SLLN for Bochner-integrable i.i.d.
+Banach-valued random variables; boundedness is more than enough for the
+application below.
+
+\begin{lemma}[Interval SLLN]
+\label{lem:interval-slln}
+Let \(Z_1,Z_2,\ldots\) be i.i.d. bounded random variables with values in a
+Banach space \(E\), and assume \(\EE Z_1=0\).  Then, almost surely,
+\[
+  \sup_{0\le a\le b\le n}
+  \norm{\frac1n\sum_{j=a+1}^{b} Z_j}_E \longrightarrow 0 .
+\]
+\end{lemma}
+
+\begin{proof}
+The ordinary Banach-valued SLLN gives
+\(m^{-1}\sum_{j=1}^m Z_j\to0\) almost surely.  Hence
+\[
+  \max_{0\le m\le n}
+  \norm{\frac1n\sum_{j=1}^{m}Z_j}_E\to0
+\]
+almost surely: finitely many initial partial sums are divided by \(n\), while
+the remaining ones are controlled by the SLLN.  The interval estimate follows
+by subtracting two partial sums.
+\end{proof}
+
+\begin{lemma}[Compact-curve noise estimate]
+\label{lem:curve-slln}
+Let \(B_j=A_j-\bar A\).  Fix \(x\in\X\) and \(t\ge0\).  Let \(h_n=t/n\) and
+\[
+  y_{n,k}=(I+h_n\bar A)^k x,\qquad 0\le k\le n .
+\]
+Then, almost surely,
+\[
+  \max_{0\le m\le n}
+  \norm{\frac1n\sum_{k=1}^{m} B_{n-k+1}y_{n,k-1}}
+  \longrightarrow0 .
+\]
+\end{lemma}
+
+\begin{proof}
+The points \(y_{n,k}\) converge uniformly, as sampled Euler points, to the
+compact curve \(s\mapsto e^{s\bar A}x\), \(0\le s\le t\).  Given
+\(\varepsilon>0\), choose a partition
+\[
+  0=s_0<s_1<\cdots<s_M=t
+\]
+so fine that both \(e^{s\bar A}x\) and the Euler samples vary by at most
+\(\varepsilon\) inside each subinterval, for all sufficiently large \(n\).
+For \(k\) with \((k-1)t/n\in[s_{r-1},s_r)\), replace \(y_{n,k-1}\) by the
+fixed vector \(z_r=e^{s_{r-1}\bar A}x\).  Since
+\(\norm{B_j}\le2\rho\), the total error in the normalized sums is at most
+\(2\rho\varepsilon\).
+
+It remains to handle finitely many fixed vectors \(z_r\).  For each \(r\), the
+variables \(B_jz_r\) are i.i.d., bounded, and have mean zero.  Lemma
+\ref{lem:interval-slln} gives
+\[
+  \sup_{0\le a\le b\le n}
+  \norm{\frac1n\sum_{j=a+1}^{b} B_jz_r}\to0
+\]
+almost surely.  The sums appearing after the replacement are finite sums of
+such interval sums, because \(k\mapsto n-k+1\) reverses intervals.  Intersect
+the finitely many probability-one events and let \(\varepsilon\downarrow0\).
+\end{proof}
+
+\begin{lemma}[Euler products]
+\label{lem:euler}
+For each fixed \(t\ge0\),
+\[
+  \left(I+\frac{t}{n}A_1\right)\cdots
+  \left(I+\frac{t}{n}A_n\right)x
+  -
+  \left(I+\frac{t}{n}\bar A\right)^n x
+  \longrightarrow0
+\]
+almost surely.
+\end{lemma}
+
+\begin{proof}
+Write \(h=t/n\), \(C_j=I+hA_j\), and \(\bar C=I+h\bar A\).  To match the
+source product order, define
+\[
+  X_{n,0}=x,\qquad
+  X_{n,k}=C_{n-k+1}X_{n,k-1},\quad 1\le k\le n,
+\]
+so \(X_{n,n}=C_1\cdots C_nx\).  Also put \(y_{n,k}=\bar C^kx\) and
+\(D_{n,k}=X_{n,k}-y_{n,k}\).  Then
+\[
+  D_{n,k}=C_{n-k+1}D_{n,k-1}
+  +h(A_{n-k+1}-\bar A)y_{n,k-1}.
+\]
+Set
+\[
+  \eta_{n,k}=h(A_{n-k+1}-\bar A)y_{n,k-1},
+  \qquad
+  S_{n,m}=\sum_{k=1}^{m}\eta_{n,k}.
+\]
+By Lemma \ref{lem:curve-slln},
+\(\max_{m\le n}\norm{S_{n,m}}\to0\) almost surely.
+
+Solving the linear recursion gives
+\[
+  D_{n,m}=\sum_{k=1}^{m}R_{m,k}\eta_{n,k},
+\]
+where \(R_{m,m}=I\) and
+\[
+  R_{m,k}=C_{n-m+1}\cdots C_{n-k}
+  \qquad (k<m).
+\]
+The exact indexing is unimportant; only the following bounds matter:
+\[
+  \norm{R_{m,k}}\le (1+\rho h)^{m-k}\le e^{\rho t}
+\]
+and
+\[
+  \norm{R_{m,k}-R_{m,k+1}}
+  \le \rho h e^{\rho t}.
+\]
+By Abel summation,
+\[
+  D_{n,m}
+  =
+  R_{m,m}S_{n,m}
+  +\sum_{k=1}^{m-1}(R_{m,k}-R_{m,k+1})S_{n,k}.
+\]
+Consequently
+\[
+  \max_{m\le n}\norm{D_{n,m}}
+  \le
+  \left(1+\rho t e^{\rho t}\right)
+  \max_{m\le n}\norm{S_{n,m}},
+\]
+which tends to zero almost surely.  Taking \(m=n\) proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:all-banach-slln}]
+First fix \(t\in[0,T]\).  Lemma \ref{lem:euler} gives almost sure convergence
+of the random Euler product to \((I+(t/n)\bar A)^nx\), and the latter
+converges in norm to \(e^{t\bar A}x\).
+
+It remains to pass from Euler factors to exponentials and then make the
+convergence uniform in \(t\).  Since \(\norm{A_j}\le\rho\),
+\[
+  \norm{e^{hA_j}-(I+hA_j)}
+  \le \frac{\rho^2h^2}{2}e^{\rho h}.
+\]
+Telescoping the product and using
+\(\norm{e^{hA_j}}\le e^{\rho h}\), \(\norm{I+hA_j}\le 1+\rho h\), gives
+\[
+  \sup_{0\le t\le T}
+  \norm{
+    \left(e^{A_1t/n}\cdots e^{A_nt/n}
+    -
+    \left(I+\frac tn A_1\right)\cdots
+    \left(I+\frac tn A_n\right)\right)x}
+  \le \frac{C_{\rho,T}\norm{x}}{n}.
+\]
+The same deterministic estimate gives
+\[
+  \sup_{0\le t\le T}
+  \norm{\left(I+\frac tn\bar A\right)^nx-e^{t\bar A}x}\to0 .
+\]
+Thus the exponential product converges almost surely for every fixed rational
+\(t\in[0,T]\), after intersecting countably many probability-one events.
+
+Finally, the maps
+\[
+  t\mapsto e^{A_1t/n}\cdots e^{A_nt/n}x
+  \quad\text{and}\quad
+  t\mapsto e^{t\bar A}x
+\]
+are Lipschitz on \([0,T]\) with a common deterministic bound
+\[
+  \rho e^{\rho T}\norm{x}.
+\]
+Indeed, differentiate the products and sum the \(n\) terms, each contributing
+at most \((\rho/n)e^{\rho T}\norm{x}\).  Convergence on a dense rational set
+therefore implies uniform convergence on \([0,T]\).  This proves the
+conjecture.
+\end{proof}
+
+\section*{Verification Notes}
+
+The proof uses only boundedness, Bochner measurability, independence, and
+identical distribution of the generators.  Uniform smoothness is not used.
+The argument does not settle the different issue mentioned immediately before
+Theorem 2.5 in the source paper: whether the i.i.d. assumption can be weakened
+to independent uniformly bounded generators with a common expectation.
+
+A small finite-dimensional smoke script in \texttt{code/matrix\_smoke.py}
+checks the theorem numerically for random \(2\times2\) matrix generators.  It
+is only a sanity check; the proof above is analytic.
+
+\section*{Novelty Check}
+
+The local run indexes were searched for arXiv `2507.07658`, the source title,
+`random semigroups`, `strong law of large numbers`, `SOT`, and related
+Banach-space keywords.  No prior packet or attempt for this conjecture was
+found.  Web searches on 2026-06-26 for the exact title, `Conjecture 2.6 random
+semigroups Banach space`, `SLLN in SOT random semigroups Banach space`, and
+close variants found the source arXiv paper and a 2026 follow-up by the same
+authors on unbounded generators in uniformly smooth Banach spaces, but no
+paper resolving the bounded-generator conjecture for arbitrary Banach spaces.
+
+\section*{Human Review Recommendation}
+
+Review should focus on Lemma \ref{lem:curve-slln}, especially the interval
+SLLN reduction for the reversed index order, and on the Abel summation step in
+Lemma \ref{lem:euler}.  If those two estimates pass, the packet gives a full
+positive solution of Conjecture 2.6.
+
+\begin{thebibliography}{9}
+
+\bibitem{DzhenzherSakbaev2025}
+S. V. Dzhenzher and V. Zh. Sakbaev,
+\emph{The Strong Law of Large Numbers for random semigroups on uniformly
+smooth Banach spaces},
+arXiv:2507.07658, 2025.
+
+\bibitem{LedouxTalagrand1991}
+M. Ledoux and M. Talagrand,
+\emph{Probability in Banach Spaces: Isoperimetry and Processes},
+Springer, 1991.
+
+\end{thebibliography}
+
+\end{document}

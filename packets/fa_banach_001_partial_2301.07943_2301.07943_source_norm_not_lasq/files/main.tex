@@ -1,0 +1,697 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=29mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlist[itemize]{topsep=0.25em,itemsep=0.15em,leftmargin=1.45em}
+\setlist[enumerate]{topsep=0.25em,itemsep=0.15em,leftmargin=1.6em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\ext}{\operatorname{ext}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\co}{\operatorname{co}}
+\newcommand{\clco}{\overline{\operatorname{co}}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\pair}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\sourceNorm}[1]{\left\lvert #1\right\rvert_{\eps}}
+\newcommand{\newnorm}[1]{\left\lvert\!\left\lvert\!\left\lvert #1\right\rvert\!\right\rvert\!\right\rvert}
+
+\title{LASQ versus the Diameter Two Property\\
+\large Verification of the fixed-$\eps$ obstruction, further obstructions, and quantitative partial progress}
+\author{Research note prepared from the supplied source paper and partial proof}
+\date{22 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Rodr\'iguez and Rueda Zoca asked whether a locally almost square (LASQ) Banach space can fail the diameter two property (D2P).  The supplied partial proof concerns the fixed-$\eps$ renorming used in their construction of spaces with the slice-D2P but with arbitrarily small relatively weakly open subsets.  That proof is correct.  We sharpen it in three ways: a symmetric ``leakage'' inequality is obtained; every tree generator, not only the root, is shown to be quantitatively strongly extreme; and the actual norm on the whole space constructed in the proof of their Theorem~1.2 is shown not to be LASQ.
+
+A literature search through 21 June 2026 did not locate a proof or counterexample for the general LASQ-versus-D2P question.  We therefore examine two later natural candidates.  The 2024 renorming of $L_\infty[0,1]$ by Cobollo et al. and the 2026 dual LD2P-without-D2P example of Haller--Kaasik--Ostrak both contain explicit strongly extreme sphere points and hence are not LASQ.  Finally, we prove a finite-rank estimate: if $X$ is LASQ and a basic relatively weakly open subset of $B_X$ is determined by an operator of rank $r$, then its diameter is at least $2/(r+1)$.  This does not settle the problem, but it isolates the remaining obstruction: LASQ supplies almost square directions at one point, while D2P requires such directions to be simultaneously small under finitely many functionals.
+\end{abstract}
+
+\tableofcontents
+
+\section{The question and the outcome of this investigation}
+
+For a real Banach space $X$, write $B_X$ and $S_X$ for its closed unit ball and unit sphere.  We use the following equivalent $\eps$-form of local almost squareness:
+\[
+ X \text{ is LASQ}
+ \quad\Longleftrightarrow\quad
+ \forall x\in S_X\ \forall\eps>0\ \exists y\in S_X:
+ \norm{x\pm y}\le 1+\eps.
+\]
+The diameter two property (D2P) means that every non-empty relatively weakly open subset of $B_X$ has diameter two.  LASQ always implies the slice diameter two property (also called LD2P), whereas weak almost squareness implies D2P; see \cite{ALL2016}.  The question raised in \cite{RodriguezRueda2023} is:
+
+\begin{question}[Rodr\'iguez--Rueda Zoca]
+Does there exist a LASQ Banach space which fails the D2P?
+\end{question}
+
+The source passage is recorded below from the arXiv PDF.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_question_crop_page3.png}
+\end{center}
+
+The conclusions reached here are as follows.
+\begin{enumerate}
+\item The supplied fixed-$\eps$ obstruction is valid, and its quantitative estimate can be improved.
+\item The entire norm constructed in the proof of \cite[Theorem~1.2]{RodriguezRueda2023}, not merely its $c_0$ core, is not LASQ.
+\item No full resolution of the general question was found in the literature search described in \cref{sec:literature}.
+\item Two later constructions which at first sight are plausible sources of a counterexample are also not LASQ.
+\item A general finite-rank lower bound, \cref{thm:finite-rank}, gives some positive information but falls short of diameter two.
+\end{enumerate}
+
+A point $p\in S_X$ is \emph{strongly extreme} if
+\[
+ \norm{p+y_n}\longrightarrow 1,
+ \qquad
+ \norm{p-y_n}\longrightarrow 1
+ \quad\Longrightarrow\quad
+ \norm{y_n}\longrightarrow 0.
+\]
+Plainly, a LASQ space has no strongly extreme point in its unit sphere.
+
+\section[The fixed-epsilon construction from the source paper]{The fixed-$\eps$ construction from the source paper}
+\label{sec:source}
+
+The construction audited here is the fixed-$\eps$ renorming used in the proof
+of the source Theorem~1.2, shown in the following source crop.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/theorem_1_2_crop_page4.png}
+\end{center}
+
+We retain the notation of \cite[Section~3]{RodriguezRueda2023}.  Let $\N^{<\omega}$ be the Baire tree and let
+\[
+ Z=c(\N^{<\omega})\oplus_\infty c_0,
+ \qquad
+ \norm{(x,y)}_Z=\max\{\norm{x}_\infty,\norm{y}_\infty\}.
+\]
+For $\alpha\in\N^{<\omega}$ put
+\[
+ x_\alpha(\beta)=
+ \begin{cases}
+  1,&\beta\preceq\alpha,\\
+ -1,&\text{otherwise},
+ \end{cases}
+ \qquad
+ A=\{x_\alpha:\alpha\in\N^{<\omega}\}.
+\]
+Every $x_\alpha$ is $\{\pm1\}$-valued and $\lim x_\alpha=-1$.  Fix $0<\eps<1$ and set
+\begin{equation}
+\label{eq:source-ball}
+ B_\eps=\clco\Bigl(
+ (A\times\{0\})\cup(-A\times\{0\})\cup
+ \bigl((1-\eps)B_Z+\eps B_{c_0(\N^{<\omega})}\times\{0\}\bigr)
+ \Bigr).
+\end{equation}
+Let $\sourceNorm{\cdot}$ be the Minkowski functional of $B_\eps$.  The source proof gives
+\begin{equation}
+\label{eq:norm-comparison}
+ (1-\eps)B_Z\subset B_\eps\subset B_Z,
+ \qquad
+ \norm{z}_Z\le\sourceNorm{z}\le\frac{1}{1-\eps}\norm{z}_Z.
+\end{equation}
+Let $P_2(x,y)=y$ and $L(x,y)=\lim x$.
+
+\subsection{A symmetric leakage estimate}
+
+The partial proof used the one-sided estimate
+\[
+ \norm{P_2w}_\infty\le \frac{1-\eps}{\eps}\bigl(1+L(w)\bigr).
+\]
+It is correct.  In fact, the following symmetric inequality is available.
+
+\begin{lemma}[Leakage inequality]
+\label{lem:leakage}
+For every $w\in B_\eps$,
+\begin{equation}
+\label{eq:symmetric-leakage}
+ \eps\norm{P_2w}_\infty+(1-\eps)\abs{L(w)}\le 1-\eps.
+\end{equation}
+Consequently,
+\begin{equation}
+\label{eq:one-sided-leakage}
+ \norm{P_2w}_\infty
+ \le \frac{1-\eps}{\eps}\bigl(1+L(w)\bigr)
+ \quad\text{and}\quad
+ \norm{P_2w}_\infty
+ \le \frac{1-\eps}{\eps}\bigl(1-L(w)\bigr).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The left side of \eqref{eq:symmetric-leakage} is a continuous convex function of $w$.  It is therefore enough to check the three generating pieces in \eqref{eq:source-ball}.
+
+If $w=(\pm x_\alpha,0)$, then $P_2w=0$ and $\abs{L(w)}=1$, so equality holds.  If
+\[
+ w=(1-\eps)u+\eps(v,0),
+ \qquad u\in B_Z,\quad v\in B_{c_0(\N^{<\omega})},
+\]
+then $\norm{P_2w}_\infty\le1-\eps$ and $\abs{L(w)}\le1-\eps$.  Hence
+\[
+ \eps\norm{P_2w}_\infty+(1-\eps)\abs{L(w)}
+ \le \eps(1-\eps)+(1-\eps)^2=1-\eps.
+\]
+The closed convex hull is therefore contained in the sublevel set.  The two estimates in \eqref{eq:one-sided-leakage} follow from $1-\abs{t}\le1\pm t$.
+\end{proof}
+
+The geometric meaning is simple: the only generators which can carry a second $c_0$ coordinate have $\abs{L}\le1-\eps$.  Thus approaching either face $L=\pm1$ forces the second coordinate to vanish quantitatively.
+
+\subsection{All tree generators are strongly extreme}
+
+\begin{theorem}[Quantitative strong extremity]
+\label{thm:tree-strong}
+For every $\alpha\in\N^{<\omega}$, the points
+\[
+ p_\alpha=(x_\alpha,0)
+ \quad\text{and}\quad
+ -p_\alpha
+\]
+are strongly extreme points of $B_\eps$.  More precisely, if $y=(u,v)\in Z$ and
+\begin{equation}
+\label{eq:delta-assumption}
+ \sourceNorm{p_\alpha+y}\le1+\delta,
+ \qquad
+ \sourceNorm{p_\alpha-y}\le1+\delta
+\end{equation}
+for some $\delta\ge0$, then
+\begin{equation}
+\label{eq:strong-modulus}
+ \sourceNorm{y}
+ \le C_\eps\delta,
+ \qquad
+ C_\eps=\max\left\{\frac1{1-\eps},\frac1\eps\right\}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Because $B_\eps\subset B_Z$, \eqref{eq:delta-assumption} implies
+\[
+ \norm{x_\alpha\pm u}_\infty\le1+\delta.
+\]
+Every coordinate of $x_\alpha$ has modulus one.  For a scalar $a\in\{\pm1\}$,
+\[
+ \max\{\abs{a+t},\abs{a-t}\}=1+\abs{t}.
+\]
+It follows coordinatewise that
+\begin{equation}
+\label{eq:u-small}
+ \norm{u}_\infty\le\delta,
+ \qquad
+ \abs{\lim u}\le\delta.
+\end{equation}
+
+Put $\ell=\lim u$ and
+\[
+ q_+=\frac{p_\alpha+y}{1+\delta},
+ \qquad
+ q_-=\frac{p_\alpha-y}{1+\delta}.
+\]
+Both points lie in $B_\eps$.  Applying the first inequality in \eqref{eq:one-sided-leakage} to $q_+$ and $q_-$ gives, respectively,
+\[
+ \norm{v}_\infty
+ \le \frac{1-\eps}{\eps}(\delta+\ell),
+ \qquad
+ \norm{v}_\infty
+ \le \frac{1-\eps}{\eps}(\delta-\ell).
+\]
+Therefore
+\begin{equation}
+\label{eq:v-small}
+ \norm{v}_\infty
+ \le\frac{1-\eps}{\eps}(\delta-\abs{\ell})
+ \le\frac{1-\eps}{\eps}\delta.
+\end{equation}
+Combining \eqref{eq:u-small}, \eqref{eq:v-small}, and \eqref{eq:norm-comparison},
+\[
+ \sourceNorm{y}
+ \le\frac1{1-\eps}\max\left\{\delta,\frac{1-\eps}{\eps}\delta\right\}
+ =C_\eps\delta.
+\]
+This proves the quantitative estimate and hence strong extremity.  The assertion for $-p_\alpha$ follows by symmetry.
+\end{proof}
+
+\begin{corollary}
+\label{cor:partial-correct}
+The partial result supplied with the problem is correct.  Its factor $2/\eps$ can be replaced by $1/\eps$, and its conclusion holds at every tree point $\pm(x_\alpha,0)$.
+\end{corollary}
+
+\begin{proof}
+If $\sourceNorm{p_\alpha\pm y_n}\to1$, then
+\[
+ \delta_n=\max\{\sourceNorm{p_\alpha+y_n},\sourceNorm{p_\alpha-y_n}\}-1
+\]
+is non-negative by the triangle inequality and tends to zero.  Apply \eqref{eq:strong-modulus}.  Since LASQ would require vectors of norm tending to one at every sphere point, the space is not LASQ.
+\end{proof}
+
+\section{The full norm used in the source theorem is not LASQ}
+\label{sec:full-source}
+
+The source proof first constructs the preceding norm on a space isomorphic to $c_0$.  For a general space containing a complemented copy of $c_0$, it then writes $X=E\oplus W$ and equips $X$ with an $\ell_\infty$-sum norm.  The following elementary fact closes the gap between the core obstruction and the full construction.
+
+\begin{lemma}[$\ell_\infty$ sums]
+\label{lem:linfty-lasq}
+For non-zero Banach spaces $X$ and $Y$,
+\[
+ X\oplus_\infty Y\text{ is LASQ}
+ \quad\Longleftrightarrow\quad
+ X\text{ is LASQ or }Y\text{ is LASQ}.
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose first that $X$ is LASQ.  Given $(x,y)\in S_{X\oplus_\infty Y}$, choose $u_n\in S_X$ with
+\[
+ \norm{x/\norm{x}\pm u_n}\to1
+\]
+when $x\ne0$; if $x=0$, take any $u_n\in S_X$.  Convexity gives
+\[
+ \limsup_n\norm{x\pm u_n}\le1.
+\]
+Consequently,
+\[
+ \norm{(x,y)\pm(u_n,0)}
+ =\max\{\norm{x\pm u_n},\norm{y}\}\longrightarrow1.
+\]
+The same argument applies if $Y$ is LASQ.
+
+Conversely, suppose $X\oplus_\infty Y$ is LASQ and take $x\in S_X$, $y\in S_Y$.  There are $(u_n,v_n)\in B_{X\oplus_\infty Y}$ such that
+\[
+ \max\{\norm{u_n},\norm{v_n}\}\to1
+\]
+and
+\[
+ \max\{\norm{x\pm u_n},\norm{y\pm v_n}\}\to1.
+\]
+After passing to a subsequence, either $\norm{u_n}\to1$ or $\norm{v_n}\to1$.  In the first case $x$ has an LASQ sequence in $X$; in the second case $y$ has one in $Y$.  If neither summand were LASQ, choosing $x$ and $y$ to be bad sphere points would give a contradiction.
+\end{proof}
+
+\begin{theorem}
+\label{thm:full-source-not-lasq}
+The particular equivalent norm on $X$ constructed in the proof of \cite[Theorem~1.2]{RodriguezRueda2023} is not LASQ for any fixed $0<\eps<1$.
+\end{theorem}
+
+\begin{proof}
+The $c_0$ summand $E$ is equipped with the fixed-$\eps$ norm of \cref{sec:source}, so it is not LASQ by \cref{thm:tree-strong}.  If the complementary summand $W$ is non-zero, the source proof chooses on $W$ an equivalent norm whose unit ball has slices of arbitrarily small diameter.  Such a space cannot be LASQ, because LASQ implies the slice-D2P.  The final norm is the $\ell_\infty$-sum of these two norms, so \cref{lem:linfty-lasq} applies.  If $W=\{0\}$, the conclusion is already \cref{thm:tree-strong}.
+\end{proof}
+
+\begin{remark}
+The conclusion concerns the explicit norm built in the proof of the theorem.  It does not say that every norm satisfying properties (i)--(iii) of \cite[Theorem~1.2]{RodriguezRueda2023} must fail LASQ.
+\end{remark}
+
+\section{Two later candidate constructions are also not LASQ}
+\label{sec:candidates}
+
+\subsection{A general saturation obstruction in supremum norms}
+
+\begin{lemma}[Supremum-norm saturation]
+\label{lem:sup-saturation}
+Let $E$ be a subspace of $\ell_\infty(\Gamma)$ or $L_\infty(\mu)$, and let $\newnorm{\cdot}$ be an equivalent norm satisfying
+\begin{equation}
+\label{eq:sup-equivalence}
+ \norm{z}_\infty\le\newnorm{z}\le C\norm{z}_\infty
+ \qquad(z\in E).
+\end{equation}
+If $u\in S_{(E,\newnorm{\cdot})}$ is $\{\pm1\}$-valued pointwise (or almost everywhere), then $u$ is strongly extreme.  Quantitatively,
+\[
+ \newnorm{u\pm z}\le1+\delta
+ \quad\Longrightarrow\quad
+ \newnorm{z}\le C\delta.
+\]
+\end{lemma}
+
+\begin{proof}
+The left inequality in \eqref{eq:sup-equivalence} yields $\norm{u\pm z}_\infty\le1+\delta$.  Pointwise,
+\[
+ \max\{\abs{u(t)+z(t)},\abs{u(t)-z(t)}\}=1+\abs{z(t)},
+\]
+so $\norm{z}_\infty\le\delta$.  The right inequality in \eqref{eq:sup-equivalence} finishes the proof.
+\end{proof}
+
+\subsection[The 2024 L-infinity renorming]{The 2024 $L_\infty$ renorming}
+
+Cobollo, Isert, L\'opez-P\'erez, Mart\'in, Perreau, Quero, Quilis, Rodr\'iguez-Vidanes and Rueda Zoca constructed in \cite{CobolloEtAl2024} an equivalent norm on $L_\infty[0,1]$ whose unit ball has relatively weakly open subsets of arbitrarily small diameter and a weakly dense set of Daugavet points.  Their unit ball has the form
+\[
+ \mathcal B_\eps=\clco\Bigl(
+ (2K_0-\mathbf1)\cup(-2K_0+\mathbf1)
+ \cup\bigl((1-\eps)B_{L_\infty}+\eps B_{\ker E_0}\bigr)
+ \Bigr),
+\]
+with
+\[
+ (1-\eps)B_{L_\infty}\subset\mathcal B_\eps\subset B_{L_\infty}.
+\]
+Their tree functions $u_\alpha=2h_\alpha-\mathbf1$ belong to the new unit sphere and are $\{\pm1\}$-valued almost everywhere.
+
+\begin{corollary}
+\label{cor:cobollo-not-lasq}
+For every fixed $0<\eps<1$, the norm of \cite[Theorem~1.3]{CobolloEtAl2024} is not LASQ.  Every tree function $u_\alpha$ is strongly extreme, with
+\[
+ \newnorm{g}\le\frac{\delta}{1-\eps}
+ \quad\text{whenever}\quad
+ \newnorm{u_\alpha\pm g}\le1+\delta.
+\]
+\end{corollary}
+
+\begin{proof}
+The norm comparison is exactly \eqref{eq:sup-equivalence} with $C=(1-\eps)^{-1}$.  Apply \cref{lem:sup-saturation}.
+\end{proof}
+
+The cited paper proves that the same $u_\alpha$ are preserved extreme Daugavet points.  Strong extremity is a different and stronger local obstruction for the present purpose; it appears to follow immediately from the ambient $L_\infty$ saturation but was not used there.
+
+\subsection{The 2026 dual LD2P-without-D2P example}
+
+Haller, Kaasik and Ostrak constructed a metric space $M$ for which $\Lip_0(M)$ has the LD2P but fails even the weak-star D2P \cite[Example~5.2]{HallerKaasikOstrak2026}.  Its points are
+\[
+ M=\{x_i,y_i,u_j^i,v_j^i:i\in\{1,2,3\},\ j\in\N\}.
+\]
+The pairs at distance one are
+\[
+ y_1x_2,\quad y_2x_3,\quad y_3x_1,
+\]
+and, for each $i,j$, the three edges in the path
+\[
+ x_i-u_j^i-v_j^i-y_i.
+\]
+Every other pair of distinct points has distance two.  Take $x_1$ as base point.
+
+The distance-one graph is bipartite, with colour classes
+\[
+ \mathcal C_0=\{x_i,v_j^i\},
+ \qquad
+ \mathcal C_1=\{y_i,u_j^i\}.
+\]
+Define $f\in\Lip_0(M)$ by $f=0$ on $\mathcal C_0$ and $f=1$ on $\mathcal C_1$.
+
+\begin{proposition}
+\label{prop:lip-strong}
+The function $f$ is a strongly extreme point of $B_{\Lip_0(M)}$.  More precisely,
+\[
+ \norm{f\pm g}_{\Lip}\le1+\delta
+ \quad\Longrightarrow\quad
+ \norm{g}_{\Lip}\le3\delta.
+\]
+Consequently the space in \cite[Example~5.2]{HallerKaasikOstrak2026} is not LASQ.
+\end{proposition}
+
+\begin{proof}
+The function $f$ changes by exactly one across every distance-one edge, hence $\norm{f}_{\Lip}=1$.  If $p,q$ form such an edge and $a=g(p)-g(q)$, the two assumptions give
+\[
+ \abs{1+a}\le1+\delta,
+ \qquad
+ \abs{1-a}\le1+\delta,
+\]
+after possibly reversing the orientation.  Thus $\abs{a}\le\delta$.
+
+The distance-one graph has graph diameter six.  Hence any two vertices can be joined by at most six unit edges, and therefore
+\[
+ \abs{g(p)-g(q)}\le6\delta
+ \qquad(p,q\in M).
+\]
+On a distance-one pair the Lipschitz quotient is at most $\delta$; on every other pair the metric distance is two, so the quotient is at most $3\delta$.  This proves the estimate.
+\end{proof}
+
+Thus the most recent explicit dual example separating LD2P from D2P does not answer the LASQ question either.
+
+\section{The weakly-null-net route to D2P}
+\label{sec:net}
+
+The central missing ingredient can be formulated cleanly.  Say that $X$ has the \emph{net-LASQ property} if for every $x\in S_X$ there is a weakly null net $(y_\gamma)$ in $X$ such that
+\[
+ \norm{y_\gamma}\to1,
+ \qquad
+ \norm{x\pm y_\gamma}\to1.
+\]
+
+\begin{proposition}
+\label{prop:net-implies-d2p}
+Every Banach space with the net-LASQ property has the D2P.
+\end{proposition}
+
+\begin{proof}
+Let $U\subset B_X$ be non-empty and relatively weakly open.  Since a net-LASQ space is infinite-dimensional, $S_X$ is weakly dense in $B_X$; choose $x\in U\cap S_X$.  There are $f_1,\dots,f_n\in X^*$ and $\rho>0$ such that
+\[
+ W=\{z\in B_X:\abs{f_i(z-x)}<\rho\ (i=1,\dots,n)\}\subset U.
+\]
+Let $(y_\gamma)$ be a net as above and set
+\[
+ \eta_\gamma=
+ \max\{\norm{x+y_\gamma},\norm{x-y_\gamma},1\}-1.
+\]
+Then $\eta_\gamma\to0$ and
+\[
+ z_\gamma^\pm=\frac{x\pm y_\gamma}{1+\eta_\gamma}\in B_X.
+\]
+Since $y_\gamma\to0$ weakly,
+\[
+ f_i(z_\gamma^\pm-x)
+ =\frac{\pm f_i(y_\gamma)-\eta_\gamma f_i(x)}{1+\eta_\gamma}
+ \longrightarrow0.
+\]
+Thus $z_\gamma^\pm\in W$ eventually, while
+\[
+ \norm{z_\gamma^+-z_\gamma^-}
+ =\frac{2\norm{y_\gamma}}{1+\eta_\gamma}\longrightarrow2.
+\]
+Hence $\diam U=2$.
+\end{proof}
+
+Ciaci proved that positive LASQ Banach lattices have the net-LASQ property, and consequently the D2P \cite{Ciaci2023}.  The same paper explicitly asks whether ordinary LASQ implies this net property.  A positive solution of that stronger question would settle the original LASQ-versus-D2P problem positively.
+
+\section{A finite-rank lower bound for weakly open sets}
+\label{sec:finite-rank}
+
+The next result is independent of the special constructions above.  It quantifies what LASQ alone forces inside a weak neighborhood described by finitely many functionals.
+
+\begin{lemma}[Almost diametral pairs over extreme quotient points]
+\label{lem:extreme-lifting}
+Let $X$ be LASQ, let $T:X\to F$ be a finite-rank operator, and put
+\[
+ K=\overline{T(B_X)}\subset F.
+\]
+If $v\in\ext K$, then for every $\eta>0$ there are $a,b\in B_X$ such that
+\[
+ \norm{Ta-v}<\eta,
+ \qquad
+ \norm{Tb-v}<\eta,
+ \qquad
+ \norm{a-b}>2-\eta.
+\]
+\end{lemma}
+
+\begin{proof}
+If $T=0$ there is nothing to prove, so assume $K$ is non-trivial.  Since $K$ is symmetric, $0$ is not an extreme point.  Choose $z_k\in B_X$ with $Tz_k\to v$.  We claim that $\norm{z_k}\to1$.  Otherwise, after passing to a subsequence, $\norm{z_k}\le c<1$.  Then $v\in cK$, so $v=cw+(1-c)0$ for some $w\in K$, contradicting extremality.
+
+Put $x_k=z_k/\norm{z_k}\in S_X$, so $Tx_k\to v$.  By LASQ choose $y_k\in S_X$ and numbers $\eps_k\downarrow0$ such that
+\[
+ \norm{x_k\pm y_k}\le1+\eps_k.
+\]
+After passing to a subsequence, $Ty_k\to h\in F$.  Set
+\[
+ a_k=\frac{x_k+y_k}{1+\eps_k},
+ \qquad
+ b_k=\frac{x_k-y_k}{1+\eps_k}.
+\]
+Then $a_k,b_k\in B_X$, $\norm{a_k-b_k}=2/(1+\eps_k)\to2$, and
+\[
+ Ta_k\to v+h,
+ \qquad
+ Tb_k\to v-h.
+\]
+Both limits belong to $K$.  Since $v$ is their midpoint and is extreme, $h=0$.  The assertion follows for large $k$.
+\end{proof}
+
+\begin{theorem}[Finite-rank diameter estimate]
+\label{thm:finite-rank}
+Let $X$ be LASQ, let $T:X\to F$ have rank $r<\infty$, and let $V\subset T(X)$ be open.  If
+\[
+ U=B_X\cap T^{-1}(V)\ne\varnothing,
+\]
+then
+\begin{equation}
+\label{eq:rank-bound}
+ \diam U\ge\frac{2}{r+1}.
+\end{equation}
+For $r=0$, the right conclusion is understood as $\diam U=2$.
+\end{theorem}
+
+\begin{proof}
+Assume $r\ge1$ and put $K=\overline{T(B_X)}$.  Choose $x_0\in U$ and set $c=Tx_0\in V\cap K$.  By the finite-dimensional Minkowski--Carath\'eodory theorem, there are extreme points $v_1,\dots,v_m$ of $K$ and coefficients $\lambda_i\ge0$ such that
+\[
+ c=\sum_{i=1}^m\lambda_i v_i,
+ \qquad
+ \sum_{i=1}^m\lambda_i=1,
+ \qquad
+ m\le r+1.
+\]
+Choose $j$ with $\lambda_j=\max_i\lambda_i$, so $\lambda_j\ge1/(r+1)$.
+
+Fix $\eta>0$.  By \cref{lem:extreme-lifting}, choose $a_j,b_j\in B_X$ with $Ta_j,Tb_j$ as close to $v_j$ as desired and $\norm{a_j-b_j}>2-\eta$.  For $i\ne j$, choose $c_i\in B_X$ with $Tc_i$ as close to $v_i$ as desired.  Define
+\[
+ a=\lambda_j a_j+\sum_{i\ne j}\lambda_i c_i,
+ \qquad
+ b=\lambda_j b_j+\sum_{i\ne j}\lambda_i c_i.
+\]
+Both points belong to $B_X$.  Because $V$ is open and $Ta,Tb$ can be made arbitrarily close to $c$, the choices can be made so that $a,b\in U$.  Finally,
+\[
+ \norm{a-b}=\lambda_j\norm{a_j-b_j}
+ >\lambda_j(2-\eta).
+\]
+Letting $\eta\downarrow0$ gives \eqref{eq:rank-bound}.
+\end{proof}
+
+\begin{corollary}
+If a basic relatively weakly open subset of $B_X$ is described using $r$ linearly independent functionals, then an LASQ space forces its diameter to be at least $2/(r+1)$.
+\end{corollary}
+
+\begin{remark}
+This estimate is compatible with the source construction.  Its weakly open sets of small diameter use an increasing number of tree-coordinate constraints.  The bound tends to zero as the number of independent functionals grows, so it cannot by itself prove D2P.
+\end{remark}
+
+\section{Literature search and current status}
+\label{sec:literature}
+
+The literature search covered the exact problem statement, the terms LASQ, WASQ, D2P, slice-D2P/LD2P, recent work on ultrapowers, Banach lattices, Lipschitz-free spaces, spaces of Lipschitz functions, and the renormings most closely related to the source construction.  The following are the most relevant checkpoints.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}X>{\raggedright\arraybackslash}p{0.25\textwidth}@{}}
+\toprule
+Source & Result & Relevance here\\
+\midrule
+Rodr\'iguez--Rueda Zoca (2023) \cite{RodriguezRueda2023} & Poses the LASQ-without-D2P question and constructs the fixed-$\eps$ near-square renorming. & The explicit norm is ruled out in \cref{sec:source,sec:full-source}.\\
+Ciaci (2023) \cite{Ciaci2023} & Positive LASQ Banach lattices have a weakly null LASQ net and hence D2P. & Gives the strongest general positive mechanism currently found; asks whether the net conclusion holds for every LASQ space.\\
+Rueda Zoca (2025) \cite{RuedaZoca2025} & LASQ yields strong uniform slice-D2P consequences in ultrapowers. & Strengthens the slice conclusion, but does not establish D2P.\\
+Haller--Kaasik--Ostrak (2023) and Kaasik (2026) \cite{HKO2023,KaasikThesis2026} & For Lipschitz-free spaces, LASQ is equivalent to the underlying complete metric space being a length space, and hence to Daugavet/D2P behaviour. & The problem has a positive answer in this special class.\\
+Haller--Kaasik--Ostrak (2026) \cite{HallerKaasikOstrak2026} & Constructs a dual space $\Lip_0(M)$ with LD2P but not D2P. & The explicit checkerboard point in \cref{prop:lip-strong} shows this example is not LASQ.\\
+Cobollo et al. (2024) \cite{CobolloEtAl2024} & Renorms $L_\infty$ with arbitrarily small weakly open subsets and many Daugavet points. & Its $\{\pm1\}$ tree points are strongly extreme; see \cref{cor:cobollo-not-lasq}.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+No article, preprint, thesis, or survey located in this search states a general proof that LASQ implies D2P or gives a LASQ counterexample to D2P.  The most recent sources surveyed continue to record only special classes and stronger auxiliary hypotheses.  This is necessarily a literature-search conclusion rather than a proof of non-existence of an unindexed result.
+
+\section{Strategies tested and the remaining bottleneck}
+\label{sec:strategies}
+
+Several natural ways of turning the source's ``almost LASQ'' norms into an exact LASQ norm do not produce a counterexample.
+
+\paragraph{Letting $\eps\downarrow0$ on the same space.}
+If one takes the closed convex hull of the union of source balls $B_{\eps_n}$ with $\eps_n\downarrow0$, then the inclusions $(1-\eps_n)B_Z\subset B_{\eps_n}\subset B_Z$ force the resulting ball to be exactly $B_Z$.  The limiting space $c(\N^{<\omega})\oplus_\infty c_0$ is ASQ because of its $c_0$ summand, and therefore has the D2P.
+
+\paragraph{Ultraproducts of the fixed-$\eps_n$ norms.}
+The source spaces are $(r,s)$-SQ for all $r,s<(1-\eps_n)/(1+\eps_n)$.  When $\eps_n\to0$, these constants tend to one, and the standard ultraproduct argument upgrades the limit to ASQ.  Again the D2P is recovered rather than destroyed.
+
+\paragraph{Direct sums.}
+A $c_0$-sum creates tail directions and is ASQ.  An $\ell_\infty$-sum is LASQ only when at least one factor is LASQ, by \cref{lem:linfty-lasq}; if that factor has D2P, the usual product weak neighborhoods retain diameter two.  Other standard absolute sums do not bypass the same compatibility constraints; see \cite{Hardtke2018}.
+
+\paragraph{Finite-dimensional images.}
+The proof of \cref{thm:finite-rank} shows that over an extreme point of the finite-dimensional image $\overline{T(B_X)}$, LASQ directions must become small under $T$.  At an interior image point, however, a non-zero symmetric segment can remain inside the image.  Carath\'eodory decomposition then loses a factor of at most $r+1$.  Eliminating that loss would amount to finding one almost-square direction which is small under all the defining functionals, precisely the net-LASQ issue of \cref{sec:net}.
+
+Thus the fixed-$\eps$ leakage mechanism is now well understood, but no construction found here simultaneously achieves the following two incompatible-looking requirements:
+\begin{itemize}
+\item at every sphere point, a norm-one almost-square direction; and
+\item in one finite-codimensional weak neighborhood, a uniform obstruction to all almost diametral pairs.
+\end{itemize}
+
+\section{Evidence and packet history}
+
+This packet supersedes the June 15, 2026 root-point obstruction packet.  That
+earlier packet proved that the root generator in the source fixed-$\eps$
+renorming is strongly extreme.  The active packet keeps the same source target
+but incorporates the supplied June 22 research note, which strengthens the
+obstruction to all tree generators, the full norm used in the source proof, two
+later candidate constructions, and a finite-rank lower bound for weakly open
+subsets of LASQ unit balls.  The general LASQ-versus-D2P question remains open.
+
+\section{Conclusion}
+
+The supplied partial proof is mathematically sound.  The fixed-$\eps$ source ball has a sharper symmetric leakage inequality, and all of its tree generators are quantitatively strongly extreme.  This also rules out the complete norm actually used in the source proof of Theorem~1.2.  Two prominent later LD2P-without-D2P constructions are ruled out by similarly explicit strong-extremity arguments.
+
+The general LASQ-versus-D2P question was not resolved by the literature search or by the additional arguments developed here.  The finite-rank bound $2/(r+1)$ is a rigorous partial result, while the weakly-null-net formulation identifies a clean sufficient condition whose validity for arbitrary LASQ spaces remains the central bottleneck.
+
+\begin{thebibliography}{99}
+
+\bibitem{ALL2016}
+T.~A. Abrahamsen, J.~Langemets and V.~Lima,
+\emph{Almost square Banach spaces},
+J. Math. Anal. Appl. \textbf{434} (2016), 1549--1565.
+\href{https://doi.org/10.1016/j.jmaa.2015.10.013}{doi:10.1016/j.jmaa.2015.10.013}.
+
+\bibitem{Ciaci2023}
+S.~Ciaci,
+\emph{Locally almost square Banach lattices},
+Rev. R. Acad. Cienc. Exactas F\'is. Nat. Ser. A Mat. RACSAM \textbf{117} (2023), article 97.
+\href{https://doi.org/10.1007/s13398-023-01434-6}{doi:10.1007/s13398-023-01434-6}.
+
+\bibitem{CobolloEtAl2024}
+C.~Cobollo, D.~Isert, G.~L\'opez-P\'erez, M.~Mart\'in, Y.~Perreau, A.~Quero,
+A.~Quilis, D.~L. Rodr\'iguez-Vidanes and A.~Rueda Zoca,
+\emph{Banach spaces with small weakly open subsets of the unit ball and massive sets of Daugavet and $\Delta$-points},
+Rev. R. Acad. Cienc. Exactas F\'is. Nat. Ser. A Mat. RACSAM \textbf{118} (2024), article 96.
+\href{https://doi.org/10.1007/s13398-024-01596-x}{doi:10.1007/s13398-024-01596-x}.
+
+\bibitem{Hardtke2018}
+J.-D. Hardtke,
+\emph{Summands in locally almost square and locally octahedral spaces},
+Acta Comment. Univ. Tartu. Math. \textbf{22} (2018), 149--162.
+\href{https://doi.org/10.12697/ACUTM.2018.22.13}{doi:10.12697/ACUTM.2018.22.13}.
+
+\bibitem{HKO2023}
+R.~Haller, J.~K. Kaasik and A.~Ostrak,
+\emph{The Lipschitz-free space over a length space is locally almost square but never almost square},
+Mediterr. J. Math. \textbf{20} (2023), article 39.
+\href{https://doi.org/10.1007/s00009-022-02228-9}{doi:10.1007/s00009-022-02228-9}.
+
+\bibitem{HallerKaasikOstrak2026}
+R.~Haller, J.~K. Kaasik and A.~Ostrak,
+\emph{The local diameter two property and the diameter two property in spaces of Lipschitz functions},
+J. Math. Anal. Appl. \textbf{556} (2026), article 130178.
+\href{https://doi.org/10.1016/j.jmaa.2025.130178}{doi:10.1016/j.jmaa.2025.130178}.
+
+\bibitem{KaasikThesis2026}
+J.~K. Kaasik,
+\emph{Diameter two properties and almost square properties in Lipschitz-free spaces and spaces of Lipschitz functions},
+Dissertationes Mathematicae Universitatis Tartuensis 146, University of Tartu Press, 2026.
+
+\bibitem{RodriguezRueda2023}
+J.~Rodr\'iguez and A.~Rueda Zoca,
+\emph{On weakly almost square Banach spaces},
+Proc. Edinb. Math. Soc. \textbf{66} (2023), 979--997.
+\href{https://doi.org/10.1017/S0013091523000536}{doi:10.1017/S0013091523000536}.
+
+\bibitem{RuedaZoca2025}
+A.~Rueda Zoca,
+\emph{Slice diameter two property in ultrapowers},
+Bull. Malays. Math. Sci. Soc. \textbf{48} (2025), article 62.
+\href{https://doi.org/10.1007/s40840-025-01847-z}{doi:10.1007/s40840-025-01847-z}.
+
+\end{thebibliography}
+
+\end{document}

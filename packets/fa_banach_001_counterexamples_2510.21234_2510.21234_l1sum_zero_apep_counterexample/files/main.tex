@@ -1,0 +1,194 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\APEP}{\operatorname{APEP}}
+\newcommand{\Ball}{B}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\R}{\mathbb{R}}
+
+\title{A Counterexample for Zero APEPs in Infinite \texorpdfstring{$\ell_1$}{ell-1}-Sums}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Question 8.1 from:
+
+\begin{quote}
+Ramon J. Aliaga, Luis C. Garcia-Lirola, Juan Guerrero-Viu, Matias Raja,
+Abraham Rueda Zoca, \emph{Almost preserved extreme points},
+arXiv:2510.21234.
+\end{quote}
+
+The source location is page 37 of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Question 8.1 asks:
+
+\begin{quote}
+Let $\{X_i:i\in I\}$ be an arbitrary infinite family of Banach spaces and
+let $X$ be its $\ell_1$-sum. If $0\in \Ball_X$ is APEP in $\Ball_X$, must
+there exist $i$ such that $0\in X_i$ is APEP in $\Ball_{X_i}$?
+\end{quote}
+
+We give a negative answer.
+
+\section*{Definitions}
+
+Let $C$ be a bounded closed convex subset of a Banach space $E$. A point
+$x\in C$ is an almost preserved extreme point, abbreviated APEP, if every
+relatively weakly open subset $W$ of $C$ containing $x$ contains a
+non-empty slice of $C$. For the unit ball, a slice has the form
+\[
+  S(\Ball_E,f,\alpha)
+  =
+  \{y\in \Ball_E: f(y)>\sup f(\Ball_E)-\alpha\},
+\]
+where $f\in E^*$ and $\alpha>0$.
+
+\section*{Counterexample}
+
+\begin{theorem}
+There is a countably infinite family of Banach spaces $(X_n)$ such that
+$0$ is an APEP of the unit ball of $X=(\bigoplus_{n=1}^{\infty}X_n)_1$,
+but $0$ is not an APEP of the unit ball of any coordinate $X_n$.
+\end{theorem}
+
+\begin{proof}
+For each $n\ge 1$, let $X_n=H_n=\R^n$ with its Euclidean norm, and put
+\[
+  X=\left(\bigoplus_{n=1}^{\infty} H_n\right)_1.
+\]
+Then
+\[
+  X^*=\left(\bigoplus_{n=1}^{\infty} H_n\right)_\infty,
+\]
+where we identify each $H_n^*$ with $H_n$ by the inner product.
+
+First, $0$ is not an APEP of $\Ball_{H_n}$ for any fixed $n$. Indeed, in
+finite dimension the weak and norm topologies coincide, so
+\[
+  W_n=\{h\in \Ball_{H_n}:\norm{h}<1/2\}
+\]
+is a relatively weakly open neighbourhood of $0$ in $\Ball_{H_n}$. No
+non-empty slice of $\Ball_{H_n}$ is contained in $W_n$: if
+$S(\Ball_{H_n},f,\alpha)$ is non-empty, then either it is all of
+$\Ball_{H_n}$ in the degenerate case, or it contains a unit vector at
+which $f$ attains its norm. In both cases it contains a point of norm
+$1$.
+
+It remains to show that $0$ is an APEP of $\Ball_X$. Let $W$ be a
+relatively weakly open neighbourhood of $0$ in $\Ball_X$. After shrinking
+$W$, we may assume that
+\[
+  W=
+  \left\{x\in \Ball_X:
+  |x_j^*(x)|<\varepsilon,\quad j=1,\dots,m
+  \right\}
+\]
+for some $x_1^*,\dots,x_m^*\in X^*$ and $\varepsilon>0$. Write
+\[
+  x_j^*=(a_{j,n})_{n\ge 1},\qquad a_{j,n}\in H_n,
+\]
+and let
+\[
+  M=\max_{1\le j\le m}\norm{x_j^*}.
+\]
+If $M=0$, any non-empty slice of $\Ball_X$ is contained in $W$, so assume
+$M>0$.
+
+Choose $n>m$. Since $\dim H_n=n$, there is a unit vector $u\in H_n$
+orthogonal to the finite set
+\[
+  a_{1,n},a_{2,n},\dots,a_{m,n}.
+\]
+Define $\varphi\in X^*$ by
+\[
+  \varphi((h_k)_{k\ge 1})=\langle h_n,u\rangle.
+\]
+Choose $\delta>0$ so small that
+\[
+  M\bigl(\sqrt{2\delta}+\delta\bigr)<\varepsilon.
+\]
+Consider the slice
+\[
+  S=\{x=(h_k)\in\Ball_X:\varphi(x)>1-\delta\}.
+\]
+This slice is non-empty, since it contains the vector supported only at
+coordinate $n$ with value $u$.
+
+We claim that $S\subseteq W$. Let $x=(h_k)\in S$. Since
+\[
+  1-\delta < \langle h_n,u\rangle\le \norm{h_n}\le
+  \sum_{k=1}^{\infty}\norm{h_k}\le 1,
+\]
+we have
+\[
+  \sum_{k\ne n}\norm{h_k}<\delta.
+\]
+Also, using $\norm{h_n}\le 1$ and $\langle h_n,u\rangle>1-\delta$,
+\[
+  \norm{h_n-u}^2
+  =
+  \norm{h_n}^2+1-2\langle h_n,u\rangle
+  \le 2\delta.
+\]
+For each $j=1,\dots,m$, orthogonality gives
+\[
+  \langle a_{j,n},h_n\rangle
+  =
+  \langle a_{j,n},h_n-u\rangle.
+\]
+Therefore
+\[
+\begin{aligned}
+  |x_j^*(x)|
+  &\le |\langle a_{j,n},h_n\rangle|
+      + \sum_{k\ne n}|\langle a_{j,k},h_k\rangle|  \\
+  &\le M\norm{h_n-u}+M\sum_{k\ne n}\norm{h_k} \\
+  &< M\bigl(\sqrt{2\delta}+\delta\bigr)
+   < \varepsilon.
+\end{aligned}
+\]
+Thus $x\in W$ for every $x\in S$, so $S\subseteq W$.
+
+Every relatively weakly open neighbourhood of $0$ in $\Ball_X$ contains
+a non-empty slice of $\Ball_X$. Hence $0$ is an APEP of $\Ball_X$, even
+though no coordinate has $0$ as an APEP. This gives a negative answer to
+Question 8.1.
+\end{proof}
+
+\section*{Verification Notes}
+
+The argument is purely analytic. The only quantitative estimate is the
+Hilbert-space fact that if $\langle h,u\rangle>1-\delta$ with
+$\norm{h}\le 1=\norm{u}$, then $\norm{h-u}\le \sqrt{2\delta}$. The script
+\texttt{code/check\_slice\_estimate.py} performs randomized finite
+dimensional checks of the orthogonal-vector construction and this bound.
+It is a sanity check only; the proof above is the certificate.
+
+\section*{Limitations and Novelty Check}
+
+This packet answers the source question as stated and in its intended
+infinite-sum setting: the counterexample is a genuine infinite
+$\ell_1$-sum, not a degenerate one-dimensional edge case. I have not
+performed a literature search beyond the source paper and the local
+pipeline corpus, so the novelty status is ``candidate'' pending human
+and literature review.
+
+\end{document}
+

@@ -1,0 +1,221 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\CR}{\mathcal{CR}}
+\newcommand{\Fin}{\mathrm{Fin}}
+\newcommand{\Exh}{\mathrm{Exh}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Partial Result: Unconditional Support Ideals Are Non-Pathological}
+\author{Automatic Math Discovery Run \texttt{fa\_banach\_001}}
+\date{June 16, 2026}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\section*{Status}
+
+This packet records a \textbf{partial result} related to Question 11.2 of
+Kwela--Swaczyna, \emph{Zoo of ideal Schauder bases}, arXiv:2508.21235.  The
+full question remains open.
+
+\section*{Source Question}
+
+The source paper proves in Theorem 7.1 that every non-pathological analytic
+\(P\)-ideal can occur as a critical ideal \(\CR(X,\hat a)\).  It then asks:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus the remaining difficulty is the possible realization of pathological
+analytic \(P\)-ideals as critical ideals of Banach-space ideal Schauder bases.
+
+\section*{Definitions}
+
+Let \(\phi:\mathcal P(\omega)\to[0,\infty]\) be a lower semicontinuous
+submeasure.  Recall that
+\[
+  \Exh(\phi)=
+  \{A\subseteq\omega:\lim_{m\to\infty}\phi(A\setminus m)=0\}.
+\]
+Following the source paper, \(\phi\) is \emph{non-pathological} if
+\[
+  \phi(A)=
+  \sup\{\mu(A): \mu \text{ is a finitely supported measure and }
+  \mu(B)\leq \phi(B)\text{ for every }B\subseteq\omega\}
+\]
+for every \(A\subseteq\omega\).
+
+\section*{Idea of the Proof}
+
+The construction in Theorem 7.1 of the source paper realizes a given
+non-pathological analytic \(P\)-ideal by making membership of a set \(A\) mean
+that a positive weighted subseries indexed by \(A\) converges in a Banach
+sequence space.  The theorem below proves a converse for this whole
+positive-series mechanism.  Once a 1-unconditional basis is present, the norm
+of finite positive sums defines a lower semicontinuous submeasure \(\phi\).
+Hahn--Banach, together with unconditionality, supplies positive norming
+functionals for finite positive sums; these functionals are exactly the
+finitely supported dominated measures witnessing that \(\phi\) is
+non-pathological.
+
+\section*{Theorem}
+
+\begin{theorem}
+Let \(X\) be a Banach space with a 1-unconditional Schauder basis
+\((u_n)_{n\in\omega}\), and let \(c_n>0\) for all \(n\in\omega\).  Define
+\[
+  \mathcal J_{X,c}
+  =
+  \left\{A\subseteq\omega:
+  \sum_{n\in A} c_n u_n \text{ converges in }X
+  \right\}.
+\]
+Then there is a non-pathological lower semicontinuous submeasure \(\phi\) on
+\(\omega\) such that
+\[
+  \mathcal J_{X,c}=\Exh(\phi).
+\]
+One may take
+\[
+  \phi(A)=
+  \sup\left\{
+  \left\|\sum_{n\in F} c_n u_n\right\|:
+  F\in[A]^{<\omega}
+  \right\}.
+\]
+\end{theorem}
+
+\begin{proof}
+The displayed formula defines a submeasure: monotonicity is immediate, and
+subadditivity follows from the triangle inequality by splitting each finite
+\(F\subseteq A\cup B\) into \(F\cap A\) and \(F\cap B\).  It is lower
+semicontinuous because it is the supremum over finite subsets:
+\[
+  \phi(A)=\sup_m \phi(A\cap m).
+\]
+
+We first identify \(\mathcal J_{X,c}\) with \(\Exh(\phi)\).  Suppose
+\(\lim_m\phi(A\setminus m)=0\).  Then finite tails of
+\(\sum_{n\in A}c_nu_n\) have arbitrarily small norm, so the net of finite
+partial sums is Cauchy and the subseries converges in \(X\).
+
+Conversely, suppose \(\sum_{n\in A}c_nu_n\) converges, and let
+\[
+  z_m=\sum_{\substack{n\in A\\ n\geq m}} c_n u_n
+\]
+be its \(m\)-th tail.  Since \((u_n)\) is 1-unconditional, the induced lattice
+norm is monotone on positive vectors: whenever \(0\leq y\leq z\)
+coordinatewise, \(\|y\|\leq\|z\|\).  Hence for every finite
+\(F\subseteq A\setminus m\),
+\[
+  \left\|\sum_{n\in F}c_nu_n\right\|\leq \|z_m\|.
+\]
+Taking the supremum over such \(F\) gives \(\phi(A\setminus m)\leq\|z_m\|\),
+and \(\|z_m\|\to0\).  Therefore \(A\in\Exh(\phi)\).
+
+It remains to prove that \(\phi\) is non-pathological.  Fix a finite
+\(F\subseteq\omega\), and put
+\[
+  x_F=\sum_{n\in F}c_nu_n.
+\]
+By Hahn--Banach, there is \(f\in S_{X^*}\) such that \(f(x_F)=\|x_F\|\).  Since
+the basis is 1-unconditional, replacing \(f\) by its coordinatewise absolute
+value gives a positive functional \(g\in S_{X^*}\) with
+\[
+  g(x_F)=\|x_F\|=\phi(F).
+\]
+Define the finitely supported measure
+\[
+  \mu_F(\{n\})=
+  \begin{cases}
+    c_n g(u_n), & n\in F,\\
+    0, & n\notin F.
+  \end{cases}
+\]
+For every \(B\subseteq\omega\),
+\[
+  \mu_F(B)=g\left(\sum_{n\in B\cap F}c_nu_n\right)
+  \leq
+  \left\|\sum_{n\in B\cap F}c_nu_n\right\|
+  \leq \phi(B),
+\]
+while \(\mu_F(F)=\phi(F)\).  Thus each finite value \(\phi(F)\) is attained by
+a finitely supported measure dominated by \(\phi\).  Since \(\phi\) is lower
+semicontinuous,
+\[
+  \phi(A)=\sup\{\phi(F):F\in[A]^{<\omega}\}
+\]
+for all \(A\subseteq\omega\), and the preceding measures show exactly that
+\(\phi\) is non-pathological.
+\end{proof}
+
+\begin{corollary}
+The positive weighted-subseries construction used in Theorem 7.1 of
+arXiv:2508.21235 cannot be extended to realize pathological analytic
+\(P\)-ideals merely by changing the Banach sequence norm while retaining a
+1-unconditional basis.
+\end{corollary}
+
+\begin{proof}
+Theorem 7.1 realizes a non-pathological analytic \(P\)-ideal \(\mathcal I\)
+by arranging that \(A\in\mathcal I\) exactly when a weighted positive subseries
+\(\sum_{n\in A}c_nu_n\) converges in a Banach sequence space with an
+unconditional basis.  The theorem above shows that every ideal obtained in
+this way is \(\Exh(\phi)\) for a non-pathological lsc submeasure \(\phi\).
+Thus a pathological analytic \(P\)-ideal cannot be obtained by this route.
+\end{proof}
+
+\section*{Limitations}
+
+This does not answer Question 11.2 in full.  It rules out one natural route:
+realizing the missing pathological analytic \(P\)-ideals by the same
+unconditional positive-series mechanism used in Theorem 7.1.  It does not
+exclude more general ideal bases, non-unconditional constructions, or
+constructions whose critical ideals are not simply support ideals of positive
+weighted subseries.
+
+\section*{Verification and Novelty Check}
+
+The proof is purely abstract; no finite computation is used.  The only code in
+the packet is the reproducible crop script for the source question.
+
+Local registry, solution, attempt, and proof-gap indexes had no exact prior
+packet for arXiv:2508.21235 or this obstruction.  A bounded web search for the
+exact title and phrases ``ideal Schauder basis'', ``critical ideal'', and
+``analytic P-ideal'' found no later answer to Question 11.2.  The source paper
+itself proves the forward non-pathological realization theorem, but not the
+converse obstruction for unconditional support ideals recorded here.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid partial result.  The main checks are the use of a
+positive norming functional for positive finite sums in a 1-unconditional
+basis and the equivalence between convergence of the positive subseries and
+the tail condition \(\lim_m\phi(A\setminus m)=0\).
+
+\begin{thebibliography}{9}
+
+\bibitem{KS2508}
+A. Kwela and J. Swaczyna,
+\emph{Zoo of ideal Schauder bases}, arXiv:2508.21235.
+
+\bibitem{Solecki1999}
+S. Solecki,
+\emph{Analytic ideals and their applications},
+Ann. Pure Appl. Logic 99 (1999), 51--72.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,603 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\T}{\mathbb T}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\Gcal}{\mathcal G}
+\newcommand{\Pprop}{\mathsf P}
+\newcommand{\gam}{\gamma}
+\newcommand{\Sch}{\mathcal S}
+\newcommand{\F}{\mathcal F}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\dotH}{\dot H}
+
+\title{Stronger Partial Resolution Packet for Problem 3.19}
+\author{Run \texttt{fa\_banach\_001}: consolidated stronger partial}
+\date{June 18, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This packet upgrades the previous partial packet for Problem 3.19 of
+Rozendaal--Veraar, \emph{Fourier multiplier theorems involving type and
+cotype}.  It is still not a full intrinsic classification of all Banach pairs
+\((X,Y)\), but it adds several substantial results: the scalar classification,
+endpoint failures for every nonzero Banach pair, a corrected reading of
+Theorem 3.21, an endpoint correction to the positive-kernel statements, a
+closed-graph uniformization principle, monotonicity by fractional integration,
+an exact bilinear \(\gam\)-Pitt criterion, a target cotype-index obstruction,
+and a complete classification for standard infinite-dimensional
+\(L^u\to L^v\) and \(\ell^u\to\ell^v\) pairs.  The arbitrary Banach-pair
+classification remains open.
+\end{abstract}
+
+\section{Source problem and status}
+
+The source paper is Jan Rozendaal and Mark Veraar, \emph{Fourier multiplier
+theorems involving type and cotype}, arXiv:1605.09340; the arXiv page records
+the journal version in \emph{J. Fourier Anal. Appl.} 24 (2018), 583--619
+\cite{RV}.
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/problem_3_19_crop.png}
+\end{center}
+
+Problem 3.19 asks for a classification of Banach spaces \(X,Y\) for which, for
+\[
+  1\le p\le 2\le q\le\infty,\qquad
+  \frac1r=\frac1p-\frac1q,\qquad r\in(1,\infty],
+\]
+every \(X\)-strongly measurable symbol
+\[
+  m:\R^d\setminus\{0\}\to\cL(X,Y)
+\]
+whose weighted range
+\[
+  \{\abs{\xi}^{d/r}m(\xi):\xi\ne0\}
+\]
+is \(\gam\)-bounded defines a bounded Fourier multiplier
+\[
+  T_m:L^p(\R^d;X)\to L^q(\R^d;Y).
+\]
+We write this property as \(\Pprop^d_{p,q}(X,Y)\), or simply
+\(\Pprop_{p,q}(X,Y)\).
+
+\paragraph{Status.}
+This packet is a \emph{strong partial result}.  It gives complete answers in
+several important regimes, especially the scalar case, all endpoint faces, and
+the \(L^u\to L^v\) scale.  It does not give a familiar intrinsic classification
+for arbitrary Banach pairs.
+
+\section{Summary of strengthened conclusions}
+
+\begin{center}
+\begin{tabular}{@{}p{0.34\linewidth}p{0.56\linewidth}@{}}
+\toprule
+Topic & Result in this packet\\
+\midrule
+Scalar case & \(\Pprop_{p,q}(\C,\C)\) holds exactly for
+\(1<p\le2\le q<\infty\).\\
+Endpoint faces & If \(X,Y\ne0\), then \(p=1\) with finite \(q\ge2\) fails, and
+\(q=\infty\) with \(1<p\le2\) fails.\\
+Theorem 3.21 & The positive lattice theorem is valid after deleting \(p=1\)
+and interpreting the target embedding as an isomorphic closed-subspace
+embedding.\\
+Positive-kernel endpoint & The \(p=1<q\) endpoint in the positive-kernel
+statements also fails by the scalar Riesz-potential obstruction.\\
+Formal exact criterion & \(\Pprop_{p,q}(X,Y)\) is equivalent to a bilinear
+\(\gam\)-Pitt inequality.\\
+Target geometry & If \(X\ne0\) and \(\Pprop_{p,q}(X,Y)\) holds, then the cotype
+index of \(Y\) is at most \(q\).\\
+Lebesgue/sequence pairs & For standard infinite-dimensional
+\(1\le u,v<\infty\), \(\Pprop_{p,q}(L^u,L^v)\) holds exactly when
+\(p\le u\) and \(v\le q\).\\
+Still open & A standard-invariant classification for arbitrary Banach pairs.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Scalar and endpoint classification}
+
+\begin{theorem}[Scalar classification]\label{thm:scalar}
+For \(X=Y=\C\), the property \(\Pprop_{p,q}(\C,\C)\) holds if and only if
+\[
+  1<p\le2\le q<\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+For \(1<p\le2\le q<\infty\), scalar \(\gam\)-boundedness is uniform
+boundedness, so
+\[
+  \abs{m(\xi)}\le C\abs{\xi}^{-d/r}.
+\]
+The function \(\abs{\xi}^{-d/r}\) belongs to weak \(L^r\), and Hormander's
+weak-\(L^r\) multiplier theorem gives \(L^p\to L^q\) boundedness
+\cite{Hormander}.  The case \(p=q=2\) is Plancherel.
+
+Let \(p=1\) and \(2\le q<\infty\).  The symbol
+\[
+  a_q(\xi)=\abs{\xi}^{-d/q'}
+\]
+has weighted range bounded.  Its inverse Fourier transform is a nonzero
+multiple of \(\abs{x}^{-d/q}\).  Testing \(T_{a_q}\) on a nonnegative
+approximate identity \(\eta_\varepsilon\) gives, on
+\(2\varepsilon\le\abs{x}\le1/2\),
+\[
+  \abs{T_{a_q}\eta_\varepsilon(x)}\gtrsim \abs{x}^{-d/q},
+\]
+and therefore
+\[
+  \norm{T_{a_q}\eta_\varepsilon}_{L^q}^q
+  \gtrsim\int_{2\varepsilon\le\abs{x}\le1/2}\abs{x}^{-d}\,dx
+  \simeq \log(1/\varepsilon)\to\infty.
+\]
+The \(q=\infty\) face follows by duality from the real even multiplier
+\(\abs{\xi}^{-d/p}\): boundedness \(L^p\to L^\infty\) would imply boundedness
+\(L^1\to L^{p'}\), already contradicted.
+\end{proof}
+
+\begin{theorem}[Endpoint obstruction for nonzero pairs]\label{thm:endpoints}
+Let \(X,Y\ne0\).  Then
+\[
+  \Pprop_{1,q}(X,Y)\quad(2\le q<\infty)
+  \qquad\text{and}\qquad
+  \Pprop_{p,\infty}(X,Y)\quad(1<p\le2)
+\]
+both fail.
+\end{theorem}
+
+\begin{proof}
+Choose \(x_0\in X\), \(x^*\in X^*\), \(y_0\in Y\), and \(y^*\in Y^*\) with
+\(x^*(x_0)=y^*(y_0)=1\).  If \(a\) is one of the scalar counterexample symbols,
+put
+\[
+  m(\xi)x=a(\xi)x^*(x)y_0.
+\]
+The weighted family is \(\gam\)-bounded because, for \(\abs{\lambda_j}\le1\),
+\[
+\Big(\mathbb E\norm{\sum_j\gamma_j\lambda_jx^*(u_j)y_0}_Y^2\Big)^{1/2}
+\le \norm{y_0}\norm{x^*}
+\Big(\mathbb E\norm{\sum_j\gamma_ju_j}_X^2\Big)^{1/2}.
+\]
+Testing on \(f=hx_0\) and applying \(y^*\) recovers the bad scalar estimate.
+\end{proof}
+
+\section{Corrections to Theorem 3.21}
+
+\begin{center}
+\includegraphics[width=0.95\linewidth]{figures/theorem_3_21_crop.png}
+\end{center}
+
+The source's Theorem 3.21 includes \(p=1\).  This cannot be correct, already
+for \(X=Y=\C\), by Theorem~\ref{thm:scalar}.  The proof imports the critical
+embedding
+\[
+  \dot H^{d/p-d/2}_p(\R^d;X)\hookrightarrow \gam(\R^d;X).
+\]
+At \(p=1\) and \(X=\C\), this would imply the false strong endpoint Sobolev
+embedding \(\dot H^{d/2}_1\hookrightarrow L^2\).  Thus the issue is not a
+normalization artifact; it is the classical failure of strong endpoint
+fractional integration.
+
+There is also a target-space wording issue.  The source assumes that \(Y\) is
+continuously embedded in a \(q\)-concave Banach lattice \(Y_0\).  The proof
+obtains an estimate for the image \(J_YT_mf\) in \(Y_0\).  To recover an
+estimate in \(Y\), \(J_Y\) must be bounded below, i.e. an isomorphism onto a
+closed subspace.  Mere injectivity is insufficient.
+
+\begin{proposition}[Mere target injection is insufficient]\label{prop:injection}
+There is a bounded injective map \(J:\ell^v\to\ell^2\) for each \(v>2\), but
+\(\Pprop_{2,2}(\C,\ell^v)\) fails.  Hence Theorem 3.21 cannot be read with
+``continuous embedding'' meaning only bounded injective map.
+\end{proposition}
+
+\begin{proof}
+The map \(J(y_1,y_2,\ldots)=(2^{-1}y_1,2^{-2}y_2,\ldots)\) is bounded and
+injective from \(\ell^v\) to \(\ell^2\).  If this sufficed, the Hilbert target
+would give \(\Pprop_{2,2}(\C,\ell^v)\).  But Theorem~\ref{thm:target-v} below,
+with \(q=2<v\), gives a contradiction.
+\end{proof}
+
+\begin{theorem}[Corrected lattice theorem]\label{thm:corrected321}
+Let
+\[
+  1<p\le2\le q<\infty,\qquad \frac1r=\frac1p-\frac1q.
+\]
+Assume \(X\) is isomorphic to a complemented subspace of a \(p\)-convex Banach
+lattice \(X_0\) with finite cotype, and \(Y\) is isomorphic to a closed subspace
+of a \(q\)-concave Banach lattice \(Y_0\).  If
+\[
+  \{\abs{\xi}^{d/r}m(\xi):\xi\ne0\}
+\]
+is \(\gam\)-bounded, then
+\[
+  T_m:L^p(\R^d;X)\to L^q(\R^d;Y)
+\]
+is bounded.
+\end{theorem}
+
+\begin{proof}
+For \(X_0,Y_0\), the valid lattice embeddings are
+\[
+ \dotH^{d/p-d/2}_p(\R^d;X_0)\hookrightarrow\gam(\R^d;X_0),
+ \qquad
+ \gam(\R^d;Y_0)\hookrightarrow\dotH^{d/q-d/2}_q(\R^d;Y_0),
+\]
+for \(p>1\).  The source proof then applies with
+\[
+  m_1(\xi)=\abs{\xi}^{d/2-d/p},\qquad
+  m_2(\xi)=\abs{\xi}^{d/r}m(\xi)m_1(\xi),
+\]
+and the \(\gam\)-multiplier theorem.  For subspaces, use
+\(\widetilde m(\xi)=J_Ym(\xi)P_X\), where \(P_X\) is a bounded projection onto
+the copy of \(X\) and \(J_Y:Y\to Y_0\) is bounded below.  The \(Y_0\)-estimate
+then transfers back to \(Y\).
+\end{proof}
+
+\section{Another endpoint correction}
+
+The source's Theorem 3.24 and Corollary 3.25 also include the face \(p=1<q\).
+The same endpoint obstruction invalidates that face.
+
+\begin{proposition}[Positive-kernel endpoint failure]\label{prop:positivekernel}
+Let \(1<q<\infty\), \(s=d(1-1/q)\), and let \(K\in C_c^\infty(\R^d)\) be
+nonnegative with \(\int K=1\).  Convolution by \(K\) is not bounded
+\[
+  \dot H^s_1(\R^d)\to L^q(\R^d).
+\]
+Equivalently, the positive symbol \(m_s(\xi)=\abs{\xi}^{-s}\widehat K(\xi)\)
+does not define a bounded map \(L^1\to L^q\).
+\end{proposition}
+
+\begin{proof}
+Let \(I_s\) be the Riesz potential, with kernel comparable to
+\(\abs{x}^{s-d}=\abs{x}^{-d/q}\).  For a nonnegative approximate identity
+\(\eta\), \(f=I_s\eta\) belongs to \(\dot H^s_1\) with controlled norm.  But
+\[
+  K*f=I_s(K*\eta).
+\]
+Since \(K*\eta\) is compactly supported and has integral one, its Riesz
+potential has asymptotic size \(c\abs{x}^{-d/q}\) at infinity, hence is not in
+\(L^q\).
+\end{proof}
+
+\section{Uniformization and exact criterion}
+
+For the rest of the packet assume
+\[
+  1<p\le2\le q<\infty,\qquad a=d\Big(\frac1p-\frac1q\Big)<d.
+\]
+Let \(\Gcal(X,Y)\) be the Banach space of essentially \(\gam\)-bounded
+strongly measurable maps \(M:\R^d\to\cL(X,Y)\), with norm the essential
+\(\gam\)-bound of the range.
+
+\begin{theorem}[Closed-graph uniformization]\label{thm:uniformization}
+If \(\Pprop_{p,q}(X,Y)\) holds qualitatively, then there is \(C\) such that
+for every \(M\in\Gcal(X,Y)\),
+\[
+  \norm{T_{\abs{\cdot}^{-a}M}}_{\cL(L^p(\R^d;X),L^q(\R^d;Y))}
+  \le C\norm{M}_{\Gcal}.
+\]
+\end{theorem}
+
+\begin{proof}
+The map
+\[
+  \Phi:\Gcal(X,Y)\to\cL(L^p(\R^d;X),L^q(\R^d;Y)),\qquad
+  \Phi(M)=T_{\abs{\cdot}^{-a}M},
+\]
+is everywhere defined by the qualitative property.  If \(M_n\to M\) in
+\(\Gcal\) and \(\Phi(M_n)\to S\) in operator norm, then for finite-rank
+Schwartz \(f\) the functions \(\Phi(M_n)f\) converge in distributions to
+\(\Phi(M)f\), because \(a<d\) and \(\widehat f\) is rapidly decreasing.  They
+also converge in distributions to \(Sf\).  Hence \(S=\Phi(M)\) on a dense
+subspace, so the graph is closed.  The closed graph theorem gives the bound.
+\end{proof}
+
+\begin{theorem}[Monotonicity]\label{thm:monotonicity}
+If
+\[
+  1<p\le p_0\le2\le q_0\le q<\infty
+\]
+and \(\Pprop_{p_0,q_0}(X,Y)\) holds, then \(\Pprop_{p,q}(X,Y)\) holds.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+  \alpha=d\Big(\frac1p-\frac1{p_0}\Big),\qquad
+  \beta=d\Big(\frac1{q_0}-\frac1q\Big).
+\]
+For a symbol \(m\) at \((p,q)\), set \(n(\xi)=\abs{\xi}^{\alpha+\beta}m(\xi)\).
+The weighted families for \(m\) at \((p,q)\) and \(n\) at \((p_0,q_0)\) are
+identical.  Since
+\[
+  T_m=I_\beta T_n I_\alpha,
+\]
+and vector-valued Hardy--Littlewood--Sobolev estimates for the positive Riesz
+kernels hold for every Banach space, the result follows.
+\end{proof}
+
+For finite-rank Schwartz \(f:\R^d\to X\) and \(g:\R^d\to Y^*\), define
+\[
+ \Pi_a^\gam(f,g)=
+ \sup_{\norm M_{\Gcal}\le1}
+ \left|\int_{\R^d}\abs{\xi}^{-a}
+ \ip{M(\xi)\widehat f(\xi)}{\widehat g(-\xi)}\,d\xi\right|.
+\]
+
+\begin{theorem}[Exact bilinear \(\gam\)-Pitt criterion]\label{thm:pitt}
+For nonzero \(X,Y\), \(\Pprop_{p,q}(X,Y)\) holds if and only if there is
+\(C\) such that
+\[
+  \Pi_a^\gam(f,g)
+  \le C\norm f_{L^p(\R^d;X)}\norm g_{L^{q'}(\R^d;Y^*)}
+\]
+for all finite-rank Schwartz \(f,g\).
+\end{theorem}
+
+\begin{proof}
+The forward implication is Theorem~\ref{thm:uniformization} and Fourier-side
+duality.  Conversely, for \(M\in\Gcal(X,Y)\) and finite-rank Schwartz \(f\), the
+inverse transform \(h=T_{\abs{\cdot}^{-a}M}f\) is a continuous \(Y\)-valued
+function.  The displayed bilinear inequality bounds the pairing of \(h\) with
+dense finite-rank \(L^{q'}(Y^*)\) test functions.  The standard Bochner
+norming argument gives
+\[
+  \norm h_{L^q(Y)}\le C\norm M_{\Gcal}\norm f_{L^p(X)}.
+\]
+Density gives the multiplier extension.
+\end{proof}
+
+\begin{remark}
+The criterion is exact but not an intrinsic classification in familiar Banach
+space terms.  This is why the packet remains partial for the original Problem
+3.19.
+\end{remark}
+
+\section{Frequency-translation obstructions}
+
+Fix nonzero \(k,\phi\in C_c^\infty(\R^d)\), set \(\psi=\widehat k\), and put
+\(h=k*\phi\ne0\).  Choose translations \(b_1,\ldots,b_n\) so far apart that the
+relevant translates of \(\phi\) and \(h\) are disjoint.  Since \(\psi\) is
+Schwartz,
+\[
+  \sup_{\xi\ne0}\abs{\xi}^a\abs{\psi(\xi)}<\infty.
+\]
+The phases \(e^{\pm2\pi i b_j\cdot\xi}\) make separated inputs add coherently
+after multiplication in frequency.
+
+\begin{theorem}[Domain obstruction]\label{thm:domain-u}
+Let \(1\le u<p\), let \(Y\ne0\), and suppose \(X\) contains uniformly
+complemented copies of \(\ell^u_n\).  Then \(\Pprop_{p,q}(X,Y)\) fails.
+\end{theorem}
+
+\begin{proof}
+It suffices to use the isometric model \(X=\ell^u\).  Let \(e_j\) be the first
+basis vectors and define
+\[
+  R_\theta x=n^{-1/u'}\sum_{j=1}^n\theta_j e_j^*(x),\qquad \theta\in\T^n.
+\]
+Because \(u<p\le2\), \(u<2\), and the family \(\{R_\theta\}\subset\cL(\ell^u,\C)\)
+is uniformly \(\gam\)-bounded.  Fix \(y_0\in Y\), \(\norm{y_0}=1\), and set
+\[
+  M_n(\xi)x=n^{-1/u'}\sum_{j=1}^n e^{2\pi i b_j\cdot\xi}e_j^*(x)y_0,\qquad
+  m_n(\xi)=\psi(\xi)M_n(\xi).
+\]
+The weighted \(\gam\)-bounds are uniform.  For
+\[
+  f_n(t)=\sum_{j=1}^n\phi(t-b_j)e_j,
+\]
+disjointness gives \(\norm{f_n}_{L^p(\ell^u)}=n^{1/p}\norm{\phi}_p\), while
+phase cancellation gives
+\[
+  T_{m_n}f_n=n^{1/u}h\,y_0.
+\]
+Uniformization would force \(n^{1/u}\lesssim n^{1/p}\), impossible when
+\(u<p\).
+\end{proof}
+
+\begin{theorem}[Target obstruction]\label{thm:target-v}
+Let \(q<v<\infty\), let \(X\ne0\), and suppose \(Y\) contains uniformly
+isomorphic copies of \(\ell^v_n\).  Then \(\Pprop_{p,q}(X,Y)\) fails.
+\end{theorem}
+
+\begin{proof}
+Choose embeddings \(J_n:\ell^v_n\to Y\) with uniformly bounded distortion.
+Fix \(x_0\in X\), \(x^*\in X^*\), \(x^*(x_0)=1\).  For \(\theta\in\T^n\), define
+\[
+  S_\theta z=n^{-1/v}zJ_n\Big(\sum_{j=1}^n\theta_je_j\Big).
+\]
+The family \(\{S_\theta\}\subset\cL(\C,Y)\) is uniformly \(\gam\)-bounded, using
+the type \(2\) behavior of fixed \(L^v\)-geometry for \(v>2\).  Put
+\[
+  M_n(\xi)x=n^{-1/v}x^*(x)J_n\Big(\sum_{j=1}^n e^{-2\pi i b_j\cdot\xi}e_j\Big),
+  \qquad m_n=\psi M_n.
+\]
+For \(f=\phi x_0\),
+\[
+  T_{m_n}f(t)=n^{-1/v}J_n\Big(\sum_{j=1}^n h(t-b_j)e_j\Big),
+\]
+so disjointness gives
+\[
+  \norm{T_{m_n}f}_{L^q(Y)}\gtrsim n^{1/q-1/v}\norm h_q\to\infty,
+\]
+while \(\norm f_{L^p(X)}\) is fixed.
+\end{proof}
+
+\begin{theorem}[\(\ell^\infty\) target obstruction]\label{thm:target-infty}
+If \(X\ne0\) and \(Y\) contains \(\ell^\infty_n\) uniformly, then
+\(\Pprop_{p,q}(X,Y)\) fails for every finite \(q\).
+\end{theorem}
+
+\begin{proof}
+Use the preceding construction with
+\[
+  c_n=(1+\log(n+1))^{-1/2}
+\]
+in place of \(n^{-1/v}\).  The Gaussian maximal inequality gives a uniform
+\(\gam\)-bound for the phase family into \(\ell^\infty_n\), while the output
+norm grows like
+\[
+  \frac{n^{1/q}}{\sqrt{\log(n+1)}}.
+\]
+\end{proof}
+
+Let
+\[
+  q_Y=\inf\{s\in[2,\infty):Y\text{ has cotype }s\},
+\]
+with \(q_Y=\infty\) if \(Y\) has no finite cotype.
+
+\begin{corollary}[Target cotype-index obstruction]\label{cor:cotype}
+If \(X\ne0\) and \(\Pprop_{p,q}(X,Y)\) holds, then \(q_Y\le q\).  In particular
+\(Y\) must have finite cotype.
+\end{corollary}
+
+\begin{proof}
+By the Maurey--Pisier finite representability theorem, if \(q_Y>q\), then
+\(\ell^v_n\) for some \(v>q\), or \(\ell^\infty_n\), is uniformly finitely
+representable in \(Y\).  Apply Theorem~\ref{thm:target-v} or
+Theorem~\ref{thm:target-infty}.
+\end{proof}
+
+\section{Complete \(L^u\to L^v\) classification}
+
+\begin{theorem}[Infinite-dimensional Lebesgue pairs]\label{thm:LuLv}
+Let \(1\le u,v<\infty\), and let \(L^u(S)\), \(L^v(T)\) be
+infinite-dimensional Lebesgue spaces over measure spaces admitting arbitrarily
+many pairwise disjoint sets of finite positive measure.  For
+\[
+  1<p\le2\le q<\infty,
+\]
+one has
+\[
+  \Pprop_{p,q}(L^u(S),L^v(T))
+  \quad\Longleftrightarrow\quad
+  p\le u\ \text{ and }\ v\le q.
+\]
+\end{theorem}
+
+\begin{proof}
+If \(p\le u\), then \(L^u\) is \(p\)-convex and has finite cotype.  If
+\(v\le q\), then \(L^v\) is \(q\)-concave.  The positive direction follows from
+Theorem~\ref{thm:corrected321}.  If \(u<p\), disjoint normalized indicators
+span \(1\)-complemented \(\ell^u_n\)'s in \(L^u\), so Theorem~\ref{thm:domain-u}
+applies.  If \(v>q\), disjoint normalized indicators give uniformly
+isomorphic \(\ell^v_n\)'s in \(L^v\), so Theorem~\ref{thm:target-v} applies.
+\end{proof}
+
+\begin{corollary}[Sequence spaces]\label{cor:sequence}
+For \(1\le u,v<\infty\),
+\[
+  \Pprop_{p,q}(\ell^u,\ell^v)
+  \quad\Longleftrightarrow\quad
+  p\le u\ \text{ and }\ v\le q.
+\]
+In particular,
+\[
+  \Pprop_{p,q}(\ell^u,\ell^u)
+  \quad\Longleftrightarrow\quad
+  p\le u\le q.
+\]
+\end{corollary}
+
+\section{Remaining open core}
+
+The results above strongly constrain the answer and solve many concrete
+regimes, but they do not finish the original problem for arbitrary Banach
+pairs.  The main remaining task is to turn the exact
+\(\gam\)-Pitt criterion of Theorem~\ref{thm:pitt} into a classification in
+standard Banach-space invariants.
+
+\begin{problem}
+Classify the pairs \((X,Y)\) for which the bilinear criterion in
+Theorem~\ref{thm:pitt} holds using familiar invariants such as type, cotype,
+Fourier type, \(K\)-convexity, or local finite representability.
+\end{problem}
+
+\begin{problem}
+Decide whether \(\Pprop_{p,q}(X,Y)\) forces type \(p\) of \(X\) or cotype
+\(q\) of \(Y\) at the exact endpoint without the extra assumptions in known
+rank-one Pitt converse arguments.
+\end{problem}
+
+\begin{problem}
+Classify \(\Pprop_{p,q}(L^\infty(S),Y)\) for finite-cotype targets \(Y\).  The
+corrected lattice theorem does not apply because \(L^\infty\) lacks finite
+cotype.
+\end{problem}
+
+\section{Novelty and verification notes}
+
+The source paper, local run index, and web/arXiv searches through June 18, 2026
+were checked for Problem 3.19, Theorem 3.21, errata/corrigenda, weighted
+\(\gam\)-bounded multiplier ranges, and \(L^u\to L^v\) or
+\(\ell^u\to\ell^v\) formulations.  No official correction to the \(p=1\)
+endpoint and no matching published \(L^u\to L^v\) cross-pair classification
+were located.  This is bounded evidence, not an exhaustive novelty proof.
+
+Human review should focus on:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the closed-graph argument for \(\Gcal(X,Y)\);
+\item the closed-range interpretation of the target embedding in Theorem 3.21;
+\item the positive-kernel endpoint counterexample;
+\item the uniform \(\gam\)-bounds in the frequency-translation constructions;
+\item the finite-representability step in Corollary~\ref{cor:cotype}.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+
+\bibitem{Hormander}
+L. H\"ormander,
+\newblock Estimates for translation invariant operators in \(L^p\) spaces,
+\newblock \emph{Acta Math.} \textbf{104} (1960), 93--140.
+
+\bibitem{RV}
+J. Rozendaal and M. Veraar,
+\newblock Fourier multiplier theorems involving type and cotype,
+\newblock \emph{J. Fourier Anal. Appl.} \textbf{24} (2018), 583--619;
+arXiv:1605.09340.
+
+\bibitem{Veraar}
+M. Veraar,
+\newblock Embeddings into spaces of \(\gamma\)-radonifying operators,
+\newblock \emph{Math. Proc. Cambridge Philos. Soc.} \textbf{159} (2015),
+267--288.
+
+\bibitem{DV}
+O. Dominguez and M. Veraar,
+\newblock Extensions of the vector-valued Hausdorff--Young inequalities,
+\newblock arXiv:1904.07930.
+
+\bibitem{MP}
+B. Maurey and G. Pisier,
+\newblock Series de variables aleatoires vectorielles independantes et
+proprietes geometriques des espaces de Banach,
+\newblock \emph{Studia Math.} \textbf{58} (1976), 45--90.
+
+\end{thebibliography}
+
+\end{document}

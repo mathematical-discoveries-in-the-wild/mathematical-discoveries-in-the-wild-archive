@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\JF}{\mathrm{JF}}
+\newcommand{\dist}{\mathrm{dist}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\1}{\mathbf{1}}
+
+\title{A Partial Answer for Ball Families in the James Function Space Problem}
+\author{Run \texttt{fa\_banach\_001}, lane 0}
+\date{2026-06-23}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{
+\textbf{Status.} Partial result, likely valid.  The packet proves the
+nonseparability-of-the-dual part of Problem 1 in arXiv:1210.2379 for the
+Euclidean-ball and $\ell_\infty^{d_0}$-ball families.  It does not prove the
+remaining assertion that the corresponding spaces do not contain $\ell_1$.
+}}
+\end{center}
+
+\section{Source Problem}
+
+The source paper is S. A. Argyros, A. Manoussakis, and M. Petrakis,
+\emph{Function spaces not containing $\ell_1$}, arXiv:1210.2379
+\cite{AMP}.  In Section ``Remarks and Problems,'' Problem 1 asks the following.
+Let $\Omega$ be an open bounded subset of $\R^{d_0}$, $d_0>1$, and for a family
+$Q(\Omega)$ of convex bodies contained in $\Omega$ define
+\[
+\|f\|_{\JF(Q(\Omega))}
+=\sup\left\{\left(\sum_{i=1}^n\left(\int_{V_i}f\right)^2\right)^{1/2}:
+\{V_i\}_{i=1}^n\subset Q(\Omega),\ V_i\cap V_j=\emptyset\right\}.
+\]
+The problem asks for which families $Q(\Omega)$ the following hold:
+\[
+\text{(i) } \JF(Q(\Omega))\hbox{ does not contain }\ell_1,\qquad
+\text{(ii) } \JF^*(Q(\Omega))\hbox{ is nonseparable.}
+\]
+The paper notes that this was open, in particular, when $Q(\Omega)$ is the
+family of Euclidean balls or the family of $\ell_\infty^{d_0}$ balls contained
+in $\Omega$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{Problem 1 and the ball-family remark in arXiv:1210.2379, PDF page 45.}
+\end{figure}
+
+\section{Proof Intuition}
+
+The dual-nonseparability half has a simple mechanism that does not require the
+delicate weak-Cauchy analysis used in the paper for excluding $\ell_1$.  Every
+set $V$ in the defining family gives an integration functional
+$V^*(f)=\int_V f$, and normalized indicators provide exact norm tests for
+these functionals.  If two sets $U,V$ differ by positive measure, then the
+normalized indicator of $U\setminus V$ (or $V\setminus U$) separates
+$U^*$ from $V^*$ by distance at least one.  Thus any uncountable family of
+sets that are pairwise distinct modulo null sets yields an uncountable
+1-separated subset of the dual.
+
+For Euclidean balls and $\ell_\infty$ balls, such an uncountable family is
+obtained by fixing a center in $\Omega$ and varying the radius through an
+interval small enough that all the balls remain in $\Omega$.  This proves part
+(ii) for the ball families singled out in the source problem.  The argument
+does not address part (i), the absence of $\ell_1$.
+
+\section{Statement}
+
+\begin{theorem}\label{thm:uncountable-separated}
+Let $\Omega$ be a bounded open subset of $\R^d$ with Lebesgue measure $\mu$,
+and let $Q$ be a family of positive-measure measurable subsets of $\Omega$.
+Assume that the displayed formula above defines the norm used to form
+$\JF(Q)$ from $L^1(\Omega)$, and for $V\in Q$ let
+$V^*(f)=\int_V f$ on the dense copy of $L^1(\Omega)$ in $\JF(Q)$.
+
+If $Q$ contains an uncountable subfamily $\mathcal U$ such that any two
+distinct $U,V\in\mathcal U$ differ modulo null sets, then $\JF(Q)^*$ is
+nonseparable.  More precisely, $\{V^*:V\in\mathcal U\}$ is an uncountable
+1-separated subset of $\JF(Q)^*$.
+\end{theorem}
+
+\begin{corollary}\label{cor:balls}
+Let $\Omega$ be a nonempty bounded open subset of $\R^d$, $d>1$.  If
+$Q(\Omega)$ is either the family of Euclidean balls contained in $\Omega$ or
+the family of $\ell_\infty^d$ balls contained in $\Omega$, then
+$\JF^*(Q(\Omega))$ is nonseparable.
+\end{corollary}
+
+\section{Proof}
+
+\begin{lemma}\label{lem:indicator-bound}
+Let $A\subset\Omega$ be measurable with $0<\mu(A)<\infty$, and put
+$g_A=\1_A/\mu(A)$.  Then $\|g_A\|_{\JF(Q)}\leq 1$.
+\end{lemma}
+
+\begin{proof}
+For every finite pairwise disjoint family $V_1,\ldots,V_n$ from $Q$,
+\[
+\left(\sum_{i=1}^n \left|\int_{V_i}g_A\right|^2\right)^{1/2}
+=
+\left(\sum_{i=1}^n \left(\frac{\mu(V_i\cap A)}{\mu(A)}\right)^2\right)^{1/2}.
+\]
+All terms are nonnegative, so this is at most
+\[
+\sum_{i=1}^n \frac{\mu(V_i\cap A)}{\mu(A)}
+\leq \frac{\mu(A)}{\mu(A)}=1,
+\]
+because the sets $V_i\cap A$ are pairwise disjoint subsets of $A$.  Taking the
+supremum over all such families gives the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:uncountable-separated}]
+For each $V\in Q$, the functional $V^*$ is bounded with norm at most one, since
+the singleton family $\{V\}$ is permitted in the definition of the norm:
+\[
+\left|\int_V f\right|\leq \|f\|_{\JF(Q)}.
+\]
+The bound is sharp.  By Lemma \ref{lem:indicator-bound},
+$\|\1_V/\mu(V)\|_{\JF(Q)}\leq 1$, while
+\[
+V^*(\1_V/\mu(V))=1.
+\]
+Thus $\|V^*\|=1$.
+
+Now let $U,V\in\mathcal U$ be distinct.  Since they are distinct modulo null
+sets, either $\mu(U\setminus V)>0$ or $\mu(V\setminus U)>0$.  In the first
+case set $A=U\setminus V$; in the second set $A=V\setminus U$.  Suppose for
+definiteness that $\mu(U\setminus V)>0$.  Lemma \ref{lem:indicator-bound}
+gives $\|g_A\|_{\JF(Q)}\leq 1$, and
+\[
+(U^*-V^*)(g_A)
+=\int_U g_A-\int_V g_A
+=1-0=1.
+\]
+Hence $\|U^*-V^*\|\geq 1$.  The other case is identical after reversing the
+roles of $U$ and $V$.  Therefore $\{V^*:V\in\mathcal U\}$ is uncountable and
+1-separated.  A separable metric space cannot contain an uncountable
+1-separated subset, so $\JF(Q)^*$ is nonseparable.
+\end{proof}
+
+\begin{proof}[Proof of Corollary \ref{cor:balls}]
+Choose $x_0\in\Omega$ and $R>0$ such that the closed Euclidean ball
+$\overline B_2(x_0,R)$ is contained in $\Omega$.
+
+For Euclidean balls, the family
+\[
+\{\overline B_2(x_0,r):0<r<R\}
+\]
+has cardinality continuum, and two balls with distinct radii differ by a set
+of positive Lebesgue measure.  Theorem \ref{thm:uncountable-separated} applies.
+
+For $\ell_\infty^d$ balls, choose $0<r<R/\sqrt d$ and use the closed cubes
+\[
+\overline B_\infty(x_0,r)=x_0+[-r,r]^d.
+\]
+The family $\{\overline B_\infty(x_0,r):0<r<R/\sqrt d\}$ is again uncountable
+and pairwise distinct modulo null sets, and each cube is contained in
+$\overline B_2(x_0,R)\subset\Omega$.  Theorem
+\ref{thm:uncountable-separated} gives nonseparability of the dual.
+
+The same conclusion holds if the convention in $Q(\Omega)$ uses open balls
+instead of closed convex bodies, since the boundary has Lebesgue measure zero
+and the mod-null separation argument is unchanged.
+\end{proof}
+
+\section{Verification and Limitations}
+
+The proof is a direct estimate from the defining norm and uses no computational
+or external structural theorem.  The core inequality is the elementary estimate
+\[
+\left(\sum_i a_i^2\right)^{1/2}\leq \sum_i a_i
+\]
+for nonnegative $a_i$, applied to the measures of the disjoint intersections
+$V_i\cap A$.
+
+The result is limited to Problem 1(ii), nonseparability of
+$\JF^*(Q(\Omega))$.  It does not establish Problem 1(i), namely that the
+corresponding space $\JF(Q(\Omega))$ does not contain $\ell_1$.
+
+Cheap run-index searches for arXiv:1210.2379 and the core terms
+``Function spaces not containing $\ell_1$,'' ``Euclidean balls,'' and
+``$\ell_\infty$ balls'' did not find an existing packet for this target.
+Bounded web searches for the same phrases and arXiv id found no obvious later
+paper explicitly resolving the ball-family version of Problem 1.  This is
+therefore promoted as a partial theorem for human review, not as a claimed
+full solution of the source problem.
+
+\section{Human Review Recommendation}
+
+Reviewers should check that the intended definition of $Q(\Omega)$ in the
+source paper permits the chosen ball convention and that the completion of
+$L^1(\Omega)$ under the displayed norm is the intended ambient space.  The
+separation estimate itself is elementary; the main scope issue is that the
+argument gives no information about the $\ell_1$-noncontainment half.
+
+\begin{thebibliography}{9}
+\bibitem{AMP}
+S. A. Argyros, A. Manoussakis, and M. Petrakis,
+\emph{Function spaces not containing $\ell_1$},
+arXiv:1210.2379, 2012.
+\end{thebibliography}
+
+\end{document}

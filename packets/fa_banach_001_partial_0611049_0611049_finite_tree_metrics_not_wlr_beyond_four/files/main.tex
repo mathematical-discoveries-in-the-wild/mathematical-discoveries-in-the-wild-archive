@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{A Tree-Metric Obstruction to Finite Weak Linear Rigidity}
+\author{Run \texttt{fa\_banach\_001}}
+\date{June 18, 2026}
+
+\begin{document}
+\emergencystretch=2em
+\maketitle
+
+\paragraph{Status.}
+This is a partial result for Question~5 of Melleray--Petrov--Vershik,
+\emph{Linearly rigid metric spaces and the embedding problem},
+arXiv:math/0611049.  It is not a full answer to the arbitrary finite-metric
+question.
+
+\paragraph{Source question.}
+In Section~3.3, after defining weakly linearly rigid spaces as those for
+which the Hausdorff--Kuratowski and Kantorovich--Rubinstein norms coincide,
+the authors ask:
+
+\begin{quote}
+Does there exist the finite WLR metric space with more than four points?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=0.95\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Definitions.}
+For a finite metric space \(X\), write \(\operatorname{Lip}_0(X)\) for the
+space of real-valued Lipschitz functions modulo constants, represented by
+fixing one base point to have value \(0\).  Its unit ball is
+\[
+  B_{\operatorname{Lip}_0(X)}
+  =
+  \{f:\ |f(x)-f(y)|\le \rho(x,y)\text{ for all }x,y\in X\}/\mathbb R.
+\]
+In the finite case, \(X\) is WLR precisely when every extreme point of this
+unit ball is represented by a signed distance function
+\[
+  f(\cdot)=\pm \rho(x,\cdot)+c
+\]
+for some \(x\in X\) and some constant \(c\).  This is the finite exact form of
+the criterion stated in the source paper.
+
+\paragraph{Proof Intuition.}
+For a finite tree metric, the Lipschitz inequalities along the tree edges are
+independent coordinates.  Once a root is fixed, a Lipschitz function is
+determined by its increments along the \(n-1\) edges, each lying in an interval
+\([-\ell(e),\ell(e)]\).  Thus the Lipschitz unit ball is a box with
+\(2^{n-1}\) vertices.  Signed distance functions supply at most \(2n\) of
+those vertices.  When \(n\ge5\), there are too many box vertices, so at least
+one extremal Lipschitz function cannot come from a signed distance function.
+
+\begin{lemma}\label{lem:box}
+Let \(T=(V,E)\) be a finite tree with positive edge lengths \(\ell(e)\), and
+let \(\rho\) be the induced path metric on \(V\).  Then
+\(B_{\operatorname{Lip}_0(V)}\) is affinely isomorphic to the box
+\[
+  \prod_{e\in E}[-\ell(e),\ell(e)].
+\]
+In particular, it has exactly \(2^{|V|-1}\) extreme points.
+\end{lemma}
+
+\begin{proof}
+Fix a root \(o\in V\), orient every edge away from \(o\), and represent
+\(\operatorname{Lip}_0(V)\) by functions satisfying \(f(o)=0\).  The map
+\[
+  f\longmapsto (f(v)-f(u))_{e=(u,v)\in E}
+\]
+is a linear isomorphism from this quotient model onto \(\mathbb R^E\), because
+the value of \(f\) at any vertex is recovered by summing increments along the
+unique path from \(o\).
+
+The Lipschitz condition on adjacent vertices gives
+\[
+  |f(v)-f(u)|\le \ell(uv)\qquad (uv\in E).
+\]
+Conversely, if these edge inequalities hold and \(x,y\in V\), then along the
+unique path \(x=x_0,x_1,\ldots,x_k=y\),
+\[
+  |f(x)-f(y)|
+  \le \sum_{i=0}^{k-1}|f(x_{i+1})-f(x_i)|
+  \le \sum_{i=0}^{k-1}\ell(x_i x_{i+1})
+  = \rho(x,y).
+\]
+Thus the edge inequalities are exactly the full Lipschitz unit-ball
+constraints.  The stated box description and vertex count follow.
+\end{proof}
+
+\begin{theorem}\label{thm:tree}
+Let \(T\) be a finite weighted tree and let \(\rho\) be its path metric on the
+vertex set \(V(T)\).  If \(|V(T)|\ge5\), then \((V(T),\rho)\) is not weakly
+linearly rigid.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:box}, the finite Lipschitz unit ball has
+\(2^{|V|-1}\) extreme points.  If \((V,\rho)\) were WLR, each of these extreme
+points would have to be represented by a signed distance function
+\(\pm\rho(x,\cdot)+c\).  There are at most \(2|V|\) such functions modulo
+constants.  For \(|V|\ge5\),
+\[
+  2^{|V|-1} > 2|V|.
+\]
+Hence at least one extreme point of \(B_{\operatorname{Lip}_0(V)}\) is not a
+signed distance function, contradicting the WLR criterion.
+\end{proof}
+
+\begin{theorem}\label{thm:four}
+Among four-point weighted tree metrics on the tree vertices, the WLR spaces
+are exactly the weighted tripods.  Equivalently, the underlying tree must be
+the star \(K_{1,3}\).
+\end{theorem}
+
+\begin{proof}
+There are only two tree shapes on four vertices: the path \(P_4\) and the
+star \(K_{1,3}\).
+
+For the star \(K_{1,3}\), let \(D\) be the center and \(A,B,C\) the leaves,
+with edge lengths \(a,b,c>0\).  Then
+\[
+  \rho(D,A)=a,\quad \rho(D,B)=b,\quad \rho(D,C)=c,
+\]
+and the leaf distances are
+\[
+  \rho(A,B)=a+b,\quad \rho(A,C)=a+c,\quad \rho(B,C)=b+c.
+\]
+This is precisely the four-point WLR family recorded in the source paper.
+
+For the path \(P_4\), choose an ordering of the vertices
+\[
+  x_1-x_2-x_3-x_4
+\]
+with edge lengths \(a,b,c>0\).  By Lemma~\ref{lem:box}, every choice of signs
+on the three edge increments gives an extreme point.  Consider the alternating
+increment pattern
+\[
+  f(x_2)-f(x_1)=a,\qquad
+  f(x_3)-f(x_2)=-b,\qquad
+  f(x_4)-f(x_3)=c.
+\]
+If this extreme point were a signed distance function, then its signs along
+the path edges would have to be those of the distance from some vertex, or the
+negative of such a distance.  Along a path, a distance function has edge signs
+which change direction at most once: the signs point away from the root
+vertex; its negative points toward the root vertex.  The pattern
+\(+,-,+\) changes direction twice, so it is neither a distance function nor
+the negative of one.  Therefore \(P_4\) is not WLR.
+\end{proof}
+
+\paragraph{Limitations.}
+Theorem~\ref{thm:tree} rules out a large and natural class of finite metrics,
+including all finite weighted graph-path trees on at least five vertices.  It
+does not rule out arbitrary finite metrics with five or more points.  The full
+Question~5 remains open after this packet.
+
+\paragraph{Verification.}
+The script \texttt{code/check\_tree\_wlr.py} verifies the sign-pattern count
+for all labeled trees up to six vertices and checks the four-point path/star
+dichotomy.
+
+\paragraph{References.}
+\begin{itemize}
+\item J. Melleray, F. V. Petrov, and A. M. Vershik,
+  \emph{Linearly rigid metric spaces and the embedding problem},
+  arXiv:math/0611049.
+\end{itemize}
+
+\end{document}

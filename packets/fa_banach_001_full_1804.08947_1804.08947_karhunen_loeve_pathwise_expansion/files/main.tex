@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{Candidate Full Result: A Pathwise Karhunen--Loeve Expansion from the Separating Dual}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_11}}
+\date{2026-06-15}
+
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\N}{\mathbb N}
+\emergencystretch=2em
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+\textbf{Candidate full result, likely valid, needs human review.}
+This packet gives a positive answer to both questions in Remark 2.26 of
+Cioica--Licht--Cox--Veraar \cite{CLCV2018}. The prior partial packet is now
+included only as provenance under
+\[
+\texttt{provenance/partial\_basis\_from\_dual\_packet/},
+\]
+and proved only that the orthonormal basis can be chosen from \(E^*\).
+
+\section*{Source Question}
+
+The source paper proves a Karhunen--Loeve type expansion for Gaussian random
+variables in separable \(r\)-Banach spaces with separating dual, using
+Byczkowski's RKHS theorem \cite{Byc1987}. The relevant source passage is
+Remark 2.26 on page 14:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In words, the source asks whether, in Proposition 2.25, the orthonormal basis
+\((h_n)\) can be chosen from \(E^*\), and whether it can be chosen so that
+\[
+  \sum_{n=1}^\infty h_n(X)x_n=X
+  \quad\text{almost surely.}
+\]
+
+\section*{Definitions and Source Tools}
+
+Let \(E\) be a separable \(r\)-Banach space, \(0<r\le 1\), and let \(X\) be an
+\(E\)-valued Gaussian random variable with law \(\mu\). Following the notation
+recalled before Proposition 2.25 in the source paper, \(E^2(\mu)\) denotes the
+real Hilbert space of square-integrable \(\mu\)-a.e. additive measurable
+functionals on \(E\), modulo equality \(\mu\)-a.e., with inner product
+\[
+  \langle f,g\rangle_{E^2(\mu)}
+  =
+  \int_E f(x)g(x)\,d\mu(x).
+\]
+Each \(x^*\in E^*\) defines an element of \(E^2(\mu)\). The proof uses the
+following source results: Proposition 2.25/Byczkowski's theorem for an
+in-law Gaussian series representation; the finite-matrix estimate and ideal
+property for Gaussian sums in \(r\)-Banach spaces; the theorem testing
+\(\gamma\)-radonifying operators against an orthonormal basis; and the
+Ito--Nisio convergence criterion, Proposition 2.18 in the source paper.
+
+\section*{Proof Intuition}
+
+The first step is the density observation from the earlier partial packet:
+because \(E^*\) separates points and generates the Borel structure of \(E\),
+the continuous linear functionals are dense in the Gaussian Hilbert space
+\(E^2(\mu)\). Thus Gram--Schmidt gives an orthonormal basis
+\((h_n)\subseteq E^*\).
+
+Byczkowski's theorem gives some Gaussian series
+\[
+  Y_0=\sum_{j=1}^\infty \gamma_j y_j
+\]
+whose limit has law \(\mu\). The coefficient sequence \((y_j)\) may be viewed
+as a bounded Gaussian-radonifying map \(R_0:\ell^2\to E\). For each dual-basis
+element \(h_n\), the scalar series for \(h_n(Y_0)\) has coefficient vector
+\[
+  a_n=(h_n(y_j))_{j\ge 1}\in \ell^2.
+\]
+Since the \(h_n(Y_0)\)'s are independent standard Gaussians, the vectors
+\((a_n)\) are orthonormal in \(\ell^2\). Rotate the coefficient map by the
+isometry \(e_n\mapsto a_n\) and set \(x_n=R_0a_n\). Then
+\[
+  h_k(x_n)=\delta_{kn}.
+\]
+For every \(x^*\in E^*\), the scalar coefficients \(x^*(x_n)\) are precisely
+the Fourier coefficients of \(x^*\) in the basis \((h_n)\) of \(E^2(\mu)\).
+Therefore \(x^*(\sum_{n\le N} h_n(X)x_n)\to x^*(X)\) in \(L^2\) for every
+\(x^*\in E^*\), and Ito--Nisio turns this scalar convergence into the desired
+almost-sure \(E\)-valued convergence.
+
+\begin{lemma}[The coefficient operator]
+Let \((y_j)_{j\ge 1}\subseteq E\). If the Gaussian series
+\(\sum_{j=1}^\infty \gamma_j y_j\) converges almost surely to an \(E\)-valued
+Gaussian random variable, then the map \(R_0e_j=y_j\), initially defined on
+the finitely supported vectors in \(\ell^2\), extends to a bounded operator
+\(R_0:\ell^2\to E\). Moreover \(R_0\in\gamma(\ell^2,E)\).
+\end{lemma}
+
+\begin{proof}
+Let \(S_N=\sum_{j=1}^N\gamma_j y_j\). By the source paper's
+Hoffmann--Jorgensen theorem and Fernique integrability for Gaussian random
+variables, \(S_N\to S\) in \(L^p(\Omega;E)\) for every \(0<p<\infty\); in
+particular, \(\sup_N\|S_N\|_{L^1(\Omega;E)}<\infty\).
+
+For a finitely supported vector \(a=(a_1,\ldots,a_N)\in\ell^2_N\) with
+\(\|a\|_2\le 1\), apply the source paper's finite-matrix estimate for Gaussian
+sums to the \(1\times N\) matrix with row \(a\). It gives
+\[
+  \left\|
+    \gamma_1\sum_{j=1}^N a_jy_j
+  \right\|_{L^1(\Omega;E)}
+  \le
+  C_r
+  \left\|
+    \sum_{j=1}^N \gamma_jy_j
+  \right\|_{L^1(\Omega;E)}
+  \le C_r\sup_M \|S_M\|_{L^1(\Omega;E)} .
+\]
+Since the left-hand side is
+\(\EE|\gamma_1|\,\|\sum_{j=1}^N a_jy_j\|_E\), the finite coefficient map is
+uniformly bounded on the unit ball of \(\ell^2\). Hence it extends to a
+bounded operator \(R_0:\ell^2\to E\). Finally, the testing-against-an-ONB
+theorem from the source paper applies to the standard basis of \(\ell^2\);
+because \(\sum_j\gamma_jR_0e_j=\sum_j\gamma_jy_j\) converges in \(L^p\), it
+follows that \(R_0\in\gamma(\ell^2,E)\).
+\end{proof}
+
+\begin{theorem}
+Let \(E\) be a separable \(r\)-Banach space whose dual \(E^*\) separates the
+points of \(E\). Let \(X\) be an \(E\)-valued Gaussian random variable with law
+\(\mu\). Then there exist an orthonormal basis
+\((h_n)_{n\ge 1}\) of \(E^2(\mu)\), with every \(h_n\in E^*\), and a sequence
+\((x_n)_{n\ge 1}\subseteq E\), such that
+\[
+  \sum_{n=1}^\infty h_n(X)x_n=X
+  \quad\PP\text{-almost surely}.
+\]
+\end{theorem}
+
+\begin{proof}
+First, the canonical image of \(E^*\) is dense in \(E^2(\mu)\). Indeed, let
+\(D\) be its closed span and take \(g\in E^2(\mu)\) orthogonal to \(D\). For
+any finite family \(x_1^*,\ldots,x_m^*\in E^*\), the random vector
+\[
+  (g(X),x_1^*(X),\ldots,x_m^*(X))
+\]
+is jointly Gaussian, and the first coordinate has zero covariance with all
+other coordinates. Hence \(g(X)\) is independent of every finite dual
+coordinate vector. Since \(E\) is separable and \(E^*\) separates points, the
+source paper recalls that \(\cB(E)=\sigma(x^*:x^*\in E^*)\) and that a
+countable subset of \(E^*\) separates points. Thus \(g(X)\) is measurable with
+respect to \(\sigma\{x^*(X):x^*\in E^*\}\), while the preceding finite
+independence implies independence from this sigma-field. Therefore \(g(X)\)
+is independent of itself and hence is almost surely constant. As an element of
+\(E^2(\mu)\), it is a centered Gaussian functional, so \(g=0\). Thus
+\(D^\perp=\{0\}\), and \(D=E^2(\mu)\). Applying Gram--Schmidt to a countable
+dense subset of the canonical image of \(E^*\) gives an orthonormal basis
+\((h_n)\subseteq E^*\). The finite-dimensional cases are identical with
+finite sums, so assume for notational simplicity that the basis is infinite.
+
+By Proposition 2.25 of the source paper, choose a Gaussian sequence
+\((\gamma_j)_{j\ge 1}\) and vectors \(y_j\in E\) such that
+\[
+  Y_0:=\sum_{j=1}^\infty \gamma_j y_j
+\]
+converges almost surely and \(Y_0\) has the same distribution as \(X\). By the
+lemma, the coefficient map \(R_0:\ell^2\to E\), \(R_0e_j=y_j\), is bounded.
+
+For each \(n\), continuity of \(h_n\) gives
+\[
+  h_n(Y_0)
+  =
+  \sum_{j=1}^\infty \gamma_j h_n(y_j)
+  \quad\text{in }L^2(\Omega).
+\]
+Set \(a_n=(h_n(y_j))_{j\ge 1}\in\ell^2\). Since \(Y_0\) and \(X\) have the
+same law and \((h_n)\) is orthonormal in \(E^2(\mu)\),
+\[
+  \langle a_n,a_m\rangle_{\ell^2}
+  =
+  \EE[h_n(Y_0)h_m(Y_0)]
+  =
+  \EE[h_n(X)h_m(X)]
+  =
+  \delta_{nm}.
+\]
+Thus the map \(J:\ell^2\to\ell^2\) defined by \(Je_n=a_n\) is an isometry.
+Define
+\[
+  x_n:=R_0Je_n=R_0a_n,\qquad n\ge 1.
+\]
+
+For any \(k\) and any finitely supported \(v\in\ell^2\),
+\[
+  h_k(R_0v)
+  =
+  \left\langle v,a_k\right\rangle_{\ell^2}.
+\]
+By continuity this remains true for all \(v\in\ell^2\), and therefore
+\[
+  h_k(x_n)=\langle a_n,a_k\rangle_{\ell^2}=\delta_{kn}.
+\]
+
+Now fix \(x^*\in E^*\). Put \(b=(x^*(y_j))_{j\ge 1}\in\ell^2\); this is the
+coefficient vector of the scalar \(L^2\)-series for \(x^*(Y_0)\). Then
+\[
+  x^*(x_n)
+  =
+  x^*(R_0a_n)
+  =
+  \langle a_n,b\rangle_{\ell^2}
+  =
+  \EE[h_n(Y_0)x^*(Y_0)]
+  =
+  \EE[h_n(X)x^*(X)].
+\]
+In other words, \(x^*(x_n)\) is exactly the \(n\)-th Fourier coefficient of
+the element \(x^*\in E^2(\mu)\) in the orthonormal basis \((h_n)\). Therefore
+the partial sums
+\[
+  S_N:=\sum_{n=1}^N h_n(X)x_n
+\]
+satisfy, for every \(x^*\in E^*\),
+\[
+  x^*(S_N)
+  =
+  \sum_{n=1}^N h_n(X)x^*(x_n)
+  \longrightarrow
+  x^*(X)
+  \quad\text{in }L^2(\Omega).
+\]
+The random variables \((h_n(X))_{n\ge 1}\) form a Gaussian sequence, so the
+increments \(h_n(X)x_n\) are independent and symmetric. The Ito--Nisio
+proposition in the source paper applies because \(E^*\) separates points.
+The scalar convergence just proved is precisely its dual weak convergence
+condition with candidate limit \(X\). Hence \(S_N\to X\) almost surely, which
+is the asserted pathwise expansion.
+\end{proof}
+
+\section*{Verification Notes}
+
+This is a full candidate solution of Remark 2.26 under the same hypotheses as
+Proposition 2.25. The proof deliberately combines source-paper tools rather
+than presenting a later literature answer: the density argument gives the
+dual-valued ONB, Byczkowski's in-law series gives initial coefficients, the
+finite-matrix estimate legitimizes the coefficient operator, and Ito--Nisio
+identifies the rotated series with the original \(X\).
+
+A bounded literature and duplication check was performed against the run
+indexes and exact web searches for the remark's wording, ``Karhunen--Loeve'',
+``Byczkowski'', ``orthonormal basis out of \(E^*\)'', and
+``\(h_n(X)x_n=X\)''. No prior full packet or direct later answer was found.
+
+\section*{Limitations and Review Recommendation}
+
+Human review should focus on two points. First, verify that the coefficient
+operator lemma is an acceptable extraction from the source paper's finite
+matrix estimate, Hoffmann--Jorgensen theorem, Fernique theorem, and
+testing-against-an-ONB theorem. Second, verify the final Ito--Nisio invocation:
+the scalar \(L^2\) convergence for every \(x^*\in E^*\) should indeed imply
+almost-sure convergence of the \(E\)-valued partial sums to the specified
+random variable \(X\).
+
+\begin{thebibliography}{9}
+
+\bibitem{CLCV2018}
+P. A. Cioica-Licht, S. G. Cox, and M. C. Veraar,
+\emph{Stochastic integration in quasi-Banach spaces},
+arXiv:1804.08947.
+
+\bibitem{Byc1987}
+T. Byczkowski,
+\emph{RKHS for Gaussian measures on metric vector spaces},
+Bull. Polish Acad. Sci. Math. 35 (1--2), 93--103, 1987.
+
+\bibitem{BycIng1987}
+T. Byczkowski and T. Inglot,
+\emph{Gaussian random series on metric vector spaces},
+Math. Z. 196 (1), 39--50, 1987.
+
+\end{thebibliography}
+
+\end{document}

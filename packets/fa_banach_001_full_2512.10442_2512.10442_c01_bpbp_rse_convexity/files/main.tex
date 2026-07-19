@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\K}{\mathbb K}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\RSE}{\operatorname{RSE}}
+\newcommand{\BPBp}{\operatorname{BPBp}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{An Affirmative Answer to the Connected \texorpdfstring{$C[0,1]$}{C[0,1]} BPBp-RSE Convexity Question}
+\author{Automated Math Discovery Smoke Test}
+\date{June 8, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source and Open Question}
+
+This packet concerns Question 5.8 from:
+
+\begin{quote}\raggedright
+Helena del Rio, \emph{Bollobas-type theorems for range strongly exposing
+operators}, arXiv:2512.10442.
+\end{quote}
+
+The paper proves the corresponding necessity when the compact space is not
+connected, using non-trivial $M$-summands of $C(K)$. It then asks whether the
+same conclusion holds for the connected space $[0,1]$. The source location is
+page 31 of the paper.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Quoted Tool from the Source Paper}
+
+We use the following lemma quoted in the source paper as Lemma 2.6.
+
+\begin{lemma}[RSE zero lemma]
+Let $X$ and $Y$ be Banach spaces. If $S\in\RSE(X,Y)$ attains its norm at
+$x_0\in S_X$ and $z\in X$ satisfies
+\[
+  \norm{x_0+z}\le 1
+  \quad\text{and}\quad
+  \norm{x_0-z}\le 1,
+\]
+then $S(z)=0$.
+\end{lemma}
+
+\section*{The Bump Functions}
+
+Let $X=C[0,1]$ over either $\mathbb R$ or $\mathbb C$. Choose
+$f,g\in X$ such that
+\[
+  0\le f,g\le 1,\qquad
+  \norm{f}=\norm{g}=1,\qquad
+  f(0)=1,\qquad g(1)=1,
+\]
+and $\operatorname{supp}f\cap\operatorname{supp}g=\emptyset$. For instance,
+one may take two small triangular bump functions supported near $0$ and $1$.
+The only feature we use is this: if $x\in S_X$ and $\norm{x-f}<\alpha<1$,
+then there exists $\lambda>0$ such that
+\[
+  \norm{x+\lambda g}\le 1
+  \quad\text{and}\quad
+  \norm{x-\lambda g}\le 1.
+\]
+Indeed, on $\operatorname{supp}g$ we have $f=0$, hence $|x|<\alpha$ there,
+while outside $\operatorname{supp}g$ the perturbation by $\lambda g$ vanishes.
+Taking $0<\lambda<1-\alpha$ gives the claim.
+
+\section*{Main Result}
+
+\begin{theorem}
+Let $Y$ be a Banach space.
+\begin{enumerate}
+\item In the complex case, if $(C[0,1],Y)$ has the BPBp-RSE, then $Y$ is
+$\C$-uniformly convex.
+\item In the real case, if $(C[0,1],Y)$ has the BPBp-RSE, then $Y$ is
+uniformly convex.
+\end{enumerate}
+Consequently, combined with the sufficiency results in the source paper, the
+expected characterizations for the connected space $C[0,1]$ are valid.
+\end{theorem}
+
+\begin{proof}
+We write $\eta$ for a BPBp-RSE modulus of the pair $(C[0,1],Y)$.
+
+\smallskip
+\noindent\emph{Complex case.}
+Fix $0<\varepsilon<1$ and put $\alpha=\varepsilon/3$. Choose
+\[
+  0<\delta<\min\{\eta(\alpha),\alpha\}.
+\]
+Let $y_0\in S_Y$ and $y\in Y$ satisfy
+\[
+  \sup_{\omega\in\T}\norm{y_0+\omega y}\le 1+\delta.
+\]
+We will prove that $\norm{y}<\varepsilon$.
+
+Define $T\colon C[0,1]\to Y$ by
+\[
+  T(h)=h(0)y_0+h(1)y.
+\]
+The norm of the associated map $\ell_\infty^2\to Y$,
+$(a,b)\mapsto ay_0+by$, is attained on the distinguished boundary of the
+bidisc. Equivalently, the closed bidisc is the closed convex hull of
+$\T^2$, and the norm is convex. Therefore
+\[
+  \norm{T}
+  \le
+  \sup_{\substack{|a|\le 1\\ |b|\le 1}}\norm{ay_0+by}
+  =
+  \sup_{\omega\in\T}\norm{y_0+\omega y}
+  \le 1+\delta.
+\]
+Also $\norm{T}\ge\norm{Tf}=1$. Hence
+\[
+  \left\|\frac{T}{\norm{T}}f\right\|
+  =\frac{1}{\norm{T}}
+  \ge \frac{1}{1+\delta}
+  >1-\eta(\alpha).
+\]
+Applying the BPBp-RSE to $T/\norm{T}$ and $f$, we obtain
+$S\in\RSE(C[0,1],Y)$ and $x\in S_{C[0,1]}$ such that
+\[
+  \norm{Sx}=1=\norm{S},\qquad
+  \left\|S-\frac{T}{\norm{T}}\right\|<\alpha,\qquad
+  \norm{x-f}<\alpha.
+\]
+By the bump observation, choose $\lambda>0$ with
+$\norm{x\pm\lambda g}\le 1$. The RSE zero lemma gives
+$S(\lambda g)=0$, and hence $Sg=0$. Consequently,
+\[
+  \norm{y}
+  =
+  \norm{Tg}
+  =
+  \norm{Tg-Sg}
+  \le
+  \norm{T-S}
+  \le
+  \left\|S-\frac{T}{\norm{T}}\right\|
+     +\left\|\frac{T}{\norm{T}}-T\right\|
+  <
+  \alpha+\delta
+  <\varepsilon.
+\]
+This is precisely the $\C$-uniform convexity estimate.
+
+\smallskip
+\noindent\emph{Real case.}
+Fix $0<\varepsilon<1$ and put $\alpha=\varepsilon/4$. Choose
+\[
+  0<\delta<\min\{\eta(\alpha),\alpha\}.
+\]
+Let $u,v\in S_Y$ satisfy
+\[
+  \left\|\frac{u+v}{2}\right\|>1-\delta.
+\]
+Set
+\[
+  a=\frac{u+v}{2},\qquad b=\frac{u-v}{2},
+\]
+and define $T\colon C[0,1]\to Y$ by
+\[
+  T(h)=h(0)a+h(1)b.
+\]
+For $h\in B_{C[0,1]}$, the real numbers $r=h(0)$ and $s=h(1)$ satisfy
+$|r|,|s|\le 1$, and
+\[
+  T(h)
+  =
+  \frac{r+s}{2}u+\frac{r-s}{2}v.
+\]
+Since
+\[
+  \left|\frac{r+s}{2}\right|+\left|\frac{r-s}{2}\right|
+  =
+  \max\{|r|,|s|\}
+  \le 1,
+\]
+we get $\norm{T}\le 1$. On the other hand,
+$\norm{T}\ge\norm{Tf}=\norm{a}>1-\delta$.
+Thus
+\[
+  \left\|\frac{T}{\norm{T}}f\right\|
+  =
+  \frac{\norm{a}}{\norm{T}}
+  >1-\eta(\alpha).
+\]
+Applying the BPBp-RSE to $T/\norm{T}$ and $f$, we obtain
+$S\in\RSE(C[0,1],Y)$ and $x\in S_{C[0,1]}$ such that
+\[
+  \norm{Sx}=1=\norm{S},\qquad
+  \left\|S-\frac{T}{\norm{T}}\right\|<\alpha,\qquad
+  \norm{x-f}<\alpha.
+\]
+As above, the bump observation and the RSE zero lemma imply $Sg=0$. Hence
+\[
+  \norm{b}
+  =
+  \norm{Tg-Sg}
+  \le
+  \norm{T-S}
+  \le
+  \left\|S-\frac{T}{\norm{T}}\right\|
+     +\left\|\frac{T}{\norm{T}}-T\right\|
+  <
+  \alpha+\delta
+  <2\alpha.
+\]
+Therefore
+\[
+  \norm{u-v}=2\norm{b}<4\alpha=\varepsilon.
+\]
+This proves uniform convexity of $Y$.
+\end{proof}
+
+\section*{Sanity Check Script}
+
+The file \texttt{code/check\_bump\_test.py} performs finite-dimensional
+numerical checks of the two elementary norm estimates used above. It does not
+constitute part of the proof; it is only a guard against sign or coefficient
+mistakes in the two-coordinate test operators.
+
+\end{document}

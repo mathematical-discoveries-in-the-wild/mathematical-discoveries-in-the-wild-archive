@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diag}{\Delta}
+
+\title{The Sequence-Quotient Reflection Theorem Fails for Compact Operators}
+\author{Run \texttt{fa\_banach\_001}, lane 19}
+\date{June 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem and Internal Lemma}
+
+The source paper is Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces}, arXiv:2311.14257.  After proving the commutative and von
+Neumann boundary cases, it asks for a noncommutative C*-algebra
+classification:
+
+\begin{center}
+\includegraphics[width=0.92\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+This packet is not a counterexample to the source problem.  It is a
+counterexample to an intermediate reflection lemma proposed during the
+lane-19 push:
+
+\begin{quote}
+If a countable BCP witness \(C\subset A\) is captured by a unit vector in
+\(\ell_\infty(A)/c_0(A)\), then \(C\) is captured by a unit vector in \(A\).
+\end{quote}
+
+\section*{Statement}
+
+Let \(H=\ell_2\), let \(A=\Kcal(H)\), and let
+\[
+        A_\infty=\ell_\infty(A)/c_0(A).
+\]
+Let \(\diag:A\to A_\infty\) denote the diagonal embedding.
+
+\begin{theorem}
+\label{thm:main}
+There is a countable BCP witness \(C\subset S_A\) and an element
+\(v\in S_{A_\infty}\) such that
+\[
+        \dist(\diag(c),\C v)=\|c\|
+        \qquad(c\in C),
+\]
+but there is no \(u\in S_A\) such that
+\[
+        \dist(c,\C u)=\|c\|
+        \qquad(c\in C).
+\]
+\end{theorem}
+
+\section*{Idea of the Proof}
+
+Let \(p_n\) be the rank-one projection onto the \(n\)-th basis vector of
+\(\ell_2\).  Every compact operator is asymptotically disjoint from these
+rank-one projections:
+\[
+        \|a-\lambda p_n\|\longrightarrow \max\{\|a\|,|\lambda|\}.
+\]
+Thus \(v=[(p_n)]\) captures the diagonal copy of every compact operator in
+the sequence quotient.
+
+On the other hand, if \(C\) is dense in the unit sphere of \(A\), then no
+actual unit compact operator \(u\) can capture all of \(C\), because some
+\(c\in C\) is close to \(u\), giving
+\[
+        \dist(c,\C u)<\|c\|.
+\]
+
+\section*{The Compact-Operator Limit}
+
+\begin{lemma}
+\label{lem:limit}
+Let \((e_n)\) be the standard orthonormal basis of \(\ell_2\), and let
+\(p_n\) be the rank-one projection onto \(\C e_n\).  For every
+\(a\in\Kcal(\ell_2)\) and every \(\lambda\in\C\),
+\[
+        \lim_{n\to\infty}\|a-\lambda p_n\|
+        =
+        \max\{\|a\|,|\lambda|\}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let \(P_N\) be the projection onto
+\(\operatorname{span}\{e_1,\ldots,e_N\}\).  Since \(a\) is compact,
+\[
+        \|a-P_NaP_N\|\longrightarrow0.
+\]
+Fix \(\varepsilon>0\), and choose \(N\) with
+\[
+        \|a-P_NaP_N\|<\varepsilon .
+\]
+For \(n>N\), the operators \(P_NaP_N\) and \(p_n\) act on orthogonal summands,
+so
+\[
+        \|P_NaP_N-\lambda p_n\|
+        =
+        \max\{\|P_NaP_N\|,|\lambda|\}.
+\]
+Therefore, for \(n>N\),
+\[
+\begin{aligned}
+ \bigl|\|a-\lambda p_n\|
+       -\max\{\|P_NaP_N\|,|\lambda|\}\bigr|
+ &\le \|a-P_NaP_N\|\\
+ &<\varepsilon .
+\end{aligned}
+\]
+Also \(|\|P_NaP_N\|-\|a\||<\varepsilon\) after increasing \(N\), since
+\(P_NaP_N\to a\) in norm.  Letting \(\varepsilon\downarrow0\) proves the
+claim.
+\end{proof}
+
+\section*{Proof of the Counterexample}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let \(C\subset S_A\) be a countable dense subset of the unit sphere of
+\(A=\Kcal(\ell_2)\).  This is a BCP witness: for every \(u\in S_A\), choose
+\(c\in C\) with \(\|c-u\|<1/2\).  Then
+\[
+        \dist(c,\C u)\le \|c-u\|<1/2<1=\|c\|.
+\]
+
+Let \(v\in A_\infty\) be the class of the bounded sequence \((p_n)\).  Since
+\(\|p_n\|=1\), we have \(v\in S_{A_\infty}\).  For any \(a\in A\) and
+\(\lambda\in\C\), Lemma~\ref{lem:limit} gives
+\[
+        \|\diag(a)-\lambda v\|
+        =
+        \limsup_n\|a-\lambda p_n\|
+        =
+        \max\{\|a\|,|\lambda|\}.
+\]
+Taking the infimum over \(\lambda\in\C\), we obtain
+\[
+        \dist(\diag(a),\C v)=\|a\|.
+\]
+In particular this holds for every \(c\in C\).
+
+It remains to show that no actual unit vector in \(A\) reflects this capture.
+Let \(u\in S_A\).  Since \(C\) is dense in \(S_A\), choose \(c\in C\) with
+\[
+        \|c-u\|<1/2.
+\]
+Then
+\[
+        \dist(c,\C u)\le \|c-u\|<1/2<1=\|c\|.
+\]
+Thus \(u\) does not capture \(C\).  Since \(u\in S_A\) was arbitrary, no such
+reflecting unit vector exists in \(A\).
+\end{proof}
+
+\section*{Consequence for the C*-BCP Program}
+
+This counterexample shows that diagonal capture in
+\(\ell_\infty(A)/c_0(A)\) is too weak to imply actual capture in \(A\), even
+for a countable BCP witness.  Therefore the proposed reflection shortcut
+cannot prove
+\[
+        \text{C*-algebra BCP}\Rightarrow\text{C*-algebra UBCP}.
+\]
+
+There is no contradiction with known positive results: \(A=\Kcal(\ell_2)\)
+is separable, hence has UBCP.  The point is subtler.  UBCP spaces can still
+have sequence-quotient elements that capture countable diagonal sets.
+Therefore a proof of BCP\(\Rightarrow\)UBCP must use more than the mere
+existence of sequence-quotient capture obtained by diagonalization.
+
+\section*{Novelty and Search Bounds}
+
+Local indexes were searched for arXiv:2311.14257, reflection theorem,
+sequence quotient, countable capture, compact operators, BCP, and UBCP.  The
+previous lane-19 attempts proposed the reflection route but did not record
+this compact-operator counterexample.  This packet is a counterexample to an
+agent-generated intermediate lemma, not a new answer to the source paper's
+Question 3.
+
+\section*{Human Review Focus}
+
+Reviewers should check:
+\begin{enumerate}
+    \item the compact approximation step
+          \(P_NaP_N\to a\) for \(a\in\Kcal(\ell_2)\);
+    \item the orthogonal-block norm formula for
+          \(P_NaP_N-\lambda p_n\) when \(n>N\);
+    \item the computation of distance to the line \(\C v\) in the quotient;
+    \item the fact that a dense subset of the unit sphere is a BCP witness
+          but cannot be actually captured by any unit vector.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{HKL}
+Jinghao Huang, Karimbergen Kudaybergenov, and Rui Liu,
+\emph{The ball-covering property of von Neumann algebras and noncommutative
+symmetric spaces},
+arXiv:2311.14257, 2023.
+
+\bibitem{Conway}
+John B. Conway,
+\emph{A Course in Functional Analysis},
+Springer, 1990.
+
+\bibitem{lane19capture}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{BCP and Countable Capture Are Exact Opposites},
+solution packet
+\texttt{2311.14257\_bcp\_countable\_capture\_exact\_equivalence}, 2026.
+
+\bibitem{lane19reflection}
+Run \texttt{fa\_banach\_001}, lane 19,
+\emph{Local Transition Bumps and the Reflection Wall},
+attempt note
+\texttt{2311.14257\_local\_transition\_bump\_reflection\_push}, 2026.
+
+\end{thebibliography}
+
+\end{document}
+

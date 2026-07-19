@@ -1,0 +1,140 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\emergencystretch=3em
+
+\title[Tree Banach--Saks permanence]{A tree Banach--Saks partial answer to Braga's weakly sequentially continuous coarse embedding problem}
+\author{Agent lane 19}
+\date{June 15, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Source problem}
+
+The source is Bruno de Mendonca Braga's paper \emph{On asymptotically uniformly smoothness and nonlinear geometry of Banach spaces}, arXiv:1808.03254 \cite{Braga2018}.  In Section 8, Problem 8.6 asks:
+
+\begin{quote}
+Let \(X\) and \(Y\) be Banach spaces. Assume that \(Y\) has the weak \(p\)-Banach--Saks property, for some \(p\in(1,\infty)\). If \(X\) coarse Lipschitzly embeds into \(Y\) by a weakly sequentially continuous map, does it follow that \(X\) has the weak \(p\)-Banach--Saks property?
+\end{quote}
+
+The crop below shows the source question on page 33 of the compiled source PDF.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions and status}
+
+A weakly null tree \((x_{\bar n})_{\bar n\in[\N]^{\le k}}\) is indexed by increasing finite sequences.  A Banach space \(X\) has the tree-\(p\)-Banach--Saks property with constant \(C\) if every normalized weakly null tree of height \(k\) in \(X\) has a branch \(n_1<\cdots<n_k\) such that
+\[
+  \left\|\sum_{j=1}^k x_{n_1,\ldots,n_j}\right\| \le C k^{1/p}.
+\]
+Braga records that tree-\(p\)-Banach--Saks implies weak \(p\)-Banach--Saks \cite[Section 6]{Braga2018}.
+
+This packet proves the permanence statement asked in Problem 8.6 under the stronger hypothesis that \(Y\) has tree-\(p\)-Banach--Saks.  Thus the original weak \(p\)-Banach--Saks target hypothesis remains open.
+
+\section{Proof intuition}
+
+Braga's Theorem 6.10 proves a related permanence theorem by applying a weakly sequentially continuous coarse Lipschitz embedding to partial sums along a weakly null tree.  The successive differences in \(Y\) form another weakly null tree, and the telescoping sum of those differences is exactly the embedded image of the original branch sum.
+
+The only extra point here is that tree-\(p\)-Banach--Saks controls equal-coefficient sums, while the telescoping differences have different lengths.  The sign-stabilized form of tree-\(p\)-Banach--Saks gives one branch on which all signed sums of the normalized differences are small.  Any positive coefficient vector with coefficients bounded by \(1\) is an average of sign vectors, so the same branch also controls the actual variable-length telescoping sum.
+
+\section{The partial theorem}
+
+\begin{theorem}
+Let \(p\in(1,\infty)\), and let \(X\) and \(Y\) be Banach spaces.  Assume that \(Y\) has the tree-\(p\)-Banach--Saks property.  If \(X\) coarse Lipschitzly embeds into \(Y\) by a weakly sequentially continuous map, then \(X\) has the tree-\(p\)-Banach--Saks property.  Consequently, \(X\) has the weak \(p\)-Banach--Saks property.
+\end{theorem}
+
+\begin{proof}
+Let \(C\) witness the tree-\(p\)-Banach--Saks property of \(Y\).  We first use the standard sign form of this property: for every normalized weakly null tree \((z_{\bar n})_{\bar n\in[\N]^{\le k}}\) in \(Y\), there is an infinite \(M\subset\N\) such that
+\[
+  \left\|\sum_{j=1}^k \eps_j z_{n_1,\ldots,n_j}\right\|
+  \le C k^{1/p}
+\]
+for all \(n_1<\cdots<n_k\) in \(M\) and all signs \(\eps_j\in\{-1,1\}\).  This is Braga's Proposition 6.5, obtained by applying the tree property to the finitely many sign-changed trees and then using Ramsey stabilization.
+
+Let \(f:X\to Y\) be a weakly sequentially continuous coarse Lipschitz embedding.  After translating, assume \(f(0)=0\).  There are constants \(L\ge1\) and \(A\ge0\) such that
+\[
+  L^{-1}\|x-y\| - A
+  \le \|f(x)-f(y)\|
+  \le L\|x-y\| + A
+\]
+for all \(x,y\in X\).  For \(m\in\N\), define \(f_m(x)=m^{-1}f(mx)\).  Then \(f_m\) is still weakly sequentially continuous and satisfies the same inequalities with \(A/m\) in place of \(A\).  Choose \(m\) so large that \(\delta=A/m<L^{-1}/2\).  Put \(U=L+\delta\).
+
+Fix \(k\in\N\) and let \((x_{\bar n})_{\bar n\in[\N]^{\le k}}\) be a normalized weakly null tree in \(X\).  For a node \(s=(n_1,\ldots,n_j)\), write
+\[
+  u_s=\sum_{i=1}^j x_{n_1,\ldots,n_i},
+  \qquad u_\emptyset=0,
+\]
+and let \(s^{-}=(n_1,\ldots,n_{j-1})\) be the predecessor of \(s\).  Define a tree in \(Y\) by
+\[
+  y_s=f_m(u_s)-f_m(u_{s^-}).
+\]
+For each fixed predecessor \(s\), the sequence \(x_{s,n}\) is weakly null, hence \(u_s+x_{s,n}\) converges weakly to \(u_s\).  Since \(f_m\) is weakly sequentially continuous, \(f_m(u_s+x_{s,n})-f_m(u_s)\) is weakly null.  Therefore \((y_s)\) is a weakly null tree.
+
+Moreover, because every \(x_s\) is normalized,
+\[
+  L^{-1}-\delta \le \|y_s\| \le L+\delta=U
+\]
+for every node \(s\).  Thus \(e_s=y_s/\|y_s\|\) is a normalized weakly null tree in \(Y\).  Applying the sign form above, choose a branch \(n_1<\cdots<n_k\) such that all signed sums of \(e_{n_1,\ldots,n_j}\) are bounded by \(Ck^{1/p}\).  For this branch, set
+\[
+  t_j=\frac{\|y_{n_1,\ldots,n_j}\|}{U}\in[0,1].
+\]
+The vector \(\sum_{j=1}^k t_j e_{n_1,\ldots,n_j}\) lies in the convex hull of the sign sums \(\sum_{j=1}^k \eps_j e_{n_1,\ldots,n_j}\): choose independent signs with mean \(t_j\) and take expectations.  Hence
+\[
+  \left\|\sum_{j=1}^k y_{n_1,\ldots,n_j}\right\|
+  = U\left\|\sum_{j=1}^k t_j e_{n_1,\ldots,n_j}\right\|
+  \le U C k^{1/p}.
+\]
+The left side telescopes to \(\|f_m(u_{n_1,\ldots,n_k})-f_m(0)\|\).  The lower coarse Lipschitz inequality gives
+\[
+  L^{-1}\|u_{n_1,\ldots,n_k}\|-\delta
+  \le U C k^{1/p}.
+\]
+Since \(k^{1/p}\ge1\),
+\[
+  \left\|\sum_{j=1}^k x_{n_1,\ldots,n_j}\right\|
+  \le L(UC+\delta) k^{1/p}.
+\]
+This proves that \(X\) has the tree-\(p\)-Banach--Saks property.  Braga's observation that tree-\(p\)-Banach--Saks implies weak \(p\)-Banach--Saks then gives the final conclusion.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof is purely analytic.  The main verification points are:
+\begin{itemize}
+  \item weak sequential continuity is used exactly to turn the nonlinear increments \(y_s\) into a weakly null tree;
+  \item rescaling \(f\) makes the additive coarse error small enough that those increments are semi-normalized;
+  \item the sign-stabilized tree-\(p\)-Banach--Saks branch plus convexity handles the variable increment lengths;
+  \item the final telescoping identity transfers the branch estimate back to \(X\).
+\end{itemize}
+
+The result does not settle Braga's Problem 8.6 as stated.  It replaces the target assumption ``\(Y\) has weak \(p\)-Banach--Saks'' by the stronger assumption ``\(Y\) has tree-\(p\)-Banach--Saks.''  The endpoint \(p\) is preserved.
+
+Cheap run indexes were searched for `1808.03254', Braga, weak \(p\)-Banach--Saks, tree-Banach--Saks, and weakly sequentially continuous coarse Lipschitz embeddings.  Web searches for the exact problem label and core phrase combinations found the source arXiv page and no later direct answer.  A later local source on Hamming graph concentration properties was checked for overlap and did not answer Problem 8.6.
+
+\section{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{Braga2018}
+B. de Mendonca Braga,
+\emph{On asymptotically uniformly smoothness and nonlinear geometry of Banach spaces},
+arXiv:1808.03254, 2018.
+\url{https://arxiv.org/abs/1808.03254}
+
+\end{thebibliography}
+
+\end{document}

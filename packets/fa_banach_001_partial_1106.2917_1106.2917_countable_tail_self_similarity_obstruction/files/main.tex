@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Stone}{\operatorname{Stone}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\cinf}{\oplus_{\infty}}
+
+\title{A Countable-Tail Obstruction to the \texorpdfstring{$C(K)$}{C(K)} Cube-Not-Square Route}
+\author{Run \texttt{fa\_banach\_001}, lane 6}
+\date{2026-06-29}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+The source paper is Piotr Koszmider, \emph{A $C(K)$ Banach space which does not have the Schroeder-Bernstein property}, arXiv:1106.2917. In the introduction, after explaining why the Gowers-Maurey cube-not-square construction is difficult to reproduce in the $C(K)$ setting, Koszmider asks whether such spaces can be of the form $C(K)$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The source open problem on page 2 of arXiv:1106.2917, together with the beginning of the countable compactification construction.}
+\end{figure}
+
+The relevant construction in the source defines Boolean algebras $A_n$ and subalgebras $C_n$, all copied from a fixed pair $(A,C)$, and then defines
+\[
+ D_+ =
+ \left\{ a\in \prod_{n\in\N} A_n :
+        a_n\in C_n \text{ for all but finitely many } n
+ \right\}.
+\]
+The compact space $K_+$ is the Stone space of $D_+$, and $X_+=C(K_+)$.
+
+\section*{Result}
+
+We prove that this countable-tail template is automatically isometric to all of its finite powers. Consequently, Koszmider's actual $K_+$ construction, and any direct finite-cycle variant with the same countably repeated tail condition, cannot produce a $C(K)$ space isomorphic to its cube but not to its square.
+
+\section*{Proof Intuition}
+
+The tail condition ``all but finitely many coordinates lie in $C_n$'' is insensitive to splitting $\N$ into finitely many infinite subsequences. A sequence is eventually in the $C_n$'s on all of $\N$ if and only if its restrictions are eventually in the $C_n$'s on each piece of the partition. Since Koszmider's pairs $(A_n,C_n)$ are copies of one fixed pair, each infinite subsequence gives the same Boolean algebra again after reindexing. Stone duality then turns a Boolean product into a topological disjoint union, and $C$ of a finite disjoint union is the finite $\ell_\infty$-sum.
+
+\begin{theorem}[countable-tail finite self-similarity]
+Let $I$ be a countably infinite set. For each $i\in I$, let $C_i$ be a Boolean subalgebra of a Boolean algebra $A_i$, and define
+\[
+ D(I)=
+ \left\{ (a_i)_{i\in I}\in \prod_{i\in I} A_i :
+        a_i\in C_i \text{ for all but finitely many } i
+ \right\}.
+\]
+Let $I=I_1\sqcup \cdots \sqcup I_r$ be a finite partition into infinite sets. Then restriction to the pieces gives a Boolean algebra isomorphism
+\[
+  D(I) \cong D(I_1)\times\cdots\times D(I_r),
+\]
+where each $D(I_j)$ is defined by the same tail rule on $I_j$.
+
+If, in addition, each subsystem $(A_i,C_i)_{i\in I_j}$ is pair-isomorphic to $(A_i,C_i)_{i\in I}$, then $D(I_j)\cong D(I)$ for every $j$, and therefore
+\[
+  \Stone(D(I)) \cong \bigsqcup_{j=1}^r \Stone(D(I)).
+\]
+Hence
+\[
+  C(\Stone(D(I))) \cong
+  \underbrace{C(\Stone(D(I))) \cinf \cdots \cinf C(\Stone(D(I)))}_{r\text{ copies}}
+\]
+isometrically.
+\end{theorem}
+
+\begin{proof}
+For $a=(a_i)_{i\in I}\in D(I)$, let $\rho_j(a)=(a_i)_{i\in I_j}$. The map
+\[
+ \rho:D(I)\to D(I_1)\times\cdots\times D(I_r),
+ \qquad
+ \rho(a)=(\rho_1(a),\ldots,\rho_r(a)),
+\]
+is a Boolean homomorphism, because all Boolean operations are coordinatewise.
+
+It is injective since the restrictions to the partition pieces determine every coordinate of $a$.
+It is surjective as follows. Given $b^{(j)}\in D(I_j)$ for $j=1,\ldots,r$, define $a_i=b_i^{(j)}$ when $i\in I_j$. For each $j$, the exceptional set
+\[
+ F_j=\{i\in I_j: b_i^{(j)}\notin C_i\}
+\]
+is finite. Since there are only finitely many pieces, $F_1\cup\cdots\cup F_r$ is finite, so $a\in D(I)$. Thus $\rho$ is an isomorphism.
+
+Under the extra pair-isomorphism hypothesis, each $D(I_j)$ is simply a reindexed copy of $D(I)$. This gives $D(I)\cong D(I)^r$ as a finite Boolean product. Stone duality sends a finite Boolean product to the topological disjoint sum of the corresponding Stone spaces. Finally, for a finite disjoint union $K=K_1\sqcup\cdots\sqcup K_r$,
+\[
+ C(K) \cong C(K_1)\cinf\cdots\cinf C(K_r)
+\]
+isometrically by restriction to the clopen summands.
+\end{proof}
+
+\begin{corollary}[Koszmider's $K_+$]
+For the compact space $K_+$ constructed in arXiv:1106.2917,
+\[
+ C(K_+) \cong C(K_+)^r
+\]
+isometrically for every finite $r\geq 1$.
+\end{corollary}
+
+\begin{proof}
+In Koszmider's construction, the algebras $A_n$ are copies of one Boolean algebra $A$, and the $C_n$ are the corresponding copies of one subalgebra $C$. Thus every infinite subsequence of the block indices gives a reindexed copy of the same pair system. Apply the theorem to any partition of $\N$ into $r$ infinite subsets.
+\end{proof}
+
+\begin{corollary}[obstruction to the direct finite-cycle route]
+No construction whose compactifying Boolean algebra has the above countably repeated tail form can witness the cube-not-square phenomenon for $C(K)$.
+\end{corollary}
+
+\begin{proof}
+The theorem gives $C(K)\cong C(K)^2$ isometrically as soon as it gives any finite self-similarity at all. Hence such a space cannot satisfy $C(K)\cong C(K)^3$ while $C(K)\not\cong C(K)^2$.
+\end{proof}
+
+\section*{Limitations}
+
+This is a partial result only. It does not rule out a different compact space $K$, a non-countable-index compactification, or a construction whose finite-power behavior is controlled by a genuinely nontrivial type monoid rather than by a countable eventually-in-subalgebra tail condition. The global question whether some $C(K)$ is isomorphic to its cube but not its square remains open here.
+
+\section*{Novelty and Verification Notes}
+
+The proof has no computational dependency. It is an explicit Boolean-algebra isomorphism followed by standard Stone duality and the elementary identification of $C$ of a finite disjoint union with a finite $\ell_\infty$ direct sum.
+
+Bounded local source search for the exact phrases ``isomorphic to its cube'', ``not isomorphic to its square'', and close variants found the known Gowers-Maurey phenomenon, several square-negative $C(K)$ or $C_0(K)$ examples, and the prior no-promotion attempt for arXiv:1106.2917. It did not find a later local source resolving Koszmider's global $C(K)$ cube-not-square problem.
+
+Human-review recommendation: check that the intended scope is recorded narrowly. The packet claims a route obstruction for countably repeated tail compactifications, not a full negative answer to Koszmider's open problem.
+
+\begin{thebibliography}{9}
+\bibitem{Koszmider2011}
+P. Koszmider,
+\emph{A $C(K)$ Banach space which does not have the Schroeder-Bernstein property},
+arXiv:1106.2917.
+\end{thebibliography}
+
+\end{document}

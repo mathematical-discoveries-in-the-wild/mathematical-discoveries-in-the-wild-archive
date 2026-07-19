@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\X}{X}
+\newcommand{\Z}{Z}
+\newcommand{\F}{F}
+\newcommand{\spn}{\operatorname{span}}
+
+\title{Finite-Codimensional Invariance for Norming M-Bases}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_12}}
+\date{2026-06-15}
+
+\begin{document}
+\maketitle
+
+\section*{Source Problem}
+
+Hajek and Russo ask the following heredity problem for norming Markushevich
+bases in \cite[Problem 6.1]{HR}: if a Banach space $\X$ admits a norming
+M-basis and $\Z$ is a subspace of $\X$, must $\Z$ admit a norming M-basis?
+The source problem appears on PDF page 24 of arXiv:2402.18442 and in the
+parsed source at \texttt{manuscript.tex:685--691}.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result}
+
+This packet proves that the answer is positive for all finite-codimensional
+subspaces. In fact, admitting a norming M-basis is invariant under passing to
+closed finite-codimensional subspaces.
+
+\begin{theorem}\label{thm:finite-codim}
+Let $\X$ be a Banach space with a norming M-basis. If $\Z$ is a closed
+finite-codimensional subspace of $\X$, then $\Z$ admits a norming M-basis.
+\end{theorem}
+
+\begin{theorem}\label{thm:finite-codim-invariance}
+Let $\Z$ be a closed finite-codimensional subspace of a Banach space $\X$.
+Then $\X$ admits a norming M-basis if and only if $\Z$ admits a norming
+M-basis.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+There are two steps. First, if the finite-dimensional annihilator of $\Z$ is
+already contained in the coordinate span of a given norming M-basis, Gaussian
+elimination removes finitely many pivot coordinates and leaves a norming
+M-basis on $\Z$. Second, an arbitrary finite-codimensional subspace can be
+isomorphically moved to such a coordinate-annihilator subspace. Indeed, choose
+finitely many original basis vectors that span the finite-dimensional quotient
+$\X/\Z$. Because the coordinate span is norming, hence separates points, its
+restrictions to this finite-dimensional complement give all coordinate
+functionals on the complement. These coordinate-span functionals define a
+model subspace $W$ with a coordinate annihilator, and an explicit finite-rank
+formula gives an isomorphism $\Z\cong W$.
+
+\section*{Proof}
+
+\begin{lemma}\label{lem:coordinate-finite-codim}
+Let $\{e_\gamma;\varphi_\gamma\}_{\gamma\in\Gamma}$ be a
+$\lambda$-norming M-basis of a Banach space $\X$, where $0<\lambda\le 1$.
+Let $E$ be a finite-dimensional subspace of
+$Y=\spn\{\varphi_\gamma:\gamma\in\Gamma\}$, and set
+\[
+    W=\bigcap_{f\in E}\ker f .
+\]
+Then $W$ admits a $\lambda$-norming M-basis.
+\end{lemma}
+
+\begin{proof}
+If $E=\{0\}$ there is nothing to prove, so assume $\dim E=m>0$.
+Choose a basis $f_1,\ldots,f_m$ of $E$. Since $E$ is contained in the
+coordinate span, there is a finite set $A\subseteq\Gamma$ such that
+\[
+    E\subseteq \spn\{\varphi_\alpha:\alpha\in A\}.
+\]
+The $m\times |A|$ matrix $(f_i(e_\alpha))_{i,\alpha}$ has rank $m$.
+Choose $B\subseteq A$ with $|B|=m$ such that the square matrix
+$(f_i(e_\beta))_{i,\beta\in B}$ is invertible.
+
+For each $\alpha\in\Gamma\setminus B$, let $(c_{\beta\alpha})_{\beta\in B}$
+be the unique scalar family satisfying
+\[
+    f_i(e_\alpha)=\sum_{\beta\in B} c_{\beta\alpha} f_i(e_\beta)
+    \qquad (i=1,\ldots,m).
+\]
+Define
+\[
+    u_\alpha=e_\alpha-\sum_{\beta\in B}c_{\beta\alpha}e_\beta
+    \in W,\qquad
+    \psi_\alpha=\varphi_\alpha|_{W}
+    \quad(\alpha\in\Gamma\setminus B).
+\]
+Then, for $\alpha,\eta\in\Gamma\setminus B$,
+\[
+    \psi_\alpha(u_\eta)
+      =\varphi_\alpha(e_\eta)
+       -\sum_{\beta\in B}c_{\beta\eta}\varphi_\alpha(e_\beta)
+      =\delta_{\alpha\eta},
+\]
+so the system is biorthogonal.
+
+We next prove fundamentality. The above choice of $B$ defines a continuous
+finite-rank projection $P:\X\to W$ by
+\[
+    Px=x-\sum_{\beta\in B} a_\beta(x)e_\beta,
+\]
+where the scalars $a_\beta(x)$ are the unique solution of
+\[
+    f_i(x)=\sum_{\beta\in B} a_\beta(x) f_i(e_\beta)
+    \qquad (i=1,\ldots,m).
+\]
+The functionals $a_\beta$ are continuous linear combinations of
+$f_1,\ldots,f_m$. Hence $P$ is continuous, $P\X=W$, and
+$P e_\alpha=u_\alpha$ for $\alpha\notin B$. Since
+$\spn\{e_\gamma:\gamma\in\Gamma\}$ is dense in $\X$, it follows that
+$\spn\{u_\alpha:\alpha\in\Gamma\setminus B\}$ is dense in $W$.
+
+For totality, suppose $z\in W$ and $\psi_\alpha(z)=0$ for every
+$\alpha\in\Gamma\setminus B$. Then
+\[
+    z-\sum_{\beta\in B}\varphi_\beta(z)e_\beta
+\]
+is annihilated by every $\varphi_\gamma$, $\gamma\in\Gamma$, and is therefore
+zero by totality of the original M-basis. Thus
+$z\in\spn\{e_\beta:\beta\in B\}$. But $z\in W$ and the matrix
+$(f_i(e_\beta))_{i,\beta\in B}$ is invertible, so all coefficients are zero.
+Hence $z=0$.
+
+It remains to check the norming constant. Let
+$Y_0=\spn\{\psi_\alpha:\alpha\in\Gamma\setminus B\}\subseteq W^*$.
+The equations $f_i(z)=0$ for $z\in W$ and the invertibility of the pivot
+matrix express each omitted restriction $\varphi_\beta|_W$, $\beta\in B$,
+as a linear combination of the restrictions
+$\varphi_\alpha|_W$ with $\alpha\in A\setminus B$. Therefore
+$Y|_W=Y_0$.
+
+Since $Y$ is $\lambda$-norming for $\X$, for every $z\in W$,
+\[
+ \lambda\|z\|_\X
+ \le
+ \sup\{ |y^*(z)|: y^*\in Y,\ \|y^*\|_{\X^*}\le 1\}
+ \le
+ \sup\{ |g(z)|: g\in Y_0,\ \|g\|_{W^*}\le 1\}.
+\]
+Thus $Y_0$ is $\lambda$-norming for $W$, and the biorthogonal system
+$\{u_\alpha;\psi_\alpha\}_{\alpha\in\Gamma\setminus B}$ is a
+$\lambda$-norming M-basis of $W$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:finite-codim}]
+Let $\{e_\gamma;\varphi_\gamma\}_{\gamma\in\Gamma}$ be a norming M-basis of
+$\X$, and put $Y=\spn\{\varphi_\gamma:\gamma\in\Gamma\}$. If $\Z=\X$, there is
+nothing to prove, so assume $m=\dim(\X/\Z)>0$. Let $q:\X\to \X/\Z$ be the
+quotient map. Since $\spn\{e_\gamma:\gamma\in\Gamma\}$ is dense in $\X$ and
+$\X/\Z$ is finite-dimensional, the vectors $q(e_\gamma)$ span $\X/\Z$.
+Choose $B=\{\beta_1,\ldots,\beta_m\}\subseteq\Gamma$ such that
+$q(e_{\beta_1}),\ldots,q(e_{\beta_m})$ is a basis of $\X/\Z$, and set
+$L=\spn\{e_{\beta_1},\ldots,e_{\beta_m}\}$. Then $\X=\Z\oplus L$.
+
+Let $f_1,\ldots,f_m\in \X^*$ be the coordinate functionals of this
+decomposition, so
+\[
+    f_i\Big(z+\sum_{j=1}^m a_j e_{\beta_j}\Big)=a_i
+    \qquad (z\in\Z).
+\]
+The restrictions of $Y$ to $L$ separate points of $L$, because $Y$ separates
+points of $\X$. Since $L$ is finite-dimensional, $Y|_L=L^*$. Hence there are
+$g_1,\ldots,g_m\in Y$ such that
+\[
+    g_i(e_{\beta_j})=\delta_{ij}\qquad (1\le i,j\le m).
+\]
+Define
+\[
+    W=\bigcap_{i=1}^m\ker g_i .
+\]
+By Lemma \ref{lem:coordinate-finite-codim}, $W$ admits a norming M-basis.
+
+It remains only to identify $\Z$ and $W$ isomorphically. Define
+\[
+    S:\Z\to W,\qquad
+    Sz=z-\sum_{i=1}^m g_i(z)e_{\beta_i}.
+\]
+The formula gives $g_j(Sz)=0$ for all $j$, so $S$ maps $\Z$ into $W$.
+Conversely, define
+\[
+    R:W\to\Z,\qquad
+    Rw=w-\sum_{i=1}^m f_i(w)e_{\beta_i}.
+\]
+Then $R$ maps $W$ into $\Z$. A direct computation using
+$g_i(e_{\beta_j})=f_i(e_{\beta_j})=\delta_{ij}$ gives $RS=I_\Z$ and
+$SR=I_W$. Thus $\Z$ is isomorphic to $W$. Pulling a norming M-basis of $W$
+back through this isomorphism gives a norming M-basis of $\Z$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:finite-codim-invariance}]
+The forward implication is Theorem \ref{thm:finite-codim}. For the converse,
+assume that $\Z$ admits a $\lambda$-norming M-basis
+$\{z_\alpha;z_\alpha^*\}_{\alpha\in A}$. Choose a finite-dimensional
+complement $L$ of $\Z$ in $\X$, so $\X=\Z\oplus L$, and let
+$P_\Z:\X\to\Z$ and $P_L:\X\to L$ be the associated bounded projections.
+Take a basis $u_1,\ldots,u_n$ of $L$ with biorthogonal coordinate
+functionals $u_1^*,\ldots,u_n^*\in L^*$.
+
+Define functionals on $\X$ by
+\[
+    \widetilde z_\alpha^* = z_\alpha^*\circ P_\Z,\qquad
+    \widetilde u_i^* = u_i^*\circ P_L .
+\]
+Then
+\[
+    \{z_\alpha;\widetilde z_\alpha^*\}_{\alpha\in A}
+    \cup
+    \{u_i;\widetilde u_i^*\}_{i=1}^n
+\]
+is a biorthogonal system in $\X$. Its vectors are fundamental because
+$\spn\{z_\alpha\}$ is dense in $\Z$ and $u_1,\ldots,u_n$ span $L$; its
+functionals are total because they separately detect the $\Z$ and $L$
+coordinates.
+
+It remains to check that their linear span is norming. Let
+$D=\spn\{z_\alpha^*:\alpha\in A\}$ and
+\[
+    \widetilde D=P_\Z^*D+P_L^*L^*
+    \subseteq \X^* .
+\]
+Since the norm $x=z+u\mapsto \|z\|+\|u\|$ is equivalent to the original norm
+on the finite direct sum $\Z\oplus L$, and since $D$ is norming for $\Z$
+while $L^*$ is norming for $L$, there is a constant $c>0$ such that
+\[
+    \sup\{ |f(x)|: f\in \widetilde D,\ \|f\|_{\X^*}\le 1\}
+    \ge c\|x\|_\X
+    \qquad (x\in \X).
+\]
+Thus $\widetilde D$ is a norming subspace of $\X^*$, and the displayed
+biorthogonal system is a norming M-basis of $\X$.
+\end{proof}
+
+\section*{Limitations and Novelty Check}
+
+The theorem does not solve the full heredity problem: arbitrary
+infinite-codimensional subspaces are not covered. It also does not settle the
+complemented-subspace problem quoted later in the source paper.
+
+The run indexes were checked for arXiv:2402.18442, norming Markushevich bases,
+the heredity problem, finite-codimensional subspaces, and hyperplanes. A
+bounded web search on 2026-06-15 used phrases combining norming M-bases or
+norming Markushevich bases with finite-codimensional subspaces, hyperplanes,
+subspaces, and the heredity problem. It did not find this exact subcase
+recorded as a later answer. After the finite-codimensional upgrade, the same
+search phrases were rerun with ``finite codimension'', ``finite-codimensional'',
+``hyperplane'', ``separable quotient'', and ``quotient'' variants; no exact
+duplicate was found.
+
+\section*{References}
+
+\begin{thebibliography}{9}
+\bibitem{HR}
+P. Hajek and T. Russo,
+\emph{Norming Markushevich bases: recent results and open problems},
+arXiv:2402.18442.
+\end{thebibliography}
+
+\end{document}

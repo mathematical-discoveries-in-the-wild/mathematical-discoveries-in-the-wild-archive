@@ -1,0 +1,781 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\allowdisplaybreaks
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\WC}{\mathrm{WC}}
+\newcommand{\J}{\mathrm{J}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\co}{\operatorname{co}}
+\newcommand{\MAX}{\operatorname{MAX}}
+\newcommand{\Ord}{\operatorname{Ord}}
+\newcommand{\id}{\operatorname{Id}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cJ}{\mathcal J}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\B}{\mathrm B}
+\newcommand{\restr}{\mathord\upharpoonright}
+
+\title{Fixed Levels of the Summing-Basis Weak-Compactness Index\\
+\large A full-scale attack on Question 9.3}
+\author{Prepared from the automatic-solver packet and a further literature/proof search}
+\date{21 June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Beanland--Causey--Freeman--Wallis asked for which ordinals $\xi$ the class
+\[
+   \cW_\xi=\{A:X\to Y:\WC(A)\leq \xi\}
+\]
+is an operator ideal, where $\WC$ is the tree index obtained from domination of the summing basis of $c_0$.
+This note records the strongest result obtained in a renewed attempt at the problem.
+The finite levels are determined exactly and all finite cutoffs fail under the standard convention for operator ideals, while the known level $\omega$ is the ideal of super weakly compact operators.
+Several further unconditional results are proved: an exact triangular-array reformulation, a sharp summable-error perturbation lemma, an explicit obstruction to any fixed-error argument, a difference-sequence reformulation, convex-block stability, a direct-sum ordinal lower bound, a successor-level nonideality criterion, comparison with Causey's James index, and two uniform finite localization principles.
+
+The literature supplies full-rank finite-color pair stabilization precisely at the multiplicatively indecomposable ordinals $\omega^{\omega^\eta}$, and the analogous James-index cutoffs are ideals at exactly these natural scales.  The pair theorem gives the fixed-mesh stabilization required by the obvious addition argument, but fixed mesh is not enough: errors can accumulate against alternating coefficients.  We isolate a precise rank-preserving ``summable fusion'' principle.  If this principle holds at an infinite ordinal $\lambda$, then $\cW_\lambda$ is an operator ideal.  Thus the remaining gap is reduced to one explicit tree-Ramsey/fusion statement rather than an analytic estimate.  No claim of a complete classification is made.
+\end{abstract}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Verified status.}
+The finite-level computation is correct.  The source proves that $\cW_\omega$ is the ideal of super weakly compact operators and that $\{A:\WC(A)<\omega_1\}$ is an ideal.  I did not locate a later paper explicitly resolving the fixed higher cutoffs.  The strongest new conclusion below is the conditional ideal theorem, Theorem~\ref{thm:SF-ideal}, together with a proof that all of its analytic ingredients are already available; only the rank-preserving summable fusion remains.
+}}
+\end{center}
+
+\tableofcontents
+
+\section{Definitions and conventions}
+
+All Banach spaces are real; the complex case requires only the usual scalar modifications.  If $(u_i)_{i=1}^n$ and $(v_i)_{i=1}^n$ are finite sequences, write
+\[
+   (u_i)_{i=1}^n\lesssim_K(v_i)_{i=1}^n
+\]
+when
+\[
+   \Bigl\|\sum_{i=1}^n a_i u_i\Bigr\|
+   \leq K\Bigl\|\sum_{i=1}^n a_i v_i\Bigr\|
+   \qquad(a_1,\dots,a_n\in\R).
+\]
+
+Let $(e_i)$ denote the unit vector basis of $c_0$ and let
+\[
+   s_i=e_1+\cdots+e_i
+\]
+be its summing basis.  Thus
+\begin{equation}\label{eq:summing-norm}
+   \Bigl\|\sum_{i=1}^n a_i s_i\Bigr\|_{c_0}
+   =\max_{1\leq j\leq n}\Bigl|\sum_{i=j}^n a_i\Bigr|.
+\end{equation}
+Some references use the reversed finite ordering, in which initial sums appear instead of tail sums.  The two finite norms are uniformly $2$-equivalent, but we keep the exact convention in \eqref{eq:summing-norm}.
+
+For an operator $A:X\to Y$ and $K>1$, define the tree
+\[
+ \WC(A,X,Y,K)=\{\varnothing\}\cup
+ \left\{(x_i)_{i=1}^n\in B_X^{<\N}:
+       (s_i)_{i=1}^n\lesssim_K(Ax_i)_{i=1}^n\right\}.
+\]
+Its order is denoted by $o(\WC(A,X,Y,K))$, with order $\infty$ for an ill-founded tree, and
+\[
+   \WC(A,X,Y)=\sup_{K>1}o(\WC(A,X,Y,K)).
+\]
+We suppress the spaces when they are clear.  The distinction between $K>1$ and $K\geq1$ is immaterial after increasing the constant.
+
+For an ordinal $\xi$, let
+\[
+   \cW_\xi(X,Y)=\{A\in\mathcal L(X,Y):\WC(A,X,Y)\leq\xi\},
+   \qquad
+   \cW_\xi=\bigcup_{X,Y}\cW_\xi(X,Y).
+\]
+We use the standard operator-ideal convention: an ideal contains all finite-rank operators and is stable under addition and two-sided composition.
+
+We use two elementary tree facts repeatedly.  First, if a tree contains the empty sequence and its nonempty part is a well-founded $B$-tree of order $\alpha$, then the full tree has order $\alpha+1$.  Second, for every ordinal $\alpha$ there is a canonical $B$-tree $M_\alpha$ of order $\alpha$, and $o(T)>\alpha$ if and only if a monotone copy of $M_\alpha$ is carried into $T$ branchwise.  These are the standard minimal-tree facts used in the source paper.
+
+\section{The finite levels}
+
+The automatic-solver packet's main theorem is correct.  For completeness we give the proof in a form compatible with the source convention.
+
+\begin{theorem}\label{thm:finite-rank}
+Let $A:X\to Y$ be bounded.  For every integer $n\geq1$,
+\[
+   \WC(A)\leq n
+   \quad\Longleftrightarrow\quad
+   \rank(A)\leq n-1.
+\]
+Equivalently, if $\rank(A)=r<\infty$, then $\WC(A)=r+1$, while every infinite-rank operator satisfies $\WC(A)\geq\omega$.
+\end{theorem}
+
+\begin{proof}
+Suppose $\rank(A)=r<\infty$.  If $(x_i)_{i=1}^m\in\WC(A,K)$, then $(Ax_i)_{i=1}^m$ dominates the linearly independent sequence $(s_i)_{i=1}^m$.  Hence $Ax_1,\dots,Ax_m$ are linearly independent, and $m\leq r$.  Therefore every node has length at most $r$ and
+\[
+   o(\WC(A,K))\leq r+1.
+\]
+
+Conversely, choose linearly independent $y_1,\dots,y_r\in A(B_X)$ and lifts $x_i\in B_X$ with $Ax_i=y_i$.  Since any two bases of finite-dimensional spaces are equivalent, there is $K>1$ such that
+\[
+   (s_i)_{i=1}^r\lesssim_K(y_i)_{i=1}^r.
+\]
+Thus $\WC(A,K)$ has a node of length $r$, so its order is at least $r+1$.  This proves $\WC(A)=r+1$.
+
+If $A$ has infinite rank, the same argument produces, for every $m$, a constant $K_m$ and a node of length $m$ in $\WC(A,K_m)$.  Consequently
+\[
+   \WC(A)\geq\sup_m(m+1)=\omega.
+\]
+\end{proof}
+
+\begin{corollary}\label{cor:finite-fail}
+No finite ordinal gives a positive answer to Question 9.3 under the standard definition of operator ideal.
+\end{corollary}
+
+\begin{proof}
+For $n\geq2$, $\cW_n$ is the class of operators of rank at most $n-1$.  On an $n$-dimensional space take complementary projections $P,Q$ with ranks $n-1$ and $1$.  Then $P,Q\in\cW_n$, but $P+Q=I$ has $\WC(I)=n+1$.  For $n=1$, the class consists only of zero operators, so it does not contain all finite-rank operators.
+\end{proof}
+
+\section{Exact triangular arrays}
+
+The most useful reformulation is completely exact.
+
+\begin{proposition}[exact triangular criterion]\label{prop:triangular}
+For vectors $y_1,\dots,y_n$ in a Banach space $Y$ and $K\geq1$, the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $(s_i)_{i=1}^n\lesssim_K(y_i)_{i=1}^n$.
+\item There are functionals $f_1,\dots,f_n\in K B_{Y^*}$ such that
+\begin{equation}\label{eq:triangular}
+ f_j(y_i)=
+ \begin{cases}
+ 0,&i<j,\\
+ 1,&i\geq j.
+ \end{cases}
+\end{equation}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+If (i) holds, the linear map $T:[y_i]_{i=1}^n\to[s_i]_{i=1}^n$ defined by $Ty_i=s_i$ has norm at most $K$.  If $e_j^*$ is the $j$th coordinate functional on $c_0$, then $e_j^*(s_i)=\mathbf 1_{\{i\geq j\}}$.  Extend $e_j^*T$ by Hahn--Banach to obtain $f_j\in K B_{Y^*}$ satisfying \eqref{eq:triangular}.
+
+Conversely, for scalars $(a_i)$ choose $j$ for which the maximum in \eqref{eq:summing-norm} is attained.  Then
+\[
+ \Bigl|\sum_{i=j}^n a_i\Bigr|
+ =\Bigl|f_j\Bigl(\sum_{i=1}^n a_i y_i\Bigr)\Bigr|
+ \leq K\Bigl\|\sum_{i=1}^n a_i y_i\Bigr\|.
+\]
+\end{proof}
+
+Thus a $\WC$-tree is exactly a tree of uniformly bounded exact triangular arrays.  This formulation exposes both the strength of the index and the difficulty of splitting a triangular matrix between two summands.
+
+\subsection{A summable-error perturbation lemma}
+
+Fixed entrywise approximation is not enough, but summable column errors are.
+
+\begin{lemma}[summable triangular errors]\label{lem:summable-errors}
+Let $y_1,\dots,y_n\in Y$.  Suppose $f_1,\dots,f_n\in Y^*$ satisfy $\|f_j\|\leq L$ and
+\[
+  \bigl|f_j(y_i)-\mathbf 1_{\{i\geq j\}}\bigr|\leq\eps_i
+  \qquad(1\leq i,j\leq n).
+\]
+If $E=\sum_{i=1}^n\eps_i<\tfrac12$, then
+\[
+   (s_i)_{i=1}^n\lesssim_{L/(1-2E)}(y_i)_{i=1}^n.
+\]
+\end{lemma}
+
+\begin{proof}
+For scalars $(a_i)$ put
+\[
+   T_j=\sum_{i=j}^n a_i,\qquad T_{n+1}=0,
+   \qquad M=\max_j|T_j|.
+\]
+Then $a_i=T_i-T_{i+1}$, so $|a_i|\leq2M$.  Choose $j_0$ with $|T_{j_0}|=M$.  We have
+\begin{align*}
+ \left|f_{j_0}\left(\sum_i a_i y_i\right)-T_{j_0}\right|
+ &\leq\sum_i|a_i|\eps_i\\
+ &\leq2ME.
+\end{align*}
+Therefore
+\[
+  L\left\|\sum_i a_i y_i\right\|
+  \geq (1-2E)M
+  =(1-2E)\left\|\sum_i a_i s_i\right\|.
+\]
+\end{proof}
+
+\subsection{Why a fixed mesh cannot work}
+
+The preceding summability hypothesis is essential, even in finite-dimensional $\ell_\infty$.
+
+\begin{proposition}[fixed-error obstruction]\label{prop:fixed-error-obstruction}
+For every $\delta>0$ there are arbitrarily large $n$, vectors $y_1,\dots,y_n\in\ell_\infty^n$, and coordinate functionals $f_1,\dots,f_n\in B_{(\ell_\infty^n)^*}$ such that
+\[
+  \bigl|f_j(y_i)-\mathbf 1_{\{i\geq j\}}\bigr|<\delta
+  \qquad(1\leq i,j\leq n),
+\]
+while $(y_i)_{i=1}^n$ is linearly dependent and therefore does not dominate the summing basis with any constant.
+\end{proposition}
+
+\begin{proof}
+Let $H_{ji}=\mathbf 1_{\{i\geq j\}}$.  Put $T_j=(-1)^j$ for $1\leq j\leq n$, $T_{n+1}=0$, and $a_i=T_i-T_{i+1}$.  Then
+\[
+   \sum_{i=1}^n|a_i|=2n-1=:L_0,
+   \qquad
+   \sum_{i=1}^n a_iH_{ji}=T_j.
+\]
+Define
+\[
+   E_{ji}=-\frac{T_j\,\operatorname{sgn}(a_i)}{L_0},
+   \qquad
+   y_i=(H_{ji}+E_{ji})_{j=1}^n.
+\]
+Then $|E_{ji}|=1/L_0$, which is below $\delta$ for large $n$.  On the other hand,
+\[
+   \sum_i a_iE_{ji}
+   =-\frac{T_j}{L_0}\sum_i|a_i|
+   =-T_j,
+\]
+so $\sum_i a_i y_i=0$.  Taking $f_j$ to be the $j$th coordinate functional gives the claimed approximate triangular matrix.
+\end{proof}
+
+\begin{remark}
+This example pinpoints the failure in the most tempting application of the finite-color pair Ramsey theorem: a uniform mesh $\delta$ can be made as small as desired, but a branch can be arbitrarily long, and alternating coefficients have total variation of order the branch length while their summing-basis norm stays $1$.
+\end{remark}
+
+\section{Difference sequences and convex blocks}
+
+\subsection{A constrained $c_0$ reformulation}
+
+Let $x_0=0$ and $z_i=x_i-x_{i-1}$.  If
+\[
+   b_j=\sum_{i=j}^n a_i,
+\]
+then
+\begin{equation}\label{eq:abel}
+   \sum_{i=1}^n a_iAx_i=\sum_{j=1}^n b_jAz_j.
+\end{equation}
+The change of variables is bijective, since $a_i=b_i-b_{i+1}$ with $b_{n+1}=0$.
+
+\begin{proposition}[difference tree]\label{prop:difference-tree}
+Define
+\[
+\begin{split}
+ \cD(A,K)=\{\varnothing\}\cup\bigl\{(z_i)_{i=1}^n:
+ &\ \sum_{j=1}^i z_j\in B_X\quad(1\leq i\leq n),\\
+ &\ \max_i|b_i|\leq K\|\sum_i b_iAz_i\|
+       \quad(b_1,\dots,b_n\in\R)\bigr\}.
+\end{split}
+\]
+The maps
+\[
+   (x_i)_{i=1}^n\longmapsto(x_i-x_{i-1})_{i=1}^n,
+   \qquad
+   (z_i)_{i=1}^n\longmapsto\left(\sum_{j=1}^i z_j\right)_{i=1}^n
+\]
+are inverse initial-segment preserving bijections between $\WC(A,K)$ and $\cD(A,K)$.  Hence the two trees have the same order.
+\end{proposition}
+
+\begin{proof}
+This is exactly \eqref{eq:summing-norm} and \eqref{eq:abel}.  The unit-ball condition on the partial sums is the image of the condition $x_i\in B_X$.
+\end{proof}
+
+The reformulation says that $\WC$ measures lower $c_0$ estimates for difference vectors, but only for differences whose partial sums stay in the unit ball.  This constraint is the reason that standard $c_0$-index estimates do not immediately apply.
+
+\subsection{Convex-block stability}
+
+\begin{proposition}\label{prop:convex-block}
+Every successive convex block of a finite sequence which $K$-dominates the summing basis again $K$-dominates the summing basis.
+\end{proposition}
+
+\begin{proof}
+Suppose $(y_i)_{i=1}^n$ $K$-dominates $(s_i)_{i=1}^n$ and
+\[
+   z_j=\sum_{i=p_{j-1}+1}^{p_j}\lambda_i y_i,
+   \qquad \lambda_i\geq0,
+   \qquad \sum_{i=p_{j-1}+1}^{p_j}\lambda_i=1.
+\]
+For scalars $a_j$, expand $\sum_j a_jz_j=\sum_i c_i y_i$ with $c_i=a_j\lambda_i$ on the $j$th block.  At the first coordinate of the $j$th block, the old tail sum is exactly $\sum_{r=j}^m a_r$.  Hence
+\[
+ \max_j\left|\sum_{r=j}^m a_r\right|
+ \leq \max_i\left|\sum_{r=i}^n c_r\right|
+ \leq K\left\|\sum_j a_jz_j\right\|.
+\]
+\end{proof}
+
+This positive stability is useful, but it is weaker than closure under signed absolutely convex blocks.  The latter is the property behind the clean product estimates for the $\ell_p$ and $c_0$ Bourgain indices and is precisely what fails for the summing basis.
+
+\section{Ideal axioms and direct sums}
+
+\subsection{Everything except addition}
+
+\begin{proposition}\label{prop:composition}
+If $U:Y\to Z$, $A:X\to Y$, and $V:W\to X$ are bounded, then
+\[
+   \WC(UAV,W,Z)\leq\WC(A,X,Y).
+\]
+Also $\WC(cA)=\WC(A)$ for every nonzero scalar $c$.
+\end{proposition}
+
+\begin{proof}
+A node $(w_i)$ of $\WC(UAV,K)$ is sent to
+\[
+   x_i=\frac{Vw_i}{\max\{1,\|V\|\}}\in B_X.
+\]
+For all scalars $(a_i)$,
+\[
+ \left\|\sum_i a_i s_i\right\|
+ \leq K\|U\|\max\{1,\|V\|\}
+       \left\|\sum_i a_iAx_i\right\|.
+\]
+This gives an initial-segment preserving map into a suitable $\WC(A,K')$ tree.  Scalar invariance follows by rescaling $K$.
+\end{proof}
+
+\begin{corollary}\label{cor:only-addition}
+For every $\xi\geq\omega$, the class $\cW_\xi$ contains all finite-rank operators and is stable under scalar multiplication and two-sided composition.  Therefore addition is the only unresolved operator-ideal axiom at fixed infinite levels.
+\end{corollary}
+
+\subsection{Concatenation in direct sums}
+
+Let $A:X\to Y$ and $B:W\to Z$, and consider
+\[
+   A\oplus B:X\oplus_\infty W\longrightarrow Y\oplus_1 Z.
+\]
+
+\begin{lemma}[node concatenation]\label{lem:node-concat}
+If $(x_i)_{i=1}^m\in\WC(A,K)$ and $(w_j)_{j=1}^n\in\WC(B,K)$, then
+\[
+ ( (x_1,0),\dots,(x_m,0),(0,w_1),\dots,(0,w_n) )
+ \in\WC(A\oplus B,K).
+\]
+\end{lemma}
+
+\begin{proof}
+For coefficients $(a_i)_{i=1}^m$ and $(b_j)_{j=1}^n$, let $M_A$ and $M_B$ be the two separate summing-basis norms.  Every tail sum of the concatenated coefficient vector has modulus at most $M_A+M_B$, while
+\[
+ \left\|\sum_i a_iAx_i\right\|+
+ \left\|\sum_j b_jBw_j\right\|
+ \geq\frac{M_A+M_B}{K}.
+\]
+\end{proof}
+
+For nonempty well-founded $B$-trees $S,T$, define
+\[
+   S\star T=S\cup\{s^\frown t:s\in\MAX(S),\ t\in T\}.
+\]
+A derivative calculation gives
+\begin{equation}\label{eq:star-order}
+   o(S\star T)=o(T)+o(S).
+\end{equation}
+The appended copy of $T$ is removed first, after which the remaining tree is $S$.
+
+\begin{proposition}[ordinal lower bound]\label{prop:direct-sum-lower}
+Suppose, for a common $K$, the nonempty parts of $\WC(A,K)$ and $\WC(B,K)$ contain $B$-subtrees of orders $\alpha$ and $\beta$, respectively.  Then the nonempty part of $\WC(A\oplus B,K)$ contains a subtree of order $\beta+\alpha$.
+\end{proposition}
+
+\begin{proof}
+Use Lemma~\ref{lem:node-concat} on the leaf replacement $S\star T$, with $S$ from $A$ and $T$ from $B$, and apply \eqref{eq:star-order}.
+\end{proof}
+
+\subsection{A successor-level obstruction}
+
+\begin{theorem}[successor criterion]\label{thm:successor-fail}
+Let $\xi\geq2$ be a successor ordinal.  If there exists an operator $A$ with $\WC(A)=\xi$, then $\cW_\xi$ is not closed under addition.
+\end{theorem}
+
+\begin{proof}
+Write $\xi=\eta+1$.  Since $\xi$ is a successor and
+\[
+   \WC(A)=\sup_{K>1}o(\WC(A,K))=\xi,
+\]
+there is $K>1$ with $o(\WC(A,K))=\xi$.  Thus the nonempty part contains a $B$-subtree of order $\eta$.
+
+Let $F:\R\to\R$ be the identity.  Its one-node $B$-tree has order $1$ and lies in $\WC(F,K)$.  By Proposition~\ref{prop:direct-sum-lower}, the nonempty part of $\WC(F\oplus A,K)$ has order at least $\eta+1$, so
+\[
+   \WC(F\oplus A)\geq\eta+2=\xi+1.
+\]
+But
+\[
+   F\oplus A=(F\oplus0)+(0\oplus A),
+\]
+and the two summands have indices $2\leq\xi$ and $\xi$.  Hence $\cW_\xi$ is not sum closed.
+\end{proof}
+
+This theorem recovers every finite counterexample and shows that any future occurrence theorem for infinite successor values of $\WC$ would automatically produce corresponding failures of Question 9.3.
+
+\section{Comparison with the James index}
+
+For $\eps>0$, let $\cJ(A,\eps)$ be the tree of finite sequences $(x_i)_{i=1}^n\subset B_X$ such that for every $1\leq m<n$,
+\[
+  d\bigl(\co\{Ax_i:i\leq m\},\co\{Ax_i:i>m\}\bigr)\geq\eps.
+\]
+Causey's James index is
+\[
+   \J(A)=\sup_{\eps>0}o(\cJ(A,\eps)).
+\]
+This is equivalent to Causey's formulation using the body $A^*B_{Y^*}$.
+
+\begin{proposition}\label{prop:WC-le-J}
+For every operator $A$,
+\[
+   \WC(A)\leq\J(A).
+\]
+\end{proposition}
+
+\begin{proof}
+If $(x_i)_{i=1}^n\in\WC(A,K)$, take convex combinations
+\[
+   u=\sum_{i\leq m}\alpha_iAx_i,
+   \qquad
+   v=\sum_{i>m}\beta_iAx_i.
+\]
+The corresponding coefficient vector has a tail sum equal to $-1$ at $m+1$.  Hence
+\[
+   1\leq K\|u-v\|.
+\]
+Thus the same node belongs to $\cJ(A,1/K)$.
+\end{proof}
+
+The two indices are not equal, even at the bottom.
+
+\begin{proposition}\label{prop:J-finite-rank}
+If $A$ is nonzero and finite rank, then
+\[
+   \J(A)=\omega,
+   \qquad
+   \WC(A)=\rank(A)+1.
+\]
+\end{proposition}
+
+\begin{proof}
+The second equality is Theorem~\ref{thm:finite-rank}.  For each fixed $\eps>0$, an $\eps$-convexly separated sequence in the bounded finite-dimensional set $A(B_X)$ is pairwise $\eps$-separated, so its length is bounded.  Hence every fixed-$\eps$ tree has finite order and $\J(A)\leq\omega$.
+
+Choose $x\in B_X$ with $Ax\neq0$.  For every $n$, the points
+\[
+   0,\frac1n x,\frac2n x,\dots,x
+\]
+have images on a line segment whose consecutive gaps are $\|Ax\|/n$; in their natural order they are $\|Ax\|/n$-convexly separated.  Therefore $\J(A)\geq\omega$.
+\end{proof}
+
+Causey proved that
+\[
+   \{A:\J(A)\leq\omega^{\omega^\eta}\}
+\]
+is a closed operator ideal for every ordinal $\eta$, and that the level $\omega$ is the super weakly compact ideal.  Proposition~\ref{prop:WC-le-J} explains why this theorem is highly relevant, but Proposition~\ref{prop:J-finite-rank} shows that the James index is genuinely coarser at finite levels, so the result does not by itself answer Question 9.3.
+
+\section{Uniform finite localization}
+
+The analytic obstruction is not finite.  On every prescribed finite length one can pass to uniformly wide-summing subsequences.  The difficulty is making those choices coherent while preserving transfinite tree order.
+
+A finite sequence $(y_i)$ is called $L$-wide-$(s)$ if it is $2L$-basic, $\|y_i\|\leq L$, and
+\[
+   \left|\sum_{i=j}^n a_i\right|
+   \leq L\left\|\sum_{i=1}^n a_i y_i\right\|
+   \qquad(1\leq j\leq n).
+\]
+In particular, an $L$-wide-$(s)$ sequence $L$-dominates the summing basis.
+
+\begin{proposition}[convex separation localizes]\label{prop:cs-localization}
+For every $R<\infty$, $\eps>0$, and $k\in\N$, there are $N\in\N$ and $L<\infty$ such that every $\eps$-convexly separated sequence $(y_i)_{i=1}^N\subset R B_Y$, in an arbitrary Banach space $Y$, has an $L$-wide-$(s)$ subsequence of length $k$.
+\end{proposition}
+
+\begin{proof}
+Assume the assertion fails.  For each $n$, choose a Banach space $Y_n$ and an $\eps$-convexly separated sequence $(y_i^{(n)})_{i=1}^n\subset R B_{Y_n}$ having no $n$-wide-$(s)$ subsequence of length $k$.  Let $\mathcal U$ be a free ultrafilter and form the ultraproduct $Y=(Y_n)_\mathcal U$.  For fixed $i$, let $y_i$ be the class of $(y_i^{(n)})_{n\geq i}$, padded by zero for $n<i$.  Every finite initial segment of $(y_i)$ is $\eps$-convexly separated, so $(y_i)$ has no weakly convergent subsequence: otherwise Mazur's theorem would give successive convex blocks with norm distance tending to zero, contradicting convex separation.
+
+By Rosenthal's characterization of non-relatively weakly compact bounded sets, $(y_i)$ has a wide-$(s)$ subsequence.  It is $L_0$-wide-$(s)$ for some $L_0$.  Choose $L>L_0$.  The finitely many inequalities defining that the first $k$ selected vectors are $L$-wide-$(s)$ transfer to $Y_n$ for $\mathcal U$-many $n$.  For such $n\geq L$, this contradicts the choice of $(y_i^{(n)})$.
+\end{proof}
+
+The same compactness argument gives a directly additive version.
+
+\begin{proposition}[finite splitting dichotomy]\label{prop:finite-split}
+For every $R,K<\infty$ and $k\in\N$, there are $N\in\N$ and $L<\infty$ with the following property.  If
+\[
+   a_i,b_i\in R B_Y\qquad(1\leq i\leq N)
+\]
+and $(a_i+b_i)_{i=1}^N$ $K$-dominates the summing basis, then either $(a_i)$ or $(b_i)$ has an $L$-wide-$(s)$ subsequence of length $k$.
+\end{proposition}
+
+\begin{proof}
+If the conclusion failed uniformly, take an ultraproduct exactly as above.  The resulting infinite sequence $(a_i+b_i)$ dominates the summing basis and hence is not relatively weakly compact.  If both $\{a_i:i\in\N\}$ and $\{b_i:i\in\N\}$ were relatively weakly compact, their sum set would be relatively weakly compact, a contradiction.  Therefore one of the two sequences contains a wide-$(s)$ subsequence.  Transfer its first $k$ terms back to a sufficiently large finite coordinate.
+\end{proof}
+
+\begin{remark}
+Propositions~\ref{prop:cs-localization} and~\ref{prop:finite-split} show that no new finite-dimensional estimate is needed.  What is missing is a coherent choice of the good subsequences over a tree of the same ordinal rank.
+\end{remark}
+
+\section{What the pair-Ramsey literature gives}
+
+Causey's proof for the James index uses a Ramsey theorem on linearly ordered pairs in well-founded trees.  Causey--Doebele subsequently proved the sharp structural theorem: the ordinals at which every finite coloring of comparable pairs admits a monochromatic subtree of full rank are exactly the multiplicatively indecomposable ordinals
+\[
+   \lambda=\omega^{\omega^\eta}.
+\]
+These are also exactly the scales appearing in Causey's ideal theorem for $\J$.
+
+For the present problem one needs an extended version, because the functional used at a threshold may depend on a maximal extension.  Causey's Corollary 5.9 supplies precisely finite-color stabilization on the extended pairs of $M_{\omega^{\omega^\eta}}$.
+
+The next statement records what follows immediately for bounded scalar arrays.  It is the strongest conclusion obtainable from a single finite partition.
+
+\begin{proposition}[fixed-mesh stabilization]\label{prop:fixed-mesh}
+Let $\lambda=\omega^{\omega^\eta}$ and let
+\[
+   u=(u_A,u_B)
+\]
+be a bounded $\R^2$-valued array indexed by triples $(p,q,v)$ with $p\neq q$, $p,q\preceq v$, and $v\in\MAX(M_\lambda)$.  For every $\delta>0$ there are vectors $\alpha,\beta\in\R^2$, monotone maps $r,c,a:M_\lambda\to M_\lambda$, and a map $e:\MAX(M_\lambda)\to\MAX(M_\lambda)$ such that along every branch
+\[
+ r(t_1)\prec c(t_1)\prec a(t_1)\prec r(t_2)\prec c(t_2)\prec a(t_2)\prec\cdots,
+ \qquad a(v)\preceq e(v),
+\]
+and, whenever $s,t\preceq v$,
+\begin{align*}
+ s\prec t&\implies
+   \|u(c(s),r(t),e(v))-\alpha\|_\infty<\delta,\\
+ t\preceq s&\implies
+   \|u(c(s),r(t),e(v))-\beta\|_\infty<\delta,\\
+ &\hspace{7mm}\|u(c(s),a(v),e(v))-\alpha\|_\infty<\delta.
+\end{align*}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Partition a bounded square in $\R^2$ into finitely many sets of diameter below $\delta$.  Apply Causey's extended-pair stabilization first to the values with the vector node before the threshold node, and then, inside the obtained copy, to the values with the threshold before the vector.  The first stabilization survives the second.  Since $3\lambda=\lambda$, the standard shuffle construction used in Causey's Lemma 5.10 gives three interlaced monotone copies $r,c,a$; an extension of the last copy gives $e$.  The anchor values are pre-threshold values, so they lie in the same cell as $\alpha$.
+\end{proof}
+
+If $u_D(p,q,v)=\phi_{q,v}(D x_p)$ for $D=A,B$, then exact triangularity for $A+B$ forces
+\[
+   \alpha_A+\alpha_B\approx0,
+   \qquad
+   \beta_A+\beta_B\approx1.
+\]
+One component has a gap near $1/2$, and subtracting an anchor functional produces a uniformly approximately triangular array for that component.  Proposition~\ref{prop:fixed-error-obstruction} shows why this still does not finish the proof: the approximation error is fixed, whereas Lemma~\ref{lem:summable-errors} needs errors summable down each branch.
+
+\section{The exact missing fusion principle}
+
+We now formulate a tree statement which is sufficient and whose fixed-mesh version is already supplied by the literature.
+
+For a nonzero ordinal $\lambda$, use the canonical $B$-tree
+\[
+ M_1=\{(1)\},\qquad
+ M_{\alpha+1}=\{(\alpha+1)\}\cup\{(\alpha+1)^\frown t:t\in M_\alpha\},
+\]
+and, for limit $\lambda$,
+\[
+ M_\lambda=\bigcup_{\alpha<\lambda}M_{\alpha+1}.
+\]
+Then $o(M_\lambda)=\lambda$.
+
+\begin{definition}[summable fusion property]\label{def:SF}
+An infinite ordinal $\lambda$ has property $\mathrm{SF}(\lambda)$ if the following holds.  Given $R<\infty$, a bounded array
+\[
+  u=(u_A,u_B):
+  \{(p,q,v):p\neq q,\ p,q\preceq v,\ v\in\MAX(M_\lambda)\}
+  \longrightarrow[-R,R]^2,
+\]
+and a positive summable sequence $(\eta_n)$, there are $\alpha,\beta\in[-R,R]^2$, monotone maps $r,c,a:M_\lambda\to M_\lambda$, and $e:\MAX(M_\lambda)\to\MAX(M_\lambda)$ such that
+\[
+ r(t_1)\prec c(t_1)\prec a(t_1)\prec r(t_2)\prec c(t_2)\prec a(t_2)\prec\cdots,
+ \qquad a(v)\preceq e(v),
+\]
+and for all $s,t\preceq v$,
+\begin{align}
+ s\prec t&\implies
+ \|u(c(s),r(t),e(v))-\alpha\|_\infty<\eta_{|s|},\label{eq:SF-pre}\\
+ t\preceq s&\implies
+ \|u(c(s),r(t),e(v))-\beta\|_\infty<\eta_{|s|},\label{eq:SF-post}\\
+ &\hspace{5mm}
+ \|u(c(s),a(v),e(v))-\alpha\|_\infty<\eta_{|s|}.
+ \label{eq:SF-anchor}
+\end{align}
+\end{definition}
+
+The dependence of the error on the vector level $|s|$ is exactly what is needed in Lemma~\ref{lem:summable-errors}.  A fixed $\delta$ version of $\mathrm{SF}(\lambda)$ is Proposition~\ref{prop:fixed-mesh} at $\lambda=\omega^{\omega^\eta}$.
+
+\begin{theorem}[conditional ideal theorem]\label{thm:SF-ideal}
+Let $\lambda$ be an infinite ordinal satisfying $\mathrm{SF}(\lambda)$.  Then
+\[
+   \cW_\lambda=\{A:\WC(A)\leq\lambda\}
+\]
+is an operator ideal.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:only-addition}, only addition must be proved.  We prove the contrapositive.  Let $C=A+B$ and assume $\WC(C)>\lambda$.  Choose $K>1$ with
+\[
+   o(\WC(C,K))>\lambda.
+\]
+There are vectors $(x_t)_{t\in M_\lambda}\subset B_X$ such that every branch belongs to $\WC(C,K)$.  By Proposition~\ref{prop:triangular}, for every $v\in\MAX(M_\lambda)$ and every $q\preceq v$ there is $\phi_{q,v}\in K B_{Y^*}$ such that
+\begin{equation}\label{eq:C-exact}
+ \phi_{q,v}(Cx_p)=
+ \begin{cases}
+ 0,&p\prec q,\\
+ 1,&q\preceq p\preceq v.
+ \end{cases}
+\end{equation}
+
+Define the bounded array
+\[
+  u_D(p,q,v)=\phi_{q,v}(Dx_p),
+  \qquad D\in\{A,B\}.
+\]
+Choose positive $(\eta_n)$ with $\sum_n\eta_n\leq1/16$ and apply $\mathrm{SF}(\lambda)$.  Since $\eta_n\to0$ and $M_\lambda$ has arbitrarily long branches, \eqref{eq:C-exact}, \eqref{eq:SF-pre}, and \eqref{eq:SF-post} yield the exact scalar identities
+\[
+   \alpha_A+\alpha_B=0,
+   \qquad
+   \beta_A+\beta_B=1.
+\]
+Consequently
+\[
+  (\beta_A-\alpha_A)+(\beta_B-\alpha_B)=1.
+\]
+Choose $D\in\{A,B\}$ such that
+\[
+   d:=\beta_D-\alpha_D
+   \quad\text{satisfies}\quad |d|\geq\tfrac12.
+\]
+
+For $t\preceq v$ define
+\[
+   g_{t,v}
+   =\frac{\phi_{r(t),e(v)}-\phi_{a(v),e(v)}}{d}\in Y^*.
+\]
+Then $\|g_{t,v}\|\leq4K$.  If $s\prec t$, equations \eqref{eq:SF-pre} and \eqref{eq:SF-anchor} give
+\[
+   |g_{t,v}(Dx_{c(s)})|\leq4\eta_{|s|},
+\]
+whereas if $t\preceq s\preceq v$, equations \eqref{eq:SF-post} and \eqref{eq:SF-anchor} give
+\[
+   |g_{t,v}(Dx_{c(s)})-1|\leq4\eta_{|s|}.
+\]
+Thus every selected branch is an approximately triangular array with functional bound $4K$ and column errors $4\eta_i$.  Here
+\[
+   E=\sum_i4\eta_i\leq\tfrac14.
+\]
+Lemma~\ref{lem:summable-errors} shows that every selected branch $8K$-dominates the summing basis.  Hence the monotone map $c$ carries $M_\lambda$ into $\WC(D,8K)$ branchwise, and
+\[
+   \WC(D)>\lambda.
+\]
+Therefore, if both $\WC(A)$ and $\WC(B)$ are at most $\lambda$, then $\WC(A+B)\leq\lambda$.
+\end{proof}
+
+\begin{remark}[the proof gap is now combinatorial]
+Theorem~\ref{thm:SF-ideal} uses no unproved Banach-space estimate.  Its functional-analytic step is the exact triangular criterion plus the elementary summable-error lemma.  The only unresolved assertion is whether the finite-color full-rank pair stabilization can be fused, without loss of rank, at a prescribed summable sequence of meshes.
+\end{remark}
+
+\section{A second possible completion route}
+
+There is another clean target which would bypass direct fusion.
+
+\begin{problem}[ordinal comparison target]\label{prob:J-WC-comparison}
+Prove, for every ordinal $\alpha$ and every operator $A$, that
+\begin{equation}\label{eq:J-WC-target}
+   \J(A)>\omega\alpha
+   \quad\Longrightarrow\quad
+   \WC(A)>\alpha.
+\end{equation}
+Equivalently, in the relevant ordinal sense,
+\[
+   \J(A)\leq\omega\,\WC(A).
+\]
+\end{problem}
+
+Proposition~\ref{prop:cs-localization} is the finite-dimensional input for \eqref{eq:J-WC-target}: every sufficiently long convexly separated node contains a uniformly summing-dominating subsequence of any prescribed finite length.  Again, the missing ingredient is rank-preserving coherent selection.
+
+If \eqref{eq:J-WC-target} holds and
+\[
+   \lambda=\omega^{\omega^\eta},\qquad \eta>0,
+\]
+then $\omega\lambda=\lambda$.  Therefore
+\[
+   \WC(A)\leq\lambda\implies\J(A)\leq\lambda.
+\]
+Causey's James-index ideal theorem would then give, for $A,B\in\cW_\lambda$,
+\[
+   \J(A+B)\leq\lambda,
+   \qquad
+   \WC(A+B)\leq\J(A+B)\leq\lambda.
+\]
+The exceptional bottom level $\lambda=\omega$ is already known directly from the ultrapower characterization of super weak compactness.
+
+Thus either $\mathrm{SF}(\lambda)$ or the comparison \eqref{eq:J-WC-target} would settle all the natural candidate levels.
+
+\section{Candidate classification and present status}
+
+The currently visible evidence points to the same ordinal scales from three independent directions:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $\omega$ is a positive level: $\cW_\omega$ is the super weakly compact ideal.
+\item Causey's James-index levels $\J\leq\omega^{\omega^\eta}$ are closed operator ideals.
+\item Causey--Doebele proved that the ordinals with full-rank finite-color homogeneity for comparable pairs are exactly the multiplicatively indecomposable ordinals $\omega^{\omega^\eta}$.
+\end{enumerate}
+
+This motivates, but does not prove, the following working conjecture.
+
+\begin{conjecture}\label{conj:classification}
+Among infinite ordinals, the fixed cutoff $\cW_\lambda$ is an operator ideal precisely at the multiplicatively indecomposable levels
+\[
+   \lambda=\omega^{\omega^\eta}.
+\]
+\end{conjecture}
+
+There are two important cautions.
+First, Theorem~\ref{thm:successor-fail} gives a general mechanism for negative successor levels only when the corresponding exact $\WC$ value occurs; a full occurrence theorem for $\WC$ is not presently available here.
+Second, pair homogeneity by itself yields only fixed mesh.  Proposition~\ref{prop:fixed-error-obstruction} shows that the passage from fixed mesh to summable mesh is a real mathematical step, not a cosmetic strengthening.
+
+The verified state after this push is therefore:
+\[
+\boxed{
+\begin{minipage}{0.82\textwidth}
+All finite levels fail; $\omega$ works; fixed higher successor levels fail whenever the exact successor value occurs; the natural positive candidates are $\omega^{\omega^\eta}$; and their ideal property follows from the explicit summable-fusion statement $\mathrm{SF}(\omega^{\omega^\eta})$.  The literature proves the corresponding fixed-mesh statement but, in the sources located, not the summable fusion.
+\end{minipage}}
+\]
+
+\section{Literature search conclusion}
+
+The source paper poses Question 9.3 after proving the two global positive results $\WC\leq\omega$ and $\WC<\omega_1$.  Causey's later James-index paper proves the ideal theorem at $\omega^{\omega^\eta}$ for a different convex-separation index, and Causey--Doebele give the sharp pair-Ramsey theorem explaining those ordinals.  Rosenthal's wide-$(s)$ paper supplies the finite localization and perturbation technology behind Propositions~\ref{prop:cs-localization} and~\ref{prop:finite-split}.  Searches by the exact notation $\WC(A,X,Y)$, the source question, the paper title and citations, ``summing basis'', ``wide-$(s)$'', ``James index'', and pair-Ramsey terminology did not locate an explicit published solution or counterexample to Question 9.3 itself.
+
+\begin{thebibliography}{99}
+
+\bibitem{BCFW}
+K. Beanland, R. Causey, D. Freeman, and B. Wallis,
+\emph{Classes of operators determined by ordinal indices},
+J. Funct. Anal. \textbf{271} (2016), 1691--1746.
+
+\bibitem{CauseyJ}
+R. M. Causey,
+\emph{A Ramsey theorem for trees with applications to weakly compact operators},
+Fund. Math. \textbf{243} (2018), 29--53.
+
+\bibitem{CauseyDoebele}
+R. M. Causey and C. Doebele,
+\emph{A Ramsey theorem for pairs in trees},
+Fund. Math. \textbf{248} (2020), 147--193.
+
+\bibitem{Rosenthal}
+H. P. Rosenthal,
+\emph{On wide-$(s)$ sequences and their applications to certain classes of operators},
+Pacific J. Math. \textbf{189} (1999), 311--338.
+
+\end{thebibliography}
+
+\end{document}
