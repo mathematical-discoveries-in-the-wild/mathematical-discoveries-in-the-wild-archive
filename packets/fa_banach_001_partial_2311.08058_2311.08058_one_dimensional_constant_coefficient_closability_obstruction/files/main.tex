@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Leb}{\mathcal L^1}
+\newcommand{\supp}{\operatorname{supp}}
+
+\title{A one-dimensional higher-order closability obstruction}
+\author{Candidate partial result for arXiv:2311.08058}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid, awaiting human review.  The result
+settles the one-dimensional finite-output-exponent subcase of the source
+question and proves a stronger arbitrary-order statement.}}
+\end{center}
+
+\section{Source question}
+
+Alberti, Bate, and Marchese study closability of differential operators with
+respect to Radon measures in \cite{ABM}.  In concluding Remark~1.7(iv), page~4,
+they point out that their first-order analysis does not readily cover the
+following second-order expectation.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent\textbf{Transcription.}
+For the Laplace operator on $C_c^2(\R^d)$, one would expect closability from
+$L^p(\mu)$ to $L^q(\mu)$ only when $\mu\ll\mathcal L^d$, but the source's
+results do not easily imply this.
+
+Here closability is sequential: if $u_n\to0$ in the input space and
+$Tu_n\to w$ in the output space, then necessarily $w=0$.
+
+\section{Idea of the proof}
+
+In one dimension, compact support can be forced by finitely many moment
+conditions.  If $\mu$ has a singular part, choose a compact Lebesgue-null set
+$K$ of positive $\mu$-mass.  A smooth cutoff can equal one on $K$ while having
+arbitrarily small Lebesgue support and arbitrarily small $\mu$-mass off $K$.
+We add tiny fixed bumps away from $K$ to kill the first $m$ moments.  The
+$m$-fold primitive is then compactly supported and all its lower derivatives
+are uniformly small, whereas its $m$th derivative converges in $L^q(\mu)$ to
+$\mathbf 1_K$.  The leading coefficient of a differential operator therefore
+survives in the output while the input converges to zero.
+
+\section{The result}
+
+\begin{theorem}\label{thm:main}
+Let $\mu$ be a positive Radon measure on $\R$, let
+$1\le p\le\infty$ and $1\le q<\infty$, and let
+\[
+  P(D)=\sum_{j=0}^{m}a_jD^j,
+  \qquad m\ge1,\quad a_m\ne0,
+\]
+be a scalar constant-coefficient differential operator.  Regard $P(D)$ on
+$C_c^\infty(\R)$ as an operator from $L^p(\mu)$ to $L^q(\mu)$.
+If $\mu\not\ll\Leb$, then $P(D)$ is not sequentially closable.
+
+Consequently, closability forces $\mu\ll\Leb$.  In particular, for $m=2$
+this proves the necessary condition suggested in \cite[Remark~1.7(iv)]{ABM}
+in dimension one for every finite output exponent.
+\end{theorem}
+
+\begin{proof}
+Write the Lebesgue decomposition as $\mu=f\Leb+\mu_s$.  Since
+$\mu\not\ll\Leb$, the singular part is nonzero.  By singularity and inner
+regularity there is a compact set $K\subset\R$ such that
+\[
+  \Leb(K)=0,
+  \qquad 0<\mu(K)=\mu_s(K)<\infty.
+\]
+Choose a bounded open interval $I$ containing $K$.  Outer regularity of both
+$\Leb$ and $\mu$, followed by intersection of the two neighborhoods, gives
+open sets $U_n$ with
+\[
+  K\subset U_n\Subset I,
+  \qquad \Leb(U_n)\longrightarrow0,
+  \qquad \mu(U_n\setminus K)\longrightarrow0.
+\]
+Choose $g_n\in C_c^\infty(U_n)$ such that $0\le g_n\le1$ and $g_n=1$ on a
+neighborhood of $K$.  Because $I$ is bounded,
+\begin{equation}\label{eq:mom-small}
+ b_{n,k}:=\int_{\R}x^k g_n(x)\,dx\longrightarrow0
+ \quad (0\le k\le m-1).
+\end{equation}
+
+We next fix the moment correctors.  There exist
+$\psi_0,\ldots,\psi_{m-1}\in C_c^\infty(\R\setminus\overline I)$, all
+supported in one compact set, such that the matrix
+\[
+ M_{k\ell}:=\int_{\R}x^k\psi_\ell(x)\,dx,
+ \qquad 0\le k,\ell\le m-1,
+\]
+is invertible.  Indeed, take unit-mass smooth bumps concentrated near $m$
+distinct points outside $\overline I$; as their radii tend to zero, $M$ tends
+to the corresponding Vandermonde matrix.
+
+Let $c_n=(c_{n,0},\ldots,c_{n,m-1})$ solve $Mc_n=-b_n$, and set
+\[
+ h_n:=g_n+\sum_{\ell=0}^{m-1}c_{n,\ell}\psi_\ell.
+\]
+By \eqref{eq:mom-small}, $c_n\to0$.  Thus
+\begin{equation}\label{eq:h-properties}
+ \int x^k h_n(x)\,dx=0\quad(0\le k\le m-1),
+ \qquad \|h_n\|_{L^1(dx)}\longrightarrow0,
+\end{equation}
+and all $h_n$ are supported in one fixed compact set.
+
+Define the $m$-fold one-sided primitive
+\[
+ u_n(x):=\frac1{(m-1)!}\int_{-\infty}^{x}(x-t)^{m-1}h_n(t)\,dt.
+\]
+Then $u_n^{(m)}=h_n$.  To the left of the common support, $u_n=0$.  To
+the right, expand $(x-t)^{m-1}$ by the binomial theorem; every term contains
+one of the moments in \eqref{eq:h-properties}, so $u_n=0$ there as well.
+The same calculation applies to all lower derivatives.  Hence
+$u_n\in C_c^\infty(\R)$, with support in one fixed compact set $C$.
+Moreover, for each $0\le j<m$,
+\begin{equation}\label{eq:lower-small}
+ \|u_n^{(j)}\|_\infty\le C_j\|h_n\|_{L^1(dx)}\longrightarrow0.
+\end{equation}
+Since $\mu(C)<\infty$, \eqref{eq:lower-small} yields $u_n\to0$ in
+$L^p(\mu)$ for every $1\le p\le\infty$.
+
+On $K$, the correction bumps vanish and $g_n=1$.  Off $K$, the cutoff error
+is supported in $U_n\setminus K$.  Therefore, for finite $q$,
+\[
+ \|g_n-\mathbf1_K\|_{L^q(\mu)}^q
+ \le \mu(U_n\setminus K)\longrightarrow0.
+\]
+The correction coefficients tend to zero and the fixed bumps have finite
+$L^q(\mu)$ norm, so
+\begin{equation}\label{eq:h-limit}
+ h_n\longrightarrow\mathbf1_K
+ \quad\hbox{in }L^q(\mu).
+\end{equation}
+Combining \eqref{eq:lower-small} and \eqref{eq:h-limit} gives
+\[
+ P(D)u_n
+ =a_mh_n+\sum_{j=0}^{m-1}a_ju_n^{(j)}
+ \longrightarrow a_m\mathbf1_K
+ \quad\hbox{in }L^q(\mu).
+\]
+The limit is nonzero because $a_m\ne0$ and $\mu(K)>0$.  Thus the closure of
+the graph contains both $(0,0)$ and $(0,a_m\mathbf1_K)$, so it is not a graph.
+This proves nonclosability.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof is purely analytic.  The moment matrix is a small perturbation of a
+Vandermonde matrix; the moment identities make the one-sided primitive compactly
+supported; and all convergence occurs on a fixed compact set of finite
+$\mu$-mass.  These points also cover infinite Radon measures and the input
+endpoint $p=\infty$.
+
+The restriction $q<\infty$ is essential to this argument: small
+$\mu$-measure of $U_n\setminus K$ does not imply an $L^\infty(\mu)$ bound.
+No assertion is made for $d\ge2$, where compact support of a solution to
+$\Delta u=h$ is not controlled by finitely many scalar moments.  Absolute
+continuity is proved only to be necessary, not sufficient.
+
+\section{Novelty check}
+
+The lightweight run indexes were searched for the source id and the terms
+``second-order closability'', ``Laplacian'', and ``higher-order
+constant-coefficient operator''.  A bounded arXiv search through 21 July 2026
+used exact and close variants of ``second derivative closable Radon measure'',
+``Laplacian closable absolutely continuous measure'', and ``higher order
+differential operator weighted $L^p$ closability''.  It found the source paper
+but no later exact answer.  This supports, but does not prove, bibliographic
+novelty.
+
+\section{Human-review recommendation}
+
+Review as a likely valid partial theorem.  The highest-value check is the
+moment-cancellation argument that makes every $u_n$ compactly supported.  If
+confirmed, the result gives a complete affirmative answer to the source's
+necessary-condition question in dimension one for finite output exponent, and
+simultaneously covers all positive-order constant-coefficient operators.
+
+\begin{thebibliography}{9}
+\bibitem{ABM}
+G. Alberti, D. Bate, and A. Marchese,
+\emph{On the closability of differential operators},
+J. Funct. Anal. 289 (2025), 111029;
+\href{https://arxiv.org/abs/2311.08058}{arXiv:2311.08058v2}.
+\end{thebibliography}
+
+\end{document}
+

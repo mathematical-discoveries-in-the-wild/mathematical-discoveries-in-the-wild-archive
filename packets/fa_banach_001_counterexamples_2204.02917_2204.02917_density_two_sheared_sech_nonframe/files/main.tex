@@ -1,0 +1,358 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\cG}{\mathcal G}
+\newcommand{\doteqphase}{\mathrel{\dot=}}
+
+\title{A density-two sheared hyperbolic-secant Gabor nonframe}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 8, \texttt{agent\_lane\_08}, model GPT5.6}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{\textbf{Status.}
+Candidate counterexample, likely valid, with a directed-interval
+Poincare--Miranda certificate. Human verification is recommended.}}
+\end{center}
+
+\begin{abstract}
+Faulhuber and Shafkulovska ask for the lattice frame set of the
+Fourier-invariant hyperbolic secant and note that sufficient density
+conditions are unknown for general lattices.  We give a computer-assisted
+existence proof of a non-separable lattice of density \(2\) on which the
+normalized hyperbolic secant does not generate a Gabor frame.  The mechanism
+is a simultaneous pair of Zak-transform zeros after a metaplectic shear.
+One zero is forced by evenness; the other is certified by the
+Poincare--Miranda theorem with explicit interval and tail bounds.
+\end{abstract}
+
+\section{Source question and scope}
+
+The source is Faulhuber and Shafkulovska, \emph{Gabor frame bound
+optimizations}, arXiv:2204.02917 \cite{FaulhuberShafkulovska}.  On page 13,
+after solving the rectangular optimization problem for the hyperbolic
+secant, they write:
+
+\begin{quote}
+``In contrast to the Gaussian case, we do not know sufficient density
+conditions for the hyperbolic secant and general lattices to yield Gabor
+frames. So, before speculating about an optimality result for general
+lattices one should work out the lattice frame set of the hyperbolic
+secant.''
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The page-13 passage in the original paper.  The crop retains the
+full readable page width and the complete surrounding paragraph.}
+\end{figure}
+
+The theorem below disproves the most direct extension of the rectangular
+criterion: density greater than one is not sufficient for arbitrary
+lattices.  It does not determine the full lattice frame set, and it does not
+exclude sufficient conditions that use lattice shape in addition to density.
+
+\section{Definitions}
+
+For \(x,\omega\in\R\), let
+\[
+ T_xf(t)=f(t-x),\qquad M_\omega f(t)=\e^{2\pi\ii\omega t}f(t),
+ \qquad \pi(x,\omega)=M_\omega T_x.
+\]
+For a full-rank lattice \(\Lambda\subset\R^2\), write
+\(
+ \cG(f,\Lambda)=\{\pi(\lambda)f:\lambda\in\Lambda\}.
+\)
+The lattice density is the reciprocal of its covolume.
+
+For \(a>0\), use the Zak transform
+\[
+ Z_af(x,\omega)=\sum_{k\in\Z}f(x-ak)\e^{2\pi\ii ak\omega}.
+\]
+All windows used below are Schwartz functions, so their Zak transforms are
+continuous and all displayed series may be differentiated termwise on the
+compact parameter boxes in question.
+
+Finally, let
+\[
+ g(t)=\sqrt{\frac\pi2}\,\sech(\pi t),\qquad
+ C_qf(t)=\e^{\pi\ii q t^2}f(t).
+\]
+The scalar normalization of \(g\) is immaterial for zeros, but agrees with
+the source paper.
+
+\section{Proof intuition}
+
+At density two, the Zak representation has two fibers.  A frame requires
+that the sum of their squared moduli stay uniformly positive.  For an even
+window, the two fibers automatically share one zero at the half-time point
+and half-frequency shift.  It therefore suffices to tune a chirp until the
+other fiber vanishes at the same half-time point.
+
+The relevant Zak value is a two-parameter complex series \(F(a,c)\).  A
+high-precision search locates a zero extremely close to
+\((1/\sqrt{28},15/28)\).  The formal proof does not assert that this center
+is an exact zero.  Instead, it preconditions \((\Re F,\Im F)\), proves the
+correct signs on the four faces of a \(10^{-6}\)-radius box, and invokes
+Poincare--Miranda.  A chirp/shear covariance then moves the nonframe from a
+chirped window on a rectangular lattice to the original hyperbolic secant
+on a sheared lattice of the same density.
+
+\section{The density-two Zak obstruction}
+
+\begin{lemma}[Two-fiber obstruction]\label{lem:zak}
+Let \(f\) have continuous Zak transform, \(a>0\), and
+\(b=1/(2a)\).  If, for some \((x_0,\omega_0)\),
+\[
+ Z_af(x_0,\omega_0)=Z_af(x_0,\omega_0+b)=0,
+\]
+then \(\cG(f,a\Z\times b\Z)\) is not a frame.
+\end{lemma}
+
+\begin{proof}
+On the Zak rectangle \(Q=[0,a)\times[0,1/a)\), direct index changes give
+\begin{align*}
+ Z_a(T_{na}f)(x,\omega)&=\e^{-2\pi\ii na\omega}Z_af(x,\omega),\\
+ Z_a(M_{mb}f)(x,\omega)&=\e^{2\pi\ii mbx}Z_af(x,\omega-mb).
+\end{align*}
+Write \(m=2\ell+r\), \(r\in\{0,1\}\).  Since \(2b=1/a\) is the
+frequency period of \(Z_af\), the two residue classes of \(m\) give the two
+multipliers
+\[
+ Z_af(x,\omega),\qquad
+ \e^{\pi\ii x/a}Z_af(x,\omega-b),
+\]
+times the orthogonal Fourier basis
+\(\e^{2\pi\ii\ell x/a}\e^{-2\pi\ii na\omega}\) on \(Q\).
+Parseval therefore shows that a lower Gabor frame bound would force
+\[
+ |Z_af(x,\omega)|^2+|Z_af(x,\omega-b)|^2\ge A'>0
+\]
+for almost every \((x,\omega)\in Q\), with an inessential normalization
+constant \(A'\).  The two asserted zeros, quasi-periodicity, and continuity
+make the left side zero at \((x_0,\omega_0)\) and arbitrarily small on
+positive-measure neighborhoods.  No positive essential lower bound exists.
+\end{proof}
+
+\section{Certified existence of the tuned chirp}
+
+Define, for \(a>0\) and \(c\in\R\),
+\begin{equation}\label{eq:F}
+ F(a,c)=\sum_{k\in\Z}
+ \sech\!\bigl(\pi a(k+\tfrac12)\bigr)
+ \e^{\pi\ii c(k+\frac12)^2}.
+\end{equation}
+Set
+\[
+ a_0=\frac1{\sqrt{28}},\qquad c_0=\frac{15}{28},\qquad
+ r=10^{-6},
+\]
+and let
+\[
+ B=\{(a,c):|a-a_0|\le r,\ |c-c_0|\le r\}.
+\]
+
+\begin{lemma}[Certified zero box]\label{lem:zero}
+There is \((a_*,c_*)\in B\) such that \(F(a_*,c_*)=0\).
+\end{lemma}
+
+\begin{proof}
+Put \(U=(\Re F,\Im F)^T\), \(J_0=DU(a_0,c_0)\), and use the fixed
+decimal-rational preconditioner
+\[
+ A=\begin{pmatrix}
+ 0.07386071204&-0.11010607132\\
+ -0.01062523295&-0.02565158148
+ \end{pmatrix},\qquad G=AU.
+\]
+Directed interval summation, including explicit tails, gives
+\begin{align*}
+ |\Re F(a_0,c_0)|, |\Im F(a_0,c_0)|&<10^{-40},\\
+ F_a(a_0,c_0)&\in
+ [8.37043247980345,8.37043247980346]\notag\\[-2mm]
+ &\quad+\ii[-3.46714665606285,-3.46714665606284],\\
+ F_c(a_0,c_0)&\in
+ [-35.928990826924,-35.928990826923]\notag\\[-2mm]
+ &\quad+\ii[-24.101675899640,-24.101675899639].
+\end{align*}
+In particular, every entry of \(AJ_0-I_2\) has absolute value below
+\(10^{-9}\).
+
+For completeness, the uniform analytic remainder bound is short.  If
+\(x=k+1/2\), termwise differentiation of \eqref{eq:F} gives, for either real
+component,
+\[
+ |F_{aa}|\le \pi^2\sum_x |x|^2\sech(\pi a|x|),\quad
+ |F_{ac}|\le \pi^2\sum_x |x|^3\sech(\pi a|x|),\quad
+ |F_{cc}|\le \pi^2\sum_x |x|^4\sech(\pi a|x|).
+\]
+Throughout \(B\), \(a>0.188\).  Using
+\(\sech y\le2\e^{-y}\), \(\pi^2<10\), and
+\(\e^{-0.59}<0.555\), the elementary differentiated-geometric-series
+bounds give
+\[
+ |F_{aa}|<400,\qquad |F_{ac}|<2100,\qquad |F_{cc}|<14000.
+\]
+Consequently, the Taylor remainder in either real component of \(U\) is at
+most
+\[
+ \frac12(400+2\cdot2100+14000)r^2=9.3\times10^{-9}.
+\]
+The absolute row sums of \(A\) are \(0.18396678336\) and
+\(0.03627681443\).  Thus the two transformed remainders are at most
+\[
+ 1.710892\times10^{-9},\qquad 3.37375\times10^{-10}.
+\]
+Combining the center, linear, and remainder bounds yields
+\begin{align*}
+ |G_1(a,c)-(a-a_0)|&<1.711\times10^{-9}+2\times10^{-15},\\
+ |G_2(a,c)-(c-c_0)|&<3.374\times10^{-10}+2\times10^{-15}
+\end{align*}
+for \((a,c)\in B\).  Hence \(G_1\) is strictly negative and positive on
+the two \(a\)-faces, respectively, while \(G_2\) is strictly negative and
+positive on the two \(c\)-faces.  Poincare--Miranda gives a point in \(B\)
+where \(G=0\).  Since \(A\) is invertible, \(F=0\) there.
+
+The finite directed-interval calculation and the differentiated geometric
+tail estimates are reproduced by \texttt{code/verify\_zero\_box.py}.
+\end{proof}
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+There exist \(a_*,c_*\) satisfying
+\[
+ \left|a_*-\frac1{\sqrt{28}}\right|\le10^{-6},\qquad
+ \left|c_*-\frac{15}{28}\right|\le10^{-6},
+\]
+such that, with \(q_*=c_*/a_*^2\), the lattice
+\begin{equation}\label{eq:lattice}
+ \Lambda_*=\Z(a_*,-q_*a_*)+
+ \Z\left(0,\frac1{2a_*}\right)
+\end{equation}
+has density \(2\), but \(\cG(g,\Lambda_*)\) is not a frame.
+The lattice is not a coordinate-product lattice.
+\end{theorem}
+
+\begin{proof}
+Choose \((a_*,c_*)\) from Lemma~\ref{lem:zero}, put
+\(q_*=c_*/a_*^2\), \(b_*=1/(2a_*)\), and \(h=C_{q_*}g\).
+At the half-time point,
+\[
+ Z_{a_*}h(a_*/2,0)=\sqrt{\frac\pi2}\,F(a_*,c_*)=0.
+\]
+The window \(h\) is even.  At the half-frequency shift,
+\[
+ Z_{a_*}h(a_*/2,b_*)
+ =\sum_{k\in\Z}h(a_*(\tfrac12-k))(-1)^k=0,
+\]
+because the terms indexed by \(k\) and \(1-k\) have opposite signs and
+equal window values.  Lemma~\ref{lem:zak} says that
+\(\cG(h,a_*\Z\times b_*\Z)\) is not a frame.
+
+It remains only to undo the chirp.  Direct calculation gives
+\[
+ C_q^{-1}\pi(x,\omega)C_q
+ =\e^{\pi\ii qx^2}\pi(x,\omega-qx).
+\]
+Unitary conjugation and irrelevant unimodular atom phases therefore identify
+\(\cG(C_qg,a\Z\times b\Z)\) with
+\[
+ \cG\bigl(g,\Z(a,-qa)+\Z(0,b)\bigr).
+\]
+This gives exactly \eqref{eq:lattice}.  Its covolume is
+\(a_*b_*=1/2\), so its density is \(2\).
+
+Finally, a coordinate-product lattice would require the vertical shear of
+the first generator to be an integral multiple of \(b_*\), i.e.
+\(q_*a_*/b_*=2c_*\in\Z\).  But the certified box puts
+\(2c_*\) strictly between \(1\) and \(2\).  Thus the lattice is genuinely
+non-separable in the given time-frequency coordinates.
+\end{proof}
+
+\section{Verification and limitations}
+
+The verifier was run with
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  runs/fa_banach_001/solutions/counterexamples/\
+  2204.02917_density_two_sheared_sech_nonframe/code/verify_zero_box.py
+\end{verbatim}
+It printed \texttt{CERTIFIED}.  In particular, the strict face margins were
+larger than \(9.98\times10^{-7}\), while the largest nonlinear transformed
+remainder was below \(1.72\times10^{-9}\).  The proof uses the interval
+library only for finite evaluations of elementary functions; convergence,
+tails, and Taylor remainders are bounded analytically.
+
+The result is existential within a tiny explicit box.  It does not claim
+that the visually distinguished center \((1/\sqrt{28},15/28)\) is itself an
+exact zero.  It supplies one density-two nonframe, not a classification of
+all shears or all densities.
+
+\section{Bounded novelty check}
+
+On 21 July 2026 we searched the run registry and arXiv using the exact source
+id and combinations of \texttt{hyperbolic secant}, \texttt{general lattice},
+\texttt{sheared lattice}, \texttt{non-frame}, and \texttt{lattice frame set}.
+The rectangular theorem of Janssen and Strohmer \cite{JanssenStrohmer}, the
+half-irregular product-set theorem of Baranov and Belov
+\cite{BaranovBelov}, and the later Hermite-window paper
+\cite{HermiteFrames} were checked as close variants.  None contains the
+general-lattice sech counterexample above.  This is a bounded, arXiv-centered
+search, so novelty confidence is moderate rather than definitive.
+
+\section{Human-review recommendation}
+
+We recommend high-priority expert review.  The three shortest checks are:
+(i) rerun the interval certificate in an independent ball-arithmetic system,
+(ii) inspect Lemma~\ref{lem:zak}'s two-fiber normalization, and (iii) verify
+the sign in the last chirp covariance.  The substantial mathematical claim
+is otherwise reduced to explicit inequalities with large margins.
+
+\begin{thebibliography}{9}
+
+\bibitem{FaulhuberShafkulovska}
+M. Faulhuber and I. Shafkulovska,
+\emph{Gabor frame bound optimizations},
+arXiv:2204.02917 (2022; revised 2023).
+
+\bibitem{JanssenStrohmer}
+A. J. E. M. Janssen and T. Strohmer,
+\emph{Hyperbolic secants yield Gabor frames},
+arXiv:math/0301134 (2003).
+
+\bibitem{BaranovBelov}
+A. Baranov and Y. Belov,
+\emph{Irregular sampling for hyperbolic secant type functions},
+arXiv:2312.10174 (2023).
+
+\bibitem{HermiteFrames}
+M. Faulhuber, I. Shafkulovska, and I. Zlotnikov,
+\emph{On the frame property of Hermite functions and analytic extensions
+of their frame sets}, arXiv:2403.10503 (2024).
+
+\bibitem{Miranda}
+C. Miranda,
+\emph{Un'osservazione su un teorema di Brouwer},
+Bollettino dell'Unione Matematica Italiana 3 (1940), 5--7.
+
+\end{thebibliography}
+
+\end{document}

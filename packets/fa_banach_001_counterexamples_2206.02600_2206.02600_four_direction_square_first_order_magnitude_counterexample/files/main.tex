@@ -1,0 +1,334 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\Mag}{\operatorname{Mag}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Four-Direction Counterexample to First-Order\\Magnitude Sharpness}
+\author{\texttt{agent\_lane\_14}}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate counterexample, likely valid, pending human review.
+
+\section{Source conjecture}
+
+The source is Mark W. Meckes, \emph{Magnitude and Holmes--Thompson
+intrinsic volumes of convex bodies}, arXiv:2206.02600, published in the
+\emph{Canadian Mathematical Bulletin} 66 (2023), 854--867
+\cite{Meckes2023}.  Conjecture 1.7 on page 4 (label
+\texttt{C:mu1-conj} in the source) states:
+
+\begin{quote}
+Suppose that \(E=(\R^n,\norm{\cdot})\) is a hypermetric normed space,
+and let \(K\in\cK^n\). Then
+\[
+ \lim_{t\to0^+}\frac{\Mag(tK,\norm{\cdot})-1}{t}
+ =\frac14\mu_1^E(K).
+\]
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\caption{Corollary 1.6 and Conjecture 1.7 in arXiv:2206.02600, p.~4.}
+\end{figure}
+
+We give a two-dimensional hypermetric norm and a full-dimensional square for
+which the limsup is strictly smaller than the conjectured coefficient.
+
+\section{Definitions and a spherical magnitude bound}
+
+For a compact positive definite metric space \((X,d)\), the magnitude
+definition used in the source is
+\[
+ \Mag(X,d)=\sup_{\nu}
+ \frac{\nu(X)^2}{\displaystyle\iint_{X\times X}e^{-d(x,y)}
+                    \,d\nu(x)\,d\nu(y)},
+\]
+where the supremum is over finite signed Borel measures on \(X\).
+
+The following elementary lemma is the mechanism behind the counterexample.
+
+\begin{lemma}[Spherical Gaussian bound]\label{lem:sphere}
+Let \(X\) admit a map
+\(\Phi:X\to H\) into a real Hilbert space such that
+\[
+ d(x,y)=\norm{\Phi(x)-\Phi(y)}_H^2.
+\]
+If there are \(p\in H\) and \(R\ge0\) such that
+\(\norm{\Phi(x)-p}_H=R\) for every \(x\in X\), then, for every \(t>0\),
+\[
+ \Mag(X,td)\le e^{2tR^2}.
+\]
+Consequently,
+\[
+ \limsup_{t\to0^+}\frac{\Mag(X,td)-1}{t}\le2R^2.
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(v_x=\Phi(x)-p\), so that \(\norm{v_x}=R\). For a finite signed
+Borel measure \(\nu\), uniform convergence of the exponential series on the
+radius-\(R\) sphere gives
+\begin{align*}
+ \iint e^{-t d(x,y)}\,d\nu(x)d\nu(y)
+ &=e^{-2tR^2}\iint e^{2t\ip{v_x}{v_y}}\,d\nu(x)d\nu(y)\\
+ &=e^{-2tR^2}\sum_{m=0}^{\infty}\frac{(2t)^m}{m!}
+   \norm{\int v_x^{\otimes m}\,d\nu(x)}_{H^{\otimes m}}^2\\
+ &\ge e^{-2tR^2}\nu(X)^2.
+\end{align*}
+Every term is nonnegative. Substitution in the variational definition of
+magnitude yields the first assertion. The second follows from
+\((e^{2tR^2}-1)/t\to2R^2\).
+\end{proof}
+
+\section{Proof intuition}
+
+An \(L_1\) metric is a squared Hilbert metric: each scalar coordinate
+\(a\) is sent to an oriented interval indicator \(\eta_a\), for which
+\(\norm{\eta_a-\eta_b}_2^2=|a-b|\).  If the scalar coordinate ranges over
+\([-h,h]\), all these indicators lie on the sphere centered at the average
+of the two endpoint indicators, with squared radius \(h/2\).  Summing over
+the generating directions therefore gives the source paper's coefficient
+\(\mu_1^E(K)/4\) through Lemma~\ref{lem:sphere}.
+
+The important point is that this natural sphere need not be the smallest
+sphere available in the ambient Hilbert space.  For the four directions
+used below, their rank-one quadratic tensors satisfy one nontrivial linear
+relation.  That relation produces a Hilbert vector orthogonal to every
+embedded point but not orthogonal to the natural center.  Removing the
+center's component in that direction strictly decreases the common radius.
+Lemma~\ref{lem:sphere} then gives a strict first-order upper bound, which is
+incompatible with the conjectured equality.
+
+\section{The counterexample}
+
+Set
+\[
+ u_1=(1,0),\qquad u_2=(0,1),\qquad
+ u_3=\frac{(1,1)}{\sqrt2},\qquad
+ u_4=\frac{(1,-1)}{\sqrt2},
+\]
+and equip \(\R^2\) with the norm
+\begin{equation}\label{eq:norm}
+ \norm{x}_E=\sum_{j=1}^4|\ip{x}{u_j}|.
+\end{equation}
+Let \(K=[-1,1]^2\).
+
+\begin{theorem}\label{thm:counterexample}
+The normed space \(E=(\R^2,\norm{\cdot}_E)\) is hypermetric and
+\(K\in\cK^2\), but
+\[
+ \limsup_{t\to0^+}\frac{\Mag(tK,\norm{\cdot}_E)-1}{t}
+ \le 2+2\sqrt2-\frac{3}{2(1+2\sqrt2)}
+ <\frac14\mu_1^E(K)=2+2\sqrt2.
+\]
+In particular, Conjecture 1.7 of the source paper is false.
+\end{theorem}
+
+\begin{proof}
+Define the even nonnegative measure on \(S^1\)
+\[
+ \rho=\frac12\sum_{j=1}^4(\delta_{u_j}+\delta_{-u_j}).
+\]
+Then
+\(\norm{x}_E=\int_{S^1}|\ip{x}{u}|\,d\rho(u)\), so Proposition 2.2 of
+the source paper shows that \(E\) is hypermetric. The set \(K\) is plainly a
+compact, full-dimensional convex body.
+
+For \(j=1,\dots,4\), put
+\[
+ h_j=\max_{x\in K}\ip{x}{u_j},
+ \qquad (h_1,h_2,h_3,h_4)=(1,1,\sqrt2,\sqrt2).
+\]
+Let
+\[
+ H=\bigoplus_{j=1}^4 L_2([-h_j,h_j]).
+\]
+For \(a\in[-h,h]\), define the oriented interval indicator
+\[
+ \eta_a(s)=
+ \begin{cases}
+   \mathbf 1_{(0,a]}(s),&a\ge0,\\
+   -\mathbf 1_{(a,0]}(s),&a<0.
+ \end{cases}
+\]
+It satisfies
+\(\norm{\eta_a-\eta_b}_{L_2}^2=|a-b|\). Hence the map
+\[
+ \Phi(x)=\bigl(\eta_{\ip{x}{u_1}},\ldots,
+                   \eta_{\ip{x}{u_4}}\bigr)
+\]
+obeys
+\begin{equation}\label{eq:embedding}
+ \norm{\Phi(x)-\Phi(y)}_H^2
+ =\sum_{j=1}^4|\ip{x-y}{u_j}|=\norm{x-y}_E.
+\end{equation}
+
+For each \(j\), let
+\[
+ c_j=\frac12(\eta_{-h_j}+\eta_{h_j}),\qquad c=(c_1,c_2,c_3,c_4).
+\]
+A direct one-dimensional calculation gives, for every
+\(a\in[-h_j,h_j]\),
+\[
+ \norm{\eta_a-c_j}_{L_2}^2=\frac{h_j}{2}.
+\]
+Thus every \(\Phi(x)\), \(x\in K\), lies on the sphere centered at \(c\)
+with squared radius
+\begin{equation}\label{eq:R0}
+ R_0^2=\frac12\sum_{j=1}^4h_j=1+\sqrt2.
+\end{equation}
+
+We now strictly improve this center. Put
+\[
+ (\alpha_1,\alpha_2,\alpha_3,\alpha_4)=(-1,-1,1,1)
+\]
+and define \(g=(g_1,\ldots,g_4)\in H\) by
+\[
+ g_j(s)=2\alpha_j s\qquad(-h_j\le s\le h_j).
+\]
+The four directions satisfy
+\begin{equation}\label{eq:tensor-relation}
+ u_3u_3^{T}+u_4u_4^{T}=u_1u_1^{T}+u_2u_2^{T}=I_2.
+\end{equation}
+Since
+\(\ip{g_j}{\eta_a}_{L_2}=\alpha_j a^2\), equation
+\eqref{eq:tensor-relation} yields, for every \(x\in K\),
+\begin{equation}\label{eq:g-orthogonal}
+ \ip{g}{\Phi(x)}_H
+ =\sum_{j=1}^4\alpha_j\ip{x}{u_j}^2=0.
+\end{equation}
+On the other hand,
+\begin{align}
+ \ip{g}{c}_H
+ &=\sum_{j=1}^4\alpha_jh_j^2=2,
+ \label{eq:gc}\\
+ \norm{g}_H^2
+ &=\frac83\sum_{j=1}^4h_j^3
+ =\frac{16}{3}(1+2\sqrt2).
+ \label{eq:gnorm}
+\end{align}
+Let
+\[
+ q=\frac{\ip{c}{g}}{\norm{g}^2}g,
+ \qquad p=c-q.
+\]
+Then \(p\perp g\), while \(\Phi(x)\perp g\) by
+\eqref{eq:g-orthogonal}. Since \(c=p+q\), the two summands in
+\(\Phi(x)-c=(\Phi(x)-p)-q\) are orthogonal. Therefore all \(\Phi(x)\)
+lie on the sphere centered at \(p\) whose squared radius is
+\begin{equation}\label{eq:R}
+ R^2=R_0^2-\norm{q}^2
+ =1+\sqrt2-\frac{3}{4(1+2\sqrt2)}.
+\end{equation}
+Combining \eqref{eq:embedding}, Lemma~\ref{lem:sphere}, and
+\eqref{eq:R} gives
+\begin{equation}\label{eq:strict-upper}
+ \limsup_{t\to0^+}\frac{\Mag(tK,\norm{\cdot}_E)-1}{t}
+ \le2R^2
+ =2+2\sqrt2-\frac{3}{2(1+2\sqrt2)}.
+\end{equation}
+
+It remains only to compare the normalization with the conjecture. For
+\(m=1\), Proposition 2.3 of the source paper has \(c_1=2\), and hence
+\[
+ \mu_1^E(K)
+ =2\int_{S^1}\operatorname{vol}_1(A_uK)\,d\rho(u)
+ =2\sum_{j=1}^4(2h_j)
+ =8+8\sqrt2.
+\]
+Consequently,
+\[
+ \frac14\mu_1^E(K)=2+2\sqrt2.
+\]
+The right side of \eqref{eq:strict-upper} is smaller by the positive
+amount
+\[
+ \frac{3}{2(1+2\sqrt2)}.
+\]
+This rules out the equality asserted by Conjecture 1.7.
+\end{proof}
+
+\begin{remark}
+The proof does not need the existence or value of the actual one-sided
+derivative. A strict limsup upper bound below the conjectured number already
+disproves the conjecture. It also does not use numerical approximation: all
+constants and the sphere reduction are exact.
+\end{remark}
+
+\section{Verification notes}
+
+The companion script \texttt{code/verify\_constants.py} uses exact symbolic
+arithmetic to check the rank-one tensor relation, the values of
+\(\ip{c}{g}\) and \(\norm{g}^2\), the radius drop, the \(c_1=2\)
+normalization calculation, and the final strict gap. It was run with
+\begin{quote}\ttfamily
+conda run --no-capture-output -n sandbox python
+code/verify\_constants.py
+\end{quote}
+from the packet directory. The script is a sign and normalization regression
+check; Lemma~\ref{lem:sphere} and Theorem~\ref{thm:counterexample} are the
+proof.
+
+For human review, the most important points to inspect are:
+\begin{itemize}
+\item the use of finite signed measures in the tensor-series proof of
+      Lemma~\ref{lem:sphere};
+\item the orthogonal radius reduction in equations
+      \eqref{eq:g-orthogonal}--\eqref{eq:R};
+\item the factor \(c_1=2\) in the source paper's Proposition 2.3.
+\end{itemize}
+
+\section{Novelty check and limitations}
+
+The run's lightweight indexes were searched first for arXiv:2206.02600 and
+the exact paper title. Additional searches used the terms
+Holmes--Thompson, first-order magnitude, and hypermetric magnitude. No prior
+registry, solution, attempt, or proof-gap entry for this conjecture was found.
+
+A bounded web and arXiv search on 21 July 2026 used the exact title, arXiv
+identifier, Conjecture 1.7, sharp to first order, and hypermetric. It
+recovered the source paper and its 2019 Euclidean predecessor, but no later
+proof, counterexample, or matching four-direction construction. This is not
+an exhaustive MathSciNet or zbMATH citation search. Accordingly, the packet
+claims a likely valid mathematical counterexample but only moderate novelty
+confidence; an elementary construction of this kind could be unpublished
+folklore.
+
+The result addresses only finite-dimensional Conjecture 1.7. It says nothing
+about Conjecture 1.5 in the source paper concerning finiteness of magnitude for
+compact convex subsets of infinite-dimensional \(L_1\).
+
+\section{Human-review recommendation}
+
+Recommended verdict: \textbf{likely valid counterexample}. If the three
+checks listed above pass, the strict inequality directly contradicts the
+exact conclusion of Conjecture 1.7 while satisfying all its hypotheses.
+
+\begin{thebibliography}{9}
+
+\bibitem{Meckes2023}
+Mark W. Meckes,
+\emph{Magnitude and Holmes--Thompson intrinsic volumes of convex bodies},
+Canadian Mathematical Bulletin \textbf{66} (2023), no.~3, 854--867;
+arXiv:2206.02600; DOI: 10.4153/S0008439522000728.
+
+\end{thebibliography}
+
+\end{document}

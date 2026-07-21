@@ -1,0 +1,380 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand{\F}{\mathcal F}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Lipz}{\operatorname{Lip}_0}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathcal D}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diver}{\operatorname{div}}
+\newcommand{\clspan}{\overline{\operatorname{span}}}
+
+\begin{document}
+
+\begin{center}
+{\Large Full solution packet for arXiv:2108.02727}\\[4pt]
+{\large Collapsing subsets in Lipschitz-free spaces and an explicit flux model for persistence diagrams}
+\end{center}
+
+\paragraph{Status.}
+\textbf{full\_solution\_likely\_valid}.  This packet answers the concrete
+problem in the conclusion of Chad Giusti and Darrick Lee,
+\emph{Signatures, Lipschitz-free spaces, and paths of persistence diagrams},
+arXiv:2108.02727.  It first gives the exact functorial answer for every metric
+pair, then combines it with the Euclidean representation of
+C\'uth--Kalenda--Kaplick\'y to obtain an explicit vector-field representation
+for ordinary persistence diagrams.
+
+\paragraph{Source question (Conclusion, p.~26).}
+The source asks for ``an explicit description of the Lipschitz-free space of
+the quotient metric space of a metric pair'' and, specifically, whether known
+representations of $\F(\R^N)$ can be adapted to represent persistence
+diagrams.
+
+\begin{center}
+\includegraphics[width=.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Result at a glance}
+
+Let $X/A$ denote the pointed metric space obtained by collapsing a nonempty
+closed subset $A$ of a metric space $X$ to one point.  With $X$ based at a
+point of $A$, put
+\[
+  \F_X(A)=\clspan\{\delta_X(a):a\in A\}\subseteq \F(X).
+\]
+There is a canonical linear isometry
+\[
+  \boxed{\quad \F(X/A)\cong \F(X)/\F_X(A).\quad}                 \tag{1}
+\]
+Thus every concrete model of $\F(X)$ automatically induces one for the
+collapsed metric pair: quotient the model by the vectors representing $A$.
+
+For ordinary persistence diagrams, rotate the birth--death half-plane so that
+\[
+ H=\R\times(0,\infty),\qquad \partial H=\R\times\{0\}.
+\]
+The diagonal becomes $\partial H$.  Then (1) and the theorem of
+C\'uth--Kalenda--Kaplick\'y give the explicit isometric representation
+\[
+ \boxed{
+ \F(\overline H/\partial H)
+ \cong
+ \frac{L^1(H;\R^2)}
+ {\{g\in L^1(H;\R^2):\diver g=0\text{ in }\D'(H)\}} .}         \tag{2}
+\]
+The fact that divergence is taken \emph{inside $H$}, rather than after
+zero-extension to $\R^2$, is the key boundary effect: flux may disappear
+through the collapsed diagonal.
+
+If $D,E$ are finite persistence diagrams and $\nu_D,\nu_E$ are their counting
+measures after rotation into $H$, then (2) gives the exact flux formula
+\[
+ \boxed{
+ W_1^\partial(D,E)
+ =\inf\left\{\|g\|_{L^1(H)}:
+       g\in L^1(H;\R^2),\ \diver g=\nu_E-\nu_D\text{ in }\D'(H)
+       \right\}.}                                             \tag{3}
+\]
+
+\section*{Proof intuition}
+
+There are two simple dual facts behind the result.
+
+First, a Lipschitz function on $X/A$ is exactly a Lipschitz function on $X$
+that vanishes on $A$.  The two Lipschitz constants agree: besides the direct
+bound through $d(x,y)$, vanishing on $A$ gives the second bound through
+$d(x,A)+d(y,A)$.  Since Lipschitz-free spaces are the canonical preduals of
+these function spaces, collapsing $A$ amounts to quotienting out the closed
+span of the evaluation vectors on $A$.
+
+Second, in the Euclidean representation a vector field $g$ acts on a
+Lipschitz function $f$ by $\int g\cdot\nabla f$.  After the boundary is
+collapsed, the only test functions are those with zero boundary values.
+Consequently, the invisible vector fields are precisely those whose
+divergence vanishes in the interior.  Boundary flux is deliberately not
+tested.  An atom of a persistence diagram is a unit source whose flux can
+either travel to another atom or exit through the boundary; minimizing the
+$L^1$ cost gives exactly partial $W_1$.
+
+\section*{The general metric-pair theorem}
+
+For a nonempty closed $A\subseteq X$, write
+\[
+ d_A([x],[y])=\min\{d(x,y),d(x,A)+d(y,A)\}
+\]
+for the quotient metric, with the evident interpretation when one class is
+the collapsed point $*$.  Choose $a_0\in A$ as the base point of $X$.
+
+\begin{theorem}[Free spaces commute with collapsing]\label{thm:collapse}
+Let $X$ be a metric space and let $A\subseteq X$ be nonempty and closed.
+The quotient map $q:X\to X/A$ induces a canonical surjective linear map
+\[
+ Q:\F(X)\longrightarrow \F(X/A),\qquad Q\delta_X(x)=\delta_{X/A}(q(x)),
+\]
+and
+\[
+ \ker Q=\F_X(A).
+\]
+The induced map $\F(X)/\F_X(A)\to\F(X/A)$ is a linear isometry.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ I_A=\{f\in\Lipz(X): f|_A=0\}.
+\]
+Composition with $q$ maps $\Lipz(X/A)$ into $I_A$.  This map is onto: if
+$f\in I_A$, define $\widetilde f([x])=f(x)$ and $\widetilde f(*)=0$.
+It is also isometric.  Indeed, if $L=\|f\|_{\Lip}$, then
+\[
+ |f(x)-f(y)|\le Ld(x,y)
+\]
+and, because $f$ vanishes on $A$,
+\[
+ |f(x)-f(y)|\le |f(x)|+|f(y)|
+ \le L\bigl(d(x,A)+d(y,A)\bigr).
+\]
+Taking the smaller bound shows that $\widetilde f$ is $L$-Lipschitz on
+$X/A$.  The reverse norm inequality follows because $q$ is $1$-Lipschitz.
+Therefore
+\[
+ \Lipz(X/A)\xrightarrow[cong]{\ f\mapsto f\circ q\ } I_A.    \tag{4}
+\]
+
+The annihilator of $\F_X(A)$ in $\F(X)^*=\Lipz(X)$ is exactly $I_A$.
+The adjoint of the induced map
+\[
+ \overline Q:\F(X)/\F_X(A)\longrightarrow\F(X/A)
+\]
+is precisely (4), hence is an onto isometry.  It follows directly that
+$\overline Q$ is an isometry: for $u\in\F(X)/\F_X(A)$,
+\[
+ \|\overline Qu\|
+ =\sup_{\|h\|_{\Lip}\le1}|\langle u,h\circ q\rangle|=\|u\|.
+\]
+Its range is closed, and its annihilator is $\ker \overline Q^*=\{0\}$, so
+the range is also dense.  Thus $\overline Q$ is onto.  The asserted kernel
+identity follows.
+\end{proof}
+
+\paragraph{Interpretation.}
+The theorem is base-point independent in the usual canonical sense.  The
+choice $a_0\in A$ merely makes every $\delta_X(a)$ unambiguous.  Also,
+$\F_X(A)$ is canonically the embedded copy of $\F(A)$; the isometry of that
+embedding follows, for example, by the scalar McShane extension theorem.
+
+\section*{Euclidean metric pairs}
+
+We record the exact mechanism for adapting the known Euclidean model.  Let
+$U\subset\R^n$ be nonempty, open, and convex, and let $A$ be a nonempty
+closed subset of $\overline U$.  Define
+\[
+ \mathcal Y_A=
+ \left\{g\in L^1(U;\R^n):
+   \int_U g\cdot\nabla f=0
+   \quad\text{for every }f\in\Lip(\overline U)\text{ with }f|_A=0
+ \right\}.                                                     \tag{5}
+\]
+
+\begin{proposition}[Explicit model for a Euclidean pair]\label{prop:pair}
+There is a canonical linear isometry
+\[
+ \F(\overline U/A)\cong L^1(U;\R^n)/\mathcal Y_A.              \tag{6}
+\]
+Under (6), $g$ acts on $f\in\Lip(\overline U)$ with $f|_A=0$ by
+$\int_U g\cdot\nabla f$.
+\end{proposition}
+
+\begin{proof}
+C\'uth--Kalenda--Kaplick\'y, Theorem~1.1, identify $\F(U)$ isometrically
+with a quotient of $L^1(U;\R^n)$ via the pairing
+\[
+ (g,f)\longmapsto\int_U g\cdot\nabla f.                        \tag{7}
+\]
+Passing from $U$ to its completion $\overline U$ does not change the free
+space: the evaluation vectors from the dense subset $U$ have dense span and
+the metric embedding extends continuously.  Changing the base point only
+adds constants to dual Lipschitz functions, so it does not alter the gradient
+pairing (7).  Apply
+Theorem~\ref{thm:collapse}.  By (4), the dual functions that remain after
+collapsing $A$ are exactly the Lipschitz functions vanishing on $A$.
+Therefore the preimage, under (7), of the subspace being quotiented out is
+exactly the annihilator (5).  Taking the quotient gives (6), with no change
+of norm.
+\end{proof}
+
+For comparison, before collapsing a boundary the kernel in the
+C\'uth--Kalenda--Kaplick\'y theorem consists of fields whose zero-extension
+has divergence zero on all of $\R^n$.  Formula (5) shows exactly how a
+collapsed subset changes that condition.
+
+\section*{The persistence half-plane}
+
+Let $H=\R\times(0,\infty)$ and $A=\partial H$.  Distributional divergence
+in $H$ is defined by
+\[
+ \langle\diver g,\varphi\rangle=-\int_H g\cdot\nabla\varphi
+ \qquad(\varphi\in C_c^\infty(H)).
+\]
+
+\begin{lemma}[The collapsed-boundary kernel]\label{lem:boundary}
+For the pair $(\overline H,\partial H)$, the subspace in (5) is
+\[
+ \mathcal Y_{\partial H}
+ =\mathcal Z_H
+ :=\{g\in L^1(H;\R^2):\diver g=0\text{ in }\D'(H)\}.           \tag{8}
+\]
+\end{lemma}
+
+\begin{proof}
+If $g\in\mathcal Y_{\partial H}$, test (5) with
+$\varphi\in C_c^\infty(H)$ to obtain $\diver g=0$ in $H$.
+
+Conversely, suppose $\diver g=0$ in $H$, and let
+$f\in\Lip(\overline H)$ vanish on $\partial H$.  Extend $f$ by zero to the
+lower half-plane.  The extension $F$ is Lipschitz on $\R^2$: for
+$(s,t)\in H$, $|f(s,t)|\le \|f\|_{\Lip}t$, which also handles pairs lying on
+opposite sides of the boundary.
+
+Choose $\chi_R\in C_c^\infty(\R^2)$ with $\chi_R=1$ on $B(0,R)$,
+$\chi_R=0$ outside $B(0,2R)$, and $|\nabla\chi_R|\le C/R$.  Put
+$F_R=\chi_RF$.  Translate $F_R$ upward by $\varepsilon$ and mollify at a
+scale smaller than $\varepsilon/2$.  This produces functions in
+$C_c^\infty(H)$ whose gradients converge almost everywhere to $\nabla F_R$
+and are bounded uniformly in $L^\infty$.  Pairing with $g\in L^1$ and using
+dominated convergence gives
+\[
+ \int_H g\cdot\nabla F_R=0.                                   \tag{9}
+\]
+As $R\to\infty$, $\nabla F_R\to\nabla f$ almost everywhere on $H$.
+Moreover the gradients are uniformly bounded: on the annulus where
+$\nabla\chi_R\ne0$,
+\[
+ |F|\,|\nabla\chi_R|
+ \le \|f\|_{\Lip}t\,C/R\le 2C\|f\|_{\Lip}.
+\]
+Dominated convergence in (9) now yields $\int_Hg\cdot\nabla f=0$.
+Thus $g\in\mathcal Y_{\partial H}$.
+\end{proof}
+
+\begin{corollary}[Vector-field model for persistence diagrams]\label{cor:pd}
+Let
+\[
+ \Omega=\{(b,d)\in\R^2:b\le d\},\qquad
+ \Delta=\{(t,t):t\in\R\},
+\]
+with the Euclidean metric.  Then
+\[
+ \F(\Omega/\Delta)
+ \cong L^1(H;\R^2)/\mathcal Z_H                              \tag{10}
+\]
+canonically and isometrically, after the rotation
+\[
+ \rho(b,d)=\left(\frac{b+d}{\sqrt2},\frac{d-b}{\sqrt2}\right).
+\]
+For finite diagrams $D,E$, let
+$\nu_D=\sum_{z\in D}\delta_{\rho(z)}$ and define $\nu_E$ similarly, omitting
+diagonal points.  The class of $D-E$ consists exactly of the fields $g$ with
+\[
+ \diver g=\nu_E-\nu_D\quad\text{in }\D'(H),                  \tag{11}
+\]
+and its norm is the infimum of $\|g\|_{L^1(H)}$ over (11).  Equivalently,
+formula (3) holds.
+\end{corollary}
+
+\begin{proof}
+The rotation $\rho$ is an isometry from $\Omega$ onto $\overline H$ and maps
+$\Delta$ onto $\partial H$.  Proposition~\ref{prop:pair} and
+Lemma~\ref{lem:boundary} give (10).
+
+The pairing convention gives
+\[
+ \int_H g\cdot\nabla f
+ =-\langle\diver g,f\rangle.
+\]
+Hence (11) represents
+$\langle\nu_D-\nu_E,f\rangle$, exactly the evaluation vector of $D-E$.
+Two representatives differ precisely by an element of $\mathcal Z_H$, and
+the quotient norm is the stated infimum.  Finally, Giusti--Lee define
+$\F(\Omega/\Delta)$ as the completion of finite virtual diagrams in the
+partial $W_1$ norm.  Therefore that quotient norm equals
+$W_1^\partial(D,E)$.
+\end{proof}
+
+For a single pair $x,y\in H$, Corollary~\ref{cor:pd} specializes to the
+transparent identity
+\[
+ \inf_{\diver g=\delta_y-\delta_x}\|g\|_1
+ =\min\{|x-y|,\dist(x,\partial H)+\dist(y,\partial H)\}.
+\]
+The two terms are the two possible flux routes: directly from $x$ to $y$, or
+from $x$ to the collapsed boundary and back out to $y$.
+
+\section*{Verification and scope}
+
+\paragraph{Checks performed.}
+The quotient metric used in Theorem~\ref{thm:collapse} was checked against
+the source definition.  The norm equality in (4) uses both branches of that
+minimum, so it is not merely a contractive identification.  The supporting
+paper's Theorem~1.1 was checked directly, including its warning that its
+uncollapsed kernel uses zero-extension and divergence in all of $\R^n$.
+Lemma~\ref{lem:boundary} independently derives the changed boundary
+condition.  The signs in (11) follow from
+$\langle\diver g,f\rangle=-\int g\cdot\nabla f$.
+
+\paragraph{What ``explicit'' means here.}
+Formula (10) is an exact, isometric Banach-space quotient, and (11) gives a
+concrete PDE description of every diagram vector.  It is not a unique
+coordinate representation: adding a divergence-free field does not change
+the element.  Nor is it finite-dimensional.  Those limitations already
+occur in the known representation of $\F(\R^2)$ that motivated the source
+question.
+
+\paragraph{Novelty assessment.}
+Exact-phrase and structural searches were run for the quotient identity, a
+collapsed-subset representation, and a divergence/flux representation of
+persistence diagrams.  The searches recovered the ambient convex-domain
+theorem used above and later extensions of ambient free-space
+representations, but no explicit collapsed-diagonal formula (10) or diagram
+flux formula (3).  The abstract identity (1) is elementary enough that it may
+be folklore; the claimed mathematical contribution of this packet is the
+complete derivation and its persistence-diagram specialization.  Novelty
+confidence is therefore moderate, while proof confidence is high.
+
+\paragraph{Human-review recommendation.}
+Review as a full answer to the concrete problem on p.~26.  The two points
+most worth checking are the weak-$*$ approximation in
+Lemma~\ref{lem:boundary} and the interpretation of partial $W_1$ in
+Corollary~\ref{cor:pd}.  The result concerns the $p=1$ geometry used by
+Lipschitz-free spaces; it does not claim analogous linearizations for
+$p>1$.
+
+\begin{thebibliography}{9}
+\bibitem{GiustiLee}
+C. Giusti and D. Lee,
+\emph{Signatures, Lipschitz-free spaces, and paths of persistence diagrams},
+arXiv:2108.02727, especially the Conclusion, p.~26.
+
+\bibitem{CuthKalendaKaplicky}
+M. C\'uth, O. F. K. Kalenda, and P. Kaplick\'y,
+\emph{Isometric representation of Lipschitz-free spaces over convex domains
+in finite-dimensional spaces},
+Mathematika 63 (2017), 538--552; arXiv:1610.03966,
+Theorem~1.1.
+\end{thebibliography}
+
+\end{document}

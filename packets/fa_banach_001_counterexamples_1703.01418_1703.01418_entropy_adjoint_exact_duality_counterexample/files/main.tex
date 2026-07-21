@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{Exact entropy duality fails in dimension two\\
+\large A finite-rank counterexample to arXiv:1703.01418}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 2, candidate for human review}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate counterexample, likely valid.}
+Over real Banach spaces, the coordinate identity
+$T:\ell_1^2\to\ell_2^2$ is finite rank and compact, but its second entropy
+number differs from that of its adjoint.  We compute both values exactly by
+matching two-ball covers and five-point odd-cycle lower bounds.}}
+\end{center}
+
+\section{Source question}
+
+Deepesh and Kiran Kumar ask whether
+\[
+                         \eps_k(T)=\eps_k(T^*)
+\]
+for finite-rank or compact operators between Banach spaces, and repeat the
+identity as Problem 4.1(1) for arbitrary Banach spaces \cite{DK}.  The question
+appears in Remark 4.4 and Problem 4.1(1) on PDF page 9:
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We give a two-dimensional negative answer to the literal exact-identity
+question.
+
+\section{Definition and counterexample}
+
+For a bounded operator $S:X\to Y$, the source defines
+\[
+ \eps_n(S)=\inf\left\{r>0:
+ S(B_X)\subseteq\bigcup_{j=1}^{N}(y_j+rB_Y)
+ \text{ for some }N\le n\right\}.
+\]
+Thus $\eps_2(S)$ is the optimal common radius of two balls covering $S(B_X)$.
+
+\begin{theorem}[Exact two-dimensional separation]\label{thm:main}
+Let
+\[
+             T:\ell_1^2(\R)\longrightarrow\ell_2^2(\R),
+             \qquad T(x_1,x_2)=(x_1,x_2).
+\]
+Then $T$ has rank two, $T^*$ is the coordinate identity
+$\ell_2^2(\R)\to\ell_\infty^2(\R)$, and
+\begin{align*}
+ \eps_2(T)&=\sqrt{\frac58},\\
+ \eps_2(T^*)&=\frac{1+1/\sqrt2}{2}.
+\end{align*}
+In particular,
+\[
+                         \eps_2(T)<\eps_2(T^*),
+\]
+so exact entropy-number duality fails even for a finite-rank compact operator
+between two-dimensional Banach spaces.
+\end{theorem}
+
+\section{Proof intuition}
+
+The operator $T$ asks for a two-disk cover of the planar diamond $B_1^2$,
+whereas $T^*$ asks for a two-axis-parallel-square cover of the Euclidean disk
+$B_2^2$.  Each body admits a simple optimal cover by two congruent balls.
+
+Optimality is certified without optimization theory.  On each boundary we
+select five points arranged cyclically so that consecutive points are at
+least one ball-diameter apart.  If two smaller balls covered the five points,
+assigning each point to one of its covering balls would give a proper
+two-colouring of a five-cycle, which is impossible.  The two geometries give
+different exact radii.
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}{0.47\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.55]
+  \draw[->,gray!55] (-1.25,0)--(1.25,0);
+  \draw[->,gray!55] (0,-1.25)--(0,1.25);
+  \draw[very thick] (1,0)--(0,1)--(-1,0)--(0,-1)--cycle;
+  \draw[blue,dashed] (0.25,-0.25) circle[radius=0.79057];
+  \draw[red,dashed] (-0.25,0.25) circle[radius=0.79057];
+  \fill[blue] (0.25,-0.25) circle[radius=0.025];
+  \fill[red] (-0.25,0.25) circle[radius=0.025];
+\end{tikzpicture}
+
+$B_1^2$ in the Euclidean metric
+\end{minipage}\hfill
+\begin{minipage}{0.47\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.55]
+  \draw[->,gray!55] (-1.25,0)--(1.25,0);
+  \draw[->,gray!55] (0,-1.25)--(0,1.25);
+  \draw[very thick] (0,0) circle[radius=1];
+  \draw[blue,dashed] (-0.7071,-0.7071) rectangle (1,1);
+  \draw[red,dashed] (-1,-1) rectangle (0.7071,0.7071);
+  \fill[blue] (0.14645,0.14645) circle[radius=0.025];
+  \fill[red] (-0.14645,-0.14645) circle[radius=0.025];
+\end{tikzpicture}
+
+$B_2^2$ in the $\ell_\infty$ metric
+\end{minipage}
+\caption{The explicit two-ball covers.  Dashed circles and squares are target-norm balls.}
+\label{fig:covers}
+\end{figure}
+
+\section{The odd-cycle obstruction}
+
+\begin{lemma}\label{lem:cycle}
+Let $K$ be a subset of a metric space.  Suppose that
+$z_1,\dots,z_{2j+1}\in K$ and, cyclically,
+\[
+                    d(z_i,z_{i+1})\ge 2r.
+\]
+Then $K$ cannot be covered by two balls of radius strictly less than $r$.
+Consequently its second entropy number is at least $r$.
+\end{lemma}
+
+\begin{proof}
+If two balls of radius $r'<r$ covered the points, assign to every $z_i$ one
+of the balls containing it.  Two cyclic neighbours cannot receive the same
+ball because that ball has diameter at most $2r'<2r$.  This would properly
+two-colour an odd cycle, a contradiction.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+\subsection{The diamond in Euclidean distance}
+
+Set
+\[
+              K=B_1^2=\{(x,y):|x|+|y|\le1\},
+              \qquad r=\sqrt{\frac58},
+              \qquad c=\left(\frac14,-\frac14\right).
+\]
+The half-diamond $K_+=K\cap\{x\ge y\}$ is the convex hull of
+\[
+ (1,0),\quad(0,-1),\quad
+ \left(\frac12,\frac12\right),\quad
+ \left(-\frac12,-\frac12\right).
+\]
+Each of these four vertices is at Euclidean distance exactly $r$ from $c$.
+Since a Euclidean ball is convex,
+\[
+                         K_+\subseteq c+rB_2^2.
+\]
+The other half is $K_-=-K_+$, so it is contained in $-c+rB_2^2$.  Hence
+$\eps_2(T)\le r$.
+
+For the reverse bound, take the following five boundary points of $K$, in
+cyclic order:
+\[
+ (1,0),\quad
+ \left(-\frac12,\frac12\right),\quad
+ (0,-1),\quad
+ \left(\frac12,\frac12\right),\quad
+ (-1,0).
+\]
+The first four successive Euclidean distances are
+\[
+                         \sqrt{\frac52}=2r,
+\]
+and the last-to-first distance is $2\ge2r$.  Lemma~\ref{lem:cycle} gives
+$\eps_2(T)\ge r$.  Therefore
+\[
+                         \eps_2(T)=\sqrt{\frac58}.
+\]
+
+\subsection{The Euclidean disk in the supremum metric}
+
+Under the canonical finite-dimensional dualities,
+\[
+ T^*:\ell_2^2\longrightarrow\ell_\infty^2
+\]
+is again the coordinate identity.  Put
+\[
+ a=\frac1{\sqrt2},\qquad
+ s=\frac{1+a}{2},\qquad
+ d=\left(\frac{1-a}{2},\frac{1-a}{2}\right).
+\]
+The two closed $\ell_\infty$-balls of radius $s$ centred at $d$ and $-d$ are
+the squares
+\[
+                  [-a,1]^2
+                  \qquad\text{and}\qquad
+                  [-1,a]^2.
+\]
+Their union contains $B_2^2$.  Indeed, a point of $[-1,1]^2$ outside both
+squares must have one coordinate strictly less than $-a$ and the other
+strictly greater than $a$.  Its squared Euclidean norm is then strictly larger
+than $2a^2=1$.  Thus $\eps_2(T^*)\le s$.
+
+For the lower bound, use the five points of the Euclidean unit circle
+\[
+ (1,0),\quad (-a,a),\quad (0,-1),\quad (a,a),\quad (-1,0).
+\]
+The first four successive $\ell_\infty$-distances are
+$1+a=2s$, while the last-to-first distance is $2\ge2s$.  By
+Lemma~\ref{lem:cycle}, $\eps_2(T^*)\ge s$.  Hence
+\[
+                         \eps_2(T^*)=\frac{1+1/\sqrt2}{2}.
+\]
+
+Finally,
+\[
+ \left(\frac{1+1/\sqrt2}{2}\right)^2-\frac58
+ =\frac{\sqrt2-1}{4}>0,
+\]
+which proves the strict inequality and completes the counterexample.
+
+\section{Verification, scope, and novelty check}
+
+The accompanying script \texttt{code/verify\_exact\_values.py} checks every
+listed vertex and cycle distance, then samples $80{,}004$ boundary points
+against the two explicit covers.  It reproduces the two exact radii
+numerically.  The computation is only a sanity check; the proof above is
+symbolic.
+
+The counterexample is over real Banach spaces.  This suffices to refute the
+source's literal assertion for arbitrary Banach spaces.  If ``Banach spaces''
+was intended to mean complex spaces only, that narrower version is not
+settled here.  The example also does not contradict the source's
+Hilbert-to-Hilbert theorem: the domain $\ell_1^2$ is not Hilbert.  Finally, it
+does not address the classical \emph{essential} or asymptotic duality problem
+for entropy numbers, nor the separate rate-transfer question in Problem
+4.1(1); it only disproves pointwise exact equality.
+
+The run's registry, solution, attempt, and proof-gap indexes were searched by
+arXiv id, title, and the phrases ``entropy numbers adjoint exact equality'' and
+``finite rank entropy duality''.  Bounded primary-source web searches used
+those phrases and the two formal identities
+$\ell_1^2\to\ell_2^2$ and $\ell_2^2\to\ell_\infty^2$.  They found the source
+and classical literature on essential/asymptotic duality, but no occurrence
+of this exact two-dimensional counterexample.  This is not an exhaustive
+novelty certification.
+
+\begin{thebibliography}{9}
+\bibitem{DK}
+K. P. Deepesh and V. B. Kiran Kumar,
+\emph{Approximation of Entropy Numbers}, arXiv:1703.01418 (2017).
+\end{thebibliography}
+
+\end{document}

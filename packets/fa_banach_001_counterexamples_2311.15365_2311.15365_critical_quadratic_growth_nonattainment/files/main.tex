@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Ptwo}{\mathcal P_2}
+
+\begin{document}
+
+\begin{center}
+{\Large Counterexample packet for arXiv:2311.15365}\par\vspace{5pt}
+{\large Critical quadratic growth can destroy attainment}
+\end{center}
+
+\paragraph{Status.}
+\textbf{counterexample\_likely\_valid}. This packet gives a negative answer
+to the critical-\(p=2\) minimizer-existence question in Noboru Isobe,
+\emph{A convergence result of a continuous model of deep learning via
+\L{}ojasiewicz--Simon inequality}, arXiv:2311.15365v2~\cite{source}.
+
+\paragraph{Source problem.}
+The source considers, for
+\(\eta\in L^2(0,1;\Ptwo(\R^m))\),
+\begin{equation}\label{eq:sourceJ}
+ J(\eta)=\int_{\mathsf X\times\mathsf Y}\ell\,d\mu_1^\eta
+ +\frac{\lambda}{2}\int_0^1\int_{\R^m}|\theta|^2\,d\eta_t(\theta)\,dt,
+\end{equation}
+where \(\mu_t^\eta\) solves
+\begin{equation}\label{eq:ce}
+ \partial_t\mu_t^\eta+\operatorname{div}_x
+ \bigl(\mu_t^\eta v_{\eta_t}\bigr)=0,
+ \qquad
+ v_{\eta_t}(x)=\int_{\R^m}v(x,\theta)\,d\eta_t(\theta).
+\end{equation}
+Its existence theorem assumes the subcritical bounds, for some \(p<2\),
+\begin{align}\label{eq:growth}
+ |v(x,\theta)|&\leq C|\theta|^p(1+|x|),\\
+ |v(x_1,\theta)-v(x_2,\theta)|&\leq
+ C|\theta|^p|x_1-x_2|.
+\end{align}
+Remark 7.1 on PDF page 23 says that ``the scenario when \(p=2\) in
+Assumption 1.3 remains unsolved'' and asks for an example in which a minimizer
+does not exist.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{The open question in Remark 7.1 of arXiv:2311.15365v2, PDF page 23.}
+\end{figure}
+
+\paragraph{Proof intuition.}
+The regularization charges the second moment of the parameter distribution.
+We choose a vector field whose ratio to this quadratic cost is strictly less
+than one at every finite parameter but tends to one at infinity. A mass of
+order \(M^{-2}\) placed at \(\theta=M\) then has a fixed quadratic cost and a
+nonvanishing effect on the terminal state. The limiting effect-to-cost ratio
+is never achieved by a finite parameter distribution, so the objective has a
+minimizing sequence but no minimizer.
+
+\begin{theorem}[Explicit nonattainment at \(p=2\)]\label{thm:main}
+In the source problem, take
+\[
+ d=m=1,\qquad \mathsf X=\R,\qquad \mathsf Y=\{0\},\qquad
+ \mu_0=\delta_{(0,0)},\qquad \lambda=2,
+\]
+and define
+\begin{equation}\label{eq:data}
+ v(x,\theta)=\frac{\theta^4}{1+\theta^2},
+ \qquad
+ \ell(x,0)=(x-1)^2.
+\end{equation}
+Then all assumptions in the source's minimizer-existence problem hold with
+the critical exponent \(p=2\), but
+\[
+ \inf_{\eta\in L^2(0,1;\Ptwo(\R))}J(\eta)=\frac34
+\]
+and the infimum is not attained.
+\end{theorem}
+
+\begin{proof}
+First check the hypotheses. The set \(\mathsf Y\) and the support of \(\mu_0\)
+are compact, \(\lambda>0\), and \(\ell\) is continuous, nonnegative, and
+\[
+ \ell(x,0)=(x-1)^2\leq 2+2x^2.
+\]
+The vector field is continuous and independent of \(x\). Moreover,
+\[
+ 0\leq v(x,\theta)=\theta^2\frac{\theta^2}{1+\theta^2}
+ \leq \theta^2,
+\]
+whereas
+\(v(x_1,\theta)-v(x_2,\theta)=0\). Thus both bounds in
+\eqref{eq:growth} hold with \(p=2\) and \(C=1\).
+
+Fix an arbitrary admissible \(\eta\), and put
+\begin{equation}\label{eq:AR}
+ R=\int_0^1\int_\R\theta^2\,d\eta_t(\theta)\,dt,
+ \qquad
+ A=\int_0^1\int_\R\frac{\theta^4}{1+\theta^2}
+ \,d\eta_t(\theta)\,dt.
+\end{equation}
+Admissibility gives \(R<\infty\), and \(0\leq A\leq R\). Since the
+averaged vector field in \eqref{eq:ce} is independent of \(x\), its flow is
+translation by
+\[
+ x_t=\int_0^t\int_\R\frac{\theta^4}{1+\theta^2}
+ \,d\eta_s(\theta)\,ds.
+\]
+Starting from \(\mu_0=\delta_{(0,0)}\), this gives
+\(\mu_1^\eta=\delta_{(A,0)}\). Hence, because \(\lambda/2=1\),
+\begin{equation}\label{eq:JAR}
+ J(\eta)=(A-1)^2+R.
+\end{equation}
+
+There is a strict pointwise efficiency loss at every nonzero finite
+parameter:
+\begin{equation}\label{eq:strict}
+ R-A=\int_0^1\int_\R\frac{\theta^2}{1+\theta^2}
+ \,d\eta_t(\theta)\,dt.
+\end{equation}
+If \(R>0\), then \(\eta_t\) is not concentrated at zero for a set of times
+of positive measure, and \eqref{eq:strict} is strictly positive. Thus
+\(A<R\). If \(R=0\), then \(A=0\) and \(J(\eta)=1\). In the remaining case,
+\begin{align*}
+ J(\eta)
+ &>(A-1)^2+A\\
+ &=\left(A-\frac12\right)^2+\frac34
+ \geq\frac34.
+\end{align*}
+Consequently every admissible \(\eta\) satisfies \(J(\eta)>3/4\).
+
+It remains to show sharpness. Put \(r=1/2\), and for every \(M\geq1\) take
+the constant-in-time curve
+\begin{equation}\label{eq:seq}
+ \eta_t^M=\left(1-\frac{r}{M^2}\right)\delta_0
+ +\frac{r}{M^2}\delta_M,
+ \qquad 0\leq t\leq1.
+\end{equation}
+It belongs to \(L^2(0,1;\Ptwo(\R))\), and its quantities in
+\eqref{eq:AR} are
+\[
+ R_M=r=\frac12,
+ \qquad
+ A_M=\frac{r}{M^2}\frac{M^4}{1+M^2}
+ =r\frac{M^2}{1+M^2}\longrightarrow r=\frac12.
+\]
+Therefore
+\[
+ J(\eta^M)=(A_M-1)^2+\frac12\longrightarrow
+ \left(\frac12-1\right)^2+\frac12=\frac34.
+\]
+The lower bound and this sequence prove that the infimum is \(3/4\); its
+strictness for every admissible \(\eta\) proves nonattainment.
+\end{proof}
+
+\paragraph{Verification notes.}
+The proof uses no external theorem beyond the source's formulation of the
+continuity-equation model. The flow calculation can also be checked directly
+in distributions because the time-dependent velocity is spatially constant
+and integrable. The strict step is exact: the integrand in
+\eqref{eq:strict} vanishes only at \(\theta=0\). The included script evaluates
+the exact formulas for sample \(M\); it is a smoke test, not part of the proof.
+
+\paragraph{Why the critical exponent matters.}
+The measures in \eqref{eq:seq} converge narrowly to \(\delta_0\), but their
+second moments stay equal to \(1/2\). At every finite \(M\), velocity is
+strictly smaller than quadratic cost; the missing efficiency appears only at
+infinity. For \(p<2\), a bounded second moment controls this lower-order
+effect uniformly at infinity. At \(p=2\), the effect and the regularizer have
+the same homogeneity, permitting precisely this escape-of-mass mechanism.
+
+\paragraph{Novelty check and limitations.}
+On 2026-07-21, the run's registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:2311.15365, the exact title, ``continuous DNN,''
+``\(p=2\),'' ``quadratic growth,'' and ``minimizer does not exist.'' Bounded
+primary-source searches on arXiv used the exact id together with the same
+phrases and close ``continuous model of deep learning'' variants. They found
+the source paper, currently v2, but no later paper or revision resolving this
+question. This supports candidate novelty but is not an exhaustive claim
+about all published literature. The theorem addresses minimizer existence at
+the critical growth exponent; it does not address the source's separate
+questions about analyticity, curvature, or convergence of gradient flows.
+
+\paragraph{Human-review recommendation.}
+Review as a full negative answer to the critical-\(p=2\) existence question
+and as the explicit nonattainment example requested in Remark 7.1. The two
+points most worth auditing are the translation formula for \(\mu_1^\eta\) and
+the implication \(R>0\Rightarrow R-A>0\).
+
+\begin{thebibliography}{9}
+\bibitem{source}
+N. Isobe,
+\emph{A convergence result of a continuous model of deep learning via
+\L{}ojasiewicz--Simon inequality},
+arXiv:2311.15365v2, 2024.
+\end{thebibliography}
+
+\end{document}

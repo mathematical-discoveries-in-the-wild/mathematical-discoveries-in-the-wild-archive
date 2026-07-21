@@ -1,0 +1,260 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\title{Pairwise maximal monotonicity does not force\\maximal multi-marginal \(c\)-monotonicity}
+\author{Candidate counterexample packet for arXiv:1901.03777}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.} Candidate counterexample, likely valid, awaiting human review. The construction answers the source question as stated; it does not address a strengthened version requiring the global set to be closed.}}
+\end{center}
+
+\section{Source question}
+
+Bartz, Bauschke, Phan, and Wang study the cost
+\[
+ c(x_1,\ldots,x_N)=\sum_{1\le i<j\le N}\ip{x_i}{x_j}
+\]
+on a product of real Hilbert spaces.  If \(\Gamma\subset H^N\), write
+\(\Gamma_{i,j}\) for its projection onto coordinates \(i,j\), viewed as the
+graph of a relation from \(H\) to \(H\).  After Proposition~5.9, they ask
+whether maximal monotonicity of every \(\Gamma_{i,j}\) implies maximal
+\(c\)-monotonicity of \(\Gamma\) \cite{BBPW}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The exact question and preceding proposition, source PDF page 22.}
+\end{figure}
+
+\paragraph{Transcription.}
+``To the best of our knowledge, the question whether the maximal monotonicity
+of the \(\Gamma_{i,j}\)'s implies the maximal \(c\)-monotonicity of \(\Gamma\)
+is still open.''
+
+\section{Definitions used}
+
+A relation \(M\subset H\times H\) is monotone when
+\[
+ \ip{x-y}{u-v}\ge0
+ \qquad ((x,u),(y,v)\in M),
+\]
+and maximally monotone when it has no proper monotone extension.  Minty's
+range characterization says that a monotone relation \(M\) is maximally
+monotone exactly when
+\[
+ \{x+u:(x,u)\in M\}=H.
+\]
+We use this in precisely the form recalled in \cite[Fact~1.3]{BBPW}.
+
+For the above cost, \(\Gamma\) is \(c\)-monotone if and only if, for every
+nonempty proper \(K\subset\{1,\ldots,N\}\) and every \(x,y\in\Gamma\),
+\[
+ \ip{\sum_{i\in K}(x_i-y_i)}{\sum_{j\notin K}(x_j-y_j)}\ge0.
+\]
+This is \cite[Lemma~2.3]{BBPW}.  A \(c\)-monotone set is maximally
+\(c\)-monotone if it has no proper \(c\)-monotone extension.
+
+\section{Idea of the proof}
+
+The construction starts with three coordinatewise monotone maps
+\(T_1,T_2,T_3\colon\R^3\to\R^3\) which partition the identity.  There is one
+coordinate for each pair \(12,13,23\).  On the coordinate dedicated to pair
+\(ij\), both \(T_i\) and \(T_j\) use a soft-threshold map and are therefore
+constant on an interval around zero.  The remaining map carries the missing
+coordinate, keeping \(T_1+T_2+T_3=\Id\).
+
+Every pair sum is still onto, so Minty's theorem makes every pair projection
+maximally monotone.  The flat interval supplies a different nonzero parameter
+which reproduces the deleted zero pair for each of the three projections.
+Thus removing the global origin creates a genuine \(c\)-monotone hole which
+none of the pair projections sees.
+
+\section{Counterexample}
+
+\begin{theorem}
+For \(N=3\) and \(H=\R^3\), there exists
+\(\Gamma\subset H^3\) such that every two-marginal projection
+\(\Gamma_{i,j}\) is maximally monotone, while \(\Gamma\) is not maximally
+\(c\)-monotone.
+\end{theorem}
+
+\begin{proof}
+Define the soft-threshold map
+\[
+ \rho(t)=\sgn(t)(|t|-1)_+
+ =\begin{cases}
+ t+1,&t<-1,\\
+ 0,&-1\le t\le1,\\
+ t-1,&t>1,
+ \end{cases}
+\]
+and set
+\[
+ \alpha(t)=\frac13\rho(t),
+ \qquad
+ \beta(t)=t-\frac23\rho(t).
+\]
+Both \(\alpha\) and \(\beta\) are continuous and nondecreasing: away from
+the two breakpoints their slopes are respectively \(1/3,0,1/3\) and
+\(1/3,1,1/3\).  Moreover,
+\begin{equation}\label{eq:partition-scalar}
+ 2\alpha(t)+\beta(t)=t.
+\end{equation}
+
+Use coordinates \(s=(s_{12},s_{13},s_{23})\) on \(H=\R^3\), and define
+\[
+\begin{aligned}
+T_1(s)&=\bigl(\alpha(s_{12}),\alpha(s_{13}),\beta(s_{23})\bigr),\\
+T_2(s)&=\bigl(\alpha(s_{12}),\beta(s_{13}),\alpha(s_{23})\bigr),\\
+T_3(s)&=\bigl(\beta(s_{12}),\alpha(s_{13}),\alpha(s_{23})\bigr).
+\end{aligned}
+\]
+Equation~\eqref{eq:partition-scalar} gives
+\begin{equation}\label{eq:identity-partition}
+ T_1+T_2+T_3=\Id_H.
+\end{equation}
+Let
+\[
+ \widetilde\Gamma
+ =\{(T_1(s),T_2(s),T_3(s)):s\in H\},
+ \qquad
+ \Gamma=\widetilde\Gamma\setminus\{(0_H,0_H,0_H)\}.
+\]
+The deleted point has the unique parameter \(s=0\), by
+\eqref{eq:identity-partition}.
+
+We first check pairwise monotonicity.  Fix \(s,t\in H\).  On each scalar
+coordinate, every \(T_i\) uses either \(\alpha\) or \(\beta\).  Since both
+maps are nondecreasing, the product of their increments is nonnegative.
+Adding the three coordinate products yields, for \(i\ne j\),
+\begin{equation}\label{eq:pair-mono}
+ \ip{T_i(s)-T_i(t)}{T_j(s)-T_j(t)}\ge0.
+\end{equation}
+Therefore every pair projection \(\widetilde\Gamma_{i,j}\) is monotone.
+For each cut in the three-marginal definition, the required inner product is
+a sum of two expressions in \eqref{eq:pair-mono}; hence
+\(\widetilde\Gamma\) is \(c\)-monotone.  Its subset \(\Gamma\) is also
+\(c\)-monotone.
+
+We next check pairwise maximality.  Put
+\[
+ \phi=2\alpha=\frac23\rho,
+ \qquad
+ \psi=\alpha+\beta=\Id_{\R}-\frac13\rho.
+\]
+The map \(\phi\) is onto because \(\rho\) is onto.  The map \(\psi\) has the
+explicit form
+\[
+ \psi(t)=\begin{cases}
+ \frac23t-\frac13,&t<-1,\\
+ t,&-1\le t\le1,\\
+ \frac23t+\frac13,&t>1,
+ \end{cases}
+\]
+so it is also onto.  Directly from the definitions,
+\begin{align*}
+(T_1+T_2)(s)&=\bigl(\phi(s_{12}),\psi(s_{13}),\psi(s_{23})\bigr),\\
+(T_1+T_3)(s)&=\bigl(\psi(s_{12}),\phi(s_{13}),\psi(s_{23})\bigr),\\
+(T_2+T_3)(s)&=\bigl(\psi(s_{12}),\psi(s_{13}),\phi(s_{23})\bigr).
+\end{align*}
+Each map is therefore onto \(H\).  Equivalently, for every \(i<j\),
+\[
+ \{x_i+x_j:(x_i,x_j)\in\widetilde\Gamma_{i,j}\}=H.
+\]
+Together with monotonicity, Minty's theorem implies that every
+\(\widetilde\Gamma_{i,j}\) is maximally monotone.
+
+It remains to see that deletion of the global origin changes none of these
+pair projections.  Every pair value having a nonzero parameter remains in
+\(\Gamma_{i,j}\).  The pair value generated at the deleted parameter \(s=0\)
+is \((0_H,0_H)\).  Because \(\rho\) vanishes on \([-1,1]\), this same pair
+value is generated by the following nonzero parameters:
+\[
+\begin{array}{c|c}
+\text{pair}&\text{replacement parameter}\\ \hline
+(1,2)&(1/2,0,0)\\
+(1,3)&(0,1/2,0)\\
+(2,3)&(0,0,1/2).
+\end{array}
+\]
+For instance, at \(s=(1/2,0,0)\) one has \(T_1(s)=T_2(s)=0_H\), while
+\(T_3(s)=(1/2,0,0)\), so this is not the deleted triple.  The other two
+checks are identical.  Consequently,
+\[
+ \Gamma_{i,j}=\widetilde\Gamma_{i,j}
+ \qquad(1\le i<j\le3),
+\]
+and all three projections of \(\Gamma\) are maximally monotone.
+
+Finally, \(\widetilde\Gamma\) is a proper \(c\)-monotone extension of
+\(\Gamma\).  Thus \(\Gamma\) is not maximally \(c\)-monotone, completing the
+counterexample.
+\end{proof}
+
+\section{Verification notes}
+
+The proof uses no numerical assumption.  The included script
+\texttt{code/verify\_counterexample.py} is a regression check for the
+piecewise identities.  It tests all breakpoints, explicit inverses for the
+three pair-sum maps, the three deletion witnesses, and 50,000 seeded random
+pairs.  It reported no contradiction.
+
+The most important human checks are:
+\begin{enumerate}
+\item equation~\eqref{eq:pair-mono}, where coordinatewise monotonicity is
+      converted into Hilbert-space pair monotonicity;
+\item the use of Minty's range criterion after proving pair-sum surjectivity;
+\item the fact that a different nonzero replacement parameter is allowed for
+      each pair projection.
+\end{enumerate}
+
+\section{Novelty check and limitations}
+
+A bounded search on July 21, 2026 covered the exact quoted question, the arXiv
+id, the paper title, close combinations of ``two-marginal projections'',
+``maximal monotonicity'', and ``maximal \(c\)-monotonicity'', local run indexes
+and full text, and citation-facing results.  It found no explicit resolution
+of this exact pair-projection question.  This is evidence only for ``no answer
+found in the bounded search'', not a definitive priority claim.
+
+The constructed \(\Gamma\) is not closed: the mechanism is a single deleted
+global point invisible to every pair projection.  The source question places
+no closedness condition on \(\Gamma\), so the example answers it as written.
+Whether the implication holds under an additional closedness or pairwise-join
+completeness assumption remains outside this result.
+
+\section{Human review recommendation}
+
+Send to a monotone-operator or multi-marginal optimal-transport expert.  The
+formal verification is short and self-contained.  If accepted, the natural
+next question is whether a closed counterexample exists or whether closedness
+restores the implication.
+
+\begin{thebibliography}{9}
+\bibitem{BBPW}
+S. Bartz, H. H. Bauschke, H. M. Phan, and X. Wang,
+\emph{Multi-marginal maximal monotonicity and convex analysis},
+Mathematical Programming \textbf{185} (2021), 385--408;
+\href{https://arxiv.org/abs/1901.03777}{arXiv:1901.03777v2}.
+\end{thebibliography}
+
+\end{document}

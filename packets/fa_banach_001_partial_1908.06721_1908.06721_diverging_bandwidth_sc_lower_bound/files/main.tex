@@ -1,0 +1,304 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\scspec}{\sigma_{\mathrm{sc}}}
+
+\title{Diverging Local Bandwidth Suffices for the\\
+Singular-Continuous Three-Limit Lower Bound}
+\author{Candidate strong partial result for arXiv:1908.06721}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate strong partial result, likely valid, awaiting human review.
+The theorem removes the source's square-root growth rate, but it does not settle
+the bounded-bandwidth case.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is Matthew J. Colbrook, \emph{Computing Spectral Measures and
+Spectral Types} \cite{Colbrook}.  Its identifier is arXiv:1908.06721v3.  For an integer-valued
+function $f$ with $f(n)>n$, let $P_n$ be projection onto the first $n$
+canonical basis vectors and let
+\[
+ \Omega_{f,0}=\left\{T=T^*: (I-P_{f(n)})TP_n=0\text{ for every }n\right\}.
+\]
+Writing $\Xi_{\mathrm{sc}}^{\C}(T)=\scspec(T)$, the source proves in Theorem
+5.1 that
+\[
+ \{\Xi_{\mathrm{sc}}^{\C},\Omega_{f,0},\Lambda_i\}\notin\Delta_3^G,
+ \qquad i=1,2,
+\]
+provided $f(n)-n\geq\sqrt{2n}+1/2$.  In the summary on page 6 it asks whether
+this growth condition can be dropped.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The exact question in the source paper, page 6.}
+\end{figure}
+
+The present packet proves the same exclusion whenever $f(n)-n\to\infty$.
+It also identifies why the remaining bounded-bandwidth case cannot be reached
+by merely improving the enumeration in the source's direct-sum proof.
+
+\section{Proof intuition}
+
+Colbrook reduces a height-three decision problem to singular-continuous
+spectrum by taking a direct sum of countably many half-line Schr\"odinger
+operators.  The displayed square-root rate enters only when that disjoint
+union of rays is placed into one copy of $\ell^2(\N)$ using a triangular
+enumeration.
+
+If $h(n)=f(n)-n$ tends to infinity, one can do better.  Wait until the entire
+tail has $h\geq k$, and then enumerate the first $k$ rays round-robin.  The gap
+between consecutive vertices of any active ray is exactly $k$, so every edge
+crossing a cut at $n$ ends no later than $n+h(n)=f(n)$.  Increasing $k$ slowly
+gives a bijection with all countably many rays and no prescribed rate of
+divergence.
+
+This mechanism is optimal for the direct-sum route.  Across the cut after $n$,
+every ray that has already started but is infinite needs a distinct crossing
+endpoint among the $h(n)$ sites $n+1,\ldots,f(n)$.  As the number of started
+rays tends to infinity, necessarily $h(n)\to\infty$.  Thus bounded bandwidth
+requires a genuinely different spectral encoding.
+
+\section{The adaptive enumeration}
+
+We first isolate the combinatorial point.  A \emph{ray enumeration} is a
+bijection between $\N$ and $\N\times\N$; for fixed $j$, the pairs $(j,m)$,
+$m=1,2,\ldots$, are the successive vertices of ray $j$.
+
+\begin{lemma}[Adaptive round-robin enumeration]\label{lem:enumeration}
+Let $f:\N\to\N$ satisfy $f(n)>n$, and put $h(n)=f(n)-n$.  If
+$h(n)\to\infty$, there is a ray enumeration with the following property: if
+$p<q$ are the positions of two successive vertices of one ray, then
+\begin{equation}\label{eq:cut}
+ q\leq f(n)\qquad(p\leq n<q).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose integers
+\[
+ 1=c_1<c_2<c_3<\cdots
+\]
+recursively so that
+\begin{enumerate}[label=(\roman*)]
+\item $h(n)\geq k$ for all $n\geq c_k$;
+\item $c_{k+1}-c_k$ is a positive multiple of $k$.
+\end{enumerate}
+This is possible because $h(n)\to\infty$: after choosing $c_k$, move far
+enough into the tail where $h\geq k+1$ and then move finitely farther to the
+required congruence class modulo $k$.
+
+On the phase $c_k\leq n<c_{k+1}$, label the positions periodically
+\[
+ 1,2,\ldots,k,1,2,\ldots,k,\ldots .
+\]
+Condition (ii) makes the phase an integral number of cycles.  At phase $k$ the
+labels $1,\ldots,k$ occur, and every fixed label occurs in every later phase;
+therefore, numbering the successive occurrences of label $j$ by
+$m=1,2,\ldots$ gives a bijection $\N\to\N\times\N$.
+
+Within phase $k$, consecutive occurrences of a fixed label are $k$ positions
+apart.  At the transition from phase $k$ to phase $k+1$, the last occurrence
+of an old label $j\leq k$ is at
+\[
+ c_{k+1}-k+j-1,
+\]
+and its first occurrence in the next phase is at $c_{k+1}+j-1$; that gap is
+again $k$.  New label $k+1$ has no predecessor.  Consequently, if an edge
+$p<q$ starts in phase $k$, then $q-p\leq k$.  For $p\leq n<q$, condition (i)
+gives $h(n)\geq k$, and hence
+\[
+ q-n\leq q-p\leq k\leq h(n).
+\]
+This is exactly \eqref{eq:cut}.
+\end{proof}
+
+\begin{proposition}[Sharpness for disjoint rays]\label{prop:sharp}
+Suppose a ray enumeration satisfies \eqref{eq:cut}.  Then
+$f(n)-n\to\infty$.
+\end{proposition}
+
+\begin{proof}
+For a fixed cut $n$, let $A_n$ be the set of rays having at least one vertex
+among positions $1,\ldots,n$.  For each $j\in A_n$, take the last vertex of
+ray $j$ at or before $n$ and the next vertex of that ray.  The latter is a
+crossing endpoint $q_j$ satisfying
+\[
+ n<q_j\leq f(n).
+\]
+The endpoints $q_j$ are distinct because the enumeration is a bijection.
+Therefore
+\[
+ |A_n|\leq f(n)-n.
+\]
+Every one of the countably many rays eventually starts, so for every $K$ one
+has $|A_n|\geq K$ for all sufficiently large $n$.  Thus $f(n)-n\to\infty$.
+\end{proof}
+
+\section{Strengthened lower bound}
+
+We use the source notation $\Lambda_1$ for matrix-entry evaluations and
+$\Lambda_2$ for the augmented evaluation set that also contains the relevant
+quadratic matrix data.  The SCI classes and the metric on closed subsets of
+$\C$ are exactly those of \cite{Colbrook}.
+
+\begin{theorem}[Diverging-bandwidth lower bound]\label{thm:main}
+Let $f:\N\to\N$ satisfy $f(n)>n$ and
+\[
+ f(n)-n\longrightarrow\infty.
+\]
+Then, for $i=1,2$,
+\[
+ \{\Xi_{\mathrm{sc}}^{\C},\Omega_{f,0},\Lambda_i\}
+ \notin\Delta_3^G.
+\]
+Equivalently, no height-two tower of general algorithms computes the
+singular-continuous spectrum on $\Omega_{f,0}$.
+\end{theorem}
+
+\begin{proof}
+We repeat the reduction in the proof of Theorem 5.1 of \cite{Colbrook}, changing
+only its enumeration of the direct sum.
+
+Let $a=(a_{k,j})_{k,j\in\N}\in\{0,1\}^{\N\times\N}$ and consider the decision
+problem
+\[
+ \Xi'(a)=1\quad\Longleftrightarrow\quad
+ \text{some column of $a$ contains infinitely many ones}.
+\]
+This problem has general SCI equal to $3$; this is the decision problem used in
+the source proof (with the lower bound cited there from
+Ben-Artzi--Hansen--Nevanlinna--Seidel \cite{BHNS}).
+
+For every column $j$, define on $\ell^2(\N)$
+\[
+ H_j=H_0+v_j,\qquad
+ v_j(m)=\sum_{k=1}^{\infty}a_{k,j}\,\delta_{m,k!},
+\]
+where $H_0$ is the free half-line discrete Schr\"odinger operator.  The sparse
+potential theorem of Krutikov and Remling \cite{KR}, in precisely the form
+quoted as Theorem 3.4 in \cite{Colbrook}, gives
+\begin{align*}
+ [0,4]&\subset\scspec(H_j) &&\text{if column $j$ has infinitely many ones},\\
+ \scspec(H_j)\cap(0,4)&=\varnothing
+ &&\text{if column $j$ has only finitely many ones}.
+\end{align*}
+
+Set $\widetilde H=\bigoplus_{j=1}^{\infty}H_j$.  Use Lemma
+\ref{lem:enumeration} to identify its canonical basis with that of
+$\ell^2(\N)$.  The only off-diagonal entries of every $H_j$ join successive
+vertices of its ray.  If such an edge has positions $p<q$, then for every cut
+$p\leq n<q$, Lemma \ref{lem:enumeration} gives $q\leq f(n)$.  Hence no column
+among the first $n$ has a nonzero entry below row $f(n)$, and therefore
+\[
+ (I-P_{f(n)})\widetilde H P_n=0
+ \quad\text{for every }n.
+\]
+Thus $\widetilde H\in\Omega_{f,0}$.  Its entries are uniformly bounded, so it
+is a bounded self-adjoint operator.
+
+The direct-sum spectral decomposition now yields
+\[
+ \Xi'(a)=1\Longrightarrow [0,4]\subset\scspec(\widetilde H),
+ \qquad
+ \Xi'(a)=0\Longrightarrow \scspec(\widetilde H)\cap(0,4)=\varnothing.
+\]
+Every queried matrix entry of $\widetilde H$ depends on at most one entry of
+$a$, after applying the fixed enumeration and its inverse.  The augmented
+$\Lambda_2$ data are also finite-information functions of $a$, because every
+column of $\widetilde H$ has at most three nonzero entries.  Thus the reduction
+works for both $\Lambda_1$ and $\Lambda_2$.
+
+If a height-two general tower computed $\scspec(\widetilde H)$, applying the
+continuous postprocessing
+\[
+ F\longmapsto 1-\min\{1,\operatorname{dist}(3,F)\}
+\]
+and then the discrete-output conversion in the source proof of Theorem 5.1
+would give a height-two general tower for $\Xi'$.  This contradicts
+$\operatorname{SCI}_G(\Xi')=3$.  The claimed exclusion follows.
+\end{proof}
+
+\section{Verification and limitations}
+
+\paragraph{Internal checks.}
+The script \texttt{code/check\_round\_robin.py} constructs the phases for the
+slowly diverging sample
+\[
+ h(n)=\lfloor\log_2(n+1)\rfloor+1
+\]
+and checks every cut inequality in a finite prefix.  This is only a sanity
+check; Lemma \ref{lem:enumeration} is the proof.  The most important points for
+human verification are (a) the phase-transition gap is $k$, not $k+1$, and
+(b) the cut inequality is exactly the matrix condition defining
+$\Omega_{f,0}$.
+
+\paragraph{Scope.}
+The theorem removes every quantitative growth rate but retains
+$f(n)-n\to\infty$.  Proposition \ref{prop:sharp} shows that the latter cannot
+be removed from this direct-sum/ray-enumeration proof.  The original question
+remains open for bounded or non-diverging local bandwidth, notably
+$f(n)=n+1$.
+
+\paragraph{Novelty check.}
+The run's lightweight registry, solution, attempt, and proof-gap indexes were
+searched for arXiv:1908.06721, the title, singular-continuous spectrum, SCI,
+and bandwidth terminology; no duplicate was found.  A bounded web/arXiv search
+on 21 July 2026 used the exact source sentence and the phrases
+``singular continuous spectrum'', ``Delta 3'', ``SCI'', ``bandwidth'', and
+``Colbrook''.  It found the source and later numerical spectral-measure papers
+but no separate settlement of this hypothesis.  The novelty confidence is
+moderate rather than definitive because this was not an exhaustive citation
+review.
+
+\paragraph{Recommendation.}
+Promote as a strong partial result if a reviewer confirms Lemma
+\ref{lem:enumeration} and the finite-information simulation for $\Lambda_2$.
+Do not describe it as a full answer to the source question.
+
+\begin{thebibliography}{9}
+
+\bibitem{Colbrook}
+M.~J. Colbrook,
+\emph{Computing Spectral Measures and Spectral Types},
+Communications in Mathematical Physics 384 (2021), 433--501;
+arXiv:1908.06721v3.
+
+\bibitem{KR}
+D.~Krutikov and C.~Remling,
+\emph{Schr\"odinger operators with sparse potentials: asymptotics of the
+Fourier transform of the spectral measure},
+Communications in Mathematical Physics 223 (2001), 509--532.
+
+\bibitem{BHNS}
+J.~Ben-Artzi, M.~J. Colbrook, A.~C. Hansen, O.~Nevanlinna, and M.~Seidel,
+\emph{Computing Spectra---On the Solvability Complexity Index hierarchy and
+towers of algorithms},
+arXiv:1508.03280v5; see also the exact decision-problem citation in
+\cite{Colbrook}.
+
+\end{thebibliography}
+
+\end{document}

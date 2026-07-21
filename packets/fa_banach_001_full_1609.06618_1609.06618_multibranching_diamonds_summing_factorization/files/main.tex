@@ -1,0 +1,297 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ellone}{\ell_1}
+\newcommand{\snorm}[1]{\lVert #1\rVert_s}
+\newcommand{\onorm}[1]{\lVert #1\rVert_1}
+
+\title{Fixed-branching diamonds factor through the summing basis\\
+\large A positive answer to Remark 1.7 of arXiv:1609.06618}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 12, candidate for human review}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full solution, likely
+valid.}  For every fixed finite branching number $k$, we construct the
+factorization maps asked for in Remark 1.7.  If $C_2$ is a binary-diamond
+constant, the construction gives $C(k)=2C_2\lceil\log_2 k\rceil$.  The new
+ingredient is an elementary family of binary projections, one of which
+preserves each prescribed pairwise distance exactly.}}
+\end{center}
+
+\section{Source question}
+
+Ostrovskii and Randrianantoanina study multibranching diamonds
+$D_{n,k}$ and factorization between the unit-vector and summing bases
+\cite{OR}.  Their condition (1.1) asks for maps $f_n:D_{n,k}\to\ellone$ such
+that, uniformly in $n$,
+\begin{equation}\label{eq:factor}
+ \onorm{f_n(u)-f_n(v)}\le d_{D_{n,k}}(u,v)
+ < C(k)\snorm{f_n(u)-f_n(v)}.
+\end{equation}
+Here
+\[
+ \snorm{(a_i)}=\sup_r\left|\sum_{i=1}^r a_i\right|.
+\]
+On page 4, Remark 1.7 asks whether $C(k)$ exists for every fixed $k$ and
+emphasizes that even $C(3)$ was unknown:
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_question_crop.png}
+\end{center}
+
+We answer the entire fixed-branching question affirmatively.
+
+\section{Statement of the result}
+
+We use the recursive description of $D_{n,k}$.  The graph $D_{0,k}$ is one
+edge with bottom and top endpoints.  To obtain $D_{n,k}$, replace every edge
+by $k$ paths of length two, with the edge lengths halved.  Equivalently,
+$D_{n,k}$ is the parallel composition of $k$ arms, each arm being the series
+composition of two copies of $D_{n-1,k}$ scaled by $1/2$.
+
+Johnson and Schechtman proved the binary case \cite{JS}.  Thus there is a
+constant $C_2>1$ such that, for every $n$, some
+$g_n:D_{n,2}\to\ellone$ satisfies
+\begin{equation}\label{eq:binary}
+ \onorm{g_n(a)-g_n(b)}\le d_{D_{n,2}}(a,b)
+ < C_2\snorm{g_n(a)-g_n(b)}.
+\end{equation}
+
+\begin{theorem}[All fixed branchings]\label{thm:main}
+For every integer $k\ge2$ and every $n\in\N$, there is a map
+$F_{n,k}:D_{n,k}\to\ellone$ satisfying
+\[
+ \onorm{F_{n,k}(x)-F_{n,k}(y)}\le d_{D_{n,k}}(x,y)
+ < 2C_2\lceil\log_2 k\rceil
+   \snorm{F_{n,k}(x)-F_{n,k}(y)}
+\]
+for all distinct vertices $x,y$.  In particular, the numbers $C(k)$ asked
+for in Remark 1.7 exist for every finite $k$, and one may take
+\[
+                 C(k)=2C_2\lceil\log_2 k\rceil.
+\]
+\end{theorem}
+
+The logarithmic upper bound is compatible with Theorem 1.6 of \cite{OR},
+which implies that valid constants cannot remain bounded as $k\to\infty$.
+We make no claim that the logarithmic order or its coefficient is sharp.
+
+\section{Idea of the proof}
+
+Assign distinct binary words to the $k$ arm labels.  Reading one coordinate
+of those words collapses every $k$-fold parallel replacement onto a binary
+replacement.  The resulting map to a binary diamond preserves the height of
+every vertex in every recursive cell.  A pair of vertices has at most one
+relevant parallel split: the first recursive cell in which the two points
+occupy different arms.  Any bit distinguishing those two arm labels preserves
+the pair's distance exactly.
+
+We therefore have $m=\lceil\log_2 k\rceil$ nonexpansive binary images and at
+least one exact image for every pair.  Compose all images with $g_n$, put them
+in consecutive coordinate blocks, and average by $1/m$.  The $\ellone$ upper
+bound averages.  An arbitrary offset from earlier blocks can reduce the
+summing norm visible inside the exact block by at most a factor two.  This
+gives $2mC_2$.
+
+\section{Binary projections}
+
+Fix a function $q:\{1,\ldots,k\}\to\{0,1\}$.  It induces recursively a map
+\[
+                    \pi_q:D_{n,k}\longrightarrow D_{n,2}.
+\]
+The bottom and top go to the binary bottom and top.  In every replaced edge,
+the midpoint in source arm $i$ goes to the midpoint in binary arm $q(i)$;
+inside each of the two child edges the same rule is repeated.  Multiple
+source arms are allowed to collapse onto one binary arm.
+
+\begin{lemma}[One binary projection preserves each distance]
+\label{lem:projection}
+Every $\pi_q$ is $1$-Lipschitz and preserves the distance from a vertex to
+the bottom and top of every recursive subdiamond containing that vertex.
+Moreover, for every $x,y\in D_{n,k}$, one of the following holds:
+\begin{enumerate}
+ \item every map $\pi_q$ preserves $d(x,y)$; or
+ \item there are two distinct arm labels $a,b\in\{1,\ldots,k\}$ such that
+       every $q$ with $q(a)\ne q(b)$ satisfies
+       \[
+          d_{D_{n,2}}(\pi_q(x),\pi_q(y))=d_{D_{n,k}}(x,y).
+       \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We argue by induction on $n$, simultaneously for the endpoint assertion and
+the dichotomy.  The result is immediate for $n=0$.  A final edge of
+$D_{n,k}$ maps to a final edge of $D_{n,2}$ of the same length, so $\pi_q$ is
+$1$-Lipschitz.
+
+Let the bottom and top of the root diamond be $B,T$, and let $M_i$ be the
+midpoint of arm $i$.  Each lower piece $[B,M_i]$ and upper piece $[M_i,T]$
+is a scaled copy of $D_{n-1,k}$.  The induction hypothesis in these pieces
+shows that distance to their endpoints is preserved.  Consequently the
+distance from any vertex to $B$ and $T$ is preserved as well.  For example,
+if $x$ is in the upper piece of arm $i$, the route from $B$ through $M_i$ has
+length
+\[
+             d(B,M_i)+d(M_i,x),
+\]
+and no route entering through $T$ is shorter; the same statement holds after
+projection.  The other cases are symmetric.  Applying the same reasoning
+inside any recursive cell proves the full endpoint assertion.
+
+Now consider $x,y$.  Cases in which one point is $B$ or $T$ are already
+covered by endpoint preservation.  If $x$ and $y$ lie in distinct root arms
+$i\ne j$, put
+\[
+ h_x=d(B,x),\qquad h_y=d(B,y),\qquad L=d(B,T).
+\]
+Different arms meet only at $B$ and $T$, hence
+\begin{equation}\label{eq:different-arms}
+ d(x,y)=\min\{h_x+h_y,\,2L-h_x-h_y\}.
+\end{equation}
+If $q(i)\ne q(j)$, their images lie in distinct binary arms.  Endpoint
+preservation gives the same $h_x,h_y,L$, so the binary analogue of
+\eqref{eq:different-arms} is identical.  Alternative (2) holds with
+$a=i,b=j$.
+
+It remains to suppose that both points lie in one root arm $i$.  If they lie
+in the same lower piece or the same upper piece, apply the inductive
+dichotomy in that copy of $D_{n-1,k}$.  If they lie in different pieces, say
+$x\in[B,M_i]$ and $y\in[M_i,T]$, every path either passes through $M_i$ or
+exits through both $B$ and $T$.  The former route is no longer than the latter:
+writing $\alpha=d(B,x)$ and $\beta=d(y,T)$, their lengths are respectively
+\[
+             L-\alpha-\beta
+       \quad\hbox{and}\quad
+             L+\alpha+\beta.
+\]
+Thus
+$d(x,y)=d(x,M_i)+d(M_i,y)$.  Both terms are endpoint distances inside child
+diamonds and are preserved by every $\pi_q$.  This is alternative (1) and
+completes the induction.
+\end{proof}
+
+Choose pairwise distinct words
+\[
+       \sigma(1),\ldots,\sigma(k)\in\{0,1\}^m,
+       \qquad m=\lceil\log_2 k\rceil,
+\]
+and let $q_j(i)=\sigma(i)_j$.  Lemma~\ref{lem:projection} immediately gives
+the key metric identity
+\begin{equation}\label{eq:max-projection}
+ d_{D_{n,k}}(x,y)
+ =\max_{1\le j\le m}
+   d_{D_{n,2}}(\pi_{q_j}(x),\pi_{q_j}(y)).
+\end{equation}
+Indeed, in alternative (2), the distinct words of $a$ and $b$ differ in some
+coordinate; alternative (1) is even stronger.  The reverse inequality in
+\eqref{eq:max-projection} follows from $1$-Lipschitzness.
+
+\section{The summing norm of concatenated blocks}
+
+For finite sequences $z^{(1)},\ldots,z^{(m)}$, write
+$z=z^{(1)}\mathbin\Vert\cdots\mathbin\Vert z^{(m)}$ for their concatenation.
+
+\begin{lemma}[Block visibility]\label{lem:block}
+For every block $j$,
+\[
+                         \snorm{z}\ge\frac12\snorm{z^{(j)}}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $A$ be the sum of all coordinates preceding block $j$, and let $P_r$ be
+the partial sums within that block, with $P_0=0$.  Choose $r$ with
+$|P_r|=\snorm{z^{(j)}}=:s$.  The global partial sums include both $A$ and
+$A+P_r$.  Since
+\[
+                  s=|P_r|\le |A|+|A+P_r|,
+\]
+one of those two global partial sums has absolute value at least $s/2$.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+For $x\in D_{n,k}$ define
+\begin{equation}\label{eq:construction}
+ F_{n,k}(x)=\frac1m\bigl(
+   g_n(\pi_{q_1}(x))\mathbin\Vert\cdots\mathbin\Vert
+   g_n(\pi_{q_m}(x))\bigr).
+\end{equation}
+Because $g_n$ and every $\pi_{q_j}$ are nonexpansive in the relevant
+$\ellone$ and graph metrics,
+\begin{align*}
+ \onorm{F_{n,k}(x)-F_{n,k}(y)}
+ &=\frac1m\sum_{j=1}^m
+   \onorm{g_n(\pi_{q_j}(x))-g_n(\pi_{q_j}(y))}\\
+ &\le\frac1m\sum_{j=1}^m
+   d(\pi_{q_j}(x),\pi_{q_j}(y))
+ \le d(x,y).
+\end{align*}
+
+By \eqref{eq:max-projection}, choose $j$ for which
+$d(\pi_{q_j}(x),\pi_{q_j}(y))=d(x,y)$.  Lemma~\ref{lem:block} and the binary
+estimate \eqref{eq:binary} give
+\begin{align*}
+ \snorm{F_{n,k}(x)-F_{n,k}(y)}
+ &\ge \frac{1}{2m}
+ \snorm{g_n(\pi_{q_j}(x))-g_n(\pi_{q_j}(y))}\\
+ &>\frac{d(x,y)}{2mC_2}.
+\end{align*}
+This is the claimed strict inverse inequality and completes the proof.
+
+\section{Verification, scope, and novelty}
+
+The packet includes an independent address-based exhaustive checker.  It
+constructs all bit projections, computes all-pairs shortest-path distances,
+and verifies \eqref{eq:max-projection} at finite depths before checking the
+concatenated Hamming realization.  This is only a regression test; the
+inductive proof above covers all $n$.
+
+The result answers exactly the full fixed-branching question in Remark 1.7,
+including the highlighted case $k=3$.  It does not solve the neighboring
+Planar Conjecture, forbidden-minor conjecture, or the problem of embedding all
+series-parallel metrics into every non-superreflexive Banach space.
+
+Before promotion, the run's solution, attempt, proof-gap and registry indexes
+were searched by arXiv id, exact question, and the phrases
+``multibranching diamond'', ``summing norm'', ``$D_{n,3}$'', and ``$C(3)$''.
+A bounded primary arXiv search used the same phrases together with ``binary
+projection'' and ``fixed branching''.  It found no later resolution or this
+binary-code construction.  This is not an exhaustive novelty certification;
+the separate \texttt{novelty.md} records the search bounds.
+
+Human review is strongly recommended.  The principal audit target is
+Lemma~\ref{lem:projection}, especially the same-arm/different-half case.  The
+new proof otherwise uses only the published binary case and elementary norm
+estimates.
+
+\begin{thebibliography}{9}
+\bibitem{OR}
+M. I. Ostrovskii and B. Randrianantoanina,
+\emph{A new approach to low-distortion embeddings of finite metric spaces
+into non-superreflexive Banach spaces}, arXiv:1609.06618 (2016), Remark 1.7.
+
+\bibitem{JS}
+W. B. Johnson and G. Schechtman,
+\emph{Diamond graphs and super-reflexivity},
+J. Topol. Anal. \textbf{1} (2009), 177--189,
+doi:10.1142/S1793525309000114.
+\end{thebibliography}
+
+\end{document}

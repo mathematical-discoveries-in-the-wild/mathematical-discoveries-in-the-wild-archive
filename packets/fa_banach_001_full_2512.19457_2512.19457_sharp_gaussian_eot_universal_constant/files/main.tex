@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Tr}{\operatorname{tr}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\W}{\mathcal{W}}
+
+\title{The sharp universal constant for Gaussian entropic-transport coupling convergence}
+\author{Candidate solution packet for arXiv:2512.19457}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\textwidth}{
+\textbf{Status: full solution, likely valid (human review requested).}
+For every dimension $d$, the sharp constant in Conjecture 3.1 of Yun is
+$C_d=d/2$.  In fact, the normalized squared Wasserstein distance has an
+explicit limit for every positive-definite covariance pair, and equality in
+the universal bound occurs exactly for identity transport $A=B$.
+}}
+\end{center}
+
+\section{Source and open problem}
+
+The source is Ho Yun's arXiv:2512.19457 paper \cite{yun}.  Its Conjecture 3.1
+appears on page 19 of the current PDF.  The paper considers the entropic Gaussian coupling
+$\pi_\varepsilon$ between $N(0,A)$ and $N(0,B)$ and its unregularized limit
+$\pi_0$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Conjecture 3.1 in the source paper, page 19.}
+\end{figure}
+
+\paragraph{Transcription.}
+For $A,B\succ0$ on $\R^d$, is there a dimension-dependent constant $C_d>0$
+such that
+\[
+  \limsup_{\varepsilon\downarrow0}
+  \frac{\W_2^2(\pi_\varepsilon,\pi_0)}{\varepsilon}
+  \le C_d
+  \qquad\text{for all }A,B\succ0?
+\]
+The source observes that $A=B$ gives the lower bound $C_d\ge d/2$ and asks
+whether this identity case is the worst case.
+
+\section{Notation and the source formula}
+
+All matrices below are real symmetric unless stated otherwise.  Let
+\[
+  P=A^{1/2}BA^{1/2},\qquad Z=P^{1/2},\qquad
+  X=A,\qquad Y=ZA^{-1}Z,\qquad S=X+Y.
+\]
+Because $A,B\succ0$, all five matrices $P,Z,X,Y,S$ are positive definite.
+With the properly aligned Green operators
+\[
+  G=A^{1/2},\qquad M=A^{-1/2}Z,
+\]
+one has $GG^*=A$, $MM^*=B$, $G^*M=Z$, $G^*G=X$, and $M^*M=Y$.
+The spectral shrinkage is
+\[
+  R_\varepsilon=f_\varepsilon(Z),\qquad
+  f_\varepsilon(t)=
+  \frac{2t}{\sqrt{4t^2+\varepsilon^2}+\varepsilon}.
+\]
+Theorem 3.10 of the source gives
+\begin{align}
+  \W_2^2(\pi_\varepsilon,\pi_0)
+    &=2\Tr\!\left(S-Q_\varepsilon^{1/2}\right), \label{eq:source}\\
+  Q_\varepsilon
+    &=X^2+Y^2+XR_\varepsilon Y+YR_\varepsilon X. \label{eq:Q}
+\end{align}
+Here $\Tr S=\Tr(A+B)$, since $Y=M^*M$ and $MM^*=B$.
+
+\section{Proof intuition}
+
+The exact formula \eqref{eq:source} only needs to be differentiated at
+$\varepsilon=0$.  Spectral shrinkage has first variation
+$R_\varepsilon=I-(\varepsilon/2)Z^{-1}+O(\varepsilon^2)$.  The apparently
+noncommutative cross terms in \eqref{eq:Q} then collapse because
+\[
+  XZ^{-1}Y=YZ^{-1}X=Z.
+\]
+Thus $Q_\varepsilon=S^2-\varepsilon Z+O(\varepsilon^2)$, and differentiating
+the trace of the matrix square root produces the exact asymptotic coefficient
+$\Tr(S^{-1}Z)$.
+
+The bound is an operator arithmetic--geometric mean identity rather than a
+spectral estimate:
+\[
+  S-2Z=X+ZX^{-1}Z-2Z=(X-Z)X^{-1}(X-Z)\succeq0.
+\]
+After congruence and inversion, this gives
+$Z^{1/2}S^{-1}Z^{1/2}\preceq \tfrac12 I$.  Taking the trace yields $d/2$.
+
+\section{Sharp theorem}
+
+\begin{theorem}\label{thm:main}
+Let $A,B\in\R^{d\times d}$ be positive definite, and let
+$\pi_\varepsilon,\pi_0$ be the Gaussian couplings in Conjecture 3.1 of
+\cite{yun}.  With $Z=(A^{1/2}BA^{1/2})^{1/2}$, the limit exists and is
+\begin{equation}\label{eq:limit}
+  \lim_{\varepsilon\downarrow0}
+  \frac{\W_2^2(\pi_\varepsilon,\pi_0)}{\varepsilon}
+  =\Tr\!\left[
+    \bigl(A+ZA^{-1}Z\bigr)^{-1}Z
+  \right]
+  \le \frac d2.
+\end{equation}
+Equality holds in \eqref{eq:limit} if and only if $A=B$.  Consequently the
+smallest universal constant in Conjecture 3.1 is
+\[
+  \boxed{C_d=d/2}.
+\]
+\end{theorem}
+
+\begin{lemma}[Trace-square-root differential]\label{lem:trace-root}
+If $C\succ0$ and $H=H^*$, then, as $t\to0$,
+\[
+  \Tr(C+tH)^{1/2}
+  =\Tr C^{1/2}+\frac t2\Tr(C^{-1/2}H)+o(t).
+\]
+The same conclusion holds when $tH$ is replaced by $tH+O(t^2)$.
+\end{lemma}
+
+\begin{proof}
+Diagonalize $C$.  The standard divided-difference formula for the
+Fr\'echet derivative of a matrix function says that the diagonal entries of
+$D(\sqrt{\cdot})_C[H]$ in this eigenbasis are
+$\frac12\lambda_i^{-1/2}H_{ii}$.  Their sum is
+$\frac12\Tr(C^{-1/2}H)$.  Since the square-root map is continuously
+Fr\'echet differentiable on the positive-definite cone, an $O(t^2)$ remainder
+in the argument contributes $o(t)$.  This is also the usual spectral trace
+differentiation identity; see, for example, Higham \cite[Chapter 3]{higham}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+On the positive spectrum of $Z$, scalar Taylor expansion, uniformly over that
+finite spectrum, gives
+\[
+  f_\varepsilon(Z)
+  =I-\frac{\varepsilon}{2}Z^{-1}+O(\varepsilon^2)
+  \qquad(\varepsilon\downarrow0)
+\]
+in operator norm.  Since $Y=ZX^{-1}Z$,
+\[
+  XZ^{-1}Y=Z,
+  \qquad
+  YZ^{-1}X=Z.
+\]
+Substitution in \eqref{eq:Q} yields
+\begin{align*}
+  Q_\varepsilon
+  &=X^2+Y^2+XY+YX
+    -\frac{\varepsilon}{2}
+      \left(XZ^{-1}Y+YZ^{-1}X\right)
+    +O(\varepsilon^2)\\
+  &=S^2-\varepsilon Z+O(\varepsilon^2).
+\end{align*}
+Apply Lemma \ref{lem:trace-root} with $C=S^2$ and $H=-Z$:
+\[
+  \Tr Q_\varepsilon^{1/2}
+  =\Tr S-\frac{\varepsilon}{2}\Tr(S^{-1}Z)+o(\varepsilon).
+\]
+Equation \eqref{eq:source} now proves the equality in \eqref{eq:limit}.
+
+It remains to bound this coefficient.  Using $Y=ZX^{-1}Z$,
+\begin{equation}\label{eq:amgm}
+  S-2Z
+  =X+ZX^{-1}Z-2Z
+  =(X-Z)X^{-1}(X-Z)\succeq0.
+\end{equation}
+Congruence by $Z^{-1/2}$ and inversion give
+\[
+  Z^{1/2}S^{-1}Z^{1/2}\preceq\frac12I.
+\]
+Therefore
+\[
+  \Tr(S^{-1}Z)
+  =\Tr\!\left(Z^{1/2}S^{-1}Z^{1/2}\right)
+  \le\frac d2.
+\]
+
+If equality holds, the positive-semidefinite matrix
+$\frac12I-Z^{1/2}S^{-1}Z^{1/2}$ has trace zero and hence vanishes.  Thus
+$S=2Z$.  Equation \eqref{eq:amgm} then forces $X=Z$.  Since
+$Z^2=A^{1/2}BA^{1/2}$ and $X=A$, this is equivalent to
+$A^{1/2}BA^{1/2}=A^2$, hence $B=A$.  Conversely, $A=B$ gives $Z=A$ and
+$\Tr(S^{-1}Z)=\Tr((2A)^{-1}A)=d/2$.  The source already identifies this
+case as the lower-bound example, so $C_d=d/2$ is sharp.
+\end{proof}
+
+\section{Verification and limitations}
+
+\begin{itemize}[leftmargin=*]
+\item The proof uses only the source's exact Wasserstein formula
+  \eqref{eq:source}, finite-dimensional matrix Taylor expansion, and the
+  explicit positive-semidefinite identity \eqref{eq:amgm}.
+\item The accompanying script tested five independent random covariance pairs
+  in each of dimensions $1,2,5,10$.  For
+  $\varepsilon\in\{10^{-3},3\cdot10^{-4},10^{-4}\}$, direct evaluation of
+  the source formula converged to \eqref{eq:limit}; every coefficient was at
+  most $d/2$.  It also checks equality for $A=B$.  These tests are sanity
+  checks, not part of the proof.
+\item Scope: the theorem answers exactly the source's non-degenerate,
+  finite-dimensional conjecture.  It makes no new claim about singular
+  covariances or infinite-dimensional nonparametric rates.
+\end{itemize}
+
+\paragraph{Bounded novelty check.}
+On 21 July 2026, the run's registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:2512.19457 and the phrases ``spectral shrinkage'',
+``Gaussian entropic optimal transport'', and ``universal bounds''.  No prior
+packet or duplicate was found.  A web/arXiv search used the exact paper title
+with ``Universal Bounds'', ``Wasserstein Gaussian entropic coupling d/2'',
+``Gaussian entropic optimal transport coupling convergence sharp constant'',
+and a site-restricted arXiv variant.  The current arXiv source still states
+Conjecture 3.1, and no separate primary source resolving this exact constant
+was found.  This is a bounded search, not a proof of novelty.
+
+\paragraph{Human-review recommendation.}
+Verify the transcription of Theorem 3.10 into \eqref{eq:source}, including the
+normalization of $\varepsilon$, and the aligned factor
+$M=A^{-1/2}Z$.  Once those convention-sensitive inputs are confirmed, the
+remaining expansion and operator inequality are self-contained.
+
+\begin{thebibliography}{9}
+\bibitem{yun}
+H. Yun,
+\emph{Spectral Shrinkage of Gaussian Entropic Optimal Transport},
+arXiv:2512.19457 (2025; current PDF accessed 21 July 2026),
+\url{https://arxiv.org/abs/2512.19457}.
+
+\bibitem{higham}
+N. J. Higham,
+\emph{Functions of Matrices: Theory and Computation},
+Society for Industrial and Applied Mathematics, 2008.
+\end{thebibliography}
+
+\end{document}

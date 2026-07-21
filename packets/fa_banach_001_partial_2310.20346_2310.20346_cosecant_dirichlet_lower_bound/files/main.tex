@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\N}{\mathbb N}
+
+\title{A cosecant certificate for the bidisc weak-product constant}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 0}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: candidate partial result,
+likely valid.}  The result below improves a quantitative obstruction but does
+not resolve the equality of the two spaces.}}
+\end{center}
+
+\section{Source question}
+
+Bampouras and Brevig ask whether, for fixed $d\geq2$, there is a constant
+$C_d>0$ such that
+\[
+ \|f\|_{H^1(\T^d)}\geq C_d\|f\|_{W(\T^d)},
+ \qquad W(\T^d)=H^2(\T^d)\odot H^2(\T^d),
+\]
+for every $f\in W(\T^d)$; equivalently, whether $H^1(\T^d)$ and
+$W(\T^d)$ are equal as sets \cite{BB}.  The question occurs on page 3 of the
+source paper.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{The open question in arXiv:2310.20346, page 3.}
+\end{figure}
+
+For the bidisc, put
+\[
+ K_2:=\sup_{0\neq f\in W(\T^2)}
+ \frac{\|f\|_{W(\T^2)}}{\|f\|_{H^1(\T^2)}}\in[1,\infty].
+\]
+Thus the best possible constant in the displayed inequality is $K_2^{-1}$
+when $K_2<\infty$.  The quadratic construction used previously gives a lower
+bound about $1.16064$ for $K_2$ \cite{Brevig}; the source paper also discusses
+the earlier Ortega--Cerd\`a--Seip obstruction \cite{OS}.
+
+\section{Proof intuition}
+
+The source paper turns the weak-product dual norm into the operator norm of a
+small Hankel operator.  For a homogeneous bidisc symbol, that Hankel operator
+is a direct sum of finite Hankel matrices.  We choose the symbol coefficients
+from a discrete cosecant matrix which is exactly orthogonal.  Every required
+Hankel block is then a submatrix of an isometry, giving a norm-one dual
+certificate at once.
+
+Pairing this certificate with a homogeneous Dirichlet polynomial yields a
+quantity asymptotic to $(2/\pi)\log N$.  The $H^1$ norm of that polynomial is
+the usual Dirichlet-kernel $L^1$ norm, asymptotic to
+$(4/\pi^2)\log N$.  The quotient of the two leading constants is $\pi/2$.
+This supplies a quantitative partial result only; it neither proves nor
+disproves that $K_2$ is finite.
+
+\section{Statement}
+
+\begin{theorem}\label{thm:main}
+Let $W(\T^2)=H^2(\T^2)\odot H^2(\T^2)$.  Then
+\[
+ K_2\geq \frac{\pi}{2}.
+\]
+Consequently, if a constant $C_2>0$ satisfies
+$\|f\|_{H^1(\T^2)}\geq C_2\|f\|_{W(\T^2)}$ for every $f\in W(\T^2)$, then
+\[
+ C_2\leq \frac{2}{\pi}.
+\]
+More precisely, for $N\geq2$ define
+\[
+ f_N(z_1,z_2)=\sum_{k=0}^{N-1}z_1^kz_2^{N-1-k}
+\]
+and
+\[
+ S_N=\frac1N\sum_{k=0}^{N-1}
+ \csc\!\left(\frac{\pi(k+\tfrac12)}{N}\right).
+\]
+Then $\|f_N\|_{W(\T^2)}\geq S_N$ and
+\[
+ \frac{S_N}{\|f_N\|_{H^1(\T^2)}}\longrightarrow\frac\pi2.
+\]
+\end{theorem}
+
+\section{Proof}
+
+We first record the finite orthogonality identity responsible for the
+certificate.
+
+\begin{lemma}\label{lem:orthogonal}
+For $N\geq2$, the real $N\times N$ matrix
+\[
+ C_{r,s}=\frac{1}{N\sin\!\left(\pi(r+s+\tfrac12)/N\right)},
+ \qquad 0\leq r,s\leq N-1,
+\]
+is orthogonal.
+\end{lemma}
+
+\begin{proof}
+Use the standard identities, obtained by logarithmically differentiating the
+finite sine product,
+\begin{align*}
+ \sum_{s=0}^{N-1}\cot\left(x+\frac{s\pi}{N}\right)
+   &=N\cot(Nx),\\
+ \sum_{s=0}^{N-1}\csc^2\left(x+\frac{s\pi}{N}\right)
+   &=N^2\csc^2(Nx).
+\end{align*}
+For distinct rows $r\neq t$, set
+$u_s=\pi(r+s+\tfrac12)/N$ and
+$v_s=\pi(t+s+\tfrac12)/N$.  Since
+\[
+ \frac1{\sin u_s\sin v_s}
+ =\frac{\cot u_s-\cot v_s}{\sin(v_s-u_s)},
+\]
+the inner product of rows $r$ and $t$ vanishes: both cotangent sums are
+$N\cot(\pi(r+\tfrac12))=N\cot(\pi(t+\tfrac12))=0$.
+For a row with itself, the second identity gives
+\[
+ \sum_{s=0}^{N-1}\csc^2 u_s
+ =N^2\csc^2\!\left(\pi(r+\tfrac12)\right)=N^2.
+\]
+The prefactor $N^{-2}$ completes the proof.
+\end{proof}
+
+Now put $m=N-1$ and consider the $m$-homogeneous symbol
+\[
+ \psi_N(z_1,z_2)=\sum_{k=0}^{m}a_kz_1^kz_2^{m-k},
+ \qquad
+ a_k=\frac{1}{N\sin\!\left(\pi(k+\tfrac12)/N\right)}.
+\]
+The dual of $W(\T^2)$ is isometric to the bounded small Hankel operators
+\cite{BB}.  For completeness, on the homogeneous input space of degree $n$,
+$0\leq n\leq m$, the matrix of the Hankel form associated with $\psi_N$ is
+\[
+ A_n=(a_{i+j})_{\substack{0\leq i\leq m-n\\0\leq j\leq n}}.
+\]
+Indeed, the product of the basis monomials
+$z_1^jz_2^{n-j}$ and $z_1^iz_2^{m-n-i}$ has $z_1$-degree $i+j$.
+The matrix $A_n$ is exactly the submatrix of $C$ formed by rows
+$0,\ldots,m-n$ and columns $0,\ldots,n$.  Lemma~\ref{lem:orthogonal} therefore
+gives $\|A_n\|_{\mathrm{op}}\leq1$ for every $n$.  The full Hankel operator is
+the orthogonal direct sum of these blocks (and is zero on input degrees larger
+than $m$), so
+\[
+ \|\psi_N\|_{W(\T^2)^*}\leq1.
+\]
+Duality now yields
+\[
+ \|f_N\|_{W(\T^2)}
+ \geq |\langle f_N,\psi_N\rangle|
+ =\sum_{k=0}^{N-1}a_k=S_N.                                      \tag{1}
+\]
+
+It remains to compare two elementary logarithmic asymptotics.  Set
+$x_k=(k+\tfrac12)/N$.  The function
+\[
+ h(x)=\csc(\pi x)-\frac1{\pi x}-\frac1{\pi(1-x)}
+\]
+extends continuously to $[0,1]$.  Consequently, midpoint summation and a
+change of index give
+\begin{align*}
+ S_N
+ &=\frac1N\sum_{k=0}^{N-1}
+ \left(\frac1{\pi x_k}+\frac1{\pi(1-x_k)}+h(x_k)\right)\\
+ &=\frac2\pi\sum_{k=0}^{N-1}\frac1{k+\tfrac12}+O(1)
+ =\frac2\pi\log N+O(1).                                      \tag{2}
+\end{align*}
+
+On the torus,
+\[
+ |f_N(e^{i\theta_1},e^{i\theta_2})|
+ =\left|\sum_{k=0}^{N-1}e^{ik(\theta_1-\theta_2)}\right|.
+\]
+Hence normalized Haar integration and the Dirichlet-kernel formula give
+\[
+ \|f_N\|_{H^1(\T^2)}
+ =\frac1\pi\int_0^\pi\frac{|\sin(Nx)|}{\sin x}\,dx
+ =\frac2\pi\int_0^{\pi/2}\frac{|\sin(Nx)|}{\sin x}\,dx.       \tag{3}
+\]
+On $(0,\pi/2]$, the difference $1/\sin x-1/x$ is bounded by a constant
+times $x$.  Replacing $1/\sin x$ by $1/x$ in (3) therefore changes the
+integral by $O(1)$.  After $u=Nx$,
+\[
+ \|f_N\|_{H^1(\T^2)}
+ =\frac2\pi\int_0^{N\pi/2}\frac{|\sin u|}{u}\,du+O(1).
+\]
+The periodic function $|\sin u|-2/\pi$ has mean zero and a bounded
+primitive.  Integration by parts on $[1,R]$ thus shows
+\[
+ \int_0^R\frac{|\sin u|}{u}\,du=\frac2\pi\log R+O(1).
+\]
+Therefore
+\[
+ \|f_N\|_{H^1(\T^2)}=\frac4{\pi^2}\log N+O(1).                 \tag{4}
+\]
+Combining (1)--(4) proves
+\[
+ \liminf_{N\to\infty}
+ \frac{\|f_N\|_{W(\T^2)}}{\|f_N\|_{H^1(\T^2)}}
+ \geq\frac{(2/\pi)}{(4/\pi^2)}=\frac\pi2,
+\]
+which proves Theorem~\ref{thm:main}.
+
+\section{Verification notes}
+
+The included script \texttt{code/verify\_cosecant\_certificate.py} checks, for
+several $N$, that $CC^T$ is the identity to floating-point precision, every
+block $A_n$ has operator norm at most one, and the numerical certificate ratio
+approaches $\pi/2$.  These tests are sanity checks only; Lemma~\ref{lem:orthogonal}
+and the asymptotic calculation are complete analytic proofs.
+
+The most important human checks are:
+\begin{enumerate}
+ \item the convention for the small Hankel pairing and the indices of $A_n$;
+ \item that all homogeneous blocks, including the endpoint degrees, are
+ covered by the submatrix argument;
+ \item the normalization of Haar measure in the Dirichlet-kernel asymptotic.
+\end{enumerate}
+
+\section{Limitations and novelty status}
+
+The theorem only bounds a hypothetical embedding constant.  It does not show
+that $K_2$ is finite, so the source problem remains open.  A digit-separated
+lacunary product test did not amplify the finite gain: extra Hankel
+interactions increased the dual norm faster than the observed $H^1$ gain.
+
+A bounded search on 21 July 2026 inspected the source paper and Brevig's
+earlier paper \cite{Brevig}.  It also checked arXiv:2101.00763 and exact
+arXiv/web queries containing ``polydisc Nehari'', ``cosecant matrix'',
+``Dirichlet kernel'', and ``$\pi/2$''.  No matching construction or bound was
+found.  The $N=3$ member
+of the family recovers the earlier quadratic certificate in \cite{Brevig},
+which is evidence that the present construction is a natural asymptotic
+extension, not evidence of definitive novelty.  Novelty confidence is
+therefore moderate and a specialist literature review is recommended.
+
+\begin{thebibliography}{9}
+\bibitem{BB}
+K. Bampouras and O. F. Brevig,
+\emph{Norm attaining vectors and Hilbert points},
+arXiv:2310.20346 (2023; revised 2024).
+
+\bibitem{Brevig}
+O. F. Brevig,
+\emph{Minimal norm Hankel operators},
+Proc. Amer. Math. Soc. \textbf{150} (2022), 4383--4391;
+arXiv:2107.01680.
+
+\bibitem{OS}
+J. Ortega-Cerd\`a and K. Seip,
+\emph{A lower bound in Nehari's theorem on the polydisc},
+J. Anal. Math. \textbf{118} (2012), 339--342.
+\end{thebibliography}
+
+\end{document}

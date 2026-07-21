@@ -1,0 +1,232 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ttwo}{\mathsf{T}_2}
+\newcommand{\law}{\lambda}
+
+\title{Talagrand's inequality does not force Poincar\'e\\
+after the quadratic-tail map}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 2, candidate for human review}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.94\textwidth}{
+\textbf{Status: candidate counterexample, likely valid.}
+We construct an absolutely continuous probability measure $\mu$ on $\R$
+which satisfies Talagrand's quadratic transport inequality $\Ttwo$, while
+$(\omega_2)_\#\mu$ does not satisfy Poincar\'e inequality.  This answers the
+necessity question after Corollary 9.15 of arXiv:1003.3852 negatively.
+}}
+
+\section{Source question}
+
+Gozlan and L\'eonard define
+\[
+ \omega_2(x)=\operatorname{sgn}(x)\max\{|x|,|x|^2\}
+\]
+and prove that Poincar\'e inequality for $(\omega_2)_\#\mu$ implies
+$\Ttwo$ for $\mu$.  Immediately afterward they ask whether the condition is
+necessary \cite[Corollary 9.15 and the following paragraph, PDF p.~54]{GL}.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth,height=0.67\textheight,keepaspectratio]{figures/open_problem_crop.png}
+
+\small Source PDF page 54; the definition, corollary, and exact question are visible.
+\end{center}
+
+\section{Definitions and counterexample}
+
+Write
+\[
+ d\law(t)=\frac12 e^{-|t|}\,dt,\qquad a_n=16^n\quad(n\geq1),
+\]
+and, for $t\geq0$, define the unit ramp
+\[
+ r_n(t)=\min\{\max\{t-a_n,0\},1\}.
+\]
+Set
+\[
+ b(t)=\sqrt{t+1}-1,
+ \qquad F(t)=b(t)+\sum_{n\geq1}r_n(t),
+\]
+where the sum is locally finite.  Extend $F$ oddly to
+\[
+ T(t)=\operatorname{sgn}(t)F(|t|),
+\]
+and let
+\[
+ \mu=T_\#\law.
+\]
+
+\begin{theorem}[Sparse-ramp counterexample]\label{thm:main}
+The probability measure $\mu$ is symmetric, absolutely continuous, and has a
+positive density.  It satisfies Talagrand's quadratic transport inequality
+$\Ttwo$.  Nevertheless $(\omega_2)_\#\mu$ does not satisfy Poincar\'e
+inequality.
+\end{theorem}
+
+\section{Proof intuition}
+
+The two-sided exponential law has a transport inequality with the mixed cost
+$\min\{|s-t|^2,|s-t|\}$.  A map which is both Lipschitz and H\"older of order
+$1/2$ turns this mixed cost into a quadratic cost, hence produces a $\Ttwo$
+measure.  The square-root background $b(t)$ has exactly these two regularity
+properties.
+
+The sparse unit ramps do not destroy either property: exponential spacing
+means that an interval of length $d$ meets at most $O(\sqrt d)$ ramps.  But a
+ramp far out in the tail makes the reciprocal-density integral in the
+weighted Muckenhoupt criterion large.  Its exponential factor cancels the
+tail probability, leaving a factor comparable to $a_n$, which diverges.
+
+\section{Regularity of the transport map}
+
+\begin{lemma}\label{lem:regularity}
+The odd homeomorphism $T$ is $3/2$-Lipschitz and satisfies
+\[
+ |T(t)-T(s)|\leq 2\sqrt2\,|t-s|^{1/2}
+ \qquad(s,t\in\R).
+\]
+\end{lemma}
+
+\begin{proof}
+The ramps have disjoint interiors.  Almost everywhere on $[0,\infty)$,
+\[
+ 0<b'(t)\leq\frac12,
+ \qquad 0\leq \sum_nr_n'(t)\leq1.
+\]
+Thus $F$ is $3/2$-Lipschitz.  Since $F(0)=0$, the odd extension has the same
+Lipschitz constant, including across zero.
+
+For the half-H\"older bound, take $0\leq s<t$ and put $d=t-s$.  The background
+satisfies $b(t)-b(s)\leq\sqrt d$.  If $d<1$, the interval $[s,t]$ meets at
+most one ramp interval and the total ramp increment is at most
+$d\leq\sqrt d$.  Suppose $d\geq1$ and $N$ ramp intervals meet $[s,t]$.
+If $N=1$, their total increment is at most $1\leq\sqrt d$.  If $N\geq2$ and
+the first such interval has index $p$, then
+\[
+ d\geq a_{p+N-1}-(a_p+1)
+ \geq16(16^{N-1}-1)-1\geq N^2.
+\]
+The ramp increment is at most $N\leq\sqrt d$.  Hence
+$F(t)-F(s)\leq2\sqrt d$ on either half-line.  For opposite signs,
+\[
+ |T(t)-T(s)|\leq2(\sqrt{|t|}+\sqrt{|s|})
+ \leq2\sqrt2\,|t-s|^{1/2}.
+\]
+Strict monotonicity, continuity, and divergence follow from $b$, so $T$ is a
+homeomorphism.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+\subsection*{The quadratic transport inequality}
+
+The source recalls that $\law$ satisfies a transport--entropy inequality for
+\[
+ c_0(s,t)=\min\{|s-t|^2,|s-t|\}
+\]
+with a finite universal constant \cite[Section 9.3]{GL}.  Put
+$\delta=|s-t|$ and $\Delta=|T(s)-T(t)|$.  Lemma~\ref{lem:regularity} gives
+\[
+ \delta^2\geq\frac49\Delta^2,
+ \qquad
+ \delta\geq\frac18\Delta^2.
+\]
+Consequently
+\[
+ c_0(s,t)\geq\frac18|T(s)-T(t)|^2.
+\]
+The contraction principle for transport inequalities therefore shows that
+$\mu=T_\#\law$ satisfies a quadratic transport--entropy inequality, i.e.
+$\Ttwo$ (with an inessential finite change of constant).
+
+Since $T$ is locally absolutely continuous and $T'(t)>0$ almost everywhere,
+$\mu$ has a positive density $h$.  On the positive half-line it obeys
+\begin{equation}\label{eq:density}
+ h(T(t))=\frac{\frac12e^{-t}}{T'(t)}
+ \qquad\text{for almost every }t>0.
+\end{equation}
+Symmetry follows from oddness of $T$.
+
+\subsection*{Failure of Poincar\'e after $\omega_2$}
+
+The median of $\mu$ is zero.  Proposition 9.16 of the source says that
+$(\omega_2)_\#\mu$ satisfies Poincar\'e inequality if and only if, in
+particular,
+\begin{equation}\label{eq:muck}
+ D^+_{\omega_2}
+ =\sup_{x\geq0}\mu[x,\infty)
+   \int_0^x\frac{\omega_2'(u)^2}{h(u)}\,du
+ <\infty.
+\end{equation}
+
+Let $x_n=T(a_n+1)$ and abbreviate
+$\beta_n=b(a_n)=\sqrt{a_n+1}-1$.  Monotonicity gives
+\[
+ \mu[x_n,\infty)=\frac12e^{-(a_n+1)}.
+\]
+On the ramp $a_n<t<a_n+1$, one has $T'(t)\geq1$ and
+$T(t)\geq\beta_n>1$.  Hence $\omega_2'(T(t))=2T(t)$ there.  Using
+\eqref{eq:density} and the change of variables $u=T(t)$,
+\begin{align*}
+ \int_0^{x_n}\frac{\omega_2'(u)^2}{h(u)}\,du
+ &\geq
+ \int_{a_n}^{a_n+1}8T(t)^2T'(t)^2e^t\,dt\\
+ &\geq8\beta_n^2 e^{a_n}(e-1).
+\end{align*}
+Multiplying the last two displays yields
+\[
+ \mu[x_n,\infty)
+ \int_0^{x_n}\frac{\omega_2'(u)^2}{h(u)}\,du
+ \geq4(1-e^{-1})\beta_n^2\longrightarrow\infty.
+\]
+Thus $D^+_{\omega_2}=\infty$, so $(\omega_2)_\#\mu$ fails
+Poincar\'e inequality.  This proves the theorem. \qed
+
+\section{Verification, limitations, and novelty check}
+
+The accompanying script \texttt{code/verify\_sparse\_ramp.py} samples
+100,000 pairs around both signs and the first five ramps.  It checks the
+Lipschitz, half-H\"older, and mixed-cost lower bounds and prints the first five
+Muckenhoupt lower bounds.  The proof above is symbolic and does not depend on
+the computation.
+
+This is a one-dimensional negative answer to the literal necessity question.
+No quantitative claim is made about the best $\Ttwo$ constant.  The map is
+piecewise smooth rather than globally smooth; the source question only asks
+about probability measures, and the resulting density is positive and
+absolutely continuous.
+
+The run registry and bounded primary-source searches used arXiv:1003.3852,
+the exact source sentence, the authors, and combinations of
+``$\omega_2$ image'', ``Talagrand $\Ttwo$'', ``weighted Poincar\'e'',
+``necessary'', and ``counterexample''.  They found the source survey and
+general weighted-Poincar\'e papers but no explicit answer or this sparse-ramp
+construction.  This is not an exhaustive novelty certification.
+
+\medskip
+\noindent\textbf{Human review recommendation.}
+High-priority specialist review, focusing on Lemma~\ref{lem:regularity}, the
+transport-cost comparison, and the Muckenhoupt change of variables.
+
+\begin{thebibliography}{9}
+\bibitem{GL}
+N.~Gozlan and C.~L\'eonard,
+\emph{Transport Inequalities. A Survey},
+Markov Processes and Related Fields 16 (2010), 635--736;
+arXiv:1003.3852.
+\end{thebibliography}
+
+\end{document}

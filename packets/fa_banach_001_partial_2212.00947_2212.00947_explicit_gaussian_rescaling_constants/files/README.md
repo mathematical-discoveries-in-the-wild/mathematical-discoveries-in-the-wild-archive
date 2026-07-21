@@ -1,6 +1,10 @@
 # Explicit Gaussian constants for unconditional multiplier rescaling
 
-Status: `partial_result_likely_valid`; `quantitative_strengthening_of_literature_answer`; `human_review_recommended`.
+Superseded by the full sharp result in
+`solutions/full/2508.02802_sharp_rank_one_cb_constant/`, which proves that
+the complex constant `4/pi` is optimal and that the real optimum is `pi/2`.
+
+Status: `partial_result_superseded_by_full_sharp_constant`; `human_review_recommended`.
 
 Source paper: Peter Balazs, Daniel Freeman, Roxana Popescu, and Michael
 Speckbacher, *Quantitative bounds for unconditional pairs of frames*,

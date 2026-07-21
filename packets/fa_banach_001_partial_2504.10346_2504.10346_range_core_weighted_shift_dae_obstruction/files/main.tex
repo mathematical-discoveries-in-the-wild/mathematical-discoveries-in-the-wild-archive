@@ -1,0 +1,305 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newcommand{\N}{\mathbb N}
+\newcommand{\X}{\mathcal X}
+\newcommand{\Hc}{\mathcal H_{\mathrm c}}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\supp}{supp}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\title{A Range-Core Obstruction and an Adjoint Weighted-Shift Dichotomy\\
+for Quasinilpotent Differential-Algebraic Equations}
+\author{Run \texttt{fa\_banach\_001} --- lane 3}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: substantial partial answer, likely valid.}
+Every solution of $(Tx)'=x$ takes its values in
+$\Hc(T):=\bigcap_{n\geq1}\overline{\ran T^n}$ and generates a nonzero
+closed invariant subspace on which $T$ has dense range.  Consequently, a
+total generalized kernel of $T^*$ forces triviality.  For the compact
+quasinilpotent forward shift $Fe_n=(n+1)^{-1}e_{n+1}$ the DAE is trivial,
+whereas its adjoint has an infinite-dimensional family of explicit global
+solutions.  Thus compactness, spectrum, singular values, and even all power
+norms do not determine the answer.
+}}
+\end{center}
+
+\section{Source problem}
+
+Friedrich M. Philipp's \emph{On Differential-Algebraic Equations with
+Bounded Spectrum in Banach Spaces}, arXiv:2504.10346v1, calls
+$x\in C([0,\infty),\X)$ a solution of
+\begin{equation}\label{eq:dae}
+ \frac{d}{dt}Tx=x
+\end{equation}
+when $Tx\in C^1([0,\infty),\X)$ and $(Tx)'=x$.  Open Problem~4.3 asks for
+which quasinilpotent $T\in\mathcal L(\X)$ equation~\eqref{eq:dae} has only
+the zero solution~\cite{Philipp}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{Open Problem~4.3 in arXiv:2504.10346v1, PDF page 11.}
+\end{figure}
+
+\section{Proof intuition}
+
+The equation supplies much more regularity after applying powers of $T$:
+$T^n x$ is $n$ times continuously differentiable and its $n$th derivative
+is $x$.  Since a derivative is a limit of finite differences, and all finite
+differences of $T^n x$ lie in $\ran T^n$, every value $x(t)$ lies in the
+closed range of every power.  Equivalently, $x(t)$ is annihilated by every
+functional killed by a power of $T^*$.
+
+The discrete shift examples expose the strength and the limitation of this
+obstruction.  A forward shift successively forces the coordinates of a
+solution to vanish.  Its adjoint is a backward shift; prescribing the first
+coordinate then turns the remaining coordinates into successive terminal
+antiderivatives.  Fast-decaying weights make these antiderivatives
+square-summable for a short compactly supported seed.
+
+\section{The range-core obstruction}
+
+The following result does not require quasinilpotence.
+
+\begin{theorem}[closed-hyperrange and invariant-core obstruction]
+\label{thm:range}
+Let $T\in\mathcal L(\X)$ on a complex Banach space, and let $x$ solve
+\eqref{eq:dae}.  Then, for every $n\geq1$,
+\begin{equation}\label{eq:regularity}
+ T^n x\in C^n([0,\infty),\X),\qquad
+ \frac{d^k}{dt^k}T^n x=T^{n-k}x\quad(0\leq k\leq n).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:closed-hyperrange}
+ x(t)\in \Hc(T):=\bigcap_{n\geq1}\overline{\ran T^n}
+ \qquad(t\geq0).
+\end{equation}
+If $x\ne0$, then
+\begin{equation}\label{eq:M}
+ M:=\overline{\operatorname{span}}
+ \{T^k x(t):k\geq0,\ t\geq0\}
+\end{equation}
+is a nonzero closed $T$-invariant subspace satisfying
+\begin{equation}\label{eq:dense-range}
+ M=\overline{T(M)}.
+\end{equation}
+Consequently, either of the following conditions forces every solution to be
+zero:
+\begin{enumerate}
+ \item $\Hc(T)=\{0\}$;
+ \item $\bigcup_{n\geq1}\ker (T^*)^n$ is total in $\X^*$;
+ \item no nonzero closed $T$-invariant subspace $M$ satisfies
+       $M=\overline{T(M)}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The assertion for $n=1$ is the definition of a solution.  Suppose
+\eqref{eq:regularity} holds for $n$.  Applying $T$ preserves all existing
+derivatives, and
+\[
+ \frac{d^n}{dt^n}T^{n+1}x=Tx\in C^1,
+ \qquad \frac{d^{n+1}}{dt^{n+1}}T^{n+1}x=x.
+\]
+This proves \eqref{eq:regularity} by induction.
+
+For fixed $t\geq0$, the forward $n$th finite-difference quotients of the
+$C^n$ function $T^n x$ converge to
+$(T^n x)^{(n)}(t)=x(t)$.  Each quotient is a linear combination of values
+$T^n x(t+jh)$ and hence belongs to $\ran T^n$.  This proves
+\eqref{eq:closed-hyperrange}, including at $t=0$.
+
+The space in \eqref{eq:M} is nonzero when $x\ne0$, is closed by definition,
+and is $T$-invariant.  Each generator is a derivative,
+\[
+ T^k x(t)=\frac{d}{dt}T^{k+1}x(t),
+\]
+and therefore is a limit of difference quotients of values
+$T^{k+1}x(s)=T(T^k x(s))\in T(M)$.  Thus $M\subseteq\overline{T(M)}$; the
+opposite inclusion follows from invariance.
+
+Condition 1 now follows from \eqref{eq:closed-hyperrange}, and condition 3
+from \eqref{eq:dense-range}.  Finally, the standard annihilator identity
+\[
+ \overline{\ran T^n}={}^{\perp}\!\ker (T^*)^n
+\]
+shows that every $x(t)$ annihilates
+$\bigcup_n\ker (T^*)^n$.  Totality gives $x(t)=0$ for every $t$.
+\end{proof}
+
+\section{Adjoint compact shifts with opposite behavior}
+
+Let $H=\ell^2(\N_0)$ with standard basis $(e_n)_{n\geq0}$, and define
+\begin{equation}\label{eq:shifts}
+ Fe_n=\frac1{n+1}e_{n+1},\qquad B=F^*.
+\end{equation}
+Thus $Be_0=0$ and $Be_{n+1}=(n+1)^{-1}e_n$.
+
+\begin{theorem}[adjoint dichotomy]\label{thm:shifts}
+The operators $F$ and $B$ are compact, nonnilpotent, and quasinilpotent, and
+\begin{equation}\label{eq:powers}
+ \|F^m\|=\|B^m\|=\frac1{m!}\qquad(m\geq1).
+\end{equation}
+They nevertheless have opposite behavior for \eqref{eq:dae}:
+\begin{enumerate}
+ \item for $T=F$, the only solution is $x=0$;
+ \item for $T=B$, there is an infinite-dimensional family of nonzero global
+       solutions.
+\end{enumerate}
+More explicitly, choose $0<a<1$ and
+$f\in C_c([0,\infty))$ with $\supp f\subseteq[0,a]$.  Put
+\begin{equation}\label{eq:explicit}
+ x_0(t)=f(t),\qquad
+ x_n(t)=(-1)^n n\int_t^a(s-t)^{n-1}f(s)\,ds\quad(n\geq1),
+\end{equation}
+where the integral is declared zero for $t\geq a$.  Then
+$x\in C([0,\infty),H)$, $Bx\in C^1([0,\infty),H)$, and $(Bx)'=x$.
+The map $f\mapsto x$ is injective.
+\end{theorem}
+
+\begin{proof}
+The weights of $F$ tend to zero, so $F$, and hence $B=F^*$, is compact.
+For $m\geq1$,
+\[
+ \|F^m\|=\sup_{j\geq0}
+ \frac1{(j+1)(j+2)\cdots(j+m)}=\frac1{m!}.
+\]
+The same equality holds for $B^m=(F^m)^*$.  Formula~\eqref{eq:powers}
+gives spectral radius zero, while neither shift is nilpotent.
+
+Suppose first that $(Fx)'=x$.  The zeroth coordinate of $Fx$ is identically
+zero, hence $x_0=0$.  Since
+$(Fx)_{n+1}=x_n/(n+1)$, the equation gives
+$x_{n+1}=x_n'/(n+1)$.  Induction yields $x_n=0$ for every $n$.
+
+For $B$, formula~\eqref{eq:explicit} gives
+\begin{equation}\label{eq:recurrence}
+ x_{n+1}'(t)=(n+1)x_n(t)\qquad(n\geq0).
+\end{equation}
+At the endpoint $a$ this remains valid because a continuous $f$ supported in
+$[0,a]$ has $f(a)=0$.  Moreover,
+\[
+ |x_n(t)|\leq \|f\|_\infty(a-t)^n
+ \leq \|f\|_\infty a^n\quad(0\leq t\leq a),
+\]
+and all coordinates vanish for $t\geq a$.  The geometric majorant gives an
+$\ell^2$ tail uniformly in $t$, so coordinatewise continuity upgrades to
+$H$-valued continuity.
+
+Now $(Bx)_n=x_{n+1}/(n+1)$.  Hence \eqref{eq:recurrence} gives the desired
+derivative coordinatewise.  To verify the Banach-valued derivative rather
+than merely its coordinates, for $0\leq u\leq t$ we use
+\eqref{eq:recurrence} to obtain
+\[
+ Bx(t)-Bx(u)=\int_u^t x(s)\,ds
+\]
+in every coordinate.  Both sides belong to $H$, so the equality holds in
+$H$.  Continuity of $x$ now implies $Bx\in C^1$ and $(Bx)'=x$.  Finally,
+$x_0=f$, so the construction is injective; the seed space is
+infinite-dimensional.
+\end{proof}
+
+For orientation, the obstruction of Theorem~\ref{thm:range} detects the same
+dichotomy:
+\[
+ \overline{\ran F^n}=\{y:y_0=\cdots=y_{n-1}=0\},
+ \quad \Hc(F)=\{0\},
+\]
+whereas $\ran B^n$ contains every finitely supported sequence and therefore
+$\Hc(B)=H$.
+
+\section{A weighted-shift sufficient condition for nontriviality}
+
+The construction is not tied to the particular weights above.
+
+\begin{proposition}\label{prop:generalweights}
+Let $B_w$ be the bounded backward weighted shift on $\ell^2(\N_0)$,
+\[
+ B_w e_0=0,\qquad B_w e_n=w_ne_{n-1}\quad(n\geq1),
+\]
+where every $w_n\ne0$, and put $W_n=w_1\cdots w_n$.  If for some $a>0$
+\begin{equation}\label{eq:weightcriterion}
+ \left(\frac{a^n}{n!\,|W_n|}\right)_{n\geq1}\in\ell^2,
+\end{equation}
+then $(B_wx)'=x$ has an infinite-dimensional family of compactly supported
+global solutions.  If also $w_n\to0$, then $B_w$ is compact and
+quasinilpotent.
+\end{proposition}
+
+\begin{proof}
+For a seed $f\in C_c([0,\infty))$ supported in $[0,a]$, set $x_0=f$ and
+\[
+ x_n(t)=\frac{(-1)^n}{W_n(n-1)!}
+          \int_t^a(s-t)^{n-1}f(s)\,ds\qquad(n\geq1).
+\]
+Then $w_{n+1}x_{n+1}'=x_n$ and
+\[
+ |x_n(t)|\leq \|f\|_\infty
+          \frac{a^n}{n!\,|W_n|}.
+\]
+Condition~\eqref{eq:weightcriterion} supplies the uniform $\ell^2$ majorant,
+and the proof of Theorem~\ref{thm:shifts} applies verbatim.  If $w_n\to0$,
+finite-rank truncations converge to $B_w$ in norm, so $B_w$ is compact.  To
+see quasinilpotence directly, fix $\varepsilon>0$ and choose $N$ so that
+$|w_n|\leq\varepsilon$ for $n>N$.  With
+$C=\max(1,\sup_n|w_n|)$, every product of $m>N$ consecutive weights is at
+most $C^N\varepsilon^{m-N}$ in modulus.  Hence
+$\limsup_m\|B_w^m\|^{1/m}\leq\varepsilon$, and the spectral radius is zero.
+\end{proof}
+
+For $w_n=1/n$, one has $W_n=1/n!$, and
+\eqref{eq:weightcriterion} reduces to $(a^n)\in\ell^2$, explaining the
+restriction $a<1$ in Theorem~\ref{thm:shifts}.
+
+\section{Scope, verification, and novelty bound}
+
+Theorem~\ref{thm:range} is a checkable sufficient condition, not a full
+characterization.  Indeed, the source proves that the Volterra operator $V$
+has only the zero global solution even though $V$ has dense range in
+$L^2(0,1)$, so $\Hc(V)=L^2(0,1)$.  Thus a nonzero closed hyperrange or a
+dense-range invariant core does not by itself produce a solution.
+
+The adjoint pair shows that the answer is not determined by compactness,
+quasinilpotence, singular values, or the sequence $(\|T^m\|)_{m\geq1}$:
+$F$ and $F^*$ share all of these data.  It also supplies a discrete analogue
+of the source's sign-sensitive Volterra examples, with every solution written
+explicitly.
+
+The proofs were checked against the solution definition in the current arXiv
+v1.  A bounded novelty search through 21 July 2026 covered the run registry,
+the local arXiv source corpus, the source paper and its references, arXiv, and
+exact web combinations of ``quasinilpotent'', ``weighted shift'',
+``$(Tx)'=x$'', ``closed hyperrange'', and generalized kernels of $T^*$.
+It found the source paper and general weighted-shift literature, but no prior
+statement of Theorem~\ref{thm:range}, the explicit adjoint dichotomy, or
+Proposition~\ref{prop:generalweights} in this DAE setting.  Publication-level
+novelty remains subject to expert review.  We recommend review as a candidate
+partial result, with particular attention to the novelty of the closed-range
+criterion and the weighted-shift family rather than to their elementary
+ingredients.
+
+\begin{thebibliography}{9}
+\bibitem{Philipp}
+F. M. Philipp,
+\emph{On Differential-Algebraic Equations with Bounded Spectrum in Banach
+Spaces}, arXiv:2504.10346v1 (2025).
+\end{thebibliography}
+
+\end{document}

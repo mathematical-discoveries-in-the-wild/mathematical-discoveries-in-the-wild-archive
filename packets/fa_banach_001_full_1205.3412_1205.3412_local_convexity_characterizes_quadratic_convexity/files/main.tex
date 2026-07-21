@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[left=1in,right=1in,top=0.85in,bottom=0.85in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\BX}{B_X}
+\newcommand{\SX}{S_X}
+
+\title{Local convexity of nonlinear self-maps characterizes quadratic convexity\\
+\large A candidate full solution to Problem 6.1 of arXiv:1205.3412}
+\author{Automated mathematics discovery run \texttt{fa\_banach\_001}\\
+Lane 5, candidate for human review}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status: candidate full solution, likely valid.}
+The property in Problem 6.1 forces the given norm to have modulus of
+convexity of power type $2$.  Consequently it also forces superreflexivity.
+Together with the forward theorem in the source paper, this gives an
+equivalence.}}
+\end{center}
+
+\section{The question and the answer}
+
+For a Banach space $X$, Banakh, Banakh, Plichko and Prykarpatsky define
+\[
+ \operatorname{conv}_2(X)
+ =\inf_{\substack{x,y\in \BX\\x\ne y}}
+   \frac{1-\norm{(x+y)/2}}{\norm{x-y}^2}.
+\]
+This number is positive exactly when the given norm has modulus of
+convexity of power type $2$.  Their main theorem says that if
+$\operatorname{conv}_2(X)>0$, every Lipschitz-open, second-order Lipschitz
+map from an open subset of $X$ to any Banach space is uniformly locally
+convex \cite{BBPP}.
+
+Problem 6.1 of the source asks for the converse when the codomain is $X$:
+if every Lipschitz-open, second-order Lipschitz map $f:U\to X$ is locally
+convex, must $X$ have modulus of convexity of power type $2$?  Must it be
+(super)reflexive?  We answer both questions affirmatively.
+
+All arguments below are over the real scalar field.  For a complex Banach
+space we apply them to its underlying real Banach space.  This loses
+nothing: the hypotheses in the problem are metric, and convexity is real
+convexity.
+
+\begin{theorem}\label{thm:main}
+For a Banach space $X$, the following are equivalent.
+\begin{enumerate}
+\item $\operatorname{conv}_2(X)>0$.
+\item Every Lipschitz-open, second-order Lipschitz map $f:U\to X$, with
+      $U\subset X$ open, is locally convex.
+\end{enumerate}
+If these conditions hold, then $X$ is superreflexive (and hence reflexive).
+\end{theorem}
+
+The implication $(1)\Rightarrow(2)$ is the main theorem of the source
+paper.  We prove the converse by contrapositive.  The counterexample will be
+a quadratic perturbation of the identity on the unit ball.
+
+\section{Proof intuition}
+
+When $\operatorname{conv}_2(X)=0$, the unit ball has chords whose midpoint
+lies only $o(\bigl(\text{chord length}\bigr)^2)$ below a supporting
+hyperplane.  A quadratic term of the natural chord-squared size can therefore
+push the preimage of an image midpoint outside a ball even when both endpoint
+preimages remain inside.
+
+We realize these pushes simultaneously with a norm-convergent bilinear
+series.  The possible rotation of the supporting functionals is the one
+nontrivial selection issue.  Either some fixed output direction is seen by
+arbitrarily flat supports, or sufficiently flat supports become uniformly
+small on every prescribed finite set of directions.  The first alternative
+gives a rank-one range; the second gives an almost diagonal series whose
+distinguished term dominates its past and tail.  Finally, making the
+quadratic perturbation small compared with the identity guarantees
+Lipschitz openness and controls its inverse displacement.
+
+\section{Small quadratic perturbations are admissible}
+
+\begin{lemma}\label{lem:quadratic}
+Let $B:X\times X\to X$ be a continuous symmetric real-bilinear map with
+$\norm{B}\leq\kappa$, where $0<2\kappa<1$.  On $U=B_1(0)$ put
+\[
+                     f(x)=x+B(x,x).
+\]
+Then $f$ is injective, Lipschitz-open, and second-order Lipschitz.  More
+precisely, with $L=2\kappa$,
+\begin{align}
+ \norm{f(x)-f(y)}&\geq(1-L)\norm{x-y} \qquad(x,y\in U),\label{eq:lower}\\
+ \operatorname{Lip}_o(f)&\geq1-L,\label{eq:open}\\
+ \operatorname{Lip}_2(f)&\leq2\kappa.\label{eq:lip2}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Write $Q(x)=B(x,x)$.  For $x,y\in U$,
+\[
+ Q(x)-Q(y)=B(x-y,x)+B(y,x-y),
+\]
+so $\norm{Q(x)-Q(y)}\leq L\norm{x-y}$.  This proves
+\eqref{eq:lower}, hence injectivity.
+
+Suppose $B_r(x)\subset U$ and
+$\norm{w-f(x)}<(1-L)r$.  Choose $s<r$ so that
+$\norm{w-f(x)}<(1-L)s$.  On the complete closed ball
+$\overline B_s(x)$, the map
+\[
+                         T(z)=w-Q(z)
+\]
+is an $L$-contraction and maps the ball strictly into itself, since
+\[
+ \norm{T(z)-x}
+ \leq\norm{w-f(x)}+\norm{Q(x)-Q(z)}< (1-L)s+Ls=s.
+\]
+Its fixed point belongs to $B_s(x)$ and satisfies $f(z)=w$.  This proves
+\eqref{eq:open}.  Finally,
+\[
+ f(x+h)-2f(x)+f(x-h)=2B(h,h),
+\]
+which gives \eqref{eq:lip2} with the definition used in the source.
+\end{proof}
+
+\section{A bilinear form detecting arbitrarily flat midpoints}
+
+Assume henceforth that $\operatorname{conv}_2(X)=0$.  For
+$x,y\in\BX$, set
+\[
+             z=\frac{x+y}{2},\qquad h=\frac{x-y}{2},\qquad
+             d=1-\norm{z}.
+\]
+Call $(x,y,\sigma)$ a \emph{flat triple} if $x\ne y$, $z\ne0$,
+$\sigma\in S_{X^*}$, and $\sigma(z)=\norm{z}$.  Its flatness ratio is
+$d/\norm{h}^2$.  Because
+\[
+ \inf\frac{d}{\norm{h}^2}=4\operatorname{conv}_2(X)=0,
+\]
+flat triples with arbitrarily small ratio exist.
+
+Set
+\[
+       \alpha_n=16^{-n},\qquad
+       \kappa=\sum_{n=1}^\infty\alpha_n=\frac1{15},\qquad
+       C=(1-2\kappa)^{-1}.
+\]
+We shall construct flat triples $(x_n,y_n,\sigma_n)$, vectors
+$v_n\in\SX$, functionals $\varphi_n\in S_{X^*}$, positive numbers
+$\beta_n$, and a symmetric bilinear map $B$ such that
+\begin{equation}\label{eq:detection}
+ \norm{B}\leq\kappa,
+ \qquad
+ \sigma_n\bigl(B(h_n,h_n)\bigr)
+       \geq\beta_n\norm{h_n}^2,
+\end{equation}
+where $h_n=(x_n-y_n)/2$.  The only issue is that the norming functionals
+$\sigma_n$ may rotate.  The following exhaustive dichotomy handles it.
+
+\subsection*{Case I: one direction is seen infinitely often}
+
+Suppose there are $v\in\SX$, $c>0$, and flat triples of arbitrarily small
+ratio for which $|\sigma(v)|\geq c$.  By passing to one sign along a
+sequence whose ratios tend to zero, and replacing $v$ by $-v$ if needed,
+we may require $\sigma_n(v)\geq c$.  Put
+\[
+                         \beta_n=c\alpha_n.
+\]
+Choose $\varphi_n\in S_{X^*}$ with
+$\varphi_n(h_n)=\norm{h_n}$, and define
+\begin{equation}\label{eq:Bcase1}
+ B(u,w)=\sum_{m=1}^\infty
+       \alpha_m\varphi_m(u)\varphi_m(w)v.
+\end{equation}
+The series converges in operator norm and $\norm{B}\leq\kappa$.  Moreover,
+all its scalar summands are nonnegative, so
+\[
+ \sigma_n(B(h_n,h_n))
+ =\sigma_n(v)\sum_m\alpha_m\varphi_m(h_n)^2
+ \geq c\alpha_n\norm{h_n}^2.
+\]
+
+\subsection*{Case II: every fixed direction eventually disappears}
+
+Suppose Case I fails.  Then for every $v\in\SX$ and every $c>0$ there is a
+threshold $\theta>0$ such that
+\begin{equation}\label{eq:disappear}
+ \frac{1-\norm{z}}{\norm{h}^2}<\theta
+ \quad\Longrightarrow\quad |\sigma(v)|<c
+\end{equation}
+for every flat triple $(x,y,\sigma)$.  The same assertion holds
+simultaneously for any finite list of directions, by taking the minimum of
+the corresponding thresholds.
+
+We choose the triples inductively.  Once $v_1,\ldots,v_{n-1}$ have been
+chosen, use \eqref{eq:disappear} and then choose the next triple sufficiently
+flat that
+\begin{equation}\label{eq:pastsmall}
+                 \sum_{m<n}\alpha_m|\sigma_n(v_m)|
+                 \leq\frac{\alpha_n}{4}.
+\end{equation}
+Set
+\[
+ v_n=\frac{z_n}{\norm{z_n}},\qquad
+ \beta_n=\frac{\alpha_n}{2},
+\]
+so $\sigma_n(v_n)=1$.  Again take
+$\varphi_n\in S_{X^*}$ with
+$\varphi_n(h_n)=\norm{h_n}$, and now define
+\begin{equation}\label{eq:Bcase2}
+ B(u,w)=\sum_{m=1}^\infty
+       \alpha_m\varphi_m(u)\varphi_m(w)v_m.
+\end{equation}
+Then $\norm{B}\leq\kappa$.  Since
+\[
+                  \sum_{m>n}\alpha_m=\frac{\alpha_n}{15},
+\]
+the distinguished $n$th term, \eqref{eq:pastsmall}, and the tail estimate
+give
+\begin{align*}
+ \sigma_n(B(h_n,h_n))
+ &\geq \alpha_n\norm{h_n}^2
+   -\norm{h_n}^2\sum_{m<n}\alpha_m|\sigma_n(v_m)|
+   -\norm{h_n}^2\sum_{m>n}\alpha_m\\
+ &\geq\left(1-\frac14-\frac1{15}\right)
+       \alpha_n\norm{h_n}^2
+ \geq\frac{\alpha_n}{2}\norm{h_n}^2.
+\end{align*}
+Thus \eqref{eq:detection} holds in both cases.
+
+\section{The images of arbitrarily small balls are nonconvex}
+
+There is a harmless order-of-choice point in the preceding construction
+which we now make explicit.  In either case, before choosing the $n$th flat
+triple choose $\varepsilon_n>0$ so that $\varepsilon_n\downarrow0$,
+$\varepsilon_n<1/4$, and
+\begin{equation}\label{eq:epssmall}
+ 2C\kappa^2\varepsilon_n+C^2\kappa^3\varepsilon_n^2
+ \leq\frac{\beta_n}{2}.
+\end{equation}
+Then choose the triple sufficiently flat that, in addition to the relevant
+case condition,
+\begin{equation}\label{eq:flatneeded}
+ d_n<\frac14\varepsilon_n\beta_n\norm{h_n}^2.
+\end{equation}
+This is possible in Case I by its definition, and in Case II by
+\eqref{eq:disappear}.  Thus the $B$ just constructed satisfies all the
+preceding estimates for these choices.
+
+Apply Lemma~\ref{lem:quadratic} to this $B$ and let
+\[
+                     f(x)=x+B(x,x),\qquad x\in B_1(0).
+\]
+The map is Lipschitz-open and second-order Lipschitz.  Consider
+\[
+ a_n=\varepsilon_nx_n,\qquad c_n=\varepsilon_ny_n.
+\]
+The midpoint of their images is
+\begin{align}
+ w_n&=\frac{f(a_n)+f(c_n)}2\notag\\
+    &=f(\varepsilon_nz_n)
+      +\varepsilon_n^2B(h_n,h_n),\label{eq:image-midpoint}
+\end{align}
+where bilinearity was used in the second line.
+
+Indeed $B_{1/2}(\varepsilon_nz_n)\subset B_1(0)$, and
+\[
+ \norm{w_n-f(\varepsilon_nz_n)}
+ \leq\kappa\varepsilon_n^2
+ <\frac{1-2\kappa}{2}.
+\]
+Thus Lipschitz openness gives an $r_n\in B_1(0)$ with $f(r_n)=w_n$;
+injectivity makes it unique.  Write
+\[
+                         r_n=\varepsilon_nz_n+u_n.
+\]
+The lower Lipschitz estimate \eqref{eq:lower} and
+\eqref{eq:image-midpoint} imply
+\begin{equation}\label{eq:ubound}
+ \norm{u_n}
+ \leq C\varepsilon_n^2\norm{B(h_n,h_n)}
+ \leq C\kappa\varepsilon_n^2\norm{h_n}^2.
+\end{equation}
+Expanding the equation $f(r_n)=w_n$ gives
+\[
+ u_n+2\varepsilon_nB(z_n,u_n)+B(u_n,u_n)
+       =\varepsilon_n^2B(h_n,h_n).
+\]
+Consequently, using $\norm{z_n},\norm{h_n}\leq1$ and
+\eqref{eq:ubound},
+\begin{align*}
+ \norm{u_n-\varepsilon_n^2B(h_n,h_n)}
+ &\leq2\kappa\varepsilon_n\norm{u_n}
+       +\kappa\norm{u_n}^2\\
+ &\leq \varepsilon_n^2\norm{h_n}^2
+       \bigl(2C\kappa^2\varepsilon_n
+              +C^2\kappa^3\varepsilon_n^2\bigr)\\
+ &\leq\frac12\varepsilon_n^2\beta_n\norm{h_n}^2.
+\end{align*}
+Together with \eqref{eq:detection}, this yields
+\begin{equation}\label{eq:supportu}
+              \sigma_n(u_n)
+              \geq\frac12\varepsilon_n^2
+                     \beta_n\norm{h_n}^2.
+\end{equation}
+
+Now put
+\[
+\rho_n=\varepsilon_n
+       +\frac14\varepsilon_n^2\beta_n\norm{h_n}^2.
+\]
+Here $\beta_n\leq\alpha_1=1/16$, so $\rho_n<1$ and this ball lies in the
+domain of $f$.  Both $a_n$ and $c_n$ lie in the open ball
+$B_{\rho_n}(0)$, while
+\eqref{eq:flatneeded} and \eqref{eq:supportu} give
+\begin{align*}
+ \norm{r_n}
+ &\geq\sigma_n(r_n)\\
+ &=\varepsilon_n(1-d_n)+\sigma_n(u_n)\\
+ &>\varepsilon_n
+   -\frac14\varepsilon_n^2\beta_n\norm{h_n}^2
+   +\frac12\varepsilon_n^2\beta_n\norm{h_n}^2
+ =\rho_n.
+\end{align*}
+Thus $r_n\notin B_{\rho_n}(0)$.  Since $f$ is injective,
+$w_n$ has no other preimage in that ball.  But $w_n$ is the midpoint of
+$f(a_n)$ and $f(c_n)$, so
+\[
+                         f(B_{\rho_n}(0))
+\]
+is not convex.  As $\rho_n\to0$, the map $f$ is not locally convex at the
+origin.  This proves the contrapositive of $(2)\Rightarrow(1)$.
+
+Finally, $\operatorname{conv}_2(X)>0$ makes the given norm uniformly convex.
+Hence $X$ is superreflexive, and in particular reflexive.  This completes
+the proof of Theorem~\ref{thm:main}.
+
+\section{Scope and novelty check}
+
+The construction answers both clauses of Problem 6.1 and does not require
+differentiability beyond the source's second-order Lipschitz hypothesis.
+It also strengthens the qualitative conclusion: failure of quadratic
+convexity is witnessed by one explicit quadratic perturbation of the
+identity whose images of arbitrarily small balls centered at zero are
+nonconvex.
+
+Cheap indexes for the present run and a bounded title/keyword search found
+the source paper and later papers discussing local convexity, but no prior
+proof of this converse.  This is not an exhaustive novelty certification.
+The flat-triple dichotomy and the nonconvexity calculation should receive
+independent specialist review.
+
+\begin{thebibliography}{9}
+\bibitem{BBPP}
+I.~Banakh, T.~Banakh, A.~Plichko, and A.~Prykarpatsky,
+\emph{On local convexity of nonlinear mappings between Banach spaces},
+arXiv:1205.3412 (2012),
+\url{https://arxiv.org/abs/1205.3412}.
+\end{thebibliography}
+
+\end{document}

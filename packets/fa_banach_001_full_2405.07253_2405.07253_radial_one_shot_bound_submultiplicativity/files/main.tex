@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\cE}{\mathcal E}
+
+\title{A sharp radial one-shot bound via Gamma--Beta submultiplicativity}
+\author{Candidate solution packet for arXiv:2405.07253}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The result completely answers the motivating radial one-shot question on
+page 23 of the source paper.  It does \emph{not} prove the stronger
+consecutive-monotonicity statement called Conjecture 2 there.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is S.~Brazitikos and G.~Chasapis, \emph{Sharp estimates for the
+Cram\'er transform of log-concave measures and geometric applications},
+arXiv:2405.07253, published in \emph{Advances in Mathematics} 478 (2025),
+110407 \cite{BC}.  On PDF page 23, immediately after Corollary 4.18, the
+authors ask whether
+\[
+  \E e^{-\Lambda_X^*(X)}
+  \leq \bigl(\E e^{-\Lambda_Y^*(Y)}\bigr)^n                 \tag{1}
+\]
+holds for every rotationally invariant, not necessarily product,
+log-concave random vector $X$ in $\R^n$, where $Y$ is the standard
+one-dimensional double exponential.  They then propose the stronger
+Conjecture 2: if $X_n$ is the isotropic radial exponential in dimension $n$,
+then $n\mapsto(\E e^{-\Lambda_{X_n}^*(X_n)})^{1/n}$ is non-increasing.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The question and Conjecture 2 on page 23 of the source PDF.}
+\end{figure}
+
+\section{Exact one-dimensional reduction}
+
+For $n\geq1$, let $\cE_n$ denote the isotropic radial exponential law on
+$\R^n$, whose density is proportional to
+$\exp(-\sqrt{n+1}\,|x|)$, and set
+\[
+  A_n:=\E\exp\bigl(-\Lambda_{\cE_n}^*(\cE_n)\bigr).
+\]
+The explicit Cram\'er transform computed in the source paper gives
+\[
+  \Lambda_{(\cE_n)_1}^*(r)
+  =\frac{n+1}{2}h\!\left(\frac r{\sqrt{n+1}}\right),
+  \qquad
+  h(q):=\sqrt{1+4q^2}-1-log\!\left(
+  \frac{\sqrt{1+4q^2}+1}{2}\right).                       \tag{2}
+\]
+If $R_n=|\cE_n|$ and $S_n=\sqrt{n+1}\,R_n$, polar integration shows that
+$S_n$ has the Gamma law $\operatorname{Gamma}(n,1)$.  Consequently
+\[
+  A_n=\E e^{-F_n(S_n)},
+  \qquad
+  F_n(s):=\frac{n+1}{2}h\!\left(\frac{s}{n+1}\right).     \tag{3}
+\]
+
+\section{Proof intuition}
+
+The Gamma representation (3) is compatible with addition of dimensions:
+independent Gamma variables of shapes $n$ and $m$ add to a Gamma variable of
+shape $n+m$.  Conditional on their sum, the splitting proportion is
+$\operatorname{Beta}(n,m)$.  Thus the product $A_nA_m$ becomes a conditional
+average over one Beta variable.
+
+There are two Jensen steps.  First, $x\mapsto e^{-x}$ is convex, so averaging
+over the random Beta split can only increase the exponential relative to the
+exponential of the averaged energy.  Second, the derivative $h'$ is concave.
+After size-biasing the Beta split, its mean lands at exactly the scale
+$1/(n+m+1)$ occurring in $F_{n+m}$.  This proves that the averaged split
+energy is at most the unsplit energy $F_{n+m}$.  The two steps yield
+$A_{n+m}\leq A_nA_m$.
+
+\section{The submultiplicativity theorem}
+
+\begin{lemma}[Concavity of the derivative]\label{lem:concavity}
+The function $h'$ is strictly concave on $[0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Writing $w=\sqrt{1+4q^2}$, direct differentiation of (2) gives
+\[
+  h'(q)=\frac{4q}{w+1},
+  \qquad
+  h''(q)=\frac{4}{w(w+1)},
+\]
+and hence
+\[
+  h'''(q)=-\frac{16q(2w+1)}{w^3(w+1)^2}<0
+  \qquad(q>0).
+\]
+Thus $h'$ is concave on $[0,\infty)$ and strictly concave away from the
+endpoint.
+\end{proof}
+
+\begin{lemma}[Beta splitting inequality]\label{lem:beta}
+Let $n,m\geq1$ and let $D\sim\operatorname{Beta}(n,m)$.  Then, for every
+$s\geq0$,
+\[
+  \E\bigl[F_n(sD)+F_m(s(1-D))\bigr]\leq F_{n+m}(s).       \tag{4}
+\]
+The inequality is strict when $s>0$.
+\end{lemma}
+
+\begin{proof}
+Let the right-hand side of (4) minus the left-hand side be $G(s)$.  Clearly
+$G(0)=0$, and (3) gives $F_k'(s)=\tfrac12h'(s/(k+1))$.  Therefore
+\begin{align*}
+  2G'(s)
+  ={}&h'\!\left(\frac{s}{n+m+1}\right)\\
+   &-\E\left[D h'\!\left(\frac{sD}{n+1}\right)
+      +(1-D)h'\!\left(\frac{s(1-D)}{m+1}\right)\right]. \tag{5}
+\end{align*}
+The elementary size-bias identities for a Beta variable say
+\begin{align*}
+ \E[D\varphi(D)]
+   &=\frac{n}{n+m}\E\varphi(D_+),
+   &D_+&\sim\operatorname{Beta}(n+1,m),\\
+ \E[(1-D)\varphi(1-D)]
+   &=\frac{m}{n+m}\E\varphi(E_+),
+   &E_+&\sim\operatorname{Beta}(m+1,n).
+\end{align*}
+Their means are
+\[
+  \E D_+=\frac{n+1}{n+m+1},
+  \qquad
+  \E E_+=\frac{m+1}{n+m+1}.
+\]
+By Lemma~\ref{lem:concavity} and Jensen's inequality,
+\begin{align*}
+ \E h'\!\left(\frac{sD_+}{n+1}\right)
+ &\leq h'\!\left(\frac{s}{n+m+1}\right),\\
+ \E h'\!\left(\frac{sE_+}{m+1}\right)
+ &\leq h'\!\left(\frac{s}{n+m+1}\right).
+\end{align*}
+After multiplication by $n/(n+m)$ and $m/(n+m)$, these two estimates show
+from (5) that $G'(s)\geq0$.  Since $G(0)=0$, (4) follows.  Strict concavity
+and the non-degeneracy of the Beta laws give strictness for $s>0$.
+\end{proof}
+
+\begin{theorem}[Submultiplicativity]\label{thm:submult}
+For all integers $n,m\geq1$,
+\[
+  A_{n+m}\leq A_nA_m.                                   \tag{6}
+\]
+In fact, the inequality is strict.
+\end{theorem}
+
+\begin{proof}
+Let $U\sim\operatorname{Gamma}(n,1)$ and
+$V\sim\operatorname{Gamma}(m,1)$ be independent.  The standard
+Gamma--Beta change of variables gives
+\[
+  S:=U+V\sim\operatorname{Gamma}(n+m,1),\qquad
+  D:=\frac{U}{U+V}\sim\operatorname{Beta}(n,m),
+\]
+and $S,D$ are independent.  (This also follows directly by applying the
+Jacobian $s$ to $u=sd$, $v=s(1-d)$.)  By (3), conditional Jensen for the
+convex function $x\mapsto e^{-x}$, and Lemma~\ref{lem:beta},
+\begin{align*}
+ A_nA_m
+ &=\E e^{-F_n(U)-F_m(V)}\\
+ &=\E_S\E_D e^{-F_n(SD)-F_m(S(1-D))}\\
+ &\geq\E_S\exp\left(-\E_D[F_n(SD)+F_m(S(1-D))]\right)\\
+ &\geq\E_S e^{-F_{n+m}(S)}
+ =A_{n+m}.
+\end{align*}
+Strictness holds because $S>0$ almost surely and the strict part of
+Lemma~\ref{lem:beta} applies.
+\end{proof}
+
+\section{Full answer to the radial one-shot question}
+
+\begin{corollary}[Sharp all-dimensional radial constant]\label{cor:answer}
+Let $X$ be a full-dimensional rotationally invariant log-concave random
+vector in $\R^n$, and let $Y$ be the isotropic one-dimensional double
+exponential.  Then
+\[
+  \E e^{-\Lambda_X^*(X)}
+  \leq A_n
+  \leq A_1^n
+  =\bigl(\E e^{-\Lambda_Y^*(Y)}\bigr)^n.                 \tag{7}
+\]
+Thus the question preceding Conjecture 2 in the source paper has an
+affirmative answer.  The base $A_1\simeq0.7872717101$ is sharp for a bound
+required to hold in every dimension $n\geq1$.
+\end{corollary}
+
+\begin{proof}
+The first inequality in (7) is Theorem 4.13 of the source paper
+\cite{BC}, whose extremizer among radial log-concave laws in dimension $n$
+is $\cE_n$.  The second follows by induction from
+Theorem~\ref{thm:submult}.  In dimension one, $\cE_1$ is precisely the
+isotropic double exponential $Y$, and equality holds.  Hence no smaller
+dimension-free base can hold simultaneously for all $n\geq1$.
+\end{proof}
+
+\section{Verification notes and scope}
+
+The proof is analytic and uses no numerical premise.  The accompanying script
+\nolinkurl{code/check_submultiplicativity.py} independently checks the explicit
+Gamma integral, the concavity formula for $h'$, the Beta splitting inequality
+on a finite grid, and (6) for small dimensions.  These computations are smoke
+tests only, not part of the proof.
+
+The principal points for human verification are:
+\begin{itemize}
+  \item the scaling in (2)--(3), especially
+  $S_n=\sqrt{n+1}\,|\cE_n|\sim\operatorname{Gamma}(n,1)$;
+  \item the direction of the two Jensen inequalities;
+  \item the two Beta size-bias means in Lemma~\ref{lem:beta}; and
+  \item that Theorem 4.13 of the source has exactly the full-dimensional
+  radial log-concave scope used in Corollary~\ref{cor:answer}.
+\end{itemize}
+
+Submultiplicativity does not by itself imply that
+$n\mapsto A_n^{1/n}$ is non-increasing at every consecutive integer.
+Therefore Conjecture 2, as a stronger sequence statement, remains open in
+this packet.  What is completely settled is the explicit question that
+motivates it: inequality (1), with the sharp all-dimensional base $A_1$.
+
+\section{Novelty check}
+
+Before promotion, the local run indexes were searched for arXiv:2405.07253,
+``one-shot separability'', ``radial exponential'', and
+``submultiplicativity''; no overlapping result was found.  A bounded web
+search on 21 July 2026 used the paper title, the exact one-shot phrase,
+``Conjecture 2'', and combinations of ``Cram\'er transform'', ``radial
+exponential'', and ``monotonicity''.  It found the arXiv and published source
+but no later paper resolving this question.  This is a bounded search, not a
+claim of exhaustive novelty.
+
+\begin{thebibliography}{9}
+\bibitem{BC}
+S.~Brazitikos and G.~Chasapis,
+\emph{Sharp estimates for the Cram\'er transform of log-concave measures and
+geometric applications}, Adv. Math. 478 (2025), 110407;
+arXiv:2405.07253.
+\end{thebibliography}
+
+\end{document}

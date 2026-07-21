@@ -1,0 +1,360 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathcal N}
+\newcommand{\T}{\mathcal T}
+\newcommand{\K}{\mathcal K}
+\newcommand{\C}{\mathcal C}
+\newcommand{\Pcone}{\mathcal P}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+
+\begin{document}
+
+\begin{center}
+{\Large Full solution packet for arXiv:2501.17505}\\[4pt]
+{\large A Hardy-block formula for the missing associate norm}
+\end{center}
+
+\paragraph{Status.}
+\textbf{full\_solution\_likely\_valid}.  This packet answers the printed
+associate-space problem in item (iii), p.~36, of Miquel Saucedo and Sergey
+Tikhonov, \emph{The Fourier transform is an extremizer of a class of bounded
+operators}, arXiv:2501.17505.  In the Banach range $1\le q<2$, it identifies
+the requested associate functional as an explicit block space and gives its
+norm as an attained minimum.
+
+\paragraph{Source problem (item (iii), p.~36).}
+After finding the optimal Fourier-domain functional, the source says that it
+is of interest to find its associate.  It records a known formula for the
+simpler of two functionals and states: ``We have not been able to find an
+expression for the latter in the literature.''
+
+\begin{center}
+\includegraphics[width=.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{The functional from the source}
+
+Fix $1\le q<2$ and set
+\[
+ \frac1{q^\sharp}=\frac1q-\frac12,
+ \qquad
+ U(t)=\int_0^t u^*(s)^q\,ds,
+\]
+\[
+ \xi(t)=U(t)+t^{q/2}
+ \left(\int_t^\infty u^*(s)^{q^\sharp}\,ds\right)^{q/q^\sharp}.
+\]
+Write
+\[
+ a(t)=U(t)^{q^\sharp/2}u^*(t)^q
+       \xi(t)^{-q^\sharp/2}t^{-q/2}.                           \tag{1}
+\]
+The second functional displayed on p.~36 is
+\[
+ \N_a(F)=
+ \left(\int_0^\infty a(t)
+ \left[\int_0^t
+   \left(\int_0^{1/r}F^*(s)\,ds\right)^2dr
+ \right]^{q/2}dt\right)^{1/q}.                                \tag{2}
+\]
+As in Definition 1.1 of the source, its associate is
+\[
+ \N_a'(G)=\sup\left\{\int_0^\infty |F(s)G(s)|\,ds:
+                         \N_a(F)\le1\right\}.                  \tag{3}
+\]
+
+\section*{Result at a glance}
+
+Let
+\[
+ \Omega=\{(t,r):0<r<t<\infty\}
+\]
+and, for a measurable kernel $K$ on $\Omega$, define
+\[
+ \|K\|_{q',a}=
+ \left(\int_0^\infty a(t)
+       \left[\int_0^t |K(t,r)|^2dr\right]^{q'/2}dt\right)^{1/q'}
+                                                                  \tag{4}
+\]
+when $q>1$.  At $q=1$, (4) means
+\[
+ \|K\|_{\infty,a}=esssup_{t:a(t)>0}
+       \left(\int_0^t|K(t,r)|^2dr\right)^{1/2}.                 \tag{5}
+\]
+Define the positive adjoint Hardy operator
+\[
+ (\T_a^*K)(s)=
+ \int_0^\infty a(t)
+ \int_0^{\min\{t,1/s\}}K(t,r)\,dr\,dt.                         \tag{6}
+\]
+For nonnegative functions $g,h$ on $(0,\infty)$, write
+\[
+ g\preccurlyeq_H h
+ \quad\Longleftrightarrow\quad
+ \int_0^xg(s)\,ds\le\int_0^xh(s)\,ds
+ \quad\text{for every }x>0.                                   \tag{7}
+\]
+Then the requested associate has the exact formula
+\[
+ \boxed{
+ \N_a'(G)=min\left\{\|K\|_{q',a}:
+ K\ge0,\quad G^*\preccurlyeq_H\T_a^*K\right\}.}              \tag{8}
+\]
+Thus the associate is a concrete Hardy-block space.  Expanding the constraint
+in (8), admissibility of $K$ means
+\[
+ \int_0^xG^*(s)\,ds
+ \le
+ \int_0^\infty a(t)\int_0^t
+        K(t,r)\min\{x,1/r\}\,dr\,dt
+ \qquad(x>0).                                                   \tag{9}
+\]
+Formula (8) is valid with value $+\infty$ as well.  Whenever the associate
+norm is finite, a minimizing kernel exists.
+
+\section*{Proof intuition}
+
+The nested integral in (2) looks nonlinear only because an $L^2$ norm is
+written out.  On decreasing functions it is the norm of the positive linear
+map
+\[
+ (\T f)(t,r)=\mathbf 1_{\{r<t\}}\int_0^{1/r}f(s)\,ds
+\]
+into the mixed space $L^q(a(t)dt;L^2(0,t))$.  Dualizing that mixed space
+introduces the kernel $K$ in (4).  Fubini's theorem gives the explicit
+adjoint (6).
+
+The only remaining feature is that an associate of a rearrangement-invariant
+functional tests decreasing rearrangements.  A function $h$ dominates $g$
+against every nonnegative decreasing test function exactly when
+$g\preccurlyeq_Hh$.  Consequently, the adjoint need not equal $G^*$
+pointwise; it must dominate it in the cumulative Hardy order.  A separation
+argument proves that this necessary condition is also sufficient and that no
+norm is lost.
+
+\section*{Formal theorem and proof}
+
+The proof works for a general locally integrable weight $a\ge0$.  We assume
+only the natural nondegeneracy condition that (2) is finite on bounded,
+compactly supported decreasing functions; this holds in every nontrivial
+case in which the source functional defines an associate space.
+
+\begin{lemma}[The Hardy cone]\label{lem:hardycone}
+Let $p\in L^1_{\mathrm{loc}}(0,\infty)$.  Then
+\[
+ \int_0^\infty f(s)p(s)\,ds\ge0
+\]
+for every nonnegative, nonincreasing, compactly supported step function $f$
+if and only if
+\[
+ \int_0^xp(s)\,ds\ge0\qquad(x>0).                              \tag{10}
+\]
+Consequently, for nonnegative $g,h$,
+\[
+ \int_0^\infty f g\le\int_0^\infty f h
+ \quad\text{for all nonnegative decreasing }f
+\]
+if and only if $g\preccurlyeq_Hh$.
+\end{lemma}
+
+\begin{proof}
+Necessity follows by taking $f=\mathbf1_{(0,x)}$.  Conversely, every
+nonnegative decreasing step function has the form
+\[
+ f=\sum_{j=1}^m c_j\mathbf1_{(0,x_j)},\qquad c_j\ge0.
+\]
+Equation (10) then gives $\int fp\ge0$.  General decreasing tests follow by
+monotone approximation.  Apply this with $p=h-g$ for the final assertion.
+\end{proof}
+
+\begin{theorem}[Associate of the nested Hardy functional]\label{thm:dual}
+Let $1\le q<\infty$ and let $a\ge0$ be locally integrable.  Define
+\[
+ \N_a(F)=\left(\int_0^\infty a(t)
+ \left[\int_0^t\left(\int_0^{1/r}F^*(s)\,ds\right)^2dr
+ \right]^{q/2}dt\right)^{1/q}.
+\]
+If $\N_a$ is finite on compactly supported decreasing step functions, then
+its associate is given by (8)--(9), with (5) when $q=1$.  If
+$\N_a'(G)<\infty$, the minimum in (8) is attained.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ Z_q=L^q\big((0,\infty),a(t)dt;L^2(0,t)\big).
+\]
+For $q=1$ its Banach dual is
+$Z_\infty=L^\infty(a(t)dt;L^2(0,t))$; for $q>1$ its dual is $Z_{q'}$.
+Their duality pairing is
+\[
+ \langle H,K\rangle
+ =\int_0^\infty a(t)\int_0^tH(t,r)K(t,r)\,dr\,dt.              \tag{11}
+\]
+
+By the Hardy--Littlewood rearrangement inequality, (3) becomes
+\[
+ \N_a'(G)=sup\left\{\int_0^\infty f(s)G^*(s)\,ds:
+ f\ge0\text{ decreasing},\ \|\T f\|_{Z_q}\le1\right\},      \tag{12}
+\]
+where
+\[
+ (\T f)(t,r)=\mathbf1_{\{0<r<t\}}
+                 \int_0^{1/r}f(s)\,ds.                         \tag{13}
+\]
+Indeed, $\|\T f\|_{Z_q}=\N_a(f)$ by inspection.
+
+For $K\in Z_{q'}$, Tonelli's theorem gives
+\begin{align*}
+ \langle\T f,K\rangle
+ &=\int_0^\infty a(t)\int_0^tK(t,r)
+       \int_0^{1/r}f(s)\,ds\,dr\,dt\\
+ &=\int_0^\infty f(s)(\T_a^*K)(s)\,ds,                        \tag{14}
+\end{align*}
+first for nonnegative functions and then by decomposition.  This proves the
+adjoint formula (6).
+
+Suppose $K\ge0$ and $G^*\preccurlyeq_H\T_a^*K$.  Lemma
+\ref{lem:hardycone}, (14), and mixed-norm H\"older give, for every decreasing
+$f\ge0$,
+\[
+ \int fG^*\le\int f\T_a^*K
+ =\langle\T f,K\rangle
+ \le\|\T f\|_{Z_q}\|K\|_{q',a}.
+\]
+Taking the supremum in (12) proves
+\[
+ \N_a'(G)\le
+ \inf_{K\ge0,\,G^*\preccurlyeq_H\T_a^*K}\|K\|_{q',a}.        \tag{15}
+\]
+
+We prove the reverse inequality by separation.  Let
+$C=\N_a'(G)<\infty$, and let $\Pcone$ be the cone of locally integrable $p$
+satisfying (10).  In the weak local topology generated by compactly
+supported decreasing step functions, consider
+\[
+ \mathcal B_C=\left\{\T_a^*K-p:\|K\|_{q',a}\le C,\ p\in\Pcone\right\}.
+                                                                  \tag{16}
+\]
+The dual ball is weakly compact when $q>1$ and weak-star compact when $q=1$;
+$\Pcone$ is weakly closed by (10).  Since the sum of a compact set and a
+closed set is closed, $\mathcal B_C$ is closed.  These statements may
+equivalently be verified first on finite intervals and finite step
+partitions, then passed to the limit by weak compactness.
+
+If $G^*\notin\mathcal B_C$, Hahn--Banach separation gives a compactly
+supported test function $f$ such that
+\[
+ \int fG^*>
+ \sup_{\|K\|_{q',a}\le C,\,p\in\Pcone}
+ \left(\int f\T_a^*K-\int fp\right).                           \tag{17}
+\]
+The supremum on the right can be finite only if $f$ belongs to the polar of
+$\Pcone$.  By Lemma~\ref{lem:hardycone}, this means that $f$ is
+nonnegative and decreasing.  Equations (11)--(14) then show that the right
+side of (17) is
+\[
+ C\sup_{\|K\|_{q',a}\le1}\langle\T f,K\rangle
+ =C\|\T f\|_{Z_q}.
+\]
+This contradicts (12) and the definition of $C$.  Hence
+$G^*=\T_a^*K-p$ for some $\|K\|_{q',a}\le C$ and $p\in\Pcone$, or
+equivalently
+\[
+ G^*\preccurlyeq_H\T_a^*K.
+\]
+Replacing $K$ by $|K|$ preserves its norm and only increases $\T_a^*K$, so
+we may take $K\ge0$.  Together with (15), this proves equality and also
+attainment of the minimum.
+
+Finally, integrating (6) over $s\in(0,x)$ and applying Tonelli yields
+\[
+ \int_0^x(\T_a^*K)(s)\,ds
+ =\int_0^\infty a(t)\int_0^tK(t,r)\min\{x,1/r\}\,dr\,dt,
+\]
+which is exactly (9).
+\end{proof}
+
+\begin{corollary}[Answer to the problem on p.~36]\label{cor:source}
+Let $1\le q<2$, let $u$ be as in Corollary 5.3 of Saucedo--Tikhonov, and
+assume $\xi(t)<\infty$ for $t>0$.  Form $a$ from (1).  The associate of the
+second functional in item (iii), p.~36, is the Hardy-block functional in
+(8), equivalently (4)--(5) subject to the explicit inequalities (9).
+Therefore the sharp rearrangement-invariant target norm requested there is
+completely determined by an attained convex minimization problem.
+\end{corollary}
+
+\begin{proof}
+Substitution of (1) into Theorem~\ref{thm:dual} gives exactly the second
+displayed functional on p.~36.  Definition 1.1 of the source is (3), so the
+theorem computes the requested associate.
+\end{proof}
+
+\section*{Checks, interpretation, and scope}
+
+\paragraph{Consistency check.}
+When $\xi\asymp U$, Corollary 5.3 of the source simplifies (2), up to constants
+depending only on $q$, to the first Hardy functional displayed on p.~36.  The
+source cites the known associate $\|wG^{**}\|_{q'}$ for that functional.
+Since equivalent functionals have equivalent associates, (8) agrees with
+that known formula in the simplifying regime.  Formula (8) additionally
+covers the genuinely harder case in which $\xi/U$ is not uniformly bounded.
+
+\paragraph{What the formula provides.}
+The original supremum in (3) ranges over all input functions.  Formula (8)
+replaces it by a convex mixed-norm minimization over positive kernels, with
+the elementary linear constraints (9).  On a finite grid it is a
+second-order cone program.  More importantly, (8) identifies the functions
+in the associate space and their norm without reference to Fourier
+transforms or to an unspecified best constant.
+
+\paragraph{Limitations.}
+The answer is a two-variable block representation, not in general a single
+weighted Lorentz or $\Gamma$ norm.  No claim is made that the kernel can be
+eliminated for arbitrary irregular $u$.  The theorem covers the Banach
+associate range $1\le q<2$, including $q=1$; it does not assert a Banach-dual
+formula for $0<q<1$.
+
+\paragraph{Novelty check.}
+\begin{sloppypar}
+The run indexes were searched for the arXiv id, title, associate norms,
+Hardy/Copson duality, and the defining nested integral.  Current arXiv
+searches used the exact printed phrase, the authors, the displayed
+$U$--$\xi$ structure, K\"othe associates of mixed Hardy/Copson spaces, and
+papers citing arXiv:2501.17505.  They found the source paper and general
+Ces\`aro/Copson duality literature, but no answer to this exact functional and
+no later paper citing the source with such an answer.  Novelty confidence is
+moderate: the conic-polar mechanism is standard, but this exact associate
+identification and its application to the source functional were not found.
+\end{sloppypar}
+
+\paragraph{Human-review recommendation.}
+Review as a full answer in block-space form.  The main verifier focus should
+be the closedness/separation step leading from (12) to (16), especially the
+weak-star endpoint $q=1$.  A second useful check is whether a preferred
+definition of ``expression'' in this subliterature demands a one-variable
+weighted norm; mathematically, (8) computes the associate and its exact best
+constant, but it deliberately retains an auxiliary kernel.
+
+\begin{thebibliography}{9}
+\bibitem{SaucedoTikhonov}
+M. Saucedo and S. Tikhonov,
+\emph{The Fourier transform is an extremizer of a class of bounded operators},
+arXiv:2501.17505, especially Definition~1.1, Corollary~5.3, and item (iii) on
+p.~36.
+\end{thebibliography}
+
+\end{document}

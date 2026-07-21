@@ -1,0 +1,334 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dd}{\,d}
+
+\title{Tensor-Free Calder\'on Duals for Multi-Norm Littlewood--Paley Families}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}, lane 9}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This is a candidate full solution, pending human review, of the first question
+in Section 13, item 4 of Hejna--Nagel--Ricci \cite{HNR}.  It proves the
+intrinsic tensor-free conclusion of Section 4.2: existence of an associated
+Calder\'on reproducing family, with arbitrarily high (indeed infinite)
+coordinate cancellation.  It does not claim the broader $L^1$-equivalence
+question in the following sentence of the source.
+
+\section*{Source question}
+
+The source is Agnieszka Hejna, Alexander Nagel, and Fulvio Ricci,
+\emph{Littlewood-Paley square functions and the local Hardy space for
+Multi-Norm Structures on $\R^d$}, arXiv:2507.09399v1.  On page 63, Section 13,
+item 4, the authors ask whether the results of Section 4.2 continue to hold
+without assuming that the functions $\Psi_L$ are tensor products, while
+retaining uniform boundedness in Schwartz norms, cancellation in each marked
+variable, and
+\[
+  \sum_{L\in\cL}\Psi_L^{(-L)}=\delta_0.
+\]
+
+\begin{center}
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions and notation}
+
+We use the notation of \cite[Sections 2--4]{HNR}.  Thus a standard matrix
+$\mathbf E$ determines an index set $\cL\subset\mathbb N^n$, a finite
+partition $\cL=\bigcup_S\cL_S$ by marked partitions, and a set $D_L$ of marked
+coordinates for each $L\in\cL$.  If
+$L=(\ell_1,\ldots,\ell_n)$, write
+\[
+  2^{-L}\xi=(2^{-\ell_1}\xi_1,\ldots,2^{-\ell_n}\xi_n),
+\]
+with the fixed homogeneous dilations inside each coordinate block understood.
+The Fourier transform of $\Psi_L^{(-L)}$ is therefore
+$\widehat\Psi_L(2^{-L}\xi)$.
+
+For $L\in\cL_S$, where
+$S=\{(A_r,k_r):1\le r\le s\}$, the geometry established in
+\cite[Section 3.4]{HNR} gives
+\begin{equation}\label{eq:scale-relation}
+  \ell_j=\left\lfloor\frac{\ell_{k_r}}{e(k_r,j)}\right\rfloor
+  \quad(j\in A_r),
+  \qquad D_L=\{k_1,\ldots,k_s\}.
+\end{equation}
+In particular, on each of the finitely many pieces $\cL_S$, all unmarked
+coordinates of $L$ are determined by the marked ones.
+
+Cancellation in the variable $x_i$ means
+\[
+  \int_{\R^{d_i}}\Psi_L(x_1,\ldots,x_i,\ldots,x_n)\dd x_i=0
+\]
+as a Schwartz function of the remaining variables.  Equivalently,
+$\widehat\Psi_L$ vanishes on the hyperplane $\{\xi_i=0\}$.
+
+\section*{Proof intuition}
+
+The partition identity prevents all frequency-local atoms from being small at
+the same point.  The only possible complication is that a general Schwartz
+atom is not frequency supported in its nominal multi-norm tube.  Cancellation
+controls leakage below a marked scale, Schwartz decay controls leakage above
+any scale, and the marked-partition geometry turns the total leakage into
+ordinary geometric series.  After enlarging the tubes by a fixed amount, the
+atoms associated with tubes missing a given frequency have total magnitude
+less than $1/2$.
+
+We then keep only the atoms in those enlarged tubes and form their pointwise
+Gram symbol
+\[
+  A(\xi)=\sum_L\theta_L(\xi)
+       \left|\widehat\Psi_L(2^{-L}\xi)\right|^2.
+\]
+It is bounded below because the retained atoms still sum to at least $1/2$,
+and only boundedly many are retained.  The canonical frame inverse
+$\theta_L\overline{\widehat\Psi_L}/A$ gives an exact reproducing identity.
+The cutoffs have fixed compact support after rescaling by $L$ and avoid the
+marked coordinate hyperplanes.  Consequently the duals are uniformly
+Schwartz and have vanishing moments of every order in every marked variable.
+
+\section*{The adapted tail lemma}
+
+Choose smooth homogeneous gauges $\rho_i$ on the frequency blocks
+$\R^{d_i}$.  Their precise choice is immaterial.
+
+\begin{lemma}[localized tails and overlap]\label{lem:tails}
+Let $\{\Psi_L:L\in\cL\}$ be uniformly bounded in every Schwartz seminorm and
+suppose that $\widehat\Psi_L$ vanishes on $\{\xi_i=0\}$ whenever
+$i\in D_L$.  Given $\varepsilon>0$, there is $R>1$ and, for every
+$D\subseteq\{1,\ldots,n\}$, a function
+$\vartheta_D\in C_c^\infty(\R^d)$ with $0\le\vartheta_D\le1$ such that the
+following hold.  Put
+\[
+  a_L(\xi)=\widehat\Psi_L(2^{-L}\xi),\qquad
+  \vartheta_L(\xi)=\vartheta_{D_L}(2^{-L}\xi).
+\]
+Then
+\begin{enumerate}
+\item
+  $\vartheta_D=1$ when
+  \[
+    2^{-R}\le\rho_i(\eta_i)\le2^R\ (i\in D),
+    \qquad \rho_i(\eta_i)\le2^R\ (i\notin D),
+  \]
+  and its support is contained in the same set with $R$ replaced by $R+1$.
+  In particular, its support misses $\{\eta_i=0\}$ for every $i\in D$.
+\item
+  Uniformly in $\xi$,
+  \begin{equation}\label{eq:tail}
+    \sum_{L:\,\vartheta_L(\xi)\ne1}|a_L(\xi)|<\varepsilon.
+  \end{equation}
+\item
+  At every $\xi$, at most $N_R$ of the functions $\vartheta_L(\xi)$ are
+  nonzero, where $N_R$ is independent of $\xi$.
+\item
+  If $\vartheta_L(\xi)\vartheta_P(\xi)\ne0$ for some $\xi$, then
+  $|L-P|\le C_R$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Smooth cutoffs with property (1) are obtained from fixed annular cutoffs in
+the marked variables and fixed ball cutoffs in the unmarked variables.
+
+We give the estimates behind (2)--(4).  Uniform Schwartz bounds and repeated
+Hadamard factorization in the marked coordinate blocks imply, for every $N$,
+\begin{equation}\label{eq:fourier-envelope}
+ |\widehat\Psi_L(\eta)|
+ \le C_N
+ \prod_{i\in D_L}\min\{1,\rho_i(\eta_i)\}
+ \left(1+\sum_{j=1}^n\rho_j(\eta_j)\right)^{-N}.
+\end{equation}
+Indeed, vanishing on each marked hyperplane supplies one factor from that
+coordinate block, and the remaining factors are uniformly Schwartz.
+
+Fix a marked partition $S=\{(A_r,k_r):1\le r\le s\}$ and sum
+\eqref{eq:fourier-envelope}, with $\eta=2^{-L}\xi$, over
+$L\in\cL_S$.  By \eqref{eq:scale-relation}, this is a sum only over the
+marked integers $\ell_{k_1},\ldots,\ell_{k_s}$.  If
+$2^{-\ell_{k_r}}\rho_{k_r}(\xi_{k_r})<2^{-R}$, the cancellation factor gives
+geometric decay.  If a marked or unmarked normalized frequency exceeds
+$2^R$, the last factor in \eqref{eq:fourier-envelope} gives geometric decay;
+take $N$ larger than the number of free marked indices.  Summing successively
+in the $s$ marked integers gives
+\[
+ \sup_{\xi}\sum_{\substack{L\in\cL_S:\
+             \vartheta_L(\xi)\ne1}}|a_L(\xi)|
+ \le C_S2^{-c_SR}.
+\]
+When $\xi_{k_r}=0$, the corresponding summands vanish and the same estimate
+is immediate.  There are only finitely many marked partitions, so increasing
+$R$ proves \eqref{eq:tail}.
+
+If $\vartheta_L(\xi)\ne0$, every marked $\ell_{k_r}$ lies in an interval of
+length $O(R)$ determined by $\rho_{k_r}(\xi_{k_r})$.  Formula
+\eqref{eq:scale-relation} then determines all unmarked components.  This gives
+the uniform cardinality bound in (3).
+
+Finally, the supports of the $\vartheta_L$ are fixed enlargements of the
+frequency tubes $B_L$ of \cite[Section 3.4]{HNR}.  Thus a common point of two
+supports gives an intersection of fixed enlargements of the two tubes.  The
+fixed-enlargement version of \cite[Lemma 3.8(iv)]{HNR} gives
+$|L-P|\le C_R$.  Equivalently, this also follows directly by applying
+\eqref{eq:scale-relation} to the finitely many possible pairs of marked
+partitions.  This proves (4).
+\end{proof}
+
+\section*{Main theorem}
+
+\begin{theorem}[tensor-free Calder\'on dual]\label{thm:main}
+Let $\mathbf E$ be a standard matrix and let $\cL,D_L$ be the associated
+multi-norm index data from \cite{HNR}.  Suppose
+$\{\Psi_L:L\in\cL\}\subset\cS(\R^d)$ satisfies:
+\begin{enumerate}
+\item the family is uniformly bounded in every Schwartz seminorm;
+\item $\Psi_L$ has cancellation in $x_i$ for every $i\in D_L$;
+\item in the sense of tempered distributions,
+\[
+  \sum_{L\in\cL}\Psi_L^{(-L)}=\delta_0.
+\]
+\end{enumerate}
+Then there is a family
+$\{\widetilde\Psi_L:L\in\cL\}\subset\cS(\R^d)$, uniformly bounded in every
+Schwartz seminorm, such that
+\begin{equation}\label{eq:calderon}
+  \sum_{L\in\cL}
+  \Psi_L^{(-L)}*\widetilde\Psi_L^{(-L)}=\delta_0
+\end{equation}
+in $\cS'(\R^d)$.  Moreover, for every $i\in D_L$,
+$\widetilde\Psi_L$ has vanishing moments of every order in the variable
+$x_i$.  In particular it has cancellation of any prescribed finite order.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma \ref{lem:tails} with $\varepsilon=1/2$.  The estimate used in its
+proof also gives absolute locally uniform convergence of
+$\sum_L a_L(\xi)$, including all derivatives after lowering the decay order.
+The assumed distributional identity therefore implies the pointwise identity
+\begin{equation}\label{eq:partition-pointwise}
+  \sum_{L\in\cL}a_L(\xi)=1.
+\end{equation}
+
+Let
+\[
+  \cC(\xi)=\{L:\vartheta_L(\xi)=1\}.
+\]
+By \eqref{eq:tail} and \eqref{eq:partition-pointwise},
+\[
+  \left|\sum_{L\in\cC(\xi)}a_L(\xi)\right|\ge\frac12.
+\]
+Lemma \ref{lem:tails}(3) now gives
+\[
+  \max_{L\in\cC(\xi)}|a_L(\xi)|\ge\frac1{2N_R}.
+\]
+Define the localized frame symbol
+\begin{equation}\label{eq:A}
+  A(\xi)=\sum_{L\in\cL}\vartheta_L(\xi)|a_L(\xi)|^2.
+\end{equation}
+The sum is locally finite by Lemma \ref{lem:tails}(3), and
+\begin{equation}\label{eq:A-lower}
+  A(\xi)\ge (2N_R)^{-2}>0
+\end{equation}
+for every $\xi$.
+
+For $L\in\cL$, define
+\begin{equation}\label{eq:dual-definition}
+ \widehat{\widetilde\Psi_L}(\eta)
+   =\frac{\vartheta_{D_L}(\eta)\,
+       \overline{\widehat\Psi_L(\eta)}}{A(2^L\eta)}.
+\end{equation}
+We first verify uniform Schwartz bounds.  The numerator in
+\eqref{eq:dual-definition} has support in one of finitely many fixed compact
+sets.  On such a support, put $\xi=2^L\eta$.  A term indexed by $P$ can occur
+in $A(\xi)$ only when
+$\vartheta_P(\xi)\vartheta_L(\xi)\ne0$.  Lemma \ref{lem:tails}(4) then gives
+$|P-L|\le C_R$, and Lemma \ref{lem:tails}(3) bounds the number of such terms.
+After returning to the normalized variable $\eta$, all relative dilations
+$2^{L-P}$ range over a fixed compact set.  Uniform Schwartz bounds on the
+$\Psi_P$ consequently give uniform bounds for every derivative of
+$A(2^L\eta)$ on the support of the numerator.  Together with
+\eqref{eq:A-lower} and the quotient rule, this proves that the functions in
+\eqref{eq:dual-definition} are uniformly bounded in $C_c^\infty$.  Their
+inverse Fourier transforms are therefore uniformly bounded in every Schwartz
+seminorm.
+
+For $i\in D_L$, the support of $\vartheta_{D_L}$ misses the entire hyperplane
+$\{\eta_i=0\}$.  Hence $\widehat{\widetilde\Psi_L}$ and all its derivatives
+vanish there.  This is precisely cancellation of every order in $x_i$.
+
+Finally,
+\[
+ \widehat{\widetilde\Psi_L^{(-L)}}(\xi)
+ =\frac{\vartheta_L(\xi)\overline{a_L(\xi)}}{A(\xi)}.
+\]
+Therefore, by \eqref{eq:A},
+\[
+ \sum_{L\in\cL}
+ \widehat{\Psi_L^{(-L)}}(\xi)
+ \widehat{\widetilde\Psi_L^{(-L)}}(\xi)
+ =\frac{\sum_L\vartheta_L(\xi)|a_L(\xi)|^2}{A(\xi)}=1.
+\]
+The sums are locally finite after insertion of the cutoffs, so this identity
+holds in $\cS'(\R^d)$.  Taking inverse Fourier transforms proves
+\eqref{eq:calderon}.
+\end{proof}
+
+\section*{Verification notes and limitations}
+
+\begin{itemize}
+\item The conjugate in \eqref{eq:dual-definition} is essential for complex
+families: it makes the denominator a positive Gram symbol.
+\item The case $L=0$, where $D_L=\varnothing$, uses only a fixed low-frequency
+ball cutoff.  All nonzero boundary and interior indices have at least one
+marked coordinate, so local finiteness is unchanged.
+\item The only geometric input beyond the definitions is the scale relation
+\eqref{eq:scale-relation} and bounded overlap of fixed tube enlargements,
+both consequences of Section 3 of the source paper.
+\item The main reviewer focus should be Lemma \ref{lem:tails}, especially the
+uniform summation over different marked partitions.  The rest of the proof is
+an exact algebraic frame inversion.
+\item The theorem supplies the associated Calder\'on family, which is the
+tensor-free content of Section 4.2.  It does not assert the tensor-specific
+partial-sum identity involving the separately defined functions $\Phi_L$, nor
+does it by itself prove the broader $L^1$ square-function equivalence asked in
+the next sentence of the source.
+\end{itemize}
+
+\section*{Novelty check}
+
+On July 21, 2026, bounded searches were performed for the exact question
+sentence, the source identifier and title, ``multi-norm Calder\'on reproducing
+formula non-tensor,'' and ``multi-norm Littlewood-Paley family.''  Searches
+also used the relevant author/topic combinations.  They found the source preprint and adjacent
+Littlewood--Paley literature, but no later paper or source revision answering
+this question.  This is not an exhaustive bibliographic proof of novelty;
+novelty confidence is moderate.
+
+\begin{thebibliography}{9}
+\bibitem{HNR}
+A.~Hejna, A.~Nagel, and F.~Ricci,
+\emph{Littlewood-Paley square functions and the local Hardy space for
+Multi-Norm Structures on $\mathbb R^d$}, arXiv:2507.09399v1 (2025).
+\end{thebibliography}
+
+\end{document}

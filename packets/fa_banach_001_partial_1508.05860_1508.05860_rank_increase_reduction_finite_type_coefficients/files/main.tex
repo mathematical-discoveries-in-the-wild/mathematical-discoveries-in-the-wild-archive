@@ -1,0 +1,239 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\dist}{\operatorname{dist}}
+
+\title{Stable finite-type components and one-sided removal\\of a rank hypothesis}
+\author{Automated discovery run \texttt{fa\_banach\_001}, lane 13}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate partial result, likely valid, awaiting human review.  This does not completely remove the dimension hypothesis in Proposition 2.1 of de Laat--Mimura--de la Salle \cite{source}.
+
+\section{Source question}
+
+Let $K$ be a compact Lie group with a left-invariant Riemannian metric $d$, let $U\subset K\times K$ be closed, and let $U$ act on $K$ by
+\[
+ (k',k'')\cdot k=k'k(k'')^{-1}.
+\]
+For a finite-dimensional unitary representation $\rho:U\to\mathcal U(V)$, let $U_k$ be the stabilizer of $k$, let
+\[
+ V_k=V^{\rho(U_k)},\qquad P_k:V\to V_k
+\]
+be the invariant subspace and its orthogonal projection.  Let $\lambda$ denote the left regular representation of $K$ on $L^2(K)$.
+
+For a Banach space $X$, define
+\begin{equation}\label{eq:Delta}
+ \Delta_X(k,k_0)=
+ \left\|
+ \left(\int_U\bigl(\lambda(u\cdot k)-\lambda(u\cdot k_0)\bigr)\,du\right)
+ \otimes\Id_X
+ \right\|_{B(L^2(K;X))}.
+\end{equation}
+An admissible finite-type coefficient is a map
+\[
+ f(a)=\sum_{i=1}^n\langle a\xi_i,\eta_i\rangle v_i,
+ \qquad
+ \sum_i\|\xi_i\|\,\|\eta_i\|\,\|v_i\|\leq1,
+\]
+satisfying
+\[
+ f\bigl(\pi(k')a\pi((k'')^{-1})\bigr)=\rho(k',k'')f(a)
+ \quad((k',k'')\in U)
+\]
+for an isometric representation $\pi:K\to O(X)$.
+
+Proposition 2.1 of \cite{source} proves
+\begin{equation}\label{eq:desired}
+ \|f(\pi(k))-f(\pi(k_0))\|
+ \leq C_{V,k_0}\bigl(d(k,k_0)+\Delta_X(k,k_0)\bigr)
+\end{equation}
+under the hypothesis $\dim V_k=\dim V_{k_0}$.  Immediately afterward the authors ask whether this dimension hypothesis is necessary.  Figure~\ref{fig:question} reproduces the complete source page.
+
+\begin{figure}[p]
+ \centering
+ \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{figures/open_problem_crop.png}
+ \caption{Proposition 2.1 and the open question in \cite[p.~1867, Section 2.4]{source}.}
+ \label{fig:question}
+\end{figure}
+
+\section{Idea of the proof}
+
+The source proof constructs a smooth covariant matrix coefficient $\psi:K\to B(V)$ with $\psi(k_0)=P_{k_0}$.  Covariance forces $\psi(k)$ to vanish on $V_k^\perp$.  Thus, near $k_0$, the large singular-value subspace of $\psi(k)$ has the old rank $\dim V_{k_0}$ and lies inside $V_k$.  This is a canonical ``stable'' part $Q_kV$ of the possibly larger invariant space $V_k$.
+
+The source argument already controls $\psi(k)f(\pi(k))-f(\pi(k_0))$.  On the stable singular subspace, $\psi(k)$ has a uniformly bounded inverse.  Applying this inverse recovers an estimate for $Q_kf(\pi(k))-f(\pi(k_0))$.  If $\dim V_k\leq\dim V_{k_0}$, the stable subspace exhausts $V_k$, so the original conclusion follows.  The only directions not treated are invariant directions that appear when the stabilizer rank jumps upward.
+
+\section{Formal result}
+
+Put $d_0=\dim V_{k_0}$.  We use the following two facts proved in Section 2.4 of \cite{source}.  There is a Lipschitz map $\psi:K\to B(V)$ such that
+\begin{equation}\label{eq:psi-properties}
+ \psi(u\cdot k)=\psi(k)\rho(u^{-1}),
+ \qquad \psi(k_0)=P_{k_0},
+\end{equation}
+and its scalar entries are coefficients of the regular representation.  Moreover, the reduction to invariant coefficients in the proof of Proposition 2.1 gives, for every admissible $X,\pi,f$,
+\begin{equation}\label{eq:source-estimate}
+ \|\psi(k)f(\pi(k))-f(\pi(k_0))\|
+ \leq C_0\Delta_X(k,k_0),
+\end{equation}
+where $C_0$ depends only on $V,k_0$ and the chosen $\psi$.
+
+\begin{lemma}[Stable spectral subspace]\label{lem:stable}
+There are $r>0$ and $C_1<\infty$ such that, whenever $d(k,k_0)<r$, there is an orthogonal projection $Q_k$ satisfying
+\[
+ Q_k\leq P_k,\qquad \operatorname{rank}Q_k=d_0,
+ \qquad \|Q_k-P_{k_0}\|\leq C_1d(k,k_0).
+\]
+There is also an operator $B_k\in B(V)$ such that
+\[
+ B_k\psi(k)Q_k=Q_k,\qquad
+ \sup_{d(k,k_0)<r}\|B_k\|<\infty,\qquad
+ \|B_k-P_{k_0}\|\leq C_1d(k,k_0).
+\]
+Finally,
+\[
+ \|\psi(k)(I-Q_k)\|\leq C_1d(k,k_0).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $P_0=P_{k_0}$ and $A_k=\psi(k)^*\psi(k)$.  From \eqref{eq:psi-properties}, if $u\in U_k$ then $\psi(k)=\psi(k)\rho(u^{-1})$.  Averaging over $U_k$ gives
+\begin{equation}\label{eq:psiPk}
+ \psi(k)=\psi(k)P_k,
+\end{equation}
+so $A_k=P_kA_kP_k$.
+
+Since $\psi$ is Lipschitz and $\psi(k_0)=P_0$, the positive matrices $A_k$ satisfy
+\[
+ \|A_k-P_0\|\leq C\,d(k,k_0).
+\]
+Choose $r$ so small that the spectrum of $A_k$ lies in
+\[
+ [0,1/4]\cup[3/4,5/4]
+\]
+for $d(k,k_0)<r$, with exactly $d_0$ eigenvalues in the second interval.  Define
+\[
+ Q_k=\mathbf 1_{[1/2,\infty)}(A_k).
+\]
+Finite-dimensional spectral calculus, with the spectral gap fixed, gives
+\[
+ \|Q_k-P_0\|\leq C\|A_k-P_0\|
+ \leq C_1d(k,k_0).
+\]
+Equation \eqref{eq:psiPk} implies $Q_k\leq P_k$.
+
+On $Q_kV$, the operator $A_k$ is bounded below by $3/4$.  Set
+\[
+ B_k=Q_k(A_k|_{Q_kV})^{-1}Q_k\psi(k)^*.
+\]
+Then $B_k\psi(k)Q_k=Q_k$.  Inversion and spectral projection are Lipschitz on this fixed gapped neighborhood of $P_0$, so $B_k$ is uniformly bounded and
+\[
+ \|B_k-P_0\|\leq C_1d(k,k_0).
+\]
+Lastly,
+\[
+ \begin{split}
+ \|\psi(k)(I-Q_k)\|
+ &\leq \|(\psi(k)-P_0)(I-Q_k)\|+\|P_0(I-Q_k)\|\\
+ &\leq \|\psi(k)-P_0\|+\|P_0-Q_k\|
+ \leq C_1d(k,k_0).
+ \end{split}
+\]
+Enlarging $C_1$ yields all assertions.
+\end{proof}
+
+\begin{theorem}[The stable component is controlled]\label{thm:stable-control}
+With no hypothesis on $\dim V_k$, for every $k$ satisfying $d(k,k_0)<r$ and every admissible $X,\pi,f$,
+\begin{equation}\label{eq:stable-control}
+ \|Q_kf(\pi(k))-f(\pi(k_0))\|
+ \leq C\bigl(d(k,k_0)+\Delta_X(k,k_0)\bigr).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $v=f(\pi(k))$ and $v_0=f(\pi(k_0))$.  Admissibility and the fact that $\pi(k)$ is an isometry give $\|v\|,\|v_0\|\leq1$.  Equivariance of $f$ gives $v\in V_k$ and $v_0\in V_{k_0}$, hence $P_0v_0=v_0$.
+
+Using Lemma~\ref{lem:stable},
+\[
+ \begin{split}
+ Q_kv-v_0
+ &=B_k\psi(k)Q_kv-P_0v_0\\
+ &=B_k\bigl(\psi(k)v-v_0\bigr)
+   +(B_k-P_0)v_0
+   -B_k\psi(k)(I-Q_k)v.
+ \end{split}
+\]
+The first term is bounded by a constant times $\Delta_X(k,k_0)$ by \eqref{eq:source-estimate}; the other two are bounded by a constant times $d(k,k_0)$ by Lemma~\ref{lem:stable}.  This proves \eqref{eq:stable-control}.
+\end{proof}
+
+\begin{corollary}[One-sided removal of the rank equality]\label{cor:onesided}
+The conclusion \eqref{eq:desired} of Proposition 2.1 in \cite{source} holds for every $k\in K$ satisfying
+\[
+ \dim V_k\leq\dim V_{k_0}.
+\]
+Thus the source hypothesis $\dim V_k=\dim V_{k_0}$ may be replaced by the one-sided inequality above.
+\end{corollary}
+
+\begin{proof}
+If $d(k,k_0)<r$, Lemma~\ref{lem:stable} gives
+\[
+ d_0=\operatorname{rank}Q_k\leq\dim V_k\leq d_0.
+\]
+Hence $Q_k=P_k$.  Since $f(\pi(k))\in V_k$, Theorem~\ref{thm:stable-control} becomes \eqref{eq:desired}.
+
+If $d(k,k_0)\geq r$, admissibility gives the trivial estimate
+\[
+ \|f(\pi(k))-f(\pi(k_0))\|\leq2
+ \leq \frac{2}{r}d(k,k_0).
+\]
+Combining the two regions proves the claim with a constant depending only on $V,k_0$.
+\end{proof}
+
+\begin{corollary}[Necessary shape of a counterexample]\label{cor:obstruction}
+If the completely rank-free version of Proposition 2.1 is false, then there is a sequence $k_j\to k_0$ such that
+\[
+ \dim V_{k_j}>\dim V_{k_0},
+ \qquad
+ \left\|\int_U\bigl(\lambda(u\cdot k_j)-\lambda(u\cdot k_0)\bigr)\,du\right\|_{B(L^2(K))}\to0.
+\]
+For such a sequence, the only component not controlled by Theorem~\ref{thm:stable-control} is
+\[
+ (P_{k_j}-Q_{k_j})f(\pi(k_j)),
+\]
+which lies in the newly appearing stabilizer-invariant directions.
+\end{corollary}
+
+\begin{proof}
+Failure of a uniform constant in \eqref{eq:desired}, together with the bound of $2$ on its left side, produces a sequence for which the right-hand denominator tends to zero.  Thus $k_j\to k_0$.  For every nonzero $X$, restricting the amplified operator in \eqref{eq:Delta} to scalar functions tensored with one fixed unit vector of $X$ shows that its norm dominates the displayed scalar norm.  Hence that scalar norm also tends to zero.  Corollary~\ref{cor:onesided} excludes $\dim V_{k_j}\leq d_0$.  The component statement follows from $Q_{k_j}\leq P_{k_j}$ and Theorem~\ref{thm:stable-control}.
+\end{proof}
+
+\section{Verification and limitations}
+
+The new proof is finite-dimensional and contains no numerical dependency.  Its two points requiring expert verification are: (i) $A_k=P_kA_kP_k$, which ensures $Q_k\leq P_k$; and (ii) the Moore--Penrose inverse identity in Theorem~\ref{thm:stable-control}.  Both are explicit in the displayed calculation.
+
+This packet is a partial answer only.  It does not bound the extra-rank component $ (P_k-Q_k)f(\pi(k))$.  A full positive answer would follow from a uniform lower bound on the scalar orbital norm whenever such new invariant directions occur, but no general proof of that assertion is supplied.
+
+A bounded web/arXiv search on 21 July 2026 used the exact source sentence and close variants of the phrases ``dimension of $V_k$,'' ``finite-type coefficients,'' ``weak relative property $(T_X)$,'' and ``strong property (T).''  It found the source paper and related strong-property-(T) work, but no later settlement of this exact rank question.  The novelty assessment is therefore provisional and not an exhaustive citation review.
+
+\paragraph{Human-review recommendation.}
+Check Lemma~\ref{lem:stable} and the three-term identity in the proof of Theorem~\ref{thm:stable-control}.  If confirmed, accept Corollary~\ref{cor:onesided} and the stable-component theorem as a partial result; do not treat the original rank-free question as solved.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+T. de Laat, M. Mimura, and M. de la Salle,
+\emph{On strong property (T) and fixed point properties for Lie groups},
+Ann. Inst. Fourier (Grenoble) \textbf{66} (2016), no.~5, 1859--1893;
+arXiv:1508.05860.
+\end{thebibliography}
+
+\end{document}

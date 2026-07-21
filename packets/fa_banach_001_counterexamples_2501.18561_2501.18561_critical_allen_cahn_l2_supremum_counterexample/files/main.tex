@@ -1,0 +1,277 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+            urlcolor=MidnightBlue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Torus}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+
+\title{A critical Allen--Cahn energy counterexample\\
+\large The expected squared path supremum is infinite at $\gamma^2=2$}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 6 review packet}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Problem 4 of Agresti--Veraar asks for a critical $L^2$ energy-supremum
+estimate and highlights the periodic Allen--Cahn equation with quadratic noise
+at $\gamma^2=2$ as unknown.  We give a negative answer.  For every positive
+deterministic constant initial condition, the spatially constant solution is
+the reciprocal radius of a four-dimensional Ornstein--Uhlenbeck process.  A
+second-moment estimate for its small-ball occupation time yields a $1/y$ lower
+tail for the squared reciprocal-radius supremum.  Thus the supremum is finite
+almost surely on every compact time interval, but its expectation is infinite.
+\end{abstract}
+
+\noindent\colorbox{MidnightBlue!8}{\parbox{0.965\linewidth}{
+\textbf{Packet status.} Candidate counterexample, likely valid; prepared for
+expert review.  The probabilistic argument is self-contained apart from the
+standard fact that points are polar for four-dimensional Brownian motion, for
+which a one-line annulus argument is recalled below.}}
+
+\section{Source question}
+
+Agresti and Veraar ask whether, in the critical variational setting, one has
+\begin{equation}\label{eq:asked}
+  \E\sup_{t\in[0,T]}\|u(t)\|_H^2
+  \le C_T\bigl(1+\E\|u_0\|_H^2\bigr).
+\end{equation}
+They then single out the one-dimensional periodic equation
+\begin{equation}\label{eq:spde}
+ du=(\Delta u+u-u^3)\,dt+\gamma u^2\,dW
+\end{equation}
+and state that the $L^2$ bound is unknown at $\gamma^2=2$
+\cite[Problem 4, p.~92]{AgrestiVeraar}.  The following image is a direct crop
+from the current source PDF.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+  \caption{Problem 4 and the critical Allen--Cahn model in
+  arXiv:2501.18561v5, page 92.}
+  \label{fig:source}
+\end{figure}
+
+\section{Result}
+
+Lebesgue measure on $\Torus$ may have any fixed positive normalization,
+denoted by $|\Torus|$.
+
+\begin{theorem}[Negative answer at the critical coefficient]\label{thm:main}
+Fix $x_0>0$, set $\gamma=\sqrt2$, and take the smooth deterministic initial
+condition $u_0(\xi)=x_0$ in \eqref{eq:spde}.  For every $T>0$, the resulting
+global spatially constant solution satisfies
+\[
+  \E\sup_{0\le t\le T}\|u(t)\|_{L^2(\Torus)}^2=\infty.
+\]
+In particular, no finite constant $C_T$ can make \eqref{eq:asked} hold for
+this critical model.
+\end{theorem}
+
+\subsection*{Proof intuition}
+
+Constant functions form an invariant mode, so the SPDE contains a scalar SDE.
+For a general positive $\gamma$, taking the reciprocal and rescaling formally
+produces a radial Ornstein--Uhlenbeck process of dimension
+\[
+  \delta=3+\frac{2}{\gamma^2}.
+\]
+The critical value $\gamma^2=2$ is therefore exactly dimension four.  A
+four-dimensional diffusion visits an $\varepsilon$-ball during a fixed time
+window with probability of order at least $\varepsilon^2$.  Since the original
+solution is the reciprocal radius, such a visit creates a squared peak of
+order $\varepsilon^{-2}$.  The two powers cancel, producing the borderline
+$1/y$ tail whose integral diverges.  The formal proof below derives the
+four-dimensional representation and the required lower bound without assuming
+independence of visits.
+
+\section{Reciprocal radial representation}
+
+On the spatially constant subspace, \eqref{eq:spde} becomes
+\begin{equation}\label{eq:scalar}
+ dX_t=(X_t-X_t^3)\,dt+\sqrt2 X_t^2\,dW_t,
+ \qquad X_0=x_0.
+\end{equation}
+For as long as $X>0$, It\^o's formula with $Y=X^{-1}$ gives
+\begin{align*}
+ dY_t
+ &= -X_t^{-2}\,dX_t+X_t^{-3}\,d[X]_t \\
+ &=\left(-Y_t+\frac{3}{Y_t}\right)dt-\sqrt2\,dW_t.
+\end{align*}
+Consequently $R=Y/\sqrt2$ obeys
+\begin{equation}\label{eq:radial}
+ dR_t=\left(-R_t+\frac{3}{2R_t}\right)dt+d\beta_t,
+ \qquad \beta=-W.
+\end{equation}
+
+We can construct this process globally.  Let $Z$ be the four-dimensional OU
+process
+\begin{equation}\label{eq:ou}
+ dZ_t=-Z_t\,dt+dB_t^{(4)},\qquad
+ |Z_0|=\frac{1}{\sqrt2 x_0}.
+\end{equation}
+It\^o's formula for the Euclidean norm shows that $R_t=|Z_t|$ satisfies
+\eqref{eq:radial}, with
+$\beta_t=\int_0^t \langle Z_s/|Z_s|,dB_s^{(4)}\rangle$ up to a possible
+zero-hitting time.  There is no such time: explicitly,
+\[
+ e^t Z_t=Z_0+\widetilde B_{a(t)},
+ \qquad a(t)=\frac{e^{2t}-1}{2},
+\]
+for a four-dimensional Brownian motion $\widetilde B$.  A Brownian motion
+started at radius $r>0$ hits the ball of radius $\varepsilon<r$ with
+probability $(\varepsilon/r)^2$; this follows by optional stopping of the
+harmonic function $|z|^{-2}$ on annuli.  Letting $\varepsilon\downarrow0$
+shows that a prescribed point is polar.  Hence $R_t>0$ for every $t$ almost
+surely.
+
+Now set
+\begin{equation}\label{eq:reciprocal}
+ X_t=\frac{1}{\sqrt2|Z_t|},\qquad W=-\beta.
+\end{equation}
+A second application of It\^o's formula verifies \eqref{eq:scalar}.  This is a
+positive global solution.  Moreover, continuity and nonvanishing of $Z$ imply
+that $\min_{0\le t\le T}|Z_t|>0$ almost surely, so its pathwise supremum is
+finite on every compact interval.  Under the well-posedness asserted for the
+source model, uniqueness identifies this solution with the variational
+solution for the constant initial datum.
+
+\section{A fixed-window small-ball estimate}
+
+The next lemma is the quantitative core of the counterexample.
+
+\begin{lemma}\label{lem:hit}
+Let $Z$ solve \eqref{eq:ou}.  For every $T>0$ there are constants
+$c>0$ and $\varepsilon_0>0$ such that
+\[
+ \Pp\!\left(\inf_{T/2\le t\le T}|Z_t|\le\varepsilon\right)
+ \ge c\varepsilon^2,
+ \qquad 0<\varepsilon\le\varepsilon_0.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $I=[T/2,T]$ and
+\[
+ O_\varepsilon=\int_I\1_{\{|Z_t|\le\varepsilon\}}\,dt.
+\]
+For $t>0$, $Z_t$ is Gaussian with mean $e^{-t}Z_0$ and covariance
+\[
+ q_t I_4,\qquad q_t=\frac{1-e^{-2t}}2.
+\]
+As $t$ ranges over the compact interval $I$, these densities are uniformly
+bounded above on $\R^4$ and uniformly bounded below on the unit ball.  Thus,
+for $0<\varepsilon\le1$,
+\begin{equation}\label{eq:onetime}
+ c_1\varepsilon^4\le \Pp(|Z_t|\le\varepsilon)
+ \le C_1\varepsilon^4,
+ \qquad t\in I.
+\end{equation}
+In particular, $\E O_\varepsilon\ge c_2\varepsilon^4$.
+
+If $s<t$ are in $I$ and $h=t-s$, then conditionally on $Z_s$,
+\[
+ Z_t=e^{-h}Z_s+G_h,
+ \qquad G_h\sim N(0,q_h I_4).
+\]
+On $0<h\le T/2$, one has $q_h\ge c_T h$.  Bounding a Gaussian probability
+by the volume of the ball times the maximum of its density gives, uniformly
+in the conditional mean,
+\begin{equation}\label{eq:transition}
+ \Pp(|Z_t|\le\varepsilon\mid Z_s)
+ \le \min\{1,C_2\varepsilon^4 h^{-2}\}.
+\end{equation}
+Combining \eqref{eq:onetime} and \eqref{eq:transition}, then integrating in
+$s$ and $h$, yields
+\begin{align*}
+ \E O_\varepsilon^2
+ &\le C_3\varepsilon^4
+   \int_0^{T/2}\min\{1,C_2\varepsilon^4h^{-2}\}\,dh \\
+ &\le C_4\varepsilon^6.
+\end{align*}
+For the last inequality, split the integral at
+$h=\sqrt{C_2}\,\varepsilon^2$ (and decrease $\varepsilon_0$ if needed).
+Cauchy--Schwarz on $O_\varepsilon\1_{\{O_\varepsilon>0\}}$ now gives
+\[
+ \Pp(O_\varepsilon>0)
+ \ge \frac{(\E O_\varepsilon)^2}{\E O_\varepsilon^2}
+ \ge c_3\varepsilon^2.
+\]
+The event $\{O_\varepsilon>0\}$ is contained in the hitting event stated in
+the lemma.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Let $M_T=\sup_{0\le t\le T}X_t^2$.  By \eqref{eq:reciprocal} and
+Lemma~\ref{lem:hit},
+\[
+ \Pp\!\left(M_T\ge\frac{1}{2\varepsilon^2}\right)
+ \ge c\varepsilon^2
+ \qquad(0<\varepsilon\le\varepsilon_0).
+\]
+With $\varepsilon=(2y)^{-1/2}$, this becomes
+\[
+ \Pp(M_T\ge y)\ge \frac{c}{2y}
+\]
+for all sufficiently large $y$.  The layer-cake formula therefore gives
+\[
+ \E M_T=\int_0^\infty\Pp(M_T\ge y)\,dy=\infty.
+\]
+Finally, the constant solution $u(t,\xi)=X_t$ satisfies
+\[
+ \|u(t)\|_{L^2(\Torus)}^2=|\Torus|X_t^2,
+\]
+whereas $\E\|u_0\|_{L^2(\Torus)}^2=|\Torus|x_0^2<\infty$.  This contradicts
+\eqref{eq:asked} for every finite $C_T$ and completes the proof.
+
+\section{Checks, compatibility, and scope}
+
+\begin{itemize}[leftmargin=*,itemsep=3pt]
+\item The divergence concerns the expectation of the \emph{path supremum};
+      it does not assert finite-time explosion.  Indeed, every sample path is
+      bounded on $[0,T]$.
+\item At each fixed $t>0$, $\E X_t^2<\infty$: a nondegenerate density in four
+      dimensions is locally integrable against $|z|^{-2}$.  Thus the result is
+      compatible with ordinary fixed-time energy moments.
+\item The verifier script in \texttt{code/verify\_reduction.py} checks the
+      three exact It\^o/generator identities and the elementary split-integral
+      scaling.  It is a guard against algebraic errors, not a substitute for
+      Lemma~\ref{lem:hit}.
+\item The theorem resolves the highlighted $\gamma^2=2$ model negatively and
+      therefore refutes Problem 4 as a general assertion.  It says nothing
+      about the neighboring continuous-dependence Problem 5 or the subcritical
+      regime $\gamma^2<2$.
+\end{itemize}
+
+\section*{Literature-status note}
+
+A bounded search on 21 July 2026 checked the run indexes, the current arXiv
+record, exact phrases from Problem 4, and searches combining the critical
+quadratic-noise model with reciprocal and radial-OU transforms.  No later
+proof or counterexample to this exact question was found.  This statement
+records the search performed; it is not a claim of exhaustive priority.
+
+\begin{thebibliography}{9}
+\bibitem{AgrestiVeraar}
+Antonio Agresti and Mark Veraar,
+\emph{Nonlinear SPDEs and maximal regularity: an extended survey},
+arXiv:2501.18561v5, 2025.
+\end{thebibliography}
+
+\end{document}

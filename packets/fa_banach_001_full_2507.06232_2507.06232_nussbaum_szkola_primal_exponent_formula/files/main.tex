@@ -1,0 +1,312 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.78in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Ent}{\operatorname{Ent}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cN}{\mathcal N}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\Aug}{\mathrm{Aug}}
+\newcommand{\NS}{\mathrm{NS}}
+\newcommand{\bits}{\mathbb R}
+
+\definecolor{statusblue}{RGB}{25,73,112}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.45em}
+
+\title{A Lifted Primal-Domain Formula for the\\
+Petz--Augustin Random-Coding Exponent}
+\author{Run \texttt{fa\_banach\_001} --- candidate solution packet}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\colorbox{statusblue!12}{\parbox{0.95\linewidth}{
+\textbf{Status.} Candidate full solution, likely valid, scoped to finite
+input alphabets and finite-dimensional output systems. The formula is an exact
+spectral lift with finite time-sharing. A quantum-state-only primal formula is
+not claimed.}}
+
+\section{\hspace{0.22em}Source question}
+
+Cheng and Liu prove that the constant-composition random-coding exponent of a
+classical--quantum channel $\cN:x\mapsto\rho_x$ with fixed input law $p$ is
+\begin{equation}\label{eq:dual}
+ E_{\rm P}(R)
+ =\sup_{\alpha\in[1/2,1]}
+ \frac{1-\alpha}{\alpha}
+ \bigl[I_\alpha^{\Aug}(p;\cN)-R\bigr],
+\end{equation}
+where $I_\alpha^{\Aug}$ is built from the Petz R\'enyi divergence
+\cite[Theorem~4.3]{ChengLiu}. In Remark~4.4, PDF page~23, they explain why the
+literal quantum analogue of the classical Csisz\'ar--K\"orner formula yields
+the wrong, log-Euclidean R\'enyi divergence, and ask whether any primal-domain
+expression exists. The complete source context is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{\hspace{0.22em}Definitions}
+
+All logarithms and relative entropies below use base two. Let $\mathcal X$ be
+finite, let $\cH$ be finite-dimensional, let $p$ be a probability distribution
+on $\mathcal X$, and let $\rho_x\in\cS(\cH)$. For $0<\alpha<1$,
+\[
+ D_\alpha(\rho\Vert\sigma)
+ =\frac{1}{\alpha-1}
+ \log\Tr(\rho^\alpha\sigma^{1-\alpha}),
+ \qquad
+ I_\alpha^{\Aug}(p;\cN)
+ =\inf_{\sigma\in\cS(\cH)}
+ \sum_xp(x)D_\alpha(\rho_x\Vert\sigma).
+\]
+
+Fix spectral decompositions
+\[
+ \rho_x=\sum_i r_{x,i}|u_{x,i}\rangle\langle u_{x,i}|,
+ \qquad
+ \sigma=\sum_j q_j|v_j\rangle\langle v_j|.
+\]
+The associated Nussbaum--Szko\l a distributions
+\cite{NussbaumSzkola,AndroulakisJohn} on the pairs $(i,j)$ are
+\begin{equation}\label{eq:NS}
+ P_{x,\sigma}(i,j)=r_{x,i}|\langle u_{x,i},v_j\rangle|^2,
+ \qquad
+ Q_{x,\sigma}(i,j)=q_j|\langle u_{x,i},v_j\rangle|^2.
+\end{equation}
+
+A \emph{primitive primal datum} is
+$\omega=(\sigma,(T_x)_{x\in\mathcal X})$, where $\sigma$ is faithful and
+each $T_x$ is a probability distribution on the eigen-index pairs. Define
+extended nonnegative costs
+\begin{equation}\label{eq:AB}
+ A(\omega)=\sum_xp(x)D(T_x\Vert P_{x,\sigma}),
+ \qquad
+ B(\omega)=\sum_xp(x)D(T_x\Vert Q_{x,\sigma}).
+\end{equation}
+Only data with finite costs are needed. Let
+\begin{equation}\label{eq:K}
+ \cK=\cl\conv\bigl\{(A(\omega),B(\omega)):\omega
+ \text{ is a finite-cost primitive datum}\bigr\}\subseteq\mathbb R^2.
+\end{equation}
+Thus $\cK$ permits ordinary finite time-sharing and limiting sequences, but it
+does not depend on the R\'enyi order.
+
+\section{\hspace{0.22em}Proof Intuition}
+
+The obstacle identified by the source is noncommutativity: the usual Gibbs
+variational argument applied directly to matrices creates the log-Euclidean
+R\'enyi divergence. The key idea is to apply Gibbs variation only after the
+Nussbaum--Szko\l a spectral lift. That lift preserves the Petz R\'enyi overlap
+exactly, while turning it into an ordinary classical overlap.
+
+For $s=(1-\alpha)/\alpha$, the classical tilted distribution converts each
+term $sD_\alpha$ into a minimum of $A+sB$. Minimizing over the Augustin state
+therefore identifies the dual exponent with
+$\sup_{0\le s\le1}\inf_{(A,B)\in\cK}[A+s(B-R)]$. Convex time-sharing makes
+Sion minimax applicable. After exchanging the two optimizations, maximizing
+over $s$ gives precisely the hinge $(B-R)_+$. In the commuting case, $A$ is
+conditional relative entropy and $B$ reduces to mutual information, recovering
+the classical formula.
+
+\section{\hspace{0.22em}Main result}
+
+\begin{theorem}[Lifted primal formula]\label{thm:main}
+For every finite classical--quantum channel $\cN:x\mapsto\rho_x$, input law
+$p$, and rate $R\in\mathbb R$, the Petz--Augustin exponent in
+\eqref{eq:dual} satisfies
+\begin{equation}\label{eq:primal}
+ \boxed{
+ E_{\rm P}(R)
+ =\inf_{(A,B)\in\cK}\bigl\{A+(B-R)_+\bigr\}.}
+\end{equation}
+Every point relevant to this infimum can be approximated by time-sharing among
+at most three primitive data. If all $\rho_x$ commute, \eqref{eq:primal}
+reduces to the Csisz\'ar--K\"orner formula
+\begin{equation}\label{eq:CK}
+ \inf_{V:x\mapsto V_x}
+ \left\{
+ \sum_xp(x)D(V_x\Vert W_x)
+ +\bigl(I(p,V)-R\bigr)_+
+ \right\},
+\end{equation}
+where $W_x$ are the common-basis eigenvalue distributions of $\rho_x$.
+\end{theorem}
+
+\section{\hspace{0.22em}Proof}
+
+\begin{lemma}[Classical tilt identity]\label{lem:tilt}
+For probability distributions $P,Q$ on a finite set and $s\ge0$, put
+$\alpha=1/(1+s)$. Then
+\begin{equation}\label{eq:tilt}
+ sD_\alpha(P\Vert Q)
+ =\inf_T\bigl\{D(T\Vert P)+sD(T\Vert Q)\bigr\}.
+\end{equation}
+For $s>0$ the minimizer is
+\[
+ T_s(z)=\frac{P(z)^\alpha Q(z)^{1-\alpha}}
+ {\sum_yP(y)^\alpha Q(y)^{1-\alpha}}.
+\]
+The equality at $s=0$ is understood by continuity and is also immediate.
+\end{lemma}
+
+\begin{proof}
+Let $Z_s=\sum_zP(z)^{1/(1+s)}Q(z)^{s/(1+s)}$. For any admissible $T$,
+\begin{align*}
+ D(T\Vert P)+sD(T\Vert Q)
+ &=(1+s)D(T\Vert T_s)-(1+s)\log Z_s.
+\end{align*}
+The first term has minimum zero. The second equals
+$sD_{1/(1+s)}(P\Vert Q)$ by definition.
+\end{proof}
+
+\begin{lemma}[Petz preservation]\label{lem:NS}
+The distributions in \eqref{eq:NS} satisfy
+\[
+ D_\alpha(P_{x,\sigma}\Vert Q_{x,\sigma})
+ =D_\alpha(\rho_x\Vert\sigma),\qquad 0<\alpha<1.
+\]
+\end{lemma}
+
+\begin{proof}
+Writing $c_{ij}=|\langle u_{x,i},v_j\rangle|^2$, one has
+\begin{align*}
+ \sum_{i,j}P_{x,\sigma}(i,j)^\alpha
+ Q_{x,\sigma}(i,j)^{1-\alpha}
+ &=\sum_{i,j}r_{x,i}^\alpha q_j^{1-\alpha}c_{ij}\\
+ &=\Tr(\rho_x^\alpha\sigma^{1-\alpha}).
+\end{align*}
+Taking $(\alpha-1)^{-1}\log$ proves the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Write $s=(1-\alpha)/\alpha$, so $\alpha\in[1/2,1]$ corresponds to
+$s\in[0,1]$. For $s>0$, Lemmas~\ref{lem:tilt} and \ref{lem:NS}, followed by
+separate minimization over each $T_x$, give
+\begin{align}\label{eq:support}
+ sI_{1/(1+s)}^{\Aug}(p;\cN)
+ &=\inf_{\sigma>0}\sum_xp(x)
+     sD_{1/(1+s)}(\rho_x\Vert\sigma)\notag\\
+ &=\inf_{\omega}\bigl\{A(\omega)+sB(\omega)\bigr\}\notag\\
+ &=\inf_{(A,B)\in\cK}\{A+sB\}.
+\end{align}
+Restricting the first infimum to faithful $\sigma$ does not change its value:
+replace any $\sigma$ by
+$(1-\varepsilon)\sigma+\varepsilon I/\dim\cH$ and let
+$\varepsilon\downarrow0$. The required Petz overlaps are continuous for
+$\alpha<1$. At $s=0$, both sides of \eqref{eq:support} equal zero.
+
+Substitute \eqref{eq:support} into \eqref{eq:dual}:
+\begin{align*}
+ E_{\rm P}(R)
+ &=\sup_{s\in[0,1]}\inf_{(A,B)\in\cK}
+   \{A+s(B-R)\}.
+\end{align*}
+The set $[0,1]$ is compact convex, $\cK$ is convex, and the displayed
+function is continuous affine in both variables. Apply Sion's minimax theorem
+to its negative (with $s$ as the compact minimization variable) to obtain
+\begin{align*}
+ E_{\rm P}(R)
+ &=\inf_{(A,B)\in\cK}\sup_{s\in[0,1]}
+   \{A+s(B-R)\}\\
+ &=\inf_{(A,B)\in\cK}\{A+(B-R)_+\},
+\end{align*}
+which is \eqref{eq:primal}. Since $\cK\subseteq\mathbb R^2$, Carath\'eodory's
+theorem says that every point of its nonclosed convex hull is a convex
+combination of at most three primitive cost pairs; closure points are limits
+of such combinations.
+
+It remains to verify the commuting reduction. In a common eigenbasis, each
+spectral lift is an ordinary classical refinement of the channel $W_x$. A
+primitive $T_x$ can be pushed through the map that forgets the refinement,
+giving a channel $V_x$. Data processing yields
+\[
+ \sum_xp(x)D(V_x\Vert W_x)\le A,
+ \qquad
+ I(p,V)\le B.
+\]
+For the unrefined diagonal choice, the sharper chain rule is
+\[
+ \sum_xp(x)D(V_x\Vert q)
+ =I(p,V)+D(pV\Vert q),
+\]
+so minimizing over $q$ gives $B=I(p,V)$. For a time-sharing mixture, average
+the resulting channels $V$; joint convexity of relative entropy and convexity
+of $I(p,V)$ show that this averaging does not increase either relevant cost.
+Thus no lifted/time-shared datum beats \eqref{eq:CK}, while every candidate in
+\eqref{eq:CK} occurs as a single diagonal primitive datum. The two infima are
+equal.
+\end{proof}
+
+\section{\hspace{0.22em}Verification, scope, and novelty}
+
+The script \texttt{code/check\_variational\_identity.py} performs two checks:
+\begin{itemize}
+\item 400 seeded random noncommuting matrix/order instances of
+Lemma~\ref{lem:tilt} combined with Lemma~\ref{lem:NS};
+\item 100 seeded random instances of the classical chain rule used in the
+commuting reduction.
+\end{itemize}
+The command is
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/check_variational_identity.py
+\end{verbatim}
+The computation is a sanity check, not part of the proof.
+
+The result is exact in the finite setting surrounding source Remark~4.4. It
+does not supply an infinite-dimensional extension. More importantly, its
+primal variables are classical tilted laws on canonical spectral lifts, with
+finite time-sharing. Whether the same exponent admits a comparably simple
+formula involving only alternative quantum output states remains open.
+
+The bounded novelty search covered the four run indexes; exact-phrase arXiv
+searches for ``primal-domain expression'' with Petz--Augustin information;
+Nussbaum--Szko\l a, Csisz\'ar--K\"orner, sphere-packing, and
+constant-composition variants; arXiv:2308.02929; and arXiv:2601.06492. No
+matching exponent formula or answer to Remark~4.4 was found. Novelty confidence
+is therefore provisional rather than definitive.
+
+\textbf{Human-review recommendation.} Review as a scoped candidate full
+solution. In particular, verify the faithful-state approximation, the sign in
+the Sion step, and whether a spectral-lift formula meets the intended breadth
+of the source's phrase ``primal-domain expression.''
+
+\begin{thebibliography}{9}
+\bibitem{ChengLiu}
+H.-C. Cheng and P.-C. Liu,
+\emph{Error Exponents for Quantum Packing Problems via An Operator Layer Cake
+Theorem}, arXiv:2507.06232v4 (2026).
+
+\bibitem{NussbaumSzkola}
+M. Nussbaum and A. Szko\l a,
+\emph{The Chernoff lower bound for symmetric quantum hypothesis testing},
+arXiv:quant-ph/0607216 (2006).
+
+\bibitem{AndroulakisJohn}
+G. Androulakis and T. C. John,
+\emph{Quantum $f$-divergences via Nussbaum--Szko\l a distributions and
+applications to $f$-divergence inequalities}, arXiv:2308.02929 (2023).
+
+\bibitem{Sion}
+M. Sion,
+\emph{On general minimax theorems}, Pacific J. Math. 8 (1958), 171--176.
+\end{thebibliography}
+
+\end{document}
