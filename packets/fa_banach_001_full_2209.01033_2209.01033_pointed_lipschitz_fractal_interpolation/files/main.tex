@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\Lipz}{\operatorname{Lip}_0}
+\newcommand{\R}{\mathbb R}
+
+\title{Pointed Lipschitz fractal interpolation on intervals and curves}
+\author{FA/Banach run \texttt{fa\_banach\_001}, lane 1}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source metadata and status}
+
+The source is P.~R.~Massopust, \emph{Fractal Interpolation over Curves},
+arXiv:2209.01033 (2022), published in \emph{Contemporary Mathematics} 797
+(2024), 61--73 \cite{Massopust}.  Section~7, page~13 of the arXiv PDF, leaves
+two research directions to the reader.  The second is to replace the unital
+Lipschitz algebra by the algebra of bounded real-valued Lipschitz functions
+vanishing at a base point.
+
+\medskip
+\noindent\textbf{Claimed status: full solution, likely valid.}
+The theorem below carries out that pointed-Lipschitz direction for the interval
+partitions used in fractal interpolation, gives exact junction conditions, and
+transports the result to simple bi-Lipschitz curves in Banach spaces.
+
+\section*{The source direction}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In the notation of the source, the direction is to replace
+$\Lip(X,F)$ by the pointed space
+\[
+  \Lipz(X)=\{f:X\to\R:f\text{ is Lipschitz and }f(x_0)=0\}.
+\]
+On a bounded pointed metric space this is a Banach space for the norm
+$\|f\|_{\Lipz}=\Lip(f)$; the base-point condition implies
+$\|f\|_\infty\leq \operatorname{diam}(X)\Lip(f)$.
+
+\section*{Proof intuition}
+
+The pointed condition changes the join-up problem.  At an internal knot, the
+right branch sees $f(0)=0$, whereas the left branch sees the unrestricted value
+$f(1)$.  Consequently, an RB formula acts on \emph{all} of $\Lipz$ precisely
+when the left vertical multiplier vanishes at that endpoint and the two affine
+terms agree there.
+
+For contraction, multiplication contributes two terms:
+$\|s\|_\infty\Lip(f-g)$ and $\Lip(s)\|f-g\|_\infty$.
+The pointed estimate $\|f-g\|_\infty\leq\Lip(f-g)$ combines them, while
+composition with an inverse partition branch contributes
+$\Lip(h_i^{-1})$.  The junction conditions make the branchwise estimates glue
+without any additional loss on an interval.
+
+\section*{Pointed fixed-point theorem}
+
+Fix a partition
+\[
+  0=t_0<t_1<\cdots<t_n=1.
+\]
+For $1\leq i\leq n$, let
+$h_i:[0,1]\to[t_{i-1},t_i]$ be an increasing bi-Lipschitz homeomorphism,
+with $h_i(0)=t_{i-1}$ and $h_i(1)=t_i$.  Put
+\[
+  \lambda_i=\Lip(h_i^{-1}),\qquad
+  a_i=\|s_i\|_\infty,\qquad b_i=\Lip(s_i),
+\]
+where $q_i,s_i\in\Lip([0,1])$.
+
+For $f\in\Lipz([0,1])$, consider the branch formula
+\begin{equation}\label{eq:RB}
+ (Tf)(x)=q_i(h_i^{-1}x)+s_i(h_i^{-1}x)f(h_i^{-1}x),
+ \qquad x\in[t_{i-1},t_i].
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+The formula \eqref{eq:RB} defines an affine self-map of all of
+$\Lipz([0,1])$ if and only if
+\begin{equation}\label{eq:join}
+ q_1(0)=0,\qquad
+ s_i(1)=0,\quad q_i(1)=q_{i+1}(0)\qquad(1\leq i<n).
+\end{equation}
+Under these conditions,
+\begin{equation}\label{eq:constant}
+ \Lip(Tf-Tg)\leq c\,\Lip(f-g),
+ \qquad
+ c:=\max_{1\leq i\leq n}\lambda_i(a_i+b_i).
+\end{equation}
+In particular, if $c<1$, there is a unique
+$\psi\in\Lipz([0,1])$ satisfying
+\begin{equation}\label{eq:selfref}
+ \psi(h_i(t))=q_i(t)+s_i(t)\psi(t),
+ \qquad t\in[0,1],\quad 1\leq i\leq n.
+\end{equation}
+For every $f_0\in\Lipz([0,1])$, the iterates $f_k=T^k f_0$ converge to
+$\psi$ in pointed Lipschitz norm and obey
+\begin{equation}\label{eq:error}
+ \Lip(\psi-f_k)\leq \frac{c^k}{1-c}\Lip(Tf_0-f_0).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+First suppose \eqref{eq:RB} defines a self-map on all of $\Lipz$.
+At $0=h_1(0)$, taking $f=0$ gives $(Tf)(0)=q_1(0)$, hence
+$q_1(0)=0$.  At the knot $t_i=h_i(1)=h_{i+1}(0)$, equality of the two
+branch values gives, for every $f\in\Lipz$,
+\[
+ q_i(1)+s_i(1)f(1)=q_{i+1}(0)+s_{i+1}(0)f(0)=q_{i+1}(0).
+\]
+Taking first $f=0$ and then $f(t)=t$ proves the remaining conditions in
+\eqref{eq:join}.
+
+Conversely, assume \eqref{eq:join}.  It makes the two definitions in
+\eqref{eq:RB} agree at every internal knot, and it gives $(Tf)(0)=0$.
+On the $i$th interval, composition and the product estimate show that
+\begin{align*}
+ \Lip\big((Tf)|_{[t_{i-1},t_i]}\big)
+ \leq \lambda_i\big(
+   \Lip(q_i)+a_i\Lip(f)+b_i\|f\|_\infty
+ \big),
+\end{align*}
+so $Tf$ is continuous and finitely piecewise Lipschitz.  Such a function on
+an interval is globally Lipschitz: telescope across the intervening knots and
+use that the subinterval lengths sum to the total length.  Thus $T$ maps
+$\Lipz$ to itself.
+
+Let $u=f-g$.  On the $i$th branch,
+\[
+ (Tf-Tg)(x)=(s_i u)(h_i^{-1}x),
+\]
+and hence
+\begin{align*}
+ \Lip\big((Tf-Tg)|_{[t_{i-1},t_i]}\big)
+ &\leq\lambda_i\big(a_i\Lip(u)+b_i\|u\|_\infty\big)\\
+ &\leq\lambda_i(a_i+b_i)\Lip(u),
+\end{align*}
+because $u(0)=0$ and the interval has diameter one.  Moreover, at every
+internal knot the left difference is $s_i(1)u(1)=0$ and the right difference
+is $s_{i+1}(0)u(0)=0$.  The same telescoping argument therefore gives the
+global estimate \eqref{eq:constant}.
+
+Finally, $\Lipz([0,1])$ is complete for the norm $\Lip(\cdot)$.  Indeed, a
+Cauchy sequence in that norm is uniformly Cauchy because every member
+vanishes at zero; its uniform limit is pointed Lipschitz, and passage to the
+limit in difference quotients gives convergence in Lipschitz norm.  If $c<1$,
+Banach's fixed-point theorem now gives the unique fixed point, convergence of
+the iterates, and \eqref{eq:error}.  The fixed-point equation is exactly
+\eqref{eq:selfref}.
+\end{proof}
+
+\section*{Transfer to curves}
+
+\begin{corollary}\label{cor:curve}
+Let $E$ be a Banach space and let
+$\gamma:[0,1]\to E$ be a bi-Lipschitz homeomorphism onto its trace
+$X=\gamma([0,1])$.  Set $x_0=\gamma(0)$ and
+\[
+ H_i=\gamma\circ h_i\circ\gamma^{-1},\qquad
+ Q_i=q_i\circ\gamma^{-1},\qquad S_i=s_i\circ\gamma^{-1}.
+\]
+If \eqref{eq:join} and $c<1$ hold, there is a unique
+$\Psi\in\Lipz(X)$ such that
+\[
+ \Psi(H_i x)=Q_i(x)+S_i(x)\Psi(x),
+ \qquad x\in X,\quad 1\leq i\leq n.
+\]
+It is $\Psi=\psi\circ\gamma^{-1}$, where $\psi$ is the fixed point from
+Theorem~\ref{thm:main}.  The transported RB iterates converge in
+$\Lipz(X)$.
+\end{corollary}
+
+\begin{proof}
+Composition with $\gamma$ and $\gamma^{-1}$ gives mutually inverse bounded
+linear maps between $\Lipz(X)$ and $\Lipz([0,1])$.  Under these maps, the
+curve RB operator is conjugate to \eqref{eq:RB}.  Existence, uniqueness, and
+convergence therefore transfer directly.
+\end{proof}
+
+In particular, the corollary applies to every simple regular $C^1$ arc on a
+compact interval once it is given a bi-Lipschitz parametrization (for example,
+the usual regular embedded arcs used by interval-based fractal interpolation).
+
+\section*{Why the contraction constant needs both terms}
+
+The two summands in \eqref{eq:constant} cannot generally be replaced by their
+maximum.  Take $n=1$, $h_1$ the identity, $q_1=0$, and
+$s_1(t)=a t$ with $0<a<1$.  This defines $Tf(t)=atf(t)$ on all of
+$\Lipz([0,1])$.  For $f(t)=t$,
+\[
+ \Lip(f)=1,
+ \qquad
+ \Lip(Tf)=\Lip(at^2)=2a.
+\]
+Thus $T$ is not a contraction whenever $a>1/2$, even though both
+$\|s_1\|_\infty=a$ and $\Lip(s_1)=a$ are separately less than one.  The
+coefficient in Theorem~\ref{thm:main} is $2a$, and is attained on this test
+function.
+
+\section*{Verification, scope, and novelty}
+
+The proof is exact and has no numerical or computer-assisted component.  Its
+checks are: completeness of the pointed norm; necessity and sufficiency of the
+junction identities; the product Lipschitz estimate; inverse-branch expansion;
+finite interval gluing; and conjugacy under a bi-Lipschitz curve
+parametrization.
+
+The result completes the source's pointed-Lipschitz direction for the natural
+interval partition model and its simple bi-Lipschitz curve transports.  It does
+not address the source's separate, much broader direction concerning arbitrary
+Banach or Fr\'echet submanifolds.
+
+The local run indexes were searched for arXiv:2209.01033, the title, pointed
+Lipschitz algebras, $\Lipz$, and RB operators.  Bounded web searches on
+July~21, 2026 used the exact Section~7 wording and the combinations
+``pointed Lipschitz'', ``$\Lipz$'', ``fractal interpolation'', and
+``Read--Bajraktarevi\'c''.  The arXiv record, 2024 publication metadata, and
+current author-publication search results were checked.  No later work
+explicitly carrying out this direction was found.  Novelty confidence is
+moderate because the fixed-point argument is elementary; proof confidence is
+high.
+
+\medskip
+\noindent\textbf{Human review recommendation.}
+Review as a likely valid full answer to the second Section~7 direction.  The
+most useful check is that ``replace by $\Lipz$'' is intended as a self-map on
+the whole pointed algebra; under that literal interpretation, the junction
+conditions in \eqref{eq:join} are forced, not optional.
+
+\begin{thebibliography}{9}
+\bibitem{Massopust}
+P.~R.~Massopust,
+\emph{Fractal Interpolation over Curves},
+arXiv:2209.01033 (2022); \emph{Contemporary Mathematics} 797 (2024), 61--73,
+doi:10.1090/conm/797/15934.
+\end{thebibliography}
+
+\end{document}

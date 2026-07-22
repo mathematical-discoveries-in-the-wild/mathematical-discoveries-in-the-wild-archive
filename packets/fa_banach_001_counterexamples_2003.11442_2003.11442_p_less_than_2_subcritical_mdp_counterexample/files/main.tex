@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Xscr}{\mathscr X}
+
+\title{A one-big-jump counterexample to the $p<2$\\
+subcritical moderate-deviation extension}
+\author{Run \texttt{fa\_banach\_001}, lane 7 (GPT5.6)}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate counterexample, full negative resolution of the final question in
+Remark 1.1(c) of arXiv:2003.11442, subject to human review.}}
+\end{center}
+
+\section{Source question}
+
+Alonso-Guti\'errez, Prochno, and Th\"ale \cite{APT2020} prove a quadratic
+moderate-deviation principle (MDP) for normalized Euclidean norms of random
+orthogonal projections of uniform points in $\ell_p^n$-balls when $p\ge2$.
+At the end of Remark 1.1(c), page 5, they ask:
+\begin{quote}
+``Another open problem is to decide whether or not the rate function in the
+MDP in Theorem C is the same also for $1\le p<2$.''
+\end{quote}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+  \caption{The open question in Remark 1.1(c) of the source paper, page 5.}
+\end{figure}
+
+For a uniform random vector $X_n$ in $B_p^n$, an independent Haar-uniform
+$k_n$-dimensional subspace $E_n$, and
+\[
+ m_p=M_p(2)=p^{2/p}\frac{\Gamma(3/p)}{\Gamma(1/p)},
+\]
+the source normalization is
+\[
+ \Xscr_{n,p}=\frac{n^{1/p}}{\sqrt{m_p}}\|P_{E_n}X_n\|_2-\sqrt{k_n}.
+\]
+Theorem C assumes $t_n\to\infty$, $t_n=o(\sqrt{k_n})$, and either
+$t_n=o(\sqrt{n-k_n})$ or the alternative endpoint condition, and concludes
+that $\Xscr_{n,p}/t_n$ has speed $t_n^2$ and a strictly positive quadratic
+rate function.
+
+\section{Idea of the proof}
+
+The restriction $p\ge2$ is structural.  In the exact representation used by
+the source, the squared $p$-generalized Gaussian coordinate $Z_i^2$ occurs in
+the numerator.  When $p<2$, it has stretched-exponential tail
+$\exp(-c u^{p/2})$.  One coordinate of size $Z_1^2\asymp t_n\sqrt n$ already
+moves $\Xscr_{n,p}$ by order $t_n$.  The logarithmic cost of this event is
+only $(t_n\sqrt n)^{p/2}$.  At the explicit admissible scale
+$t_n=n^{1/(4-p)}$, this is $o(t_n^2)$.  Consequently a fixed positive upper
+tail has rate zero on the proposed speed, contradicting every positive
+quadratic MDP rate.
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+Fix $1\le p<2$.  Let $k_n=\lfloor n/2\rfloor$ and
+\[
+ t_n=n^{1/(4-p)}.
+\]
+Let $X_n$ be uniform on $B_p^n$, let $E_n$ be an independent Haar-uniform
+$k_n$-dimensional subspace, and define $\Xscr_{n,p}$ as above.  Then
+\[
+ \lim_{n\to\infty}\frac1{t_n^2}
+ \log\Pp\!\left(\frac{\Xscr_{n,p}}{t_n}\ge1\right)=0.
+\]
+In particular, $\Xscr_{n,p}/t_n$ does not satisfy an MDP with speed $t_n^2$
+and the quadratic rate function proposed in Theorem C.  Hence the final
+question in Remark 1.1(c) has a negative answer for every $1\le p<2$.
+\end{theorem}
+
+\begin{proof}
+Put $d_n=t_n/\sqrt n$.  Since $p<2$,
+\[
+ t_n\longrightarrow\infty,\qquad
+ d_n\longrightarrow0,
+\]
+and, because $k_n/n\to1/2$, both $t_n=o(\sqrt{k_n})$ and
+$t_n=o(\sqrt{n-k_n})$ hold.  Thus these scales satisfy the hypotheses in the
+question.
+
+\medskip
+\noindent\textbf{Step 1: the exact representation.}
+Let $g_1,\ldots,g_n$ be independent standard Gaussians, let
+$Z_1,\ldots,Z_n$ be independent $p$-generalized Gaussians with density
+\[
+ f_p(z)=\frac{\exp(-|z|^p/p)}{2p^{1/p}\Gamma(1+1/p)},
+\]
+and let $W$ be exponential with rate $1/p$, all independent.  Equation (3.1)
+and item (i) on page 5 of \cite{APT2020} give
+\[
+ \frac{n^{1/p}}{\sqrt{k_n}}\|P_{E_n}X_n\|_2
+ \stackrel d=
+ G_n\,
+ \frac{(n^{-1}\sum_{i=1}^n Z_i^2)^{1/2}}
+ {(n^{-1}\sum_{i=1}^n |Z_i|^p+W/n)^{1/p}},
+\]
+where
+\[
+ G_n=\frac{(k_n^{-1}\sum_{i=1}^{k_n}g_i^2)^{1/2}}
+ {(n^{-1}\sum_{i=1}^n g_i^2)^{1/2}}.
+\]
+Since $\E Z_1^2=m_p$ and $\E|Z_1|^p=1$, define
+\[
+ R_n=\left(\frac{n^{-1}\sum Z_i^2}{m_p}\right)^{1/2}
+ \left(n^{-1}\sum |Z_i|^p+\frac Wn\right)^{-1/p}.
+\]
+Then
+\begin{equation}\label{eq:Xrep}
+ \Xscr_{n,p}\stackrel d=\sqrt{k_n}\,(G_nR_n-1).
+\end{equation}
+
+\medskip
+\noindent\textbf{Step 2: a deterministic one-big-jump event.}
+Set $L=12m_p$, and choose a sufficiently small fixed $\eta>0$.  Consider the
+intersection $A_n$ of the following events:
+\begin{align*}
+ L t_n\sqrt n&\le Z_1^2\le(L+1)t_n\sqrt n,\tag{A1}\\
+ \left|\sum_{i=2}^n(Z_i^2-m_p)\right|&\le\eta t_n\sqrt n,\tag{A2}\\
+ \left|\sum_{i=2}^n(|Z_i|^p-1)\right|&\le\eta t_n\sqrt n,\tag{A3}\\
+ W&\le\eta t_n\sqrt n,\tag{A4}\\
+ G_n&\ge1-\eta d_n.\tag{A5}
+\end{align*}
+On this event, for all sufficiently large $n$,
+\begin{equation}\label{eq:numerator}
+ \frac1n\sum_{i=1}^n Z_i^2
+ \ge m_p+(L-2\eta)d_n.
+\end{equation}
+Moreover,
+\[
+ \frac{Z_1^p}{n d_n}
+ \le (L+1)^{p/2}(t_n\sqrt n)^{p/2-1}\longrightarrow0,
+\]
+because $p/2-1<0$.  Hence (A3)--(A4) imply
+\begin{equation}\label{eq:denominator}
+ \frac1n\sum_{i=1}^n|Z_i|^p+\frac Wn\le1+3\eta d_n
+\end{equation}
+for large $n$.  Using
+$\sqrt{1+u}\ge1+u/3$ for small $u\ge0$ and
+$(1+v)^{-1/p}\ge1-v/p$ for $v\ge0$, equations
+\eqref{eq:numerator}--\eqref{eq:denominator} yield
+\[
+ G_nR_n\ge
+ (1-\eta d_n)
+ \left(1+\frac{L-2\eta}{3m_p}d_n\right)
+ \left(1-\frac{3\eta}{p}d_n\right).
+\]
+Because $L/(3m_p)=4$, we may first choose $\eta$ small and then $n$ large so
+that
+\begin{equation}\label{eq:detlower}
+ G_nR_n\ge1+3d_n.
+\end{equation}
+Combining \eqref{eq:Xrep} and \eqref{eq:detlower},
+\[
+ \frac{\Xscr_{n,p}}{t_n}
+ \ge 3\sqrt{\frac{k_n}{n}}>1
+\]
+for all sufficiently large $n$.
+
+\medskip
+\noindent\textbf{Step 3: logarithmic cost.}
+The variables in (A5), (A4), (A1), and (A2)--(A3) are independent across
+the indicated Gaussian, $W$, first-coordinate, and remaining-coordinate
+blocks.  Since all moments of $Z_i$ are finite, Chebyshev's inequality gives
+\[
+ \Pp((\mathrm{A2})\cap(\mathrm{A3}))\longrightarrow1.
+\]
+Also $\Pp(\mathrm{A4})\to1$.  Finally,
+$G_n-1=O_{\Pp}(n^{-1/2})$, whereas $d_n=t_n n^{-1/2}$ with $t_n\to\infty$,
+so $\Pp(\mathrm{A5})\to1$.
+
+Write $a_n=(Lt_n\sqrt n)^{1/2}$ and
+$b_n=((L+1)t_n\sqrt n)^{1/2}$.  The displayed density gives the elementary
+lower bound
+\begin{align*}
+ \Pp(\mathrm{A1})
+ &=2\int_{a_n}^{b_n}f_p(z)\,dz\\
+ &\ge c_p(b_n-a_n)\exp(-b_n^p/p),
+\end{align*}
+where $c_p>0$.  Therefore
+\begin{equation}\label{eq:cost}
+ \log\Pp(A_n)
+ \ge-\frac{(L+1)^{p/2}}p(t_n\sqrt n)^{p/2}
+ +O(\log n+\log t_n)+o(1).
+\end{equation}
+The chosen scale makes
+\[
+ \frac{(t_n\sqrt n)^{p/2}}{t_n^2}
+ =n^{(p-2)/4}\longrightarrow0.
+\]
+Dividing \eqref{eq:cost} by $t_n^2$ shows
+\[
+ \liminf_{n\to\infty}\frac1{t_n^2}
+ \log\Pp\!\left(\frac{\Xscr_{n,p}}{t_n}\ge1\right)\ge0.
+\]
+The reverse inequality is automatic because probabilities are at most one,
+so the asserted limit is zero.
+
+\medskip
+\noindent\textbf{Step 4: contradiction to the proposed MDP.}
+If $\Xscr_{n,p}/t_n$ obeyed an MDP with speed $t_n^2$ and rate
+$I(x)=\alpha_{p,1/2}x^2$ with $\alpha_{p,1/2}>0$, the large-deviation upper
+bound for the closed set $[1,\infty)$ would give
+\[
+ \limsup_{n\to\infty}\frac1{t_n^2}
+ \log\Pp\!\left(\frac{\Xscr_{n,p}}{t_n}\ge1\right)
+ \le-\alpha_{p,1/2}<0,
+\]
+contradicting the limit just proved.
+\end{proof}
+
+\section{Verification and scope}
+
+The algebraic checks are:
+\[
+ \frac1{4-p}<\frac12,
+ \qquad
+ \frac1{4-p}>\frac{p}{2(4-p)},
+ \qquad
+ \frac{(t_n\sqrt n)^{p/2}}{t_n^2}=n^{(p-2)/4}.
+\]
+Thus the example lies inside the source's subcritical scale window but above
+the Gaussian-to-one-big-jump crossover for every $p<2$.  The included script
+checks these identities numerically over a grid of $p$ values.  No numerical
+claim is used in the proof.
+
+This result resolves only the final $p<2$ question in Remark 1.1(c).  It does
+not address the preceding questions about supercritical $t_n$ or the gap
+between the two conditions relating $t_n$ and $n-k_n$.
+
+\section{Novelty check}
+
+On 22 July 2026 we searched the run indexes and arXiv/web exact phrases for
+the source title, ``same also for $1\le p<2$'', ``subcritical scales'',
+``$p$-generalized Gaussian moderate deviations'', and random projections of
+$\ell_p^n$-balls.  No paper explicitly answering Remark 1.1(c) was found.
+Tuchel--Gantert--Prochno \cite{TGP2026} give a general 2026 description of
+Gaussian and few-big-jump regimes for stretched-exponential sums, but their
+paper neither cites arXiv:2003.11442 nor states this projected-norm
+counterexample.  The proof above is self-contained once the exact
+representation from the source is granted.  Novelty confidence is therefore
+medium-high; a reviewer should still run a citation-database search.
+
+\begin{thebibliography}{9}
+\bibitem{APT2020}
+D. Alonso-Guti\'errez, J. Prochno, and C. Th\"ale,
+\emph{Large deviations, moderate deviations, and the KLS conjecture},
+arXiv:2003.11442 (2020).
+
+\bibitem{TGP2026}
+P. Tuchel, N. Gantert, and J. Prochno,
+\emph{Large deviations for sums of multivariate stretched-exponential random
+variables: the few-big-jumps principle}, arXiv:2602.01168 (2026).
+\end{thebibliography}
+
+\end{document}

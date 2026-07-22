@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\id}{\mathrm{Id}}
+\newcommand{\tr}{\operatorname{Tr}}
+
+\title{The quadratic quantum Wasserstein channel complexity\\
+is not convex}
+\author{Candidate counterexample for arXiv:2402.13150\\
+Run \texttt{fa\_banach\_001}, lane 10, model GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{
+\textbf{Status.} Candidate counterexample likely valid; full negative answer
+to the channel-complexity convexity question in Section~5.1 of
+arXiv:2402.13150.  On one qubit, for the source paper's symmetric Pauli cost,
+the mixture of the identity channel and the Pauli-$X$ channel violates the
+convexity inequality.  All estimates are exact and finite-dimensional.
+}}
+\end{center}
+
+\section{Source question}
+
+Bunth, Pitrik, Titkos, and Virosztek define, for a finite collection of
+observables $\mathcal A=\{A_1,\ldots,A_k\}$, the channel Wasserstein
+complexity
+\begin{equation}\label{eq:complexity}
+ C_W(\Phi)=\max_{\rho\in\cS(\mathcal H)}
+ d_{\mathcal A}(\rho,\Phi(\rho)),
+\end{equation}
+where $d_{\mathcal A}$ is their modified quadratic quantum Wasserstein
+divergence \cite{BPVT}.  At the end of Section~5.1 (printed page 18), they
+write:
+\begin{quote}
+``We note that whether the Wasserstein complexity (37) is convex or not is an
+open question.''
+\end{quote}
+The original passage is reproduced in Figure~\ref{fig:problem}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+  \caption{The open question in arXiv:2402.13150v4, printed page 18.}
+  \label{fig:problem}
+\end{figure}
+
+Here convexity has its standard meaning on the convex set of quantum
+channels:
+\[
+ C_W((1-t)\Phi_0+t\Phi_1)
+ \leq (1-t)C_W(\Phi_0)+tC_W(\Phi_1),\qquad 0\leq t\leq1.
+\]
+
+\section{Definitions and proof intuition}
+
+For two states $\rho,\omega$, let
+\[
+ D_{\mathcal A}^2(\rho,\omega)
+ =\min_{\Pi\in\mathcal C(\rho,\omega)}\tr(C_{\mathcal A}\Pi),
+ \qquad
+ C_{\mathcal A}=\sum_j(A_j\otimes I-I\otimes A_j^T)^2,
+\]
+with the coupling convention of \cite{BPVT}.  The modified divergence is
+\begin{equation}\label{eq:ddef}
+ d_{\mathcal A}^2(\rho,\omega)
+ =D_{\mathcal A}^2(\rho,\omega)
+ -\frac12\bigl(D_{\mathcal A}^2(\rho,\rho)
+                 +D_{\mathcal A}^2(\omega,\omega)\bigr).
+\end{equation}
+
+\paragraph{Proof intuition.}
+Take the source paper's own symmetric qubit cost
+$\mathcal A_s=\{\sigma_x,\sigma_y,\sigma_z\}$.  Mix the identity channel with
+the bit flip $\mathsf X(\rho)=\sigma_x\rho\sigma_x$.  Convexity would make the
+complexity of this mixture grow at most linearly in the mixing parameter
+$t$.  But on the pure input $|0\rangle\langle0|$, the output immediately
+acquires a second eigenvalue $t$.  The square root in the definition of
+$d_s$ produces an exact term $\sqrt{t(1-t)}$ in $d_s^2$, and hence
+$d_s\asymp t^{1/4}$.  This is much larger than a linear function near zero.
+
+Only one global estimate is needed: the Pauli cost operator equals
+$8(I-|\Omega\rangle\langle\Omega|)$, so every channel has complexity at most
+$2\sqrt2$.  At $t=1/4$, this upper bound on the convexity right-hand side is
+$\sqrt2/2$, while the single pure input gives the exact lower bound
+$\sqrt{1+\sqrt3}$.
+
+\section{Two elementary Pauli calculations}
+
+Write
+\[
+ \sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+ \sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad
+ \sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
+\]
+and abbreviate $D_s=D_{\mathcal A_s}$ and $d_s=d_{\mathcal A_s}$ as in the
+source paper.
+
+\begin{lemma}[Pure-input formula]\label{lem:pure}
+If at least one of $\rho,\omega\in\cS(\C^2)$ is pure, then
+\begin{equation}\label{eq:pure}
+ d_s^2(\rho,\omega)=\sum_{j=x,y,z}
+ \left\{
+ \tr(\sqrt\rho\,\sigma_j\sqrt\rho\,\sigma_j)
+ +\tr(\sqrt\omega\,\sigma_j\sqrt\omega\,\sigma_j)
+ -2\tr(\rho\sigma_j)\tr(\omega\sigma_j)
+ \right\}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+When one marginal is pure, its only coupling with the other state is the
+product coupling.  Expanding its cost gives
+\[
+ D_s^2(\rho,\omega)=\sum_j
+ \bigl(\tr(\rho\sigma_j^2)+\tr(\omega\sigma_j^2)
+ -2\tr(\rho\sigma_j)\tr(\omega\sigma_j)\bigr).
+\]
+For any state $\tau$, the canonical purification realizes the self-cost and
+gives
+\[
+ D_s^2(\tau,\tau)=2\sum_j
+ \bigl(\tr(\tau\sigma_j^2)
+ -\tr(\sqrt\tau\,\sigma_j\sqrt\tau\,\sigma_j)\bigr).
+\]
+Substitution in \eqref{eq:ddef} proves \eqref{eq:pure}.  These are also the
+source paper's displayed pure-state and self-cost formulas
+\cite[Sec.~2]{BPVT}.
+\end{proof}
+
+\begin{lemma}[Uniform diameter bound]\label{lem:diameter}
+For every pair of qubit states, $d_s(\rho,\omega)\leq2\sqrt2$.  Consequently,
+$C_W(\Phi)\leq2\sqrt2$ for every qubit channel $\Phi$.
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ |\Omega\rangle=\frac1{\sqrt2}(|00\rangle+|11\rangle).
+\]
+The Pauli expansion of the maximally entangled projection is
+\[
+ \sum_{j=x,y,z}\sigma_j\otimes\sigma_j^T
+ =4|\Omega\rangle\langle\Omega|-I.
+\]
+Since $\sigma_j^2=I$,
+\begin{align*}
+ C_s&=\sum_j(\sigma_j\otimes I-I\otimes\sigma_j^T)^2\\
+ &=6I-2\sum_j\sigma_j\otimes\sigma_j^T
+ =8(I-|\Omega\rangle\langle\Omega|).
+\end{align*}
+Thus $0\leq C_s\leq8I$.  Every coupling has cost at most $8$, so
+$D_s^2(\rho,\omega)\leq8$.  Formula \eqref{eq:ddef} subtracts nonnegative
+self-costs; hence $d_s^2\leq D_s^2\leq8$.  Maximizing over $\rho$ proves the
+channel bound.  The same spectral decomposition appears in
+\cite[Eq.~(24)]{BPVT}.
+\end{proof}
+
+\section{The counterexample}
+
+Let $\mathsf X$ be the Pauli bit-flip channel and define
+\begin{equation}\label{eq:channel}
+ \mathsf X(\rho)=\sigma_x\rho\sigma_x,
+ \qquad
+ \Lambda_t=(1-t)\id+t\mathsf X.
+\end{equation}
+
+\begin{theorem}\label{thm:counterexample}
+For the symmetric Pauli quadratic Wasserstein divergence on one qubit, the
+channel complexity \eqref{eq:complexity} is not convex.  Explicitly,
+\[
+ C_W\!\left(\frac34\id+\frac14\mathsf X\right)
+ \geq\sqrt{1+\sqrt3}
+ >\frac{\sqrt2}{2}
+ \geq\frac34C_W(\id)+\frac14C_W(\mathsf X).
+\]
+\end{theorem}
+
+\begin{proof}
+Use the pure input
+\[
+ \rho_0=|0\rangle\langle0|,
+ \qquad
+ \omega_t=\Lambda_t(\rho_0)
+ =\begin{pmatrix}1-t&0\\0&t\end{pmatrix}.
+\]
+Apply Lemma~\ref{lem:pure}.  For $\sigma_z$, the three terms in braces are
+\[
+ 1+1-2(1)(1-2t)=4t.
+\]
+For each of $\sigma_x$ and $\sigma_y$, both expectation values and the
+$\rho_0$ square-root term vanish, while
+\[
+ \tr(\sqrt{\omega_t}\,\sigma_j\sqrt{\omega_t}\,\sigma_j)
+ =2\sqrt{t(1-t)}.
+\]
+Therefore
+\begin{equation}\label{eq:exactcurve}
+ d_s^2(\rho_0,\Lambda_t(\rho_0))
+ =4t+4\sqrt{t(1-t)},
+\qquad
+ C_W(\Lambda_t)\geq
+ \sqrt{4t+4\sqrt{t(1-t)}}.
+\end{equation}
+At $t=1/4$, this lower bound is $\sqrt{1+\sqrt3}$.
+
+On the other hand, $C_W(\id)=0$ because $d_s(\rho,\rho)=0$.  By
+Lemma~\ref{lem:diameter}, $C_W(\mathsf X)\leq2\sqrt2$.  If $C_W$ were convex,
+then
+\[
+ C_W(\Lambda_{1/4})
+ \leq\frac34C_W(\id)+\frac14C_W(\mathsf X)
+ \leq\frac{\sqrt2}{2}.
+\]
+This contradicts \eqref{eq:exactcurve}, since
+$1+\sqrt3>1/2$.  Hence $C_W$ is not convex.
+\end{proof}
+
+\begin{remark}[Robust mechanism]
+Equation \eqref{eq:exactcurve} gives
+$C_W(\Lambda_t)\geq2t^{1/4}(1+o(1))$ as $t\downarrow0$, whereas convexity
+would give $C_W(\Lambda_t)\leq2\sqrt2\,t$.  Thus the violation holds for an
+interval of small positive $t$ and is not a numerical coincidence at
+$t=1/4$.
+\end{remark}
+
+\section{Verification, scope, and novelty}
+
+The proof is exact; no numerical optimization over couplings or states is
+used.  The accompanying script \texttt{code/verify\_counterexample.py}
+symbolically checks the Pauli cost identity, its spectrum, the three terms in
+\eqref{eq:pure}, and the strict convexity gap at $t=1/4$.  It is a redundant
+finite-dimensional check, not a substitute for the proof.
+
+The counterexample answers exactly the question as stated: the observable
+collection is the source paper's standard symmetric Pauli choice, both
+endpoints and their mixture are quantum channels, and the same divergence
+and maximization as equation (37) are used.  It does not assert that every
+other quantum Wasserstein channel complexity is nonconvex, nor does it address
+convexity notions for the different order-one/Hamming-Wasserstein complexity.
+
+A bounded literature search was performed on 22 July 2026 using the exact
+source sentence, the source title and arXiv id, and combinations of
+``quantum Wasserstein complexity,'' ``convex,'' ``channel,'' ``Pauli,'' and
+``quadratic divergence.''  The local run indexes were also searched.  No
+prior answer to this exact Section~5.1 question was found.  Search hits about
+convexity concerned different order-one or resource-dependent channel
+complexities.  Novelty is therefore plausible but not certified.
+
+The source paper's separate De Palma--Trevisan triangle-inequality conjecture
+is no longer open: Wirth subsequently proved it in full generality
+\cite{Wirth}.  That literature update is why the present packet targets the
+still-distinct channel-complexity question rather than claiming a new proof of
+the paper's main conjecture.
+
+\paragraph{Human-review recommendation.}
+High priority and low expected effort.  Check (i) the pure-input formula's
+normalization against equation (37), (ii) the identity
+$C_s=8(I-|\Omega\rangle\langle\Omega|)$, and (iii) that convexity is meant on
+the affine space of channels.  These three checks reproduce the entire
+argument.
+
+\begin{thebibliography}{9}
+\setlength{\itemsep}{0.6em}
+
+\bibitem{BPVT}
+G.~Bunth, J.~Pitrik, T.~Titkos, and D.~Virosztek,
+\emph{On the metric property of quantum Wasserstein divergences},
+arXiv:2402.13150v4 (2025), especially Sections 2, 3.1, and 5.1.
+
+\bibitem{Wirth}
+M.~Wirth,
+\emph{Triangle Inequality for a Quantum Wasserstein Divergence},
+arXiv:2511.20450 (2025).
+
+\end{thebibliography}
+
+\end{document}

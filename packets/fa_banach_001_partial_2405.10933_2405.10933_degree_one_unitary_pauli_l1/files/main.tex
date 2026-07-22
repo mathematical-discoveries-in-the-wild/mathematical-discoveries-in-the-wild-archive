@@ -1,0 +1,379 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\A}{\mathcal A}
+
+\title{A sharp Pauli $\ell_1$ bound for degree-one unitaries\\
+and a collision-free higher-degree criterion}
+\author{Candidate partial result for arXiv:2405.10933}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate partial result, likely valid, pending
+human review.  The full question remains open for fixed degrees $d\ge2$.
+
+\section{Source question}
+
+Arunachalam, Dutt, Escudero Guti\'errez, and Palazuelos ask the following in
+Question 4 on page 6 of \cite{ADGP}.
+
+\begin{quote}
+Is there a constant $C(d)$ such that
+\[
+ \sum_{x\in\{0,1,2,3\}^n}|\widehat U(x)|\le C(d)
+\]
+for every $n$-qubit degree-$d$ unitary $U$?
+\end{quote}
+
+Here $U=\sum_x\widehat U(x)\sigma_x$ is the Pauli expansion and the degree is
+the largest number of nonidentity tensor factors in a Pauli string having a
+nonzero coefficient.  We write
+\[
+ \A(U):=\sum_x|\widehat U(x)|.
+\]
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The definition and Question 4 in the source paper \cite[p.~6]{ADGP}.}
+\end{figure}
+
+\section{Proof intuition}
+
+At degree one, separate the identity coefficient from the traceless local
+piece on each qubit.  Unitarity has a separate equation on every two-qubit
+support.  That equation is a sum of two simple tensors, so it can vanish only
+when each local piece is a phase times a Hermitian matrix.  Two active qubits
+must carry phases differing by $\pi/2$; three active qubits would impose three
+mutually incompatible phase differences.  Thus a degree-one unitary is
+automatically a two-qubit junta.  The remaining estimate is the sharp
+$\ell_1$--$\ell_2$ inequality for two three-dimensional Pauli vectors.
+
+This proves only the first nontrivial degree.  Tensoring its extremizer gives
+an exponential lower bound on any possible constants in the full problem.
+For higher degree, a Hermitian dilation reduces arbitrary unitaries to
+Hermitian involutions at the cost of one degree.  We also isolate a concrete
+mechanism that every difficult example must use: if the products of distinct
+commuting Pauli strings in the Fourier support do not collide, then the
+support is pairwise anticommuting and a sunflower argument gives an explicit
+dimension-free bound.
+
+\section{Sharp degree-one theorem}
+
+We use the normalized Hilbert--Schmidt inner product
+$\langle A,B\rangle=2^{-n}\Tr(A^*B)$, for which the Pauli strings are
+orthonormal.  Hence every unitary satisfies
+\begin{equation}\label{eq:parseval}
+ \sum_x|\widehat U(x)|^2=1.
+\end{equation}
+
+\begin{lemma}[two-tensor dependence]\label{lem:tensor}
+Let $x,x'$ be nonzero vectors in a complex vector space $E$ and let $y,y'$ be
+nonzero vectors in a complex vector space $F$.  If
+\[
+ x'\otimes y+x\otimes y'=0,
+\]
+then there is a nonzero scalar $\lambda$ such that
+$x'=\lambda x$ and $y'=-\lambda y$.
+\end{lemma}
+
+\begin{proof}
+If $x'$ were not in the span of $x$, there would be a linear functional
+$\varphi$ on $E$ with $\varphi(x)=0$ and $\varphi(x')=1$.  Applying
+$\varphi\otimes\mathrm{id}_F$ would give $y=0$, a contradiction.  Thus
+$x'=\lambda x$, and substitution gives $y'=-\lambda y$.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Let $U$ be an $n$-qubit unitary of Pauli degree at most one.  Then:
+\begin{enumerate}
+\item $U$ acts nontrivially on at most two qubits;
+\item $\A(U)\le\sqrt6$;
+\item the constant $\sqrt6$ is attained.
+\end{enumerate}
+Consequently the optimal constant in Question 4 at degree one is
+$C(1)=\sqrt6$.
+\end{theorem}
+
+\begin{proof}
+Write
+\begin{equation}\label{eq:decomp}
+ U=aI+\sum_{j=1}^n B_j^{(j)},
+ \qquad
+ B_j=b_{j1}X+b_{j2}Y+b_{j3}Z,
+\end{equation}
+where the superscript means that $B_j$ acts on the $j$th qubit and as the
+identity elsewhere.  Call $j$ active when $B_j\ne0$.
+
+Fix two distinct active qubits $j,k$.  The component of $U^*U=I$ supported
+exactly on $\{j,k\}$ is
+\begin{equation}\label{eq:cross}
+ B_j^*\otimes B_k+B_j\otimes B_k^*=0.
+\end{equation}
+Lemma~\ref{lem:tensor} gives a scalar $\lambda_{jk}$ such that
+\[
+ B_j^*=\lambda_{jk}B_j,
+ \qquad B_k^*=-\lambda_{jk}B_k.
+\]
+Taking adjoints twice shows $|\lambda_{jk}|=1$.  Thus every local piece having
+an active partner can be written
+\[
+ B_j=e^{i\theta_j}H_j
+\]
+with $H_j$ nonzero, Hermitian, and traceless.  Equation
+\eqref{eq:cross} is then equivalent to
+\begin{equation}\label{eq:phase}
+ \theta_j-\theta_k\equiv\frac{\pi}{2}\pmod\pi.
+\end{equation}
+There cannot be three active qubits: if $j,k,\ell$ were active, the equations
+for $(j,k)$ and $(j,\ell)$ would give
+$\theta_k\equiv\theta_\ell\pmod\pi$, contradicting the equation for
+$(k,\ell)$.  This proves the junta assertion.
+
+If no qubit is active, then $\A(U)=1$.  If exactly one is active, $U$ is an
+embedded one-qubit unitary.  It has at most four Pauli coefficients, so
+\eqref{eq:parseval} and Cauchy--Schwarz give $\A(U)\le2$.
+
+It remains to consider exactly two active qubits.  Relabel them $1,2$.  Write
+$B_j=e^{i\theta_j}H_j$ as above.  Since a traceless Hermitian $2\times2$
+matrix is $H_j=h_j\cdot(X,Y,Z)$ with $h_j\in\mathbb R^3$, we have
+\[
+ H_j^2=r_j^2I,\qquad r_j:=\|h_j\|_2.
+\]
+The one-qubit components of $U^*U=I$ say
+\[
+ \Re(\overline a e^{i\theta_1})=0,
+ \qquad
+ \Re(\overline a e^{i\theta_2})=0.
+\]
+Because the two phases differ by $\pi/2$ modulo $\pi$, these two real
+equations force $a=0$.  The scalar component now gives
+\begin{equation}\label{eq:radii}
+ r_1^2+r_2^2=1.
+\end{equation}
+After a global phase and absorbing a sign into $H_2$, the unitary therefore
+has the normal form
+\begin{equation}\label{eq:normal}
+ U=H_1+iH_2,
+ \qquad H_j=h_j\cdot(X,Y,Z),\qquad
+ \|h_1\|_2^2+\|h_2\|_2^2=1,
+\end{equation}
+where the two terms act on distinct qubits.  Hence
+\[
+ \A(U)=\|h_1\|_1+\|h_2\|_1
+ \le\sqrt3(r_1+r_2)
+ \le\sqrt6,
+\]
+where both inequalities are Cauchy--Schwarz and the last uses
+\eqref{eq:radii}.
+
+For sharpness, put $Q=(X+Y+Z)/\sqrt3$.  The Pauli anticommutation relations
+give $Q^2=I$.  Since $Q\otimes I$ and $I\otimes Q$ commute,
+\begin{equation}\label{eq:extremizer}
+ U_\star=\frac{Q\otimes I+iI\otimes Q}{\sqrt2}
+\end{equation}
+is unitary.  It has six nonzero degree-one Pauli coefficients, each of
+modulus $1/\sqrt6$, so $\A(U_\star)=\sqrt6$.
+\end{proof}
+
+\begin{corollary}[Hermitian subcase]
+Every Hermitian degree-at-most-one unitary is a one-qubit junta and satisfies
+$\A(U)\le\sqrt3$.  The constant $\sqrt3$ is sharp.
+\end{corollary}
+
+\begin{proof}
+In the Hermitian case all $B_j$ in \eqref{eq:decomp} are Hermitian, so
+\eqref{eq:cross} becomes $2B_j\otimes B_k=0$.  Thus at most one qubit is
+active.  A non-scalar Hermitian one-qubit unitary is traceless and has the
+form $h\cdot(X,Y,Z)$ for a real unit vector $h$.  Its coefficient $\ell_1$
+norm is at most $\sqrt3$, with equality at $Q$ above.
+\end{proof}
+
+\section{Necessary growth in higher degree}
+
+\begin{corollary}\label{cor:lower}
+If constants $C(d)$ as in Question 4 exist, then for every positive integer
+$d$,
+\[
+ C(d)\ge 6^{d/2}.
+\]
+\end{corollary}
+
+\begin{proof}
+Take $U_\star^{\otimes d}$ on $2d$ qubits.  Pauli degree is additive under
+tensor products, while Pauli coefficient $\ell_1$ norm is multiplicative.
+Thus this unitary has degree exactly $d$ and
+\[
+ \A(U_\star^{\otimes d})=\A(U_\star)^d=(\sqrt6)^d.
+\]
+\end{proof}
+
+\section{Hermitian dilation and a collision-free criterion}
+
+The next two statements do not settle Question~4 for $d\ge2$, but they reduce
+the arbitrary-unitary problem to the Hermitian one and identify a necessary
+additive-combinatorial feature of any difficult support.
+
+For a canonical Pauli string $P\in\{I,X,Y,Z\}^{\otimes n}$, write $[P]$ for
+its label modulo scalar phase.  Thus, if $P$ and $Q$ commute, then
+$PQ=\pm R$ for the unique canonical Pauli string $R$ with $[R]=[P][Q]$.
+
+\begin{lemma}[Hermitian dilation]\label{lem:dilation}
+Suppose that every Hermitian unitary of Pauli degree at most $d+1$ has Pauli
+coefficient $\ell_1$ norm at most $H(d+1)$.  Then every unitary $U$ of Pauli
+degree at most $d$ satisfies
+\[
+ \A(U)\le H(d+1).
+\]
+\end{lemma}
+
+\begin{proof}
+Write $U=A+iB$, where
+\[
+ A=\frac{U+U^*}{2},\qquad B=\frac{U-U^*}{2i}
+\]
+are Hermitian, and introduce one ancilla qubit.  The block matrix
+\[
+ F=\begin{pmatrix}0&U\\ U^*&0\end{pmatrix}
+   =X\otimes A-Y\otimes B
+\]
+is a Hermitian unitary of Pauli degree at most $d+1$.  If
+$\widehat U(P)=\alpha_P+i\beta_P$, then $\widehat A(P)=\alpha_P$ and
+$\widehat B(P)=\beta_P$.  The $X$ and $Y$ parts of the dilation have disjoint
+Pauli supports, so
+\[
+ \A(F)=\sum_P\bigl(|\alpha_P|+|\beta_P|\bigr)
+ \ge \sum_P|\alpha_P+i\beta_P|=\A(U).
+\]
+The asserted bound follows.
+\end{proof}
+
+\begin{theorem}[collision-free support]\label{thm:collisionfree}
+Let
+\[
+ F=\sum_{P\in\mathcal S}a_P P,\qquad a_P\in\mathbb R\setminus\{0\},
+\]
+be a Hermitian unitary of Pauli degree at most $d$.  Assume that the product
+labels of distinct commuting pairs in $\mathcal S$ are collision-free: if
+\[
+ P\ne Q,\quad R\ne S,\quad [P,Q]=[R,S]=0,
+ \quad [P][Q]=[R][S],
+\]
+then $\{P,Q\}=\{R,S\}$.  Then
+\begin{equation}\label{eq:collisionbound}
+ \A(F)\le \sqrt{M_d},\qquad
+ M_d:=1+\sum_{k=1}^d k!\,3^{k^2+k}.
+\end{equation}
+Consequently, if the support of the dilation in Lemma~\ref{lem:dilation} is
+collision-free, then
+\[
+ \A(U)\le\sqrt{M_{d+1}}.
+\]
+\end{theorem}
+
+\begin{proof}
+Expanding $F^2=I$ gives
+\[
+ F^2=\sum_{P\in\mathcal S}a_P^2I
+   +\sum_{\{P,Q\}\subset\mathcal S}a_Pa_Q\{P,Q\}.
+\]
+An anticommuting pair contributes zero.  A commuting pair contributes
+$\pm2a_Pa_QR$ for the canonical Pauli string with label $[P][Q]$.  Under the
+collision-free hypothesis, this nonzero coefficient cannot be cancelled by
+another pair.  Since every nonidentity coefficient of $F^2$ vanishes, no two
+distinct members of $\mathcal S$ commute.  Thus $\mathcal S$ is pairwise
+anticommuting.
+
+It remains to bound the size of a pairwise anticommuting family of Pauli
+strings of weight at most $d$.  Fix $k\ge1$ and consider the members with
+support size exactly $k$.  There are at most $3^k$ strings on any fixed
+support.  The Erd\H{o}s--Rado sunflower lemma \cite{ER} says that a family of more than
+$k!(r-1)^k$ distinct $k$-sets contains an $r$-petal sunflower.  Take
+$r=3^k+1$.  From such a sunflower choose one Pauli string on each support.
+Two of the chosen strings have the same Pauli labels on the common core, by
+pigeonhole.  Their petals are disjoint, so these two strings commute, a
+contradiction.  Hence there are at most $k!3^{k^2}$ distinct supports of size
+$k$, and therefore at most $k!3^{k^2+k}$ strings at that level.  Adding the
+possible identity string proves $|\mathcal S|\le M_d$.
+
+Finally Parseval gives $\sum_{P\in\mathcal S}a_P^2=1$, and Cauchy--Schwarz
+gives $\A(F)\le\sqrt{|\mathcal S|}\le\sqrt{M_d}$.  The last assertion follows
+from Lemma~\ref{lem:dilation}.
+\end{proof}
+
+\paragraph{Why the collision condition is substantive.}
+It is automatic at degree one after separating supports, but it can fail at
+degree two.  If $H_{ij}$ denotes the exact two-qubit component on
+$\{i,j\}$, then the four-qubit component of $F^2=I$ contains
+\[
+ \{H_{ij},H_{k\ell}\}+\{H_{ik},H_{j\ell}\}
+ +\{H_{i\ell},H_{jk}\}=0.
+\]
+The three perfect matchings of four vertices may therefore cancel.  For
+example, if every edge term uses a fixed Pauli label at each endpoint, all
+three products have the same four-qubit Pauli label.  This is exactly the
+collision phenomenon excluded in Theorem~\ref{thm:collisionfree}; controlling
+such structured collisions is the unresolved part of the full problem.
+
+\section{Verification, novelty, and limitations}
+
+The script \texttt{code/verify\_extremizer.py} checks unitarity, Pauli degree,
+and the coefficient norm of \eqref{eq:extremizer}, as well as coefficient
+norms of its first few tensor powers.  This is a finite consistency check and
+is not used in the proof.
+
+For novelty, searches were run through July 2026 for the exact wording of
+Question 4 and close variants involving ``degree-$d$ unitary'', ``Pauli
+coefficients'', ``Fourier $\ell_1$ norm'', and ``quantum Boolean degree one''.
+They located the source paper and the older Hermitian quantum-Boolean
+framework of Montanaro and Osborne \cite{MO}, but no later paper stating this
+sharp classification for arbitrary degree-one unitaries.  The latter paper's
+quantum FKN results cover a closely related Hermitian setting; the source
+question, however, ranges over arbitrary unitaries, and the sharp extremizer
+above is non-Hermitian.  Novelty confidence is moderate rather than
+definitive.
+
+The result does not provide an unconditional upper bound for any fixed
+$d\ge2$; the main question remains open there.  Corollary~\ref{cor:lower}
+only constrains the growth of a possible positive answer, while
+Theorem~\ref{thm:collisionfree} handles supports without repeated commuting
+products.  The small-coefficient example
+\[
+ \epsilon X\otimes X+\sqrt{1-\epsilon^2}\,Y\otimes I
+\]
+from \cite{MO} also shows why a proof cannot rely on a positive lower bound
+for nonzero coefficients or influences.
+
+\paragraph{Human-review recommendation.}
+Review as a likely-valid sharp partial answer.  The highest-value checks are
+Lemma~\ref{lem:tensor}, extraction of the two-qubit component
+\eqref{eq:cross}, the phase normalization leading to \eqref{eq:normal}, and
+the collision-free hypothesis in Theorem~\ref{thm:collisionfree}.
+
+\begin{thebibliography}{9}
+\bibitem{ADGP}
+S.~Arunachalam, A.~Dutt, F.~Escudero Guti\'errez, and C.~Palazuelos,
+\emph{Learning low-degree quantum objects}, arXiv:2405.10933, 2024.
+
+\bibitem{MO}
+A.~Montanaro and T.~J. Osborne,
+\emph{Quantum boolean functions}, Chicago Journal of Theoretical Computer
+Science 2010(1), 2010; arXiv:0810.2435.
+
+\bibitem{ER}
+P.~Erd\H{o}s and R.~Rado,
+\emph{Intersection theorems for systems of sets},
+Journal of the London Mathematical Society 35 (1960), 85--90.
+\end{thebibliography}
+
+\end{document}

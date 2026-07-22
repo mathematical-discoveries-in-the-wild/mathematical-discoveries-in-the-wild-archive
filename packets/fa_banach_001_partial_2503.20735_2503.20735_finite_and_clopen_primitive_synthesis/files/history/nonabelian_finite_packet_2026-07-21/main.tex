@@ -1,0 +1,305 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\A}{\mathcal A}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Prim}{\operatorname{Prim}}
+\newcommand{\hull}{\operatorname{hull}}
+\newcommand{\Ad}{\operatorname{Ad}}
+
+\title{Finite Primitive Sets Are Sets of Synthesis for\\
+$p$-Adic Unipotent Weighted Orlicz Algebras}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 2}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Question 8.12 of Carter's paper asks for geometric conditions on subsets of
+the primitive and coadjoint-orbit spectra which imply spectral synthesis for
+Hermitian weighted Orlicz algebras on unipotent $p$-adic groups.  We prove
+that every finite subset is a set of synthesis.  More generally, the result
+holds for every finite closed family of admissible primitive points of a
+locally elliptic group.  Carter's CCR theorem makes all primitive points
+admissible in the $p$-adic unipotent case.  The proof combines compact-open
+smoothing, finite-dimensional representation corners, finite Hecke algebras,
+and an exact central-support cutoff in Carter's generating ideal $j(C)$.
+We also retain the earlier compact-open synthesis theorem in the abelian case.
+\end{abstract}
+
+\paragraph{Status.}
+Candidate substantial partial result, likely valid, subject to human review.
+It completely establishes the geometric criterion ``$C$ is finite'' for all
+groups in Question 8.12, including nonabelian ones.  The source question is
+open-ended, and infinite subsets of nonabelian orbit spaces remain untreated.
+
+\section{Source question}
+
+The source is Max Carter, \emph{Weighted Orlicz $*$-algebras on locally
+elliptic groups}, arXiv:2503.20735v2, Question 8.12 on page 29
+\cite{Carter}.  Given a $p$-adic unipotent matrix group $N$, Carter identifies
+\[
+ \Prim_*(L^\Phi(N,\omega))\cong
+ \mathfrak n^*/\Ad^*(N)
+\]
+and asks which geometric properties of a subset $C$ imply
+$\ker(C)=j(C)$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 8.12, rendered from page 29 of
+  arXiv:2503.20735v2.}
+\end{figure}
+
+\section{Definitions}
+
+Let $G$ be locally elliptic, let $(\Phi,\Psi)$ be a complementary pair of
+Young functions with $\Phi\in\Delta_2$, and let $\omega$ be an
+$L^\Phi$-weight with $1/\omega\in L^\Psi(G)$.  Put
+\[
+  \A=L^\Phi(G,\omega)
+\]
+and assume that $\A$ is Hermitian.  Carter identifies the irreducible
+$*$-representations of $\A$ with the irreducible unitary representations of
+$G$ and defines, for closed $C\subseteq\Prim_*(\A)$,
+\[
+ \ker(C)=\bigcap_{P\in C}P.
+\]
+His smooth functional calculus produces a closed two-sided ideal $j(C)$ with
+$j(C)\subseteq\ker(C)$ and $\hull_*(j(C))=C$; the set $C$ is a
+\emph{set of synthesis} if $j(C)=\ker(C)$ \cite[Theorem 7.1]{Carter}.
+
+Write $\D(G)$ for the compactly supported locally constant functions on $G$.
+If $H\leq G$ is compact-open, set
+\[
+ e_H=\mu(H)^{-1}1_H.
+\]
+Then $e_H=e_H^*=e_H*e_H$, and $\pi(e_H)$ is the orthogonal projection onto
+the $H$-fixed vectors of a unitary representation $\pi$.  Call $\pi$
+\emph{admissible} if these fixed-vector spaces are finite dimensional for
+all compact-open $H$.
+
+\section{Proof intuition}
+
+There are two scales in the proof.  At the analytic scale, convolution on
+both sides by $e_H$ approximates the identity.  For a finite family of
+admissible representations, the smoothed algebra $e_H\A e_H$ is evaluated
+inside a finite direct sum of matrix algebras.  A bounded linear lift in that
+finite-dimensional image corrects dense test functions so that all selected
+representations annihilate them exactly.
+
+At the algebraic scale, every test function lies in a finite-dimensional
+Hecke algebra.  If all selected representations annihilate a test function
+$d$, they also annihilate the central support projection $p_d$ of $d$ in
+that Hecke algebra.  Carter's smooth functional calculus turns a scalar
+multiple of $p_d$ back into exactly $p_d$, placing it in $m(C)$.  Since
+$d=p_d*d$, the test function lies in $j(C)$.  Passing first through the
+finite corner and then through the compact-open approximate identity proves
+synthesis.  In the $p$-adic unipotent case, CCR makes every fixed-vector
+projection compact and therefore finite rank.
+
+\section{Finite Hecke support}
+
+\begin{lemma}[Dense locally finite test algebra]\label{lem:test}
+$\D(G)$ is dense in $\A$, and every $d\in\D(G)$ belongs to a
+finite-dimensional convolution $*$-subalgebra of $\D(G)$.
+\end{lemma}
+
+\begin{proof}
+The $\Delta_2$ hypothesis gives density of compactly supported functions in
+the weighted Orlicz space.  Since a locally elliptic group has a compact-open
+basis, uniform approximation on compact sets by locally constant step
+functions, together with local boundedness of $\omega$, gives density of
+$\D(G)$.
+
+Fix $d\in\D(G)$.  Its compact support is contained in a compact-open subgroup
+$K$.  Uniform local constancy on $K$ supplies an open subgroup of $K$ under
+whose left and right translations $d$ is invariant.  Replacing it by its
+normal core gives an open normal subgroup $H\triangleleft K$ with the same
+property.  The $H$-bi-invariant functions supported in $K$ form a
+finite-dimensional convolution $*$-algebra, isomorphic after Haar
+normalization to the finite group algebra $\mathbb C[K/H]$, and contain $d$.
+\end{proof}
+
+\begin{lemma}[Algebraic kernel elements lie in $j(C)$]\label{lem:algebraic}
+Let $C\subseteq\Prim_*(\A)$ be closed.  Then
+\[
+  \D(G)\cap\ker(C)\subseteq j(C).
+\]
+\end{lemma}
+
+\begin{proof}
+Take $d\in\D(G)\cap\ker(C)$ and place it, using
+Lemma~\ref{lem:test}, in a finite-dimensional convolution $*$-algebra $B$.
+Viewed in its faithful finite-dimensional regular representation, $B$ is a
+finite-dimensional $C^*$-algebra.  Let $p_d$ be the central support projection
+of $d$ in $B$, so the ideal generated by $d$ is $Bp_d$ and $p_d*d=d$.
+
+For every irreducible representation $\pi$ whose kernel lies in $C$, the
+kernel of the restricted $*$-representation $\pi|_B$ is an ideal containing
+$d$.  It therefore contains $p_d$, so $\pi(p_d)=0$.  Choose
+\[
+ 0<a<2\pi,\qquad a\lVert p_d\rVert_1\leq1.
+\]
+Carter's cutoff Proposition 5.5 provides $\varphi\in A_\gamma$ which is zero
+near $0$ and satisfies $\varphi(a)=1$.  Thus $\varphi\{ap_d\}\in m(C)$.
+Since $p_d*p_d=p_d$ and $\varphi(0)=0$, the defining power series for the
+functional calculus gives
+\[
+ \varphi\{ap_d\}=\varphi(a)p_d=p_d.
+\]
+Hence $p_d\in m(C)\subseteq j(C)$, and $d=p_d*d\in j(C)$.
+\end{proof}
+
+\section{Finite admissible sets}
+
+\begin{theorem}[Finite admissible synthesis]\label{thm:admissible}
+Let $C=\{\ker\pi_1,\ldots,\ker\pi_r\}$ be a finite closed subset of
+$\Prim_*(\A)$.  If every $\pi_i$ is admissible, then $C$ is a set of
+synthesis.
+\end{theorem}
+
+\begin{proof}
+Put $I=\ker(C)$.  Fix a compact-open subgroup $H\leq G$ and define
+\[
+ \A_H=e_H*\A*e_H,
+ \qquad
+ \D_H=e_H*\D(G)*e_H.
+\]
+The density in Lemma~\ref{lem:test} and boundedness of convolution by $e_H$
+show that $\D_H$ is dense in $\A_H$.  Consider
+\[
+ T_H:\A_H\longrightarrow
+ \bigoplus_{i=1}^r
+ \mathcal B(\mathcal H_{\pi_i}^H),
+ \qquad T_H(f)=(\pi_1(f),\ldots,\pi_r(f)).
+\]
+The codomain is finite dimensional by admissibility.  Therefore
+$T_H(\D_H)$ is a closed linear subspace.  Density implies
+\[
+ T_H(\D_H)=T_H(\A_H).
+\]
+Choose a linear right inverse
+\[
+ R_H:T_H(\A_H)\longrightarrow\D_H
+\]
+for $T_H$.  Its domain is finite dimensional, so $R_H$ is bounded for the
+$\A$-norm on its range.
+
+Let $f\in I$ and put $f_H=e_H*f*e_H$.  Then $f_H\in I\cap\A_H$.  Choose
+$d_n\in\D_H$ with $d_n\to f_H$ in $\A$ and set
+\[
+ h_n=d_n-R_H(T_H(d_n)).
+\]
+Since $T_H(f_H)=0$, continuity gives $T_H(d_n)\to0$, and boundedness of $R_H$
+gives $h_n\to f_H$.  Moreover $T_H(h_n)=0$, so
+$h_n\in\D(G)\cap I$.  Lemma~\ref{lem:algebraic} yields $h_n\in j(C)$, and
+closedness gives $f_H\in j(C)$.
+
+As $H$ shrinks to the identity, Carter's compact-neighbourhood approximate
+identity \cite[Proposition 2.16(ii)]{Carter} gives
+\[
+ e_H*f*e_H\longrightarrow f
+ \quad\text{in }\A.
+\]
+Thus $f\in j(C)$.  We have proved $I\subseteq j(C)$; the reverse inclusion is
+part of Carter's construction, so $I=j(C)$.
+\end{proof}
+
+\begin{corollary}[All finite coadjoint-orbit sets]\label{cor:padic}
+Let $N$ be a group of unipotent matrices over a $p$-adic field, and let
+$\A=L^\Phi(N,\omega)$ satisfy the hypotheses above.  Then every finite subset
+of
+\[
+ \mathfrak n^*/\Ad^*(N)\cong\Prim_*(\A)
+\]
+is a set of synthesis.
+\end{corollary}
+
+\begin{proof}
+Carter's Theorem 8.10 states that $N$ is CCR and identifies its unitary dual
+with the coadjoint-orbit space.  If $H\leq N$ is compact-open and $\pi$ is
+irreducible, then $\pi(e_H)$ belongs to
+$\pi(C^*(N))=\mathcal K(\mathcal H_\pi)$.  It is also an orthogonal
+projection, hence has finite rank.  Thus every irreducible representation is
+admissible.  The CCR property also makes primitive ideals maximal, so the
+primitive spectrum is $T_1$ and every finite subset is closed.  Apply
+Theorem~\ref{thm:admissible} and Carter's Corollary 8.11.
+\end{proof}
+
+\section{The retained abelian compact-open criterion}
+
+\begin{theorem}\label{thm:compactopen}
+If $G$ is abelian, every compact-open subset of the Pontryagin dual
+$\widehat G\cong\Prim_*(\A)$ is a set of synthesis.
+\end{theorem}
+
+\begin{proof}
+Fourier transformation maps $\D(G)$ onto $\D(\widehat G)$.  If a compact-open
+$U\subseteq\widehat G$ is disjoint from a closed $C$, let
+$e_U\in\D(G)$ satisfy $\widehat e_U=1_U$.  Scale $e_U$ to $h=ae_U$ with
+$0<a<2\pi$ and $\lVert h\rVert_1\leq1$.  Every representation in $C$
+annihilates $h$.  A Carter cutoff which is zero near $0$ and one at $a$ gives
+$\varphi\{h\}=e_U\in m(C)$.  Hence every test function whose Fourier support
+is contained in $U$ belongs to $j(C)$.
+
+Now let $C$ itself be compact-open and choose $q_C\in\D(G)$ with
+$\widehat q_C=1_C$.  For $f\in\ker(C)$, Fourier injectivity gives
+$f*q_C=0$.  If $f_n\in\D(G)$ tends to $f$, put
+\[
+ g_n=f_n-f_n*q_C.
+\]
+Then
+\[
+ \lVert g_n-f\rVert_\A
+ \leq(1+\lVert q_C\rVert_\A)\lVert f_n-f\rVert_\A\longrightarrow0,
+\]
+and the compact-open support of $\widehat g_n$ is disjoint from $C$.
+The cutoff argument gives $g_n\in j(C)$, hence $f\in j(C)$.  Therefore
+$\ker(C)=j(C)$.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+The proof uses no numerical computation.  Its critical points were checked
+independently: compact-open indicators are the source's approximate identity;
+CCR turns their represented projections into finite-rank projections; the
+right inverse is used only after fixing $H$, so no uniform bound as
+$H\downarrow\{e\}$ is required; and the central-support projection belongs
+to Carter's exact generating set $m(C)$.
+
+The result does not classify infinite subsets of a nonabelian orbit space.
+Local indexes and bounded arXiv searches on 21 July 2026 used the exact source
+id and combinations of ``spectral synthesis'', ``$p$-adic unipotent'',
+``finite sets'', ``singleton'', ``primitive spectrum'', and ``weighted
+Orlicz''.  No exact prior theorem was found.  Carter explicitly notes that
+even the unweighted $L^1(N)$ case would be novel \cite[Section 8.3]{Carter};
+novelty confidence is nevertheless only moderate pending expert review.
+
+\paragraph{Human-review recommendation.}
+Check Lemma~\ref{lem:algebraic}, especially the central support inside the
+finite Hecke algebra, and check the equality
+$T_H(\D_H)=T_H(\A_H)$ before the finite-dimensional lift is chosen.  These
+are the only new structural steps.
+
+\begin{thebibliography}{9}
+\bibitem{Carter}
+M.~Carter,
+\emph{Weighted Orlicz $*$-algebras on locally elliptic groups},
+Studia Math. \textbf{287} (2026), no.~2, 145--180;
+arXiv:2503.20735v2.
+\end{thebibliography}
+
+\end{document}

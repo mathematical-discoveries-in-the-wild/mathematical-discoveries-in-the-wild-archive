@@ -1,0 +1,293 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{statusblue}{HTML}{1F4E79}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\cnull}{c_0(X)}
+
+\title{A reflexive smooth support space preserving weak convergence}
+\author{Solution packet for arXiv:1505.06235}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{statusblue}{statusblue!5}{%
+\parbox{0.92\textwidth}{
+\textbf{Status: claimed full solution; likely valid.}
+Every weakly convergent sequence of Borel probability measures on a separable
+Banach space can be realized on one separable reflexive Banach subspace that
+is compactly embedded in the original space, has an equivalent
+Fr\'echet-differentiable norm, carries all the measures, and preserves their
+weak convergence.}}
+\end{center}
+
+\section{Source question}
+
+Ostrovsky and Sirota prove that weak convergence of probability measures on a
+separable Banach space $X$ can be preserved after passing to a separable
+Banach subspace compactly embedded in $X$ \cite{OS}.  In concluding
+remark~C on page~8, they recall Buldygin's theorem that a probability measure
+may be concentrated on such a subspace which is additionally reflexive and
+has a Fr\'echet-differentiable norm, and ask whether one can retain these
+``good'' properties while also preserving the weak convergence.  The source
+passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+In precise terms: if $\mu_n\Rightarrow\mu$ on $X$, can one choose a single
+separable reflexive Banach space $Y\subset X$, compactly embedded in $X$ and
+Fr\'echet-smoothly renormable, such that every $\mu_n$ and $\mu$ is
+concentrated on $Y$ and $\mu_n\Rightarrow\mu$ also as measures on $Y$?  The
+answer is yes.
+
+\section{Input theorem and proof intuition}
+
+We use the following published support theorem of Buldygin, in exactly the
+form recalled in the source paper \cite{Buldygin}: every Borel probability
+measure on a separable Banach space $B$ is concentrated on the range of a
+compact continuous injection $j:R\to B$, where $R$ is a separable reflexive
+Banach space.  The smooth norm will be recovered at the end by equivalent
+renorming.
+
+The main difficulty is that putting all measures on one reflexive support
+does not itself make the family tight in the stronger support norm.  We avoid
+this by using a Skorokhod coupling $\xi_n\to\xi$ almost surely and treating the
+whole difference sequence
+\[
+   D=(\xi_n-\xi)_{n\geq1}
+\]
+as one random variable with values in $\cnull$.  Buldygin's theorem puts $D$
+on a reflexive space $Z$ compactly embedded in $\cnull$.  Compactness makes
+the coordinate operators $Z\to X$ uniformly small in the tail.
+
+Those coordinate ranges still need to be assembled inside one reflexive
+subspace of $X$.  We group them into finite blocks, take an $\ell_1$-sum
+inside each block, and an $\ell_2$-sum across blocks.  Increasing block
+weights make the norm of the $n$th coordinate tend to zero, while sufficiently
+small coordinate-operator tails make the assembled operator compact.  This
+is the only new mechanism in the proof.
+
+\section{Compact coordinate assembly}
+
+For $n\geq1$, let $Q_n:\cnull\to X$ be the $n$th coordinate map.
+
+\begin{lemma}[reflexive coordinate assembly]\label{lem:assembly}
+Let $Z$ be a separable reflexive Banach space and
+$J:Z\to\cnull$ a compact operator.  Set $A_n=Q_nJ$.  Then there are a
+separable reflexive Banach space $\mathcal E$ and a compact operator
+$T:\mathcal E\to X$ such that
+\[
+  A_nz\in T(\mathcal E)
+  \quad\text{and}\quad
+  \|A_nz\|_{T(\mathcal E)}\longrightarrow0
+  \qquad(z\in Z),
+\]
+where the range is equipped with the quotient norm induced by $T$.
+\end{lemma}
+
+\begin{proof}
+Compact subsets of $\cnull$ have uniformly vanishing coordinate tails.
+Indeed, this follows by taking a finite uniform-norm net and then taking a
+common tail for its finitely many centers.  Applied to the closure of
+$J(B_Z)$, this gives
+\begin{equation}\label{eq:tail}
+  \sup_{n\geq N}\|A_n\|\longrightarrow0.
+\end{equation}
+
+Choose integers
+\[
+  1=N_1<N_2<N_3<\cdots
+\]
+so that, for $k\geq2$,
+\begin{equation}\label{eq:blocksmall}
+  \sup_{n\geq N_k}\|A_n\|\leq4^{-k}.
+\end{equation}
+Put $I_k=\{N_k,\ldots,N_{k+1}-1\}$ and
+\[
+  E_k=\ell_1(I_k;Z),
+  \qquad
+  \mathcal E=\left(\bigoplus_{k\geq1}E_k\right)_{\ell_2}.
+\]
+Each $I_k$ is finite, hence each $E_k$ is reflexive; consequently
+$\mathcal E$ is reflexive and separable.  Define
+\begin{equation}\label{eq:T}
+  T((z_n)_{n\geq1})
+  =\sum_{k\geq1}2^k\sum_{n\in I_k}A_nz_n.
+\end{equation}
+The norm of the $k$th block map is at most
+\[
+  \beta_k:=2^k\sup_{n\in I_k}\|A_n\|.
+\]
+Here $\beta_1<\infty$ and, by \eqref{eq:blocksmall},
+$\beta_k\leq2^{-k}$ for $k\geq2$.  Thus $(\beta_k)\in\ell_2$, and
+Cauchy--Schwarz shows that the series in \eqref{eq:T} converges and defines a
+bounded operator.
+
+Each $A_n=Q_nJ$ is compact.  Therefore every finite block truncation of $T$
+is compact, while the operator norm of the omitted tail is at most
+\[
+  \left(\sum_{k>K}\beta_k^2\right)^{1/2}\longrightarrow0.
+\]
+Hence $T$ is compact.
+
+If $n\in I_k$ and $z\in Z$, place $2^{-k}z$ in the $n$th coordinate of
+$E_k$ and zero elsewhere.  Formula \eqref{eq:T} maps this vector to $A_nz$,
+and its $\mathcal E$-norm is $2^{-k}\|z\|_Z$.  Consequently
+\begin{equation}\label{eq:rangenorm}
+  \|A_nz\|_{T(\mathcal E)}\leq2^{-k}\|z\|_Z
+  \quad(n\in I_k),
+\end{equation}
+which tends to zero with $n$.
+\end{proof}
+
+\section{Full affirmative answer}
+
+\begin{theorem}\label{thm:main}
+Let $X$ be a separable Banach space and let $\mu_n,\mu$ be Borel probability
+measures on $X$ such that $\mu_n\Rightarrow\mu$ weakly.  There exists a
+separable reflexive Banach space $Y\subset X$ with the following properties:
+\begin{enumerate}
+\item the inclusion $Y\hookrightarrow X$ is compact;
+\item $\mu_n(X\setminus Y)=\mu(X\setminus Y)=0$ for every $n$;
+\item after the measures are regarded as measures on $Y$,
+      $\mu_n\Rightarrow\mu$ weakly on $Y$;
+\item $Y$ admits an equivalent norm which is Fr\'echet differentiable on its
+      unit sphere.
+\end{enumerate}
+Thus the open question in concluding remark~C of \cite{OS} has an affirmative
+answer.
+\end{theorem}
+
+\begin{proof}
+Since $X$ is Polish, the Skorokhod representation theorem gives $X$-valued
+random variables $\xi_n,\xi$ on one probability space, with laws
+$\mu_n,\mu$, such that
+\begin{equation}\label{eq:skorokhod}
+  \xi_n\longrightarrow\xi\quad\text{almost surely in }X.
+\end{equation}
+After changing the variables on a null set, define the $\cnull$-valued random
+variable
+\[
+  D=(d_n)_{n\geq1},\qquad d_n=\xi_n-\xi.
+\]
+It is Borel measurable because its finite coordinate truncations are
+measurable and converge to it in the $c_0(X)$ norm.
+
+Apply Buldygin's support theorem twice.  For the law of $\xi$ there are a
+separable reflexive space $R$ and a compact injection $j_0:R\to X$ such that
+\begin{equation}\label{eq:limitlift}
+  \xi\in j_0(R)\quad\text{almost surely}.
+\end{equation}
+For the law of $D$ there are a separable reflexive space $Z$ and a compact
+injection $J:Z\to\cnull$ such that
+\begin{equation}\label{eq:difflift}
+  D\in J(Z)\quad\text{almost surely}.
+\end{equation}
+
+Apply Lemma~\ref{lem:assembly} to $J$, obtaining $\mathcal E$ and $T$.
+Let
+\[
+  \mathcal H=R\oplus_2\mathcal E,
+  \qquad
+  S:\mathcal H\to X,\quad S(r,e)=j_0r+Te.
+\]
+The space $\mathcal H$ is separable and reflexive, and $S$ is compact.  Set
+\[
+  Y=\mathcal H/\ker S
+\]
+and identify $Y$ with $S(\mathcal H)\subset X$, equipped with the quotient
+norm.  Then $Y$ is separable and reflexive, and its inclusion into $X$ is
+compact.
+
+On the probability-one event where \eqref{eq:limitlift} and
+\eqref{eq:difflift} hold, write $\xi=j_0r$ and $D=Jz$.  Since
+$d_n=Q_nJz=A_nz$, Lemma~\ref{lem:assembly} shows that $d_n\in Y$ and
+\[
+  \|d_n\|_Y\longrightarrow0.
+\]
+Thus $\xi,\xi_n=\xi+d_n$ all belong to $Y$ almost surely and
+\begin{equation}\label{eq:Yas}
+  \xi_n\longrightarrow\xi\quad\text{almost surely in }Y.
+\end{equation}
+
+The continuous injection of the separable Banach space $Y$ into the Polish
+space $X$ has Borel range and Borel inverse on its range by the
+Lusin--Souslin theorem.  Hence the variables above are genuinely measurable
+as $Y$-valued random variables, and their laws are precisely the unique lifts
+of $\mu_n,\mu$ to $Y$.  For every bounded continuous $f:Y\to\mathbb R$,
+\eqref{eq:Yas} and dominated convergence give
+\[
+  \int_Y f\,d\mu_n\longrightarrow\int_Y f\,d\mu.
+\]
+This proves weak convergence on $Y$.
+
+Finally, a separable reflexive Banach space has separable dual, and every
+Banach space with separable dual admits an equivalent norm which is
+Fr\'echet differentiable away from the origin \cite{DGZ}.  Replace the
+quotient norm of $Y$ by such an equivalent norm.  Equivalent renorming
+preserves compactness of the inclusion, concentration, and convergence, and
+gives property~4.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof separates the external inputs from the new argument.  Its external
+inputs are the Skorokhod representation theorem, Buldygin's single-measure
+reflexive-support theorem, Lusin--Souslin measurability, and the classical
+smooth-renorming theorem.  The coordinate-assembly lemma is proved in full.
+The critical estimates are \eqref{eq:blocksmall}--\eqref{eq:rangenorm}; they
+simultaneously give compactness of $T$ and convergence of every coordinate in
+the new range norm.  No computational step is used.
+
+A bounded novelty search on 22 July 2026 covered arXiv and web searches for
+arXiv:1505.06235, the exact paper title and open-question wording, Buldygin's
+support theorem and DOI, and combinations of ``compactly embedded,''
+``reflexive subspace,'' ``Fr\'echet differentiable norm,'' and ``weak
+convergence of probability/Radon measures.''  It found the source paper,
+Buldygin's support result, and related later work with additional moment or
+uniform-integrability assumptions, but no later result explicitly resolving
+this exact question.  Novelty confidence is \emph{moderate}; exhaustive
+priority is not claimed.
+
+The theorem answers the source's probabilistic question for sequences.  It
+does not claim the analogous statement for the source's arbitrary nets of
+sigma-finite measures.  Recommended human review: \textbf{verify and
+circulate}, focusing on the interpretation of Buldygin's theorem, the compact
+block assembly, and the Borel lifting step.
+
+\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{2pt}
+\bibitem{OS}
+E.~Ostrovsky and L.~Sirota,
+\emph{Strengthening of weak convergence for Radon measures in separable
+Banach spaces}, 2015,
+\href{https://arxiv.org/abs/1505.06235}{arXiv:1505.06235}.
+
+\bibitem{Buldygin}
+V.~V.~Buldygin,
+\emph{The supports of probability measures in separable Banach spaces},
+Theory Probab. Appl. \textbf{29} (1985), 546--549;
+\href{https://doi.org/10.1137/1129067}{doi:10.1137/1129067}.
+
+\bibitem{DGZ}
+R.~Deville, G.~Godefroy, and V.~Zizler,
+\emph{Smoothness and Renormings in Banach Spaces},
+Pitman Monographs and Surveys in Pure and Applied Mathematics 64,
+Longman Scientific \& Technical, 1993.
+\end{thebibliography}
+
+\end{document}

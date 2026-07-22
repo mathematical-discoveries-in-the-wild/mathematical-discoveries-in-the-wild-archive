@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\B}{\mathbb D}
+\newcommand{\Id}{\operatorname{Id}}
+
+\title{A Radial-Twist Counterexample for Nonlinear Abel Averages\\
+\large A negative answer to the open question in arXiv:1311.6698}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 8}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full counterexample, likely valid; human
+review requested.
+
+\section{Source question}
+
+Bracci, Kozitsky, and Shoikhet \cite{BKS} ask the following. Let $D$ be a
+balanced dense subset of the open unit ball of a complex Banach space, and let
+$h:D\to X$ be weakly closed and $0$-dissipative. If for some
+$\alpha_0>0$ the Abel average
+\[
+  \Phi_{\alpha_0}=(\Id-\alpha_0 h)^{-1}
+\]
+exists, is holomorphic, and maps the ball into itself, must the Abel averages
+exist for every positive parameter?
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\noindent This is a full-width crop of Section 4, ``Open question,'' on page
+13 of the source PDF.
+
+\section{Idea of the counterexample}
+
+Work in the unit disc and prescribe $\Id-h$ rather than $h$.  Inside a disc
+slightly larger than radius $1/2$, let $\Id-h$ be the dilation $z\mapsto2z$.
+Outside, keep its output modulus equal to $2|z|$ but gradually rotate it
+through an angle of at most $\pi/3$.  The modulus $2|z|$ makes $\Id-h$
+globally injective, while the absence of rotation on the preimage of the unit
+disc makes its Abel average exactly $w\mapsto w/2$.
+
+The rotation is small enough to preserve dissipativity: its cosine is at
+least $1/2$.  But at parameter $1/2$, the map is the midpoint of the identity
+and the twisted dilation.  Two carefully chosen circles then have the same
+image radius, and their angular phases can be aligned.  This creates an exact
+two-point collision over a point strictly inside the unit disc.
+
+\section{Construction and theorem}
+
+Let $X=\mathbb C$ with its usual norm, let $\B=\{z:|z|<1\}$, and take
+$D=\B$.  Set
+\[
+  a=\frac{\sqrt7}{5},\qquad b=\frac35.
+\]
+Thus $1/2<a<b<1$.  Define a continuous function
+$\varphi:[0,1)\to[0,\pi/3]$ by
+\[
+\varphi(r)=
+\begin{cases}
+0, & 0\le r\le a,\\[2mm]
+\displaystyle \frac{\pi}{3}\frac{r-a}{b-a}, & a<r<b,\\[3mm]
+\displaystyle \frac{\pi}{3}, & b\le r<1.
+\end{cases}
+\]
+Finally define
+\[
+  h(z)=\bigl(1-2e^{i\varphi(|z|)}\bigr)z,\qquad z\in\B.
+\]
+
+\begin{theorem}
+The map $h:D\to\mathbb C$ is weakly closed and $0$-dissipative.  Its Abel
+average at $\alpha_0=1$ exists and is the holomorphic self-map
+\[
+  \Phi_1(w)=\frac{w}{2},\qquad w\in\B.
+\]
+Nevertheless, the Abel average at $\alpha=1/2$ does not exist: the map
+$\Id-\tfrac12h$ is not injective over $\B$.  Consequently the open question
+of \cite{BKS} has a negative answer.
+\end{theorem}
+
+\begin{proof}
+The domain $D=\B$ is balanced and dense in $\B$.  Since $\varphi$ is
+continuous, so is $h$.  In finite dimension weak and norm convergence agree,
+so $h$ is weakly closed (indeed, it has a norm-closed graph).
+
+Identify $\mathbb C^*$ with $\mathbb C$ in the usual way.  For $z\ne0$, the
+unique element of $J(z)$ is the functional $z^*(w)=\overline z w$.  Therefore
+\[
+\operatorname{Re}\langle h(z),z^*\rangle
+=\bigl(1-2\cos\varphi(|z|)\bigr)|z|^2\le0,
+\]
+because $0\le\varphi\le\pi/3$.  Hence the definition in \cite{BKS} holds
+with $\varsigma=0$ (in fact the inequality holds throughout the disc), and
+$h$ is $0$-dissipative.
+
+At parameter $1$ we have
+\[
+  (\Id-h)(z)=2e^{i\varphi(|z|)}z.                 \tag{1}
+\]
+This map is globally injective on $\B$: equality of two outputs first gives
+equality of their moduli, since the output modulus is $2|z|$; the two values
+of $\varphi$ then agree, and (1) gives equality of the inputs.  In fact (1)
+maps $\B$ bijectively onto the disc of radius $2$: for a point $w$ in that
+disc, put $r=|w|/2$ and $z=\tfrac12e^{-i\varphi(r)}w$.
+
+For $w\in\B$, its unique preimage under (1) has modulus $|w|/2<1/2<a$.
+On that region $\varphi=0$, so the preimage is simply $w/2$.  Thus
+\[
+  \Phi_1=(\Id-h)^{-1}\big|_{\B}:w\longmapsto\frac w2
+\]
+is holomorphic and maps $\B$ into itself, exactly as required by the source
+hypothesis.
+
+It remains to show failure at parameter $1/2$.  We have
+\[
+  \left(\Id-\frac12h\right)(z)
+  =\left(\frac12+e^{i\varphi(|z|)}\right)z.       \tag{2}
+\]
+Choose $\psi\in(0,\pi/2)$ by
+\[
+  e^{i\psi}=\frac{2+i\sqrt3}{\sqrt7},
+\]
+and set
+\[
+  z_1=\frac{\sqrt7}{5},\qquad
+  z_2=\frac35e^{-i\psi}
+      =\frac{3(2-i\sqrt3)}{5\sqrt7}.
+\]
+Their moduli are $a$ and $b$, respectively, so
+$\varphi(|z_1|)=0$ and $\varphi(|z_2|)=\pi/3$.  Formula (2) gives
+\[
+\left(\Id-\frac12h\right)(z_1)
+=\frac32\frac{\sqrt7}{5}
+=\frac{3\sqrt7}{10}.
+\]
+Also
+\[
+  \frac12+e^{i\pi/3}
+  =\frac{2+i\sqrt3}{2}
+  =\frac{\sqrt7}{2}e^{i\psi},
+\]
+and hence
+\[
+\left(\Id-\frac12h\right)(z_2)
+=\frac{\sqrt7}{2}e^{i\psi}\frac35e^{-i\psi}
+=\frac{3\sqrt7}{10}.
+\]
+The points $z_1$ and $z_2$ are distinct because their moduli differ, whereas
+their common image belongs to $\B$ since
+\[
+  \left|\frac{3\sqrt7}{10}\right|^2=\frac{63}{100}<1.
+\]
+Thus $(\Id-\tfrac12h)^{-1}$ is not a function on $\B$, so the Abel average
+at $\alpha=1/2$ does not exist.  This proves the negative answer.
+\end{proof}
+
+\section{Checks, scope, and relation to the partial theorem}
+
+The construction satisfies a stronger property than the source hypothesis:
+$\Id-h$ is globally injective on $D$ and even maps $D$ bijectively onto the
+disc of radius $2$.  Thus the counterexample is insensitive to whether the
+inverse notation is read globally or only over the unit ball.
+
+The earlier upward-propagation result for this target remains consistent with
+the example: existence at $\alpha_0=1$ forces all averages for
+$\alpha\ge1$, while the present failure occurs at $\alpha=1/2$.  The example
+therefore shows that the unresolved downward direction is a genuine
+obstruction and settles the full source question negatively.
+
+The optional script \texttt{code/check\_counterexample.py} samples the
+dissipativity inequality and evaluates the collision numerically.  It is not
+part of the proof; all calculations above are exact.
+
+\section{Novelty check and review recommendation}
+
+A bounded search covered the exact printed question, arXiv id 1311.6698, the
+source title and authors, and combinations of ``weakly closed,''
+``0-dissipative,'' ``Abel average,'' ``counterexample,'' and ``negative
+answer.''  No later answer or matching construction was found.  The 2019
+monograph \cite{ERS} reproduces the question as open.  Novelty confidence is
+therefore moderate-high within the searched sources, but exhaustive priority
+is not claimed.
+
+Human review should focus on the support-functional calculation, global
+injectivity of (1), and the two exact evaluations of (2).  No unproved lemma
+or external theorem is used.
+
+\begin{thebibliography}{9}
+\bibitem{BKS}
+F. Bracci, Y. Kozitsky, and D. Shoikhet,
+\emph{Abel averages and holomorphically pseudo-contractive maps in Banach
+spaces}, J. Math. Anal. Appl. 423 (2015), no. 2, 1580--1593;
+arXiv:1311.6698. DOI: 10.1016/j.jmaa.2014.10.079.
+
+\bibitem{ERS}
+M. Elin, S. Reich, and D. Shoikhet,
+\emph{Numerical Range of Holomorphic Mappings and Applications},
+Birkh\"auser, Cham, 2019. DOI: 10.1007/978-3-030-05020-7.
+\end{thebibliography}
+
+\end{document}

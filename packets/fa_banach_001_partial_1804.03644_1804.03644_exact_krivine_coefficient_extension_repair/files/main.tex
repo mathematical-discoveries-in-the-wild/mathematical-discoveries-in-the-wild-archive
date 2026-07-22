@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\arsinh}{\operatorname{arsinh}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Coeff}[2]{[#1^{#2}]}
+
+\title{Exact inverse-hypergeometric coefficient certificates through
+degree 39 and a repaired \texorpdfstring{$1.0085$}{1.0085} Krivine constant}
+\author{Candidate partial result for arXiv:1804.03644\\
+Lane 12, agent \texttt{agent\_lane\_12}, model GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\linewidth}{
+\textbf{Status: exact computer-assisted partial result, likely valid;
+human verification requested.}
+The inverse-coefficient conditions conjectured in the source are certified
+for every odd degree through 39.  Combined with the source's analytic tail
+lemma, this repairs a false final numerical implication in the published
+argument and proves the slightly stronger factor $1.0085$.  The all-orders
+endpoint-extremality conjecture remains open.}}
+\end{center}
+
+\section{Source question and result}
+
+For $a,b\in[0,1]$, put
+\[
+ \alpha=\frac{1-a}{2},\qquad \beta=\frac{1-b}{2},\qquad
+ F_{a,b}(z)=z\,{}_2F_1\!\left(\alpha,\beta;\frac32;z^2\right).
+\]
+Write the local compositional inverse at the origin as
+\[
+ G_{a,b}(w)=F_{a,b}^{-1}(w)
+            =\sum_{\substack{k\geq1\\k\text{ odd}}}d_k(a,b)w^k,
+ \qquad
+ h_{a,b}(r)=\sum_{\substack{k\geq1\\k\text{ odd}}}|d_k(a,b)|r^k.
+\]
+Bhattiprolu, Ghosh, Guruswami, Lee, and Tulsiani conjectured that the
+Grothendieck endpoint is extremal~\cite{BGGLT}:
+\[
+                  h_{a,b}^{-1}(1)\geq \arsinh(1)
+                  \qquad (a,b\in[0,1]).                 \tag{1.1}
+\]
+Their statement is reproduced below.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+  \caption{Full-width crop of physical PDF page 20 (paper page 18) of
+  arXiv:1804.03644.  The authors state that they could not establish the
+  endpoint bound and conjecture (1.1).}
+\end{figure}
+
+\noindent\textbf{Transcription of the question.}
+Is $h_{a,b}^{-1}(1)\geq\arsinh(1)$ for every $a,b\in[0,1]$?
+
+The source observed that the following two coefficient conditions, if true
+in every odd degree, imply (1.1):
+\begin{align*}
+ d_k(a,b)&\leq \frac1{k!}&&\text{if }k\equiv1\pmod4, \tag{C1}\\
+ d_k(a,b)&\leq0&&\text{if }k\equiv3\pmod4.             \tag{C2}
+\end{align*}
+It reports an exact Mathematica verification through $k=29$ and then invokes
+a uniform tail bound.  We extend the exact range by ten degrees and obtain a
+rigorous quantitative repair.
+
+\begin{theorem}[Degree-39 certificate and repaired constant]
+\label{thm:main}
+For every $a,b\in[0,1]$, conditions \emph{(C1)} and \emph{(C2)} hold for
+every odd $k\leq39$.  Consequently,
+\[
+ h_{a,b}^{-1}(1)\geq0.874
+ \geq \frac{\arsinh(1)}{1.0085}.                        \tag{1.2}
+\]
+Every computation in the coefficient certificate and in the numerical
+comparison is over the rational numbers.
+\end{theorem}
+
+\section{\texorpdfstring{\hspace{0.3em}Proof intuition}{Proof intuition}}
+
+Lagrange inversion turns each $d_{2n+1}$ into one coefficient of a negative
+integer power of a hypergeometric series.  After substituting
+$\alpha=(1-a)/2$ and $\beta=(1-b)/2$, this is an exact rational polynomial
+on the square $[0,1]^2$.  Positivity on that square can be certified without
+sampling: convert the target polynomial to the tensor-product Bernstein
+basis.  If every Bernstein coefficient is nonnegative, the polynomial is
+nonnegative everywhere.  This succeeds in every required degree through 39
+except $k=7$, for which a short two-variable inequality gives a stronger
+strict certificate.
+
+The source's defect lemma then allows all unknown coefficients from degree 41
+onward to be paid for by one geometric tail.  Extending the exact range from
+29 to 39 makes that tail small enough to prove $h^{-1}(1)\geq0.874$.
+Finally, short rational Taylor bounds for $\sinh$ certify that $0.874$ is at
+least $\arsinh(1)/1.0085$.  No floating-point comparison enters the proof.
+
+\section{Exact coefficient certificate}
+
+Set
+\[
+ \Phi(t)={}_2F_1\!\left(\alpha,\beta;\frac32;t\right)
+ =\sum_{j\geq0}c_jt^j,
+ \qquad
+ c_j=\frac{(\alpha)_j(\beta)_j}{(3/2)_j\,j!}.
+\]
+Lagrange inversion gives, for $n\geq0$,
+\[
+ d_{2n+1}=\frac1{2n+1}\Coeff{t}{n}
+                  \Phi(t)^{-(2n+1)}.                   \tag{3.1}
+\]
+Thus every coefficient needed in Theorem~\ref{thm:main} is an exactly
+computable element of $\mathbb Q[a,b]$.
+
+We recall the elementary positivity certificate used by the verifier.  If
+\[
+ P(a,b)=\sum_{u=0}^{r}\sum_{v=0}^{s}p_{uv}a^ub^v,
+\]
+then its coefficients in the bidegree-$(r,s)$ Bernstein basis are
+\[
+ B_{ij}=\sum_{u\leq i}\sum_{v\leq j}
+ p_{uv}\frac{\binom{i}{u}}{\binom{r}{u}}
+       \frac{\binom{j}{v}}{\binom{s}{v}}.               \tag{3.2}
+\]
+The identity
+\[
+ P(a,b)=\sum_{i=0}^{r}\sum_{j=0}^{s}B_{ij}
+ \binom ri a^i(1-a)^{r-i}\binom sj b^j(1-b)^{s-j}
+\]
+shows that $B_{ij}\geq0$ for every $i,j$ implies $P\geq0$ on $[0,1]^2$.
+
+For $k\equiv1\pmod4$, the exact verifier applies (3.2) to
+\[
+                       \frac1{k!}-d_k(a,b).              \tag{3.3}
+\]
+For $k\equiv3\pmod4$, it first cancels the manifest nonnegative edge factor
+and applies (3.2) to
+\[
+                 \frac{-d_k(a,b)}{(1-a)(1-b)}.           \tag{3.4}
+\]
+Using (3.1), every Bernstein coefficient in (3.3)--(3.4) is computed as an
+exact rational number.  They are all nonnegative for
+\[
+ k=3,5,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39.
+\]
+The case $k=1$ is the identity $d_1=1$.  Only $k=7$ is not certified by the
+direct Bernstein basis (two coefficients are negative), and it is settled
+next.
+
+\begin{lemma}[The exceptional seventh coefficient]
+For every $a,b\in[0,1]$, one has $d_7(a,b)<0$ unless $a=1$ or $b=1$, in
+which case $d_7=0$.
+\end{lemma}
+
+\begin{proof}
+Exact expansion of (3.1) and factorization give
+\[
+ -d_7=\frac{(1-a)(1-b)}{5040}P(a,b),
+\]
+where, on writing $u=a+b$ and $v=ab$,
+\[
+ P=225v^2-344uv+127u^2+34v-8u+1.                       \tag{3.5}
+\]
+Suppose first that $0\leq u\leq11/100$.  Since $0\leq v\leq u^2/4$,
+\[
+ P\geq1-8u-86u^3\geq
+ 1-\frac{88}{100}-86\left(\frac{11}{100}\right)^3>0. \tag{3.6}
+\]
+Now suppose $11/100\leq u\leq2$.  On the feasible interval for $v$,
+\[
+ \frac{\partial P}{\partial v}=450v-344u+34
+ \leq \frac{225}{2}u^2-344u+34<0.                      \tag{3.7}
+\]
+Indeed, the last quadratic is convex and is negative at both endpoints
+$11/100$ and $2$, hence is negative throughout the interval.  Therefore
+(3.5) is minimized at the largest possible $v$, namely $v=u^2/4$; equivalently
+$a=b=t=u/2$.  At that point
+\begin{align*}
+ P(t,t)
+ &=225t^4-688t^3+542t^2-16t+1\\
+ &=\left(15t^2-\frac{344}{15}t+\frac{15}{43}\right)^2
+   +\frac{54152}{9675}t^2+\frac{1624}{1849}>0.          \tag{3.8}
+\end{align*}
+Equations (3.5)--(3.8) prove the claim.
+\end{proof}
+
+This completes the exact proof of (C1)--(C2) through degree 39.
+
+\section{Tail estimate and the constant}
+
+The source proves the inverse-coefficient estimate
+\[
+                         |d_k(a,b)|\leq\frac{6.1831}{k}  \tag{4.1}
+\]
+uniformly for the present purpose; its displayed result is stronger in the
+interior of the parameter square~\cite[Lemma 4.7]{BGGLT}.  Take
+\[
+ \delta=\frac{439}{500}=0.878,
+ \qquad
+ E=\frac{61831}{10000\cdot41}
+       \frac{\delta^{41}}{1-\delta^2}.                  \tag{4.2}
+\]
+Since only odd powers occur, (4.1) gives
+\[
+ h_{\rm err}(41,\delta)
+ :=\sum_{\substack{k\geq41\\k\text{ odd}}}|d_k|\delta^k
+ \leq E.                                                \tag{4.3}
+\]
+Put $\rho=\arsinh(1-2E)$.  The exact inequalities below show in particular
+that $\rho\leq\delta$.  The proof of the source's defect lemma remains valid
+when an upper bound $E\geq h_{\rm err}(41,\delta)$ replaces the exact tail:
+using (C1)--(C2) below degree 41,
+\begin{align*}
+ h_{a,b}(\rho)
+ &\leq-G_{a,b}(\rho)+\sin\rho+\sinh\rho
+                         +2h_{\rm err}(41,\rho)\\
+ &\leq-G_{a,b}(\rho)+\sin\rho+1
+   +2\bigl(h_{\rm err}(41,\rho)-E\bigr)\\
+ &\leq-G_{a,b}(\rho)+\sin\rho+1\leq1.                \tag{4.4}
+\end{align*}
+The last inequality is precisely the monotonicity step in the source's
+Lemma 4.1: $G_{a,b}(\rho)\geq G_{0,0}(\rho)=\sin\rho$.
+Hence $h_{a,b}^{-1}(1)\geq\rho$.
+
+It remains only to compare three rational quantities.  For rational
+$0\leq x\leq1$, define
+\[
+ S_N(x)=\sum_{j=0}^{N}\frac{x^{2j+1}}{(2j+1)!}.
+\]
+Positivity of the Taylor series and a geometric majorant for successive
+terms give
+\[
+ S_N(x)\leq\sinh x\leq S_N(x)+
+ \frac{x^{2N+3}}{(2N+3)!}
+ \left(1-\frac{x^2}{(2N+4)(2N+5)}\right)^{-1}.          \tag{4.5}
+\]
+With $N=12$, exact rational arithmetic in (4.2) and (4.5) verifies
+\[
+ \sinh\!\left(\frac{437}{500}\right)\leq{}1-2E
+ \leq\sinh\!\left(\frac{439}{500}\right),             \tag{4.6}
+\]
+and
+\[
+ \sinh\!\left(\frac{437}{500}\frac{2017}{2000}\right)
+ \geq1.                                                  \tag{4.7}
+\]
+Thus $0.874\leq\rho\leq0.878$ and
+$\arsinh(1)\leq0.874\cdot1.0085$.  Combining this with (4.4) proves
+Theorem~\ref{thm:main}.
+
+\section{The repaired arithmetic step}
+
+The source's Theorem 4.2 advertises $\varepsilon_0=0.00863$, but its final
+displayed step is
+\[
+ \arsinh(0.974202)\geq\frac{\arsinh(1)}{1+0.00863}.      \tag{5.1}
+\]
+This implication is false: the two sides are approximately $0.863013$ and
+$0.873832$, respectively.  The relevant source page is reproduced below.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/source_constant_gap_crop.png}
+  \caption{Full-width crop of physical PDF page 22 (paper page 20) of
+  arXiv:1804.03644, including Theorem 4.2, the degree-29 computation, the
+  tail bound, and the final numerical implication (5.1).}
+\end{figure}
+
+Theorem~\ref{thm:main} is not a reinterpretation of (5.1): the additional
+exact coefficients reduce the tail at degree 41, and (4.5)--(4.7) replace the
+false floating-point comparison by rational inequalities.  It therefore
+repairs the advertised theorem and slightly strengthens its approximation
+factor from $1.00863$ to $1.0085$.
+
+\section{Verification, limitations, and novelty}
+
+\begin{itemize}
+\item The accompanying verifier independently constructs every $d_k$ from
+(3.1), rather than importing a table.  It performs the substitutions,
+factor cancellations, Bernstein conversion, and sign tests in exact SymPy
+rational arithmetic.  The $k=7$ factorization and every constant comparison
+in (4.6)--(4.7) are also asserted exactly.
+\item The certificate is finite and computer-assisted.  It proves no sign
+condition for $k\geq41$, and it does not settle the all-orders conjecture
+(1.1).  The analytic tail estimate and the monotonicity step in (4.4) are
+taken from the source.
+\item A numerical scan through inverse degree 121 on a $21\times21$ parameter
+grid found no counterexample to (1.1).  A stronger experimental
+coefficientwise inequality $G_{a,b}^{(4)}\leq G_{a,b}$ also held on that
+grid, but neither observation is used in the theorem.
+\item A bounded novelty search on 22 July 2026 used arXiv/web searches for
+the exact title, ``generalized Krivine rounding'',
+``$h_{a,b}^{-1}(1)$'', and the inverse-hypergeometric coefficient conditions.
+It found the source paper but no later proof or counterexample to (1.1), nor
+an erratum repairing Theorem 4.2.  This is evidence, not a definitive
+literature certification.
+\end{itemize}
+
+\noindent\textbf{Human-review recommendation.}
+Verify and retain as a quantitative partial result.  The highest-value checks
+are the exact execution of the verifier, the $k=7$ reduction
+(3.5)--(3.8), and the use of the source's Lemmas 4.1 and 4.7 in (4.1)--(4.4).
+
+\begin{thebibliography}{9}
+\bibitem{BGGLT}
+V.~Bhattiprolu, M.~Ghosh, V.~Guruswami, E.~Lee, and M.~Tulsiani,
+\emph{Approximating operator norms via generalized Krivine rounding},
+arXiv:1804.03644 (2018).
+\end{thebibliography}
+
+\end{document}

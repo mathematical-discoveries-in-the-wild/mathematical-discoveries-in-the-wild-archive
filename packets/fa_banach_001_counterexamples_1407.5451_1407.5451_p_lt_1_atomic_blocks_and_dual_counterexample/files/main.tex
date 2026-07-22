@@ -1,0 +1,310 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathsf E}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Hatb}{H^{p}_{\mathrm{atb},q}}
+
+\title{Both \(p<1\) Atomic-Block Questions Fail\\
+on an Atomic Filtration}
+\author{Solution packet for arXiv:1407.5451, Problem 3.1}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Counterexample likely valid, subject to human review.  For every
+\(0<p<1\) and \(1<q<\infty\), both assertions in the source problem fail
+on the same countably atomic probability space with one fixed filtration.}}
+\end{center}
+
+\section{Source problem}
+
+Conde-Alonso and Parcet define \((p,q)\)-atomic blocks for \(0<p<1\),
+then ask in Problem 3.1 whether
+\[
+ H^p_{\mathrm{atb},q}(\Omega)=H_p(\Omega)
+ \qquad\text{and}\qquad
+ H_p(\Omega)^*=\Lambda_{p,q}(\Omega).
+\]
+Here \(H_p\) is defined by the martingale square function.  The proposed
+Lipschitz norm is
+\begin{equation}\label{eq:lambda}
+ \|h\|_{\Lambda_{p,q}}
+ =\sup_{k\geq1,\,A\in\Sigma_k}
+ \frac{1}{\mu(A)^{1/p-1}}
+ \left[
+   \left(\frac1{\mu(A)}\int_A |h-\E_kh|^q\,d\mu\right)^{1/q}
+   +\|dh_k\|_\infty
+ \right].
+\end{equation}
+The question and the definitions immediately preceding it occur on page 17
+of the source paper \cite{source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{The definition and Problem 3.1 on page 17 of arXiv:1407.5451.}
+\end{figure}
+
+For a \((p,q)\)-subatom supported on \(A_j\in\Sigma_{k_j}\), the source
+requires
+\begin{equation}\label{eq:subatom}
+ \|a_j\|_q
+ \leq \mu(A_j)^{1-1/p-1/q'}\frac1{k_j-k+1}
+ =\mu(A_j)^{1/q-1/p}\frac1{k_j-k+1}.
+\end{equation}
+The size of one block \(b=\sum_j\lambda_ja_j\) is the infimum of
+\(\sum_j|\lambda_j|\), while the outer decomposition of a function into
+blocks is aggregated in \(\ell_p\).
+
+\section{Proof intuition}
+
+The definition has an exponent mismatch in how it groups pieces.  Inside one
+block, arbitrarily many subatoms are charged in \(\ell_1\).  For \(p<1\), a
+martingale square function can see the same pieces in \(\ell_p\), which is
+much larger.
+
+The concrete gadget has two signs.  At level two it equals \(+1\) or \(-1\).
+At level three it usually cancels back to zero, but with probability
+\(\varepsilon\) it jumps to size \(1/\varepsilon\) in order to preserve the
+martingale condition.  Its terminal \(L_p\) norm tends to zero like
+\(\varepsilon^{1/p-1}\), and the proposed atomic-block norm has the same
+small upper bound.  Its square function, however, remembers the level-two
+jump of size one on the whole block.  Countably many disjoint copies give a
+function in \(L_p\cap H^p_{\mathrm{atb},q}\) but not in \(H_p\).
+
+For the dual assertion, use a decaying sum of the level signs.  Its decay is
+chosen so that testing every martingale difference costs at most its local
+\(L_p\) square-function mass.  Formula \eqref{eq:lambda} nevertheless assigns
+it infinite norm: at late levels its nonzero global jump is multiplied by a
+negative power of the measure of an already resolved, extremely small atom.
+
+\section{The counterexample}
+
+\begin{theorem}\label{thm:main}
+Fix \(0<p<1\) and \(1<q<\infty\).  There is a countably atomic probability
+space with a fixed filtration for which
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \(H^p_{\mathrm{atb},q}(\Omega)\not=H_p(\Omega)\), even as sets;
+\item \(H_p(\Omega)^*\not=\Lambda_{p,q}(\Omega)\), with
+      \(\Lambda_{p,q}\) defined by \eqref{eq:lambda}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ w_n=2^{-n},\qquad
+ \varepsilon_n=2^{-n/(1-p)} \quad(n\geq1).
+\]
+Thus \(\sum_nw_n=1\), \(0<\varepsilon_n\leq1/2\), and
+\begin{equation}\label{eq:epssum}
+ \varepsilon_n^{1-p}=2^{-n}.
+\end{equation}
+Partition \(\Omega\) into atoms
+\(A_n^+,C_n^+,A_n^-,C_n^-\), with
+\[
+ \mu(A_n^\pm)=\frac{w_n\varepsilon_n}{2},
+ \qquad
+ \mu(C_n^\pm)=\frac{w_n(1-\varepsilon_n)}{2}.
+\]
+Let \(B_n^\pm=A_n^\pm\cup C_n^\pm\), put
+\(B_n=B_n^+\cup B_n^-\), and let
+\(R_n=\bigcup_{j\geq n}B_j\).  Define an increasing filtration by declaring
+that the atoms of \(\Sigma_{2n-1}\) are
+\[
+ A_j^\pm,C_j^\pm\ (j<n),\qquad R_n,
+\]
+and that the atoms of \(\Sigma_{2n}\) are
+\[
+ A_j^\pm,C_j^\pm\ (j<n),\qquad B_n^+,B_n^-,R_{n+1}.
+\]
+Thus \(\Sigma_1\) is trivial.  From level \(2n-1\) to level \(2n\) the
+filtration reveals the sign in the \(n\)-th block, and at level \(2n+1\) it
+reveals whether the rare event occurred.
+
+Define
+\begin{equation}\label{eq:gn}
+ g_n=\varepsilon_n^{-1}(\1_{A_n^+}-\1_{A_n^-}).
+\end{equation}
+The two signs have equal mass, so \(\E_{2n-1}g_n=0\), while
+\[
+ \E_{2n}g_n=\1_{B_n^+}-\1_{B_n^-}=:r_n,
+ \qquad \E_{2n+1}g_n=g_n.
+\]
+Consequently the only nonzero differences are
+\(dg_{n,2n}=r_n\) and \(dg_{n,2n+1}=g_n-r_n\).  The square
+function \(S(g_n)\) is \(\sqrt2\) on \(C_n^+\cup C_n^-\), and it is
+\[
+ \left(1+\left(\frac{1-\varepsilon_n}{\varepsilon_n}\right)^2\right)^{1/2}
+\]
+on \(A_n^+\cup A_n^-\).  Therefore
+\begin{align}
+ \|g_n\|_p^p
+   &=w_n\varepsilon_n^{1-p},\label{eq:lpgn}\\
+ \|g_n\|_{H_p}^p
+   &=w_n\left[(1-\varepsilon_n)2^{p/2}
+      +\varepsilon_n
+       \left(1+\left(\frac{1-\varepsilon_n}{\varepsilon_n}\right)^2
+       \right)^{p/2}\right]
+   \geq 2^{p/2-1}w_n.\label{eq:hpgn}
+\end{align}
+
+We next verify that \(g_n\) is a very cheap \((p,q)\)-atomic block.  Set
+\(m_n=w_n\varepsilon_n/2\) and
+\[
+ a_n^+=\frac{m_n^{-1/p}}3\1_{A_n^+},
+ \qquad
+ a_n^-=-\frac{m_n^{-1/p}}3\1_{A_n^-},
+ \qquad
+ \lambda_n=\frac{3m_n^{1/p}}{\varepsilon_n}.
+\]
+Both subatoms are supported at level \(k_j=2n+1\), while the block has
+cancellation at level \(k=2n-1\).  Moreover
+\[
+ \|a_n^\pm\|_q
+ =\frac13m_n^{1/q-1/p}
+ =m_n^{1/q-1/p}\frac1{(2n+1)-(2n-1)+1},
+\]
+so \eqref{eq:subatom} holds with equality, for every \(q>1\).  Since
+\(g_n=\lambda_na_n^++\lambda_na_n^-\),
+\begin{equation}\label{eq:blockgn}
+ |g_n|_{\mathrm{atb},q}^p
+ \leq2\lambda_n
+ =6\,2^{-1/p}w_n^{1/p}\varepsilon_n^{1/p-1}.
+\end{equation}
+
+Let \(t_n=w_n^{-1/p}\).  The finite martingales
+\begin{align*}
+ F_{2N-1}&=\sum_{n<N}t_ng_n,\\
+ F_{2N}&=\sum_{n<N}t_ng_n+t_Nr_N,\\
+ F_{2N+1}&=\sum_{n\leq N}t_ng_n
+\end{align*}
+are integrable and compatible with the filtration.  They converge pointwise
+and in \(L_p\) to
+\[
+ f=\sum_{n\geq1}t_ng_n.
+\]
+By \eqref{eq:lpgn} and disjointness,
+\[
+ \|f\|_p^p
+ =\sum_n t_n^pw_n\varepsilon_n^{1-p}
+ =\sum_n2^{-n}<\infty.
+\]
+Using the blocks \(t_ng_n\), equations \eqref{eq:blockgn} and
+\eqref{eq:epssum} give
+\[
+ \|f\|_{H^p_{\mathrm{atb},q}}^p
+ \leq (6\,2^{-1/p})^p
+       \sum_n\varepsilon_n^{1-p}<\infty.
+\]
+Thus the series is an admissible atomic-block decomposition of the
+\(L_p\)-function \(f\).  On the other hand, square functions are supported
+on the disjoint sets \(B_n=B_n^+\cup B_n^-\).  Hence \eqref{eq:hpgn}
+implies
+\[
+ \|f\|_{H_p}^p
+ =\sum_n t_n^p\|g_n\|_{H_p}^p
+ \geq 2^{p/2-1}\sum_n t_n^pw_n
+ =2^{p/2-1}\sum_n1=\infty.
+\]
+This proves (i).
+
+For (ii), put \(\alpha=1/p-1>0\),
+\(\beta_n=(w_n/2)^\alpha\), and take the bounded function
+\[
+ \phi=\sum_{n\geq1}\beta_nr_n.
+\]
+Its only nonzero martingale differences are
+\(d\phi_{2n}=\beta_nr_n\).  On finite martingales define
+\[
+ L_\phi(h)=\sum_{n\geq1}\beta_n\int (dh_{2n})r_n\,d\mu;
+\]
+this agrees with \(\int h\phi\,d\mu\) whenever the latter is directly
+defined.  Write \(c_{n,\pm}\) for the two constant values of \(dh_{2n}\)
+on \(B_n^\pm\), and put \(m_n'=w_n/2\).  Since
+\(\beta_n=(m_n')^{1/p-1}\),
+\begin{align*}
+ \left|\beta_n\int (dh_{2n})r_n\,d\mu\right|
+ &\leq \beta_nm_n'(|c_{n,+}|+|c_{n,-}|)\\
+ &\leq
+ \left(\int_{B_n}|dh_{2n}|^p\,d\mu\right)^{1/p}=:x_n.
+\end{align*}
+For \(p<1\), \(\sum_nx_n\leq(\sum_nx_n^p)^{1/p}\).  Therefore
+\[
+ |L_\phi(h)|\leq\left(\sum_n\int_{B_n}|dh_{2n}|^p\,d\mu\right)^{1/p}
+ \leq\|h\|_{H_p}.
+\]
+Thus \(L_\phi\) extends continuously and \(\phi\) represents an element of
+\(H_p^*\).
+
+But \(\phi\notin\Lambda_{p,q}\).  In \eqref{eq:lambda}, take \(k=2n\)
+and the already resolved atom \(A=A_{n-1}^+\), for \(n\geq2\).  Since
+\(\|d\phi_{2n}\|_\infty=\beta_n\), the corresponding expression is at
+least
+\[
+ \frac{\beta_n}{(w_{n-1}\varepsilon_{n-1}/2)^\alpha}
+ =\left(\frac{1}{2\varepsilon_{n-1}}\right)^\alpha
+ \longrightarrow\infty.
+\]
+This proves (ii).
+\end{proof}
+
+\section{Verification notes}
+
+The proof uses only the definitions printed in the source.  In particular:
+\begin{itemize}
+\item the filtration is fixed once and for all; every finite stage of the
+      separating martingale is integrable, and the finite stages converge in
+      \(L_p\) to the displayed terminal function;
+\item every subatom satisfies the source normalization with equality;
+\item the separating function \(f\) belongs to \(L_p\), so the counterexample
+      respects the set-level requirement in the definition of
+      \(H^p_{\mathrm{atb},q}\);
+\item the same construction works for every finite \(q>1\), because the
+      \(q\)-dependence cancels in the indicator normalization;
+\item the dual counterexample uses exactly the global jump term as it appears
+      inside the brackets in the source's displayed \(\Lambda_{p,q}\) norm.
+\end{itemize}
+
+The accompanying script \texttt{code/verify\_counterexample.py} evaluates the
+finite-block formulas and partial sums for several choices of \(p,q\).  It is a
+sanity check, not a substitute for the proof.
+
+\section{Novelty and limitations}
+
+A bounded search was performed in the run indexes and on arXiv using
+\texttt{1407.5451}, the exact notation \(H^p_{\mathrm{atb},q}\), the paper
+title, and the phrases ``\((p,q)\)-atomic blocks'' and ``atomic block
+\(H_p\) martingale''.  No later paper settling Problem 3.1 was found.  The
+novelty claim is therefore bounded rather than exhaustive.
+
+The theorem answers Problem 3.1 negatively for arbitrary filtrations.  It does
+not rule out a repaired theorem under additional regularity, a restriction on
+how subatoms may be grouped, or a modified Lipschitz norm in which the jump
+term is not multiplied by the measure of an unrelated set.
+
+\paragraph{Human-review recommendation.}
+Verify the source transcription of the subatom exponent and the placement of
+\(\|df_k\|_\infty\) in \eqref{eq:lambda}; then check the two conditional
+expectations in \eqref{eq:gn}.  All remaining estimates are exact scalar
+calculations.
+
+\begin{thebibliography}{1}
+\bibitem{source}
+J.~M. Conde-Alonso and J. Parcet,
+\emph{Atomic blocks for noncommutative martingales},
+arXiv:1407.5451 (2014), Problem 3.1, p.~17.
+\end{thebibliography}
+
+\end{document}

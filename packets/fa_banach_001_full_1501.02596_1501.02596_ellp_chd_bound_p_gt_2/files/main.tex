@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname\hspace{0.6em}}
+\makeatother
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\co}{\operatorname{co}}
+\newcommand{\zetaX}{\zeta}
+
+\title{The Finite-Dimensional Convex-Hull-Deviation Bound for $\ell_p^n$, $p>2$}
+\author{Run \texttt{fa\_banach\_001} --- lane 5}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\linewidth}{
+\textbf{Status: candidate full solution, likely valid.}
+Question 1 of Ivanov's arXiv:1501.02596 has an affirmative answer.  The
+proof is a mixed-norm interpolation estimate for the centering operator.
+The separate exactness problem in Question 2 is not addressed.
+}}
+\end{center}
+
+\section{Source question}
+
+For a Banach space $X$, its convex-hull-deviation constant is
+\[
+ \zeta_X=\sup_{D\subset B_X}\ \sup_{x\in\co D}\ \inf_{y\in D}\|x-y\|_X.
+\]
+Ivanov proves an upper bound for $L_p$ spaces and, for $1\le p\le2$, the
+finite-dimensional refinement
+\begin{equation}\label{eq:source}
+ \zeta_{\ell_p^n}\le
+ \left(2\frac{n-1}{n}\right)^{|1/p-1/p'|},
+ \qquad \frac1p+\frac1{p'}=1.
+\end{equation}
+Question 1 on arXiv PDF page 8 asks whether \eqref{eq:source} also holds
+for $2<p<\infty$ \cite{Ivanov}.
+
+\begin{center}
+ \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The answer is affirmative.  We use one earlier reduction from the source:
+if $\dim X=n$, then every value below $\zeta_X$ has a witness consisting
+of at most $n$ points of $B_X$; see Remark 2 on arXiv PDF page 3
+\cite{Ivanov}.  The new ingredient is the weighted estimate below.
+
+\section{Idea of the proof}
+
+Fix weights $\alpha_i$ and consider the linear centering operator
+\[
+ T_\alpha(x_1,\ldots,x_k)
+   =\left(x_i-\sum_j\alpha_jx_j\right)_{i=1}^k.
+\]
+At the Hilbert endpoint, the variance identity makes $T_\alpha$ a
+contraction from outer $\ell_\infty$ to weighted outer $\ell_2$.  At the
+$\ell_\infty$ endpoint, expanding every centered vector as
+$\sum_j\alpha_j(x_i-x_j)$ bounds the weighted outer $\ell_1$ norm by
+$2(1-\sum_i\alpha_i^2)$.  Mixed-norm Riesz--Thorin interpolation between
+these two estimates simultaneously changes the inner exponent from $2$ to
+$p$ and the outer exponent from $2$ to $p'$.  The interpolation parameter
+is $1-2/p$, exactly the exponent missing in the source question.
+
+\section{Weighted centering inequality}
+
+\begin{lemma}\label{lem:weighted}
+Let $2<p<\infty$, let $p'=p/(p-1)$, and let
+$\alpha_1,\ldots,\alpha_k>0$ sum to $1$.  For
+$x_1,\ldots,x_k\in\ell_p^n$, put $x_0=\sum_i\alpha_i x_i$.  Then
+\begin{equation}\label{eq:weighted}
+ \left(\sum_{i=1}^k\alpha_i\|x_i-x_0\|_p^{p'}\right)^{1/p'}
+ \le
+ \left(2\left(1-\sum_{i=1}^k\alpha_i^2\right)\right)^{1-2/p}
+ \max_i\|x_i\|_p.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $T_\alpha(x)_i=x_i-x_0$ and set
+\[
+ C_\alpha=2\left(1-\sum_i\alpha_i^2\right).
+\]
+On $\ell_2^n$, the Hilbert-space variance identity gives
+\begin{align*}
+ \sum_i\alpha_i\|T_\alpha(x)_i\|_2^2
+ &=\sum_i\alpha_i\|x_i\|_2^2-\left\|\sum_i\alpha_i x_i\right\|_2^2\\
+ &\le \left(\max_i\|x_i\|_2\right)^2.
+\end{align*}
+Thus
+\[
+ T_\alpha:\ell_\infty^k(\ell_2^n)
+       \longrightarrow \ell_2^k(\alpha;\ell_2^n)
+ \quad\text{has norm at most }1.
+\]
+At the other endpoint,
+\begin{align*}
+ \sum_i\alpha_i\|T_\alpha(x)_i\|_\infty
+ &\le \sum_{i,j}\alpha_i\alpha_j\|x_i-x_j\|_\infty\\
+ &\le 2\sum_{i\ne j}\alpha_i\alpha_j\max_j\|x_j\|_\infty\\
+ &=C_\alpha\max_j\|x_j\|_\infty.
+\end{align*}
+Consequently
+\[
+ T_\alpha:\ell_\infty^k(\ell_\infty^n)
+       \longrightarrow \ell_1^k(\alpha;\ell_\infty^n)
+ \quad\text{has norm at most }C_\alpha.
+\]
+
+Apply the mixed-norm Riesz--Thorin theorem \cite[Section 14]{WilliamsWells}
+with
+\[
+ \theta=1-\frac2p.
+\]
+The inner target and domain exponent satisfies
+$1/p=(1-\theta)/2+\theta/\infty$, while the outer target exponent satisfies
+\[
+ \frac1{p'}=\frac{1-\theta}{2}+\frac{\theta}{1}.
+\]
+The interpolated operator therefore obeys
+\[
+ \|T_\alpha x\|_{\ell_{p'}^k(\alpha;\ell_p^n)}
+ \le C_\alpha^\theta
+ \|x\|_{\ell_\infty^k(\ell_p^n)},
+\]
+which is exactly \eqref{eq:weighted}.
+\end{proof}
+
+\section{Full answer to Question 1}
+
+\begin{theorem}\label{thm:main}
+For every integer $n\ge2$ and every $2<p<\infty$,
+\[
+ \boxed{\displaystyle
+ \zeta_{\ell_p^n}\le
+ \left(2\frac{n-1}{n}\right)^{1-2/p}}
+\]
+and hence inequality \emph{(10)} in Ivanov's paper holds throughout
+$2<p<\infty$.
+\end{theorem}
+
+\begin{proof}
+Use the finite-support reduction established in Remark 2 of the source
+\cite{Ivanov}.  It suffices to control a convex combination
+$x_0=\sum_{i=1}^k\alpha_i x_i$ with $k\le n$, positive weights summing to
+$1$, and $x_i\in B_{\ell_p^n}$.
+
+By Lemma \ref{lem:weighted},
+\begin{align*}
+ \min_i\|x_i-x_0\|_p
+ &\le \left(\sum_i\alpha_i\|x_i-x_0\|_p^{p'}\right)^{1/p'}\\
+ &\le \left(2\left(1-\sum_i\alpha_i^2\right)\right)^{1-2/p}.
+\end{align*}
+Since Cauchy--Schwarz gives
+$\sum_i\alpha_i^2\ge1/k\ge1/n$, the last expression is at most
+\[
+ \left(2\left(1-\frac1n\right)\right)^{1-2/p}.
+\]
+Taking the supremum over the source's finite witnesses proves the claim.
+Finally, for $p>2$ one has $|1/p-1/p'|=1-2/p$, so the displayed estimate
+is precisely \eqref{eq:source}.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof uses only the source's at-most-$n$-point reduction, the Hilbert
+variance identity, two triangle inequalities, Cauchy--Schwarz, and standard
+mixed-norm interpolation.  The exponent bookkeeping is explicit in the
+proof.  A deterministic randomized stress test is supplied in
+\texttt{code/check\_mixed\_norm\_bound.py}; it is not part of the proof.
+
+A bounded novelty search through 22 July 2026 checked the run registry and
+solution/attempt indexes, the local arXiv corpus, exact-title and keyword
+arXiv/web searches, and Ivanov's later related arXiv:1904.06729.  No explicit
+answer to Question 1 was found.  Novelty confidence is moderate rather than
+high because the interpolation argument is short and may be implicit in
+earlier mixed-norm literature.
+
+This packet fully answers Question 1 only.  Question 2, concerning exactness
+of the dimension-free $L_p$ estimate, remains outside the result.  Human
+review should focus on the mixed-norm interpolation identity and the exact
+scope of the source's finite-support reduction.
+
+\begin{thebibliography}{9}
+\bibitem{Ivanov}
+G. Ivanov,
+\emph{Convex hull deviation and contractibility},
+arXiv:1501.02596, 2015.
+
+\bibitem{WilliamsWells}
+L. R. Williams and J. H. Wells,
+\emph{Embeddings and Extensions in Analysis},
+Springer-Verlag, 1975.
+\end{thebibliography}
+
+\end{document}

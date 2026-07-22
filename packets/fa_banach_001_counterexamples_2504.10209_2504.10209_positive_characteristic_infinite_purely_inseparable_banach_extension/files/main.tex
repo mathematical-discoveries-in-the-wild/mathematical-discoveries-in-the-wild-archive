@@ -1,0 +1,203 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Fp}{\mathbb F_p}
+
+\title{A positive-characteristic counterexample to\\
+finite algebraic Banach field extensions}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}\\
+Model: GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\linewidth}{\textbf{Status.}
+Counterexample likely valid, subject to human review.  This gives a full
+negative answer to the exact question in Remark~7.3 of arXiv:2504.10209v1;
+it does not settle the paper's broader positive-characteristic automatic-
+continuity problem.}}
+\end{center}
+
+\section{Source question}
+
+Feliks R\k{a}czka's paper \emph{Continuity of differential operators for
+nonarchimedean Banach algebras} proves the following as Lemma~7.2 in
+characteristic zero: if $K\subset L$ is algebraic, $K$ is a nontrivially
+valued nonarchimedean field, and $L$ is a Banach $K$-algebra which is a field,
+then $[L:K]<\infty$ and $L$ is nonarchimedean \cite{Raczka}.
+Remark~7.3 asks whether this remains true when $\operatorname{char}K=p>0$.
+It specifically observes that purely inseparable extensions defeat the
+root-separation argument used in characteristic zero.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+  \caption{Remark~7.3 on page 11 of the source paper.}
+\end{figure}
+
+\section{Definitions and notation}
+
+For a field $F$ of characteristic $p$, write
+\[
+F^p=\{x^p:x\in F\}.
+\]
+This is a subfield.  An extension $E/F$ is \emph{purely inseparable of
+exponent one} if $x^p\in F$ for every $x\in E$.  In particular, such an
+extension is algebraic, although its total degree need not be finite.
+
+For a coefficient field $k$ and an indeterminate $t$, the Laurent-series
+field $k((t))$ is equipped with the $t$-adic absolute value
+\[
+\left|\sum_{n\ge n_0}a_nt^n\right|=q^{\min\{n:a_n\ne0\}},
+\qquad 0<q<1.
+\]
+It is a complete nontrivially valued nonarchimedean field.
+
+\section{Proof intuition}
+
+In positive characteristic, Frobenius provides exactly the phenomenon that
+the characteristic-zero proof cannot see.  Start with a complete field $L$
+whose coefficient field has infinitely many independent imperfection
+directions, and use the Frobenius image $K=L^p$ as the base field.  The base
+remains complete, while every element of $L$ becomes algebraic of degree at
+most $p$ over $K$.  There is nevertheless no uniform bound on the dimension
+of the whole extension: finitely many imperfection variables already produce
+$p^N$ independent monomials for arbitrary $N$.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+For every prime $p$, there are fields $K\subset L$ of characteristic $p$ such
+that:
+\begin{enumerate}
+  \item $K$ is a complete nontrivially valued nonarchimedean field;
+  \item $L$ is a field and a Banach $K$-algebra for a multiplicative
+        nonarchimedean norm;
+  \item $L/K$ is purely inseparable of exponent one, hence algebraic;
+  \item $[L:K]=\infty$.
+\end{enumerate}
+Consequently, the characteristic-$p$ analogue of Lemma~7.2 in
+arXiv:2504.10209 is false.  It is false even when the Banach algebra norm on
+$L$ is already multiplicative and nonarchimedean.
+\end{theorem}
+
+\begin{proof}
+Let $u_1,u_2,\ldots$ be algebraically independent over $\Fp$, and put
+\[
+k=\Fp(u_1,u_2,\ldots),\qquad L=k((t)).
+\]
+Give $L$ its $t$-adic absolute value, normalized by $|t|=q$ for some
+$0<q<1$, and set
+\[
+K=L^p.
+\]
+
+We first identify $K$.  Frobenius is continuous for the $t$-adic topology,
+and in characteristic $p$ it gives
+\[
+\left(\sum_{n\ge n_0}a_nt^n\right)^p
+   =\sum_{n\ge n_0}a_n^p t^{pn}.
+\]
+Conversely, every coefficient in $k^p$ has a unique $p$th root in $k$.
+Therefore
+\begin{equation}\label{eq:frobenius-image}
+K=L^p=k^p((t^p))
+ =\Fp(u_1^p,u_2^p,\ldots)((t^p)).
+\end{equation}
+Upon writing $s=t^p$, the right-hand side is the Laurent-series field
+$k^p((s))$, with $|s|=q^p$.  Thus $K$ is complete, nontrivially valued, and
+nonarchimedean.  The same facts hold for $L$, and multiplicativity gives
+$|ax|=|a||x|$ for $a\in K$ and $x\in L$.  Hence $L$ is a Banach
+$K$-algebra.
+
+For every $x\in L$, we have $x^p\in K$, so $x$ is a zero of
+\[
+X^p-x^p\in K[X].
+\]
+Thus $L/K$ is purely inseparable of exponent one and, in particular,
+algebraic.
+
+It remains to prove that its degree is infinite.  Fix $N\ge1$ and consider
+the $p^N$ elements
+\[
+u_1^{e_1}\cdots u_N^{e_N},
+\qquad 0\le e_i<p.
+\]
+We claim that they are linearly independent over $K$.  Suppose that a finite
+relation
+\begin{equation}\label{eq:relation}
+\sum_{0\le e_1,\ldots,e_N<p}
+c_{e_1,\ldots,e_N}(t^p)u_1^{e_1}\cdots u_N^{e_N}=0
+\end{equation}
+holds, with coefficients in $K=k^p((t^p))$.  Expand each coefficient as a
+Laurent series in $t^p$.  Comparing the coefficient of every power $t^{pm}$
+in \eqref{eq:relation} gives a relation over $k^p$ among the same monomials.
+
+Those monomials are linearly independent over $k^p$.  Indeed, any proposed
+finite relation uses only finitely many of the variables.  In the resulting
+finite rational-function field, the monomials whose exponent in each variable
+lies in $\{0,\ldots,p-1\}$ form a basis over the subfield of $p$th powers:
+this follows by adjoining the variables one at a time, each satisfying
+$X^p-u_i^p$ and contributing degree $p$.  Hence every Laurent-series
+coefficient in \eqref{eq:relation} is zero, proving the claim.
+
+We have shown that $[L:K]\ge p^N$ for every $N$.  Consequently
+$[L:K]=\infty$, completing the counterexample.
+\end{proof}
+
+\section{What the counterexample does and does not show}
+
+The example violates the finiteness conclusion of the proposed
+characteristic-$p$ lemma.  It does not violate the other conclusion: $L$ is
+itself nonarchimedean.  Thus the obstruction is not a pathological
+submultiplicative Banach norm; it is the unbounded $p$-rank permitted by pure
+inseparability.
+
+This packet does not give a full positive-characteristic characterization of
+automatic continuity for differential operators, nor a replacement for the
+source paper's Theorems~1.2--1.3.  It settles only the precise question in
+Remark~7.3.
+
+\section{Verification and novelty status}
+
+The proof was audited along four possible failure points: the exact Frobenius
+image in \eqref{eq:frobenius-image}, completeness of $K$, algebraicity of
+$L/K$, and infinite $K$-linear dimension.  Each is proved explicitly above.
+No computation is used.
+
+On 22 July 2026, a bounded novelty check searched the run's lightweight
+indexes and arXiv/web results using arXiv:2504.10209, the exact paper title,
+the opening phrase of Remark~7.3, the source label
+\texttt{NormsOnFiniteExtensions}, the author, and the terms \emph{purely
+inseparable}, \emph{$p$-degree}, and \emph{algebraic Banach field extension}.
+The search found the source paper and summaries of it, but no separate work
+claiming to answer Remark~7.3.  This bounded search cannot certify novelty;
+human literature review is still required.
+
+\enlargethispage{6\baselineskip}
+\section{Human-review recommendation}
+
+Review \eqref{eq:frobenius-image} and the coefficientwise independence step
+in \eqref{eq:relation}.  Once those two points are accepted, all source
+hypotheses and the failure of finite degree are immediate.  Recommended
+verdict: \texttt{likely valid}, with a separate expert novelty check before
+external dissemination.
+
+\begin{thebibliography}{9}
+\bibitem{Raczka}
+F. R\k{a}czka,
+\emph{Continuity of differential operators for nonarchimedean Banach
+algebras}, arXiv:2504.10209v1 (2025), especially Lemma~7.2 and Remark~7.3.
+\url{https://arxiv.org/abs/2504.10209}
+\end{thebibliography}
+
+\end{document}

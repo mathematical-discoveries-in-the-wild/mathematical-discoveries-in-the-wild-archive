@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Sone}{\mathbb S^1}
+\newcommand{\Ead}{\mathcal E_{a,d}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\dd}{\,\mathrm d}
+
+\title{Single-vortex extremizers on analytic planar domains\\
+\large A partial result for Open Problem 1 of arXiv:1606.01526}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 8}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate substantial partial solution, likely valid, requiring human review.
+The result below completely classifies attainment in every equivalence class
+with one isolated vortex on a real-analytic simply connected planar domain.
+It does not classify classes with several or non-atomic singularities.
+
+\section{Source question}
+
+The source is H.~Brezis, P.~Mironescu, and I.~Shafrir,
+\emph{Distances between classes in $W^{1,1}(\Omega;\mathbb S^1)$},
+arXiv:1606.01526, later published in \emph{Calc. Var. PDE} 57 (2018),
+Article 14 \cite{BMS}. On page 22, Open Problem 1 asks whether some smooth
+bounded domain fails property $(\mathrm P_1)$, namely the existence of
+$u\in W^{1,1}(\Omega;\Sone)$ such that
+\[
+  0<\Sigma(u)=\int_\Omega |\nabla u|.
+\]
+The authors specifically suggest that the interior of a noncircular ellipse
+may fail $(\mathrm P_1)$.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Definitions and statement}
+
+Let $\Omega\subset\mathbb R^2$ be a bounded simply connected domain, let
+$a\in\Omega$, and let $d\in\mathbb Z\setminus\{0\}$. Define
+\[
+ w_{a,d}(x)=\left(\frac{x-a}{|x-a|}\right)^d,
+ \qquad x\in\Omega\setminus\{a\}.
+\]
+Since $|\nabla w_{a,d}|=|d|/|x-a|$, this map belongs to
+$W^{1,1}(\Omega;\Sone)$. Its equivalence class in the terminology of
+\cite{BMS} is
+\[
+ \Ead=\{w_{a,d}e^{i\varphi}:\varphi\in W^{1,1}(\Omega;\mathbb R)\}.
+\]
+Every member of this class has one topological singularity at $a$, of
+multiplicity $d$. Put
+\[
+ r_a=\dist(a,\partial\Omega),\qquad
+ m_{a,d}=\inf_{u\in\Ead}\int_\Omega|\nabla u|.
+\]
+The geometric formula $\Sigma=2\pi L$ in \cite{BMS} gives
+\begin{equation}\label{eq:source-value}
+ m_{a,d}=\Sigma(w_{a,d})=2\pi |d|r_a.
+\end{equation}
+
+\begin{theorem}[single-vortex attainment classification]\label{thm:main}
+Assume in addition that $\partial\Omega$ is connected and real analytic.
+Then the infimum $m_{a,d}$ is attained by some $u\in\Ead$ if and only if
+$\Omega=B_{r_a}(a)$.
+\end{theorem}
+
+\begin{corollary}[noncircular ellipses]\label{cor:ellipse}
+Let $\Omega$ be the interior of a noncircular ellipse. For every
+$a\in\Omega$ and every $d\ne0$, no map in $\Ead$ satisfies
+\[
+ \int_\Omega|\nabla u|=\Sigma(u).
+\]
+Thus no single-vortex class can witness property $(\mathrm P_1)$ on a
+noncircular ellipse.
+\end{corollary}
+
+\section{Proof intuition}
+
+The largest disk centered at the vortex is already enough to account for the
+entire sharp lower bound. Every centered circle inside that disk sees degree
+$d$, and hence at least $2\pi|d|$ of tangential variation. Integrating over
+the radius gives $2\pi|d|r_a$, exactly the source value
+\eqref{eq:source-value}.
+
+If a minimizer exists, there is no energy left for either radial variation
+inside the disk or any variation outside it. The minimizer is therefore an
+angular loop inside the disk and locally constant outside. Its nonzero degree
+can change only at directions where the inscribed circle actually touches the
+domain boundary. The contact set must have positive length. A connected
+real-analytic boundary which shares a positive-length set with a circle must
+be that circle. The unresolved part of Open Problem 1 is whether an ellipse
+could have an extremizer with a more complicated singularity distribution.
+
+\section{Proof}
+
+We use standard Sobolev slicing and trace facts in the form presented, for
+example, in \cite{Leoni}.
+
+\begin{lemma}[sharp polar bound and its equality consequences]\label{lem:polar}
+Let $\Omega$ be bounded and simply connected, $a\in\Omega$, $d\ne0$, and
+$r=r_a$. Every $u\in\Ead$ satisfies
+\begin{equation}\label{eq:polar-bound}
+ \int_\Omega|\nabla u|\ge 2\pi|d|r.
+\end{equation}
+If equality holds, then
+\begin{align}
+ \nabla u&=0 &&\text{a.e. on }\Omega\setminus B_r(a),
+ \label{eq:outside-zero}\\
+ u(a+\rho e^{i\theta})&=q(e^{i\theta})
+ &&\text{for a.e. }(\rho,\theta)\in(0,r)\times(0,2\pi),
+ \label{eq:angular-form}
+\end{align}
+for some $q\in W^{1,1}(\Sone;\Sone)$ of degree $d$.
+\end{lemma}
+
+\begin{proof}
+For almost every $\rho\in(0,r)$, the slice
+$u_\rho(\theta)=u(a+\rho e^{i\theta})$ belongs to
+$W^{1,1}(\Sone;\Sone)$. The factor $e^{i\varphi}$ in the definition of
+$\Ead$ has a real-valued phase on almost every slice and hence degree zero.
+Thus $\deg u_\rho=d$. The length-degree inequality gives
+\begin{equation}\label{eq:length-degree}
+ \int_0^{2\pi}|\partial_\theta u(\rho,\theta)|\dd\theta
+ \ge 2\pi|d|
+ \quad\text{for a.e. }\rho\in(0,r).
+\end{equation}
+Using polar coordinates in $B_r(a)\subset\Omega$,
+\begin{align*}
+ \int_\Omega|\nabla u|
+ &\ge \int_{B_r(a)}|\nabla u|\\
+ &=\int_0^r\!\int_0^{2\pi}
+ \sqrt{\rho^2|\partial_\rho u|^2+|\partial_\theta u|^2}
+ \dd\theta\dd\rho\\
+ &\ge\int_0^r\!\int_0^{2\pi}|\partial_\theta u|
+ \dd\theta\dd\rho
+ \ge 2\pi|d|r.
+\end{align*}
+If equality holds, the energy on $\Omega\setminus B_r(a)$ vanishes, proving
+\eqref{eq:outside-zero}. Equality in the pointwise middle inequality forces
+$\partial_\rho u=0$ almost everywhere in the disk. The ACL/slicing
+representative is therefore independent of $\rho$, which gives
+\eqref{eq:angular-form}; its degree is $d$ by the preceding slice argument.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose first that $u\in\Ead$ attains $m_{a,d}$. Equations
+\eqref{eq:source-value} and \eqref{eq:polar-bound} put us in the equality
+case of Lemma~\ref{lem:polar}.
+
+Let
+\[
+ K=\{e^{i\theta}\in\Sone:a+r e^{i\theta}\in\partial\Omega\}
+\]
+be the set of contact directions between the centered inscribed circle and
+the domain boundary. We claim that $q$ in \eqref{eq:angular-form} is locally
+constant on $\Sone\setminus K$. Indeed, if $e^{i\theta_0}\notin K$, then
+$x_0=a+r e^{i\theta_0}$ is an interior point of $\Omega$. A small
+neighborhood of $x_0$ is contained in $\Omega$ and is cut into two pieces by
+an arc of $\partial B_r(a)$. On its exterior piece, \eqref{eq:outside-zero}
+makes $u$ locally constant. Uniqueness of the $W^{1,1}$ trace across the
+internal smooth arc forces the trace $q$ on the interior piece to have the
+same constant value on a neighborhood of $\theta_0$.
+
+Consequently $q'=0$ almost everywhere on $\Sone\setminus K$. On the other
+hand, the degree formula for the absolutely continuous circle map $q$ gives
+\[
+ 2\pi d=\int_0^{2\pi} q\wedge q'\dd\theta.
+\]
+Since $d\ne0$, the derivative $q'$ cannot be supported on a null set. Hence
+$K$ has positive one-dimensional measure.
+
+Consider the real-analytic function
+$F(x)=|x-a|^2-r^2$. Its restriction to the connected real-analytic
+one-manifold $\partial\Omega$ vanishes on the positive-measure set
+$\partial\Omega\cap\partial B_r(a)$. The real-analytic identity principle
+\cite{KrantzParks} implies that $F$ vanishes identically on
+$\partial\Omega$. Thus $\partial\Omega=\partial B_r(a)$; boundedness and
+simple connectivity imply $\Omega=B_r(a)$.
+
+Conversely, if $\Omega=B_r(a)$, direct integration gives
+\[
+ \int_\Omega|\nabla w_{a,d}|
+ =\int_0^r\!\int_0^{2\pi}\frac{|d|}{\rho}\rho
+ \dd\theta\dd\rho=2\pi|d|r=m_{a,d}.
+\]
+So $w_{a,d}$ attains the infimum.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:ellipse}]
+The boundary of an ellipse is connected and real analytic. A noncircular
+ellipse is not a disk centered at any interior point. Theorem~\ref{thm:main}
+therefore excludes attainment in every $\Ead$.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof has been audited at the following pressure points.
+\begin{itemize}
+ \item The singularity $1/|x-a|$ is integrable in two dimensions.
+ \item A $W^{1,1}$ phase has degree zero on almost every centered slice, so
+       the degree used in \eqref{eq:length-degree} is stable throughout
+       $\Ead$.
+ \item Equality in the integral chain forces separately zero exterior energy
+       and zero radial derivative; no strict-convexity argument is used.
+ \item The trace argument is local at an internal smooth arc and does not
+       assume continuity of $u$ in two dimensions.
+ \item Positive-measure contact, rather than a single tangency, is essential
+       for the real-analytic identity step.
+\end{itemize}
+
+The result does \emph{not} prove that a noncircular ellipse fails
+$(\mathrm P_1)$. A possible extremizer with multiple vortices or a general
+singular Jacobian is not ruled out. This is why the packet is classified as a
+substantial partial result.
+
+\section{Bounded novelty check}
+
+On 22 July 2026, bounded searches were made using arXiv/web indexes and the
+local run registry. Queries combined arXiv:1606.01526, the paper title and
+DOI, the three authors, the exact phrase ``non circular ellipse'', and the
+terms ``single vortex'', ``attainment'', and properties $(\mathrm P_1)$ and
+$(\mathrm P_3)$. The searches found the source article \cite{BMS}, its short
+announcement, and unrelated uses of the label $(P_1)$, but no later paper
+stating the theorem above or resolving the ellipse question. This is bounded
+evidence only, not a guarantee of novelty.
+
+\section{Human-review recommendation}
+
+The theorem should receive expert review, with particular attention to the
+local trace step at $\partial B_r(a)\cap\Omega$ and to the stated scope. If
+confirmed, the next mathematical target is to extend the equality analysis to
+finitely many vortices, which is the most direct route toward the full ellipse
+conjecture.
+
+\begin{thebibliography}{9}
+\bibitem{BMS}
+H.~Brezis, P.~Mironescu, and I.~Shafrir,
+\emph{Distances between classes in $W^{1,1}(\Omega;\mathbb S^1)$},
+Calc. Var. Partial Differential Equations 57 (2018), Article 14;
+arXiv:1606.01526. DOI: 10.1007/s00526-017-1280-z.
+
+\bibitem{Leoni}
+G.~Leoni, \emph{A First Course in Sobolev Spaces}, 2nd ed.,
+Graduate Studies in Mathematics 181, American Mathematical Society, 2017.
+
+\bibitem{KrantzParks}
+S.~G.~Krantz and H.~R.~Parks,
+\emph{A Primer of Real Analytic Functions}, 2nd ed., Birkh\"auser, 2002.
+\end{thebibliography}
+
+\end{document}

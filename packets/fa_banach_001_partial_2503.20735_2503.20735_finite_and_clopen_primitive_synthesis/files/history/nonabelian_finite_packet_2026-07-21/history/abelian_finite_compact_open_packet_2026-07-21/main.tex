@@ -1,0 +1,286 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\A}{\mathcal A}
+\newcommand{\D}{\mathcal D}
+\newcommand{\wideG}{\widehat G}
+
+\title{Finite and Compact-Open Sets Are Sets of Synthesis\\
+for Abelian Locally Elliptic Weighted Orlicz Algebras}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 2}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Question 8.12 of Carter's paper asks for geometric conditions on subsets of
+the primitive spectrum which imply spectral synthesis for Hermitian weighted
+Orlicz algebras on unipotent $p$-adic groups.  We prove a complete criterion
+in the abelian locally elliptic case: every finite set and every compact-open
+set in the Pontryagin dual is a set of synthesis.  In particular, this applies
+to the additive unipotent group $U_2(k)\cong(k,+)$ over every non-archimedean
+local field $k$.  The mechanism is an exact compact-open Fourier cutoff which
+belongs to Carter's minimal ideal $j(C)$.
+\end{abstract}
+
+\paragraph{Status.}
+Candidate partial result, likely valid, subject to human review.  The theorem
+fully proves the stated synthesis criteria in the abelian case; it does not
+resolve the nonabelian coadjoint-orbit problem.
+
+\section{Source question}
+
+The source is Max Carter, \emph{Weighted Orlicz $*$-algebras on locally
+elliptic groups}, arXiv:2503.20735v2, Question 8.12 on page 29
+\cite{Carter}.  Its core synthesis question is:
+
+\begin{quote}
+``What geometric properties of $C$ imply that it is a set of synthesis?''
+\end{quote}
+
+The surrounding source passage and the complete question are shown below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 8.12 and its definition of a set of synthesis, rendered
+  from page 29 of arXiv:2503.20735v2.}
+\end{figure}
+
+\section{Definitions and scope}
+
+Let $G$ be an abelian locally elliptic group.  Let $(\Phi,\Psi)$ be a
+complementary pair of Young functions with $\Phi\in\Delta_2$, and let $\omega$
+be an $L^\Phi$-weight such that $1/\omega\in L^\Psi(G)$.  Put
+\[
+   \A=L^\Phi(G,\omega),
+\]
+and assume that $\A$ is Hermitian.  Carter's Theorem 6.2 identifies
+$\operatorname{Prim}_*(\A)$ with the unitary dual; because $G$ is abelian,
+this is the Pontryagin dual $\wideG$.
+
+For closed $C\subseteq\wideG$, write
+\[
+ \ker(C)=\{f\in\A:\widehat f(\chi)=0\text{ for all }\chi\in C\}.
+\]
+Carter defines a closed ideal $j(C)$ using a smooth functional calculus and
+proves $j(C)\subseteq\ker(C)$ and
+$\operatorname{hull}_*(j(C))=C$ \cite[Theorem 7.1]{Carter}.  The set $C$ is a
+\emph{set of synthesis} when $j(C)=\ker(C)$.
+
+Let $\D(G)$ be the span of the indicators of compact-open cosets of $G$.
+For the Fourier transform we use
+\[
+ \widehat f(\chi)=\int_G f(x)\overline{\chi(x)}\,dx.
+\]
+
+\section{Proof intuition}
+
+The dual of an abelian locally elliptic group has a compact-open basis.  On
+such groups, compactly supported locally constant functions are Fourier
+stable.  If $U\subseteq\wideG$ is compact-open and disjoint from $C$, the
+inverse Fourier transform $e_U$ of $1_U$ is therefore an honest element of
+$\D(G)\subseteq\A$.
+
+The key point is stronger than ordinary Fourier localization: $e_U$ lies in
+Carter's specific ideal $j(C)$.  Scale $e_U$ to a self-adjoint $h$ whose
+Fourier transform takes only the values $0$ and $a>0$, and apply Carter's
+smooth functional calculus with a function that is zero near $0$ and equal to
+$1$ at $a$.  The resulting element is exactly $e_U$ and belongs to the
+generating set $m(C)$ of $j(C)$.  Density then reduces synthesis to arranging
+that approximants have Fourier support away from $C$.  For finite $C$ this is
+done by finite interpolation; for compact-open $C$ it is done by the Fourier
+projection $1_C$.
+
+\section{Formal proof}
+
+\begin{lemma}[Fourier test functions and continuity]\label{lem:test}
+The following hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\D(G)$ is dense in $\A$.
+\item Fourier transformation maps $\D(G)$ onto $\D(\wideG)$.
+\item For every $\chi\in\wideG$, evaluation
+$f\mapsto\widehat f(\chi)$ is continuous on $\A$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Since $\Phi\in\Delta_2$, compactly supported functions are dense in the
+weighted Orlicz space; this is the standard $\Delta_2$ density property
+\cite{RaoRen}.  A locally elliptic group has a compact-open basis.  Hence a
+continuous function on a compact set is uniformly approximable by locally
+constant step functions supported on finitely many compact-open cosets.  On a
+fixed compact set $K$, uniform error $\varepsilon$ gives Orlicz error at most
+$\varepsilon\|\omega 1_K\|_{L^\Phi}$ (up to the fixed equivalent norm
+convention).  This proves (i).
+
+If $K\leq G$ is compact-open and $x\in G$, Haar orthogonality gives
+\[
+ \widehat{1_{x+K}}(\chi)
+   =\mu(K)\overline{\chi(x)}1_{K^\perp}(\chi).
+\]
+Here $K^\perp$ is compact-open in $\wideG$.  The same formula on $\wideG$,
+together with Fourier inversion, proves (ii); see also \cite{Rudin}.
+
+Finally, the Orlicz--H\"older inequality and $1/\omega\in L^\Psi(G)$ give a
+constant $H$ such that
+\[
+ |\widehat f(\chi)|\leq\|f\|_1
+ \leq H\|f\|_{L^\Phi(G,\omega)},
+\]
+which proves (iii).
+\end{proof}
+
+\begin{lemma}[Exact cutoffs lie in $j(C)$]\label{lem:cutoff}
+Let $C\subseteq\wideG$ be closed and let $U\subseteq\wideG$ be compact-open
+with $U\cap C=\varnothing$.  If $e_U\in\D(G)$ is defined by
+$\widehat{e_U}=1_U$, then $e_U\in j(C)$.  Consequently, every
+$g\in\D(G)$ satisfying $\operatorname{supp}\widehat g\subseteq U$ belongs to
+$j(C)$.
+\end{lemma}
+
+\begin{proof}
+The function $e_U$ is self-adjoint because its Fourier transform is real.
+Choose $a\in(0,2\pi)$ so small that $a\|e_U\|_1\leq1$, and set
+$h=ae_U$.  Then $h=h^*\in C_c(G)$, $\|h\|_1\leq1$, and
+\[
+ \widehat h=a1_U.
+\]
+In particular, every representation indexed by $C$ annihilates $h$.
+
+Fix the smooth functional-calculus algebra $A_\gamma$ used in Carter's
+definition of $m(C)$, with $\log_2(4/3)<\gamma<1$.  Its compact cutoff
+property supplies $\varphi\in A_\gamma$ which is zero on a neighbourhood of
+$0$ and satisfies $\varphi(a)=1$ \cite[Proposition 5.5]{Carter}.  Thus
+$\varphi\{h\}\in m(C)$.  At every $\chi\in\wideG$, compatibility of the
+functional calculus with representations gives
+\[
+ \widehat{\varphi\{h\}}(\chi)
+ =\varphi(\widehat h(\chi))
+ =1_U(\chi).
+\]
+Fourier injectivity on $L^1(G)$ yields $\varphi\{h\}=e_U$.  Therefore
+$e_U\in m(C)\subseteq j(C)$.  If
+$\operatorname{supp}\widehat g\subseteq U$, then $g=g*e_U$, so the ideal
+property gives $g\in j(C)$.
+\end{proof}
+
+\begin{theorem}[Finite and compact-open synthesis]\label{thm:main}
+Under the assumptions above:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item every finite subset of $\wideG$ is a set of synthesis for $\A$;
+\item every compact-open subset of $\wideG$ is a set of synthesis for $\A$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+First let $F=\{\chi_1,\ldots,\chi_r\}\subseteq\wideG$.  Choose pairwise
+disjoint compact-open neighbourhoods $V_i$ of the $\chi_i$, and let
+$q_i\in\D(G)$ satisfy $\widehat q_i=1_{V_i}$.  Thus
+$\widehat q_i(\chi_j)=\delta_{ij}$.
+
+Take $f\in\ker(F)$ and choose $f_n\in\D(G)$ with $f_n\to f$ in $\A$.  Define
+\[
+ g_n=f_n-\sum_{i=1}^r\widehat f_n(\chi_i)q_i.
+\]
+By Lemma \ref{lem:test}(iii), $\widehat f_n(\chi_i)\to\widehat f(\chi_i)=0$,
+so $g_n\to f$ in $\A$.  Moreover $\widehat g_n$ vanishes at every point of
+$F$.  Since $\widehat g_n$ is locally constant, it vanishes on a neighbourhood
+of each such point.  Hence
+$U_n=\operatorname{supp}\widehat g_n$ is compact-open and disjoint from $F$.
+Lemma \ref{lem:cutoff} gives $g_n\in j(F)$.  Closedness gives
+$f\in j(F)$.  Thus $\ker(F)\subseteq j(F)$; the reverse inclusion follows
+from the definition of $j(F)$.  This proves (a).
+
+Now let $C\subseteq\wideG$ be compact-open and choose $q_C\in\D(G)$ with
+$\widehat q_C=1_C$.  If $f\in\ker(C)$, then $f*q_C=0$ by Fourier injectivity.
+For $f_n\in\D(G)$ converging to $f$, put
+\[
+ g_n=f_n-f_n*q_C.
+\]
+The Banach algebra inequality gives
+\[
+ \|g_n-f\|_\A
+ \leq \|f_n-f\|_\A+\|(f_n-f)*q_C\|_\A
+ \leq (1+\|q_C\|_\A)\|f_n-f\|_\A,
+\]
+so $g_n\to f$.  Also $\widehat g_n=\widehat f_n(1-1_C)$; hence its compact-open
+support is disjoint from $C$.  Lemma \ref{lem:cutoff} gives
+$g_n\in j(C)$, and closedness again gives $f\in j(C)$.  Therefore
+$\ker(C)=j(C)$, proving (b).
+\end{proof}
+
+\begin{corollary}[Additive $p$-adic unipotent case]
+Let $k$ be a non-archimedean local field and
+$N=U_2(k)\cong(k,+)$.  Under Carter's hypotheses
+$\Phi\in\Delta_2$, $1/\omega\in L^\Psi(N)$, and Hermitianness of
+$L^\Phi(N,\omega)$, every finite subset and every compact-open subset of
+\[
+ \mathfrak n^*/\operatorname{Ad}^*(N)=\mathfrak n^*
+ \cong \operatorname{Prim}_*(L^\Phi(N,\omega))
+\]
+is a set of synthesis.
+\end{corollary}
+
+\begin{proof}
+The group $U_2(k)$ is the additive group of $k$, hence abelian and locally
+elliptic.  Its coadjoint action is trivial, so Theorem \ref{thm:main} applies.
+\end{proof}
+
+\section{Verification, limitations, and novelty check}
+
+The proof is structural and uses no numerical computation.  The independent
+verification checklist confirms: (1) the $\Delta_2$ hypothesis supplies the
+required dense Fourier test algebra; (2) the cutoff element satisfies every
+condition in the source definition of $m(C)$; (3) finite interpolation
+coefficients tend to zero by the continuous embedding $\A\hookrightarrow
+L^1(G)$; and (4) the compact-open projection preserves convergence in the
+Banach algebra norm.
+
+The theorem does not address nonabelian $N$, nontrivial coadjoint orbit
+spaces, or arbitrary closed subsets of $\wideG$.  A bounded novelty search on
+21 July 2026 covered arXiv queries combining ``weighted Orlicz'', ``spectral
+synthesis'', ``$p$-adic'', ``finite sets'', and ``compact open sets'', plus
+the source's cited discussion.  It found the source paper but no exact prior
+statement of this weighted-Orlicz criterion.  This is not an exhaustive
+literature claim, so novelty confidence is moderate.
+
+\paragraph{Human-review recommendation.}
+Review the density step for the author's chosen Orlicz norm convention and
+check that Proposition 5.5 supplies a periodic cutoff with
+$\varphi(a)=1$ for the selected $a\in(0,2\pi)$.  The remaining argument is an
+exact Fourier-idempotent calculation.
+
+\begin{thebibliography}{9}
+\bibitem{Carter}
+M.~Carter,
+\emph{Weighted Orlicz $*$-algebras on locally elliptic groups},
+Studia Math. \textbf{287} (2026), no.~2, 145--180;
+arXiv:2503.20735v2.
+
+\bibitem{RaoRen}
+M.~M. Rao and Z.~D. Ren,
+\emph{Theory of Orlicz Spaces},
+Monographs and Textbooks in Pure and Applied Mathematics 146,
+Marcel Dekker, 1991.
+
+\bibitem{Rudin}
+W.~Rudin,
+\emph{Fourier Analysis on Groups},
+Interscience Tracts in Pure and Applied Mathematics 12,
+Wiley, 1962.
+\end{thebibliography}
+
+\end{document}
+

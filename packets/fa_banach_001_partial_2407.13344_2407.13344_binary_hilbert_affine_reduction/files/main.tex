@@ -1,0 +1,251 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\setlength{\emergencystretch}{2em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\HS}{\mathrm{HS}}
+
+\begin{document}
+
+\begin{center}
+{\Large Partial-result packet for arXiv:2407.13344}\\[4pt]
+{\large Explicit affine reduction for all binary Hilbert-sphere formulas}
+\end{center}
+
+\paragraph{Status.}
+\textbf{substantial\_partial\_result\_likely\_valid}.  This packet addresses
+Question~27.9 of Ita\"i Ben Yaacov, Tom\'as Ibarluc\'ia, and Todor Tsankov,
+\emph{Extremal models and direct integrals in affine logic},
+arXiv:2407.13344v2~\cite{source}.
+
+\paragraph{Source question.}
+After proving abstractly that the theories $\HS_d$ of unit spheres of real
+$d$-dimensional Hilbert spaces have affine reduction, the source says that it
+does not know a syntactic proof and asks on page 121:
+
+\begin{quote}
+Give an explicit way of approximating continuous logic formulas by affine
+formulas modulo $\HS_d$.
+\end{quote}
+
+The introduction singles out the formula $\ip{x}{y}^3$ as an instance for
+which no affine approximants were known.  The source page containing the
+formal question is reproduced below.
+
+\begin{center}
+\includegraphics[width=.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\paragraph{Scope of the result.}
+We give an explicit uniform approximation for $\ip{x}{y}^3$, then for every
+continuous function of $\ip{x}{y}$, and consequently for every continuous
+logic formula with at most two free variables modulo any fixed $\HS_d$.
+Question~27.9 for arbitrary finite tuples remains open.
+
+\paragraph{Definitions.}
+Affine formulas allow real affine combinations of atomic formulas and the
+quantifiers $\sup$ and $\inf$.  In the Hilbert-sphere language,
+$\ip{x}{z}$ is atomic, and all quantified variables range over the unit
+sphere.  Thus, for fixed real scalars $a_i$, the expression
+\[
+ \sup_z\sum_i a_i\ip{x_i}{z}
+ =\left\|\sum_i a_i x_i\right\|
+\]
+is an affine formula modulo every $\HS_d$.
+
+\paragraph{Proof intuition.}
+The affine fragment cannot multiply formula values, but its supremum
+quantifier can take a Hilbert norm.  Carefully choosing two coefficients turns
+that norm into the square-root ridge function
+$t\mapsto\sqrt{1+rt}$, where $t=\ip{x}{y}$.  Finite differences in the
+external scalar parameter $r$ recover every power $t^k$ because the Taylor
+coefficients of $\sqrt{1+rt}$ at $r=0$ are all nonzero.  Polynomial
+approximation then gives every continuous function of one inner product.
+Finally, a binary formula on a fixed Hilbert sphere is invariant under the
+orthogonal group, so it is precisely a continuous function of the pair's
+inner product.
+
+For three or more free variables the orbit invariant is an entire Gram
+matrix.  The argument below supplies nonlinear functions of a single Gram
+coordinate, but not products of independent coordinates; this is the precise
+remaining obstruction to the full source question.
+
+\begin{proposition}[An affine square-root family]\label{prop:sqrt}
+For $-1<r<1$, set
+\[
+ a_r=\frac{\sqrt{1+r}+\sqrt{1-r}}2,
+ \qquad
+ b_r=\frac{\sqrt{1+r}-\sqrt{1-r}}2
+\]
+and define the affine formula
+\[
+ N_r(x,y)=\sup_z\bigl(a_r\ip{x}{z}+b_r\ip{y}{z}\bigr).
+\]
+Then, modulo every $\HS_d$,
+\[
+ N_r(x,y)=\sqrt{1+r\ip{x}{y}}.
+\]
+\end{proposition}
+
+\begin{proof}
+The chosen coefficients satisfy $a_r^2+b_r^2=1$ and $2a_rb_r=r$.
+Writing $t=\ip{x}{y}$ and using that $x,y$ are unit vectors gives
+\[
+ N_r(x,y)=\|a_rx+b_ry\|
+ =\sqrt{a_r^2+b_r^2+2a_rb_rt}=\sqrt{1+rt}.
+\]
+The first equality is exactly the dual formula for the norm in a real Hilbert
+space and remains valid if the displayed vector vanishes.
+\end{proof}
+
+\begin{theorem}[Explicit cubic approximants]\label{thm:cubic}
+For $0<r<1$, the affine formula
+\[
+ C_r(x,y)=\frac{8}{r^3}
+ \left(N_r(x,y)-N_{-r}(x,y)-r\ip{x}{y}\right)
+\]
+converges uniformly, modulo every $\HS_d$, to $\ip{x}{y}^3$ as
+$r\downarrow0$.  The same formula and error bound work in every dimension.
+\end{theorem}
+
+\begin{proof}
+For $t\in[-1,1]$, Proposition~\ref{prop:sqrt} gives
+\[
+ C_r(t)=\frac8{r^3}
+ \left(\sqrt{1+rt}-\sqrt{1-rt}-rt\right).
+\]
+Taylor's theorem for $s\mapsto\sqrt{1+s}$, uniformly on
+$[-1/2,1/2]$, yields
+\[
+ \sqrt{1+s}-\sqrt{1-s}-s=\frac{s^3}{8}+O(s^5).
+\]
+Taking $s=rt$ shows
+\[
+ \sup_{|t|\leq1}|C_r(t)-t^3|=O(r^2),
+\]
+which proves uniform convergence.
+\end{proof}
+
+\begin{proposition}[Every one-variable connective]\label{prop:continuous}
+Let $f\in C([-1,1])$ and let $\varepsilon>0$.  There is an explicitly
+constructible affine formula $A_{f,\varepsilon}(x,y)$ such that, in every
+real Hilbert sphere and uniformly in $x,y$,
+\[
+ \left|A_{f,\varepsilon}(x,y)-f(\ip{x}{y})\right|<\varepsilon.
+\]
+\end{proposition}
+
+\begin{proof}
+We first recover every monomial.  Fix $k\geq1$ and, for
+$0<h<1/k$, let
+\[
+ P_{k,h}(x,y)=
+ \frac{1}{k!\binom{1/2}{k}h^k}
+ \sum_{j=0}^k(-1)^{k-j}\binom{k}{j}N_{jh}(x,y).
+\]
+This is an affine formula.  For $t=\ip{x}{y}$, let
+$g_t(r)=\sqrt{1+rt}$.  The numerator above is the $k$th forward difference
+$\Delta_h^kg_t(0)$.  The integral formula for finite differences gives
+\[
+ \frac{\Delta_h^kg_t(0)}{h^k}
+ =\int_{[0,1]^k}g_t^{(k)}\bigl(h(s_1+\cdots+s_k)\bigr)
+ \,ds_1\cdots ds_k.
+\]
+The derivatives are jointly continuous for $|t|\leq1$ and $|r|<1$.
+Consequently the right-hand side converges uniformly in $t$ to
+\[
+ g_t^{(k)}(0)=k!\binom{1/2}{k}t^k.
+\]
+Thus $P_{k,h}\to\ip{x}{y}^k$ uniformly as $h\downarrow0$.
+
+Now choose, for example, a Bernstein polynomial $p$ satisfying
+$\|f-p\|_\infty<\varepsilon/2$.  Write $p(t)=\sum_{k=0}^m c_kt^k$.
+Replace each $t^k$ by $P_{k,h_k}$, choosing $h_k$ sufficiently small that
+the sum of the resulting errors is less than $\varepsilon/2$; use the
+constant affine formula $1$ for $k=0$.  The resulting affine combination is
+$A_{f,\varepsilon}$.
+\end{proof}
+
+\begin{theorem}[Binary affine reduction]\label{thm:binary}
+Fix $d\in\{1,2,\ldots,\infty\}$.  Every continuous logic formula modulo
+$\HS_d$ having at most two free variables can be uniformly approximated by
+affine formulas.  For $d\geq2$, the construction is the one in
+Proposition~\ref{prop:continuous} applied to the continuous function on
+$[-1,1]$ induced by the formula.
+\end{theorem}
+
+\begin{proof}
+Let $\varphi(x,y)$ be a continuous logic formula.  In a Hilbert sphere of
+fixed dimension $d\geq2$, two ordered pairs of unit vectors are in the same
+orthogonal-group orbit exactly when they have the same inner product.
+(For $d=\infty$, this is equivalently the standard description of binary
+types in the complete theory of infinite-dimensional real Hilbert spaces.)
+Formula interpretations are automorphism invariant.  Hence there is a
+function $f_d:[-1,1]\to\mathbb R$ such that
+\[
+ \varphi(x,y)=f_d(\ip{x}{y})\pmod{\HS_d}.
+\]
+The function $f_d$ is continuous: one may evaluate $\varphi$ on the
+continuous family
+\[
+ x=e_1,\qquad y_t=te_1+\sqrt{1-t^2}\,e_2,
+ \quad -1\leq t\leq1.
+\]
+Proposition~\ref{prop:continuous} now gives the required affine
+approximants.  If $d=1$, the only possible inner products are $-1$ and $1$,
+so every binary invariant is exactly an affine function of $\ip{x}{y}$.
+Unary formulas are constant by transitivity of the orthogonal group, and
+sentences are constant modulo the complete theory $\HS_d$.
+\end{proof}
+
+\paragraph{Verification notes.}
+The proof uses only affine operations: each $N_r$ is one supremum quantifier
+applied to an affine combination of atomic inner products, while all finite
+differences and polynomial combinations use real linear combinations.  There
+is no use of a nonlinear connective inside an approximating formula.
+
+The included script \texttt{code/check\_approximants.py} uses 80-digit
+arithmetic and samples $2001$ equally spaced values of $t\in[-1,1]$.  For the cubic approximants it
+observes the predicted quadratic error decay as $r$ is halved; it also checks
+the forward-difference formulas for powers $1$ through $6$.  These numerical
+checks are sanity checks only; uniform convergence is proved above.
+
+\paragraph{Limitations and novelty check.}
+This is a partial answer to Question~27.9: arbitrary-arity formulas remain
+untreated.  The source's highlighted cubic instance is completely resolved,
+as is the entire binary fragment.  The construction is uniform over Hilbert
+dimension once the target binary connective has been chosen, although the
+function $f_d$ associated with a general formula may depend on $d$.
+
+Before promotion, the lightweight run indexes were searched for
+arXiv:2407.13344, ``affine reduction'', ``Hilbert sphere'', and the cubic
+formula; no duplicate packet was found.  The current arXiv record is v2 and
+still contains Question~27.9.  Bounded searches of arXiv for the exact
+question, the paper title plus later work, and explicit affine Hilbert
+approximants found no later stated syntactic solution.  This check is not
+exhaustive, so novelty remains subject to expert review.
+
+\paragraph{Human-review recommendation.}
+Review as a substantial partial solution.  The central points to check are
+the coefficient identity in Proposition~\ref{prop:sqrt}, the uniform
+finite-difference limit in Proposition~\ref{prop:continuous}, and the claim
+that binary types of a fixed Hilbert-sphere theory are parametrized by the
+single inner product.  The arbitrary-arity gap should remain explicit.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+I. Ben Yaacov, T. Ibarluc\'ia, and T. Tsankov,
+\emph{Extremal models and direct integrals in affine logic},
+arXiv:2407.13344v2, 2024.
+\end{thebibliography}
+
+\end{document}

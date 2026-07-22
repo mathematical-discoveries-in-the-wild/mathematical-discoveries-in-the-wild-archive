@@ -1,0 +1,217 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.88in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\definecolor{accent}{RGB}{33,92,130}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Besov}{B^{1/2}_{p,\infty}(0,1;X)}
+
+\title{A High-Dimensional Gaussian Counterexample\\
+to the Proposed Brownian Besov Comparison}
+\author{Automated mathematical discovery packet for arXiv:0801.2959\\
+\small model: GPT5.6; lane: agent\_lane\_03}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hytönen and Veraar proved that the expected critical Besov norm of an
+$X$-valued Brownian motion is universally comparable to the $p$-th moment of
+its endpoint. They asked whether their upper estimate by
+$\sqrt p\,\E\|W(1)\|$ admits a universal reverse estimate. We give a negative
+answer. For standard Brownian motion in $\ell_2^d$, the two quantities have
+orders $\sqrt d+\sqrt p$ and $\sqrt{pd}$, respectively. Thus $d=p\to\infty$
+is a counterexample family. More precisely, the correct universal formula is
+\[
+ \E\|W\|_{B^{1/2}_{p,\infty}(0,1;X)}
+ \asymp \E\|W(1)\|+\sqrt p\,\sigma(W(1)),
+\]
+where $\sigma$ is the weak Gaussian standard deviation.
+\end{abstract}
+
+\section{Source question}
+
+For $0<\alpha<1$ and $1\le p\le\infty$, the source equips the vector-valued
+Besov space with the equivalent dyadic norm
+\[
+ \|f\|_{B^\alpha_{p,\infty}(0,1;X)}
+ =\|f\|_{L^p(0,1;X)}+
+ \sup_{n\ge0}2^{n\alpha}
+ \|f(\,\cdot+2^{-n})-f\|_{L^p(0,1-2^{-n};X)}.
+\]
+The source explicitly declares that an unsubscripted comparison sign has a
+universal constant. Its Theorem 6.1 and the unresolved sentence in Remark 6.1
+are reproduced below from page 15 of the arXiv PDF \cite{HV}.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Thus the precise question is whether there exists a universal $c>0$ such that
+for every real Banach space $X$, every $X$-valued Brownian motion $W$, and
+every $p\ge1$,
+\begin{equation}\label{eq:proposed}
+ \E\|W\|_{\Besov}\ge c\sqrt p\,\E\|W(1)\|.
+\end{equation}
+
+For a centered $X$-valued Gaussian random variable $G$, write
+\[
+ m(G):=\E\|G\|,
+ \qquad
+ \sigma(G):=\sup_{\|x^*\|\le1}
+ \bigl(\E|x^*(G)|^2\bigr)^{1/2}.
+\]
+
+\section{Proof intuition}
+
+The source has already reduced the Besov expectation to the $p$-th moment of
+$G=W(1)$. A Gaussian $p$-th moment has two independent scales: its mean
+$m(G)$ and its fluctuation scale $\sqrt p\,\sigma(G)$. The questioned bound
+replaces the weak scale $\sigma(G)$ by the potentially much larger strong
+scale $m(G)$. High-dimensional Euclidean Gaussians maximize this mismatch:
+$m(G)\asymp\sqrt d$ while $\sigma(G)=1$. Choosing $p=d$ makes the proposed
+right-hand side larger than the true scale by a factor of order $\sqrt d$.
+
+\section{The corrected estimate}
+
+\begin{lemma}[Strong and weak Gaussian scales]\label{lem:gaussian}
+There are universal constants $c,C>0$ such that every centered Gaussian
+random variable $G$ in a real Banach space and every $p\ge1$ satisfy
+\[
+ c\bigl(m(G)+\sqrt p\,\sigma(G)\bigr)
+ \le \bigl(\E\|G\|^p\bigr)^{1/p}
+ \le C\bigl(m(G)+\sqrt p\,\sigma(G)\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+The upper estimate is the standard Gaussian concentration moment bound: the
+Gaussian isoperimetric inequality gives a subgaussian upper tail above
+$m(G)$ with variance proxy $\sigma(G)^2$, and integration of that tail gives
+\[
+ \bigl(\E\|G\|^p\bigr)^{1/p}
+ \le m(G)+C\sqrt p\,\sigma(G).
+\]
+See, for example, Ledoux--Talagrand \cite[Chapter~3]{LT}.
+
+For the converse, monotonicity of moments gives
+$\bigl(\E\|G\|^p\bigr)^{1/p}\ge m(G)$. Also, for every
+$x^*\in X^*$ with $\|x^*\|\le1$,
+\[
+ \bigl(\E\|G\|^p\bigr)^{1/p}
+ \ge \bigl(\E|x^*(G)|^p\bigr)^{1/p}
+ =\gamma_p\bigl(\E|x^*(G)|^2\bigr)^{1/2},
+\]
+where $\gamma_p=(\E|N(0,1)|^p)^{1/p}\asymp\sqrt p$. Taking the supremum
+over $x^*$ yields the lower bound by $c\sqrt p\,\sigma(G)$. The maximum of
+the two lower bounds is at least half their sum.
+\end{proof}
+
+\begin{theorem}[Correct universal Besov comparison]\label{thm:correct}
+There are universal constants $c,C>0$ such that, for every real Banach space
+$X$, every $X$-valued Brownian motion $W$, and every $p\ge1$,
+\[
+ c\bigl(\E\|W(1)\|+\sqrt p\,\sigma(W(1))\bigr)
+ \le \E\|W\|_{\Besov}
+ \le C\bigl(\E\|W(1)\|+\sqrt p\,\sigma(W(1))\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Theorem 6.1 of Hytönen--Veraar \cite{HV} states, with universal constants,
+\[
+ \E\|W\|_{\Besov}\asymp
+ \bigl(\E\|W(1)\|^p\bigr)^{1/p}.
+\]
+Apply Lemma~\ref{lem:gaussian} to the centered Gaussian endpoint $W(1)$.
+\end{proof}
+
+\section{The counterexample}
+
+\begin{theorem}[Negative answer to Remark 6.1]\label{thm:counterexample}
+The universal reverse estimate \eqref{eq:proposed} is false. In fact, for
+standard $d$-dimensional Brownian motion $W_d$ with values in
+$X_d=\ell_2^d$,
+\[
+ \E\|W_d\|_{B^{1/2}_{p,\infty}(0,1;\ell_2^d)}
+ \asymp \sqrt d+\sqrt p,
+ \qquad
+ \sqrt p\,\E\|W_d(1)\|_2\asymp\sqrt{pd}.
+\]
+Consequently, the ratio of the left-hand side of \eqref{eq:proposed} to its
+right-hand scale tends to zero along $d=p\to\infty$.
+\end{theorem}
+
+\begin{proof}
+Let $g_d=W_d(1)=(g_1,\ldots,g_d)$, where the coordinates are independent
+standard normal random variables. The dual of $\ell_2^d$ is $\ell_2^d$, so
+\[
+ \sigma(g_d)=
+ \sup_{\|u\|_2\le1}\bigl(\E|\langle u,g_d\rangle|^2\bigr)^{1/2}=1.
+\]
+Moreover, $m(g_d)\asymp\sqrt d$. The upper bound follows from Jensen's
+inequality. For an elementary lower bound, put $Y=\|g_d\|_2^2$. Then
+$\E Y=d$ and $\E Y^2=d^2+2d\le3d^2$; Paley--Zygmund gives
+$\mathbb P(Y\ge d/2)\ge1/12$, hence
+$\E\sqrt Y\ge \sqrt{d/2}/12$.
+
+Theorem~\ref{thm:correct} now yields the first displayed comparison, while
+the estimate for $m(g_d)$ yields the second. If \eqref{eq:proposed} held with
+a universal $c>0$, setting $d=p=n$ would force a quantity bounded above by a
+universal multiple of $2\sqrt n$ to be bounded below by a positive universal
+multiple of $n$. This is impossible as $n\to\infty$.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+The included script evaluates the exact chi-moment identity
+\[
+ \E\|g_d\|_2^p
+ =2^{p/2}\frac{\Gamma((d+p)/2)}{\Gamma(d/2)}
+\]
+and confirms numerically that
+$\|\|g_n\|_2\|_{L^n}/(\sqrt n\,\E\|g_n\|_2)$ decreases toward zero.
+This is a sanity check, not part of the proof.
+
+The result answers only the universal, dimension-free interpretation fixed by
+the source's notation. For a fixed nonzero Gaussian $G$, a reverse bound with
+a constant depending on $\sigma(G)/m(G)$ follows from
+Lemma~\ref{lem:gaussian}.
+
+A bounded search on 22 July 2026 covered the run's four cheap indexes, its
+35,297-paper deterministic source-signal corpus, exact arXiv/web searches for
+the source title, authors, quoted unresolved phrase, and formula variants,
+and visible later primary papers citing the source. No explicit later answer
+to Remark 6.1 or this high-dimensional counterexample was found. Novelty
+confidence is moderate, not definitive.
+
+\paragraph{Human-review recommendation.}
+Verify that the source's Theorem 6.1 is uniform in $X,p,W$, and check the
+standard concentration upper bound in Lemma~\ref{lem:gaussian}. The remaining
+Euclidean calculation is elementary.
+
+\begin{thebibliography}{9}
+\bibitem{HV}
+T.~P. Hytönen and M.~C. Veraar,
+\emph{On Besov regularity of Brownian motions in infinite dimensions},
+Probability and Mathematical Statistics \textbf{28} (2008), no.~1, 143--162;
+\href{https://arxiv.org/abs/0801.2959}{arXiv:0801.2959}.
+
+\bibitem{LT}
+M.~Ledoux and M.~Talagrand,
+\emph{Probability in Banach Spaces: Isoperimetry and Processes},
+Ergebnisse der Mathematik und ihrer Grenzgebiete, vol.~23,
+Springer, 1991.
+\end{thebibliography}
+
+\end{document}

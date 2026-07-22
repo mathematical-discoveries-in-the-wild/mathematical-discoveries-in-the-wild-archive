@@ -1,0 +1,243 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{statusblue}{HTML}{1F4E79}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Dspace}{\mathcal D_E}
+\newcommand{\Schwartz}{\mathcal S(\mathbb R^n)}
+\newcommand{\Tempered}{\mathcal S'(\mathbb R^n)}
+
+\title{Normalized band-limited translates show that $\mathcal D_E$ is never Montel}
+\author{Solution packet for arXiv:1310.4047}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{statusblue}{statusblue!5}{%
+\parbox{0.91\textwidth}{
+\textbf{Status: claimed full solution; likely valid.}
+For every translation-invariant Banach space of tempered distributions $E$ in
+the sense of Dimovski--Pilipovi\'c--Vindas, the Fr\'echet space $\mathcal D_E$
+is not Montel.  No solidity, reflexivity, or boundedness of the translation
+weight is assumed.}}
+\end{center}
+
+\section{Source question}
+
+Dimovski, Pilipovi\'c, and Vindas introduce a translation-invariant Banach
+space $E$ of tempered distributions and the associated test-function space
+$\Dspace$ in \cite{DPV}.  In Remark~6 on page~17 they ask:
+\begin{quote}
+``In general: Can $\mathcal D_E$ be Montel?''
+\end{quote}
+The source passage is reproduced below at full readable width.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Debrouwere later restated the question as Problem~5.8 and proved that
+$\Dspace$ is not Montel when $E$ is a \emph{solid} translation-invariant
+Banach space of distributions \cite[Problem~5.8 and Theorem~5.9]{Debrouwere}.
+That paper explicitly says that the general case was not known.  The proof
+below removes solidity.
+
+\section{Setting and definitions}
+
+We use the source convention $T_xf=f(\,\cdot+x)$.  A
+translation-invariant Banach space of tempered distributions is a Banach
+space $E$ for which
+\[
+  \Schwartz\hookrightarrow E\hookrightarrow\Tempered,
+  \qquad T_xE\subset E,
+\]
+the translation orbit maps are continuous, and for some $M>0$ and
+$\tau\geq0$,
+\[
+  \|T_xf\|_E\leq M(1+|x|)^\tau\|f\|_E.
+\]
+Its translation weight is
+\[
+  \omega(x)=\|T_{-x}\|_{\mathcal L(E)}
+  \leq M(1+|x|)^\tau.
+\]
+The source proves that $E$ is a Banach module over the Beurling algebra
+$L^1_\omega$ and that
+\begin{equation}\label{eq:module}
+  \|u*f\|_E\leq \|u\|_{1,\omega}\|f\|_E.
+\end{equation}
+The Fr\'echet space in the question is
+\[
+  \Dspace=\{f\in\Tempered:\partial^\alpha f\in E
+           \text{ for every }\alpha\in\mathbb N_0^n\},
+\]
+with increasing seminorms
+\[
+  p_N(f)=\max_{|\alpha|\leq N}\|\partial^\alpha f\|_E.
+\]
+The embeddings $\Dspace\hookrightarrow E\hookrightarrow\Tempered$ are
+continuous \cite[Proposition~7]{DPV}.
+
+\section{Proof intuition}
+
+Unnormalized translates need not form a bounded set because the translation
+weight may grow.  Normalize a translate $T_x\phi$ by its own $E$-norm.  This
+fixes its zeroth seminorm at one, but could in principle make higher
+derivatives unbounded.  A band-limited Schwartz function prevents that:
+every derivative of $\phi$ is a fixed $L^1_\omega$ convolution of $\phi$.
+The module estimate then controls every derivative of every normalized
+translate uniformly.
+
+The normalization also cannot grow faster than a polynomial, because applying
+$T_{-x}$ recovers $\phi$.  Against a Schwartz test function, however, the
+translate $T_x\phi$ decays faster than every polynomial.  Thus the normalized
+translates converge to zero in $\Tempered$, although their $E$-norms remain
+one.  They therefore have no convergent subsequence in $\Dspace$.
+
+\section{Band-limited derivative control}
+
+Fix the Fourier convention
+\[
+  \widehat f(\xi)=\int_{\mathbb R^n}e^{-ix\cdot\xi}f(x)\,dx.
+\]
+
+\begin{lemma}\label{lem:bandlimited}
+There is a nonzero $\phi\in\Schwartz$ such that, for every multi-index
+$\alpha$, there is $u_\alpha\in\Schwartz\subset L^1_\omega$ satisfying
+\[
+  \partial^\alpha\phi=u_\alpha*\phi.
+\]
+Consequently, the family
+\[
+  g_x:=\frac{T_x\phi}{\|T_x\phi\|_E},\qquad x\in\mathbb R^n,
+\]
+is bounded in $\Dspace$.
+\end{lemma}
+
+\begin{proof}
+Choose a nonzero $\widehat\phi\in C_c^\infty(\mathbb R^n)$ and let
+$\phi=\mathcal F^{-1}\widehat\phi$.  Choose
+$\chi\in C_c^\infty(\mathbb R^n)$ with $\chi=1$ on
+$\operatorname{supp}\widehat\phi$, and define
+\[
+  \widehat u_\alpha(\xi)=\chi(\xi)(i\xi)^\alpha.
+\]
+Then $u_\alpha\in\Schwartz$.  Since $\omega$ is polynomially bounded,
+$u_\alpha\in L^1_\omega$.  Fourier transformation gives
+\[
+  \widehat{u_\alpha*\phi}
+  =\chi(\xi)(i\xi)^\alpha\widehat\phi(\xi)
+  =(i\xi)^\alpha\widehat\phi(\xi)
+  =\widehat{\partial^\alpha\phi}.
+\]
+Translations commute with derivatives and convolution, so \eqref{eq:module}
+implies
+\[
+ \|\partial^\alpha g_x\|_E
+ =\frac{\|u_\alpha*T_x\phi\|_E}{\|T_x\phi\|_E}
+ \leq \|u_\alpha\|_{1,\omega}.
+\]
+For every fixed $N$, taking the maximum over $|\alpha|\leq N$ proves that
+$\sup_xp_N(g_x)<\infty$.  The denominator is nonzero because translations
+are invertible and $\phi\neq0$.
+\end{proof}
+
+\section{Full negative answer}
+
+\begin{theorem}\label{thm:main}
+Let $E$ be any translation-invariant Banach space of tempered distributions
+in the sense of \cite{DPV}.  Then $\Dspace$ is not Montel.
+\end{theorem}
+
+\begin{proof}
+Let $\phi$ and $g_x$ be as in Lemma~\ref{lem:bandlimited}.  Since
+$T_{-x}T_x\phi=\phi$ and $\omega(x)=\|T_{-x}\|_{\mathcal L(E)}$,
+\begin{equation}\label{eq:inverse}
+  \|\phi\|_E\leq\omega(x)\|T_x\phi\|_E,
+  \qquad
+  \frac1{\|T_x\phi\|_E}
+       \leq\frac{M(1+|x|)^\tau}{\|\phi\|_E}.
+\end{equation}
+For every $\psi\in\Schwartz$, the function
+\[
+  x\longmapsto\langle T_x\phi,\psi\rangle
+\]
+is a Schwartz function of $x$: after a reflection it is the convolution of
+two Schwartz functions.  Combining this rapid decay with
+\eqref{eq:inverse} yields
+\[
+  \langle g_x,\psi\rangle
+  =\frac{\langle T_x\phi,\psi\rangle}{\|T_x\phi\|_E}
+  \longrightarrow0
+  \qquad(|x|\to\infty).
+\]
+Thus $g_x\to0$ in the weak topology $\sigma(\Tempered,\Schwartz)$.
+
+Choose any sequence $x_j$ with $|x_j|\to\infty$.  By
+Lemma~\ref{lem:bandlimited}, $(g_{x_j})$ is bounded in $\Dspace$.  If
+$\Dspace$ were Montel, the closure of this bounded set would be compact.
+Because $\Dspace$ is Fr\'echet and hence metrizable, $(g_{x_j})$ would have a
+subsequence converging in $\Dspace$.  The continuous embedding
+$\Dspace\hookrightarrow\Tempered$ and the weak convergence above force its
+limit to be zero.  But
+\[
+  p_0(g_{x_j})=\|g_{x_j}\|_E=1
+\]
+for every $j$, so no subsequence can converge to zero in $\Dspace$.  This
+contradiction proves the theorem.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof uses only four source-paper facts: polynomial growth of
+$\omega$, the convolution estimate \eqref{eq:module}, the definition of the
+$\Dspace$ seminorms, and the continuous embedding
+$\Dspace\hookrightarrow\Tempered$.  The normalization estimate
+\eqref{eq:inverse} was checked against the source sign convention
+$\omega(x)=\|T_{-x}\|$.  No numerical or computer-assisted step enters the
+proof.
+
+A bounded novelty search performed on 22 July 2026 covered arXiv and web
+searches for arXiv ids 1310.4047 and 1901.10041, the exact source question,
+``$\mathcal D_E$ is never Montel,'' ``general TIBD,'' the paper titles, and
+the relevant authors.  It found the 2019 solid-space theorem and its explicit
+statement that the general case remained open, but no later general solution.
+This is evidence, not an exhaustive bibliographic guarantee; novelty
+confidence is therefore \emph{moderate to high}.
+
+The theorem fully answers Remark~6 negatively.  It does not address the
+separate barreledness question in Remark~7.  Recommended human review:
+\textbf{verify and circulate}, with particular attention to the multiplier
+identity in Lemma~\ref{lem:bandlimited} and the compactness-to-subsequence
+step.
+
+\small
+\begin{thebibliography}{9}
+\setlength{\itemsep}{2pt}
+\bibitem{DPV}
+P.~Dimovski, S.~Pilipovi\'c, and J.~Vindas,
+\emph{New distribution spaces associated to translation-invariant Banach
+spaces}, Monatsh. Math. \textbf{177} (2015), 495--515;
+\href{https://arxiv.org/abs/1310.4047}{arXiv:1310.4047}.
+
+\bibitem{Debrouwere}
+A.~Debrouwere,
+\emph{Quasinormable $C_0$-groups and translation-invariant Fr\'echet spaces
+of type $\mathcal D_E$}, Results Math. \textbf{74} (2019), Article 135;
+\href{https://arxiv.org/abs/1901.10041}{arXiv:1901.10041}.
+\end{thebibliography}
+
+\end{document}

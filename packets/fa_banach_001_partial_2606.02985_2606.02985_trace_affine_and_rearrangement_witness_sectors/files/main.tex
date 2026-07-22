@@ -1,0 +1,282 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\trN}{\operatorname{tr}_N}
+\newcommand{\U}{\mathcal U}
+\newcommand{\M}{\mathcal M}
+
+\title{Two Explicit Witness Sectors of the\\
+Random-Embedding Conjecture}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 9, agent \texttt{agent\_lane\_09}, model GPT5.6}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Partial result likely valid; human review needed.  The full existential-
+embedding conjecture remains open.}}
+\end{center}
+
+\section{Source conjecture}
+
+Hayes, Jekel, and Kunnawalkam Elayavalli formulate two conjectures about
+random embeddings of free group factors \cite{HJK}.  Their stronger
+Conjecture 1.2, restated as Conjecture 5.1, is the following.  Let
+$U_1^{(N)},\ldots,U_r^{(N)}$ be independent Haar random unitaries, and let
+$u_1,\ldots,u_r$ be the canonical free Haar unitaries in $L(\mathbb F_r)$.
+For every self-adjoint noncommutative $*$-polynomial $p$ in $r+s$ unitary
+variables, they predict
+\begin{equation}\label{eq:source-conjecture}
+ \lim_{N\to\infty}\mathbb E\left[
+ \sup_{V_1,\ldots,V_s\in\U(M_N(\mathbb C))}
+ \trN p(U^{(N)},V)\right]
+ =\sup_{v_1,\ldots,v_s\in\U(L(\mathbb F_r))}\tau p(u,v).
+\end{equation}
+They prove that this is equivalent to existentiality of the random embedding
+of $L(\mathbb F_r)$ into a matrix ultraproduct.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\caption{Conjecture 1.2 in the source paper, page 3.}
+\end{figure}
+
+We verify \eqref{eq:source-conjecture} for two infinite witness sectors.  The
+first consists of all trace-affine witness polynomials.  The second consists
+of separated terms in which one witness conjugates one self-adjoint base
+polynomial.
+
+\section{Proof intuition}
+
+The witness optimization is difficult when several occurrences of the
+auxiliary unitaries interact.  In the two sectors below, it has an exact
+spectral solution before taking $N\to\infty$.
+
+For a trace-affine term, polar decomposition gives
+\[
+             \sup_{V\in\U(M_N)}\operatorname{Re}\trN(CV)=\trN|C|.
+\]
+Thus the optimized formula depends only on the singular-value distribution
+of a base polynomial.  For a single conjugation term, the rearrangement
+inequality gives
+\[
+ \sup_{V\in\U(M_N)}\trN(AVBV^*)
+ =\int_0^1\lambda_A(t)\lambda_B(t)\,dt,
+\]
+where $\lambda_A,\lambda_B$ are decreasing eigenvalue curves.  The same two
+identities hold in the diffuse finite factor $L(\mathbb F_r)$.  Almost-sure
+$*$-moment convergence of Haar matrices then gives convergence of trace
+norms and of the decreasing eigenvalue curves.  This proves not only the
+expected limit in the conjecture, but an almost-sure limit for every fixed
+polynomial in either sector.
+
+\section{Exact optimization lemmas}
+
+Throughout, a finite factor carries its normalized trace $\tau$.  For a
+self-adjoint $A$ in such a factor, let $\lambda_A:[0,1)\to\mathbb R$ denote
+its decreasing eigenvalue rearrangement, or spectral scale.  For a matrix it
+is the step function formed from the eigenvalues in decreasing order.
+
+\begin{lemma}[Polar optimization]\label{lem:polar}
+For every $C$ in a finite factor,
+\begin{equation}\label{eq:polar}
+                 \sup_{V\in\U(\M)}\operatorname{Re}\tau(CV)=\tau(|C|).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The upper bound follows from noncommutative H\"older inequality.  Write
+$C=W|C|$.  The polar partial isometry $W^*$ extends to a unitary $V$ because
+its initial and final complements have the same trace.  For this extension,
+$VW$ is the support projection of $|C|$, and cyclicity gives
+$\tau(CV)=\tau(|C|VW)=\tau(|C|)$.
+\end{proof}
+
+\begin{lemma}[Rearrangement optimization]\label{lem:rearrangement}
+If $A,B$ are self-adjoint elements of a diffuse finite factor, then
+\begin{equation}\label{eq:rearrangement}
+ \sup_{V\in\U(\M)}\tau(AVBV^*)
+ =\int_0^1\lambda_A(t)\lambda_B(t)\,dt.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The upper bound is the Hardy--Littlewood rearrangement inequality for finite
+von Neumann algebras; it follows from the generalized singular-value
+inequalities of Fack and Kosaki \cite{FK}.  The usual positive-operator form
+implies the self-adjoint form after adding sufficiently large scalar
+multiples of the identity to $A$ and $B$; all added terms are independent of
+$V$.
+
+For completeness, the reverse inequality can be seen directly.  Using
+spectral scales, approximate $A$ and $B$ in $L_2$ by decreasing step
+operators
+\[
+                 A_m=\sum_{k=1}^m a_kp_k,
+       \qquad    B_m=\sum_{k=1}^m b_kq_k,
+\]
+where the $p_k$ and $q_k$ are orthogonal partitions of the identity with
+$\tau(p_k)=\tau(q_k)=1/m$, and $a_k,b_k$ are decreasing.  Atoms of a spectral
+measure may be split inside their spectral projections because the factor is
+diffuse.  Projection families with the same trace vector are unitarily
+conjugate, so there is $V_m$ with $V_mq_kV_m^*=p_k$ for every $k$.  Therefore
+\[
+             \tau(A_mV_mB_mV_m^*)=\frac1m\sum_{k=1}^ma_kb_k.
+\]
+The right side tends to the integral in \eqref{eq:rearrangement}.  The
+$L_2$ approximation and Cauchy--Schwarz show that replacing $A_m,B_m$ by
+$A,B$ changes the trace by $o(1)$, proving the lower bound.
+\end{proof}
+
+\section{The two witness sectors}
+
+Let $q=q^*$ and all other capital letters below denote fixed
+noncommutative $*$-polynomials in the base variables $X_1,\ldots,X_r$.
+
+\begin{theorem}\label{thm:main}
+For every fixed polynomial $p$ of either form below, the optimized random
+matrix value converges almost surely to the $L(\mathbb F_r)$ value, and
+\eqref{eq:source-conjecture} holds.
+
+\medskip
+\noindent\textup{(A) Trace-affine sector.}  For arbitrary $C_1,\ldots,C_s$,
+\begin{equation}\label{eq:affine-form}
+ p(X,Y)=q(X)+\sum_{j=1}^s
+       \big(C_j(X)Y_j+Y_j^*C_j(X)^*\big).
+\end{equation}
+This includes, modulo cyclicity of the trace, every self-adjoint polynomial
+of total witness degree at most one.
+
+\medskip
+\noindent\textup{(B) Separated one-conjugation sector.}  For self-adjoint
+$A_j=A_j^*$ and $B_j=B_j^*$,
+\begin{equation}\label{eq:conj-form}
+ p(X,Y)=q(X)+\frac12\sum_{j=1}^s
+ \big(A_j(X)Y_jB_j(X)Y_j^*
+      +Y_jB_j(X)Y_j^*A_j(X)\big).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We use Voiculescu's almost-sure asymptotic freeness theorem \cite{Voi}, which
+gives, for every fixed $*$-polynomial $R$,
+\begin{equation}\label{eq:moment-convergence}
+ \trN R(U^{(N)})\longrightarrow\tau R(u)
+ \qquad\text{almost surely}.
+\end{equation}
+All polynomial evaluations under consideration have a common uniform
+operator-norm bound, since every variable is unitary.
+
+For \textup{(A)}, Lemma~\ref{lem:polar}, applied independently to every
+witness, gives the exact finite-$N$ formula
+\begin{equation}\label{eq:affine-matrix}
+ \sup_V\trN p(U^{(N)},V)
+ =\trN q(U^{(N)})+2\sum_{j=1}^s\trN|C_j(U^{(N)})|.
+\end{equation}
+The identical factor formula is
+\begin{equation}\label{eq:affine-factor}
+ \sup_v\tau p(u,v)=\tau q(u)+2\sum_{j=1}^s\tau|C_j(u)|.
+\end{equation}
+By \eqref{eq:moment-convergence}, the constant terms converge.  To treat the
+trace norms, apply \eqref{eq:moment-convergence} to powers of the positive
+matrices
+\[
+                    C_j(U^{(N)})^*C_j(U^{(N)}).
+\]
+Uniform polynomial approximation of $t\mapsto\sqrt t$ on a common compact
+interval yields
+\[
+                  \trN|C_j(U^{(N)})|\longrightarrow\tau|C_j(u)|.
+\]
+Equations \eqref{eq:affine-matrix} and \eqref{eq:affine-factor} prove the
+almost-sure assertion for the affine sector.
+
+For \textup{(B)}, cyclicity and Lemma~\ref{lem:rearrangement} give
+\begin{align}
+ \sup_V\trN p(U^{(N)},V)
+ &=\trN q(U^{(N)})
+   +\sum_{j=1}^s\int_0^1
+     \lambda_{A_j(U^{(N)})}(t)\lambda_{B_j(U^{(N)})}(t)\,dt,
+ \label{eq:conj-matrix}\\
+ \sup_v\tau p(u,v)
+ &=\tau q(u)
+   +\sum_{j=1}^s\int_0^1
+     \lambda_{A_j(u)}(t)\lambda_{B_j(u)}(t)\,dt.
+ \label{eq:conj-factor}
+\end{align}
+Moment convergence and the common compact spectral bound imply weak
+convergence of the empirical spectral measure of every self-adjoint base
+polynomial to its spectral measure in $L(\mathbb F_r)$.  Generalized inverses
+of uniformly compactly supported distribution functions therefore satisfy
+\[
+ \lambda_{A_j(U^{(N)})}(t)\longrightarrow\lambda_{A_j(u)}(t)
+ \quad\text{for almost every }t,
+\]
+and likewise for $B_j$.  The eigenvalue curves are uniformly bounded, so
+dominated convergence gives convergence of every integral in
+\eqref{eq:conj-matrix} to its counterpart in \eqref{eq:conj-factor}.
+
+Finally, in both sectors the optimized quantity is bounded uniformly in $N$
+by a constant depending only on $p$.  Dominated convergence upgrades the
+almost-sure limit to convergence of expectations, which is precisely
+\eqref{eq:source-conjecture}.
+\end{proof}
+
+\section{Verification, scope, and novelty check}
+
+The included numerical script constructs the polar and eigenvector-alignment
+optimizers for $180$ random matrix pairs of orders $2$ through $10$.  Both
+exact finite-dimensional formulas pass to tolerance $10^{-10}$.  This is a
+smoke test only; the proof above is analytic.
+
+The full conjecture remains open.  The theorem does not handle monomials with
+mixed witnesses, higher witness degree, or simultaneous affine and
+conjugation terms involving the same witness.  Those interactions are not
+reduced to one-variable spectral data by the present argument.
+
+Cheap run-index searches found no packet or attempt for arXiv:2606.02985.
+Bounded primary searches on July 22, 2026 used the arXiv id, title, exact
+Conjecture 1.2 label, ``existential random embedding,'' and trace-affine
+unitary optimization.  They found the source and standard background on
+trace rearrangements, but no later resolution or explicit record of these
+two witness sectors.
+
+\section{Human-review recommendation}
+
+Review as a likely valid substantial partial result.  The affine sector is
+elementary after the exact polar formula.  The highest-value checks are the
+diffuse-factor lower bound in Lemma~\ref{lem:rearrangement}, and the use of
+weak spectral convergence to pass to the eigenvalue-rearrangement pairing.
+An expert should also assess whether these explicit sectors are already
+regarded as folklore in the model theory/free probability community.
+
+\begin{thebibliography}{9}
+\bibitem{HJK}
+B. Hayes, D. Jekel, and S. Kunnawalkam Elayavalli,
+\emph{Questions on the structure of random embeddings of $L(\mathbb F_2)$},
+arXiv:2606.02985v1, 2026.
+
+\bibitem{FK}
+T. Fack and H. Kosaki,
+\emph{Generalized $s$-numbers of $\tau$-measurable operators},
+Pacific J. Math. 123 (1986), no.~2, 269--300.
+
+\bibitem{Voi}
+D. Voiculescu,
+\emph{Limit laws for random matrices and free products},
+Invent. Math. 104 (1991), no.~1, 201--220.
+\end{thebibliography}
+
+\end{document}

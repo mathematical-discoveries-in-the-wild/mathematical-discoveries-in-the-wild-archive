@@ -1,0 +1,357 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Kaux}{\mathcal K}
+
+\title{The Least Atom Determines the Optimal Hypercontractive Constant}
+\author{Automated Math Discovery Candidate Proof}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid pending expert review.  The new step is
+the strict monotonicity in the Bernoulli bias of the exact constant obtained
+in the source paper.}}
+\end{center}
+
+\section*{Source and Conjecture}
+
+This packet concerns the unnumbered conjecture on page 8 of
+Cao et al.~\cite{CaoEtAl}, arXiv:2602.17248v2.
+For a probability measure $\mu$ on a finite set, put
+\[
+ \sigma_{p,q}(\mu)
+ =\max\left\{0<r<1:
+ \norm{\E_\mu+r(I-\E_\mu)}_{L^p(\mu)\to L^q(\mu)}\leq 1\right\},
+ \qquad 1<p<q<\infty.
+\]
+If $\lambda\in(0,1/2]$, write $\sigma_{p,q}(\lambda)$ for the same
+constant on the two-point space with masses $\lambda$ and $1-\lambda$.
+The conjecture states that if the least atom of $\mu$ has mass $\lambda$,
+then
+\[
+                   \sigma_{p,q}(\mu)=\sigma_{p,q}(\lambda).
+\]
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+Wolff's two-valued-extremizer theorem already sandwiches the finite-space
+constant between
+\[
+ \inf_{\alpha\in[\lambda,1/2]}\sigma_{p,q}(\alpha)
+ \quad\text{and}\quad \sigma_{p,q}(\lambda).
+\]
+Thus the conjecture follows once the biased two-point constant is known to be
+increasing in the smaller mass.  This monotonicity was supported numerically
+in the source paper but was left open.
+
+The exact two-point formula in the source paper permits an envelope
+derivative.  If $a=\lambda/(1-\lambda)$ and $(x,y)$ is a critical extremizer,
+then a direct differentiation collapses to
+\[
+ \frac{d}{da}\log\sigma_{p,q}(\lambda)
+       =\frac{K_p(x)-K_q(y)}{a},
+ \qquad
+ K_s(t)=\frac{1-st^{s-1}+(s-1)t^s}
+ {s(1-t)(1-t^{s-1})}.
+\]
+The apparent two-parameter sign problem becomes transparent after writing
+$t=e^{-A}$:
+\[
+ K_s(e^{-A})
+ =\frac12+\frac{h(A)-h((s-1)A)}{sA},
+ \qquad h(u)=\frac{u}{2}\coth\frac{u}{2}.
+\]
+The function $h$ is increasing and convex.  The second critical equation
+forces the two logarithmic coordinate pairs to cross: the first coordinate
+increases and the second decreases.  Monotonicity and convexity of $h$ then
+give $K_p(x)>K_q(y)$.  Duality handles exponents below $2$, while exponents
+straddling $2$ have opposite signs around $K=1/2$.
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let $1<p<q<\infty$.
+\begin{enumerate}
+\item The function $\lambda\mapsto\sigma_{p,q}(\lambda)$ is strictly
+increasing on $(0,1/2]$.
+\item If $\mu$ is a probability measure on a finite set and its least atom
+has mass $\lambda\in(0,1/2)$, then
+\[
+                         \sigma_{p,q}(\mu)=\sigma_{p,q}(\lambda).
+\]
+\end{enumerate}
+Consequently, the conjecture quoted above has an affirmative answer.
+\end{theorem}
+
+\section*{The Envelope Derivative}
+
+Set $a=\lambda/(1-\lambda)\in(0,1)$.  For $s>1$ and $0<t<1$, define
+\begin{align*}
+ F_s(a,t)
+ &=\frac1s\log(a+t^s)-\log(a+t)
+   +\left(1-\frac1s\right)\log(1+a),\\
+ B_s(a,t)
+ &=\frac{(1-t)(1-t^{s-1})}{a+t^s},\\
+ K_s(t)
+ &=\frac{1-st^{s-1}+(s-1)t^s}
+ {s(1-t)(1-t^{s-1})}.
+\end{align*}
+Theorem 1.6 and the minimum formulation following it in~\cite{CaoEtAl}
+say that an active nonconstant two-point extremizer is described by
+$x,y\in(0,1)$ satisfying
+\begin{equation}\label{eq:critical}
+ F_p(a,x)=F_q(a,y),
+ \qquad B_p(a,x)=B_q(a,y),
+\end{equation}
+and its critical constant is
+\begin{equation}\label{eq:rformula}
+ r=\frac{(1-y)(a+x)}{(1-x)(a+y)}.
+\end{equation}
+
+\begin{lemma}[Derivative identity]\label{lem:derivative}
+Along every smooth active branch of solutions to \eqref{eq:critical},
+\[
+                  \frac{d}{da}\log r
+                  =\frac{K_p(x)-K_q(y)}{a}.
+\]
+The same formula is the envelope derivative at any differentiability point
+of the optimal value.
+\end{lemma}
+
+\begin{proof}
+For fixed $(a,x)$, the first equation in \eqref{eq:critical} determines $y$
+locally because
+\begin{equation}\label{eq:Ft}
+ \partial_tF_s(a,t)
+ =-\frac{aB_s(a,t)}{(1-t)(a+t)}<0.
+\end{equation}
+Let $R(a,x)=\log r$, with $y=y(a,x)$ determined by that first equation.
+A direct use of \eqref{eq:Ft} gives
+\[
+ \partial_xR
+ =\frac{a+1}{(1-x)(a+x)}
+   \left(1-\frac{B_p(a,x)}{B_q(a,y)}\right).
+\]
+Thus the second equation in \eqref{eq:critical} is precisely the stationary
+condition $\partial_xR=0$.
+
+Write $B=B_p(a,x)=B_q(a,y)$.  Differentiating in $a$ while holding $x$
+fixed and using the first equation gives
+\begin{equation}\label{eq:Ra}
+ \partial_aR
+ =\frac1{a+x}-\frac1{a+y}
+  +\frac{a+1}{aB}\bigl(\partial_aF_p(a,x)-\partial_aF_q(a,y)\bigr).
+\end{equation}
+The elementary identity
+\begin{equation}\label{eq:keyidentity}
+ \partial_aF_s(a,t)
+ +\frac{aB_s(a,t)}{(a+1)(a+t)}
+ =\frac{B_s(a,t)K_s(t)}{a+1}
+\end{equation}
+reduces \eqref{eq:Ra} to
+\[
+                         \partial_aR=\frac{K_p(x)-K_q(y)}a.
+\]
+Along a critical branch the $x'(a)$ contribution vanishes because
+$\partial_xR=0$, proving the assertion.  The envelope statement is the
+standard finite-dimensional envelope theorem applied to the one-variable
+two-point variational problem.
+\end{proof}
+
+\section*{The Sign of the Derivative}
+
+\begin{lemma}\label{lem:h}
+The function
+\[
+                         h(u)=\frac u2\coth\frac u2,
+                         \qquad u>0,
+\]
+is strictly increasing and strictly convex.
+\end{lemma}
+
+\begin{proof}
+Differentiation yields
+\[
+ h'(u)=\frac12\coth\frac u2-\frac u4\operatorname{csch}^2\frac u2>0,
+\]
+where positivity is equivalent to $\sinh u>u$.  A second differentiation
+gives
+\[
+ h''(u)=
+ \frac{u\cosh(u/2)-2\sinh(u/2)}{4\sinh^3(u/2)}>0.
+\]
+The numerator in the last expression vanishes at $0$ and has derivative
+$(u/2)\sinh(u/2)>0$.
+\end{proof}
+
+For $A,B>0$, put
+\[
+                   \Kaux(A,B)=\frac12+\frac{h(A)-h(B)}{A+B}.
+\]
+On the region $0<A\leq B$, Lemma~\ref{lem:h} implies
+\begin{align*}
+ \partial_A\Kaux(A,B)
+ &=\frac{(A+B)h'(A)+h(B)-h(A)}{(A+B)^2}>0,\\
+ \partial_B\Kaux(A,B)
+ &=\frac{h(B)-h(A)-(A+B)h'(B)}{(A+B)^2}<0.
+\end{align*}
+For the second inequality, convexity gives
+$h(B)-h(A)\leq(B-A)h'(B)<(A+B)h'(B)$.
+
+\begin{proposition}\label{prop:sign}
+Suppose $2\leq p<q<\infty$ and $(x,y)$ is an active critical pair in
+\eqref{eq:critical}.  Then $K_p(x)>K_q(y)$.  The same conclusion holds when
+$1<p<2<q$.
+\end{proposition}
+
+\begin{proof}
+First note from \eqref{eq:rformula} that $0<r<1$ is equivalent to $x<y$.
+
+Assume first that $2\leq p<q$.  Set
+\[
+ A=-\log x,\qquad B=(p-1)A,
+ \qquad C=-\log y,\qquad D=(q-1)C.
+\]
+Then $A>C$, $B\geq A$, and $D\geq C$.  The second equation in
+\eqref{eq:critical} becomes
+\begin{equation}\label{eq:cross}
+ \frac{(1-e^{-A})(1-e^{-B})}{a+e^{-(A+B)}}
+ =
+ \frac{(1-e^{-C})(1-e^{-D})}{a+e^{-(C+D)}}.
+\end{equation}
+If $B\geq D$, then the numerator on the left of \eqref{eq:cross} is
+strictly larger than the numerator on the right, while its denominator is
+strictly smaller.  This is impossible.  Hence
+\[
+                              A>C,\qquad B<D.
+\]
+
+An elementary rearrangement gives
+\begin{equation}\label{eq:Ktransform}
+ K_s(e^{-u})
+ =\frac12+\frac{h(u)-h((s-1)u)}{su}.
+\end{equation}
+Consequently $K_p(x)=\Kaux(A,B)$ and $K_q(y)=\Kaux(C,D)$.
+Starting at $(C,D)$, decreasing the second coordinate from $D$ to $B$
+increases $\Kaux$, and then increasing the first coordinate from $C$ to
+$A$ increases it again.  Therefore $K_p(x)>K_q(y)$.
+
+Now suppose $1<p<2<q$.  In \eqref{eq:Ktransform}, $(p-1)A<A$, so the
+strict increase of $h$ gives $K_p(x)>1/2$.  Similarly
+$(q-1)C>C$, so $K_q(y)<1/2$.  The conclusion follows.
+\end{proof}
+
+\begin{proposition}[Strict bias monotonicity]\label{prop:monotone}
+For every $1<p<q<\infty$, the function
+$\lambda\mapsto\sigma_{p,q}(\lambda)$ is strictly increasing on
+$(0,1/2]$.
+\end{proposition}
+
+\begin{proof}
+For $2\leq p<q$, Lemma~\ref{lem:derivative} and
+Proposition~\ref{prop:sign} show that every active envelope derivative is
+strictly positive.  The same holds directly for $p<2<q$.
+
+For completeness, the exact constant is a locally Lipschitz value function
+of $a$ on compact subintervals of $(0,1)$: it is the minimum of the smooth
+one-variable two-point crossing values, and the active minimizers supplied
+by~\cite[Theorem 1.6]{CaoEtAl} lie in the interior.  Thus the envelope theorem
+applies almost everywhere.  A locally Lipschitz function cannot decrease or
+be constant on a nondegenerate interval when all its almost-everywhere
+envelope derivatives are strictly positive.  Hence the increase is strict.
+
+If $1<p<q\leq2$, self-adjointness of the two-point noise operator gives
+\[
+ \sigma_{p,q}(\lambda)=\sigma_{q',p'}(\lambda),
+ \qquad q'=\frac q{q-1},\quad p'=\frac p{p-1}.
+\]
+Here $2\leq q'<p'$, so the already proved case applies.
+Finally, $a=\lambda/(1-\lambda)$ is strictly increasing in $\lambda$.
+\end{proof}
+
+\section*{Completion of the Finite-Space Conjecture}
+
+In the notation $1<p<q$ used here, Wolff's Theorem 3.1~\cite{Wolff}
+states that if the least atom of a finite probability measure $\mu$ has mass
+$\lambda$, then
+\begin{equation}\label{eq:wolff}
+ \inf_{\alpha\in[\lambda,1/2]}\sigma_{p,q}(\alpha)
+ \leq \sigma_{p,q}(\mu)
+ \leq \sigma_{p,q}(\lambda).
+\end{equation}
+(Wolff writes the target exponent first, so his displayed indices are in the
+reverse order.)  By Proposition~\ref{prop:monotone}, the infimum on the left
+of \eqref{eq:wolff} equals $\sigma_{p,q}(\lambda)$.  Both inequalities are
+therefore equalities, proving Theorem~\ref{thm:main}.
+
+\section*{Verification Notes}
+
+The accompanying script \texttt{code/verify\_derivative.py} checks the two
+algebraic identities \eqref{eq:keyidentity} and \eqref{eq:Ktransform}
+symbolically.  It also performs randomized finite-precision checks of the
+coordinate-crossing argument and compares the analytic derivative sign with
+finite differences of independently optimized two-point constants.  These
+computations are guards against transcription or sign errors; they are not
+used as proof.
+
+The most important points for expert review are:
+\begin{enumerate}
+\item the passage from the exact variational formula of~\cite{CaoEtAl} to the
+locally Lipschitz envelope statement in Proposition~\ref{prop:monotone};
+\item the translation of Wolff's exponent order in \eqref{eq:wolff};
+\item the strict coordinate crossing $A>C$ and $B<D$ obtained from
+\eqref{eq:cross}.
+\end{enumerate}
+
+\section*{Novelty Check and Limitations}
+
+On July 21, 2026, bounded web searches were run for the exact phrases and
+close variants ``$\sigma_{p,q}(\lambda)$ monotonicity biased Bernoulli
+hypercontractivity'', ``optimal hypercontractive constants least atom
+conjecture'', the title of the source paper, and Wolff's title together with
+``monotonicity''.  The searches found the source paper, Wolff's 2007 paper,
+and general background references, but no separate paper proving the stated
+monotonicity or answering the conjecture.  The local run indexes likewise had
+no prior packet for arXiv:2602.17248 or this claim.  Novelty confidence is
+therefore moderate rather than definitive, and the result remains a candidate
+until expert review.
+
+The proof relies on the exact two-point variational formula in
+\cite{CaoEtAl} and on Wolff's Theorem 3.1.  It does not reprove those two
+inputs.
+
+\begin{thebibliography}{9}
+
+\bibitem{CaoEtAl}
+J.~Cao, S.~Fan, Y.~Han, Y.~Qiu, and Z.~Wang,
+\emph{The optimal hypercontractive constants for $\mathbb Z_3$ and biased
+Bernoulli random variables}, arXiv:2602.17248v2, 2026.
+
+\bibitem{Wolff}
+P.~Wolff,
+\emph{Hypercontractivity of simple random variables},
+Studia Math. \textbf{180} (2007), no.~3, 219--236,
+\href{https://doi.org/10.4064/sm180-3-3}{doi:10.4064/sm180-3-3}.
+
+\end{thebibliography}
+
+\end{document}

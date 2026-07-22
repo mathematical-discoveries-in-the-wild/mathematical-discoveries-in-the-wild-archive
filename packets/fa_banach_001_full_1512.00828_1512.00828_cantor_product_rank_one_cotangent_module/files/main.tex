@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\lipc}{\operatorname{lip}}
+\newcommand{\E}{\mathcal E}
+\newcommand{\m}{\mathfrak m}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Doubling Non-Differentiability Space with Rank-One Cotangent Module}
+\author{Automated Math Discovery Candidate Proof}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full affirmative solution, likely valid pending expert review.
+For every $1<p<\infty$, the example below is compact and doubling, is not a
+Lipschitz differentiability space, and has nonzero $L^p$-cotangent module of
+constant local dimension one.}}
+\end{center}
+
+\section*{Source and Open Question}
+
+This packet addresses the unnumbered question on page 25 of Martin Kell's
+paper \emph{On Cheeger and Sobolev differentials in metric measure spaces}
+\cite{Kell}, arXiv:1512.00828.  The question is:
+
+\begin{quote}
+Is there a metric measure space $(M,d,\m)$ with $\m$ being (locally)
+doubling that is not a differentiability space but whose $L^p$-cotangent
+module is non-trivial and locally finite dimensional bounded by some
+$N\in\mathbb N$?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definitions and Construction}
+
+Let $\Ccal\subset[0,1]$ be the middle-thirds Cantor set and let $\nu$ be
+the standard Cantor probability measure.  Put
+\[
+ M=[0,1]\times\Ccal,\qquad
+ d((x,y),(x',y'))=\sqrt{|x-x'|^2+|y-y'|^2},\qquad
+ \m=\mathcal L^1\mathbin{\vrule height 1.25ex depth -0.15ex width 0.07ex
+ \vrule height 0.07ex depth -0.02ex width 0.8ex}[0,1]\otimes\nu.
+\]
+Fix $1<p<\infty$.  For $f\in\Lip(M)$ write
+\[
+ \lipc f(z)=\limsup_{w\to z}\frac{|f(w)-f(z)|}{d(w,z)}.
+\]
+The relaxed $p$-energy used to construct the $L^p$-cotangent module is
+\begin{equation}\label{eq:relaxed}
+ \E_p(f)=\inf\left\{\liminf_{k\to\infty}
+       \int_M(\lipc f_k)^p\,d\m:
+       f_k\in\Lip(M),\ f_k\to f\text{ in }L^p(\m)\right\}.
+\end{equation}
+Its minimal relaxed gradient is denoted $|D_pf|$, so that
+$\E_p(f)=\int|D_pf|^p\,d\m$ on its domain.
+
+\section*{Proof Intuition}
+
+The Cantor factor is visible to the metric but invisible to the relaxed
+Sobolev energy.  At every finite Cantor scale, a function which is smooth in
+$x$ and constant on each clopen Cantor cylinder is globally Lipschitz.  Its
+pointwise slope is exactly the horizontal derivative.  Such functions are
+dense in $L^p(\Ccal;W^{1,p}([0,1]))$.  Conversely, every Lipschitz
+approximation controls its horizontal derivative by its pointwise slope.
+Consequently
+\[
+       |D_pf|=|\partial_xf|,
+       \qquad
+       D(\E_p)=L^p(\Ccal,\nu;W^{1,p}([0,1])).
+\]
+Thus $dx$ generates the whole cotangent module and the module has rank one.
+
+The same scale separation prevents a differentiability structure.  The
+Cantor-coordinate function $h(x,y)=y$ has vertical difference quotients
+equal to one at every point.  On the other hand, its derivative along every
+Lipschitz curve fragment is zero, because the Cantor set has Lebesgue measure
+zero.  The necessary direction of Bate's characterization supplies a
+universal independent collection of Alberti representations on countably
+many pieces \cite[Theorem 7.8]{Bate}.  The zero vector is then a gradient of
+$h$ along each collection, so the theorem identifies its chart differential
+with zero, contradicting the vertical difference quotients.
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+For every $1<p<\infty$, the compact metric measure space
+$(M,d,\m)$ above has the following properties.
+\begin{enumerate}
+\item The measure $\m$ is doubling (indeed, it is Ahlfors
+$1+\log 2/\log 3$ regular).
+\item Its relaxed energy and domain are
+\begin{equation}\label{eq:energy}
+ D(\E_p)=L^p(\Ccal,\nu;W^{1,p}([0,1])),
+ \qquad
+ \E_p(f)=\int_M|\partial_xf|^p\,d\m.
+\end{equation}
+Equivalently, $|D_pf|=|\partial_xf|$ almost everywhere.
+\item Its $L^p$-cotangent module is isometrically
+$L^p(M,\m)\,dx$.  In particular it is nontrivial and has constant local
+dimension one.
+\item The space is not a Lipschitz differentiability space.
+\end{enumerate}
+Therefore $(M,d,\m)$ answers Kell's question affirmatively, with the uniform
+bound $N=1$.
+\end{theorem}
+
+\section*{The Energy Computation}
+
+Put $s=\log 2/\log 3$.  The standard Cantor measure is Ahlfors
+$s$-regular: there are constants $0<c<C<\infty$ such that
+\begin{equation}\label{eq:cantorregular}
+ cr^s\leq\nu(B_{\R}(y,r)\cap\Ccal)\leq Cr^s
+ \qquad(y\in\Ccal,\ 0<r\leq1).
+\end{equation}
+This follows directly by choosing $n$ with
+$3^{-(n+1)}<r\leq3^{-n}$ and comparing the ball with the level-$n$ and
+level-$(n+1)$ Cantor cylinders.  Euclidean balls in the product are
+sandwiched between max-metric product balls with radii $r/\sqrt2$ and $r$.
+Together with
+$\mathcal L^1([x-r,x+r]\cap[0,1])\asymp r$, this proves that $\m$ is
+Ahlfors $1+s$-regular and hence doubling.
+
+\begin{lemma}\label{lem:energy}
+The identity \eqref{eq:energy} holds.
+\end{lemma}
+
+\begin{proof}
+First prove the lower bound.  Let $f_k\in\Lip(M)$ converge to $f$ in
+$L^p(\m)$ and suppose
+\[
+              \sup_k\int_M(\lipc f_k)^p\,d\m<\infty.
+\]
+For every $k$, Fubini's theorem and one-dimensional Rademacher
+differentiability on the horizontal segments give
+\begin{equation}\label{eq:horizontalbound}
+       |\partial_x f_k(x,y)|\leq\lipc f_k(x,y)
+       \quad\text{for $\m$-almost every $(x,y)$.}
+\end{equation}
+Since $1<p<\infty$, after passing to a subsequence we may assume that
+$\partial_xf_k$ converges weakly in $L^p(\m)$ to some $g$.  Testing against
+smooth functions in $x$ and bounded measurable functions in $y$ shows
+\[
+ \int_M f\,\partial_x\psi\,d\m=-\int_Mg\psi\,d\m.
+\]
+Thus $f\in L^p(\Ccal;W^{1,p}([0,1]))$ and $g=\partial_xf$.  Weak lower
+semicontinuity and \eqref{eq:horizontalbound} yield
+\begin{equation}\label{eq:lower}
+ \int_M|\partial_xf|^p\,d\m
+ \leq\liminf_{k\to\infty}\int_M(\lipc f_k)^p\,d\m.
+\end{equation}
+In particular, finite relaxed energy forces membership in the displayed
+Bochner--Sobolev space.
+
+For the converse, let $\mathcal P_n$ be the partition of $\Ccal$ into its
+$2^n$ clopen level-$n$ cylinders.  Conditional expectation in the Cantor
+variable gives
+\[
+ F_n(x,y)=\sum_{Q\in\mathcal P_n}u_Q(x)\mathbf1_Q(y),
+ \qquad
+ u_Q(x)=\frac1{\nu(Q)}\int_Q f(x,z)\,d\nu(z).
+\]
+The cylinder sigma-algebras increase to the Borel sigma-algebra of
+$\Ccal$.  The vector-valued martingale convergence theorem, applied in the
+separable space $W^{1,p}([0,1])$, gives
+\begin{equation}\label{eq:martingale}
+ F_n\longrightarrow f
+ \quad\text{in }L^p(\Ccal;W^{1,p}([0,1])).
+\end{equation}
+For fixed $n$, approximate the finitely many $u_Q$ in $W^{1,p}([0,1])$ by
+smooth functions.  A diagonal sequence therefore reduces matters to
+functions of the form
+\begin{equation}\label{eq:cylindersimple}
+       F(x,y)=\sum_{Q\in\mathcal P_n}v_Q(x)\mathbf1_Q(y),
+       \qquad v_Q\in C^\infty([0,1]).
+\end{equation}
+Every such $F$ is globally Lipschitz on $M$: the cylinders are finitely many
+pairwise disjoint clopen sets with positive mutual separation.  Locally in
+the Cantor variable $F$ is constant, and hence, at every point where $v_Q$
+is differentiable,
+\begin{equation}\label{eq:slopeexact}
+                       \lipc F(x,y)=|v_Q'(x)|=|\partial_xF(x,y)|.
+\end{equation}
+The convergence in \eqref{eq:martingale}, the smooth approximation, and
+\eqref{eq:slopeexact} show that every
+$f\in L^p(\Ccal;W^{1,p}([0,1]))$ admits Lipschitz approximants $F_k$ with
+\[
+ F_k\to f\text{ in }L^p(\m),\qquad
+ \partial_xF_k\to\partial_xf\text{ in }L^p(\m),\qquad
+ \int(\lipc F_k)^p\,d\m\to\int|\partial_xf|^p\,d\m.
+\]
+This is the reverse inequality to \eqref{eq:lower}, and proves both the
+domain and energy identities.  Equality of the minimal relaxed gradient
+with $|\partial_xf|$ follows from the local version of the same lower and
+upper bounds (or by multiplying the construction by cylinder-simple cutoff
+functions).
+\end{proof}
+
+\section*{Identification of the Cotangent Module}
+
+The $L^p$-cotangent module is obtained by completing piecewise differentials
+with pointwise norm $|D_pf|$ as in Kell's construction \cite{Kell}.  By
+Lemma~\ref{lem:energy}, the assignment
+\begin{equation}\label{eq:modulemap}
+                         d_pf\longmapsto\partial_xf
+\end{equation}
+preserves pointwise norms and is compatible with the defining equivalence
+relation.  It therefore extends to an isometric module map into
+$L^p(M,\m)$.
+
+For the coordinate function $X(x,y)=x$, Lemma~\ref{lem:energy} gives
+$|d_pX|=1$ almost everywhere.  Write $dx=d_pX$.  Multiplication of $dx$ by
+bounded measurable functions, followed by $L^p$ completion, produces all of
+$L^p(M,\m)\,dx$.  Hence \eqref{eq:modulemap} is onto and
+\[
+                    L^p(T^*M)\cong L^p(M,\m)\,dx.
+\]
+The module is consequently nonzero and has local dimension exactly one at
+$\m$-almost every point.
+
+\section*{Failure of Lipschitz Differentiability}
+
+Let
+\[
+                         h:M\to\R,\qquad h(x,y)=y.
+\]
+This function is $1$-Lipschitz.  We first record what it does on curve
+fragments.  If $K\subset\R$ is compact and
+$\gamma=(\gamma_1,\gamma_2):K\to M$ is Lipschitz, the one-dimensional area
+formula gives
+\[
+ \int_K|\gamma_2'(t)|\,dt
+ =\int_{\R}N(\gamma_2,K,z)\,dz=0,
+\]
+because $\gamma_2(K)\subset\Ccal$ and $\mathcal L^1(\Ccal)=0$.  Therefore
+\begin{equation}\label{eq:curvezero}
+                         (h\circ\gamma)'=\gamma_2'=0
+                         \quad\text{almost everywhere on }K.
+\end{equation}
+
+Suppose, toward a contradiction, that $(M,d,\m)$ were a Lipschitz
+differentiability space.  The necessary direction of Bate's characterization
+\cite[Theorem 7.8]{Bate} gives a countable Borel decomposition, up to a null
+set, into pieces $U$ carrying finite universal collections of
+$\varphi$-independent Alberti representations.  Each $(U,\varphi)$ is a
+chart, and the chart differential of a Lipschitz function is given by any
+gradient along the collection.  At almost every relevant curve point, such
+a gradient $G_h$ satisfies
+\begin{equation}\label{eq:chain}
+ (h\circ\gamma)'(t)
+ =G_h(\gamma(t))\cdot(\varphi\circ\gamma)'(t).
+\end{equation}
+The left side is zero by \eqref{eq:curvezero}, so $G_h=0$ is a gradient of
+$h$ along every collection.  The last assertion of Bate's theorem therefore
+gives $D_\varphi h=0$ almost everywhere on every positive-dimensional piece.
+If zero-dimensional charts are allowed, their differential is zero by
+definition and the same conclusion holds.
+
+However, $\Ccal$ is perfect.  At every $(x,y)\in M$ one can choose distinct
+$y_j\in\Ccal$ with $y_j\to y$, and then
+\begin{equation}\label{eq:vertical}
+ \frac{|h(x,y_j)-h(x,y)|}{d((x,y_j),(x,y))}=1.
+\end{equation}
+Thus $h$ cannot satisfy the chart differentiability condition with zero
+differential at any point.  This contradicts the preceding conclusion on
+every positive-measure chart.  Hence no countable differentiability atlas
+can cover $M$ up to a null set, and $(M,d,\m)$ is not a Lipschitz
+differentiability space.  The proof of Theorem~\ref{thm:main} is complete.
+
+\section*{Verification Notes and Limitations}
+
+The proof is analytic and uses no computer-assisted mathematical step.  The
+following checks were made during preparation.
+\begin{itemize}
+\item The relaxation was proved in both directions, including identification
+of its full domain; it is not only a calculation on Lipschitz functions.
+\item The non-differentiability argument is formulated for Lipschitz curve
+fragments.  The area formula makes their Cantor-coordinate derivative
+vanish.
+\item The conclusion is stronger than requested: one compact globally
+doubling example works for every $p\in(1,\infty)$, and the dimension bound is
+$N=1$.
+\item The endpoint $p=1$ is not claimed.  Reflexive weak compactness in the
+lower energy estimate was used for $1<p<\infty$, which is also the range in
+the surrounding discussion of the source question.
+\end{itemize}
+
+\section*{Bounded Novelty Check}
+
+On July 22, 2026, the run's registry, solution, attempt, proof-gap, title, and
+source-ranked indexes were searched for arXiv:1512.00828 and combinations of
+``Cantor,'' ``cotangent module,'' ``Sobolev module,'' and
+``differentiability space.''  They contained no prior answer.  Bounded web
+searches used the exact source title and the phrases ``middle-thirds Cantor
+cotangent module,'' ``Cantor measure cotangent module Sobolev,'' ``not a
+differentiability space rank one cotangent module,'' and ``On Cheeger and
+Sobolev differentials Cantor product.''  The searches found the source,
+publication and citation pages, and unrelated module papers, but no direct
+answer or occurrence of this product example.  Novelty confidence is
+moderate pending a specialist literature review.
+
+\section*{Human Review Recommendation}
+
+This packet is recommended for expert review as a candidate full solution.
+The main points to check are: (i) that the source paper's relaxed cotangent
+module convention matches \eqref{eq:relaxed} without an inessential
+normalization; (ii) the vector-valued cylinder martingale approximation and
+localized minimal-gradient identity; and (iii) the precise use of Bate's
+Theorem 7.8 and the chart chain rule in deriving $D_\varphi h=0$.
+
+\begin{thebibliography}{9}
+
+\bibitem{Kell}
+M.~Kell,
+\emph{On Cheeger and Sobolev differentials in metric measure spaces},
+arXiv:1512.00828; Rev. Mat. Iberoam. \textbf{35} (2019), no.~7,
+2119--2150.
+
+\bibitem{Bate}
+D.~Bate,
+\emph{Structure of measures in Lipschitz differentiability spaces},
+arXiv:1208.1954; J. Amer. Math. Soc. \textbf{28} (2015), no.~2,
+421--482.
+
+\end{thebibliography}
+
+\end{document}

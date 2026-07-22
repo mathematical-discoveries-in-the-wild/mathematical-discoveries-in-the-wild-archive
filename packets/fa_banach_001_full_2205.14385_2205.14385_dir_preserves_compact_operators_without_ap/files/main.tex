@@ -1,0 +1,234 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\Dir}{\operatorname{Dir}}
+\newcommand{\Inv}{\operatorname{Inv}}
+
+\title{Compact Operators Remain Compact\\
+under the Bidual Direct-Limit Functor}
+\author{Candidate solution packet for arXiv:2205.14385}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.}
+Candidate full solution, likely valid, pending human review.
+
+\section{Source question}
+
+Gwizdek constructs the tower
+\[
+ X_0=X,\qquad X_{n+1}=X_n^{**}
+\]
+with its canonical isometric embeddings, defines \(\Dir(X)\) as the
+completion of the corresponding algebraic direct limit, and obtains
+\(\Dir(T)\) by iterating biduals of a bounded operator \(T\)
+\cite{source}. The compactness theorem in Section~2 assumes that \(X\) has
+the approximation property. Immediately afterward, on PDF page~11, the
+paper states:
+
+\begin{quote}
+``We conjecture that the approximation property assumption can be omitted.
+\textbf{Hypothesis 2.14.} For any Banach space \(X\) if \(T\in B(X)\) is a
+compact operator then \(\Dir(T)\) is a compact operator.''
+\end{quote}
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Hypothesis 2.14 in the source paper, PDF page 11.}
+\end{figure}
+
+\section{Proof intuition}
+
+The approximation property enters the source proof only to approximate a
+compact operator by finite-rank operators. Instead, one can follow its compact
+image through the bidual tower. If \(S:E\to F\) is compact and
+\(K=\overline{S(B_E)}\), Goldstine's theorem and weak-star continuity give
+\[
+ S^{**}(B_{E^{**}})\subseteq \kappa_F(K).
+\]
+Thus bidualization does not create any new image points; it merely moves the
+same norm-compact set into the canonical copy of the next space. At every
+tower level, the image of the unit ball therefore represents a point of the
+single compact set coming from level zero. Density then passes this containment
+to the completed direct limit.
+
+\section{The compact-image lemma}
+
+For a Banach space \(E\), let
+\(\kappa_E:E\to E^{**}\) be the canonical embedding and let \(B_E\) denote
+the closed unit ball.
+
+\begin{lemma}[compact images under bidualization]\label{lem:image}
+Let \(E,F\) be Banach spaces and let \(S:E\to F\) be compact. If
+\[
+ K=\overline{S(B_E)},
+\]
+then
+\[
+ S^{**}(B_{E^{**}})\subseteq \kappa_F(K).
+\]
+In particular, \(S^{**}\) is compact.
+\end{lemma}
+
+\begin{proof}
+Fix \(z\in B_{E^{**}}\). By Goldstine's theorem
+\cite[Chapter~2]{megginson}, there is a net \((x_\alpha)\subseteq B_E\) such
+that
+\[
+ \kappa_E x_\alpha\longrightarrow z
+ \quad\text{in }\sigma(E^{**},E^*).
+\]
+The bidual map is weak-star--weak-star continuous, and naturality of the
+canonical embeddings gives \(S^{**}\kappa_E=\kappa_F S\). Hence
+\[
+ \kappa_F(Sx_\alpha)=S^{**}(\kappa_E x_\alpha)
+ \longrightarrow S^{**}z
+ \quad\text{in }\sigma(F^{**},F^*).
+\]
+Since \(S\) is compact, \(K\) is norm compact. The set \(\kappa_F(K)\) is
+therefore weak-star compact: the canonical embedding is norm-to-weak-star
+continuous on \(K\). The weak-star topology is Hausdorff, so
+\(\kappa_F(K)\) is weak-star closed. Every term of the displayed net belongs
+to this set, and consequently its limit \(S^{**}z\) belongs to it as well.
+The final assertion follows because \(S^{**}(B_{E^{**}})\) is contained in a
+norm-compact set.
+\end{proof}
+
+\section{Main theorem}
+
+For Banach spaces \(X,Y\), put
+\[
+ X_0=X,\quad X_{n+1}=X_n^{**},
+ \qquad
+ Y_0=Y,\quad Y_{n+1}=Y_n^{**}.
+\]
+Write \(\kappa^X_{n,n+1}\) and \(\kappa^Y_{n,n+1}\) for the canonical
+embeddings, and write
+\[
+ \iota_n^X:X_n\to\Dir(X),
+ \qquad
+ \iota_n^Y:Y_n\to\Dir(Y)
+\]
+for the canonical isometries. Given \(T:X\to Y\), set
+\(T_0=T\) and \(T_{n+1}=T_n^{**}\). The definitions give
+\begin{equation}\label{eq:naturality}
+ \Dir(T)\iota_n^X=\iota_n^Y T_n,
+ \qquad
+ \iota_{n+1}^Y\kappa^Y_{n,n+1}=\iota_n^Y.
+\end{equation}
+
+\begin{theorem}\label{thm:main}
+Let \(X,Y\) be arbitrary Banach spaces. If \(T:X\to Y\) is compact, then
+\[
+ \Dir(T):\Dir(X)\longrightarrow\Dir(Y)
+\]
+is compact.
+\end{theorem}
+
+\begin{proof}
+For every \(n\geq0\), define
+\[
+ K_n=\overline{T_n(B_{X_n})}\subseteq Y_n.
+\]
+The set \(K_0\) is compact. Lemma~\ref{lem:image}, applied first to \(T_0\)
+and then inductively to \(T_n\), shows that every \(T_n\) is compact and
+\begin{equation}\label{eq:nesting}
+ K_{n+1}\subseteq \kappa^Y_{n,n+1}(K_n)
+ \qquad(n\geq0).
+\end{equation}
+Indeed, the lemma gives the inclusion before closure, and its right-hand side
+is compact and hence norm closed.
+
+Combining \eqref{eq:nesting} with \eqref{eq:naturality} and iterating gives
+\begin{equation}\label{eq:fixedK}
+ \iota_n^Y(K_n)\subseteq \iota_0^Y(K_0)
+ \qquad(n\geq0).
+\end{equation}
+Let
+\[
+ A_X=\bigcup_{n\geq0}\iota_n^X(X_n).
+\]
+This algebraic direct limit is dense in \(\Dir(X)\). If
+\(a\in A_X\cap B_{\Dir(X)}\), then \(a=\iota_n^X x\) for some
+\(x\in B_{X_n}\), since \(\iota_n^X\) is an isometry. Equations
+\eqref{eq:naturality} and \eqref{eq:fixedK} therefore imply
+\begin{equation}\label{eq:denseball}
+ \Dir(T)(A_X\cap B_{\Dir(X)})\subseteq \iota_0^Y(K_0).
+\end{equation}
+
+The set \(A_X\cap B_{\Dir(X)}\) is dense in \(B_{\Dir(X)}\). To see this,
+approximate any \(a\in B_{\Dir(X)}\) by \(a_j\in A_X\), and replace
+\(a_j\) with
+\[
+ \frac{a_j}{\max\{1,\lVert a_j\rVert\}}.
+\]
+These normalized approximants still converge to \(a\). Finally,
+\(\iota_0^Y(K_0)\) is norm compact and hence closed. By continuity of
+\(\Dir(T)\), the containment \eqref{eq:denseball} passes to the completed
+unit ball:
+\[
+ \Dir(T)(B_{\Dir(X)})\subseteq \iota_0^Y(K_0).
+\]
+Thus the image of the unit ball is relatively compact, proving that
+\(\Dir(T)\) is compact.
+\end{proof}
+
+\begin{corollary}
+Hypothesis 2.14 of \cite{source} holds without the approximation property. If
+\(T\in B(X)\) is compact, then both \(\Dir(T)\) and \(\Inv(T)\) are compact.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:main} gives the assertion for \(\Dir(T)\). Theorem~2.9 of
+the source identifies \(\Inv(T)\) with the adjoint of \(\Dir(T)\). Schauder's
+theorem \cite[Chapter~3]{megginson} says that the adjoint of a compact
+operator is compact.
+\end{proof}
+
+\section{Verification and limitations}
+
+The adversarial audit checks the unit-ball form of Goldstine's theorem, the
+weak-star closedness of \(\kappa_F(K)\), the direction of the inclusions in
+\eqref{eq:nesting}, and density of the algebraic direct-limit unit ball. No
+gap was found. No computation is relevant to this qualitative argument.
+
+A bounded novelty search on 21 July 2026 covered the run's lightweight
+indexes, arXiv/web queries for the exact conjecture sentence, paper title,
+arXiv id, author, Hypothesis~2.14, and close keyword variants, as well as
+visible later-title/citation results. No explicit later resolution was found.
+A 2025 Polish dissertation by the same author visible in the search results
+still describes the compactness theorem with an extra assumption and traces it
+to the source paper. This is negative search evidence, not an exhaustive
+review or a priority claim.
+
+The result is stronger than the stated hypothesis because it allows compact
+maps \(X\to Y\). Status remains \emph{candidate full solution, likely valid}
+until human review. The recommended review is to recheck
+Lemma~\ref{lem:image} and the completion step in
+\eqref{eq:denseball}.
+
+\begin{thebibliography}{9}
+
+\bibitem{source}
+S.~Gwizdek,
+\emph{Isometric direct limits of bidual Banach spaces},
+arXiv:2205.14385 (2022; source PDF version dated 2023).
+
+\bibitem{megginson}
+R.~E.~Megginson,
+\emph{An Introduction to Banach Space Theory},
+Graduate Texts in Mathematics 183, Springer, 1998.
+
+\end{thebibliography}
+
+\end{document}

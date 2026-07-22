@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\emergencystretch=1em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{remark}{Remark}
+\newcommand{\Prob}{\mathcal P}
+\newcommand{\Leb}{\mathsf m}
+\newcommand{\Q}{\mathcal Q}
+\newcommand{\D}{\mathcal D}
+\newcommand{\W}{W_1}
+
+\title{The Central Measure of the Unit Interval\\Is Lebesgue Measure}
+\author{Run \texttt{fa\_banach\_001}, lane 13}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Niemiec defined the central measure of a compact metric space as the
+generalized Chebyshev center of its probability measures in the Kantorovich
+metric, and asked whether the central measure of $[0,1]$ is Lebesgue measure.
+We give an affirmative answer.  The first Chebyshev center consists of the
+measures of mean $1/2$.  In quantile coordinates this center has a nonlinear
+involutive isometry that exchanges a monotone function with its distribution
+function.  Its only fixed point is the identity function.  Since the
+generalized Chebyshev center is fixed by every isometry, its quantile is the
+identity, hence the measure is Lebesgue.
+\end{abstract}
+
+\section{The question and the answer}
+
+Let $I=[0,1]$.  Write $\Prob(I)$ for the Borel probability measures on $I$,
+equipped with the Kantorovich--Rubinstein metric
+\[
+ \W(\mu,\nu)=\sup_{\operatorname{Lip}(f)\leq 1}
+ \left|\int f\,d\mu-\int f\,d\nu\right|.
+\]
+For a compact convex subset $K$ of a normed space, let $C(K)$ denote its
+Chebyshev center set, put $C^0(K)=K$ and $C^{n+1}(K)=C(C^n(K))$, and let
+$c_K$ be the unique member of $\bigcap_{n\geq0}C^n(K)$.  The source calls
+$c_{\Prob(I)}$ the \emph{central measure} $\mu_I$.
+
+On PDF page 7, after observing that the isometry group of the interval gives
+only reflection invariance, the source asks whether $\mu_I$ is Lebesgue
+measure; see Figure~\ref{fig:question}.
+
+\begin{theorem}[Full answer]\label{thm:main}
+The central measure $\mu_{[0,1]}$ is Lebesgue measure on $[0,1]$.
+\end{theorem}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.88\textwidth]{figures/open_problem_crop.png}
+\caption{The source question, arXiv:1105.5706, PDF p.~7.}
+\label{fig:question}
+\end{figure}
+
+\section{Idea of the proof}
+
+The reflection $x\mapsto1-x$ fixes every symmetric probability measure, so
+it cannot identify the central measure by itself.  The useful symmetry
+appears only after taking the first Chebyshev center.
+
+Represent a measure by its quantile $q$.  The first center is precisely
+\[
+ \Q_{1/2}=\left\{q:\ q\text{ is nondecreasing and }
+                    \int_0^1q(u)\,du=\frac12\right\}.
+\]
+For $q\in\Q_{1/2}$ set
+\[
+ (\D q)(t)=\Leb\{u\in[0,1]:q(u)\leq t\}.
+\]
+Geometrically, $\D$ reflects the completed graph of $q$ across the diagonal.
+Areas of symmetric differences show that it preserves $L^1$ distance, and
+the area below the graph shows that it sends $\int q$ to $1-\int q$.
+Consequently $\D$ is an isometry of $\Q_{1/2}$.
+
+The generalized Chebyshev center is fixed by every isometry of its compact
+convex metric space.  Thus its quantile is fixed by $\D$.  A monotonicity
+argument shows that $\D q=q$ forces $q(t)=t$.  This is exactly the quantile
+of Lebesgue measure.
+
+\section{The first Chebyshev center}
+
+For $\mu\in\Prob(I)$ write
+\[
+ m(\mu)=\int_I x\,d\mu(x),\qquad
+ e(\mu)=\sup_{\nu\in\Prob(I)}\W(\mu,\nu).
+\]
+
+\begin{lemma}\label{lem:firstcenter}
+For every $\mu\in\Prob(I)$,
+\[
+ e(\mu)=\max\{m(\mu),1-m(\mu)\}.
+\]
+Consequently the Chebyshev radius of $\Prob(I)$ is $1/2$ and
+\[
+ C(\Prob(I))=\{\mu\in\Prob(I):m(\mu)=1/2\}.
+\]
+\end{lemma}
+
+\begin{proof}
+For any $\nu$, the independent coupling gives
+\[
+ \W(\mu,\nu)
+ \leq \int_I\!\int_I |x-y|\,d\mu(x)d\nu(y)
+ \leq \max_{0\leq y\leq1}\int_I|x-y|\,d\mu(x).
+\]
+The last function is convex in $y$, so its maximum is attained at an
+endpoint.  Its value is
+\[
+ \max\{m(\mu),1-m(\mu)\}.
+\]
+Conversely,
+\[
+ \W(\mu,\delta_0)=m(\mu),\qquad
+ \W(\mu,\delta_1)=1-m(\mu).
+\]
+This proves the formula, whose minimum is $1/2$ exactly when $m(\mu)=1/2$.
+\end{proof}
+
+\section{Quantile coordinates and the hidden isometry}
+
+Let $Q_\mu:(0,1)\to I$ be the usual nondecreasing quantile function of
+$\mu$.  Let $\Q$ be the set of equivalence classes modulo null sets of
+nondecreasing measurable maps $q:I\to I$.
+
+\begin{lemma}[One-dimensional Kantorovich coordinates]\label{lem:quantile}
+The map $\mu\mapsto Q_\mu$ is a bijective isometry
+\[
+ (\Prob(I),\W)\longrightarrow(\Q,\|\cdot\|_{L^1}),
+ \qquad
+ \W(\mu,\nu)=\int_0^1|Q_\mu(u)-Q_\nu(u)|\,du.
+\]
+Moreover,
+\[
+ m(\mu)=\int_0^1Q_\mu(u)\,du.
+\]
+\end{lemma}
+
+\begin{proof}
+The second identity follows by taking $U$ uniform on $I$: $Q_\mu(U)$ has
+law $\mu$.  For completeness, if $F_\mu,F_\nu$ are the distribution
+functions, one-dimensional Kantorovich duality and integration by parts give
+\[
+ \W(\mu,\nu)=\int_0^1|F_\mu(t)-F_\nu(t)|\,dt.
+\]
+The region between two monotone completed graphs has the same area whether
+integrated horizontally or vertically.  Fubini's theorem therefore gives
+\[
+ \int_0^1|F_\mu-F_\nu|=\int_0^1|Q_\mu-Q_\nu|.
+\]
+Every nondecreasing $q:I\to I$ is, modulo a null set, the quantile of the
+law of $q(U)$, which proves surjectivity.
+\end{proof}
+
+Under this isometry, Lemma~\ref{lem:firstcenter} identifies the first center
+with the compact convex set
+\[
+ \Q_{1/2}=\left\{q\in\Q:\int_0^1q=\frac12\right\}.
+\]
+
+\begin{lemma}[Inverse-distribution isometry]\label{lem:D}
+For $q\in\Q$ define, at every $t\in I$,
+\[
+ (\D q)(t)=\Leb\{u\in I:q(u)\leq t\}.
+\]
+Then $\D:\Q\to\Q$ is an involutive isometry modulo null sets, and
+\[
+ \int_0^1\D q(t)\,dt=1-\int_0^1q(u)\,du.
+\]
+In particular, $\D$ is a surjective isometry of $\Q_{1/2}$ onto itself.
+\end{lemma}
+
+\begin{proof}
+For fixed $t$, the sublevel set
+$A_t(q)=\{u:q(u)\leq t\}$ is, modulo endpoints, an initial interval.
+Hence
+\[
+ |\D q(t)-\D r(t)|=\Leb\bigl(A_t(q)\mathbin{\triangle}A_t(r)\bigr).
+\]
+Integrating this identity and using Fubini gives
+\begin{align*}
+ \|\D q-\D r\|_1
+ &=\int_0^1\!\int_0^1
+   \left|\mathbf1_{\{q(u)\leq t\}}-
+          \mathbf1_{\{r(u)\leq t\}}\right|\,du\,dt\\
+ &=\int_0^1|q(u)-r(u)|\,du.
+\end{align*}
+Similarly,
+\[
+ \int_0^1\D q(t)\,dt
+ =\int_0^1\!\int_0^1\mathbf1_{\{q(u)\leq t\}}\,dt\,du
+ =\int_0^1(1-q(u))\,du.
+\]
+Finally, reflecting a monotone completed graph twice recovers it; equivalently,
+the elementary generalized-inverse identity gives $\D^2q=q$ almost
+everywhere.  Thus $\D$ is involutive and hence surjective.
+\end{proof}
+
+\section{The fixed point of the hidden isometry}
+
+\begin{lemma}\label{lem:fixed}
+The only $q\in\Q$ satisfying $\D q=q$ almost everywhere is
+$q(t)=t$ almost everywhere.
+\end{lemma}
+
+\begin{proof}
+Put $F=\D q$.  If $q=F$ almost everywhere, then sublevel-set measures do
+not change when $q$ is replaced by $F$.  Therefore
+\[
+ \D F=\D q=F
+\]
+pointwise.  We show that a nondecreasing $F:I\to I$ with $\D F=F$ must be
+the identity.
+
+Suppose first that $F(t)>t$ for some $t$.  Choose
+$0<\varepsilon<F(t)-t$.  For every
+$s\in(t,t+\varepsilon)$ with $s<F(t)$, monotonicity implies
+\[
+ \{x:F(x)\leq s\}\subset[0,t),
+ \qquad\text{so}\qquad
+ (\D F)(s)\leq t,
+\]
+whereas $F(s)\geq F(t)>t$.  This contradicts $\D F=F$.
+
+If $F(t)<t$, choose $0<\varepsilon<t-F(t)$.  For every
+$s\in(t-\varepsilon,t)$ with $s>F(t)$, monotonicity gives
+\[
+ [0,t]\subset\{x:F(x)\leq s\},
+ \qquad\text{so}\qquad
+ (\D F)(s)\geq t,
+\]
+while $F(s)\leq F(t)<t$, again a contradiction.  Hence $F(t)=t$ for every
+$t$, and therefore $q(t)=t$ almost everywhere.
+\end{proof}
+
+\section{Completion of the proof}
+
+Let $c_\Q$ be the generalized Chebyshev center of $\Q$.  Since
+$C(\Q)=\Q_{1/2}$, the iterates satisfy
+\[
+ C^n(\Q_{1/2})=C^{n+1}(\Q)\qquad(n\geq0),
+\]
+and therefore
+\[
+ c_\Q=c_{\Q_{1/2}}.
+\]
+The source proves that the generalized Chebyshev center of every nonempty
+compact convex subset of a normed space is fixed by every bijective isometry
+of that metric space.  Lemma~\ref{lem:D} gives such an isometry $\D$ of
+$\Q_{1/2}$.  Hence
+\[
+ \D(c_\Q)=c_\Q.
+\]
+Lemma~\ref{lem:fixed} now yields $c_\Q(t)=t$ almost everywhere.  The measure
+whose quantile is $t\mapsto t$ is Lebesgue measure on $I$.  Transporting back
+through Lemma~\ref{lem:quantile} proves Theorem~\ref{thm:main}.
+
+\section{Checks, scope, and novelty}
+
+The proof concerns the source's central measure of the \emph{first kind},
+namely the generalized Chebyshev center of $\Prob(I)$.  It does not substitute
+the source's separately defined central measure of the second kind, which the
+paper already proves to be Lebesgue.
+
+The choice of $\leq$ in the definition of $\D$ affects values only at the
+countably many discontinuity levels of a monotone function.  All metric and
+involution statements are in $L^1$, hence modulo null sets.  In the fixed-point
+argument we pass to the canonical pointwise representative $F=\D q$, for which
+$\D F=F$ holds pointwise.
+
+The run's cheap indexes, the local source-probed corpus, and bounded
+exact-phrase/title searches on July 21, 2026 found the original paper and
+self-citations but no later answer to this exact question.  This is therefore
+packaged as a candidate full solution with moderate, not definitive, novelty
+confidence.
+
+\section*{Reference}
+
+P. Niemiec, \emph{Central points and measures and dense subsets of compact
+metric spaces}, Topological Methods in Nonlinear Analysis 40 (2012),
+161--180; arXiv:1105.5706.
+
+\end{document}

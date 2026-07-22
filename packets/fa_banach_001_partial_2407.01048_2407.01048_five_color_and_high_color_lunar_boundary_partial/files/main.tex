@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,longtable}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\SAP}{\mathrm{SAP}}
+\newcommand{\im}{\operatorname{im}}
+
+\title{Boundary Cases of the $4\times4$ SAP--Lunar Problem}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Candidate partial result for expert review}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate partial result, likely valid.  The five-color
+case is computer-assisted with exact arithmetic; the high-color cutoff is a
+short combinatorial proof.  The original problem remains open here for six
+through thirteen colors.}}
+\end{center}
+
+\section{Source problem}
+
+Han, Qiu, and Wang ask the following in Problem~7 of
+\cite{HanQiuWang2024}, on PDF page~21.
+
+\begin{quote}
+Consider any map
+$\Phi:\{1,2,3,4\}\times\{1,2,3,4\}\to\mathcal L$.
+Assume that the Hankel system associated to $\Phi$ has SAP.  Does it follow
+that $\Phi$ is a lunar map?
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The definition, preceding theorem, and Problem~7 in the source
+paper, PDF page~21.}
+\end{figure}
+
+Let $[4]=\{1,2,3,4\}$.  Coordinatewise injectivity means that no color
+$\ell\in\mathcal L$ occurs twice in a row or twice in a column.  Write
+\[
+ \Gamma_\ell(a,x)=\mathbf 1_{\{\Phi(a,x)=\ell\}}.
+\]
+For scalar coefficients $c_\ell$, set
+\[
+ A(c)=[c_{\Phi(a,x)}]_{a,x\in[4]},\qquad
+ B(c)=\sum_{\ell}c_\ell\,\Gamma_\ell\otimes\Gamma_\ell.
+\]
+The upper SAP inequality, even just for scalar coefficients, requires
+\begin{equation}\label{eq:scalar-sap}
+ \|B(c)\|\leq \|A(c)\| \quad\hbox{for every }c.
+\end{equation}
+The diagonal row-pair and column-pair block of $B(c)$ is a copy of $A(c)$,
+so the reverse inequality is automatic.
+
+The generalized lunar condition is
+\begin{align*}
+ &\Phi(a,x)=\Phi(b,y),\quad \Phi(c,x)=\Phi(d,y),\quad
+ \Phi(a,z)=\Phi(b,w)\\
+ &\hspace{42mm}\Longrightarrow \Phi(c,z)=\Phi(d,w).
+\end{align*}
+
+\section{Claimed partial result}
+
+\begin{theorem}[Boundary color counts]\label{thm:main}
+Let $\Phi:[4]\times[4]\to\mathcal L$ be coordinatewise injective and let
+$m=|\im\Phi|$.
+\begin{enumerate}
+\item If $m\leq5$, then the associated Hankel system has SAP if and only if
+$\Phi$ is lunar.
+\item If $m\geq14$, then $\Phi$ is lunar, without any SAP assumption.
+\end{enumerate}
+Consequently, Problem~7 has a positive answer for $m\leq5$ and for
+$m\geq14$.  Only $6\leq m\leq13$ remains open in this packet.
+\end{theorem}
+
+The forward implication ``lunar implies SAP'' is Theorem~B of
+\cite{HanQiuWang2024}.  The new content is the converse at $m\leq5$ and the
+automatic lunar property at $m\geq14$.
+
+\section{Proof intuition}
+
+A coordinatewise injective table is a proper edge-coloring of the bipartite
+graph $K_{4,4}$: every color class is a matching.  At the low-color boundary,
+there are few enough such partitions to classify exactly.  After quotienting
+by the evident symmetries, only sixteen non-lunar five-color patterns remain.
+Each admits a tiny integer scalar substitution that makes an off-diagonal
+tensor block larger than the original matrix.  Exact Sturm counts, rather
+than decimal singular values, certify every strict inequality.
+
+At the opposite boundary, failure of the lunar implication already forces
+three independent pairs of cells to have equal colors.  Starting from sixteen
+independent cells, these identifications leave at most thirteen color classes.
+Thus fourteen colors rule out non-lunarity before operator norms enter.
+
+\section{The high-color argument}
+
+\begin{lemma}\label{lem:high}
+If a coordinatewise injective $4\times4$ map is non-lunar, then it uses at
+most thirteen colors.
+\end{lemma}
+
+\begin{proof}
+Choose a failed lunar implication and form three equality edges on the set of
+sixteen cells:
+\[
+ e_1=\{(a,x),(b,y)\},\quad
+ e_2=\{(c,x),(d,y)\},\quad
+ e_3=\{(a,z),(b,w)\}.
+\]
+Each edge joins equal-colored cells.  In a failed implication these are
+non-loop edges.  Indeed, a loop in $e_1$ or $e_2$, together with coordinatewise
+injectivity, collapses both row pairs; a loop in $e_3$ first collapses the
+first row pair.  In every case the proposed conclusion then follows.
+
+Moreover, $e_1$ is vertex-disjoint from $e_2$.  A common endpoint in the same
+column forces $a=c$ or $b=d$ and then forces the other row equality by column
+injectivity; a crossed common endpoint forces $x=y$, which similarly makes the
+conclusion automatic.  The same argument, using row injectivity, shows that
+$e_1$ is vertex-disjoint from $e_3$.
+
+Finally, $e_2$ and $e_3$ are distinct.  If they agree with the same
+orientation, the desired conclusion is the first premise; if they agree with
+opposite orientation, it is again the first premise with the two sides
+reversed.  Hence the graph with edges $e_1,e_2,e_3$ has equivalence-rank at
+least three: $e_1$ contributes one merger and the two distinct non-loop edges
+$e_2,e_3$ contribute two more.  Therefore the color partition of the sixteen
+cells has at most $16-3=13$ classes.
+\end{proof}
+
+The second assertion of Theorem~\ref{thm:main} is the contrapositive of
+Lemma~\ref{lem:high}.
+
+\section{Exact finite proof at five colors}
+
+\subsection{Complete enumeration}
+
+The verifier represents a table by a restricted-growth word of length sixteen.
+At each cell it either reuses a previous color that has appeared in neither
+the current row nor the current column, or introduces the next new color.
+Every partition of the cells into matchings has exactly one such labeling, so
+the recursion is exhaustive and duplication-free.
+
+The exact census is:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+colors & canonical tables & lunar & non-lunar\\
+\midrule
+4 & 24 & 24 & 0\\
+5 & 4896 & 144 & 4752\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The code then takes the minimum restricted-growth word over all row and column
+permutations, color relabelings, and transposition.  Transposition is harmless
+here because a scalar norm witness transposes both $A(c)$ and $B(c)$.  The
+five-color tables yield seventeen isomorphism classes: one lunar and sixteen
+non-lunar.
+
+\subsection{Exact norm certificates}
+
+For each non-lunar representative, the verifier searches primitive vectors
+$c\in\{-3,-2,\ldots,3\}^5$.  A decimal singular-value computation only
+proposes a candidate.  Acceptance is exact.
+
+Let
+\[
+ p_A(t)=\det(tI-A(c)^*A(c)),\qquad
+ p_B(t)=\det(tI-B(c)^*B(c)).
+\]
+Both are integer polynomials with only real nonnegative roots.  The verifier
+chooses a rational $q$ between the proposed squared norms and uses exact Sturm
+root counts to prove
+\[
+ \#\{\lambda\in\operatorname{roots}(p_A):\lambda>q\}=0,
+ \qquad
+ \#\{\lambda\in\operatorname{roots}(p_B):\lambda>q\}>0.
+\]
+Thus $\|A(c)\|^2<q<\|B(c)\|^2$ exactly, contradicting
+\eqref{eq:scalar-sap}.  The sixteen coefficient certificates are:
+
+\begin{center}
+\small
+\begin{longtable}{@{}r l r@{}}
+\toprule
+class & coefficient vector & numerical ratio (display only)\\
+\midrule
+\endhead
+0  & $(0,1,-3,-3,-3)$   & $1.092280$\\
+1  & $(1,-3,-3,-3,0)$   & $1.047174$\\
+2  & $(0,1,-3,-3,-3)$   & $1.044094$\\
+3  & $(1,-3,-3,2,3)$    & $1.003121$\\
+4  & $(0,1,-3,-3,-3)$   & $1.003987$\\
+5  & $(0,1,-3,-3,-3)$   & $1.047174$\\
+6  & $(0,1,-3,-3,-3)$   & $1.010169$\\
+7  & $(0,1,-3,1,-3)$    & $1.016851$\\
+8  & $(0,0,1,-3,-1)$    & $1.011773$\\
+9  & $(1,-3,-3,-3,1)$   & $1.025126$\\
+10 & $(0,0,1,-3,-3)$    & $1.043578$\\
+11 & $(0,0,1,-3,-3)$    & $1.043578$\\
+12 & $(0,1,-3,0,2)$     & $1.031391$\\
+13 & $(0,1,-3,1,1)$     & $1.037650$\\
+14 & $(0,1,1,1,-1)$     & $1.154701$\\
+15 & $(0,0,1,-1,2)$     & $1.043068$\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The representative tables, rational thresholds, and exact root counts are
+regenerated by the supplied verifier rather than trusted from this display.
+This proves the new converse for five colors.  Together with the four-color
+census and Theorem~B of \cite{HanQiuWang2024}, it proves the first assertion of
+Theorem~\ref{thm:main}.
+
+\section{Reproducibility and verification}
+
+Run from the packet directory:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_five_color_boundary.py
+\end{verbatim}
+The script checks all census and orbit counts, finds all sixteen certificates,
+and ends with
+\begin{verbatim}
+PASS: every non-lunar five-color class fails scalar SAP exactly
+\end{verbatim}
+
+An adversarial review found and repaired one bug during development: the first
+canonical relabeler wrote through a flattened view that became a copy after
+transposition.  No class count from that run was retained.  The final version
+constructs a fresh contiguous output array, and every count and certificate in
+this packet was recomputed afterward.  Independent exploratory matrix-valued
+searches were not used in the proof.
+
+\section{Limitations and novelty check}
+
+This is a partial result.  It does not decide the source problem for
+$6\leq|\im\Phi|\leq13$.  It also does not replace the source authors' general
+theorem that lunar maps have SAP.
+
+A bounded novelty search on 21 July 2026 used the exact paper title, exact
+Problem~7 wording, the phrases ``lunar map'', ``Hankel SAP converse'', and the
+author names in arXiv and general web search.  It found arXiv:2407.01048v1 and
+a contemporaneous 2024 talk announcement describing unspecified progress, but
+no later paper or public theorem resolving these boundary cases.  Novelty
+confidence is therefore medium, not high, until the authors or an expert check
+for unpublished overlap.
+
+\section{Human-review recommendation}
+
+The result is suitable for expert review.  The two priority checks are:
+\begin{enumerate}
+\item audit that the restricted-growth recursion and orbit minimization cover
+exactly the claimed tables; and
+\item audit one or two exact Sturm certificates, especially class~3, which has
+the smallest displayed margin.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{HanQiuWang2024}
+Y.~Han, Y.~Qiu, and Z.~Wang,
+\emph{Self-absorption of Hankel systems on monoids -- a seemingly universal
+property}, arXiv:2407.01048v1, 2024.
+\end{thebibliography}
+
+\end{document}

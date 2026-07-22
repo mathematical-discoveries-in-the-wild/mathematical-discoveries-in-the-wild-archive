@@ -1,0 +1,214 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Sset}{\mathcal S}
+\newcommand{\Tc}{\mathcal T_{\!c}}
+\newcommand{\T}{\mathcal T}
+
+\title{An exact fixed-point formula for the\\consistent Bellman operator}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}\\Model: GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.89\linewidth}{\textbf{Claimed status: full quantitative
+answer, subject to human review.}  The formula below completely determines
+the consistent Bellman fixed point from the classical optimal $Q$-function
+and the one-step self-transition probabilities.}}
+\end{center}
+
+\section{Source question}
+
+Kadurha David asks how the unique fixed point of the consistent Bellman
+operator relates to the fixed point obtained from the classical Bellman
+operator \cite[Chapter 5, Section 5.1.2, printed p.~34]{source}.  The passage
+appears on PDF page 38:
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+  \caption{The open question in the source paper.}
+\end{figure}
+
+Bellemare et al. had already proved the qualitative facts that the consistent
+operator is optimality-preserving and gap-increasing
+\cite[Corollary 3]{bellemare}.  The result here gives the missing exact
+coordinatewise relation.
+
+\section{Setting and notation}
+
+Let $\Sset$ and $\A$ be nonempty finite sets, let
+$P(\,cdot\mid s,a)$ be transition probabilities, let
+$r:\Sset\times\A\to\mathbb R$, and let $0\leq\gamma<1$.  For a
+$Q$-function $q$, put $v_q(s)=\max_{a\in\A}q(s,a)$.  The classical and
+consistent Bellman operators are
+\begin{align*}
+ (\T q)(s,a)
+   &=r(s,a)+\gamma\sum_{x\in\Sset}P(x\mid s,a)v_q(x),\\
+ (\Tc q)(s,a)
+   &=r(s,a)+\gamma\left(
+       P(s\mid s,a)q(s,a)
+       +\sum_{x\neq s}P(x\mid s,a)v_q(x)
+     \right).
+\end{align*}
+Both are $\gamma$-contractions in the supremum norm.  Write $q^*$ for the
+fixed point of $\T$, $q_c$ for the fixed point of $\Tc$, and
+\[
+  v^*(s)=\max_a q^*(s,a),
+  \qquad d(s,a)=P(s\mid s,a).
+\]
+
+\section{Proof intuition}
+
+At a consistent fixed point, the term caused by returning immediately to the
+same state contains $q_c(s,a)$ itself.  Moving that term to the left eliminates
+the self-loop and produces an operator on state values alone.  Its contraction
+factor is no larger than $\gamma$, even after division by
+$1-\gamma d(s,a)$.  The classical optimal value $v^*$ is a fixed point of
+this new operator: every action gives at most $v^*(s)$, and a classical
+optimal action gives equality.  Uniqueness therefore forces
+$\max_a q_c(s,a)=v^*(s)$.  Substitution then yields the exact formula, not
+just an inequality between action gaps.
+
+\section{Exact relation}
+
+\begin{theorem}[Coordinatewise fixed-point formula]
+For every $(s,a)\in\Sset\times\A$,
+\begin{equation}\label{eq:main}
+ \boxed{
+ v^*(s)-q_c(s,a)
+   =\frac{v^*(s)-q^*(s,a)}{1-\gamma d(s,a)}.}
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:qformula}
+ q_c(s,a)
+ =\frac{q^*(s,a)-\gamma d(s,a)v^*(s)}
+        {1-\gamma d(s,a)}.
+\end{equation}
+In particular, $\max_a q_c(s,a)=v^*(s)$ for every state.
+\end{theorem}
+
+\begin{proof}
+For a bounded function $v:\Sset\to\mathbb R$, define
+\begin{align*}
+ H_a v(s)
+   &=\frac{r(s,a)+\gamma\sum_{x\neq s}P(x\mid s,a)v(x)}
+           {1-\gamma d(s,a)},\\
+ Hv(s)&=\max_{a\in\A}H_a v(s).
+\end{align*}
+The denominator is positive.  For each $s,a$,
+\begin{align*}
+ |H_a v(s)-H_a w(s)|
+ &\leq
+ \frac{\gamma(1-d(s,a))}{1-\gamma d(s,a)}\,
+ \|v-w\|_\infty\\
+ &\leq \gamma\|v-w\|_\infty,
+\end{align*}
+because $1-d\leq 1-\gamma d$.  Taking maxima does not increase this bound,
+so $H$ is a $\gamma$-contraction and has a unique fixed point.
+
+Put $v_c(s)=\max_a q_c(s,a)$.  The equation $\Tc q_c=q_c$, with its
+self-loop term moved to the left, says exactly
+\[
+ q_c(s,a)=H_a v_c(s).
+\]
+Taking the maximum over $a$ gives $v_c=Hv_c$.
+
+We next show that $v^*$ is also an $H$-fixed point.  The classical fixed-point
+equation gives
+\[
+ q^*(s,a)=r(s,a)+\gamma d(s,a)v^*(s)
+      +\gamma\sum_{x\neq s}P(x\mid s,a)v^*(x).
+\]
+Consequently,
+\begin{equation}\label{eq:keyidentity}
+ v^*(s)-H_a v^*(s)
+ =\frac{v^*(s)-q^*(s,a)}{1-\gamma d(s,a)}\geq0.
+\end{equation}
+Since $\A$ is finite, some action $a^*$ attains
+$q^*(s,a^*)=v^*(s)$; for this action equality holds in
+\eqref{eq:keyidentity}.  Hence $Hv^*=v^*$.  Uniqueness of the $H$-fixed point
+now yields $v_c=v^*$.
+
+Finally, $q_c(s,a)=H_a v^*(s)$.  Replacing the numerator of $H_a v^*$ by
+$q^*(s,a)-\gamma d(s,a)v^*(s)$ proves \eqref{eq:qformula}; subtracting it
+from $v^*(s)$ gives \eqref{eq:main}.
+\end{proof}
+
+\begin{corollary}[Exact policy and gap consequences]
+For every state $s$:
+\begin{enumerate}
+\item $\operatorname*{arg\,max}_a q_c(s,a)
+      =\operatorname*{arg\,max}_a q^*(s,a)$, including all ties;
+\item each action gap is amplified by the factor
+      $(1-\gamma d(s,a))^{-1}\in[1,(1-\gamma)^{-1}]$;
+\item $q_c(s,a)\leq q^*(s,a)$, and the inequality is strict exactly when
+      $q^*(s,a)<v^*(s)$ and $d(s,a)>0$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The first two assertions follow immediately from \eqref{eq:main}.  For the
+third, subtract \eqref{eq:qformula} from $q^*(s,a)$ to obtain
+\[
+ q^*(s,a)-q_c(s,a)
+ =\frac{\gamma d(s,a)}{1-\gamma d(s,a)}
+   \bigl(v^*(s)-q^*(s,a)\bigr).
+\]
+\end{proof}
+
+\section{Verification and review notes}
+
+The script \texttt{code/check\_random\_mdps.py} generated 400 random finite
+MDPs (two to seven states, two to five actions), mixed in self-loop weights up
+to $0.995$, and independently iterated both operators.  The worst observed
+direct formula error was $1.08\times10^{-11}$; the worst residual after
+substituting the formula into $\Tc$ was $2.07\times10^{-13}$; and the maximum
+state values agreed to displayed floating-point precision.  These checks are
+not part of the proof.
+
+The theorem is deliberately stated for finite tabular MDPs, matching the
+source's summation formulas and attained maxima.  The proof extends to broader
+bounded settings under the usual measurability and supremum hypotheses, but
+that extension is not claimed here.  The main human-review point is the
+reduction from the $Q$-fixed-point equation to the contraction $H$.
+
+\section{Bounded novelty check}
+
+The run's registry, solution, attempt, and proof-gap indexes had no hit for
+arXiv:2410.03706 or this fixed-point relation.  Searches over arXiv, AAAI,
+NeurIPS, and OpenReview combined ``consistent Bellman operator'' with
+``fixed point'', ``formula'', ``self transition'', and ``action gap''.
+The primary qualitative predecessor \cite{bellemare} and later reviews were
+inspected.  They establish optimality preservation and gap increase, but the
+explicit coordinate identity \eqref{eq:main} was not found.  This was a
+bounded, not exhaustive, search; novelty confidence is therefore moderate and
+is limited to the exact formula and its sharp consequences.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+K. Kadurha David,
+\emph{Topological Foundations of Reinforcement Learning},
+arXiv:2410.03706, 2024.
+\url{https://arxiv.org/abs/2410.03706}
+
+\bibitem{bellemare}
+M. G. Bellemare, G. Ostrovski, A. Guez, P. S. Thomas, and R. Munos,
+\emph{Increasing the Action Gap: New Operators for Reinforcement Learning},
+Proc. AAAI Conf. Artificial Intelligence 30 (2016), 1476--1483;
+arXiv:1512.04860.
+\url{https://doi.org/10.1609/aaai.v30i1.10303}
+\end{thebibliography}
+
+\end{document}
+

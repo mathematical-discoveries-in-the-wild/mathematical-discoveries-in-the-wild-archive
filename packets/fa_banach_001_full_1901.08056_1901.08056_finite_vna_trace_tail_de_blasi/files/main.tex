@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\M}{\mathcal M}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ud}{u_{\tau,\delta}}
+\newcommand{\uu}{u_\tau}
+
+\title{An Exact Trace-Tail Formula for the De Blasi Measure\\
+in Finite von Neumann Preduals}
+\author{Candidate solution packet for arXiv:1901.08056}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Candidate full solution, likely valid, to the finite
+$\sigma$-finite clause of Question 12.1 in Hamhalter--Kalenda--Peralta--Pfitzner
+\cite{HKPP}. The general semifinite case is not claimed.
+
+\section{Source question}
+
+The source is J. Hamhalter, O. F. K. Kalenda, A. M. Peralta, and H. Pfitzner,
+\emph{Measures of weak non-compactness in preduals of von Neumann algebras and
+JBW$^*$-triples}, arXiv:1901.08056. Question 12.1 appears on PDF page 54.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question asks for a formula, in terms of a normal semifinite faithful trace
+$\tau$, for the De Blasi measure of weak noncompactness in $M_*$, and asks
+explicitly whether this can at least be done for finite $\sigma$-finite von
+Neumann algebras.
+
+\section{Definitions and statement}
+
+Let $M$ be a finite $\sigma$-finite von Neumann algebra. Such an algebra admits
+a faithful normal finite trace; this is also recalled in Lemma 7.12(a) of the
+source paper \cite{HKPP}. Fix one such trace $\tau$. We do not require
+$\tau(1)=1$.
+
+We use the standard isometric identification
+\[
+ M_* = L^1(M,\tau), \qquad \phi_h(x)=\tau(hx),
+ \qquad \|\phi_h\|=\|h\|_1=\tau(|h|).
+\]
+For a bounded set $A\subset L^1(M,\tau)$, its De Blasi measure is
+\[
+ \omega(A)=\inf_K\ \sup_{h\in A}\dist(h,K),
+\]
+where $K$ ranges over the relatively weakly compact subsets of
+$L^1(M,\tau)$.
+
+For $\delta>0$, define the right trace-tail quantity
+\[
+ \ud(A)=\sup_{h\in A}\ \sup\bigl\{\|he\|_1:
+ e\in\Proj(M),\ \tau(e)\leq\delta\bigr\},
+\]
+and, by monotonicity,
+\[
+ \uu(A)=\lim_{\delta\downarrow0}\ud(A)
+       =\inf_{\delta>0}\ud(A).
+\]
+
+\begin{theorem}\label{thm:main}
+Let $M$ be a finite $\sigma$-finite von Neumann algebra, let $\tau$ be a
+faithful normal finite trace on $M$, and let $A\subset M_*=L^1(M,\tau)$ be
+bounded. Then
+\[
+ \boxed{\ \omega(A)=\uu(A)\ }.
+\]
+Equivalently,
+\[
+ \omega(A)=\lim_{\delta\downarrow0}
+ \sup_{h\in A}\sup_{\substack{e\in\Proj(M)\\\tau(e)\leq\delta}}
+ \|he\|_1.
+\]
+Thus Question 12.1 has an affirmative answer for finite $\sigma$-finite von
+Neumann algebras.
+\end{theorem}
+
+The analogous left-tail formula follows either by the same proof or by applying
+the theorem to $A^*=\{h^*:h\in A\}$.
+
+\section{Proof Intuition}
+
+The proposed quantity vanishes precisely on weakly compact sets for a very
+concrete reason. The source paper proves that a weakly compact set in $M_*$ is
+uniformly controlled by one normal state in the strong$^*$ topology. A
+small-$\tau$ projection, multiplied by any contraction, is uniformly small for
+that state; hence every functional in the weakly compact set has a small right
+tail on that projection. This immediately gives $\uu(A)\leq\omega(A)$.
+
+For the reverse inequality, write $h=v|h|$ and cut $|h|$ off at height $c$.
+The discarded part is $he$, where $e=1_{(c,\infty)}(|h|)$ and
+$\tau(e)\leq\|h\|_1/c$. The retained parts have uniformly bounded $L^2$ norm.
+Because the trace is finite, the inclusion $L^2(M,\tau)\to L^1(M,\tau)$ is
+bounded, so a bounded $L^2$-ball becomes a weakly compact subset of $L^1$.
+The trace tail is therefore exactly the distance scale needed in the De Blasi
+definition.
+
+\section{Proof}
+
+We first isolate the weak-compactness input.
+
+\begin{lemma}\label{lem:wc-tail}
+If $K\subset L^1(M,\tau)$ is relatively weakly compact, then
+$\uu(K)=0$.
+\end{lemma}
+
+\begin{proof}
+Replacing $K$ by its weak closure, assume it is weakly compact. Theorem
+11.1(b') of \cite{HKPP}, specialized to the von Neumann algebra $M$, gives a
+normal state $\psi$ such that the following holds: for every $\varepsilon>0$
+there is $\eta>0$ such that
+\[
+ x\in B_M,\quad \|x\|_\psi<\eta
+ \quad\Longrightarrow\quad
+ |\phi_h(x)|<\varepsilon\quad(h\in K),                         \tag{1}
+\]
+where
+\[
+ \|x\|_\psi^2=\psi(x^*\circ x)
+ =\frac12\psi(x^*x+xx^*).
+\]
+Write $\psi(x)=\tau(gx)$ with $g\in L^1(M,\tau)_+$ and $\tau(g)=1$.
+
+We claim that
+\[
+ \sup_{\substack{e\in\Proj(M),\ \tau(e)\leq\delta\\a\in B_M}}
+ \|ea\|_\psi\longrightarrow0\qquad(\delta\downarrow0).       \tag{2}
+\]
+Indeed, given $c>0$, use functional calculus to write $g=g_0+r$ with
+$0\leq g_0\leq c1$, $r\geq0$, and $\|r\|_1\to0$ as $c\to\infty$.
+For $e\in\Proj(M)$ and $a\in B_M$, traciality and positivity give
+\begin{align*}
+ \psi(a^*ea)&=\tau(eaga^*)\leq c\tau(e)+\|r\|_1,\\
+ \psi(eaa^*e)&\leq\psi(e)\leq c\tau(e)+\|r\|_1.
+\end{align*}
+Consequently
+\[
+ \|ea\|_\psi^2\leq c\tau(e)+\|r\|_1.
+\]
+First choose $c$ so that $\|r\|_1$ is small, and then choose $\delta$ so that
+$c\delta$ is small. This proves (2).
+
+For such a small $\delta$, apply (1) to $x=ea$. Since
+$\phi_h(ea)=\tau(hea)$ and $M=(L^1(M,\tau))^*$ isometrically,
+\[
+ \|he\|_1=\sup_{a\in B_M}|\tau(hea)|<\varepsilon
+ \qquad(h\in K,\ e\in\Proj(M),\ \tau(e)\leq\delta).
+\]
+Thus $\ud(K)\to0$.
+\end{proof}
+
+We now prove the two inequalities in Theorem \ref{thm:main}.
+
+Let $K$ be relatively weakly compact and set
+\[
+ d=\sup_{h\in A}\dist(h,K).
+\]
+For $\zeta>0$, each $h\in A$ has $k_h\in K$ with
+$\|h-k_h\|_1<d+\zeta$. Right multiplication by a projection is contractive
+on $L^1$, so
+\[
+ \|he\|_1\leq \|(h-k_h)e\|_1+\|k_he\|_1
+ \leq d+\zeta+\ud(K)
+\]
+whenever $\tau(e)\leq\delta$. Lemma \ref{lem:wc-tail}, followed by
+$\zeta\downarrow0$, yields $\uu(A)\leq d$. Taking the infimum over $K$ gives
+\[
+ \uu(A)\leq\omega(A).                                        \tag{3}
+\]
+
+For the reverse inequality, put $R=\sup_{h\in A}\|h\|_1$. The case $R=0$
+is trivial, so suppose $R>0$. For $h=v|h|$ its polar decomposition and $c>0$,
+set
+\[
+ e_{h,c}=1_{(c,\infty)}(|h|),\qquad
+ k_{h,c}=v|h|1_{[0,c]}(|h|).
+\]
+Then
+\[
+ \tau(e_{h,c})\leq\frac{\|h\|_1}{c}\leq\frac Rc,             \tag{4}
+\]
+and
+\[
+ \|h-k_{h,c}\|_1=\|he_{h,c}\|_1\leq u_{\tau,R/c}(A).         \tag{5}
+\]
+Moreover,
+\[
+ \|k_{h,c}\|_2^2
+ =\tau\bigl(|h|^2 1_{[0,c]}(|h|)\bigr)
+ \leq c\tau(|h|)\leq cR.                                    \tag{6}
+\]
+
+Let $J:L^2(M,\tau)\to L^1(M,\tau)$ be the canonical inclusion. Since
+$\tau(1)<\infty$, noncommutative Cauchy--Schwarz gives
+$\|Jz\|_1\leq\tau(1)^{1/2}\|z\|_2$, so $J$ is bounded. The closed ball
+$\sqrt{cR}\,B_{L^2(M,\tau)}$ is weakly compact, and therefore its image
+\[
+ W_c=J\bigl(\sqrt{cR}\,B_{L^2(M,\tau)}\bigr)
+\]
+is weakly compact in $L^1(M,\tau)$. By (6), every $k_{h,c}$ lies in $W_c$.
+Equation (5) therefore implies
+\[
+ \omega(A)\leq\sup_{h\in A}\dist(h,W_c)
+ \leq u_{\tau,R/c}(A).
+\]
+Letting $c\to\infty$ gives
+\[
+ \omega(A)\leq\uu(A).                                        \tag{7}
+\]
+Together, (3) and (7) prove the theorem.
+
+\section{Verification and edge cases}
+
+The script \texttt{code/verify\_trace\_tail.py} checks the spectral truncation
+identities (4)--(6), right-multiplication contractivity, and the finite-trace
+$L^2\to L^1$ estimate on 240 random complex matrices. It is only a numerical
+sanity check; the proof above is analytic.
+
+The finiteness of $\tau(1)$ is used exactly once: to make the inclusion
+$L^2(M,\tau)\to L^1(M,\tau)$ bounded. For a general semifinite trace, spectral
+truncation controls concentration on small-trace projections but not escape to
+regions of arbitrarily large trace. Thus the theorem does not claim the first,
+fully semifinite clause of Question 12.1; a separate trace-tightness term would
+be needed there.
+
+\section{Bounded novelty search}
+
+Before promotion, the run indexes were searched for arXiv:1901.08056 and the
+terms ``De Blasi'', ``weak non-compactness'', ``von Neumann predual'', and
+``trace formula''. The only hit used arXiv:1901.08056 as background for a
+different operator-valued quantum-measure result. Web/arXiv searches on 21 July
+2026 used the phrases ``De Blasi measure noncommutative L1 projection trace
+formula'', ``De Blasi von Neumann algebra L1 uniform integrability'', and
+``measure of weak noncompactness noncommutative L1 projection''. They found the
+commutative $L^1$ formula of Ka\v{c}ena--Kalenda--Spurn\'y \cite{KKS}, the source
+paper, and later work on measures for operators, but no exact set formula of
+the form proved here for finite noncommutative $L^1(M,\tau)$. This is a bounded
+search, not a guarantee of novelty.
+
+\section{Human-review recommendation}
+
+The result should receive expert review. The two most important checks are:
+(i) the specialization of Theorem 11.1(b') of \cite{HKPP} in Lemma
+\ref{lem:wc-tail}, including the uniform estimate for $ea$; and (ii) the use of
+the finite-trace $L^2$ ball as a weakly compact container for all spectral
+truncations. Subject to those checks, the proof gives a complete exact formula
+for the finite $\sigma$-finite case explicitly requested in Question 12.1.
+
+\begin{thebibliography}{9}
+\bibitem{HKPP}
+J. Hamhalter, O. F. K. Kalenda, A. M. Peralta, and H. Pfitzner,
+\emph{Measures of weak non-compactness in preduals of von Neumann algebras and
+JBW$^*$-triples}, arXiv:1901.08056 (2019).
+
+\bibitem{KKS}
+M. Ka\v{c}ena, O. F. K. Kalenda, and J. Spurn\'y,
+\emph{Quantitative Dunford--Pettis property}, Adv. Math. 234 (2013), 488--527;
+arXiv:1110.1243.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ellTwo}{\ell_2}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\lipspace}{\operatorname{lip}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Reflexive-Subspace Counterexample\\
+to Question 5.1 of arXiv:1606.05999}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_13}}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{
+\textbf{Status.} Candidate full negative answer, likely valid, pending human
+review. The example does not merely obstruct distortion $1+\varepsilon$:
+the resulting little-Lipschitz space admits no isomorphic embedding into
+$c_0$ at all.
+}}
+\end{center}
+
+\section*{Source Question}
+
+García-Lirola, Petitjean, and Rueda Zoca ask the following in Question~5.1
+of \cite{GPRZ}, on source PDF page~20:
+
+\begin{quote}
+Let $M$ and $\tau$ be under the hypothesis of Theorem 2.9. Is
+$lip_\tau(M)$ $(1+\varepsilon)$-isometric to a subspace of $c_0$ for every
+$\varepsilon>0$?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+
+\small Source PDF page 20, including the complete statement of Question 5.1.
+\end{center}
+
+The paper works over the real field. Its standing setup for Theorem~2.9 is a
+bounded pointed metric space $(M,d)$ with a compact topology $\tau$ for which
+$d$ is $\tau$-lower semicontinuous. The theorem additionally assumes that
+$M$ is separable and complete, that $\tau$ is metrizable, and that
+\begin{equation*}\tag{P}
+ \forall u,v\in M\ \forall \eta>0\ \exists f\in B_{lip_\tau(M)}:
+ |f(u)-f(v)|\ge d(u,v)-\eta.
+\end{equation*}
+Here $lip_\tau(M)$ consists of the pointed $\tau$-continuous Lipschitz
+functions satisfying
+\[
+ \lim_{r\downarrow0}\ \sup_{0<d(u,v)<r}
+ \frac{|f(u)-f(v)|}{d(u,v)}=0.
+\]
+
+\section*{Proof Intuition}
+
+Snowflaking a norm by the square root turns every bounded linear functional
+into a little-Lipschitz function: a norm-linear increment is quadratic in the
+new distance. On the weak unit ball of $\ell_2$, all these linear functionals
+are also weakly continuous. Consequently $lip_\tau(M)$ contains a closed copy
+of the whole reflexive space $\ell_2$.
+
+This is incompatible with an embedding into $c_0$. One standard way to see
+the obstruction is that $c_0$ has the hereditary Dunford--Pettis property.
+If a closed copy of $\ell_2$ lived in $c_0$, that copy would have the
+Dunford--Pettis property; but its identity is weakly compact by reflexivity
+and is not completely continuous. Thus the source question fails in a much
+stronger form than requested.
+
+\section*{The Counterexample}
+
+\begin{theorem}\label{thm:main}
+There is a pair $(M,\tau)$ satisfying all hypotheses of Theorem~2.9 in
+\cite{GPRZ} such that $lip_\tau(M)$ is not isomorphic to a subspace of $c_0$.
+In particular, Question~5.1 has a negative answer.
+\end{theorem}
+
+\begin{proof}
+Let $H=\ellTwo$ over $\R$, put $M=B_H$, and use $0$ as the base point. Let
+$\tau$ be the weak topology on $B_H$ and define
+\[
+ d(u,v)=\norm{u-v}_2^{1/2}\qquad(u,v\in B_H).
+\]
+
+We first audit the hypotheses. The function $\omega(t)=\sqrt t$ is a
+nontrivial gauge in the terminology of \cite{GPRZ}: it is continuous,
+increasing, and subadditive, it vanishes at zero, it satisfies
+$\omega(t)\ge t$ for $0\le t\le1$, and
+$\omega(t)/t\to\infty$ as $t\downarrow0$. The sentence introducing the
+paper's corollary immediately after Theorem~2.9 explicitly identifies the
+following as a special case:
+\[
+ \bigl(B_{X^*},\ \omega\circ\norm{\mathord\cdot}\bigr)
+\]
+with its weak-star topology. Taking $X=H$ and identifying $X^*=H$ places our
+example in the family highlighted by the authors. We nevertheless verify
+property~(P) directly below, so the counterexample does not depend on that
+identification.
+
+For completeness, the remaining topological and metric hypotheses are also
+immediate. The ball $B_H$ is weakly compact because $H$ is reflexive, and its
+weak topology is metrizable because $H^*=H$ is separable. The snowflaked
+metric is bounded and separable. It is complete because a $d$-Cauchy sequence
+is norm Cauchy. Finally, the norm is weakly lower semicontinuous, so
+$(u,v)\mapsto d(u,v)$ is lower semicontinuous for the product weak topology.
+
+We now prove property~(P). Fix $u,v\in B_H$ with $u\ne v$, put
+$\delta=\norm{u-v}_2$, and choose $h\in S_H$ so that
+$\langle u-v,h\rangle=\delta$. For $\rho>0$ define
+\[
+ \phi_\rho(s)=\sqrt{s_++\rho}-\sqrt\rho,
+ \qquad s_+=\max\{s,0\}.
+\]
+The function $\phi_\rho$ is globally Lipschitz in the ordinary metric, with
+constant at most $1/(2\sqrt\rho)$. It also satisfies
+\begin{equation}\label{eq:holder-ramp}
+ |\phi_\rho(s)-\phi_\rho(t)|\le\sqrt{|s-t|}
+ \qquad(s,t\in\R).
+\end{equation}
+Indeed, this is the usual square-root estimate if $s,t\ge0$, it is trivial if
+$s,t\le0$, and if $s\le0\le t$, then
+\[
+ \phi_\rho(t)=\sqrt{t+\rho}-\sqrt\rho
+ \le\sqrt t\le\sqrt{|t-s|}.
+\]
+Set
+\[
+ f_\rho(z)=\phi_\rho(\langle z-v,h\rangle)
+            -\phi_\rho(\langle -v,h\rangle),
+ \qquad z\in B_H.
+\]
+Then $f_\rho(0)=0$, and $f_\rho$ is weakly continuous. From
+\eqref{eq:holder-ramp},
+\[
+ |f_\rho(z)-f_\rho(w)|
+ \le\sqrt{|\langle z-w,h\rangle|}
+ \le\sqrt{\norm{z-w}_2}=d(z,w),
+\]
+so $\norm{f_\rho}_{Lip}\le1$. Its ordinary Lipschitz bound gives
+\[
+ \frac{|f_\rho(z)-f_\rho(w)|}{d(z,w)}
+ \le \frac{1}{2\sqrt\rho}\,d(z,w),
+\]
+which tends uniformly to zero with $d(z,w)$. Hence
+$f_\rho\in B_{lip_\tau(M)}$. Finally,
+\[
+ f_\rho(u)-f_\rho(v)
+ =\sqrt{\delta+\rho}-\sqrt\rho
+ \longrightarrow\sqrt\delta=d(u,v)
+ \qquad(\rho\downarrow0).
+\]
+This proves property~(P); the case $u=v$ is immediate.
+
+For $x\in H$, define $Jx:M\to\R$ by
+\[
+ (Jx)(u)=\langle u,x\rangle.
+\]
+This function vanishes at the base point and is weakly continuous. Moreover,
+for $u\ne v$,
+\begin{equation}\label{eq:key}
+\begin{aligned}
+ \frac{|(Jx)(u)-(Jx)(v)|}{d(u,v)}
+ &\le \frac{\norm{x}_2\norm{u-v}_2}{\norm{u-v}_2^{1/2}}\\
+ &=\norm{x}_2\norm{u-v}_2^{1/2}
+ =\norm{x}_2d(u,v).
+\end{aligned}
+\end{equation}
+Because $d(u,v)\le\sqrt2$ on $B_H$, equation \eqref{eq:key} proves that
+$Jx$ is Lipschitz and
+\[
+ \norm{Jx}_{lip_\tau(M)}\le\sqrt2\norm{x}_2.
+\]
+It also proves the little-Lipschitz condition: if $0<d(u,v)<r$, then the
+quotient in \eqref{eq:key} is at most $r\norm{x}_2$, uniformly in $u,v$.
+Thus $Jx\in lip_\tau(M)$.
+
+The reverse norm estimate is just as direct. For $x\ne0$, take
+$u=x/\norm{x}_2$ and $v=0$. Then $u\in B_H$, $d(u,0)=1$, and
+\[
+ \frac{|(Jx)(u)-(Jx)(0)|}{d(u,0)}=\norm{x}_2.
+\]
+Consequently
+\begin{equation}\label{eq:embedding}
+ \norm{x}_2\le\norm{Jx}_{lip_\tau(M)}
+ \le\sqrt2\norm{x}_2 \qquad(x\in H).
+\end{equation}
+The linear map $J:H\to lip_\tau(M)$ is therefore bounded below, so its range
+is a closed subspace isomorphic to $\ell_2$.
+
+Suppose toward a contradiction that $lip_\tau(M)$ admitted an isomorphic
+embedding $T$ into $c_0$. Then $T(JH)$ would be a closed subspace of $c_0$
+isomorphic to $\ell_2$. But $c_0$ has the hereditary Dunford--Pettis property
+\cite{Cembranos}; hence $T(JH)$ has the Dunford--Pettis property. Since it is
+reflexive, its identity operator is weakly compact and therefore, by the
+Dunford--Pettis property, completely continuous. This is impossible: the
+image under an isomorphism of the orthonormal basis of $\ell_2$ is weakly
+null while its norms stay bounded away from zero. This contradiction proves
+that no such $T$ exists.
+\end{proof}
+
+\section*{Verification Notes}
+
+\begin{itemize}
+\item \textbf{Property~(P) is explicit.} The functions $f_\rho$ have
+Lipschitz norm at most one, are weakly continuous and little Lipschitz, and
+their increments converge to the required snowflake distance. The source's
+own weak-star-ball corollary independently confirms that this is the intended
+class of examples.
+\item \textbf{The snowflake is essential.} In the new metric,
+$\norm{u-v}_2=d(u,v)^2$, so the Lipschitz quotient of a linear functional is
+bounded by $\norm{x}_2d(u,v)$ and tends uniformly to zero at small scales.
+\item \textbf{The copy is closed.} The lower inequality in
+\eqref{eq:embedding}, not merely injectivity, guarantees that $JH$ is a closed
+subspace and permits restriction of any hypothetical embedding into $c_0$.
+\item \textbf{The $c_0$ contradiction is isomorphic.} Hereditary
+Dunford--Pettis is inherited by every closed subspace of $c_0$; reflexivity
+and the Dunford--Pettis property are invariant under isomorphism. Thus no
+choice of distortion can evade the obstruction.
+\item \textbf{No computational dependency.} Every estimate is exact. The
+argument uses no numerical experiment, asymptotic approximation, or
+unverified interchange of limits.
+\end{itemize}
+
+\section*{Novelty Check and Limitations}
+
+A bounded search through 22 July 2026 covered the run registry, solution,
+attempt, and proof-gap indexes; the local source corpus; the arXiv id, title,
+and authors; exact wording from Question~5.1; and searches combining
+\texttt{lip\_tau(M)}, $c_0$, and the paper's weak-star snowflake notation.
+No later answer to Question~5.1 was found. This supports, but does not prove,
+novelty.
+
+The result addresses Question~5.1 only. It makes no claim about Question~5.2
+in the same paper, concerning the Schur property of a vector-valued
+Lipschitz-free space. The recommended human check is the smoothed-ramp proof
+of property~(P), especially \eqref{eq:holder-ramp}; the rest of the proof is
+elementary Banach-space geometry.
+
+\begin{thebibliography}{9}
+\bibitem{GPRZ}
+L. García-Lirola, C. Petitjean, and A. Rueda Zoca,
+\emph{On the structure of spaces of vector-valued Lipschitz functions},
+Rev. R. Acad. Cienc. Exactas Fís. Nat. Ser. A Mat. \textbf{112} (2018),
+727--749; \href{https://arxiv.org/abs/1606.05999}{arXiv:1606.05999}.
+
+\bibitem{Cembranos}
+P. Cembranos,
+\emph{The hereditary Dunford--Pettis property on $C(K,E)$},
+Illinois J. Math. \textbf{31} (1987), no.~3, 365--373.
+\end{thebibliography}
+
+\end{document}

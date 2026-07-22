@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\emergencystretch=2em
+\newtheorem{remark}{Remark}
+\DeclareMathOperator{\spanop}{span}
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}
+{\Large Transverse local stability of the Gaussian propeller optimizer}\\[0.4em]
+{\small Run \texttt{fa\_banach\_001}, arXiv:0807.4626, partial result}
+\end{center}
+
+\section*{Source problem}
+
+Khot and Naor define an extremal Gaussian partition constant \(C(k)\) and
+prove the equivalent Gaussian-width formula
+\[
+C(k)=\sup
+\frac{\bigl(\mathbb E\max_{1\le j\le k}g_j\bigr)^2}
+{\sum_{j=1}^k\mathbb E g_j^2},
+\]
+where the supremum is over centered Gaussian \(k\)-vectors. They ask whether
+\[
+C(k)\le C(3)=\frac{9}{8\pi}\qquad(k\ge2).
+\]
+Equivalently, does the global optimizer always use only the three blades of a
+planar \(120^\circ\) propeller? The question and Gaussian formulation occur on
+page 20 of \cite{KN}.
+
+\begin{center}
+\includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Partial result}
+
+We prove strict local maximality against a natural genuinely
+higher-dimensional class of perturbations: adjoining any fixed finite cloud
+of small coefficient vectors perpendicular to the propeller plane.  The
+vectors are centered across coordinates, which is the optimal translation
+normalization for the Gaussian quotient.
+
+\section*{Proof intuition}
+
+Write \(M\) for the maximum of the three propeller coordinates. It dominates
+a fixed multiple of the planar Gaussian radius, so
+\(\mathbb P(M\le t)=O(t^2)\).  A new transverse coordinate of size
+\(\varepsilon\) can beat the propeller only on this \(O(\varepsilon^2)\)
+small-ball event, and its payoff there is \(O(\varepsilon)\). Thus all the new
+coordinates improve the expected maximum by only \(O(\varepsilon^3)\).
+Centering the enlarged coefficient family, however, raises its total variance
+by a strictly positive \(O(\varepsilon^2)\) term. The quadratic loss therefore
+beats the cubic gain for small nonzero \(\varepsilon\).
+
+This does not prove the global propeller conjecture: perturbations with
+longitudinal components, or configurations far from the propeller, remain
+uncontrolled.
+
+\begin{theorem}[Transverse local stability]\label{thm:main}
+Let \(E\perp F\) be finite-dimensional real Hilbert spaces. Let
+\(u_1,u_2,u_3\in E\) satisfy
+\[
+\|u_i\|=r>0,
+\qquad
+\langle u_i,u_j\rangle=-\frac{r^2}{2}\quad(i\ne j),
+\]
+and let \(w_1,\ldots,w_m\in F\), \(m\ge1\), be fixed and not all zero.
+Put \(k=m+3\) and
+\[
+\bar w=\frac1k\sum_{j=1}^m w_j.
+\]
+For \(\varepsilon\ge0\), form the centered coefficient family
+\[
+v_i(\varepsilon)=u_i-\varepsilon\bar w\quad(1\le i\le3),
+\qquad
+v_{3+j}(\varepsilon)=\varepsilon(w_j-\bar w)
+\quad(1\le j\le m).
+\]
+If \(G\) is standard Gaussian on \(E\oplus F\), define
+\[
+Q(\varepsilon)=
+\frac{\bigl(\mathbb E\max_{1\le i\le k}
+\langle G,v_i(\varepsilon)\rangle\bigr)^2}
+{\sum_{i=1}^k\|v_i(\varepsilon)\|^2}.
+\]
+Then \(Q(0)=9/(8\pi)\), and there is
+\(\varepsilon_0=\varepsilon_0(u_1,u_2,u_3,w_1,\ldots,w_m)>0\) such that
+\[
+Q(\varepsilon)<Q(0)=\frac{9}{8\pi}
+\qquad(0<\varepsilon<\varepsilon_0).
+\]
+\end{theorem}
+
+\begin{proof}
+The hypotheses on the \(u_i\) imply \(u_1+u_2+u_3=0\), and the definition of
+\(\bar w\) gives \(\sum_{i=1}^k v_i(\varepsilon)=0\).
+Write \(G=X+Z\), where \(X\in E\) and \(Z\in F\) are independent standard
+Gaussians, and set
+\[
+M=\max_{1\le i\le3}\langle X,u_i\rangle,
+\qquad
+N=\max_{1\le j\le m}\langle Z,w_j\rangle.
+\]
+Subtracting the same vector \(\varepsilon\bar w\) from every coefficient adds
+the common centered Gaussian
+\(-\varepsilon\langle Z,\bar w\rangle\) to their maximum.  Its expectation is
+zero, hence
+\begin{equation}\label{eq:numerator}
+\mathbb E\max_{1\le i\le k}\langle G,v_i(\varepsilon)\rangle
+=\mathbb E\max\{M,\varepsilon N\}.
+\end{equation}
+
+Put \(S=\sum_{i=1}^3\|u_i\|^2=3r^2\). Orthogonality of \(E\) and \(F\)
+gives the exact denominator identity
+\begin{equation}\label{eq:denominator}
+\sum_{i=1}^k\|v_i(\varepsilon)\|^2=S+A\varepsilon^2,
+\qquad
+A=\sum_{j=1}^m\|w_j\|^2-\frac1k
+\left\|\sum_{j=1}^m w_j\right\|^2.
+\end{equation}
+Since \(k=m+3\), Cauchy--Schwarz yields
+\[
+A\ge \left(1-\frac{m}{k}\right)\sum_{j=1}^m\|w_j\|^2
+=\frac3k\sum_{j=1}^m\|w_j\|^2>0.
+\]
+
+Let \(R=\|X\|\). Among three directions separated by \(120^\circ\), one is
+within \(60^\circ\) of every nonzero planar vector. Consequently
+\begin{equation}\label{eq:radial}
+M\ge \frac r2 R\ge0.
+\end{equation}
+As \(R\) is the radius of a standard two-dimensional Gaussian, for \(t\ge0\)
+\begin{equation}\label{eq:smallball}
+\mathbb P(M\le t)
+\le \mathbb P(R\le 2t/r)
+=1-e^{-2t^2/r^2}
+\le \frac{2t^2}{r^2}.
+\end{equation}
+
+Let \(N_+=\max\{N,0\}\) and
+\(\delta(\varepsilon)=\mathbb E[\max\{M,\varepsilon N\}-M]\).
+Conditioning on \(Z\), and using independence together with
+\eqref{eq:smallball}, gives
+\begin{align*}
+0\le\delta(\varepsilon)
+&=\mathbb E(\varepsilon N-M)_+\\
+&\le \mathbb E\!\left[
+\varepsilon N_+\,\mathbb P(M\le\varepsilon N_+\mid Z)
+\right]\\
+&\le \frac{2\varepsilon^3}{r^2}\mathbb E N_+^3
+=B\varepsilon^3,
+\end{align*}
+where \(B=2r^{-2}\mathbb E N_+^3\in(0,\infty)\).
+
+Set \(W=\mathbb E M>0\). Equations \eqref{eq:numerator} and
+\eqref{eq:denominator} imply
+\[
+Q(\varepsilon)\le
+\frac{(W+B\varepsilon^3)^2}{S+A\varepsilon^2}.
+\]
+For example, choose
+\[
+\varepsilon_0=\min\left\{
+\frac{WA}{8SB},
+\left(\frac{W^2A}{4SB^2}\right)^{1/4}
+\right\}>0.
+\]
+If \(0<\varepsilon<\varepsilon_0\), then
+\[
+2SWB\varepsilon+SB^2\varepsilon^4<W^2A,
+\]
+which is exactly
+\(S(W+B\varepsilon^3)^2<W^2(S+A\varepsilon^2)\).  Hence
+\(Q(\varepsilon)<W^2/S=Q(0)\).
+
+For completeness, the last value can be computed directly.  In polar
+coordinates, \(\mathbb ER=\sqrt{\pi/2}\), while the angular average of the
+maximum of three cosines separated by \(120^\circ\) is
+\(3\sqrt3/(2\pi)\).  Therefore
+\[
+W=r\sqrt{\frac\pi2}\frac{3\sqrt3}{2\pi}
+=\frac{3\sqrt3}{2\sqrt{2\pi}}r,
+\qquad
+\frac{W^2}{S}=\frac{9}{8\pi}.
+\]
+\end{proof}
+
+\section*{Verification notes}
+
+The proof is analytic and has no numerical or computer-assisted dependency.
+The two delicate points for human review are the centering identity
+\eqref{eq:denominator} and the cubic gain estimate following
+\eqref{eq:smallball}.  Both are displayed explicitly.
+
+A bounded novelty search on 2026-07-22 covered the exact phrases
+``propeller conjecture'', ``Gaussian moments'', ``local stability'', and
+``orthogonal perturbation'', together with arXiv:0807.4626 and its principal
+later low-dimensional result arXiv:1112.2993.  Heilman, Jagannath, and Naor
+prove the full partition inequality in \(\mathbb R^3\), while explicitly
+leaving higher dimensions open \cite{HJN}.  Searches also inspected the
+related arXiv:1901.03934 and arXiv:2209.11216 abstracts.  No exact statement of
+Theorem~\ref{thm:main} was found.  Novelty confidence is therefore moderate,
+not definitive.
+
+\enlargethispage{4\baselineskip}
+\section*{Limitations and review recommendation}
+
+This is a partial result, not a proof of \(C(k)\le C(3)\). It treats a fixed
+finite transverse cloud scaled uniformly to zero.  It does not treat
+longitudinal perturbations of the three active vertices, mixed
+longitudinal--transverse new vertices, or configurations far from the
+propeller.  Status: \textbf{candidate partial result, likely valid; human
+review recommended}, with priority on the \(O(\varepsilon^3)\) gain versus
+\(O(\varepsilon^2)\) variance mechanism.
+
+\small
+\begin{thebibliography}{9}
+\bibitem{KN}
+S. Khot and A. Naor,
+\emph{Approximate kernel clustering},
+arXiv:0807.4626, 2008.
+
+\bibitem{HJN}
+S. Heilman, A. Jagannath, and A. Naor,
+\emph{Solution of the propeller conjecture in \(\mathbb R^3\)},
+arXiv:1112.2993, 2011.
+\end{thebibliography}
+\normalsize
+
+\end{document}

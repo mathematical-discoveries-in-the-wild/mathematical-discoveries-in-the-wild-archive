@@ -1,0 +1,290 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\M}{\mathcal M}
+\newcommand{\PiD}{\Pi_{\delta}}
+\newcommand{\dd}{\,d}
+
+\title{The relative $p$-Wasserstein distance is a metric\\
+and its two coupling formulas agree}
+\author{Candidate solution packet for arXiv:2411.05678}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+For every $1\leq p<\infty$, the packet proves $\widehat W_p=W_p$ and proves
+identity of indiscernibles for $W_p$.  Thus it answers both questions posed
+for $p>1$ in Section 6.3 of the source paper.
+}}
+\end{center}
+
+\section{Source questions}
+
+The source is P.~Bubenik and A.~Elchesen, \emph{Relative Optimal Transport},
+arXiv:2411.05678v3 (6 April 2026) \cite{BE}.  In Section 6.3, on source PDF
+pages 31 and 32, the authors ask:
+\begin{quote}
+``It is an open question whether $\widehat W_p=W_p$ for $p>1$.''
+
+``It is an open question whether $W_p(\mu,\nu)=0$ implies that $\mu=\nu$
+when $p>1$.''
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+  \caption{The two questions on source PDF pages 31 and 32.}
+\end{figure}
+
+\section{Definitions and notation}
+
+Let $(X,d,A)$ be a metric pair as in the source: $(X,d)$ is complete and
+separable, and $A\subset X$ is nonempty and closed.  Put
+\[
+ d_A(x):=d(x,A),\qquad
+ d_p(x,y):=\min\!\left\{d(x,y),
+       \bigl(d_A(x)^p+d_A(y)^p\bigr)^{1/p}\right\}.
+\]
+A relative Borel measure is a Borel measure modulo measures supported on
+$A$.  Let $\M_p^+(X,A)$ be the source's space of tight relative measures
+$\mu$ with
+\[
+ \mu(d_A^p)=\int_{X\setminus A}d_A(x)^p\dd\mu(x)<\infty.
+\]
+For $\delta>0$, write $\mu_\delta$ for the restriction to
+$\{d_A>\delta\}$ and $\mu^\delta$ for the restriction to
+$\{0<d_A\leq\delta\}$.  The source proves
+\begin{equation}
+ \mu^\delta(d_A^p)\longrightarrow0 \label{eq:tails}
+ \quad\text{as }\delta\downarrow0.
+\end{equation}
+
+Let $\Pi(\mu,\nu)$ be the set of relative couplings.  Fix $a\in A$.
+The structured class $\PiD(\mu,\nu)$ consists of the trivial extensions
+\[
+ \rho=\sigma+(i_1^a)_*\mu^\delta+(i_2^a)_*\nu^\delta,
+ \qquad \sigma\in\Pi(\mu_\delta,\nu_\delta),
+\]
+where $i_1^a(x)=(x,a)$ and $i_2^a(y)=(a,y)$.  The two quantities in the
+first open question are
+\begin{align*}
+ \widehat W_p(\mu,\nu)^p
+   &:=\inf_{\pi\in\Pi(\mu,\nu)}\int d_p(x,y)^p\dd\pi(x,y),\\
+ W_p(\mu,\nu)^p
+   &:=\inf_{\delta>0}\ \inf_{\rho\in\PiD(\mu,\nu)}
+       \int d_p(x,y)^p\dd\rho(x,y).
+\end{align*}
+Since every structured coupling is a coupling, the source observes that
+$\widehat W_p\leq W_p$.
+
+\section{Proof intuition}
+
+The first question is resolved by approximating an \emph{arbitrary} coupling,
+not an optimizer.  Collapse only the $\delta$-neighborhood of the reservoir
+$A$ onto one point of $A$, and then restore the two collapsed marginal tails
+by the trivial reservoir couplings.  The resulting coupling is structured.
+The collapsed integrand converges pointwise to the original integrand and is
+dominated by
+$d_A(x)^p+d_A(y)^p$, whose coupling integral is exactly the sum of the two
+finite marginal $p$-moments.  Dominated convergence, together with
+\eqref{eq:tails},
+therefore preserves the cost in the limit.  This gives the missing inequality
+$W_p\leq\widehat W_p$ without needing a quantitative $p>1$ retraction
+estimate.
+
+For definiteness, take a compact set $K$ away from $A$.  A particle starting
+in $K$ and ending outside a small ordinary $d$-neighborhood $K_r$ must pay at
+least $r$ in the relative metric $d_p$: both the direct branch and the
+reservoir branch in the definition of $d_p$ exceed $r$.  A coupling of
+arbitrarily small cost therefore gives $\mu(K)\leq\nu(K_r)$.  The set $K_r$
+has finite $\nu$-mass because it remains a positive distance from $A$.
+Continuity from above as $r\downarrow0$, followed by symmetry and tightness,
+then forces $\mu=\nu$.  No properness or compactness of $K_r$ is used.
+
+\section{The full result}
+
+\begin{theorem}\label{thm:main}
+Let $(X,d,A)$ be a complete separable metric pair with $A\neq\varnothing$,
+and let $1\leq p<\infty$.  For all
+$\mu,\nu\in\M_p^+(X,A)$,
+\[
+             W_p(\mu,\nu)=\widehat W_p(\mu,\nu).
+\]
+Moreover,
+\[
+             W_p(\mu,\nu)=0\quad\Longrightarrow\quad\mu=\nu.
+\]
+Consequently the pseudometric $W_p$ constructed in the source is a metric on
+$\M_p^+(X,A)$.  In particular, both open questions stated there for $p>1$
+have affirmative answers.
+\end{theorem}
+
+\begin{proof}
+We first prove equality of the two costs.  Fix a coupling
+$\pi\in\Pi(\mu,\nu)$.  For $\delta>0$, define the Borel map
+\[
+ q_\delta(x):=
+ \begin{cases}
+   a,&0<d_A(x)\leq\delta,\\
+   x,&\text{otherwise},
+ \end{cases}
+ \qquad R_\delta(x,y):=(q_\delta(x),q_\delta(y)).
+\]
+This is the retraction used in Section 6.2 of the source.  Its coupling lemma
+gives
+\[
+       \sigma_\delta:=(R_\delta)_*\pi
+       \in\Pi(\mu_\delta,\nu_\delta).
+\]
+Trivially extend it to
+\[
+ \rho_\delta:=\sigma_\delta
+       +(i_1^a)_*\mu^\delta+(i_2^a)_*\nu^\delta
+       \in\PiD(\mu,\nu).
+\]
+Because $d_p(x,a)=d_A(x)$, its cost is exactly
+\begin{align}
+ \int d_p^p\dd\rho_\delta
+ &=\int_{X^2}d_p(q_\delta(x),q_\delta(y))^p\dd\pi(x,y) \notag\\
+ &\quad+\mu^\delta(d_A^p)+\nu^\delta(d_A^p). \label{eq:cost}
+\end{align}
+For every $x\in X$, $q_\delta(x)\to x$ as $\delta\downarrow0$.
+Continuity of $d_p$ therefore gives pointwise convergence of the integrand
+in \eqref{eq:cost}.  Furthermore,
+\begin{align}
+ d_p(q_\delta(x),q_\delta(y))^p
+ &\leq d_A(q_\delta(x))^p+d_A(q_\delta(y))^p \notag\\
+ &\leq d_A(x)^p+d_A(y)^p. \label{eq:dominator}
+\end{align}
+The last function is $\pi$-integrable, since the coupling marginals give
+\begin{equation}
+ \int_{X^2}\bigl(d_A(x)^p+d_A(y)^p\bigr)\dd\pi(x,y)
+   =\mu(d_A^p)+\nu(d_A^p)<\infty. \label{eq:moments}
+\end{equation}
+Dominated convergence and \eqref{eq:tails} applied to \eqref{eq:cost} now yield
+\[
+       \lim_{\delta\downarrow0}\int d_p^p\dd\rho_\delta
+       =\int d_p^p\dd\pi.
+\]
+Since every $\rho_\delta$ is admissible in the definition of $W_p$,
+\[
+       W_p(\mu,\nu)^p\leq\int d_p^p\dd\pi.
+\]
+Taking the infimum over arbitrary $\pi\in\Pi(\mu,\nu)$ gives
+$W_p\leq\widehat W_p$.  Together with the reverse inequality already
+noted in the source, this proves $W_p=\widehat W_p$.
+
+We next prove identity of indiscernibles directly.  Assume
+$W_p(\mu,\nu)=0$.  Let $K\subset X\setminus A$ be compact and put
+\[
+        \alpha:=d(K,A)>0.
+\]
+Fix $0<r<\alpha$ and let
+\[
+        K_r:=\{y\in X:d(y,K)\leq r\}.
+\]
+The function $d_A$ is $1$-Lipschitz, so
+$d_A(y)\geq\alpha-r$ on $K_r$.  Hence
+\begin{equation}
+       \nu(K_r)\leq(\alpha-r)^{-p}\nu(d_A^p)<\infty. \label{eq:finite-neighborhood}
+\end{equation}
+For $x\in K$ and $y\notin K_r$, one has $d(x,y)>r$, while
+\[
+ \bigl(d_A(x)^p+d_A(y)^p\bigr)^{1/p}
+       \geq d_A(x)\geq\alpha>r.
+\]
+Thus both branches defining $d_p(x,y)$ exceed $r$, and consequently
+\begin{equation}
+       d_p(x,y)>r \label{eq:separation}
+       \qquad(x\in K,\ y\notin K_r).
+\end{equation}
+
+Given $\eta>0$, the definition of $W_p=0$ supplies some $\delta>0$ and
+$\rho\in\PiD(\mu,\nu)$ such that
+$\int d_p^p\dd\rho<\eta$.  Marginality, \eqref{eq:separation}, and Markov's inequality give
+\begin{align*}
+ \mu(K)=\rho(K\times X)
+ &\leq \rho(K\times K_r)+\rho(K\times(X\setminus K_r))\\
+ &\leq \nu(K_r)+r^{-p}\int d_p^p\dd\rho\\
+ &<\nu(K_r)+r^{-p}\eta.
+\end{align*}
+Letting $\eta\downarrow0$ gives $\mu(K)\leq\nu(K_r)$.
+Choose any decreasing sequence $r_n\downarrow0$ with $r_1<\alpha$.
+Then $K_{r_n}\downarrow K$, and \eqref{eq:finite-neighborhood} makes the first set finite.  Continuity
+from above therefore yields
+\[
+                  \mu(K)\leq\nu(K).
+\]
+Interchanging $\mu$ and $\nu$ gives equality on every compact
+$K\subset X\setminus A$.  Both measures are tight by the definition of
+$\M_p^+(X,A)$.  The source's compact-set uniqueness lemma for tight relative
+measures now implies $\mu=\nu$.
+
+The source already proves reflexivity, symmetry, and the triangle inequality
+for $W_p$ on $\M_p^+(X,A)$.  Adding identity of indiscernibles completes the
+metric assertion.
+\end{proof}
+
+\section{Verification report}
+
+The proof is analytic and no numerical evidence is used.  The following
+points were checked against the definitions and lemmas in the current source:
+\begin{itemize}
+  \item The retraction is Borel and its pushforward has marginals
+  $\mu_\delta,\nu_\delta$ (source Lemma 6.21).
+  \item Formula \eqref{eq:cost} is exact: each tail is coupled to a point of $A$, where
+  $d_p(x,a)^p=d_A(x)^p$.
+  \item The dominator in \eqref{eq:dominator} is integrable even when the coupling has infinite
+  total mass, because \eqref{eq:moments} depends only on the two finite $p$-moments.
+  \item In the definiteness proof, $K_r$ need not be compact.  Its finite mass
+  follows from \eqref{eq:finite-neighborhood}, which is sufficient for continuity from above.
+  \item All marginal identities are evaluated on sets disjoint from $A$, so
+  they are independent of the representative chosen for a relative measure.
+  \item Agreement on compact subsets of $X\setminus A$ implies equality by
+  the source's Lemma 4.1 and the tightness assumption.
+\end{itemize}
+
+The main human-review focus should be the passage from a relative coupling to
+the exact integral identity \eqref{eq:cost}, including representative-independence, and
+the compact-set limiting argument following \eqref{eq:separation}.  Current verdict:
+\textbf{full solution likely valid}.
+
+\section{Scope and novelty check}
+
+The theorem uses exactly the source hypotheses: a complete separable metric
+pair, a nonempty closed reservoir, and tight relative measures with finite
+$p$-moment.  It does not require an optimal coupling, finite total mass,
+properness of $X$, or compactness of metric neighborhoods.  Although the
+source questions are stated for $p>1$, the argument works uniformly for every
+$1\leq p<\infty$; for $p=1$ it recovers conclusions already proved in the
+source.
+
+Before promotion, the local registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:2411.05678 and the core phrases ``relative optimal
+transport'', ``relative Wasserstein'', ``$\widehat W_p=W_p$'', and ``identity
+of indiscernibles''; no prior result was found.  A bounded web/arXiv search on
+21 July 2026 used the title, authors, exact open-question phrases, and nearby
+relative Wasserstein terminology.  It found the source and adjacent optimal
+transport work but no later settlement.  The current source version, v3 of
+6 April 2026, still labels both questions open.  This supports, but does not
+establish, novelty; the search was not an exhaustive review of all published
+literature.
+
+\begin{thebibliography}{9}
+\bibitem{BE}
+P.~Bubenik and A.~Elchesen,
+\emph{Relative Optimal Transport}, arXiv:2411.05678v3, 2026.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\M}{\mathbb M}
+\newcommand{\OS}{\mathcal{OS}}
+\newcommand{\K}{\mathcal K}
+\newcommand{\G}{\mathcal G}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\mconv}{\operatorname{mconv}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Contractive but Not Completely Positive Map on \(\OS(J_3)\)}
+\author{\texttt{agent\_lane\_03}}
+\date{2026-07-22}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate counterexample, likely valid. The construction is existential but
+finite-dimensional: the separating operator can be chosen in \(\M_3\).}}
+\end{center}
+
+\section*{Source and Conjecture}
+
+The source is Pankaj Dey, Atanu Dhang, and Mithun Mukherjee,
+\emph{Matricial ranges, dilations, and unital contractive maps},
+arXiv:2509.18027 \cite{DDM}. Write
+\[
+ J_3=\begin{bmatrix}0&1&0\\0&0&1\\0&0&0\end{bmatrix},
+ \qquad \OS(J_3)=\operatorname{span}\{I_3,J_3,J_3^*\}.
+\]
+Conjecture 6.10, on page 21, states that for a unital self-adjoint
+preserving map \(\varphi:\OS(J_3)\to\OS(X)\) with
+\(\varphi(J_3)=X\), the following are equivalent:
+\begin{enumerate}
+\item \(\varphi\) is completely positive;
+\item \(\varphi\) is contractive;
+\item \(\norm{\alpha X+\beta X^*}\le
+\sqrt{|\alpha|^2+|\beta|^2}\) for all \(\alpha,\beta\in\C\).
+\end{enumerate}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\caption{Conjecture 6.10 and its extension formulation in
+arXiv:2509.18027, p.~21.}
+\end{figure}
+
+The conjecture is false. In fact, condition (iii) need not imply even
+3-positivity.
+
+\section*{Proof Intuition}
+
+The source paper already contains the obstruction, but it must be viewed
+through matrix-convex duality. Its Example 4.11 gives a matrix \(B_0\) for
+which \(B_0B_0^*+B_0^*B_0\le I\), yet \(B_0\) cannot be compressed from any
+matrix satisfying equality. The equality matrices
+\[
+  G_{a,b}=\begin{bmatrix}0&a\\b&0\end{bmatrix},
+  \qquad |a|^2+|b|^2=1,
+\]
+are exactly the elementary boundary tests used by the scalar norm condition.
+
+Take the closed matrix-convex hull of these \(G_{a,b}\). The matrix \(B_0\)
+does not belong to it, since membership would itself give an equality
+dilation. The Effros--Winkler matrix Hahn--Banach theorem therefore produces
+a monic pencil which is positive on every \(G_{a,b}\) but not at \(B_0\).
+Writing the two self-adjoint coefficients of this pencil as one operator
+\(X\), positivity on all \(G_{a,b}\) becomes exactly
+\(\norm{\alpha X+\beta X^*}\le\sqrt{|\alpha|^2+|\beta|^2}\).
+Failure at \(B_0\), however, says that the corresponding map on
+\(\OS(J_3)\) is not 3-positive.
+
+\section*{The Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+There exists \(X\in\M_3\) such that
+\begin{equation}\label{eq:norm-condition}
+ \norm{\alpha X+\beta X^*}
+ \le \sqrt{|\alpha|^2+|\beta|^2}
+ \qquad(\alpha,\beta\in\C),
+\end{equation}
+but the unital self-adjoint preserving map
+\[
+ \varphi:\OS(J_3)\longrightarrow\OS(X),\qquad \varphi(J_3)=X,
+\]
+is not 3-positive. Consequently \(\varphi\) is contractive but is not
+completely positive, and Conjecture 6.10 of \cite{DDM} is false.
+\end{theorem}
+
+\begin{lemma}\label{lem:no-dilation}
+Let
+\[
+B_0=
+\begin{bmatrix}
+0&0&1/\sqrt3\\
+\sqrt{2/3}&0&0\\
+0&1/\sqrt3&0
+\end{bmatrix}.
+\]
+Then
+\[
+B_0B_0^*+B_0^*B_0=\operatorname{diag}(1,1,2/3),
+\]
+and there is no Hilbert space \(\mathcal L\supset\C^3\) and
+\(C\in\mathcal B(\mathcal L)\) such that
+\[
+ P_{\C^3}C|_{\C^3}=B_0,
+ \qquad CC^*+C^*C=I_{\mathcal L}.
+\]
+\end{lemma}
+
+\begin{proof}
+The displayed identity follows by multiplication. Suppose such a \(C\)
+exists and write, relative to \(\mathcal L=\C^3\oplus\mathcal L_0\),
+\[
+C=\begin{bmatrix}B_0&A\\D&E\end{bmatrix}.
+\]
+The upper-left corner of \(CC^*+C^*C=I\) gives
+\begin{equation}\label{eq:defect}
+ AA^*+D^*D
+ =I_3-(B_0B_0^*+B_0^*B_0)
+ =\operatorname{diag}(0,0,1/3).
+\end{equation}
+Hence \(A=e_3a\) and \(D=de_3^*\) for some row operator \(a\) and
+column vector \(d\) over \(\mathcal L_0\). The upper-right corner is
+\begin{equation}\label{eq:offdiag}
+ B_0D^*+AE^*+B_0^*A+D^*E=0.
+\end{equation}
+But
+\[
+ B_0e_3=\frac1{\sqrt3}e_1,
+ \qquad B_0^*e_3=\frac1{\sqrt3}e_2.
+\]
+The \(e_1\)-row of \eqref{eq:offdiag} is \(d^*/\sqrt3=0\), and its
+\(e_2\)-row is \(a/\sqrt3=0\); the two remaining terms have range in
+\(\C e_3\). Thus \(a=d=0\), contradicting \eqref{eq:defect}.
+\end{proof}
+
+\begin{lemma}\label{lem:compact}
+Let
+\[
+ \G=\left\{G_{a,b}=\begin{bmatrix}0&a\\b&0\end{bmatrix}:
+ |a|^2+|b|^2=1\right\}\subset\M_2,
+\]
+and let \(\K=\mconv(\G)\), viewed as a matrix-convex set of pairs
+\((\Rea B,\Ima B)\). Then every level \(\K(n)\) is compact, and
+\(B_0\notin\K(3)\).
+\end{lemma}
+
+\begin{proof}
+At level \(n\), the matrix-convex hull consists of
+\begin{equation}\label{eq:mconv-rep}
+ B=\sum_{j=1}^N V_j^*G_jV_j,
+ \qquad G_j\in\G,\quad V_j:\C^n\to\C^2,\quad
+ \sum_{j=1}^N V_j^*V_j=I_n.
+\end{equation}
+This set is compact. For completeness, normalize every nonzero \(V\) by
+\(\operatorname{tr}(V^*V)=1\) and consider the compact set of pairs
+\[
+ (V^*GV,V^*V)\in \M_n\oplus(\M_n)_{\rm sa}.
+\]
+Equation \eqref{eq:mconv-rep} says that \((B,I_n)\) belongs to the
+finite-dimensional conic hull of this compact set. Conic Carath\'eodory
+reduces every representation to a uniformly bounded number of terms, while
+the identity constraint fixes the total coefficient sum to
+\(\operatorname{tr}I_n=n\). The resulting parameter space is compact, so
+its image \(\K(n)\) is compact.
+
+If \(B_0\) had a representation \eqref{eq:mconv-rep}, set
+\(C=\bigoplus_jG_j\) and \(Vh=(V_1h,\ldots,V_Nh)\). Then \(V\) is an
+isometry, \(V^*CV=B_0\), and
+\[
+ CC^*+C^*C=\bigoplus_j(G_jG_j^*+G_j^*G_j)=I.
+\]
+This contradicts Lemma \ref{lem:no-dilation}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:counterexample}]
+The matrix-convex set \(\K\) is closed and contains zero: compressing any
+\(G_{a,b}\) to its first coordinate gives zero at level one, and direct sums
+give zero at every level. Apply the
+Effros--Winkler matrix Hahn--Banach theorem \cite[Theorem 2.2]{HKM} at
+level three to the self-adjoint pair
+\((\Rea B_0,\Ima B_0)\notin\K(3)\). After changing signs of the
+coefficients if necessary, it gives \(A_1,A_2\in(\M_3)_{\rm sa}\) such that
+the monic pencil
+\begin{equation}\label{eq:real-pencil}
+ \mathcal L(B)=I+\Rea(B)\otimes A_1+\Ima(B)\otimes A_2
+\end{equation}
+is positive semidefinite for every \(B\in\K\), but
+\(\mathcal L(B_0)\not\ge0\).
+
+Set \(X=(A_1-iA_2)/2\in\M_3\). For every complex matrix \(B\), direct
+expansion gives
+\begin{equation}\label{eq:complex-pencil}
+ \mathcal L(B)=I+B\otimes X+B^*\otimes X^*.
+\end{equation}
+For \(G_{a,b}\in\G\), positivity of \eqref{eq:complex-pencil} reads
+\[
+ \begin{bmatrix}
+ I_3&aX+\overline bX^*\\
+ bX+\overline aX^*&I_3
+ \end{bmatrix}\ge0.
+\]
+By the Schur complement, this is equivalent to
+\begin{equation}\label{eq:boundary-norm}
+ \norm{aX+\overline bX^*}\le1
+ \qquad(|a|^2+|b|^2=1).
+\end{equation}
+Given arbitrary \(\alpha,\beta\in\C\), normalize
+\(a=\alpha/r\), \(b=\overline\beta/r\), where
+\(r=\sqrt{|\alpha|^2+|\beta|^2}\). Equation
+\eqref{eq:boundary-norm} gives \eqref{eq:norm-condition}; the zero case is
+immediate.
+
+It remains to show that the resulting map is not completely positive.
+Lemma 5.2 of \cite{DDM} states that
+\[
+ I_n\otimes I_3+B\otimes J_3+B^*\otimes J_3^*\ge0
+ \quad\Longleftrightarrow\quad BB^*+B^*B\le I_n.
+\]
+For \(B=B_0\), the right side holds by Lemma \ref{lem:no-dilation}.
+Thus the source pencil is positive in \(\M_3(\OS(J_3))\). Applying
+\(\operatorname{id}_{\M_3}\otimes\varphi\) produces
+\[
+ I_3\otimes I_3+B_0\otimes X+B_0^*\otimes X^*=\mathcal L(B_0),
+\]
+up to the harmless tensor-factor flip. This is not positive by construction.
+Hence \(\varphi\) is not 3-positive and is not completely positive.
+
+Finally, Theorem 5.1 of \cite{DDM} proves that
+\eqref{eq:norm-condition} is equivalent to contractivity of \(\varphi\).
+Therefore \(\varphi\) is contractive but not completely positive.
+\end{proof}
+
+\section*{Verification Notes}
+
+The script \texttt{code/check\_finite\_identities.py} verifies the defect of
+\(B_0\), equality for sample boundary generators, and the two saturated
+directions \(B_0e_3=e_1/\sqrt3\) and \(B_0^*e_3=e_2/\sqrt3\). It is a
+sanity check only. The existence of \(X\) is supplied by the cited matrix
+Hahn--Banach theorem, not by numerical optimization.
+
+The decisive external statement was checked in
+\cite[Theorem 2.2]{HKM}: if a closed matrix-convex set containing zero omits
+a point at level \(m\), a monic linear pencil of size \(m\) separates that
+point from the entire set.
+
+\section*{Scope and Novelty Check}
+
+This existential finite-dimensional counterexample disproves the implication
+(iii) \(\Rightarrow\) (i), and hence the conjectured equivalence. It does not
+give numerical entries for \(X\), nor characterize the full matricial range
+of \(J_3\).
+
+The run indexes were searched for arXiv:2509.18027, the title, ``\(J_3\)'',
+``matricial range'', and ``unital contractive map''. A bounded web search on
+2026-07-22 used the exact phrases ``Conjecture 6.10'', ``Is every unital
+contractive map from \(\OS(J_3)\)'', the source title plus ``counterexample'',
+and the arXiv id plus ``Effros Winkler''. It found the source preprint and
+summaries but no later proof, disproof, or discussion of this argument.
+
+\section*{Human Review Recommendation}
+
+Recommended verdict: likely valid counterexample. The two main review points
+are Lemma \ref{lem:compact}, which ensures separation applies, and the
+conversion \eqref{eq:real-pencil}--\eqref{eq:complex-pencil}. The dilation
+obstruction is proved independently rather than taken from the source's brief
+``analogous argument'' for arbitrary dilation size.
+
+\begin{thebibliography}{9}
+\bibitem{DDM}
+Pankaj Dey, Atanu Dhang, and Mithun Mukherjee,
+\emph{Matricial ranges, dilations, and unital contractive maps},
+arXiv:2509.18027, 2025.
+
+\bibitem{EW}
+Edward G. Effros and S\o ren Winkler,
+\emph{Matrix convexity: operator analogues of the bipolar and Hahn--Banach
+theorems}, Journal of Functional Analysis \textbf{144} (1997), 117--152,
+doi:10.1006/jfan.1996.2958.
+
+\bibitem{HKM}
+J. William Helton, Igor Klep, and Scott McCullough,
+\emph{The tracial Hahn--Banach theorem, polar duals, matrix convex sets, and
+projections of free spectrahedra}, Analysis \& PDE \textbf{11} (2018),
+2343--2400; arXiv:1407.8198. Theorem 2.2 restates the Effros--Winkler
+separation theorem in the form used here.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,232 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbf E}
+\newcommand{\Pp}{\mathbf P}
+
+\title{Critical Gaussian sparsity need not converge to the semicircle edge}
+\author{Automated proof candidate for arXiv:1408.6185}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+At the critical degree $k\sim a\log n$, Bandeira and van Handel ask whether
+the norm of every Gaussian matrix supported on a $k$-regular graph might
+converge, after division by $\sqrt{k}$, to the semicircle edge $2$ when $a$
+is sufficiently large.  We give a negative answer to this universal
+alternative for every finite $a>0$.  Take the support graph to be a disjoint
+union of copies of $K_{k,k}$.  The random matrix becomes a direct sum of
+independent Gaussian bipartite blocks, whose norms are largest singular
+values of square Gaussian matrices.  A standard Wishart right-tail large
+deviation principle and an elementary extreme-value argument show that
+\[
+ \frac{\|X\|}{\sqrt{k}}\longrightarrow t_a>2,
+ \qquad
+ \int_2^{t_a}\sqrt{x^2-4}\,dx=\frac1a .
+\]
+Thus an arbitrarily large fixed logarithmic-degree constant still permits a
+strict outlier above the bulk.
+\end{abstract}
+
+\section{The source question}
+
+The source considers a symmetric matrix $X=(b_{ij}g_{ij})_{i,j\le n}$,
+where the independent upper-triangular variables are standard Gaussian and
+$B=(b_{ij})$ is a symmetric $\{0,1\}$ matrix having exactly $k$ nonzero
+entries in every row.  Corollary~4.4 proves $\|X\|/\sqrt{k}\to2$ when
+$k/\log n\to\infty$, divergence when $k/\log n\to0$, and boundedness at
+$k\sim\log n$.  Remark~4.5 asks whether at $k=a\log n$ separation from $2$
+persists for all $a$, or instead the norm converges to $2$ for sufficiently
+large $a$ \cite{BvH}.
+
+\begin{center}
+ \includegraphics[width=.84\textwidth]{figures/remark_4_5_part1.png}\\[-2mm]
+ \includegraphics[width=.84\textwidth]{figures/remark_4_5_part2.png}
+\end{center}
+
+The hypotheses allow the support graph to depend arbitrarily on $n$.  We
+disprove the possibility of a universal large-$a$ convergence theorem under
+these hypotheses.  The stronger classification of which support graphs do
+or do not converge to $2$ remains outside the claim.
+
+\section{Result}
+
+For $t\ge2$, put
+\begin{equation}
+ J(t):=\int_2^t\sqrt{x^2-4}\,dx
+ =\frac12\left(t\sqrt{t^2-4}-4\operatorname{arcosh}(t/2)\right).
+ \label{eq:J}
+\end{equation}
+The function $J$ is continuous and strictly increasing on $[2,\infty)$,
+with $J(2)=0$ and $J(t)\to\infty$.
+
+\begin{theorem}\label{thm:main}
+Fix $a>0$.  There are integers $n_k\to\infty$, symmetric
+$\{0,1\}$ matrices $B_k$ of size $n_k$, and Gaussian matrices
+$X_k=((B_k)_{ij}g_{ij})$ of the type considered in \cite{BvH}, such that
+every row of $B_k$ has exactly $k$ nonzero entries,
+\[
+ \frac{k}{\log n_k}\longrightarrow a,
+\]
+and
+\begin{equation}
+ \frac{\|X_k\|}{\sqrt{k}}\ \xrightarrow{\ \Pp\ }\ t_a,
+ \qquad J(t_a)=\frac1a .
+ \label{eq:limit}
+\end{equation}
+In particular $t_a>2$ for every finite $a>0$.
+\end{theorem}
+
+The source's bulk conclusion still applies: $k=o(n_k)$, so the empirical
+spectral distribution converges to the semicircle law while the extreme
+eigenvalue remains separated from its edge.
+
+\section{Proof}
+
+We isolate the only probabilistic input.  Let $G_k$ be a $k\times k$
+matrix with independent $N(0,1)$ entries and let $S_k=\|G_k\|$ be its
+largest singular value.
+
+\begin{lemma}[square-Wishart right tail]\label{lem:ldp}
+For every $t>2$,
+\begin{equation}
+ \lim_{k\to\infty}\frac1k
+ \log\Pp\left\{\frac{S_k}{\sqrt{k}}\ge t\right\}=-J(t).
+ \label{eq:ldp}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+This is the square real-Gaussian case of the Wishart large deviation
+principle.  For completeness, we spell out the normalization from
+\cite[Theorem~1.7]{GH}.  The largest eigenvalue of
+\[
+ \frac1{\sqrt{2k}}
+ \begin{pmatrix}0&G_k\\G_k^*&0\end{pmatrix}
+\]
+is $S_k/\sqrt{2k}$.  At aspect ratio one, the theorem gives speed $2k$,
+edge $\sqrt2$, and rate
+\[
+ I(x)=\int_{\sqrt2}^{x}\sqrt{y^2-2}\,dy,
+ \qquad x\ge\sqrt2.
+\]
+As the rate is continuous above the edge, applying the LDP to the tail and
+substituting $x=t/\sqrt2$ gives
+\[
+ 2I(t/\sqrt2)
+ =\int_2^t\sqrt{u^2-4}\,du=J(t),
+\]
+which is \eqref{eq:ldp}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let
+\[
+ m_k=\lfloor e^{k/a}\rfloor,
+ \qquad n_k=2km_k,
+\]
+and let the support graph of $B_k$ be the disjoint union of $m_k$ copies of
+$K_{k,k}$.  Every vertex has degree exactly $k$, and
+\[
+ \log n_k=\frac{k}{a}+O(\log k),
+ \qquad \frac{k}{\log n_k}\longrightarrow a.
+\]
+
+After grouping coordinates by components, the associated Gaussian matrix
+is a direct sum
+\[
+ X_k=\bigoplus_{r=1}^{m_k}
+ \begin{pmatrix}0&G_{k,r}\\G_{k,r}^*&0\end{pmatrix},
+\]
+where the $G_{k,r}$ are independent $k\times k$ standard Gaussian matrices.
+Consequently
+\begin{equation}
+ \frac{\|X_k\|}{\sqrt{k}}
+ =\max_{1\le r\le m_k}\frac{\|G_{k,r}\|}{\sqrt{k}}.
+ \label{eq:blockmax}
+\end{equation}
+
+There is a unique $t_a>2$ satisfying $J(t_a)=1/a$.  Fix
+$0<\varepsilon<t_a-2$ and abbreviate
+\[
+ p_k(t)=\Pp\{S_k/\sqrt{k}\ge t\}.
+\]
+By Lemma~\ref{lem:ldp},
+\begin{align*}
+ \log(m_kp_k(t_a-\varepsilon))
+ &=k\{a^{-1}-J(t_a-\varepsilon)+o(1)\}\longrightarrow+\infty,\\
+ \log(m_kp_k(t_a+\varepsilon))
+ &=k\{a^{-1}-J(t_a+\varepsilon)+o(1)\}\longrightarrow-\infty.
+\end{align*}
+Independence and $1-x\le e^{-x}$ therefore give
+\[
+ \Pp\left\{\max_{r\le m_k}\frac{\|G_{k,r}\|}{\sqrt{k}}
+       <t_a-\varepsilon\right\}
+ =(1-p_k(t_a-\varepsilon))^{m_k}
+ \le e^{-m_kp_k(t_a-\varepsilon)}\longrightarrow0,
+\]
+while the union bound gives
+\[
+ \Pp\left\{\max_{r\le m_k}\frac{\|G_{k,r}\|}{\sqrt{k}}
+       \ge t_a+\varepsilon\right\}
+ \le m_kp_k(t_a+\varepsilon)\longrightarrow0.
+\]
+Together with \eqref{eq:blockmax}, this proves \eqref{eq:limit}.
+\end{proof}
+
+\section{Consequences and scope}
+
+Since $J(t)=\frac43(t-2)^{3/2}(1+o(1))$ as $t\downarrow2$,
+\begin{equation}
+ t_a=2+\left(\frac{3}{4a}\right)^{2/3}(1+o(1))
+ \qquad(a\to\infty).
+\end{equation}
+Thus the gap becomes small for large $a$, but it is strictly positive for
+every fixed finite $a$.  The mechanism is structural: each individual
+Gaussian block has norm near $2\sqrt{k}$, but among
+$m_k=\exp(k/a+o(k))$ independent blocks a speed-$k$ upper-tail deviation
+occurs with high probability.
+
+This settles the universal interpretation of the second alternative in
+Remark~4.5: no finite threshold in $a$ can force convergence to $2$ for all
+regular support patterns.  It does not assert separation for every
+$k$-regular graph; expansion or other global structure may produce different
+critical behavior.
+
+The distinct Gaussian row-norm question in Remark~3.16 of the source is not
+newly solved here: it was subsequently answered by Lata\l a, van Handel, and
+Youssef \cite{LvHY}.  A bounded search on 21 July 2026 found the Wishart LDP
+and later Gaussian norm results, but no source explicitly drawing the
+$K_{k,k}$ critical-block consequence proved above.  This is a novelty check,
+not a definitive certification.
+
+\begin{thebibliography}{9}
+\bibitem{BvH}
+A. S. Bandeira and R. van Handel,
+\emph{Sharp nonasymptotic bounds on the norm of random matrices with
+independent entries}, Ann. Probab. 44 (2016), 2479--2506;
+\url{https://arxiv.org/abs/1408.6185}.
+
+\bibitem{GH}
+A. Guionnet and J. Husson,
+\emph{Large deviations for the largest eigenvalue of Rademacher matrices},
+Ann. Probab. 48 (2020), 1436--1465;
+\url{https://arxiv.org/abs/1810.01188}.
+
+\bibitem{LvHY}
+R. Lata\l a, R. van Handel, and P. Youssef,
+\emph{The dimension-free structure of nonhomogeneous random matrices},
+Invent. Math. 214 (2018), 1031--1080;
+\url{https://arxiv.org/abs/1711.00807}.
+\end{thebibliography}
+
+\end{document}

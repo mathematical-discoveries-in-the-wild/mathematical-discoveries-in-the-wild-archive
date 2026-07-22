@@ -1,0 +1,340 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+
+\title{Finite-facet bodies and the centered-simplex test case for a Minkowski-sum gauge question}
+\author{Candidate partial result for arXiv:1811.12548}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{\textbf{Status.}
+Candidate partial result, likely valid.  This packet proves the conjectured
+order for centered polytopes with linearly many facets and determines the
+exact first-order asymptotic for centered simplices.  It does not settle the
+universal worst-case question over all centered convex bodies.}}
+\end{center}
+
+\section{Source question}
+
+Huang, Slomka, Tkocz, and Vritsiou ask in Section 6 of
+\cite{HSTV} whether, for independent uniform random vectors $X,Y$ on a
+centered convex body $K\subset\R^n$, there is a universal $\alpha<1$ for
+which
+\[
+  \E\|X+Y\|_K\le 2-\Omega(n^{-\alpha}),
+\]
+and especially whether the worst deficit is of order $n^{-1/2}$.  Here
+$\|z\|_K=\inf\{t>0:z\in tK\}$ is the Minkowski functional; it need not be a
+norm when $K$ is nonsymmetric.  The source computes for the cube $Q_n$ that
+\begin{equation}\label{eq:cube}
+ \E\|X+Y\|_{Q_n}
+ =2-\frac{2\,4^n}{(2n+1)\binom{2n}{n}}
+ =2-\sqrt{\frac{\pi}{n}}+o(n^{-1/2}).
+\end{equation}
+
+Figure~\ref{fig:question} reproduces the complete source question from page
+15.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The question and cube benchmark in Section 6 of \cite{HSTV}.}
+  \label{fig:question}
+\end{figure}
+
+\section{Result}
+
+\begin{theorem}[Finite-facet bound]\label{thm:facets}
+Let $K\subset\R^n$ be a polytope whose barycenter is the origin and which has
+$N$ facets.  If $X,Y$ are independent and uniform on $K$, then
+\begin{equation}\label{eq:facets}
+ \E\|X+Y\|_K\le 2-\frac{3}{16\sqrt N}.
+\end{equation}
+Consequently, for every fixed $A>0$, the source's proposed
+$n^{-1/2}$ deficit holds uniformly over centered polytopes with at most
+$An$ facets.
+\end{theorem}
+
+\begin{theorem}[Centered-simplex asymptotic]\label{thm:main}
+Let $K_n\subset\R^n$ be any simplex whose barycenter is the origin, and let
+$X,Y$ be independent and uniform on $K_n$.  Then
+\begin{equation}\label{eq:main}
+ \E\|X+Y\|_{K_n}
+ =2-\sqrt{\frac{\pi}{2n}}+o(n^{-1/2}).
+\end{equation}
+Consequently, the ratio of the simplex deficit to the cube deficit tends to
+$1/\sqrt2$.  In particular, for all sufficiently large $n$,
+\[
+ \E\|X+Y\|_{K_n}>\E\|X+Y\|_{Q_n}.
+\]
+\end{theorem}
+
+\subsection*{Proof intuition}
+
+For a polytope the gauge is the maximum of its normalized facet
+functionals.  The deficit from a fixed facet is a nonnegative log-concave
+random variable of mean one, and such a variable has probability at most
+$2t$ of lying in $[0,t]$.  For the sum of two independent points to have
+gauge within $t$ of two, both points must lie within height $t$ of a common
+facet.  The resulting probability is at most $4Nt^2$, yielding
+Theorem~\ref{thm:facets} at $t\asymp N^{-1/2}$.
+
+Affine invariance lets us put the simplex in barycentric coordinates.  A
+uniform point is then a flat Dirichlet vector shifted so that the barycenter
+is zero, and the simplex gauge is simply minus the smallest coordinate.
+The problem therefore becomes an extreme-value calculation for
+$\min_i(P_i+Q_i)$.
+
+Flat Dirichlet coordinates are normalized independent exponentials.  Their
+normalizing sums concentrate, so the relevant minimum is asymptotically the
+minimum of $n+1$ independent $\mathrm{Gamma}(2,1)$ variables.  The
+$\mathrm{Gamma}(2,1)$ distribution has quadratic lower tail $z^2/2$;
+therefore its minimum has Rayleigh scaling and limiting mean
+$\sqrt{\pi/2}$.  A uniform tail bound and an exponentially small
+normalization bad event justify convergence of expectations.  The two
+theorems still supply no universal comparison for bodies with arbitrary or
+infinitely many supporting facets.
+
+\section{Proof}
+
+\subsection{The finite-facet theorem}
+
+We first isolate the one-dimensional estimate.
+
+\begin{lemma}[Log-concave boundary small ball]\label{lem:smallball}
+Let $U$ be a nonnegative random variable with a log-concave density and
+$\E U=1$.  Then, for $0\le t\le1/2$,
+\[
+ \Pp(U\le t)\le2t.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $S(t)=\Pp(U\ge t)$.  The survival function of a log-concave density is
+log-concave, so $H=-\log S$ is convex and $H(0)=0$.  For $u\ge t>0$,
+convexity gives $H(u)\ge(u/t)H(t)$.  If $H(t)=0$ the conclusion is
+immediate, so assume $H(t)>0$.  Then
+\[
+ 1=\E U=\int_0^\infty S(u)\,du
+ \le t+\int_t^\infty e^{-(u/t)H(t)}\,du
+ \le t+\frac{t}{H(t)}.
+\]
+Thus $H(t)\le t/(1-t)\le2t$, and consequently
+\[
+ \Pp(U\le t)=1-e^{-H(t)}\le H(t)\le2t.
+\]
+The endpoint $t=0$ follows by continuity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:facets}]
+Choose normalized facet functionals $\varphi_1,\ldots,\varphi_N$ such that
+\[
+ K=\{x:\varphi_j(x)\le1\text{ for }1\le j\le N\}.
+\]
+Since the origin is in the interior,
+$\|z\|_K=\max_j\varphi_j(z)$.  Put
+\[
+ U_j=1-\varphi_j(X),\qquad V_j=1-\varphi_j(Y).
+\]
+Each variable is nonnegative.  The one-dimensional marginal of uniform
+measure on a convex body is log-concave, and the barycenter assumption gives
+$\E\varphi_j(X)=0$; hence $\E U_j=1$.  Lemma~\ref{lem:smallball} applies.
+
+The following deficit identity is exact:
+\begin{equation}\label{eq:facetdeficit}
+ 2-\|X+Y\|_K=\min_{1\le j\le N}(U_j+V_j)=:D.
+\end{equation}
+For $0\le t\le1/2$, independence and a union bound give
+\begin{align*}
+ \Pp(D\le t)
+ &\le\sum_{j=1}^N\Pp(U_j+V_j\le t)\\
+ &\le\sum_{j=1}^N\Pp(U_j\le t)\Pp(V_j\le t)
+ \le4Nt^2.
+\end{align*}
+Take $t_0=1/(4\sqrt N)$.  Then $\Pp(D>t_0)\ge3/4$, so
+\[
+ \E D\ge t_0\Pp(D>t_0)\ge\frac{3}{16\sqrt N}.
+\]
+Together with \eqref{eq:facetdeficit}, this proves \eqref{eq:facets}.
+\end{proof}
+
+\subsection{The exact simplex asymptotic}
+
+Put $m=n+1$ and work in the hyperplane
+\[
+ H_m=\{x\in\R^m:\textstyle\sum_{i=1}^m x_i=0\}.
+\]
+Every centered $n$-simplex is a linear image of
+\[
+ K=\{x\in H_m:x_i\ge -1\text{ for every }i\}.
+\]
+Both uniform measure and the Minkowski functional commute with invertible
+linear maps, so it suffices to treat this $K$.
+
+Let $P=(P_1,\ldots,P_m)$ and $Q=(Q_1,\ldots,Q_m)$ be independent and uniform
+on the probability simplex
+\[
+ \Delta_{m-1}=\{p_i\ge0:\textstyle\sum_i p_i=1\}.
+\]
+Then $X=mP-\one$ and $Y=mQ-\one$ are independent and uniform on $K$.  For
+$z\in H_m$,
+\[
+ \|z\|_K=\inf\{t>0:z_i\ge-t\ \forall i\}=-\min_i z_i.
+\]
+It follows exactly that
+\begin{equation}\label{eq:gaugeidentity}
+ \|X+Y\|_K=2-mM_m,
+ \qquad
+ M_m:=\min_{1\le i\le m}(P_i+Q_i).
+\end{equation}
+
+We use the exponential representation.  Let $E_i,F_i$ be mutually
+independent exponential random variables of mean one, and set
+\[
+ S_m=\sum_{i=1}^m E_i,\qquad T_m=\sum_{i=1}^m F_i.
+\]
+Then
+\[
+ (P_i)_{i=1}^m\stackrel d=(E_i/S_m)_{i=1}^m,
+ \qquad
+ (Q_i)_{i=1}^m\stackrel d=(F_i/T_m)_{i=1}^m.
+\]
+
+First ignore the two random denominators.  The variables
+$Z_i:=E_i+F_i$ are independent $\mathrm{Gamma}(2,1)$ variables, with survival
+function
+\[
+ q(z):=\Pp(Z_i>z)=e^{-z}(1+z).
+\]
+Define
+\[
+ W_m:=\sqrt m\min_{1\le i\le m}Z_i.
+\]
+For every fixed $t\ge0$,
+\begin{align*}
+ \Pp(W_m>t)
+ &=q(t/\sqrt m)^m\\
+ &=\left(1-\frac{t^2}{2m}+O(m^{-3/2})\right)^m
+ \longrightarrow e^{-t^2/2}.
+\end{align*}
+Thus $W_m$ converges in distribution to the Rayleigh random variable $W$
+with survival function $\Pp(W>t)=e^{-t^2/2}$.
+
+We record the uniform tail control needed below.  Since
+\[
+ z-\log(1+z)\ge z^2/4\quad(0\le z\le1)
+\]
+and
+\[
+ z-\log(1+z)\ge(1-\log2)z\quad(z\ge1),
+\]
+we have, with $c_0=1-\log2>0$,
+\begin{equation}\label{eq:tails}
+ \Pp(W_m>t)\le
+ \begin{cases}
+   e^{-t^2/4},&0\le t\le\sqrt m,\\
+   e^{-c_0t\sqrt m},&t\ge\sqrt m.
+ \end{cases}
+\end{equation}
+These bounds give a common integrable majorant for the survival functions
+and also uniformly bound $\E W_m^2$.  Hence, by the survival-integral
+formula and dominated convergence,
+\begin{equation}\label{eq:Wmean}
+ \E W_m\longrightarrow \E W
+ =\int_0^\infty e^{-t^2/2}\,dt
+ =\sqrt{\frac\pi2}.
+\end{equation}
+
+It remains to restore the denominators.  Put $\delta_m=m^{-1/4}$ and let
+\[
+ G_m=\left\{\left|S_m/m-1\right|\le\delta_m,
+                 \ \left|T_m/m-1\right|\le\delta_m\right\}.
+\]
+Standard exponential Chernoff bounds, obtained directly from
+$\E e^{\theta E_i}=(1-\theta)^{-1}$, give
+\begin{equation}\label{eq:bad}
+ \Pp(G_m^c)\le4e^{-c\sqrt m}
+\end{equation}
+for a universal $c>0$ and all sufficiently large $m$.  On $G_m$, coordinate
+by coordinate,
+\[
+ \frac{E_i+F_i}{m(1+\delta_m)}
+ \le \frac{E_i}{S_m}+\frac{F_i}{T_m}
+ \le \frac{E_i+F_i}{m(1-\delta_m)}.
+\]
+Consequently, if
+\[
+ A_m:=m^{3/2}M_m,
+\]
+then on $G_m$
+\begin{equation}\label{eq:sandwich}
+ \frac{W_m}{1+\delta_m}\le A_m\le
+ \frac{W_m}{1-\delta_m}.
+\end{equation}
+
+Finally, $M_m\le 2/m$ because the minimum of the $m$ numbers
+$P_i+Q_i$ is no larger than their average.  Thus $A_m\le2\sqrt m$.
+Combining this deterministic bound with \eqref{eq:bad}, and combining the
+uniform second-moment bound for $W_m$ with Cauchy--Schwarz, gives
+\[
+ \E[A_m\one_{G_m^c}]\longrightarrow0,
+ \qquad
+ \E[W_m\one_{G_m^c}]\longrightarrow0.
+\]
+The sandwich \eqref{eq:sandwich}, $\delta_m\to0$, and \eqref{eq:Wmean}
+therefore imply
+\begin{equation}\label{eq:Amean}
+ \E A_m\longrightarrow\sqrt{\frac\pi2}.
+\end{equation}
+Using \eqref{eq:gaugeidentity} and $m=n+1$, we obtain
+\[
+ 2-\E\|X+Y\|_K
+ =m\E M_m
+ =\frac{\E A_m}{\sqrt m}
+ =\sqrt{\frac{\pi}{2n}}+o(n^{-1/2}),
+\]
+which proves \eqref{eq:main}.  Comparing with \eqref{eq:cube} proves the
+last assertions. \qed
+
+\section{Verification and scope}
+
+The accompanying script numerically integrates the exact survival function
+$q(t/\sqrt m)^m$ and independently samples the normalized Dirichlet model.
+Those computations check the scaling and constants but are not used in the
+proof.
+
+The proof establishes the desired order for centered polytopes with
+$O(n)$ facets and the exact leading term for simplices.  It is consistent
+with, but does not prove, a universal deficit of order $n^{-1/2}$ for bodies
+with arbitrary or infinitely many supporting facets.  It also shows that the cube is not a maximizer of
+$\E\|X+Y\|_K$ in high dimension, should one consider that stronger variant.
+The published source passage itself asks for the order of the worst deficit
+and does not require cube extremality.
+
+A bounded novelty check searched the local run indexes, the parsed arXiv
+corpus, arXiv, and exact web phrases involving uniform simplex points,
+Minkowski gauges of $X+Y$, and minima of sums of flat Dirichlet coordinates.
+No prior exact computation was found.  This is not an exhaustive literature
+claim.
+
+\begin{thebibliography}{9}
+\bibitem{HSTV}
+H. Huang, B. A. Slomka, T. Tkocz, and B.-H. Vritsiou,
+\emph{Improved bounds for Hadwiger's covering problem via thin-shell
+estimates}, arXiv:1811.12548, especially Section 6 (page 15).
+\end{thebibliography}
+
+\end{document}

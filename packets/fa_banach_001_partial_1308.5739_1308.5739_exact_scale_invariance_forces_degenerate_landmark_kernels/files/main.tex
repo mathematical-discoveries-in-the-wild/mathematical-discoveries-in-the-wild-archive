@@ -1,0 +1,315 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\kron}{\mathbin{\otimes}}
+
+\title{Exact Scale Covariance Forces Degenerate\\
+Translation-Invariant Landmark Kernels}
+\author{Run \texttt{fa\_banach\_001}, lane 12}
+\date{2026-07-22}
+
+\begin{document}
+\maketitle
+
+\section*{Status}
+
+This packet gives a sharp classification theorem for a precise subproblem
+suggested by Micheli and Glaun\`es~\cite{MG}.  No nondegenerate fixed,
+continuously differentiable, translation-invariant positive-definite
+matrix kernel can make landmark Hamiltonian dynamics exactly covariant
+under all spatial dilations.  The obstruction persists even if each
+dilation is allowed its own positive scalar rescaling of time and
+momenta.  In the paper's \(C_0^1\)-RKHS class, the only exactly covariant
+kernel is the zero kernel.  Conversely, every constant positive-semidefinite
+matrix kernel has exact dilation covariance, so the classification is tight;
+these and only these examples are degenerate.
+
+The source conclusion states a broader program rather than a formal
+conjecture, so this is classified as a substantial partial result.  It
+settles the fixed stationary-kernel version of exact scale covariance,
+but not multiscale families, approximate invariance, or the other
+geometric questions in the conclusion.
+
+\section*{Source Direction}
+
+Micheli and Glaun\`es develop matrix-valued reproducing kernels for
+landmark and diffeomorphic shape deformation.  For a translation-invariant
+kernel \(K(x,y)=\kappa(x-y)\), their landmark Hamiltonian is
+\[
+ H(p,q)=\frac12\sum_{a,b=1}^{N}
+ p_a^{\mathsf T}\kappa(q^a-q^b)p_b,
+\]
+and the first Hamilton equation is
+\begin{equation}
+ \dot q^a=\sum_{b=1}^{N}\kappa(q^a-q^b)p_b.
+ \label{eq:first-hamilton}
+\end{equation}
+Their conclusion observes that all kernels considered there contain a
+length constant and that the resulting landmark and diffeomorphism
+dynamics are not scale invariant.  It then identifies application-adapted
+kernel design and the relation between kernels and geodesic shape
+properties as future work:
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Definition and Proof Intuition}
+
+Fix the two-landmark system.  We call it \emph{exactly dilation covariant}
+if for every \(\lambda>0\) there are numbers \(A_\lambda,C_\lambda>0\)
+such that every solution \((q,p)\) is transformed into another solution
+of the same, fixed-kernel Hamiltonian system by
+\begin{equation}
+ Q^a(t)=\lambda q^a(C_\lambda t),
+ \qquad
+ P_a(t)=A_\lambda p_a(C_\lambda t).
+ \label{eq:covariance}
+\end{equation}
+This definition is deliberately permissive: both time and all momenta
+may be renormalized by arbitrary dilation-dependent scalars.
+
+At time zero, choose positions \((x,0)\) and momenta \((0,v)\).
+Equation~\eqref{eq:first-hamilton} computes the first landmark's velocity
+using the single cross-kernel value \(\kappa(x)v\).  Applying the same
+equation to the dilated trajectory compares this with
+\(\kappa(\lambda x)v\), forcing
+\[
+ \kappa(\lambda x)=h_\lambda\kappa(x)
+ \quad\text{for all }x,
+ \qquad
+ h_\lambda=\frac{\lambda C_\lambda}{A_\lambda}.
+\]
+Positive definiteness prevents a nonzero stationary kernel from having
+\(\kappa(0)=0\).  Evaluation at \(x=0\) therefore forces
+\(h_\lambda=1\).  Sending \(\lambda\) to zero and using continuity then
+makes \(\kappa\) constant.  Constant kernels move every landmark through
+the same finite-dimensional velocity subspace and have singular
+multi-landmark Gram matrices.
+
+\section*{Main Obstruction}
+
+We use the standard matrix-valued positive-definiteness convention:
+\[
+ \sum_{i,j=1}^{m}u_i^{\mathsf T}
+ \kappa(x_i-x_j)u_j\geq0
+\]
+for all finite choices of \(x_i,u_i\in\R^d\).  It implies
+\(\kappa(-x)=\kappa(x)^{\mathsf T}\) and
+\(\kappa(0)\) is positive semidefinite.
+
+\begin{lemma}[A stationary positive-definite kernel cannot vanish at zero]
+\label{lem:zero}
+If \(\kappa:\R^d\to\R^{d\times d}\) is positive definite and
+\(\kappa(0)=0\), then \(\kappa\equiv0\).
+\end{lemma}
+
+\begin{proof}
+For \(x,u,v\in\R^d\), positive semidefiniteness of the scalar
+\(2\times2\) compression of the block Gram matrix at \(x\) and \(0\)
+gives the kernel Cauchy--Schwarz inequality
+\[
+ \left|u^{\mathsf T}\kappa(x)v\right|^2
+ \leq
+ \bigl(u^{\mathsf T}\kappa(0)u\bigr)
+ \bigl(v^{\mathsf T}\kappa(0)v\bigr).
+\]
+If \(\kappa(0)=0\), the right side vanishes for every \(u,v\).
+Thus every matrix coefficient of \(\kappa(x)\) is zero, for every \(x\).
+\end{proof}
+
+\begin{theorem}[Exact dilation covariance obstruction]
+\label{thm:main}
+Let \(K(x,y)=\kappa(x-y)\) be a nonzero, continuously differentiable,
+translation-invariant positive-definite matrix-valued kernel on
+\(\R^d\).  Suppose the two-landmark Hamiltonian system associated to
+\(K\) is exactly dilation covariant in the sense of
+\eqref{eq:covariance}.  Then
+\[
+ \kappa(x)=\kappa(0)\qquad(x\in\R^d).
+\]
+Consequently, for every \(N\geq2\), the \(Nd\times Nd\) landmark block
+Gram matrix is singular.  In particular, \(K\) cannot induce a
+nondegenerate Riemannian metric on the space of \(N\) distinct
+landmarks.  Conversely, every constant positive-semidefinite matrix
+kernel is exactly dilation covariant.
+\end{theorem}
+
+\begin{proof}
+Fix \(\lambda>0\).  Take arbitrary \(x,v\in\R^d\) and a solution with
+initial data
+\[
+ q^1(0)=x,\quad q^2(0)=0,\qquad
+ p_1(0)=0,\quad p_2(0)=v.
+\]
+The first Hamilton equation~\eqref{eq:first-hamilton} gives
+\[
+ \dot q^1(0)=\kappa(x)v.
+\]
+Differentiate the transformed position in~\eqref{eq:covariance}:
+\[
+ \dot Q^1(0)=\lambda C_\lambda\kappa(x)v.
+\]
+On the other hand, because \((Q,P)\) is a solution of the same system,
+its initial data and~\eqref{eq:first-hamilton} give
+\[
+ \dot Q^1(0)
+ =\kappa(Q^1(0)-Q^2(0))P_2(0)
+ =A_\lambda\kappa(\lambda x)v.
+\]
+Since \(v\) is arbitrary,
+\begin{equation}
+ \kappa(\lambda x)=h_\lambda\kappa(x)
+ \quad\text{for all }x\in\R^d,
+ \qquad
+ h_\lambda:=\frac{\lambda C_\lambda}{A_\lambda}>0.
+ \label{eq:homogeneity}
+\end{equation}
+
+Lemma~\ref{lem:zero} and the assumption \(K\neq0\) imply
+\(\kappa(0)\neq0\).  Setting \(x=0\) in
+\eqref{eq:homogeneity} yields
+\((1-h_\lambda)\kappa(0)=0\), hence \(h_\lambda=1\).
+Therefore
+\[
+ \kappa(\lambda x)=\kappa(x)
+ \qquad(\lambda>0,\ x\in\R^d).
+\]
+For fixed \(x\), let \(\lambda\downarrow0\).  Continuity at the origin
+gives \(\kappa(x)=\kappa(0)\).
+
+For an \(N\)-landmark configuration, the block Gram matrix is now
+\[
+ G_N=(\one_N\one_N^{\mathsf T})\kron\kappa(0).
+\]
+Its rank is at most \(d\), whereas its size is \(Nd\).  It is therefore
+singular for every \(N\geq2\).  The landmark metric tensor in the source
+paper is the inverse of this block Gram matrix, so no nondegenerate
+metric results.
+
+For the converse, let \(\kappa(x)=B\), where \(B\) is positive
+semidefinite.  Then the Hamiltonian equations reduce to
+\[
+ \dot q^a=B\sum_{b=1}^{N}p_b,
+ \qquad \dot p_a=0.
+\]
+For every \(\lambda>0\), taking \(C_\lambda=1\) and
+\(A_\lambda=\lambda\) shows directly that
+\(Q(t)=\lambda q(t)\), \(P(t)=\lambda p(t)\) is again a solution.
+\end{proof}
+
+\begin{corollary}[The \(C_0^1\)-RKHS class has only the zero kernel]
+\label{cor:c0}
+Assume, as in the source paper, that \(K\) is the reproducing kernel of
+a Hilbert space \(V\) continuously embedded in
+\(C_0^1(\R^d,\R^d)\).  If the fixed-kernel landmark dynamics are exactly
+dilation covariant, then \(K=0\).
+\end{corollary}
+
+\begin{proof}
+If \(K\neq0\), Theorem~\ref{thm:main} makes
+\(\kappa(x)=\kappa(0)\).  For every \(y,a\in\R^d\), the kernel section
+\[
+ x\longmapsto K(x,y)a=\kappa(0)a
+\]
+belongs to \(V\), hence lies in \(C_0^1\) and must vanish at infinity.
+A constant function with that property is zero.  Thus
+\(\kappa(0)a=0\) for every \(a\), contradicting \(K\neq0\).
+\end{proof}
+
+\section*{What the Result Says About Kernel Design}
+
+The sharp classification shows that the obstruction is caused by the
+conjunction of four requirements:
+a single fixed kernel, stationarity, ordinary positive definiteness with
+a finite value at the origin, and exact covariance under all dilations.
+It is not merely a defect of Gaussian or Bessel examples.  Any kernel in
+this class would have to be homogeneous of degree zero; regularity at the
+origin collapses degree-zero homogeneity to constancy, and constancy
+collapses the landmark metric.
+
+Thus exact scale robustness requires changing at least one ingredient.
+Viable directions include a family
+\(\kappa_\sigma\) with a length parameter transformed as
+\(\sigma\mapsto\lambda\sigma\), a dynamical scale variable, a
+configuration-dependent normalization, or a singular/conditionally
+positive-definite construction outside the source's RKHS assumptions.
+The theorem does not distinguish which enlargement is most appropriate
+for an application.
+
+\begin{remark}[Why a scale family escapes]
+If \(\kappa_\sigma(x)=\phi(x/\sigma)\), then
+\(\kappa_{\lambda\sigma}(\lambda x)=\kappa_\sigma(x)\).
+This is covariance of a \emph{family}: the dilation changes the kernel
+parameter.  Theorem~\ref{thm:main} concerns covariance of the dynamics
+generated by one fixed kernel, exactly the setting in which a built-in
+length constant breaks scale invariance.
+\end{remark}
+
+\section*{Verification}
+
+The necessary direction is analytic and uses only the first Hamilton
+equation; the converse follows by writing the constant-kernel equations
+explicitly.  The accompanying dependency-free Python script performs three deterministic
+sanity checks:
+\begin{enumerate}
+\item exact rational row reduction confirms that
+  \((\one_N\one_N^{\mathsf T})\kron\kappa(0)\) has rank \(2\), not
+  \(2N\), for a positive-definite \(2\times2\) choice of
+  \(\kappa(0)\) and \(N=2,3,4\);
+\item a Gaussian example has dilation ratio \(1\) at the origin but
+  \(e^{-3}\) at unit distance when \(\lambda=2\), so it cannot satisfy
+  \eqref{eq:homogeneity} with one scalar \(h_\lambda\);
+\item a two-point scalar block with zero diagonal and nonzero cross term
+  has quadratic values of both signs, illustrating
+  Lemma~\ref{lem:zero}.
+\end{enumerate}
+The exact command and captured output are recorded in
+\texttt{verification.md}.
+
+\section*{Limitations and Novelty Check}
+
+This packet does not solve the source's full program of designing
+application-specific kernels or relating their tails and regularity to
+conjugate points and generic geodesic geometry.  It also does not rule
+out approximate scale invariance, invariance over a bounded range, or
+the model enlargements listed above.
+
+Before packaging, the run's cheap title, identifier, and keyword indexes
+were checked for earlier treatment of arXiv:1308.5739.  Bounded web
+searches on 2026-07-22 for the exact title and combinations of
+\emph{LDDMM}, \emph{landmark Hamiltonian}, \emph{scale invariant},
+\emph{dilation covariance}, and \emph{homogeneous positive-definite
+kernel} found the source paper and general kernel or computer-vision
+material, but no prior statement of this fixed-kernel obstruction.
+This is evidence of novelty, not an exhaustive literature review.
+
+\section*{Human Review Recommendation}
+
+Review as a likely valid substantial partial result.  The critical points
+are the quantifiers in the covariance definition, the two-landmark
+velocity comparison leading to~\eqref{eq:homogeneity}, the use of
+positive definiteness at the origin, and the distinction between a fixed
+kernel and a scale-indexed family.  The argument requires no claim about
+the second Hamilton equation beyond existence of the flow and covariance
+of the full solution.
+
+\begin{thebibliography}{9}
+\bibitem{MG}
+M.~Micheli and J.~A.~Glaun\`es,
+\emph{Matrix-valued Kernels for Shape Deformation Analysis},
+arXiv:1308.5739, 2013.
+\end{thebibliography}
+
+\end{document}

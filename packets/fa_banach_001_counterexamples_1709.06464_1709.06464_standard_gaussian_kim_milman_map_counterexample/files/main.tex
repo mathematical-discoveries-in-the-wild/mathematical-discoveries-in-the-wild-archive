@@ -1,0 +1,390 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{needspace}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\Hess}{D^2}
+\newcommand{\comm}[2]{[#1,#2]}
+
+\title{A Standard-Gaussian Counterexample to Equality of the\\
+Kim--Milman and Brenier Transport Maps}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 13\\
+Model: GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate counterexample, likely valid, awaiting human review.  The proof is
+analytic; the included symbolic computation only checks its elementary matrix
+and integral arithmetic.}}
+\end{center}
+
+\section{Source question}
+
+Kim and Milman constructed a contraction from a Gaussian measure to a more
+log-concave measure by reversing an Ornstein--Uhlenbeck heat-flow
+interpolation~\cite{KimMilman}.  Their Section~6 asked whether this map must
+coincide with the Brenier optimal-transport map. Tanana proved that the answer
+is no for a non-standard Gaussian source~\cite{Tanana}.  The final section of
+her note observed that the two maps do coincide when both the source is
+standard Gaussian and the target is Gaussian, but supplied numerical evidence
+that they need not coincide for a general log-concave perturbation of the
+standard Gaussian. The relevant page-5 passage is reproduced below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Tanana's standard-Gaussian question and numerical evidence
+  \cite[p.~5]{Tanana}.}
+\end{figure}
+
+The question addressed here is therefore:
+
+\begin{quote}
+If the source is the standard Gaussian measure and
+$d\nu=Z^{-1}e^{-F}d\gamma$ with $F$ convex, must the Kim--Milman map equal the
+Brenier map?
+\end{quote}
+
+\section{Definitions}
+
+Let $\gamma=\gamma_2$ be standard Gaussian measure on $\R^2$, and let
+$(P_t)_{t\geq0}$ be its Ornstein--Uhlenbeck semigroup:
+\[
+ P_tg(x)=\int_{\R^2}g\bigl(e^{-t}x+\sqrt{1-e^{-2t}}\,y\bigr)\,d\gamma(y).
+\]
+Given a smooth convex globally Lipschitz $F$ and $\varepsilon>0$, put
+\[
+ d\nu_\varepsilon=Z_\varepsilon^{-1}e^{-\varepsilon F}\,d\gamma.
+\]
+Following Kim--Milman, define
+\[
+ Z_t^\varepsilon=-\log P_t(e^{-\varepsilon F}),\qquad
+ \frac{d}{dt}S_t^\varepsilon(x)
+   =\nabla Z_t^\varepsilon(S_t^\varepsilon(x)),\qquad
+ S_0^\varepsilon=\Id.
+\]
+Then $S_t^\varepsilon$ transports $\nu_\varepsilon$ to the interpolating
+measure and $S_\infty^\varepsilon$ transports $\nu_\varepsilon$ to $\gamma$.
+The forward Kim--Milman map is
+$T_{KM}^\varepsilon=(S_\infty^\varepsilon)^{-1}$.
+
+\section{Proof intuition}
+
+At first order in $\varepsilon$, the derivative of the inverse flow is an
+integral of Hessians and is necessarily symmetric.  At second order, most
+terms are still Hessians, but chronological multiplication remembers the
+order in which different Hessians act.  Its skew part is exactly a double
+integral of commutators
+\[
+ \int_{0<s<t<\infty}\comm{\Hess P_tF(x)}{\Hess P_sF(x)}\,ds\,dt.
+\]
+Thus it suffices to make two OU-smoothed Hessians fail to commute in an
+integrated sense.  A sum of fourth powers of two nonorthogonal linear forms
+does so explicitly.  We first calculate with that polynomial, then replace
+the scalar fourth power by a smooth convex linear-tail truncation.  The
+commutator coefficient varies continuously under this replacement, whereas
+global Lipschitz regularity makes the Kim--Milman flow unproblematic.  A
+nonsymmetric inverse-flow derivative is impossible for the inverse of a
+Brenier map.
+
+\Needspace{9\baselineskip}
+\section{The perturbative skew formula}
+
+\begin{lemma}[Well-posedness and integrable parameter expansion]\label{lem:bounds}
+Let $F\in C^\infty(\R^2)$ be convex, bounded below, and globally Lipschitz,
+with bounded derivatives of orders at least two.  For all sufficiently small
+$\varepsilon\geq0$, the flow $S_t^\varepsilon$ and its spatial derivative are
+defined for all $t\geq0$, converge as $t\to\infty$, and are twice
+differentiable in $\varepsilon$ at $0$.  On every fixed compact set, all
+remainders needed below have an integrable-in-$t$ envelope.
+\end{lemma}
+
+\begin{proof}
+The OU commutation identity gives
+\[
+ \nabla P_tg=e^{-t}P_t(\nabla g),\qquad
+ D^kP_tg=e^{-kt}P_t(D^kg).
+\]
+For $g=e^{-\varepsilon F}$,
+\[
+ \lvert\nabla Z_t^\varepsilon\rvert
+ =\frac{\lvert\nabla P_tg\rvert}{P_tg}
+ \leq \varepsilon e^{-t}\lVert\nabla F\rVert_\infty.
+\]
+The quotient rule, the same commutation identities, and boundedness of the
+derivatives of $F$ give, locally uniformly in space and uniformly for small
+$\varepsilon$,
+\[
+ \lVert D^kZ_t^\varepsilon\rVert\leq C_k\varepsilon e^{-kt}
+ \quad(k=2,3),
+\]
+with harmless additional products having faster decay.  The denominators are
+uniformly separated from zero on compact sets: after adding a constant assume
+$F\geq0$, and use Jensen's inequality and the linear-growth bound on $F$ to
+bound $P_t(e^{-\varepsilon F})$ below.
+
+The velocity is integrable in time, while its derivative has an integrable
+bound. Standard ODE estimates therefore give global existence at every fixed
+initial point, convergence of $S_t^\varepsilon$ and $DS_t^\varepsilon$, and
+uniform compact-set bounds. Differentiating
+$-\log P_t(e^{-\varepsilon F})$ in $\varepsilon$ is justified by Gaussian
+dominated convergence (a Lipschitz function has only linear growth). The same
+integrable estimates permit twice differentiating the ODE and passing to
+$t=\infty$. This proves all assertions.
+\end{proof}
+
+\begin{lemma}[Second-order skew formula]\label{lem:skew}
+Under the hypotheses of Lemma~\ref{lem:bounds}, for every $x\in\R^2$,
+\begin{equation}\label{eq:skew}
+ DS_\infty^\varepsilon(x)-DS_\infty^\varepsilon(x)^T
+ =\varepsilon^2\mathcal C_F(x)+o(\varepsilon^2),
+\end{equation}
+where
+\begin{equation}\label{eq:C}
+ \mathcal C_F(x)=
+ \int_0^\infty\int_0^t
+ \comm{\Hess P_tF(x)}{\Hess P_sF(x)}\,ds\,dt.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $H_t=\Hess P_tF(x)$. Since
+\[
+ -\log P_t(e^{-\varepsilon F})
+   =\varepsilon P_tF+O(\varepsilon^2),
+\]
+we have, along the perturbed trajectory,
+\[
+ \Hess Z_t^\varepsilon(S_t^\varepsilon(x))
+   =\varepsilon H_t+\varepsilon^2K_t+o(\varepsilon^2).
+\]
+Here $K_t$ is symmetric: it is the sum of the Hessian of the direct second
+$\varepsilon$-variation of $Z_t^\varepsilon$ and the directional derivative
+of the Hessian $\Hess P_tF$ in the first variation of the trajectory.  The
+latter remains symmetric in its two matrix indices because third derivatives
+of a scalar function are symmetric.
+
+Let $J_t^\varepsilon=DS_t^\varepsilon(x)$ and write
+\[
+ J_t^\varepsilon=I+\varepsilon A_t+\varepsilon^2B_t+o(\varepsilon^2).
+\]
+The variational equation
+\[
+ (J_t^\varepsilon)'=
+ \Hess Z_t^\varepsilon(S_t^\varepsilon(x))J_t^\varepsilon
+\]
+gives
+\[
+ A_t=\int_0^tH_s\,ds,
+ \qquad B_t'=K_t+H_tA_t.
+\]
+Both $K_t$ and $A_t$ are symmetric. Consequently
+\[
+ B_\infty-B_\infty^T
+ =\int_0^\infty\left(H_tA_t-A_tH_t\right)dt
+ =\int_0^\infty\int_0^t\comm{H_t}{H_s}\,ds\,dt.
+\]
+Lemma~\ref{lem:bounds} justifies the integrations and the limiting expansion,
+which proves \eqref{eq:skew}.
+\end{proof}
+
+\section{An exact nonzero coefficient}
+
+Let
+\[
+ a=\begin{pmatrix}1\\0\end{pmatrix},\qquad
+ b=\begin{pmatrix}1\\1\end{pmatrix},\qquad
+ F_0(x)=(a\cdot x)^4+(b\cdot x)^4,
+ \qquad x_0=\begin{pmatrix}0\\1\end{pmatrix}.
+\]
+Set
+\[
+ P=\sum_{v\in\{a,b\}}(v\cdot x_0)^2vv^T=bb^T
+ =\begin{pmatrix}1&1\\1&1\end{pmatrix},
+\]
+and
+\[
+ Q=\sum_{v\in\{a,b\}}\lvert v\rvert^2vv^T=aa^T+2bb^T
+ =\begin{pmatrix}3&2\\2&2\end{pmatrix}.
+\]
+
+\begin{lemma}\label{lem:quartic}
+For the polynomial model above,
+\[
+ \mathcal C_{F_0}(x_0)
+ =\begin{pmatrix}0&6\\-6&0\end{pmatrix}\neq0.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $r_t=e^{-2t}$.  The Mehler formula and the fourth Gaussian moment give,
+for any fixed vector $v$,
+\[
+ D^2P_t(v\cdot x)^4
+ =12\left(r_t^2(v\cdot x)^2+r_t(1-r_t)\lvert v\rvert^2\right)vv^T.
+\]
+Therefore
+\[
+ H_t:=\Hess P_tF_0(x_0)
+ =12\left(r_t^2P+r_t(1-r_t)Q\right).
+\]
+It follows that
+\[
+ \comm{H_t}{H_s}
+ =144r_tr_s(r_t-r_s)\comm{P}{Q}.
+\]
+Direct integration yields
+\[
+ \int_0^\infty\int_0^t
+ r_tr_s(r_t-r_s)\,ds\,dt=-\frac1{24},
+\]
+whereas
+\[
+ \comm{P}{Q}=\begin{pmatrix}0&-1\\1&0\end{pmatrix}.
+\]
+Substitution in \eqref{eq:C} gives the claimed matrix.
+\end{proof}
+
+\section{Convex Lipschitz smoothing}
+
+The polynomial $F_0$ is not globally Lipschitz, so we transfer the nonzero
+coefficient to a Lipschitz convex model.
+
+For $R>1$, define the even convex $C^1$ function
+\[
+ \widetilde\psi_R(u)=
+ \begin{cases}
+ u^4,& |u|\leq R,\\
+ 4R^3|u|-3R^4,& |u|\geq R.
+ \end{cases}
+\]
+Convolve it with a nonnegative even $C^\infty$ mollifier of radius
+$\delta_R\downarrow0$ and call the result $\psi_R$.  Then $\psi_R$ is smooth,
+convex, globally Lipschitz, and has bounded derivatives of every positive
+order. Define
+\[
+ F_R(x)=\psi_R(a\cdot x)+\psi_R(b\cdot x).
+\]
+
+\begin{lemma}\label{lem:smooth}
+The mollification radii may be chosen so that
+\[
+ \mathcal C_{F_R}(x_0)\longrightarrow\mathcal C_{F_0}(x_0)
+ \qquad(R\to\infty).
+\]
+In particular, $\mathcal C_{F_R}(x_0)\neq0$ for all sufficiently large $R$.
+\end{lemma}
+
+\begin{proof}
+Choose $\delta_R\to0$ slowly enough that $\psi_R''(u)\to12u^2$ at every
+fixed $u$.  The piecewise function has second derivative $12u^2$ inside
+$(-R,R)$ and zero outside, apart from its corner in the distributional
+description.  Its mollifications can be chosen with a uniform quadratic
+envelope
+\[
+ 0\leq\psi_R''(u)\leq C(1+u^2).
+\]
+For a twice differentiable function of at most polynomial growth,
+\[
+ \Hess P_tG(x)=e^{-2t}P_t(\Hess G)(x).
+\]
+Gaussian dominated convergence hence gives
+\[
+ \Hess P_tF_R(x_0)\longrightarrow\Hess P_tF_0(x_0)
+ \quad\text{for every }t\geq0,
+\]
+and the quadratic envelope gives the uniform bound
+\[
+ \lVert\Hess P_tF_R(x_0)\rVert\leq Ce^{-2t}.
+\]
+Thus the norm of the commutator integrand is bounded by
+$Ce^{-2t}e^{-2s}$ on $0<s<t<\infty$.  Dominated convergence in
+\eqref{eq:C}, together with Lemma~\ref{lem:quartic}, proves the result.
+\end{proof}
+
+\section{Counterexample theorem}
+
+\begin{theorem}\label{thm:main}
+There exists a smooth convex globally Lipschitz function
+$F:\R^2\to\R$ and $\varepsilon_0>0$ such that, for every
+$0<\varepsilon<\varepsilon_0$, the Kim--Milman map transporting $\gamma_2$
+to
+\[
+ d\nu_\varepsilon=Z_\varepsilon^{-1}e^{-\varepsilon F}\,d\gamma_2
+\]
+does not coincide with the Brenier map.
+\end{theorem}
+
+\begin{proof}
+Choose $R$ as in Lemma~\ref{lem:smooth} and set $F=F_R$.  By
+Lemma~\ref{lem:skew},
+\[
+ DS_\infty^\varepsilon(x_0)-DS_\infty^\varepsilon(x_0)^T
+ =\varepsilon^2\mathcal C_F(x_0)+o(\varepsilon^2).
+\]
+Since $\mathcal C_F(x_0)\neq0$, the derivative
+$DS_\infty^\varepsilon(x_0)$ is nonsymmetric for all sufficiently small
+positive $\varepsilon$.
+
+Suppose that the forward Kim--Milman map were the Brenier map.  The maps here
+are smooth diffeomorphisms: this follows from the smooth globally Lipschitz
+potential and the integrable bounds in Lemma~\ref{lem:bounds}.  The inverse of
+a Brenier diffeomorphism $\nabla\phi$ is $\nabla\phi^*$, the gradient of the
+convex conjugate. Its derivative is symmetric wherever defined.  This
+contradicts the nonsymmetry of $DS_\infty^\varepsilon(x_0)$. Hence the two
+forward maps are different.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+The exact algebra in Lemma~\ref{lem:quartic} is independently checked by
+\texttt{code/verify\_commutator.py} using symbolic rational arithmetic.  The
+script is supplementary: the smoothing and perturbative ODE arguments are
+analytic and do not depend on numerical evidence.
+
+The theorem is existential: it proves that every sufficiently late smooth
+linear-tail truncation supplies a counterexample for all sufficiently small
+$\varepsilon$, but it does not provide optimized numerical values of $R$,
+$\delta_R$, or $\varepsilon_0$.  It answers map equality only; both maps remain
+valid contractions transporting the same measures.
+
+The bounded novelty search on 22 July 2026 covered the run's cheap indexes and
+arXiv/web searches for the exact ids 1002.0373 and 1709.06464 and the phrases
+``Kim--Milman map standard Gaussian Brenier'', ``heat flow interpolation
+Brenier standard Gaussian'', and close variants.  It found the source note
+and later applications of the Kim--Milman construction, but no rigorous later
+resolution of the standard-Gaussian/non-Gaussian question.  This is not an
+exhaustive guarantee; novelty confidence is medium.
+
+\paragraph{Human-review recommendation.}
+First inspect the uniform-in-time parameter differentiation in
+Lemma~\ref{lem:bounds}; then inspect the common quadratic envelope and
+dominated-convergence passage in Lemma~\ref{lem:smooth}. The exact
+commutator computation has low verification risk.
+
+\begin{thebibliography}{9}
+\bibitem{KimMilman}
+Y.-H. Kim and E. Milman,
+\emph{A Generalization of Caffarelli's Contraction Theorem via (reverse) Heat
+Flow}, arXiv:1002.0373; Math. Ann. 354 (2012), 827--862.
+
+\bibitem{Tanana}
+A. Tanana,
+\emph{Comparison of transport map generated by heat flow interpolation and
+the optimal transport Brenier map}, arXiv:1709.06464 (2017).
+\end{thebibliography}
+
+\end{document}

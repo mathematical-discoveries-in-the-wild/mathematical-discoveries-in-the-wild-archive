@@ -1,0 +1,266 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ML}[2]{E_{#1,#2}}
+\newcommand{\essinf}{\mathop{\rm ess\,inf}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62em}
+
+\title{Growth, Not Decay, for $E_{1,\beta}(i\lambda)$ When $0<\beta<1$}
+\author{Run \texttt{fa\_banach\_001}, lane 1}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+
+\section{Source question}
+
+Ruzhansky and Torebek study
+\[
+ I_{\alpha,\beta}(\lambda)
+ =\int_a^b \ML{\alpha}{\beta}(i\lambda\phi(x))\psi(x)\,dx,
+ \qquad
+ \ML{\alpha}{\beta}(z)
+ =\sum_{n=0}^{\infty}\frac{z^n}{\Gamma(\alpha n+\beta)}.
+\]
+Their theorem for $\alpha=1$ and $\beta>1$ assumes a real bounded phase,
+an $L^1$ amplitude, and $\inf|\phi|>0$, and obtains decay of order
+$\lambda^{1-\beta}$. Open Question~1 asks
+\cite[Conclusion, PDF p.~28]{PartI}:
+
+\begin{quote}
+Are van der Corput-type estimates valid for $I_{\alpha,\beta}(\lambda)$
+with $\alpha=1$ and $\beta<1$?
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We interpret the broad question in the generality of the immediately
+preceding $\alpha=1$ theorem: arbitrary bounded measurable phases separated
+from zero and $L^1$ amplitudes. In that class, the answer is negative for
+decay, and the sharp replacement scale is growth of order
+$\lambda^{1-\beta}$.
+
+\section{Claimed contribution}
+
+Throughout, complex powers use the principal branch.
+
+\begin{theorem}[Sharp nonvanishing-phase scale]\label{thm:main}
+Fix $0<\beta<1$ and $0<m\leq M<\infty$. Suppose
+$\phi:[a,b]\to\R$ is measurable,
+\[
+ m\leq |\phi(x)|\leq M\quad\text{a.e.},
+ \qquad \psi\in L^1[a,b].
+\]
+Then, as $\lambda\to+\infty$,
+\begin{equation}\label{eq:reduction}
+ I_{1,\beta}(\lambda)
+ =\lambda^{1-\beta}\int_a^b
+ e^{i\lambda\phi(x)}(i\phi(x))^{1-\beta}\psi(x)\,dx
+ +O_{\beta,m}\!\left(\lambda^{-1}\|\psi\|_1\right).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:upper}
+ |I_{1,\beta}(\lambda)|
+ \leq C_{\beta,m,M}(1+\lambda)^{1-\beta}\|\psi\|_1.
+\end{equation}
+This scale is sharp: for $[a,b]=[0,1]$ and $\phi\equiv1$, the operator norm
+of $\psi\mapsto I_{1,\beta}(\lambda)$ on $L^1[0,1]$ satisfies
+\begin{equation}\label{eq:norm}
+ \|I_{1,\beta}(\lambda)\|_{(L^1)^*}
+ =|\ML{1}{\beta}(i\lambda)|
+ =(1+o(1))\lambda^{1-\beta}.
+\end{equation}
+Consequently, no uniform estimate with a decaying right-hand side is valid
+in this class.
+\end{theorem}
+
+\section{Proof intuition}
+
+For $\beta>1$, the source paper obtains decay because the oscillatory
+exponential hidden inside $\ML{1}{\beta}$ is multiplied by
+$\lambda^{1-\beta}$. Crossing below $\beta=1$ reverses that prefactor: it
+grows. An exact beta-integral expresses $\ML{1}{\beta}$ through an incomplete
+gamma function. The standard incomplete-gamma expansion then shows that the
+growing exponential term has modulus exactly $\lambda^{1-\beta}$, while all
+remaining terms are only $O(\lambda^{-1})$. Taking the allowed constant phase
+$\phi=1$ removes any integration cancellation, so the growth is actually
+attained. Formula~\eqref{eq:reduction} records what remains for nonconstant
+phases: a classical oscillatory integral multiplied by the growing
+$\lambda^{1-\beta}$ prefactor.
+
+\section{Proof}
+
+\begin{lemma}[Imaginary-axis asymptotic]\label{lem:kernel}
+For fixed $0<\beta<1$,
+\begin{equation}\label{eq:kernel}
+ \ML{1}{\beta}(it)
+ =(it)^{1-\beta}e^{it}
+ +\frac{1-\beta}{\Gamma(\beta)it}+O_\beta(t^{-2})
+ \qquad(t\to+\infty).
+\end{equation}
+The analogous estimate holds uniformly on the two rays
+$z=it s$ with $m\leq |s|\leq M$.
+\end{lemma}
+
+\begin{proof}
+Reindexing the defining series gives the exact recurrence
+\begin{equation}\label{eq:recurrence}
+ \ML{1}{\beta}(z)
+ =\frac1{\Gamma(\beta)}+z\ML{1}{\beta+1}(z).
+\end{equation}
+For $\beta>0$, termwise integration of the exponential series gives
+\begin{align}
+ \ML{1}{\beta+1}(z)
+ &=\frac1{\Gamma(\beta)}\int_0^1
+       e^{zs}(1-s)^{\beta-1}\,ds \notag\\
+ &=z^{-\beta}e^z\frac{\gamma(\beta,z)}{\Gamma(\beta)},
+ \label{eq:lowergamma}
+\end{align}
+where the last substitution follows the straight ray from $0$ to $z$ and
+uses a consistent branch. Since
+$\gamma(\beta,z)=\Gamma(\beta)-\Gamma(\beta,z)$,
+equations~\eqref{eq:recurrence}--\eqref{eq:lowergamma} yield
+\begin{equation}\label{eq:exact}
+ \ML{1}{\beta}(z)
+ =\frac1{\Gamma(\beta)}+z^{1-\beta}e^z
+ -\frac{z^{1-\beta}e^z\Gamma(\beta,z)}{\Gamma(\beta)}.
+\end{equation}
+
+The standard fixed-parameter expansion for the upper incomplete gamma
+function is
+\begin{equation}\label{eq:uppergamma}
+ \Gamma(\beta,z)
+ =z^{\beta-1}e^{-z}
+ \left(1+\frac{\beta-1}{z}+O_\beta(z^{-2})\right),
+\end{equation}
+in every closed subsector of $|\arg z|<3\pi/2$
+\cite[Sec.~8.11(i), Eqs.~8.11.2--8.11.3]{DLMF}. This includes both imaginary
+rays and is uniform when $z=its$ with $m\leq|s|\leq M$.
+Substituting~\eqref{eq:uppergamma} into~\eqref{eq:exact} cancels the two
+constant terms and gives
+\[
+ \ML{1}{\beta}(z)
+ =z^{1-\beta}e^z
+ +\frac{1-\beta}{\Gamma(\beta)z}+O_\beta(z^{-2}),
+\]
+which proves the lemma.
+\end{proof}
+
+Apply Lemma~\ref{lem:kernel} pointwise with
+$z=i\lambda\phi(x)$. Uniformity and $|\phi|\geq m$ give
+\[
+ \ML{1}{\beta}(i\lambda\phi(x))
+ =\lambda^{1-\beta}(i\phi(x))^{1-\beta}
+  e^{i\lambda\phi(x)}+O_{\beta,m}(\lambda^{-1}).
+\]
+Multiplication by $\psi$ and integration proves
+\eqref{eq:reduction}. Taking absolute values and using
+$|(i\phi)^{1-\beta}|=|\phi|^{1-\beta}\leq M^{1-\beta}$ proves
+\eqref{eq:upper} for large $\lambda$; bounded $\lambda$ are absorbed into the
+constant by continuity of the entire Mittag-Leffler function.
+
+Finally, let $\phi\equiv1$. Then
+\[
+ I_{1,\beta}(\lambda)
+ =\ML{1}{\beta}(i\lambda)\int_0^1\psi(x)\,dx.
+\]
+The norm of the integration functional on $L^1[0,1]$ is one, hence the
+operator norm is $|\ML{1}{\beta}(i\lambda)|$. By
+Lemma~\ref{lem:kernel},
+\[
+ \left|\ML{1}{\beta}(i\lambda)
+ -(i\lambda)^{1-\beta}e^{i\lambda}\right|=O(\lambda^{-1}).
+\]
+The leading term has modulus $\lambda^{1-\beta}$, so division by that
+quantity proves~\eqref{eq:norm}. In particular the norm tends to infinity,
+which rules out every uniform decay estimate and completes the proof of
+Theorem~\ref{thm:main}.
+
+\begin{corollary}[Explicit counterexample]
+For every $0<\beta<1$, the data
+\[
+ [a,b]=[0,1],\qquad \phi(x)=1,\qquad \psi(x)=1
+\]
+satisfy the hypotheses of the nonvanishing-phase class, but
+\[
+ |I_{1,\beta}(\lambda)|\sim\lambda^{1-\beta}\longrightarrow\infty.
+\]
+Thus the decay conclusion suggested by the source question is false.
+\end{corollary}
+
+\section{Verification and limitations}
+
+The analytic audit is recorded in \path{VERIFIER_REPORT.md}. The script
+\path{code/verify_asymptotic.py} evaluates the exact
+lower-incomplete-gamma representation at 70-digit precision at the nine
+points
+\[
+ \beta\in\{0.2,0.5,0.8\},\qquad t\in\{30,100,300\}.
+\]
+It checks both
+\[
+ \frac{|\ML{1}{\beta}(it)|}{t^{1-\beta}}\approx1
+ \quad\text{and}\quad
+ t\left|\ML{1}{\beta}(it)-(it)^{1-\beta}e^{it}\right|
+ \approx\frac{1-\beta}{\Gamma(\beta)}.
+\]
+These computations are sanity checks and are not used in the proof.
+
+The theorem settles the no-decay question in the broad measurable,
+nonvanishing-phase class of the source's adjacent $\alpha=1$ result. It does
+not assert that all derivative-restricted estimates fail. Indeed,
+formula~\eqref{eq:reduction} shows that under smooth phase hypotheses the
+problem becomes a classical oscillatory integral estimate for the modified
+amplitude $(i\phi)^{1-\beta}\psi$, multiplied by
+$\lambda^{1-\beta}$. The main interpretive review point is whether this is
+the intended scope of the source's unqualified phrase ``van der Corput-type
+estimates.''
+
+\section{Novelty check}
+
+The bounded search on 21 July 2026 covered the run's registry, solution,
+attempt, and proof-gap indexes; the exact arXiv id and title; the verbatim
+open question; searches combining $\ML{1}{\beta}$, $\beta<1$, Mittag-Leffler,
+and van der Corput; and the authors' names with possible later parts. We
+checked the full local sources of Part I and Part II. Part II
+\cite{PartII} treats $\beta>1$ and the borderline $\beta=1$, but not
+$\beta<1$. No explicit later answer was found. This bounded search supports,
+but cannot certify, novelty.
+
+\textbf{Human review recommendation.} Send to a special-functions or
+oscillatory-integrals reviewer. The key checks are the branch convention in
+Lemma~\ref{lem:kernel} and the scope interpretation just stated.
+
+\begin{thebibliography}{9}
+\bibitem{PartI}
+M. Ruzhansky and B. T. Torebek,
+\emph{Van der Corput lemmas for Mittag-Leffler functions. I},
+arXiv:2002.07492 (2020; revised 2024),
+\url{https://arxiv.org/abs/2002.07492}.
+
+\bibitem{PartII}
+M. Ruzhansky and B. T. Torebek,
+\emph{Van der Corput lemmas for Mittag-Leffler functions. II.
+$\alpha$-directions},
+arXiv:2005.04546 (2020),
+\url{https://arxiv.org/abs/2005.04546}.
+
+\bibitem{DLMF}
+NIST Digital Library of Mathematical Functions,
+\emph{Incomplete Gamma Functions: Asymptotic Approximations and Expansions},
+Sec.~8.11(i), Eqs.~8.11.2--8.11.3,
+\url{https://dlmf.nist.gov/8.11}.
+\end{thebibliography}
+
+\end{document}

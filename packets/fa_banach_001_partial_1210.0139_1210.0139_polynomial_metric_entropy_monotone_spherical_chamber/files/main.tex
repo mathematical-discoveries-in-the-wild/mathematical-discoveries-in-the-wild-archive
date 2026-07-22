@@ -1,0 +1,276 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Snn}{\mathbb S_{\mathrm{nn}}}
+\newcommand{\cN}{\mathcal N}
+
+\title{Polynomial Metric Entropy of the Monotone Spherical Chamber}
+\author{Solution packet for arXiv:1210.0139}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\fbox{\parbox{0.92\textwidth}{\textbf{Status.}
+Partial result likely valid, subject to human review.  The theorem determines
+the sharp order in the ambient dimension at every fixed chordal accuracy
+$0<\varepsilon\leq 1/5$: the optimal covering number is polynomial in $M$,
+whereas the source construction is quasi-polynomial.}}
+
+\section{Source question}
+
+Fickus, Jasper, Mixon, and Peterson define
+\[
+ \Snn^{M-1}=\{x\in\R^M:0\leq x_1\leq\cdots\leq x_M,
+ \ \|x\|_2=1\}
+\]
+and use the chordal distance
+\[
+ \rho(x,y)=\sqrt{1-|\langle x,y\rangle|^2}.
+\]
+Their signed-permutation reduction makes an efficient net for this chamber the
+computational bottleneck in their NERF estimates.  In the conclusions they ask,
+in effect, how many nonnegative monotone unit vectors are needed to approximate
+all such vectors in chordal distance \cite[p.~16]{FJMP}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{The open-ended covering question in the source paper, page 16.}
+\end{figure}
+
+Let $\cN_M(\varepsilon)$ denote the least cardinality of an
+$\varepsilon$-net for $\Snn^{M-1}$ in $\rho$.  The source constructs, for fixed
+$\varepsilon$, a net of size
+$\exp(O_\varepsilon((\log M)^2))$.  The result below improves the dimension
+dependence to a power of $M$, and shows that a power is necessary at sufficiently
+fine fixed accuracy.
+
+\section{Proof intuition}
+
+The upper bound uses monotonicity in the coordinate index rather than
+quantization in the value axis.  Reverse the coordinates and divide them into
+geometrically growing consecutive blocks.  On a block beginning at $a$, use at
+most $\eta a$ coordinates.  Replacing a decreasing vector by its value at the
+right endpoint of each block loses at most an $\eta$ fraction of its squared
+mass.  Thus every chamber point is close to a fixed block-constant subspace of
+dimension $O(\eta^{-1}\log M)$.  A standard net in that subspace gives the
+upper bound after taking $\eta\asymp\varepsilon^2$.
+
+For the lower bound, reverse the idea.  Use $d\asymp\log M$ blocks whose sizes
+decrease by a factor $16$.  Give every block nearly equal \emph{energy}, and
+perturb those energies by balanced signs from a binary code.  The factor $16$
+leaves enough separation between adjacent block heights to preserve
+monotonicity under every perturbation.  Codewords far apart in Hamming distance
+then give chamber points a fixed positive chordal distance apart.
+
+\section{The metric-entropy theorem}
+
+\begin{theorem}\label{thm:main}
+There are universal constants $c>0$ and $M_0\geq2$ such that, for every
+$M\geq M_0$ and $0<\varepsilon\leq1/5$,
+\begin{equation}\label{eq:main}
+ M^c\leq \cN_M(\varepsilon)
+ \leq
+ \left(1+\frac4\varepsilon\right)^{
+ 32\varepsilon^{-2}(1+\log M)}.
+\end{equation}
+Consequently, for each fixed $0<\varepsilon\leq1/5$,
+\[
+ \log \cN_M(\varepsilon)=\Theta_\varepsilon(\log M)
+ \qquad(M\to\infty).
+\]
+The upper bound remains valid for every $0<\varepsilon<1$.
+\end{theorem}
+
+Reversing the order of the coordinates is an isometry, so in the upper-bound
+proof we work with
+\[
+ T_M=\{x\in\R^M:x_1\geq\cdots\geq x_M\geq0,\ \|x\|_2=1\}.
+\]
+For points in either chamber the inner product is nonnegative, and
+\begin{equation}\label{eq:metriccomparison}
+ \rho(x,y)^2=(1-\langle x,y\rangle)(1+\langle x,y\rangle)
+ \leq 2(1-\langle x,y\rangle)=\|x-y\|_2^2.
+\end{equation}
+
+\begin{lemma}[geometric-block compression]\label{lem:compression}
+For every $0<\eta\leq1$ there is a partition of
+$\{1,\ldots,M\}$ into $d$ consecutive blocks such that
+\begin{equation}\label{eq:dimbound}
+ d\leq4\eta^{-1}(1+\log M),
+\end{equation}
+and the orthogonal projection $P$ onto the subspace of vectors constant on
+each block satisfies
+\begin{equation}\label{eq:projectionerror}
+ \|x-Px\|_2^2\leq\eta\qquad(x\in T_M).
+\end{equation}
+Moreover, $Px$ is nonnegative and nonincreasing.
+\end{lemma}
+
+\begin{proof}
+Make every index $a<2/\eta$ a singleton.  Thereafter, whenever the next block
+starts at $a$, give it length
+\[
+ \ell_a=\min\{\lfloor\eta a\rfloor,M-a+1\}.
+\]
+For a nonterminal nonsingleton block,
+$\eta a/2\leq\ell_a\leq\eta a$.  Its successor therefore begins at least at
+$(1+\eta/2)a$.  Since
+$\log(1+\eta/2)\geq\eta/4$, counting the initial singletons and subsequent
+geometric growth gives \eqref{eq:dimbound}.
+
+Fix $x\in T_M$.  On a block $B=[a,b]$, define $q_i=x_b$ for $i\in B$.
+Then $q$ is block-constant, and
+\begin{equation}\label{eq:squareloss}
+ \sum_{i\in B}(x_i-x_b)^2
+ \leq\sum_{i\in B}(x_i^2-x_b^2).
+\end{equation}
+Put $z_i=x_i^2$.  For any $t\geq0$, the set
+$\{i:z_i>t\}$ is an initial interval $\{1,\ldots,k(t)\}$.  In the layer-cake
+representation of the right side of \eqref{eq:squareloss}, complete blocks
+cancel.  If $k(t)$ lies in a nonsingleton block $[a,b]$, the uncancelled number
+of indices is at most $|B|\leq\eta a\leq\eta k(t)$; it is zero in an initial
+singleton.  Hence
+\[
+ \|x-q\|_2^2
+ \leq \int_0^\infty \eta k(t)\,dt
+ =\eta\sum_{i=1}^M z_i=\eta.
+\]
+Orthogonal projection is at least as accurate as $q$, proving
+\eqref{eq:projectionerror}.  Finally, $Px$ consists of the consecutive block
+averages of $x$, so it remains nonnegative and nonincreasing.
+\end{proof}
+
+\begin{proof}[Proof of the upper bound in Theorem~\ref{thm:main}]
+Take $\eta=\varepsilon^2/8$ and the subspace $V$ from
+Lemma~\ref{lem:compression}.  If $e=\|x-Px\|_2$, orthogonality gives
+$\|Px\|_2=\sqrt{1-e^2}$.  Thus, for
+$u=Px/\|Px\|_2\in T_M\cap V$,
+\begin{equation}\label{eq:normalization}
+ \|x-u\|_2^2
+ =2(1-\|Px\|_2)
+ \leq2e^2\leq2\eta=\varepsilon^2/4.
+\end{equation}
+
+Take a maximal Euclidean $\varepsilon/2$-separated subset $A$ of
+$T_M\cap V$.  It is an $\varepsilon/2$-net of that set.  The usual disjoint-ball
+argument in the $d$-dimensional space $V$ gives
+\[
+ |A|\leq(1+4/\varepsilon)^d.
+\]
+Equation \eqref{eq:normalization} and the triangle inequality show that $A$ is
+an Euclidean $\varepsilon$-net of $T_M$, and
+\eqref{eq:metriccomparison} makes it a chordal $\varepsilon$-net as well.
+Since Lemma~\ref{lem:compression} gives
+$d\leq32\varepsilon^{-2}(1+\log M)$, the upper estimate follows.
+\end{proof}
+
+\begin{proof}[Proof of the lower bound in Theorem~\ref{thm:main}]
+Let $d$ be the largest even integer for which
+\[
+ m_d:=1+16+\cdots+16^{d-1}=\frac{16^d-1}{15}\leq M.
+\]
+Thus $d\geq c_1\log M$ for all sufficiently large $M$.  After $M-m_d$
+initial zero coordinates, split the remaining coordinates into consecutive
+blocks $B_1,\ldots,B_d$ of sizes
+$|B_j|=16^{d-j}$.
+
+We use a family $\mathcal C\subseteq\{-1,1\}^d$ of balanced words
+($\sum_j\sigma_j=0$) with pairwise Hamming distance at least $d/4$ and
+$|\mathcal C|\geq\exp(c_2d)$.  For completeness, such a family follows by a
+greedy selection from the $\binom d{d/2}$ balanced words.  A Hamming ball of
+radius less than $d/4$ contains at most
+\[
+ \sum_{r\leq d/8}\binom{d/2}{r}^2
+ \leq(d+1)2^{dH_2(1/4)}
+\]
+balanced words, while
+$\binom d{d/2}\geq2^d/(d+1)$ and $H_2(1/4)<1$.
+
+For $\sigma\in\mathcal C$, define $x^\sigma$ to be constant on $B_j$ with
+value
+\begin{equation}\label{eq:packingvector}
+ x^\sigma_i=
+ \frac{1+\sigma_j/2}{\sqrt{(5/4)d\,|B_j|}}
+ \qquad(i\in B_j).
+\end{equation}
+Balancedness gives $\|x^\sigma\|_2=1$.  Adjacent block heights obey
+\[
+ \frac{x^\sigma|_{B_{j+1}}}{x^\sigma|_{B_j}}
+ =4\frac{1+\sigma_{j+1}/2}{1+\sigma_j/2}\geq\frac43,
+\]
+so every $x^\sigma$ belongs to the nonnegative nondecreasing chamber.
+
+If $h$ is the Hamming distance between $\sigma$ and $\tau$, direct calculation
+using balancedness gives
+\[
+ \langle x^\sigma,x^\tau\rangle
+ =1-\frac{2(1/2)^2}{1+(1/2)^2}\frac hd
+ =1-\frac25\frac hd.
+\]
+For $h\geq d/4$, this is at most $9/10$, and hence
+\[
+ \rho(x^\sigma,x^\tau)
+ \geq\sqrt{1-(9/10)^2}=\frac{\sqrt{19}}{10}>\frac25.
+\]
+When $\varepsilon\leq1/5$, an $\varepsilon$-ball contains at most one member
+of this packing.  Therefore
+\[
+ \cN_M(\varepsilon)\geq|\mathcal C|
+ \geq\exp(c_2d)\geq M^c,
+\]
+after decreasing the universal constant $c>0$ and increasing $M_0$.
+\end{proof}
+
+\section{Verification and limitations}
+
+The argument is elementary.  The accompanying script
+\texttt{code/verify\_entropy\_bounds.py} checks the geometric-block estimate on
+random and adversarial monotone vectors, verifies the dimension count, and
+enumerates finite balanced-code packings to check normalization, monotonicity,
+and the chordal separation constant.  These computations are sanity checks,
+not ingredients of the proof.  It passed with 300 random trials at
+$(M,\varepsilon,d)=(4096,0.2,8)$ and 200 trials at
+$(7777,0.125,10)$.  The commands were
+\begin{verbatim}
+python code/verify_entropy_bounds.py --dimension 4096 --epsilon 0.2 \
+  --trials 300 --packing-blocks 8
+python code/verify_entropy_bounds.py --dimension 7777 --epsilon 0.125 \
+  --trials 200 --packing-blocks 10
+\end{verbatim}
+In the first run, the minimum enumerated packing distance was exactly
+$\sqrt{19}/10$, the constant used in the proof.
+
+The theorem settles the dimension dependence of the optimal covering number at
+every fixed $0<\varepsilon\leq1/5$.  It does not determine the sharp dependence
+of the exponent on $\varepsilon$, and the maximal-net step is an existence
+construction rather than a practically optimized enumeration.  Accordingly,
+this packet is classified as a substantial partial result rather than a full
+answer to every algorithmic interpretation of the source's broad question.
+
+A bounded novelty search used the run indexes, arXiv:1210.0139, the exact source
+phrases ``nonnegative, nonincreasing unit norm'' and ``more efficient
+$\varepsilon$-nets,'' and combinations of ``metric entropy,'' ``monotone
+cone,'' ``isotonic cone,'' and ``chordal distance.''  No later paper directly
+settling this chamber covering question was found.  This is a bounded search,
+not an exhaustive priority claim.
+
+\paragraph{Human-review recommendation.}
+Check the layer-cake cancellation in Lemma~\ref{lem:compression}, the
+normalization estimate \eqref{eq:normalization}, and the constant-weight-code
+packing.  These are the only substantive steps.
+
+\begin{thebibliography}{9}
+\bibitem{FJMP}
+M. Fickus, J. Jasper, D. G. Mixon, and J. Peterson,
+\emph{Group-theoretic constructions of erasure-robust frames},
+Linear Algebra Appl. 479 (2015), 131--154; arXiv:1210.0139.
+\end{thebibliography}
+
+\end{document}

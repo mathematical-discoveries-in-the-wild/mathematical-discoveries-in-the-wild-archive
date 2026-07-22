@@ -2,6 +2,11 @@
 
 Status: `candidate partial`, likely valid, awaiting human review.
 
+**Superseded:** the source question has now been fully resolved, including all
+dimensions for finite output exponent and a counterexample at the strong
+`L^infinity` endpoint.  See
+`solutions/counterexamples/2311.08058_laplacian_closability_full_dichotomy/`.
+
 ## Source question
 
 - Giovanni Alberti, David Bate, and Andrea Marchese, *On the closability of
@@ -66,4 +71,3 @@ closable Radon measure”, “Laplacian closable absolutely continuous measure�
 “higher order differential operator weighted Lp closability”, and close
 variants.  It found the source paper but no later exact answer.  This is a
 bounded search, not a claim of exhaustive bibliographic novelty.
-

@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Fix}{\operatorname{Fix}}
+
+\title{A Coordinate-Sweep Lemma Answers Question 1\\
+in ``Fixed Points of Averages of Resolvents''}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Bauschke, Wang, and Wylie ask whether the fixed-point set of their
+Gauss--Seidel-type sweep \(T=J_mR_m\cdots J_1R_1\) equals their
+product-space solution set~$S$. We answer the question affirmatively. The
+only needed observation is that each map \(J_kR_k\) changes only
+coordinate~$k$. More generally, a sweep through maps that update one
+distinct coordinate at a time has no fixed points beyond the common fixed
+points of its component updates. Combining this elementary lemma with
+equation~(64) of the source gives
+\[
+ S=\Fix T=\Fix(J_mR_m\cdots J_1R_1).
+\]
+The proof works for every positive integer~$m$ and requires no metric,
+linearity, continuity, or monotonicity assumptions on the coordinate
+updates.
+\end{abstract}
+
+\section{Source question}
+
+The source is H.~H.~Bauschke, X.~Wang, and C.~J.~S.~Wylie,
+\emph{Fixed Points of Averages of Resolvents: Geometry and Algorithms},
+arXiv:1102.1478v1 \cite{source}. On printed page~19 (PDF page~19), Remark
+4.6 asks, for \(m\geq3\):
+\begin{quote}
+Q1: Concerning (65), is it actually true that
+\[
+  S=\Fix T=\Fix(J_m\circ R_m\circ\cdots\circ J_1\circ R_1)?
+\]
+\end{quote}
+The source passage is reproduced in Figure~\ref{fig:question}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.94\textwidth]{figures/open_problem_crop.png}
+\caption{Remark 4.6 and its context in arXiv:1102.1478v1, p.~19.}
+\label{fig:question}
+\end{figure}
+
+For \(I=\{1,\ldots,m\}\), the source works on the product space
+\(\mathbf X=X^m\). Its equations (62)--(63) define maps \(R_k,J_k\) such
+that, whenever \(i\neq k\),
+\[
+  (R_kx)_i=x_i,
+  \qquad
+  (J_kx)_i=x_i.
+\]
+Thus \(U_k:=J_k\circ R_k\) changes at most the \(k\)-th coordinate. The
+two other source identities needed below are
+\begin{equation}\label{eq:sourceS}
+ S=\bigcap_{k=1}^m\Fix U_k
+ \qquad\text{(source equation (64))}
+\end{equation}
+and
+\begin{equation}\label{eq:sourceT}
+ T=U_m\circ\cdots\circ U_1
+ \qquad\text{(source equation (66)).}
+\end{equation}
+
+\section{Proof intuition}
+
+Run one complete sweep, beginning with coordinate~1. Once coordinate~1
+has been updated, no later map can alter it. Therefore, if the end of the
+sweep equals the starting vector, the first update must already have left
+the vector fixed. After removing that vacuous first update, the same
+argument applies to coordinate~2, and successively to all remaining
+coordinates. This triangular causality is the entire proof.
+
+\section{The coordinate-sweep theorem}
+
+\begin{theorem}[Fixed points of a one-pass coordinate sweep]
+\label{thm:sweep}
+Let \(Y=Y_1\times\cdots\times Y_m\) be a Cartesian product of arbitrary
+sets. For each \(k\in\{1,\ldots,m\}\), let \(U_k:Y\to Y\) satisfy
+\begin{equation}\label{eq:coordinate}
+ (U_ky)_i=y_i\qquad(i\neq k).
+\end{equation}
+Then
+\begin{equation}\label{eq:abstractequality}
+ \Fix(U_m\circ\cdots\circ U_1)
+   =\bigcap_{k=1}^m\Fix U_k.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The inclusion from right to left is immediate. For the reverse inclusion,
+take \(y\in\Fix(U_m\circ\cdots\circ U_1)\), and define the intermediate
+states
+\[
+ y^{(0)}=y,
+ \qquad
+ y^{(k)}=U_k y^{(k-1)}\quad(1\leq k\leq m).
+\]
+Thus \(y^{(m)}=y\). We prove inductively that \(y^{(k)}=y\) for every
+\(k\).
+
+The assertion holds for \(k=0\). Suppose \(y^{(k-1)}=y\). By
+\eqref{eq:coordinate}, applying \(U_k\) leaves every coordinate other than
+\(k\) unchanged, so
+\[
+ (y^{(k)})_i=y_i\qquad(i\neq k).
+\]
+Every later map \(U_{k+1},\ldots,U_m\) also leaves coordinate~\(k\)
+unchanged. Hence
+\[
+ (y^{(k)})_k=(y^{(m)})_k=y_k.
+\]
+All coordinates of \(y^{(k)}\) therefore equal those of~\(y\), proving
+\(y^{(k)}=y\). In particular,
+\(U_ky=U_ky^{(k-1)}=y^{(k)}=y\). The induction gives
+\(y\in\bigcap_k\Fix U_k\), as required.
+\end{proof}
+
+\begin{corollary}[Affirmative answer to Question 1]
+In the setting of arXiv:1102.1478,
+\[
+ \boxed{S=\Fix T=\Fix(J_m\circ R_m\circ\cdots\circ J_1\circ R_1).}
+\]
+In particular, Question 1 in Remark 4.6 has an affirmative answer.
+\end{corollary}
+
+\begin{proof}
+Set \(U_k=J_k\circ R_k\). Source equations (62)--(63) give
+\eqref{eq:coordinate}, so Theorem~\ref{thm:sweep} and
+\eqref{eq:sourceT} yield
+\[
+ \Fix T=\bigcap_{k=1}^m\Fix(J_k\circ R_k).
+\]
+The right-hand side is \(S\) by \eqref{eq:sourceS}.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+\paragraph{Definition and order audit.}
+The proof uses the source's actual order
+\(T=U_m\circ\cdots\circ U_1\): the first applied map is~\(U_1\), and
+every later map leaves coordinate~1 unchanged. Equations (62) and (63)
+separately leave all non-\(k\) coordinates unchanged, so their composition
+does as well. Equation (64) is exactly the common-fixed-point identity
+needed in the last line. The argument also remains valid when these sets
+are empty.
+
+\paragraph{Strength and limitation.}
+The abstract theorem applies to every \(m\geq1\), to any order that visits
+each coordinate exactly once, and to maps between products of arbitrary
+sets. These strengthenings are incidental. The result answers only Q1 of
+Remark 4.6. It supplies no convergence theorem for iterates of~$T$ and
+does not answer Q2 or Q3.
+
+\paragraph{Novelty check.}
+Cheap run and corpus indexes, followed by bounded searches using the arXiv
+identifier, paper title, displayed equality, and core fixed-point and
+Gauss--Seidel terminology, found no later general answer. A later paper,
+\emph{On moving averages} \cite{moving}, rigorously analyzes the algorithm
+in a special case; its abstract describes the result as a special-case
+convergence proof. This search is evidence, not an exhaustive
+bibliographic guarantee. The result should therefore remain a candidate
+full solution pending independent mathematical and literature review.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+H.~H. Bauschke, X.~Wang, and C.~J.~S. Wylie,
+\emph{Fixed Points of Averages of Resolvents: Geometry and Algorithms},
+arXiv:1102.1478v1 (2011),
+\url{https://arxiv.org/abs/1102.1478}.
+
+\bibitem{moving}
+H.~H. Bauschke, J.~Sarada, and X.~Wang,
+\emph{On moving averages}, arXiv:1206.3610 (2012),
+\url{https://arxiv.org/abs/1206.3610}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,354 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Om}{\Omega}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Div}{\operatorname{div}}
+\newcommand{\Breg}{\mathcal B_F}
+\newcommand{\Erel}{\mathcal E_F}
+\newcommand{\J}{\mathcal J_1}
+
+\title{Relative-Bregman uniqueness for the $L^1$-gradient flow\\
+and the full strongly elliptic quadratic subcase}
+\author{Codex agent lane 8 (GPT5.6)}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\linewidth}{\textbf{Status.}
+Candidate partial result, likely valid, human review requested.  The result
+does not settle uniqueness for every weak minimizing-movement limit of a
+general strongly convex integrand.}}
+\end{center}
+
+\section{Source question}
+
+Chambolle and Novaga study the $L^1$-minimizing movement for
+\[
+  \Phi(u)=\int_\Om F(Du)
+\]
+on a bounded connected domain, with homogeneous Neumann or Dirichlet boundary
+conditions.  They obtain limit solutions, characterize them for smooth
+strongly convex $F$, prove uniqueness for monotone solutions, and prove
+unconditional uniqueness for the isotropic Dirichlet energy
+$F(\xi)=|\xi|^2/2$ \cite{CN}.  Their abstract states:
+
+\begin{center}
+\includegraphics[width=0.97\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{quote}
+``Under a monotonicity assumption we can also prove uniqueness of the limit
+solution, even though this remains an open question in full generality.''
+\end{quote}
+
+This packet proves two results toward that question.  First, a relative
+Bregman estimate gives uniqueness for genuinely nonlinear uniformly convex
+integrands whenever one of the two solutions has an integrable
+$L^\infty_x$ bound on $D\dot v$.  Second, the nonlinear error vanishes
+identically for every constant-coefficient strongly elliptic quadratic
+integrand.  This yields unconditional uniqueness, contraction, and
+whole-family minimizing-movement convergence for that complete anisotropic
+quadratic class.
+
+\section{Framework and definitions}
+
+Let $\Om\subset\R^d$ be bounded, connected, and Lipschitz.  Put
+\[
+  \Psi(w)=\frac12\|w\|_{L^1(\Om)}^2,
+  \qquad \J=\partial\Psi\subset L^1(\Om)\times L^\infty(\Om).
+\]
+For $w\ne0$, the relation $q\in\J(w)$ is equivalent to
+\begin{equation}\label{eq:Jchar}
+  \|q\|_\infty=\|w\|_1,
+  \qquad qw=\|w\|_1|w|\quad\text{a.e.},
+\end{equation}
+while $\J(0)=\{0\}$.  In particular, $\J$ is monotone:
+\begin{equation}\label{eq:Jmono}
+  \int_\Om(q_1-q_2)(w_1-w_2)\,dx\ge0
+  \quad(q_i\in\J(w_i)).
+\end{equation}
+
+Write $A=\nabla F$ and $H=D^2F$.  A sufficiently regular solution of the
+flow characterized in \cite[Theorem 2.15]{CN} satisfies
+\begin{equation}\label{eq:flow}
+  q_u:=\Div A(Du)\in\J(\dot u)
+  \quad\text{for a.e. time}.
+\end{equation}
+The pointwise formulation in the source paper,
+\[
+ |q_u|\le\|\dot u\|_1,
+ \qquad \dot u\,q_u=|\dot u|\|\dot u\|_1,
+\]
+is precisely \eqref{eq:flow}.  We use either common Dirichlet data, so that
+$u-v$ and $\dot u-\dot v$ have zero trace, or the natural Neumann condition
+$A(Du)\cdot n=A(Dv)\cdot n=0$.
+
+For $a,b\in\R^d$, define the one-sided Bregman divergence
+\[
+  \Breg(a\mid b)=F(a)-F(b)-A(b)\cdot(a-b)
+\]
+and the relative energy
+\[
+  \Erel(u\mid v)=\int_\Om \Breg(Du\mid Dv)\,dx.
+\]
+
+\section{Proof intuition}
+
+Monotonicity of the $L^1$ duality map already gives the favorable term
+\[
+ \int_\Om [A(Du)-A(Dv)]\cdot D(\dot u-\dot v)\,dx\le0.
+\]
+For a quadratic $F$, this is exactly the time derivative of the energy of
+$D(u-v)$, which is the contraction used in the source paper.  For nonlinear
+$F$, differentiating the relative Bregman energy produces one additional
+Taylor remainder:
+\[
+ [A(Du)-A(Dv)-H(Dv)(Du-Dv)]\cdot D\dot v.
+\]
+If $H$ is Lipschitz, this is quadratic in $Du-Dv$.  Uniform convexity says
+that the Bregman energy is also quadratic in that difference.  Thus an
+integrable $L^\infty$ bound on $D\dot v$ closes a Gronwall inequality.
+
+This mechanism is asymmetric on purpose: it is a weak--strong estimate.
+It also identifies the exact obstruction to using the quadratic proof in
+the full weak class.  The regularity obtained in \cite{CN} controls
+$D\dot v$ in $L^2$, not in $L^1_tL^\infty_x$, so the theorem below does not
+silently resolve the remaining open case.
+
+\section{The relative-Bregman estimate}
+
+\begin{theorem}[Nonlinear weak--strong uniqueness]\label{thm:main}
+Assume $F\in C^2(\R^d)$ and that there are constants
+$0<\gamma\le\Gamma<\infty$ and $K<\infty$ such that
+\begin{align}
+  \gamma I&\le H(\xi)\le\Gamma I
+       &&(\xi\in\R^d), \label{eq:elliptic}\\
+  \|H(\xi)-H(\eta)\|&\le K|\xi-\eta|
+       &&(\xi,\eta\in\R^d). \label{eq:hesslip}
+\end{align}
+Let $u,v\in AC([0,T];H^1(\Om))$ satisfy \eqref{eq:flow}, the same boundary
+condition, and suppose
+\[
+  D\dot v\in L^1(0,T;L^\infty(\Om)).
+\]
+Assume the integrations by parts in \eqref{eq:pairing} below are valid
+(for example, $q_u,q_v\in L^1(0,T;L^\infty)$ with the stated boundary
+conditions).  Then for $0\le s\le t\le T$,
+\begin{equation}\label{eq:gronwall}
+  \Erel(u(t)\mid v(t))
+  \le \Erel(u(s)\mid v(s))
+     \exp\!\left(\frac K\gamma
+       \int_s^t\|D\dot v(r)\|_\infty\,dr\right).
+\end{equation}
+Consequently, two such solutions with the same initial datum coincide.
+\end{theorem}
+
+\begin{proof}
+Set $a=Du$ and $b=Dv$.  The hypotheses on $H$ imply the quadratic
+equivalence
+\begin{equation}\label{eq:bregcoerc}
+  \frac\gamma2|a-b|^2\le\Breg(a\mid b)
+  \le\frac\Gamma2|a-b|^2.
+\end{equation}
+The Banach-space chain rule (or a direct calculation for smooth curves,
+followed by approximation) gives
+\begin{align}
+ \frac d{dt}\Breg(a\mid b)
+ &= [A(a)-A(b)]\cdot(\dot a-\dot b) \notag\\
+ &\quad+
+ [A(a)-A(b)-H(b)(a-b)]\cdot\dot b. \label{eq:bregidentity}
+\end{align}
+After integration over $\Om$, the first term is
+\begin{align}
+ P(t)&:=\int_\Om[A(Du)-A(Dv)]\cdot
+                   D(\dot u-\dot v)\,dx \notag\\
+     &=-\int_\Om(q_u-q_v)(\dot u-\dot v)\,dx\le0. \label{eq:pairing}
+\end{align}
+Here the equality is integration by parts, and the inequality is the
+monotonicity \eqref{eq:Jmono}.
+
+The integral form of Taylor's theorem and \eqref{eq:hesslip} yield
+\begin{equation}\label{eq:taylor}
+ \big|A(a)-A(b)-H(b)(a-b)\big|
+ \le\frac K2|a-b|^2.
+\end{equation}
+Combining \eqref{eq:bregidentity}--\eqref{eq:taylor} and using
+\eqref{eq:bregcoerc}, we obtain for a.e. $t$,
+\[
+ \frac d{dt}\Erel(u\mid v)
+ \le \frac K2\|D\dot v\|_\infty
+       \int_\Om|Du-Dv|^2\,dx
+ \le \frac K\gamma\|D\dot v\|_\infty\Erel(u\mid v).
+\]
+Gronwall's inequality proves \eqref{eq:gronwall}.  If $u(0)=v(0)$,
+then \eqref{eq:bregcoerc} gives $Du(t)=Dv(t)$ for every $t$.
+
+With Dirichlet data, $u=v$ follows immediately.  With Neumann data,
+$u(t)-v(t)$ is spatially constant.  Lemma~\ref{lem:constant} below shows
+that its time derivative is zero; the initial equality then gives $u=v$.
+\end{proof}
+
+\begin{lemma}[Neumann constant rigidity]\label{lem:constant}
+Let $\Om$ be connected.  If $f\in H^1(\Om)$, $c\in\R$, and
+$q\in L^\infty(\Om)$ satisfy
+\[
+  \int_\Om q\,dx=0,
+  \qquad q\in\J(f)\cap\J(f+c),
+\]
+then $c=0$.
+\end{lemma}
+
+\begin{proof}
+If $q=0$, then \eqref{eq:Jchar} gives $f=f+c=0$.  Suppose $q\ne0$.
+Since $q$ has mean zero, the sets $\{q>0\}$ and $\{q<0\}$ have positive
+measure.  Relation \eqref{eq:Jchar} gives
+\[
+ f\ge0\ \text{on }\{q>0\},
+ \qquad f+c\le0\ \text{on }\{q<0\}.
+\]
+If $c>0$, these say that $f$ lies in $[0,\infty)$ on one positive-measure
+set and in $(-\infty,-c]$ on another.  Moreover, on $\{q=0\}$,
+\eqref{eq:Jchar} for the two nonzero vectors forces both $f=0$ and
+$f+c=0$; hence this set is null if $c\ne0$.  A Lipschitz truncation of
+$f$ mapping $(-\infty,-c]$ to $0$ and $[0,\infty)$ to $1$ is therefore
+an $H^1$ function taking only the values $0$ and $1$ a.e., with both
+level sets of positive measure.  Such an $H^1$ function has zero weak
+gradient and must be constant on connected $\Om$, a contradiction.
+The case $c<0$ is symmetric.
+\end{proof}
+
+\begin{corollary}[A genuinely nonlinear family]\label{cor:nonlinear}
+For every $\varepsilon>0$, the integrand
+\[
+ F_\varepsilon(\xi)=\frac12|\xi|^2+
+   \varepsilon\sum_{j=1}^d\log\cosh(\xi_j)
+\]
+satisfies the hypotheses of Theorem~\ref{thm:main}.  Thus its flow is
+unique in the class of that theorem.
+\end{corollary}
+
+\begin{proof}
+Its Hessian is diagonal with entries
+$1+\varepsilon\operatorname{sech}^2(\xi_j)$.  Hence
+$I\le H\le(1+\varepsilon)I$, and the derivative of the Hessian is globally
+bounded.  Theorem~\ref{thm:main} applies.
+\end{proof}
+
+\section{The full strongly elliptic quadratic subcase}
+
+\begin{corollary}[Anisotropic quadratic contraction and uniqueness]
+\label{cor:quadratic}
+Let $M$ be a constant symmetric positive-definite $d\times d$ matrix and
+\[
+ F(\xi)=\frac12\xi\cdot M\xi.
+\]
+For any two energy-class solutions of \eqref{eq:flow} with common
+Dirichlet data or homogeneous Neumann data,
+\begin{equation}\label{eq:quadraticcontraction}
+ \frac12\int_\Om D(u(t)-v(t))\cdot M D(u(t)-v(t))\,dx
+ \le
+ \frac12\int_\Om D(u(s)-v(s))\cdot M D(u(s)-v(s))\,dx.
+\end{equation}
+No $L^\infty$ assumption on $D\dot v$ is needed.  In particular the
+flow from a fixed initial datum is unique.
+
+Moreover, the unique discrete minimizers of
+\[
+ \Phi(w)+\frac1{2\tau}\|w-w^{n-1}\|_1^2,
+ \qquad \Phi(w)=\frac12\int_\Om Dw\cdot M Dw,
+\]
+converge, without choosing a subsequence, to this flow as $\tau\downarrow0$
+in the same topologies as the quadratic minimizing movements in \cite{CN}.
+\end{corollary}
+
+\begin{proof}
+Here $H\equiv M$, so $K=0$ and the Taylor remainder in
+\eqref{eq:bregidentity} vanishes identically.  Therefore
+\[
+ \frac d{dt}\frac12\int_\Om D(u-v)\cdot M D(u-v)\,dx
+ =-\int_\Om(q_u-q_v)(\dot u-\dot v)\,dx\le0,
+\]
+which proves \eqref{eq:quadraticcontraction}.  Dirichlet uniqueness is
+immediate; Neumann uniqueness follows from Lemma~\ref{lem:constant}.
+
+The existence, time-regularity, and compactness estimates in Section 4 of
+\cite{CN} use only polarization of the quadratic form, ellipticity, and
+the monotonicity of $\J$.  Replacing $|D\cdot|^2$ by
+$D\cdot\,M D\cdot$ changes the estimates only by the two ellipticity
+constants of $M$.  Thus every vanishing-step sequence has a subsequence
+converging to an energy-class solution.  Uniqueness shows that all cluster
+points agree.  Relative compactness then upgrades subsequential convergence
+to convergence of the whole family.
+\end{proof}
+
+\section{Verification notes and limitations}
+
+\begin{enumerate}
+\item \textbf{Sign check.}  The source equation has
+$q=\Div\nabla F(Du)\in\J(\dot u)$.  Hence monotonicity of $\J$ makes
+\(-\int(q_u-q_v)(\dot u-\dot v)\) nonpositive, exactly as required.
+
+\item \textbf{Algebra check.}  The script
+\texttt{code/check\_bregman\_identity.py} numerically differentiates the
+relative Bregman energy for the nonlinear integrand in
+Corollary~\ref{cor:nonlinear} and compares it with the two terms in
+\eqref{eq:bregidentity}.  It also tests the Taylor remainder bound on
+10,000 seeded random inputs.  This is a regression/sign check, not a proof.
+
+\item \textbf{What remains open.}  The source paper proves only
+$\dot u\in L^2_{\mathrm{loc}}((0,\infty);H^1(\Om))$ for its general
+strongly convex limit solutions.  That does not imply
+$D\dot u\in L^1_tL^\infty_x$.  Theorem~\ref{thm:main} therefore gives a
+complete classical/weak--strong uniqueness criterion but not unconditional
+uniqueness for every source-paper limit solution.
+
+\item \textbf{Neumann issue.}  Relative energy controls gradients only.
+Lemma~\ref{lem:constant} is essential; it rules out a time-dependent spatial
+constant by using the $L^1$ duality relation and connectedness.
+
+\item \textbf{Novelty status.}  A bounded search on 22 July 2026 used the
+exact title, arXiv:2302.12786, DOI 10.1137/22M1527556, the quoted open phrase,
+and combinations of ``$L^1$ gradient flow'', ``strongly convex'', and
+``uniqueness''.  Sources checked included arXiv, the 2024 SIAM journal page,
+CVGMT, and general web/arXiv search.  The journal version still states the
+full question as open, and no later paper explicitly closing it was found.
+The relative-Bregman argument may overlap standard weak--strong relative
+entropy techniques, so novelty confidence for the method is moderate; the
+mathematical claim is presented as a candidate partial result, not as a
+priority claim.
+\end{enumerate}
+
+\section{Human-review recommendation}
+
+The packet is recommended for expert review as a likely valid partial result.
+The key checks are: (i) the chain-rule regularity in the desired solution
+class; (ii) the Neumann constant-rigidity lemma; and (iii) that the source
+paper's Section 4 estimates transfer to a constant SPD matrix exactly as
+claimed.  A useful next push would prove smoothing strong enough to place
+every positive-time limit flow in $L^1_tW^{1,\infty}_x$, or replace the
+$L^\infty$ factor in the commutator estimate by a norm already controlled by
+the source paper.
+
+\begin{thebibliography}{9}
+\bibitem{CN}
+A. Chambolle and M. Novaga,
+\emph{$L^1$-gradient flow of convex functionals},
+SIAM J. Math. Anal. \textbf{56} (2024), no.~5, 5747--5781;
+arXiv:2302.12786; DOI: 10.1137/22M1527556.
+\end{thebibliography}
+
+\end{document}

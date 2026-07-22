@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Acal}{\mathfrak A}
+\newcommand{\Mcal}{\mathfrak M}
+
+\title{Integer Spectra Suffice for Maximal Separable-Sum Multiplicities}
+\author{Automated Math Discovery Candidate Proof}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid pending expert review.  The proof gives
+a pointwise strengthening of Conjecture 1.4: every real matrix can be
+replaced by an integer matrix preserving the complete multiplicity pattern
+through any prescribed finite spectral level.}}
+\end{center}
+
+\section*{Source and Conjecture}
+
+This packet concerns Conjecture 1.4 on page 4 of Helffer,
+Hoffmann-Ostenhof, and Marquetand, \emph{On maximal multiplicities for
+Hamiltonians with separable variables} \cite{Source}, arXiv:1908.02752.
+
+For a positive integer $N$, let $\Mcal(N)$ consist of $N$ rows
+\[
+                  a_1^n<a_2^n<a_3^n<\cdots,
+                  \qquad 1\leq n\leq N,
+\]
+under the source paper's standing assumption that the associated sum
+spectrum is discrete and tends to $+\infty$.  The spectrum is formed from all
+tuple sums
+\[
+                 S_{\Acal}(j_1,\ldots,j_N)
+                 =\sum_{n=1}^N a_{j_n}^n.
+\]
+Ordering with multiplicity gives eigenvalues $\lambda_k(\Acal)$, and
+$m(k,\Acal)$ is the full number of representations of
+$\lambda_k(\Acal)$.  The maximal possible value is
+\[
+             \mathfrak m_k(N)=\sup_{\Acal\in\Mcal(N)}m(k,\Acal).
+\]
+Conjecture 1.4 states:
+\begin{quote}
+For determining $\mathfrak m_k(N)$, it suffices to take the supremum over
+the $\Acal$ with all $a_i^j\in\Z$.
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section*{Proof Intuition}
+
+Although each row is infinite, a fixed spectral level only sees finitely
+many entries.  After translating every row so that its first entry is zero,
+all entries are nonnegative.  If $\Lambda=\lambda_k(\Acal)$, then any row
+entry exceeding $\Lambda$ cannot occur in a representation at or below
+$\Lambda$.
+
+On the resulting finite box of index tuples, the spectral pattern is
+specified by finitely many integer-linear equalities and strict
+integer-linear inequalities between tuple sums.
+The equalities cut out a rational linear subspace.  The inequalities select
+a relatively open chamber inside it.  Rational points are dense in a
+rational subspace, so the chamber contains a rational point with exactly the
+same equalities and strict order relations.  Clearing denominators gives
+integer row prefixes.  Appending integer tails above the preserved target
+level prevents any new tuple from entering the finite spectral pattern.
+
+\section*{Main Result}
+
+\begin{theorem}[Pointwise integer realization]\label{thm:main}
+Let $N,k\geq1$, and let $\Acal\in\Mcal(N)$ have real entries.  There exists
+$\mathfrak B\in\Mcal(N)$ all of whose entries are integers such that
+\[
+                         m(k,\mathfrak B)=m(k,\Acal).
+\]
+More strongly, the equality classes and strict ordering of the spectral
+multiset of $\Acal$ up to and including the entire equality class containing
+$\lambda_k(\Acal)$ are preserved by $\mathfrak B$.
+
+Consequently, for every $N,k\geq1$,
+\[
+ \sup_{\Acal\in\Mcal(N)}m(k,\Acal)
+ =\sup_{\substack{\Acal\in\Mcal(N)\\a_j^n\in\Z\ \forall j,n}}
+       m(k,\Acal),
+\]
+so Conjecture 1.4 has an affirmative answer.
+\end{theorem}
+
+\section*{The Rational-Chamber Lemma}
+
+\begin{lemma}\label{lem:chamber}
+Let $x\in\R^d$, and let $\ell_1,\ldots,\ell_s$ and
+$h_1,\ldots,h_t$ be linear forms on $\R^d$ with integer coefficients.
+Assume
+\[
+                  \ell_i(x)=0\quad(1\leq i\leq s),
+                  \qquad h_j(x)>0\quad(1\leq j\leq t).
+\]
+Then there is $q\in\Q^d$ satisfying the same conditions.
+Moreover, $q$ may be chosen arbitrarily close to $x$ within
+$V=\bigcap_i\ker\ell_i$.
+\end{lemma}
+
+\begin{proof}
+The subspace $V$ is the kernel of a matrix with integer entries.  Gaussian
+elimination over $\Q$ gives a basis $v_1,\ldots,v_r$ of $V$ with rational
+coordinates.  Write $x=\sum_i c_iv_i$.  Approximating the real coefficients
+$c_i$ by rationals produces rational points dense in $V$.  The conditions
+$h_j>0$ define a relatively open neighborhood of $x$ in $V$, so one of
+these rational points lies in that neighborhood.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:main}}
+
+Subtract $a_1^n$ from every entry in row $n$.  This translates the complete
+spectrum by the constant $-\sum_na_1^n$ and changes no representation
+multiplicity or spectral ordering.  We may therefore assume
+\begin{equation}\label{eq:normalized}
+                    a_1^n=0,\qquad 0<a_2^n<a_3^n<\cdots
+                    \quad(1\leq n\leq N).
+\end{equation}
+
+Put $\Lambda=\lambda_k(\Acal)$.  For each row define
+\[
+                 r_n=\max\{j:a_j^n\leq\Lambda\}.
+\]
+These integers are finite by the standing discreteness assumption, and are
+at least one because the first entries are zero.  Set
+\[
+                      I=\prod_{n=1}^N\{1,\ldots,r_n\}.
+\]
+Every tuple whose sum is at most $\Lambda$ belongs to $I$: if
+$j_n>r_n$ for some $n$, then $a_{j_n}^n>\Lambda$, while all other summands
+are nonnegative by \eqref{eq:normalized}.
+
+Now regard the finite collection of prefix entries
+\[
+                   a=(a_j^n)_{1\leq n\leq N,\ 1\leq j\leq r_n}
+\]
+as a point of $\R^d$, where $d=\sum_nr_n$.  For $u,v\in I$, define the
+integer-coefficient linear form
+\[
+ L_{uv}(z)=\sum_{n=1}^Nz_{u_n}^n-\sum_{n=1}^Nz_{v_n}^n.
+\]
+Let $V\subset\R^d$ be cut out by the equations
+\begin{equation}\label{eq:V}
+ z_1^n=0\quad(1\leq n\leq N),
+ \qquad
+ L_{uv}(z)=0\quad\text{whenever }L_{uv}(a)=0.
+\end{equation}
+This is a rational linear subspace containing $a$.
+
+Inside $V$, impose the finitely many strict conditions
+\begin{equation}\label{eq:rows}
+ z_{j+1}^n-z_j^n>0
+ \qquad(1\leq n\leq N,\ 1\leq j<r_n),
+\end{equation}
+and
+\begin{equation}\label{eq:orders}
+ \operatorname{sgn}(L_{uv}(a))L_{uv}(z)>0
+ \qquad(u,v\in I,\ L_{uv}(a)\neq0).
+\end{equation}
+Here $\operatorname{sgn}(L_{uv}(a))$ is $1$ or $-1$, so every displayed
+condition uses an integer-coefficient linear form.  Conditions
+\eqref{eq:rows}--\eqref{eq:orders} define a relatively open chamber in $V$
+which contains $a$.  Lemma~\ref{lem:chamber} supplies a rational point
+$q$ in this chamber.
+
+Choose a positive common denominator $D$ of all coordinates of $q$ and put
+\[
+                           b_j^n=Dq_j^n
+                           \qquad(1\leq j\leq r_n).
+\]
+The $b_j^n$ are integers.  Equations \eqref{eq:V} preserve every equality
+between tuple sums indexed by $I$, while \eqref{eq:orders} preserves the
+strict order of every unequal pair.  Thus the two finite multisets
+\[
+                  \{S_{\Acal}(u):u\in I\},
+                  \qquad
+                  \{S_{\mathfrak B}(u):u\in I\}
+\]
+have identical ordered equality-class patterns.  In particular, if
+$u^*\in I$ represents $\Lambda$, then
+\[
+                  T:=S_{\mathfrak B}(u^*)
+\]
+is independent of the chosen representation $u^*$ of $\Lambda$, and its
+equality class has the same cardinality as that of $\Lambda$.
+
+It remains only to complete the rows without disturbing this finite pattern.
+For $s\geq1$, define
+\begin{equation}\label{eq:tails}
+ b_{r_n+s}^n=\max\{T,b_{r_n}^n\}+s,
+ \qquad 1\leq n\leq N.
+\end{equation}
+Every row is now a strictly increasing, unbounded integer sequence beginning
+at zero.  Any tuple outside $I$ uses at least one tail entry, which by
+\eqref{eq:tails} is strictly larger than $T$; all its other entries are
+nonnegative.  Hence every such tuple sum is larger than $T$.
+
+It follows that the complete multiplicity-counted ordering through the class
+of $T$ for $\mathfrak B$ is exactly the pattern already preserved on $I$.
+The $k$-th term lies in the corresponding equality class, and therefore
+\[
+                         m(k,\mathfrak B)=m(k,\Acal).
+\]
+This proves the pointwise assertion.  Since integer matrices form a subclass
+of real matrices, one inequality between the two suprema is immediate; the
+pointwise construction gives the reverse inequality.  The theorem follows.
+
+\section*{Verification Notes and Scope}
+
+\begin{itemize}
+\item The proof preserves the ordering \emph{with multiplicity}; it is
+unaffected by the source paper's occasional distinct-value phrasing.
+\item No compactness or attainment of the supremum is used.  The comparison
+is pointwise for every admissible real matrix.
+\item The appended tails are essential: rationalizing only the visible
+prefixes would not by itself define an element of $\Mcal(N)$.
+\item The theorem uses precisely the source paper's standing discrete,
+unbounded spectral model.  The claim does not address arbitrary bounded
+strictly increasing sequences, for which the source's enumeration tending to
+$+\infty$ would fail.
+\item No computer-assisted step is part of the proof.
+\end{itemize}
+
+\section*{Bounded Novelty Check}
+
+On July 22, 2026, the run's registry, solution, attempt, proof-gap, title, and
+source-ranked indexes were searched for arXiv:1908.02752, the exact paper
+title, and combinations of ``integer entries,'' ``maximal multiplicities,''
+``separable variables,'' and ``rational chamber.''  No prior answer was
+found.  Bounded web searches used the exact title, arXiv id, author names,
+the wording of Conjecture 1.4, and close variants of ``maximal
+multiplicities integer spectrum.''  They found the source paper, an author
+publication list, and unrelated spectral-multiplicity papers, but no direct
+answer or later paper resolving Conjecture 1.4.  Novelty confidence is
+moderate pending specialist review.
+
+\section*{Human Review Recommendation}
+
+This packet is recommended for expert review as a candidate full solution.
+The main review points are the finiteness of each visible prefix under the
+source's admissibility convention, the fact that all finite equality data
+define a rational subspace, and the exclusion of every appended-tail tuple
+from the preserved spectral range.
+
+\begin{thebibliography}{9}
+
+\bibitem{Source}
+B.~Helffer, T.~Hoffmann-Ostenhof, and P.~Marquetand,
+\emph{On maximal multiplicities for Hamiltonians with separable variables},
+arXiv:1908.02752 (2019).
+
+\end{thebibliography}
+
+\end{document}

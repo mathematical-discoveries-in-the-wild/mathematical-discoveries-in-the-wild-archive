@@ -1,0 +1,372 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A sharp \(L_q/L_4\) inequality for every even \(q\)\\
+\large A partial solution of Conjecture 16 in arXiv:2110.14382}
+\author{Discovery packet for human verification}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} \texttt{partial\_solution\_likely\_valid}.  The
+argument below proves the inequality part of Eitan's conjecture for the
+infinite family \(p=4\), \(q\in 2\mathbb N\), \(q>4\).  It does not settle
+the other values of \(p\).
+
+\section{Source question and result}
+
+Let \(\mathcal E\) be a standard exponential random variable and put
+\(\Gamma=\mathcal E-1\).  Eitan's Conjecture 16 asks whether, for every
+centered real log-concave random variable \(X\) and all even integers
+\(p<q\),
+\[
+ \frac{\norm{X}_q}{\norm{X}_p}
+ \leq \frac{\norm{\Gamma}_q}{\norm{\Gamma}_p},
+\]
+with the stated equality characterization \cite[Conjecture 16,
+p.~10]{Eitan}.  Here \(\E\Gamma^n={!n}\), the subfactorial of \(n\).
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{theorem}[The \(p=4\) anchored family]\label{thm:main}
+For every centered real log-concave random variable \(X\) and every integer
+\(m\geq3\),
+\[
+ \frac{\norm{X}_{2m}}{\norm{X}_4}
+ \leq
+ \frac{\norm{\Gamma}_{2m}}{\norm{\Gamma}_4}
+ =\frac{(!(2m))^{1/(2m)}}{9^{1/4}}.
+\]
+The bound is sharp.  Within Eitan's one-parameter extremal family, equality
+holds only at the two endpoint laws \(\Gamma\) and \(-\Gamma\).
+\end{theorem}
+
+\section{Idea of the proof}
+
+Eitan's localization theorem reduces the sharp log-concave comparison to a
+one-parameter family made from two independent centered exponentials.  After
+the symmetric coordinate \(y=z^2\) is introduced, all even moments become
+polynomials in \(y\).  For \(p=4\), the desired logarithmic derivative has a
+factor \(1-y\).  The point is to prove that the quotient by \(1-y\) has
+strictly positive coefficients at every order.
+
+A direct expansion leaves alternating sums.  The useful extra substitution
+is \(w=v/(1+v)\).  It turns the coefficient in question into a convolution
+with \((1-w)^{-2n}\), hence with a positive kernel.  All coefficients from
+degree four onward are controlled by two elementary series whose
+coefficients satisfy positive first-order recurrences.  The four exceptional
+coefficients are not individually positive, but their entire contribution
+collapses to an explicit positive cubic.  This is an all-orders certificate,
+not a finite computer check.
+
+\section{Reduction to moment polynomials}
+
+Let \(\Gamma'\) be an independent copy of \(\Gamma\).  Eitan's Theorem 12
+gives, for \(1<p<q\),
+\[
+ \frac{\norm X_q}{\norm X_p}
+ \leq \max_{0\leq s\leq1}
+ \frac{\norm{\Gamma^s}_q}{\norm{\Gamma^s}_p},
+ \qquad
+ \Gamma^s=s\Gamma-(1-s)\Gamma'.
+\]
+Set
+\[
+ z=1-2s,\qquad a=\frac{1-z}{2},\qquad b=\frac{1+z}{2},
+ \qquad X_z=a\Gamma-b\Gamma'.
+\]
+Reflection permits us to take \(0\leq z\leq1\).  Independence gives the
+moment generating function
+\begin{equation}\label{eq:mgf}
+ M_z(t)=\E e^{tX_z}
+ =\frac{e^{zt}}{(1-at)(1+bt)}
+ =\frac{e^{zt}}{1+zt-(1-z^2)t^2/4}.
+\end{equation}
+Put \(y=z^2\),
+\[
+ r_{2m}(y)=\E X_z^{2m},\qquad
+ e_m(y)=\frac{r_{2m}(y)}{(2m)!},\qquad
+ g(y)=y^2+4y+1.
+\]
+Equation \eqref{eq:mgf} shows that \(e_m\) is a polynomial of degree \(m\).
+Also
+\begin{equation}\label{eq:r4}
+ r_4(y)=\frac32 g(y).
+\end{equation}
+For \(m\geq3\), monotonicity of \(\norm{X_z}_{2m}/\norm{X_z}_4\)
+is therefore equivalent to
+\begin{equation}\label{eq:L}
+ L_m(y):=2g(y)e_m'(y)-m g'(y)e_m(y)\geq0
+ \qquad(0\leq y\leq1).
+\end{equation}
+
+\section{The coefficient certificate}
+
+\begin{lemma}\label{lem:positive}
+For every \(m\geq3\), there are strictly positive numbers
+\(\rho_{m,0},\ldots,\rho_{m,m-1}\) such that
+\begin{equation}\label{eq:factor}
+ L_m(y)=(1-y)\sum_{j=0}^{m-1}\rho_{m,j}y^j.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ 4^m e_m(y)=\sum_{k=0}^{m}A_{m,k}y^k.
+\]
+Partial fractions in \eqref{eq:mgf}, followed by coefficient extraction,
+give
+\begin{align}
+ A_{m,k}
+ &=\sum_{\ell=0}^{2k}
+   \frac{(-1)^\ell2^\ell}{\ell!}
+   \binom{2m-\ell+1}{2k-\ell} \label{eq:Amk}\\
+ &=[v^{2k}]\,(1+v)^{2m+1}
+       \exp\!\left(-\frac{2v}{1+v}\right). \label{eq:Phi}
+\end{align}
+For completeness, the first line follows by writing the coefficient of
+\(t^{2m}\) in
+\[
+ \frac{e^{zt}}{(1-at)(1+bt)}
+ =a\frac{e^{zt}}{1-at}+b\frac{e^{zt}}{1+bt}
+\]
+and then collecting the coefficient of \(z^{2k}\); the second line is the
+binomial theorem.
+
+Let
+\[
+ \Phi_m(v)=(1+v)^{2m+1}
+       \exp\!\left(-\frac{2v}{1+v}\right).
+\]
+The even part of \(\Phi_m(v)\) is
+\(4^m e_m(v^2)\).  Odd terms do not contribute to the even coefficient
+below.  From \eqref{eq:L},
+\begin{align}
+ 4^m\rho_{m,j}
+  &=[v^{2j}]
+  \frac{(1+4v^2+v^4)\Phi_m'(v)/v
+       -m(4+2v^2)\Phi_m(v)}{1-v^2}. \label{eq:rho-v}
+\end{align}
+Since
+\[
+ \frac{\Phi_m'(v)}{\Phi_m(v)}
+ =\frac{(2m-1)+(2m+1)v}{(1+v)^2},
+\]
+the rational expression in \eqref{eq:rho-v} simplifies to
+\begin{equation}\label{eq:rho-simple}
+ 4^m\rho_{m,j}=[v^{2j+1}]
+ (1+v)^{2m-2}e^{-2v/(1+v)}
+ \bigl(2m(v^3+1)-v^4-4v^2-1\bigr).
+\end{equation}
+
+We first dispose of \(j=0,1\), directly from \eqref{eq:Amk}:
+\begin{align}
+ 4^m\rho_{m,0}&=2(m-2)(2m-1),\label{eq:rho0}\\
+ 4^m\rho_{m,1}&=\frac{2(m-2)}3
+  (4m^3-24m^2+47m-31).\label{eq:rho1}
+\end{align}
+The first quantity is positive.  If \(h=m-3\geq0\), the cubic in
+\eqref{eq:rho1} is
+\[
+ 4h^3+12h^2+11h+2>0.
+\]
+
+Fix now \(2\leq j\leq m-1\), and write
+\[
+ n=m-j-1\geq0,\qquad N=2j+1.
+\]
+Use \(w=v/(1+v)\) and the elementary coefficient identity
+\[
+ [v^N]H(v)=[w^N](1-w)^{N-1}H\!\left(\frac{w}{1-w}\right).
+\]
+Equation \eqref{eq:rho-simple} becomes
+\begin{equation}\label{eq:rho-w}
+ 4^m\rho_{m,j}=[w^N](1-w)^{-2n}B(w)A_m(w),
+\end{equation}
+where
+\begin{align*}
+ B(w)&=\frac{e^{-2w}}{(1-w)^4},\\
+ A_m(w)&=(2m-1)+(-8m+4)w+(12m-10)w^2\\
+ &\hspace{3.2cm}+(-6m+12)w^3-6w^4.
+\end{align*}
+Introduce
+\begin{align*}
+ A_1(w)&=2-8w+12w^2-6w^3,\\
+ C(w)&=1-4w+2w^2+6w^3-6w^4,\\
+ U(w)&=B(w)A_1(w),\qquad D_j(w)=B(w)(jA_1(w)+C(w)).
+\end{align*}
+As \(m-1=j+n\), \eqref{eq:rho-w} is
+\begin{equation}\label{eq:conv}
+ 4^m\rho_{m,j}=[w^N](1-w)^{-2n}(D_j(w)+nU(w)).
+\end{equation}
+
+We show that all coefficients of \(D_j+nU\) from degree four through
+degree \(N\) are positive.  Let
+\(B(w)=\sum_{k\geq0}b_kw^k\).  The differential identity
+\[
+ (1-w)B'(w)=2(1+w)B(w)
+\]
+gives
+\[
+ (k+1)b_{k+1}=(k+2)b_k+2b_{k-1}.
+\]
+Thus \(b_k>0\), \(b_{k+1}>b_k\), and, for \(k\geq2\),
+\(b_{k+1}<2b_k\) (the last inequality is equivalent to
+\(2b_{k-1}<kb_k\)).
+
+Write \(U(w)=\sum u_kw^k\).  Since
+\[
+ U(w)=2(3w^2-3w+1)\frac{e^{-2w}}{(1-w)^3},
+\]
+and the coefficients \(a_k\) of \(e^{-2w}/(1-w)^3\) obey
+\[
+ a_{k+1}=a_k+\frac{2a_{k-1}}{k+1},
+\]
+they are positive and nondecreasing.  For \(k\geq4\),
+\begin{align*}
+ \frac{u_k}{2}
+ &=a_k-3a_{k-1}+3a_{k-2}\\
+ &=\left(1+\frac2k\right)a_{k-2}
+      -\frac4{k-1}a_{k-3}>0,
+\end{align*}
+because \(a_{k-2}\geq a_{k-3}>0\) and
+\(1+2/k>4/(k-1)\).
+
+If \(c_k=[w^k]B(w)C(w)\), direct differentiation gives the useful
+identity
+\begin{equation}\label{eq:V}
+ \sum_{k\geq0}\left(\frac{k-1}{2}u_k+c_k\right)w^k
+ =\frac w2U'(w)-\frac12U(w)+B(w)C(w)
+ =2w(2w-1)B(w).
+\end{equation}
+Its \(k\)-th coefficient is
+\(4b_{k-2}-2b_{k-1}>0\) for \(k\geq4\).  Whenever
+\(4\leq k\leq N=2j+1\), we have \(j\geq(k-1)/2\), so
+\[
+ [w^k]D_j
+ =ju_k+c_k
+ \geq \frac{k-1}{2}u_k+c_k>0.
+\]
+Adding \(nU\) preserves strict positivity.
+
+Only degrees zero through three remain.  Their coefficients in
+\(D_j+nU\) are, using \(m=j+n+1\),
+\begin{equation}\label{eq:low4}
+ 2m-1,\quad -2(2m-1),\quad 4m-6,\quad -\frac{2(m-2)}3.
+\end{equation}
+If \(n=0\), these degrees cannot contribute to \([w^N]\), since
+\(N\geq5\), and the already positive degree-\(N\) coefficient finishes
+the proof.  Suppose \(n\geq1\), and write
+\[
+ K_r=[w^r](1-w)^{-2n}=\binom{2n+r-1}{r}.
+\]
+The total contribution of \eqref{eq:low4} is
+\[
+ S=(2m-1)K_N-2(2m-1)K_{N-1}
+ +(4m-6)K_{N-2}-\frac{2(m-2)}3K_{N-3}.
+\]
+Using \(K_r/K_{r-1}=(2n+r-1)/r\), this becomes
+\begin{equation}\label{eq:S}
+ S=K_{N-3}\frac{2(j+n-1)P(j,n)}
+ {3j(2j-1)(2j+1)},
+\end{equation}
+where
+\begin{align*}
+ P(j,n)={}&8j^3+12j^2n-12j^2+12jn^2-12jn-2j\\
+ &+12n^3-12n^2-3n+3.
+\end{align*}
+Putting \(h=n-1\geq0\) makes positivity manifest:
+\begin{align*}
+ P(j,h+1)={}&8j^3-2j+12j^2h+12j(h^2+h)\\
+ &+12h^3+24h^2+9h>0
+\end{align*}
+for \(j\geq2\).  Hence \(S>0\).  The tail of the convolution in
+\eqref{eq:conv} is also positive, proving \(\rho_{m,j}>0\).  Together with
+\eqref{eq:rho0}--\eqref{eq:rho1}, this proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+Lemma \ref{lem:positive} gives \(L_m(y)>0\) for \(0\leq y<1\) and
+\(L_m(1)=0\).  Thus
+\[
+ \frac{d}{dy}\log\frac{r_{2m}(y)^2}{r_4(y)^m}
+ =\frac{2r_{2m}'(y)}{r_{2m}(y)}
+   -\frac{m r_4'(y)}{r_4(y)}\geq0.
+\]
+Consequently \(\norm{X_z}_{2m}/\norm{X_z}_4\) is maximized at
+\(y=1\), whose laws are the two centered-exponential endpoints under
+reflection.  Eitan's Theorem 12 transfers this bound to every centered real
+log-concave \(X\).  Since \(\E\Gamma^{2m}=!(2m)\) and
+\(\E\Gamma^4=!4=9\), the displayed constant follows.  Taking
+\(X=\Gamma\) shows sharpness.
+\end{proof}
+
+\section{Verification and limitations}
+
+The accompanying script \texttt{code/verify\_p4\_coefficients.py} derives
+the moments from \eqref{eq:mgf} with exact rational arithmetic, checks
+\eqref{eq:Amk}, and verifies the positive coefficients in
+\eqref{eq:factor} through a selectable finite order.  The command
+\begin{quote}\small\ttfamily
+conda run --no-capture-output -n sandbox python\\
+code/verify\_p4\_coefficients.py --max-m 60
+\end{quote}
+passes.  This finite calculation is a regression test only; the proof is the
+uniform certificate in Lemma \ref{lem:positive}.
+
+The full conjecture for even \(p>4\), or for arbitrary even \(p<q\), remains
+open.  The proof establishes strictness inside the reduced family away from
+the endpoints.  It does not independently prove that equality in Eitan's
+reduction forces the original \(X\) to equal the reduced extremizer, so the
+general equality classification is intentionally not claimed here.
+
+A bounded novelty search checked Eitan's paper, Murawski's 2022 comparison
+paper \cite{Murawski}, the final 2026 version of Melbourne--Roysdon--Tang--Tkocz
+\cite{MRTT}, the 2026 exponential-sum paper of Brazitikos--Tang--Tkocz
+\cite{BTT}, and arXiv phrase searches for the \(p=4\) subcase.  No prior
+all-even-\(q\) theorem was found.  In particular, \cite{MRTT} still records
+the endpoint conjecture as known for \(p=2\) and for even \(p,q\leq100\).
+This is bounded evidence, not an exhaustive priority claim.
+
+\paragraph{Human-review focus.}
+Check the coefficient change from \eqref{eq:rho-simple} to
+\eqref{eq:rho-w}, the four-low-coefficient contribution
+\eqref{eq:S}, and the exact scope of Eitan's Theorem 12.
+
+\begin{thebibliography}{9}
+\bibitem{Eitan}
+Y.~Eitan,
+\emph{The centered convex body whose marginals have the heaviest tails},
+arXiv:2110.14382, 2021.
+
+\bibitem{Murawski}
+D.~Murawski,
+\emph{Comparing moments of real log-concave random variables},
+arXiv:2211.05210, 2022.
+
+\bibitem{MRTT}
+J.~Melbourne, M.~Roysdon, C.~Tang, and T.~Tkocz,
+\emph{From simplex slicing to sharp reverse H\"older inequalities},
+arXiv:2505.00944v2, 2026.
+
+\bibitem{BTT}
+S.~Brazitikos, C.~Tang, and T.~Tkocz,
+\emph{Moments of sums of exponentials, beyond CHS},
+arXiv:2602.03058, 2026.
+\end{thebibliography}
+
+\end{document}

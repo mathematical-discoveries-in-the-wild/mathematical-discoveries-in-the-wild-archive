@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\F}{\mathbb F}
+\newcommand{\T}{\mathbb T}
+\newcommand{\dI}{d_{\mathrm{isl}}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\title{A Sharp Perturbation Dichotomy for\\
+Independent-Island Phase Retrieval}
+\author{Run \texttt{fa\_banach\_001}, lane 11}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate sharp dichotomy (positive theorem plus
+counterexample), likely valid, for human review.
+
+\section{Source question}
+
+Alharbi, Freeman, Ghoreishi, Lois, and Sebastian prove that ordinary stable
+phase retrieval in a finite-dimensional Hilbert space persists under a small
+perturbation of the frame vectors. They then discuss signals supported on
+separated islands, where recovery only up to an independent phase on each
+island is sufficient, and state that the effect of perturbations in this
+setting remains an important open problem
+\cite[Introduction, PDF p.~3]{AFGLS}.
+
+\begin{center}
+\includegraphics[width=0.65\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The question is a research program rather than a single quantified
+conjecture. We formalize its basic orthogonal-island model and obtain a sharp
+dichotomy. Stable recovery need not persist under arbitrary perturbations, but
+it does persist---with the same explicit dimension-free estimate as in the
+source theorem---when every measurement vector remains in its original
+island.
+
+\section{Claimed contribution}
+
+Let $\F$ be either $\mathbb R$ or $\mathbb C$, and put $H=\F^2$ with the
+orthogonal island decomposition
+\[
+ H=H_1\oplus H_2,\qquad H_1=\F e_1,\quad H_2=\F e_2.
+\]
+Define $x\sim_{\mathrm{isl}}y$ when there are $\lambda_1,\lambda_2\in\T$
+(with $\T=\{-1,1\}$ over $\mathbb R$) such that
+\[
+ x_k=\lambda_k y_k\qquad(k=1,2).
+\]
+Thus relative phase between the two islands is deliberately ignored. Equip
+the quotient with
+\[
+ \dI(x,y)=\min_{\lambda_1,\lambda_2\in\T}
+ \left(|x_1-\lambda_1y_1|^2+|x_2-\lambda_2y_2|^2\right)^{1/2}.
+\]
+
+\begin{theorem}\label{thm:main}
+The frame $X=(e_1,e_2)$ does $1$-stable phase retrieval modulo
+$\sim_{\mathrm{isl}}$. For every $\eta>0$, however, there is a frame
+$Y=(y_1,y_2)$ satisfying
+\[
+ \sum_{j=1}^2\|y_j-e_j\|^2<\eta
+\]
+which is not even injective modulo $\sim_{\mathrm{isl}}$. Consequently no
+analogue of arbitrary-perturbation stability is possible for a fixed
+independent-island quotient, even in dimension two.
+\end{theorem}
+
+\section{Proof intuition}
+
+The coordinate frame measures the two islands separately, so its magnitude
+map is exactly the quotient-coordinate map $(x_1,x_2)\mapsto(|x_1|,|x_2|)$.
+Mix a tiny amount of the second island into the first measurement. Flipping
+the sign of that mixed measurement and solving the resulting two linear
+equations produces another signal with identical magnitudes. The new signal
+has a nonzero first-island component, whereas the original one does not, so
+the two signals are not equivalent under independent island phases. The
+instability is therefore qualitative, not merely a loss in the Lipschitz
+constant.
+
+Conversely, if measurement vectors are forbidden from crossing between
+islands, the problem separates exactly. Restricting the original stability
+inequality to one island gives ordinary stable phase retrieval there. The
+source perturbation theorem applies on every island, and orthogonality lets us
+sum the squared estimates without losing either the threshold or the
+stability constant.
+
+\section{Counterexample proof}
+
+For scalars $a,b$,
+\[
+ \min_{\lambda\in\T}|a-\lambda b|=\big||a|-|b|\big|.
+\]
+It follows coordinatewise that
+\begin{equation}\label{eq:quotient}
+ \dI(x,y)^2=\big(|x_1|-|y_1|\big)^2+
+                    \big(|x_2|-|y_2|\big)^2.
+\end{equation}
+The analysis map of $X=(e_1,e_2)$ is $\Theta_Xx=(x_1,x_2)$, hence
+\[
+ \dI(x,y)=\big\||\Theta_Xx|-|\Theta_Xy|\big\|_2.
+\]
+This proves exact $1$-stability modulo $\sim_{\mathrm{isl}}$.
+
+Fix $\eta>0$ and choose $0<\varepsilon<\sqrt\eta$. Set
+\[
+ y_1=e_1+\varepsilon e_2,\qquad y_2=e_2.
+\]
+Then
+\[
+ \|y_1-e_1\|^2+\|y_2-e_2\|^2=\varepsilon^2<\eta.
+\]
+The analysis matrix of $Y=(y_1,y_2)$ is
+\[
+ S_\varepsilon=
+ \begin{pmatrix}1&\varepsilon\\0&1\end{pmatrix},
+\]
+so $Y$ remains a basis (and therefore a frame) for every $\varepsilon$.
+
+Now take
+\[
+ x=e_2=(0,1),\qquad z=-2\varepsilon e_1+e_2=(-2\varepsilon,1).
+\]
+Both vectors are real, so the same calculation works over either scalar
+field. Directly,
+\[
+ S_\varepsilon x=(\varepsilon,1),
+ \qquad S_\varepsilon z=(-\varepsilon,1).
+\]
+Thus
+\[
+ |\Theta_Yx|=|\Theta_Yz|=(\varepsilon,1).
+\]
+On the other hand, equation~\eqref{eq:quotient} gives
+\[
+ \dI(x,z)=
+ \left((0-2\varepsilon)^2+(1-1)^2\right)^{1/2}
+ =2\varepsilon>0.
+\]
+Therefore $x\not\sim_{\mathrm{isl}}z$ despite identical magnitude
+measurements. The perturbed frame fails injectivity on the quotient, so it
+cannot satisfy any finite stability inequality. This proves the theorem.
+
+\section{Structure-preserving perturbations}
+
+We now prove the positive half in the natural finite-dimensional
+orthogonal-island model. Let
+\[
+ H=\bigoplus_{k=1}^r H_k
+\]
+be an orthogonal decomposition, let $P_k$ denote the orthogonal projection
+onto $H_k$, and partition the frame index set as
+$J=J_1\sqcup\cdots\sqcup J_r$. Define the independent-island quotient metric
+by
+\begin{equation}\label{eq:blockmetric}
+ d_r(x,y)=\min_{\lambda_1,\ldots,\lambda_r\in\T}
+ \left\|x-\sum_{k=1}^r\lambda_kP_ky\right\|.
+\end{equation}
+
+\begin{theorem}[Island-preserving perturbation theorem]\label{thm:positive}
+Let $X=(x_j)_{j\in J}$ be a frame for $H$ with frame bounds
+$B\geq A>0$. Assume that
+\[
+ x_j\in H_k\quad(j\in J_k)
+\]
+and that $X$ does $C$-stable phase retrieval for the quotient metric $d_r$:
+\[
+ d_r(x,y)\leq C
+ \left(\sum_{j\in J}
+ \big||\langle x,x_j\rangle|-|\langle y,x_j\rangle|\big|^2\right)^{1/2}.
+\]
+Let
+\[
+ 0<\nu<\frac{1}{16C^4B},
+\]
+and let $Y=(y_j)_{j\in J}$ be a structure-preserving perturbation satisfying
+\[
+ y_j\in H_k\quad(j\in J_k),
+ \qquad \sum_{j\in J}\|x_j-y_j\|^2<\nu.
+\]
+Then $Y$ is a frame with bounds
+\[
+ A\left(1-\sqrt{\frac{\nu}{A}}\right)^2
+ \quad\text{and}\quad
+ B\left(1+\sqrt{\frac{\nu}{B}}\right)^2,
+\]
+and it does $C_\nu$-stable phase retrieval modulo independent island phases,
+where
+\[
+ C_\nu=C\left(1-4C^2\sqrt{\nu B}\right)^{-1/2}.
+\]
+Thus the threshold and stability estimate are exactly those of the ordinary
+perturbation theorem in the source.
+\end{theorem}
+
+\begin{proof}
+For $u,v\in H_k$, equation~\eqref{eq:blockmetric} reduces to the ordinary
+phase quotient:
+\[
+ d_r(u,v)=\min_{\lambda\in\T}\|u-\lambda v\|.
+\]
+Measurements indexed outside $J_k$ vanish on $H_k$. Hence the restriction
+$X_k=(x_j)_{j\in J_k}$ is a frame for $H_k$ with the same admissible frame
+bounds $A,B$, and the assumed quotient inequality shows that $X_k$ does
+$C$-stable ordinary phase retrieval.
+
+Put $Y_k=(y_j)_{j\in J_k}$. Its perturbation size satisfies
+\[
+ \sum_{j\in J_k}\|x_j-y_j\|^2<\nu.
+\]
+The ordinary perturbation theorem of Alharbi et al. therefore applies to
+every pair $X_k,Y_k$ with the same parameter $\nu$. It gives the displayed
+frame bounds and, for all $u,v\in H_k$,
+\begin{equation}\label{eq:blockestimate}
+ \min_{\lambda\in\T}\|u-\lambda v\|
+ \leq C_\nu\left(\sum_{j\in J_k}
+ \big||\langle u,y_j\rangle|-|\langle v,y_j\rangle|\big|^2\right)^{1/2}.
+\end{equation}
+
+Summing the block frame inequalities proves the asserted global frame bounds
+for $Y$. Finally, orthogonality makes the minimization in
+\eqref{eq:blockmetric} separate:
+\[
+ d_r(x,y)^2=\sum_{k=1}^r
+ \min_{\lambda\in\T}\|P_kx-\lambda P_ky\|^2.
+\]
+Apply the square of \eqref{eq:blockestimate} with
+$u=P_kx$, $v=P_ky$, and sum over $k$. Since $y_j\in H_k$ for $j\in J_k$,
+the right-hand side becomes
+\[
+ C_\nu^2\sum_{j\in J}
+ \big||\langle x,y_j\rangle|-|\langle y,y_j\rangle|\big|^2.
+\]
+Taking square roots gives the claimed global stability estimate.
+\end{proof}
+
+\section{Sharp dichotomy and scope}
+
+The example embeds in $\F^m$ for every $m\ge2$: retain the same first two
+frame vectors and signals, and append $e_3,\dots,e_m$. Hence neither dimension
+nor the number of separated islands repairs the obstruction.
+
+Theorem~\ref{thm:main} and Theorem~\ref{thm:positive} give the promised sharp
+answer in the orthogonal-island model. Allowing even one arbitrarily small
+cross-island component can destroy quotient injectivity, whereas every
+sufficiently small island-preserving perturbation retains stable recovery with
+an explicit dimension-free constant. More general notions of approximately
+separated islands, signal-dependent island decompositions, or perturbations
+that change the quotient itself remain separate questions.
+
+\section{Exact verification}
+
+The script \texttt{code/verify\_counterexample.py} checks with exact rational
+arithmetic that the perturbation size is nonzero and arbitrarily scalable,
+the perturbed vectors form a basis, the two displayed magnitude measurements
+agree, and their quotient distance is positive. The positive theorem is an
+exact blockwise consequence of the source perturbation theorem; its only
+additional identity is the orthogonal sum-of-squares decomposition displayed
+in the proof.
+
+\begin{thebibliography}{9}
+\bibitem{AFGLS}
+W.~Alharbi, D.~Freeman, D.~Ghoreishi, C.~Lois, and S.~Sebastian,
+\emph{Stable phase retrieval and perturbations of frames},
+Proc. Amer. Math. Soc. Ser. B 10 (2023), 353--368;
+\href{https://arxiv.org/abs/2212.13681}{arXiv:2212.13681}.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,283 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Lp}{L^p[0,1]}
+\newcommand{\Xq}{X_q}
+
+\title{A logarithmic endpoint partial result for the\\
+continuous Bennett--Carl conjecture}
+\author{Run \texttt{fa\_banach\_001}, lane 13}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Candidate partial result, likely valid.  The $(p,1)$-summing conjecture itself
+remains open.
+
+\section{Source problem}
+
+Astashkin, Le\'snik and Wojciechowski~\cite{ALW} define, for $1<p<2$,
+\[
+  X_p=\Lambda_{p,W_p},\qquad
+  W_p(t)=\log^{,1-p}(e/t),
+\]
+and prove that the inclusion $J:X_p\to L^p[0,1]$ is $(q,1)$-absolutely
+summing for every $p<q<2$.  Their Conjecture~3.4 asks whether $J$ is
+$(p,1)$-absolutely summing.
+
+\begin{center}
+\includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The crop is from page 12 of the source PDF.  In finite-family form the
+conjecture asks for a constant $C_p$ such that
+\begin{equation}\label{eq:conj}
+ \left(\sum_i\|f_i\|_p^p\right)^{1/p}
+ \le C_p\max_{\eps_i=\pm1}
+       \left\|\sum_i\eps_i f_i\right\|_{X_p}.
+\end{equation}
+
+For a Young function $\Phi$, write $\ell_\Phi$ for the Luxemburg sequence
+space.  We say that $T:E\to F$ is $(\Phi,1)$-summing if
+\[
+ \big\|(\|Tx_i\|_F)_i\big\|_{\ell_\Phi}
+ \le C\sup_{x^*\in B_{E^*}}\sum_i|x^*(x_i)|
+\]
+for all finite families.  The quantity on the right equals
+$\max_{\eps_i=\pm1}\|\sum_i\eps_i x_i\|_E$.
+
+\section{Proof intuition}
+
+The source proof loses the endpoint only in the embedding of the exponential
+Orlicz space $\operatorname{Exp}L^{p'}$ into $X_q$.  Its norm can be computed
+from rearrangements: the $q$-th power grows like $(q-p)^{-1}$.  All other
+constants can be kept uniform while $q\downarrow p$.  Consequently
+\[
+  \pi_{q,1}(J)^q\lesssim_p (q-p)^{-1}.
+\]
+Integrating this family of estimates with weight
+$(q-p)^{\beta-1}$ turns $u^{p+q-p}$ into
+$u^p/\log^\beta(e/u)$.  This produces a single logarithmic endpoint space
+for every $\beta>1$.  The integral diverges at $\beta=1$, so the mechanism
+does not prove the original conjecture.
+
+\section{The partial theorem}
+
+For $\beta>1$, let $\Phi_\beta$ be any Young function such that
+\begin{equation}\label{eq:phi}
+ \Phi_\beta(u)\asymp_{p,\beta}
+ \frac{u^p}{\log^\beta(e/u)}\qquad(0<u\le u_0).
+\end{equation}
+Such a Young function is obtained by convexifying the displayed function near
+zero and continuing it convexly; equivalent choices give the same sequence
+space up to equivalent norms.
+
+\begin{theorem}\label{thm:main}
+Let $1<p<2$ and $\beta>1$.  The inclusion
+$J:X_p\to L^p[0,1]$ is $(\Phi_\beta,1)$-absolutely summing.  Thus there is
+$C_{p,\beta}<\infty$ such that every finite family $(f_i)\subset X_p$ obeys
+\begin{equation}\label{eq:orlicz}
+ \big\|(\|f_i\|_p)_i\big\|_{\ell_{\Phi_\beta}}
+ \le C_{p,\beta}\max_{\eps_i=\pm1}
+ \left\|\sum_i\eps_i f_i\right\|_{X_p}.
+\end{equation}
+Moreover,
+\[
+ \ell^p\subsetneq\ell_{\Phi_\beta}\subsetneq\ell^q
+ \quad\text{for every }q>p.
+\]
+In particular, \eqref{eq:orlicz} is a genuine endpoint-scale strengthening of
+the separate $(q,1)$ estimates in~\cite{ALW}, but it is weaker than
+\eqref{eq:conj}.
+\end{theorem}
+
+\section{Proof}
+
+We first quantify the source argument.  Put $p'=p/(p-1)$ and
+$E=\operatorname{Exp}L^{p'}$.
+
+\begin{lemma}[Uniform Rademacher lower estimate]\label{lem:rad}
+There exist $\eta>0$ and $c_p>0$ such that, for every
+$q\in(p,p+\eta)$ and every finite scalar family $(a_i)$,
+\[
+ \left\|\sum_i a_i r_i\right\|_{X_q}
+ \ge c_p\left(\sum_i|a_i|^q\right)^{1/q}.
+\]
+\end{lemma}
+
+\begin{proof}
+Reorder so that $|a_1|\ge\cdots\ge|a_n|$ and set
+$A_k=\sum_{i\le k}|a_i|$.  The first $k$ signs align with the coefficients
+with probability $2^{-k}$.  Conditional on this event, the remaining signed
+sum is symmetric and is nonnegative with probability at least $1/2$.
+Therefore
+\[
+ \left(\sum_i a_i r_i\right)^*(2^{-k-1})\ge A_k.
+\]
+Writing $W_q(t)=\log^{1-q}(e/t)$ and integrating on the adjacent dyadic
+intervals gives
+\[
+ \left\|\sum_i a_i r_i\right\|_{X_q}^q
+ \ge \sum_{k=1}^n A_k^q
+ \bigl[W_q(2^{-k-1})-W_q(2^{-k-2})\bigr].
+\]
+By the mean value theorem, uniformly for $q$ in a sufficiently small compact
+interval above $p$, the bracket is at least $c_p^q(k+2)^{-q}$.  Since
+$A_k/k\ge |a_k|$, the last display is at least
+$c_p^q\sum_k|a_k|^q$, after changing $c_p$ by a fixed factor.
+\end{proof}
+
+\begin{lemma}[Quantitative near-endpoint estimate]\label{lem:q}
+After possibly decreasing $\eta$, for $p<q<p+\eta$,
+\begin{equation}\label{eq:qbound}
+ \pi_{q,1}(J)\le C_p(q-p)^{-1/q}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The elementary rearrangement estimate
+\[
+ \|f\|_{X_p}^p\ge f^*(t)^pW_p(t)
+\]
+implies
+$f^*(t)\le\|f\|_{X_p}\log^{1/p'}(e/t)$, and hence
+$X_p\hookrightarrow E$ with a constant depending only on $p$.
+Conversely, the standard rearrangement bound in $E$ gives
+$f^*(t)\le C_p\|f\|_E\log^{1/p'}(e/t)$.  Since
+\[
+ dW_q(t)=\frac{q-1}{t\log^q(e/t)}\,dt,
+\]
+we obtain
+\begin{align*}
+ \|f\|_{X_q}^q
+ &\le C_p^q\|f\|_E^q(q-1)
+   \int_0^1\frac{\log^{q/p'}(e/t)}
+                    {t\log^q(e/t)}\,dt\\
+ &=C_p^q\|f\|_E^q(q-1)
+   \int_1^\infty u^{-q/p}\,du\\
+ &=C_p^q\|f\|_E^q\frac{p(q-1)}{q-p}.
+\end{align*}
+Thus
+\begin{equation}\label{eq:embed}
+ \|E\hookrightarrow X_q\|
+ \le C_p(q-p)^{-1/q}
+\end{equation}
+uniformly in the stated interval.
+
+Let $(f_i)\subset X_p$.  The $q$-concavity inequality in $L^p$ and
+Lemma~\ref{lem:rad}, applied pointwise, yield
+\[
+ \left(\sum_i\|f_i\|_p^q\right)^{1/q}
+ \le C_p\left\|\left\|\sum_i r_i(s)f_i(t)
+                  \right\|_{X_q(s)}\right\|_{L^p(t)}.
+\]
+Use \eqref{eq:embed}, followed by the transposition estimate
+\[
+ \mathcal T:L^\infty(E)\longrightarrow L^p(E)
+\]
+from Lemma~3.1 of~\cite{ALW}, and finally $X_p\hookrightarrow E$.  We get
+\begin{align*}
+ \left(\sum_i\|f_i\|_p^q\right)^{1/q}
+ &\le C_p(q-p)^{-1/q}
+ \left\|\left\|\sum_i r_i(t)f_i(s)
+                  \right\|_{X_p(s)}\right\|_{L^\infty(t)}\\
+ &=C_p(q-p)^{-1/q}
+ \max_{\eps_i=\pm1}\left\|\sum_i\eps_i f_i\right\|_{X_p}.
+\end{align*}
+This is \eqref{eq:qbound}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Normalize
+\[
+ A:=\max_{\eps_i=\pm1}\left\|\sum_i\eps_i f_i\right\|_{X_p}=1,
+ \qquad y_i=\|f_i\|_p.
+\]
+Lemma~\ref{lem:q} says, for $0<s<\eta$,
+\begin{equation}\label{eq:moments}
+ \sum_i y_i^{p+s}\le \frac{C_p^{p+s}}{s}.
+\end{equation}
+Also $\sup_i y_i\le C_p$: prescribed signs on one coordinate can be extended
+to all coordinates without decreasing the norm, and $X_p\hookrightarrow L^p$.
+
+Choose $K\ge2C_p$ and put $z_i=y_i/K\le1/2$.  Multiply
+\eqref{eq:moments} by $K^{-(p+s)}s^{\beta-1}$ and integrate over
+$0<s<\eta$.  Enlarging $K$ by a fixed $p$-dependent factor if necessary,
+\begin{equation}\label{eq:upperint}
+ \sum_i\int_0^\eta z_i^{p+s}s^{\beta-1}\,ds
+ \le C_{p,\beta}K^{-p}\int_0^\eta s^{\beta-2}\,ds
+ <\infty,
+\end{equation}
+where the last integral is finite exactly because $\beta>1$.
+
+For $0<z\le1/2$, put $L=\log(1/z)$.  Integrating only over
+$0<s<\min(\eta,L^{-1})$ shows
+\[
+ \int_0^\eta z^{p+s}s^{\beta-1}\,ds
+ =z^p\int_0^\eta e^{-sL}s^{\beta-1}\,ds
+ \ge c_{p,\beta,\eta}\frac{z^p}{\log^\beta(e/z)}.
+\]
+Together with \eqref{eq:upperint}, this proves
+\[
+ \sum_i\Phi_\beta(y_i/K)\le C'_{p,\beta}K^{-p}.
+\]
+Increasing $K=K(p,\beta)$ once more makes the right side at most one, which
+is precisely the Luxemburg estimate \eqref{eq:orlicz}.  Homogeneity restores
+an arbitrary value of $A$.
+
+Finally, as $u\downarrow0$,
+$\Phi_\beta(u)=o(u^p)$, whereas $u^q=o(\Phi_\beta(u))$ for every $q>p$.
+The standard characteristic-sequence tests give the asserted strict
+inclusions.
+\end{proof}
+
+\section{Verification, limitations, and novelty status}
+
+\begin{itemize}
+\item The proof isolates every dependence on $q-p$.  Lemma~\ref{lem:rad}
+is uniform by an explicit dyadic calculation; the sole singular factor is
+the integral in \eqref{eq:embed}.
+\item The extrapolation argument is written out rather than invoked as a
+black box.  It is the same Yano-type mechanism developed in Section~8 of
+Kazaniecki--Pawlewicz--Wojciechowski~\cite{KPW}.
+\item The argument stops at $\beta>1$.  At $\beta=1$, the upper integral in
+\eqref{eq:upperint} is logarithmically divergent.  No assertion is made for
+$\beta=1$, and the desired $\Phi(u)=u^p$ endpoint remains open.
+\item Exact finite-atomic searches from the preceding attempt found no ratio
+above one, including perturbations of the disjoint extremizers.  These tests
+support, but do not prove, Conjecture~3.4 and are not used above.
+\item A bounded web/arXiv and local-corpus search on 21 July 2026 used the
+source title, arXiv id, author combinations, ``continuous Bennett--Carl'',
+``endpoint summing'', and logarithmic Lorentz/Orlicz variants.  It found no
+later settlement and no explicit statement of Theorem~\ref{thm:main}.
+\end{itemize}
+
+\paragraph{Human-review recommendation.}
+Promote as a likely-valid partial theorem, not as a solution of Conjecture~3.4.
+The most important checks are the uniformity in Lemma~\ref{lem:rad}, the
+orientation of the two mixed norms in the transposition step, and the
+Luxemburg normalization in the final integral.
+
+\begin{thebibliography}{9}
+\bibitem{ALW}
+S.~V. Astashkin, K.~Le\'snik, and M.~Wojciechowski,
+\emph{Looking for a continuous version of Bennett--Carl theorem},
+arXiv:2502.07041 (2025).
+
+\bibitem{KPW}
+K.~Kazaniecki, A.~Pawlewicz, and M.~Wojciechowski,
+\emph{Factoring the Sobolev embedding operator},
+arXiv:2503.20478 (2025), Section~8.
+\end{thebibliography}
+
+\end{document}

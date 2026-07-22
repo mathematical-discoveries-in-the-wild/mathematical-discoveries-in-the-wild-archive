@@ -1,0 +1,326 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1.02in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\Afour}{\ensuremath{\mathrm{(A4)}}}
+\definecolor{statusred}{RGB}{156,36,31}
+\title{Stable Distance Kernels Fail the\\RKBS Admissibility Condition \Afour}
+\author{fa\_banach\_001 / agent\_lane\_12}
+\date{22 July 2026}
+\begin{document}
+\maketitle
+\noindent
+\fcolorbox{statusred}{statusred!6}{%
+  \begin{minipage}{0.92\textwidth}
+  \textbf{Status: candidate counterexample, likely valid.}
+  For every $0<\gamma<1$, the kernels
+  $\exp(-\norm{x-y}_p^\gamma)$ proposed in the source fail \Afour:
+  the Euclidean kernel fails already in $\R^2$, and the $\ell^1$ kernel
+  fails in an explicit finite dimension depending on $\gamma$.
+  \end{minipage}}
+
+\section{Source question and exact scope}
+
+Song, Zhang, and Hickernell define an admissible kernel in
+\cite[Definition~1]{SZH}.  If $x_1,\ldots,x_n,t$ are pairwise distinct,
+$G=[K(x_i,x_j)]_{i,j=1}^n$, and
+$k_t=(K(t,x_j))_{j=1}^n$, condition \Afour is
+\begin{equation}
+  \norm{G^{-1}k_t}_{\ell^1}\leq 1.
+  \label{eq:A4}
+\end{equation}
+At the end of Section~6, on PDF page~25, the source says:
+\begin{quote}
+Finally, we remark from numerical experiments that the following kernels
+\[
+ \exp\!\left(-\norm{x-y}_{\ell^p(\mathbb N_d)}^\gamma\right),
+ \qquad x,y\in\R^d,\quad \gamma\in(0,1),\quad p=1,2,
+\]
+seem to satisfy \Afour\ for small enough $\gamma$ and moderate $n$.
+We shall leave the search of more kernels satisfying \Afour\ and its
+relaxation as an open question for future study.
+\end{quote}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The stable-distance candidates and open question on page~25
+  of the source paper.}
+  \label{fig:source}
+\end{figure}
+
+The broad request to classify more admissible or relaxed kernels is open-ended.
+The theorem below gives a full negative answer for the two displayed
+multidimensional candidate families.  It does not decide their
+one-dimensional versions when $0<\gamma<1$.
+
+\section{Proof intuition}
+
+The obstacle is visible on symmetric nodes surrounding the interpolation
+target.  Every node then has the same covariance with the target, and every
+row of the Gram matrix has the same sum.  Thus the interpolation coefficient
+vector is constant, without inverting a large matrix.  Its $\ell^1$ norm is
+the quotient of two scalar exponential sums.
+
+At zero scale, all kernel entries tend to one and this quotient tends to one.
+The first derivative records only the sum of powered distances among the
+nodes.  Cross-polytopes make that derivative positive in sufficiently high
+dimension for both $p=1$ and $p=2$.  In the Euclidean plane, sufficiently
+large regular polygons do the same for every $\gamma>0$: their mean powered
+chord length is greater than the radius power.  Hence the quotient crosses
+above one at arbitrarily small positive scales and violates \eqref{eq:A4}.
+
+\section{Counterexample theorem}
+
+\begin{theorem}
+\label{thm:main}
+Fix $0<\gamma<1$.
+\begin{enumerate}
+\item For $p=1$, choose any integer $d$ such that
+\begin{equation}
+  (2d-1)2^\gamma>2d.
+  \label{eq:d1}
+\end{equation}
+Then $K(x,y)=\exp(-\norm{x-y}_1^\gamma)$ fails \Afour\ on $\R^d$.
+Consequently it fails on every $\R^{d'}$ with $d'\geq d$.
+\item For $p=2$, the kernel
+$K(x,y)=\exp(-\norm{x-y}_2^\gamma)$ fails \Afour\ on $\R^2$, and hence
+on every $\R^d$ with $d\geq2$.
+\end{enumerate}
+In both cases there are violating node sets contained in every prescribed
+neighborhood of the target.
+\end{theorem}
+
+The condition \eqref{eq:d1} is always achievable, since $2^\gamma>1$.
+For example, the least cross-polytope dimensions selected by
+\eqref{eq:d1} are $15,8,4,2$ for
+$\gamma=0.05,0.10,0.25,0.50$, respectively.
+
+\subsection{A symmetry lemma}
+
+\begin{lemma}
+\label{lem:symmetry}
+Let $G$ be an invertible $n$-by-$n$ matrix with
+$G\one=S\one$, where $S>0$.  If $k_t=a\one$ with $a>0$, then
+\[
+  G^{-1}k_t=\frac{a}{S}\one,
+  \qquad
+  \norm{G^{-1}k_t}_{\ell^1}=\frac{na}{S}.
+\]
+\end{lemma}
+\begin{proof}
+The displayed vector solves $Gc=k_t$.  Invertibility gives uniqueness, and
+all its entries are positive, so its $\ell^1$ norm is their sum.
+\end{proof}
+
+\subsection{Cross-polytopes: both values of p}
+
+\begin{proposition}
+\label{prop:cross}
+For each $p\in\{1,2\}$ and $0<\gamma<1$, the kernel
+$\exp(-\norm{x-y}_p^\gamma)$ fails \Afour\ in some finite dimension.
+The failure occurs on arbitrarily small cross-polytopes centered at the
+target.
+\end{proposition}
+
+\begin{proof}
+Put $n=2d$, take the target $t=0$, and take the nodes
+\[
+  x_1,\ldots,x_n\in\{\pm r e_1,\ldots,\pm r e_d\}.
+\]
+Write $u=r^\gamma$.  In either norm every entry of $k_0$ is
+$a=e^{-u}$, and symmetry makes all Gram row sums equal.
+
+For $p=1$, every two distinct nodes have distance $2r$.  With
+$b=e^{-2^\gamma u}$,
+\[
+  G=(1-b)I+b\one\one^{T},\qquad
+  S_1(u)=1+(n-1)e^{-2^\gamma u}.
+\]
+The eigenvalues are $1-b>0$ and $S_1(u)>0$, so $G$ is invertible.
+By Lemma~\ref{lem:symmetry}, \Afour\ fails exactly when
+\[
+ F_1(u):=ne^{-u}-1-(n-1)e^{-2^\gamma u}>0.
+\]
+Now $F_1(0)=0$ and
+\[
+ F_1'(0)=(n-1)2^\gamma-n.
+\]
+Choose $n=2d$ satisfying \eqref{eq:d1}.  Then $F_1'(0)>0$, and therefore
+$F_1(u)>0$ for all sufficiently small $u>0$.
+
+For $p=2$, each node has one antipode at distance $2r$ and $n-2$ other
+nodes at distance $\sqrt2\,r$.  Hence
+\[
+ S_2(u)=1+e^{-2^\gamma u}
+          +(n-2)e^{-2^{\gamma/2}u}.
+\]
+For completeness, this Gram matrix is invertible without appealing to a
+general kernel theorem.  If $P$ exchanges each node with its antipode and
+$b=e^{-2^\gamma u}$, $c=e^{-2^{\gamma/2}u}$, then
+\[
+ G=(1-c)I+(b-c)P+c\one\one^T.
+\]
+Its eigenvalues are $S_2(u)$, $1-b$, and $1+b-2c$.  The last is positive:
+\[
+ \frac{1+b}{2}>\sqrt b
+ =e^{-2^{\gamma-1}u}>e^{-2^{\gamma/2}u}=c,
+\]
+where $\gamma<2$ gives $2^{\gamma-1}<2^{\gamma/2}$.
+
+Again Lemma~\ref{lem:symmetry} reduces failure to $F_2(u)>0$, where
+\[
+ F_2(u):=ne^{-u}-S_2(u),\qquad
+ F_2'(0)=2^\gamma+(n-2)2^{\gamma/2}-n.
+\]
+Since $2^{\gamma/2}>1$, the derivative is positive for all sufficiently
+large even $n$.  Then $F_2(u)>0$ for every sufficiently small $u>0$.
+As $r=u^{1/\gamma}$ can be arbitrarily small, so can the configurations.
+\end{proof}
+
+\subsection{Regular polygons: Euclidean failure in dimension two}
+
+\begin{proposition}
+\label{prop:circle}
+For every $\gamma>0$ for which
+$K_\gamma(x,y)=e^{-\norm{x-y}_2^\gamma}$ is strictly positive definite
+(in particular, every $0<\gamma<1$), the kernel fails \Afour\ on $\R^2$.
+\end{proposition}
+
+\begin{proof}
+For an integer $n\geq3$, let the target be $0$ and put
+\[
+ x_j=r\bigl(\cos(2\pi j/n),\sin(2\pi j/n)\bigr),
+ \qquad j=0,\ldots,n-1.
+\]
+The nodes are distinct and the stable radial kernel is strictly positive
+definite for $0<\gamma<2$ by Schoenberg's theorem
+\cite{Schoenberg}; hence their Gram matrix is invertible.
+
+Set $u=r^\gamma$ and
+\[
+ \delta_j=2\sin(\pi j/n),\qquad
+ S_n(u)=\sum_{j=0}^{n-1}e^{-u\delta_j^\gamma}.
+\]
+The Gram matrix is circulant with row sum $S_n(u)$, while
+$k_0=e^{-u}\one$.  Lemma~\ref{lem:symmetry} gives
+\begin{equation}
+ \norm{G^{-1}k_0}_{\ell^1}
+   =\frac{ne^{-u}}{S_n(u)}.
+ \label{eq:circlequot}
+\end{equation}
+
+We first choose $n$.  The continuous Riemann sums satisfy
+\begin{equation}
+ \frac1n\sum_{j=0}^{n-1}\delta_j^\gamma
+ \longrightarrow
+ I_\gamma:=\int_0^1(2\sin(\pi s))^\gamma\,ds.
+ \label{eq:riemann}
+\end{equation}
+Moreover $I_\gamma>1$.  Indeed,
+\[
+ \int_0^1\log(2\sin(\pi s))\,ds=0,
+\]
+because $\int_0^\pi\log(\sin t)\,dt=-\pi\log2$.  The logarithm is
+integrable and nonconstant, so strict Jensen gives
+\[
+ I_\gamma
+ =\int_0^1\exp\!\bigl(\gamma\log(2\sin(\pi s))\bigr)\,ds
+ >
+ \exp\!\left(\gamma\int_0^1\log(2\sin(\pi s))\,ds\right)=1.
+\]
+By \eqref{eq:riemann}, some $n$ therefore satisfies
+\begin{equation}
+  \sum_{j=0}^{n-1}\delta_j^\gamma>n.
+  \label{eq:chord}
+\end{equation}
+
+For this $n$, define $F_n(u)=ne^{-u}-S_n(u)$.  Then
+\[
+ F_n(0)=0,\qquad
+ F_n'(0)=-n+\sum_{j=0}^{n-1}\delta_j^\gamma>0
+\]
+by \eqref{eq:chord}.  Thus $F_n(u)>0$ for all sufficiently small
+$u>0$.  Equation~\eqref{eq:circlequot} is then strictly greater than one,
+which violates \Afour.  Taking $u\downarrow0$ places the polygon in an
+arbitrarily small disk.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The $\ell^1$ assertion follows from the first half of
+Proposition~\ref{prop:cross}; embedding the same finite configuration by
+zero-padding gives failure in every higher dimension.  The Euclidean
+assertion is Proposition~\ref{prop:circle}, and the same embedding gives all
+$d\geq2$.  Both constructions allow $r$ to be arbitrarily small.
+\end{proof}
+
+\section{Verification}
+
+The proof above is analytic.  The deterministic script
+\path{code/verify_symmetric_counterexamples.py} independently:
+\begin{itemize}
+\item finds cross-polytope dimensions and checks the scalar quotients at
+80-digit precision for six values of $\gamma$ from $0.05$ to $0.95$;
+\item finds regular-polygon sizes and checks their powered-chord derivatives;
+\item directly builds and solves a $6$-by-$6$ Euclidean Gram system for
+$\gamma=1/2$, rather than using the quotient formula.
+\end{itemize}
+The direct solve reports minimum eigenvalue
+$7.79\cdot10^{-3}$, infinity-norm residual
+$1.11\cdot10^{-16}$, coefficient spread
+$1.69\cdot10^{-15}$, and \Afour\ norm $1.000065821370$.
+The run ends with
+\texttt{ALL SYMMETRIC COUNTEREXAMPLE CHECKS PASSED}.
+These checks are not used as proof.
+
+\section{Limitations and bounded novelty check}
+
+The theorem settles the two named candidates negatively as multidimensional
+\Afour\ kernels.  It does not classify all admissible kernels, decide either
+kernel on $\R$, or give optimal growth for the relaxed Lebesgue constants.
+The source's finite numerical observation for moderate $n$ is not itself
+false: the theorem shows why such experiments cannot establish the universal
+quantifiers in \Afour.
+
+On 22 July 2026, the run's registry, solution, attempt, and proof-gap indexes
+were searched by arXiv id, exact title, the phrases admissible kernel,
+condition (A4), stable distance kernel, and the displayed exponential formula.
+Bounded web/arXiv searches used the exact source sentence, title/citation
+combinations, and the formula together with Lebesgue constant and A4.
+They found the source and later papers constructing other admissible RKBS
+kernels, including arXiv:1901.01036 and arXiv:1903.00819, but no prior
+resolution of this named stable-distance family.  This is a bounded search,
+not an exhaustive novelty claim.
+
+\section{Human-review recommendation}
+
+This packet is suitable for expert review as a candidate counterexample.
+The highest-value checks are the derivative signs in
+Proposition~\ref{prop:cross}, strict Jensen and the Riemann-sum quantifier in
+Proposition~\ref{prop:circle}, and the use of strict positive definiteness for
+the planar Gram matrix.  Until review, retain the status
+\emph{candidate counterexample, likely valid}.
+
+\begin{thebibliography}{9}
+\bibitem{SZH}
+G. Song, H. Zhang, and F. J. Hickernell,
+\emph{Reproducing Kernel Banach Spaces with the $\ell^1$ Norm},
+Appl. Comput. Harmon. Anal. \textbf{34} (2013), 96--116;
+arXiv:1101.4388.
+
+\bibitem{Schoenberg}
+I. J. Schoenberg,
+\emph{Metric spaces and positive definite functions},
+Trans. Amer. Math. Soc. \textbf{44} (1938), 522--536.
+\end{thebibliography}
+\end{document}

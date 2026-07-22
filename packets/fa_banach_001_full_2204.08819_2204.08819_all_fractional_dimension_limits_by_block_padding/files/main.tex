@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\definecolor{linkblue}{HTML}{1E5AA8}
+\definecolor{statusgreen}{HTML}{246B45}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue}
+\setlist{itemsep=0.3em,topsep=0.4em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\M}{\mathrm M}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{All fractional-dimension limits for operator systems\\
+supporting non-extendible positive isometries}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 4 (\texttt{agent\_lane\_04})}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{statusgreen}{statusgreen!7}{\parbox{0.88\linewidth}{
+\textbf{Classification: \texttt{candidate\_full\_solution\_likely\_valid}.}
+The argument gives a complete negative answer to the source question as stated.  The source imposes no irreducibility or generation condition; such hypotheses define a separate strengthened problem.
+}}
+\end{center}
+
+\begin{abstract}
+Chiribella, Davidson, Paulsen, and Rahaman asked whether there are bounds on the fractional dimension of an operator system needed to support their non-extendible positive maps.  We give a complete negative answer to the question as stated.  Starting from any non-extendible positive unital isometry on an operator system, direct-sum replication and a full-matrix padding block preserve all of those properties.  Applied to their seven-dimensional system in $\M_4(\C)$, this produces fractional dimensions
+\[
+  \delta_{r,k}=\frac{7r+k^2}{(4r+k)^2}\qquad(r\geq1,\ k\geq0).
+\]
+Every $\theta\in[0,1]$ is a limit of such fractions.  Thus there is neither a positive universal lower density nor a universal upper density below one in the unrestricted formulation.
+\end{abstract}
+
+\section{Source question and precise scope}
+
+The source paper constructs positive unital norm-one maps and positive isometries on operator systems which admit no positive extension to the ambient full matrix algebra \cite{CDPR}.  After comparing examples of asymptotic fractional dimensions $1/2$ and $1/4$, the authors ask whether the fractional dimension needed for such examples is bounded.  The question and its immediate context appear on page 2:
+
+\begin{center}
+  \includegraphics[width=0.94\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+For an operator system $\mathcal S\subseteq \M_N(\C)$, we use the paper's convention
+\[
+  \operatorname{fdim}(\mathcal S;\M_N)
+   :=\frac{\dim_{\C}\mathcal S}{\dim_{\C}\M_N(\C)}
+   =\frac{\dim_{\C}\mathcal S}{N^2}.
+\]
+The result below concerns positive unital isometries $\Phi:\mathcal S\to\M_N(\C)$ with no positive linear extension $\widetilde\Phi:\M_N(\C)\to\M_N(\C)$.
+
+\paragraph{Answer obtained.}
+All of $[0,1]$ occurs as the set of limit points of fractional dimensions.  Consequently, there is no nonzero universal lower density and no universal upper density below one.  These are the strongest possible asymptotic conclusions because every fractional dimension already lies in $[0,1]$.
+
+\subsection*{Why this answers the stated question completely}
+
+The arXiv manuscript and the published journal article use the same formulation.  Neither adds an irreducibility, generation, indecomposability, or fixed-$N$ condition.  The construction below satisfies every condition that is stated:
+
+\begin{center}
+\begin{tabular}{@{}p{0.37\linewidth}p{0.52\linewidth}@{}}
+\toprule
+\textbf{Requirement in the source setting} & \textbf{Verification below} \\
+\midrule
+operator system inside a matrix algebra & $\mathcal S_{r,k}\subseteq\M_{rm+k}(\C)$ is unital and self-adjoint \\
+positive, unital, norm-one map & $\Phi_{r,k}$ is a positive unital isometry \\
+no positive extension to the full algebra & first-corner compression would extend the seed map \\
+answer about fractional dimension bounds & the limit-point set is exactly $[0,1]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus reducibility of the example is not a qualification to the stated problem.  Requiring $C^*(\mathcal S)=\M_N(\C)$ or irreducibility would be a natural new problem, but it is an additional hypothesis rather than an unresolved part of the original question.
+
+\section{Idea of the proof}
+
+There are two independent padding operations.
+
+\begin{enumerate}
+  \item Repeat a non-extendible example on $r$ diagonal blocks.  The operator-system dimension grows linearly in $r$, whereas the full ambient matrix-algebra dimension grows quadratically.  This drives the fractional dimension to zero.
+  \item Append one unrestricted $k\times k$ block on which the map is the identity.  For $k$ much larger than the original blocks, the operator system occupies nearly the full ambient dimension, driving the fraction to one.
+\end{enumerate}
+
+The key point is that neither operation repairs non-extendibility.  If a positive extension existed after padding, embed an arbitrary matrix into the first original diagonal block, apply the extension, and compress back to that block.  The composite would be a positive extension of the original map.
+
+Balancing $k$ linearly against $r$ interpolates continuously between the two endpoints and produces every intermediate limiting fraction.
+
+\section{Block-padding theorem}
+
+We first state the construction independently of the particular example in \cite{CDPR}.
+
+\begin{theorem}[Replication and full-block padding]\label{thm:padding}
+Let $\mathcal S\subseteq\M_m(\C)$ be an operator system of complex dimension $d$, and suppose
+\[
+  \Phi:\mathcal S\longrightarrow\M_m(\C)
+\]
+is a positive unital isometry having no positive extension to $\M_m(\C)$.  For integers $r\geq1$ and $k\geq0$, define the block-diagonal operator system
+\[
+ \mathcal S_{r,k}
+ :=\underbrace{\mathcal S\oplus\cdots\oplus\mathcal S}_{r\text{ copies}}
+   \oplus\M_k(\C)
+ \subseteq \M_{rm+k}(\C),
+\]
+where the last summand is omitted when $k=0$, and define
+\[
+ \Phi_{r,k}
+ :=\underbrace{\Phi\oplus\cdots\oplus\Phi}_{r\text{ copies}}
+   \oplus\id_{\M_k}.
+\]
+Then $\Phi_{r,k}$ is a positive unital isometry and has no positive extension to $\M_{rm+k}(\C)$.  Moreover,
+\[
+  \operatorname{fdim}(\mathcal S_{r,k};\M_{rm+k})
+  =\frac{rd+k^2}{(rm+k)^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+The block-diagonal space $\mathcal S_{r,k}$ is complex linear, self-adjoint, and contains the identity of $\M_{rm+k}(\C)$, hence is an operator system.  A block-diagonal element
+\[
+ X=\diag(X_1,\ldots,X_r,Y),
+ \qquad X_j\in\mathcal S,\quad Y\in\M_k(\C),
+\]
+is positive if and only if every $X_j$ and $Y$ is positive.  Since $\Phi$ and the identity map are positive, $\Phi_{r,k}(X)$ is positive whenever $X$ is positive.  Unitality follows block by block.
+
+The operator norm of a block-diagonal matrix is the maximum of the block norms.  Therefore
+\begin{align*}
+ \|\Phi_{r,k}(X)\|
+ &=\max\bigl\{\|\Phi(X_1)\|,\ldots,\|\Phi(X_r)\|,\|Y\|\bigr\}\\
+ &=\max\bigl\{\|X_1\|,\ldots,\|X_r\|,\|Y\|\bigr\}
+ =\|X\|,
+\end{align*}
+with the terms involving $Y$ omitted if $k=0$.  Thus $\Phi_{r,k}$ is an isometry.
+
+It remains to prove non-extendibility.  Suppose, toward a contradiction, that a positive linear map
+\[
+ \Psi:\M_{rm+k}(\C)\longrightarrow\M_{rm+k}(\C)
+\]
+extends $\Phi_{r,k}$.  Let
+\[
+ \iota:\M_m(\C)\to\M_{rm+k}(\C),\qquad
+ \iota(A)=\diag(A,0,\ldots,0),
+\]
+and let
+\[
+ \pi:\M_{rm+k}(\C)\to\M_m(\C),\qquad
+ \pi(B)=PBP,
+\]
+where the codomain is identified with the first $m\times m$ corner and $P$ is the corresponding orthogonal projection.  Both $\iota$ and $\pi$ are positive.  Hence $\pi\circ\Psi\circ\iota$ is a positive map $\M_m(\C)\to\M_m(\C)$.  For $A\in\mathcal S$,
+\[
+ (\pi\circ\Psi\circ\iota)(A)
+ =\pi\bigl(\Phi_{r,k}(\diag(A,0,\ldots,0))\bigr)
+ =\Phi(A).
+\]
+Thus $\pi\circ\Psi\circ\iota$ is a positive extension of $\Phi$, contradicting the hypothesis.  Therefore $\Phi_{r,k}$ has no positive extension.
+
+Finally, direct sums add vector-space dimensions, so
+\[
+ \dim_{\C}\mathcal S_{r,k}=rd+k^2,
+ \qquad
+ \dim_{\C}\M_{rm+k}(\C)=(rm+k)^2,
+\]
+which gives the displayed fractional dimension.
+\end{proof}
+
+\section{Every fractional dimension is a limit point}
+
+The complex construction in Section 4 of \cite{CDPR} is
+\[
+ \mathcal T_n=
+ \left\{
+ \begin{pmatrix}A&bI_n\\cI_n&dI_n\end{pmatrix}:
+ A\in\M_n(\C),\ b,c,d\in\C
+ \right\}\subseteq\M_{2n}(\C),
+\]
+with $\Gamma_n$ obtained by replacing $A$ with $A^{\mathsf T}$.  The paper proves that, for $n\geq2$, $\Gamma_n$ is a positive unital isometry with no positive extension.  Taking $n=2$ gives
+\[
+  \mathcal T_2\subseteq\M_4(\C),
+  \qquad \dim_{\C}\mathcal T_2=2^2+3=7.
+\]
+
+\begin{corollary}[Complete interval of asymptotic densities]\label{cor:interval}
+For every $r\geq1$ and $k\geq0$, there is an operator system
+$\mathcal U_{r,k}\subseteq\M_{4r+k}(\C)$ supporting a positive unital isometry with no positive extension and satisfying
+\[
+  \operatorname{fdim}(\mathcal U_{r,k};\M_{4r+k})
+  =\delta_{r,k}:=\frac{7r+k^2}{(4r+k)^2}.
+\]
+The set of limit points of the numbers $\delta_{r,k}$ is exactly the entire interval $[0,1]$.  In particular, no universal positive lower bound, and no universal upper bound smaller than one, can hold for these fractional dimensions.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:padding} to $(\mathcal S,\Phi,m,d)=(\mathcal T_2,\Gamma_2,4,7)$.
+
+For the lower endpoint, take $k=0$ and let $r\to\infty$:
+\[
+  \delta_{r,0}=\frac{7r}{(4r)^2}=\frac{7}{16r}\longrightarrow0.
+\]
+For the upper endpoint, take $r=1$ and let $k\to\infty$:
+\[
+  \delta_{1,k}=\frac{7+k^2}{(4+k)^2}\longrightarrow1.
+\]
+
+Now fix $0<\theta<1$ and write $s=\sqrt\theta$.  Set
+\[
+  \lambda=\frac{4s}{1-s}>0,
+  \qquad k_r=\lfloor\lambda r\rfloor.
+\]
+Then $k_r/r\to\lambda$, and division of numerator and denominator by $r^2$ yields
+\begin{align*}
+ \delta_{r,k_r}
+ &=\frac{7/r+(k_r/r)^2}{(4+k_r/r)^2}
+ \longrightarrow \frac{\lambda^2}{(4+\lambda)^2}\\
+ &=\left(\frac{\lambda}{4+\lambda}\right)^2
+ =s^2=\theta.
+\end{align*}
+Thus every point of $[0,1]$ is a limit point.  Conversely, every $\delta_{r,k}$ lies in $[0,1]$ because it is the dimension ratio of a subspace of $\M_{4r+k}(\C)$.  Hence no limit point can lie outside $[0,1]$.
+\end{proof}
+
+\begin{remark}[The same phenomenon from any seed]
+The constants $4$ and $7$ are not essential.  If any seed $(\mathcal S,\Phi)\subseteq\M_m(\C)$ as in Theorem~\ref{thm:padding} exists, replication gives density $d/(m^2r)\to0$, full-block padding gives density tending to one, and choosing $k/r\to m\sqrt\theta/(1-\sqrt\theta)$ gives every $\theta\in(0,1)$.
+\end{remark}
+
+\section{Interpretation, strengthened variants, and checks}
+
+\subsection*{What is resolved}
+
+The source question is phrased without irreducibility, generation, or fixed-ambient-size restrictions.  Corollary~\ref{cor:interval} therefore gives a full negative answer: it rules out every nontrivial universal density threshold.  In particular, examples exist at arbitrarily small positive fractional dimension.  The interpolation statement shows that the absence of a bound is not confined to a sparse endpoint phenomenon.
+
+\subsection*{Stronger questions not asked by the source}
+
+The new operator systems are visibly reducible: they are block diagonal, and for $r>1$ or $k>0$ they do not generate the entire ambient algebra $\M_{4r+k}(\C)$.  This does not affect the answer above, but it motivates the following genuinely stronger questions:
+
+\begin{itemize}
+  \item a lower density bound for operator systems satisfying $C^*(\mathcal S)=\M_N(\C)$;
+  \item a bound under irreducibility or a prescribed commutant condition;
+  \item the exact smallest dimension at a fixed ambient size $N$;
+  \item a bound for only the indecomposable forms of the three constructions in \cite{CDPR}.
+\end{itemize}
+
+These are the natural places where a substantive dimension bound could survive.
+
+\subsection*{Proof-risk audit}
+
+\begin{itemize}
+  \item \textbf{Complex dimensions:} $\dim_{\C}\mathcal T_2=7$ and $\dim_{\C}\M_4=16$, consistent with the source's asymptotic $1/4$ calculation for $\mathcal T_n$.
+  \item \textbf{Positivity of compression:} $B\mapsto PBP$ sends positive matrices to positive matrices.  Neither the corner embedding nor compression needs to be unital for the contradiction.
+  \item \textbf{No hidden off-diagonal requirement:} an extension is defined on the full ambient algebra; restricting it through the first corner is therefore legitimate even though the padded operator system itself is block diagonal.
+  \item \textbf{Endpoint language:} finite-dimensional fractional dimensions are strictly positive, so $0$ is asserted only as a limit point.  The value $1$ is likewise obtained as a limit here, not claimed for a proper operator system at a finite size.
+\end{itemize}
+
+\section{Bounded novelty search}
+
+The run's four cheap indexes (registry, theorem index, open-problem index, and negative-results index) were searched for arXiv:2204.08819 and for combinations of \emph{fractional dimension}, \emph{non-extendible positive map}, \emph{positive isometry}, \emph{direct sum}, and \emph{block padding}; no prior run result was found.  A bounded web/arXiv search on 22 July 2026 used the exact title, DOI, arXiv identifier, and the same keyword combinations.  It recovered the arXiv manuscript, the published 2023 article, and an author-hosted copy.  The published formulation is unchanged and contains no extra structural restriction.  No later paper stating the padding theorem or the $[0,1]$ limit-point conclusion was found.
+
+This is evidence of novelty, not a proof of novelty.  The direct-sum argument is elementary enough that it could be folklore or implicit elsewhere.  The mathematical claim should therefore be checked independently, and any publication-level novelty claim should receive a broader expert literature review.
+
+\section{Recommended human review}
+
+The highest-value checks are:
+
+\begin{enumerate}
+  \item confirm the logical audit that the published question contains no condition excluded by block padding;
+  \item verify the corner-compression non-extendibility argument in Theorem~\ref{thm:padding};
+  \item search operator-system folklore for equivalent direct-sum padding observations;
+  \item consider formulating the irreducible or full-generation variant as a new open problem.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{CDPR}
+G. Chiribella, K. R. Davidson, V. I. Paulsen, and M. Rahaman,
+\emph{Counterexamples to the extendibility of positive unital norm-one maps},
+Linear Algebra Appl. \textbf{663} (2023), 102--115,
+\url{https://doi.org/10.1016/j.laa.2023.01.003}; arXiv:2204.08819.
+\end{thebibliography}
+
+\end{document}

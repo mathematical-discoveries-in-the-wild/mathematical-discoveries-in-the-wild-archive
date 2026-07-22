@@ -1,0 +1,247 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{placeins}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\D}{\mathcal D}
+\newcommand{\A}{\mathcal A}
+\newcommand{\1}{\mathbf 1}
+
+\title{Decay Alone Does Not Support Directional\\
+Wavelet--Riesz Interpolation\\
+\large A counterexample to the open problem in arXiv:1409.2143}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 2}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, pending human review.
+The result gives a full negative answer to the literal ``decay estimates
+only'' formulation. If direction-specific sectional oscillation is intended
+to remain implicit, the example instead identifies a sharp missing
+hypothesis.
+}}
+\end{center}
+
+\section{Source problem}
+
+Muller and Muller \cite{source} study estimates controlling a directional
+wavelet projection $W^{(\varepsilon)}$ by a Riesz transform $R_{i_0}$ when
+$\varepsilon_{i_0}=1$. Their wavelets are indexed by dyadic cubes
+$Q\subset\R^n$ and orientations
+$\varepsilon\in\{0,1\}^n\setminus\{0\}$. The localization and decay
+condition (1.2a) is
+\begin{equation}
+ |\varphi_Q^{(\varepsilon)}(x)|
+ \leq C\left(1+\frac{\operatorname{dist}(x,Q)}{s(Q)}\right)^{-n(1+\delta)}.
+ \label{eq:decay}
+\end{equation}
+After comparing their Holder-regular estimates with the directional Haar
+estimate, they state the following problem on p.~4 of the arXiv PDF:
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Full-width source crop containing the complete decay-only problem.}
+ \label{fig:problem}
+\end{figure}
+
+In transcription: ``It remains an open problem to prove interpolatory
+estimates for directional projections $W^{(\varepsilon)}$ when the underlying
+wavelets satisfy decay estimates only.'' We show that decay alone is
+insufficient. The obstruction is already present in $L^2(\R^2)$.
+
+\FloatBarrier
+\section{Definitions and target class of estimates}
+
+Let $R_1$ be the first Riesz transform on $L^2(\R^2)$, with Fourier
+multiplier
+\[
+ -i\frac{\xi_1}{(\xi_1^2+\xi_2^2)^{1/2}}.
+\]
+An interpolatory estimate of the source's type has the property that its
+right-hand side is $o(\|u\|_2)$ whenever
+$\|R_1u\|_2=o(\|u\|_2)$. To cover both the power and logarithmic estimates,
+we consider the general form
+\begin{equation}
+ \|W^{(1,0)}u\|_2
+ \leq C\|u\|_2\,
+ \Psi\!\left(\frac{\|R_1u\|_2}{\|u\|_2}\right),
+ \qquad u\ne0,
+ \label{eq:generalestimate}
+\end{equation}
+where $\Psi:[0,1]\to[0,\infty)$ satisfies
+$\Psi(t)\to0$ as $t\downarrow0$. The source's power controls use
+$\Psi(t)=t^\beta$ with $\beta>0$, while its Lipschitz endpoint has, up to a
+constant, $\Psi(t)=t(1+\log(1/t))$.
+
+\section{Proof intuition}
+
+Once every direction-specific condition is removed, decay sees where a
+wavelet is located but not which coordinate its orientation label describes.
+We exploit this literally: swap the labels of the horizontal and vertical
+tensor Haar wavelets. This preserves the complete decay-only hypothesis, but
+the projection now called ``$(1,0)$-directional'' actually selects wavelets
+which cancel in the second coordinate.
+
+A long horizontal strip is a finite sum of those selected wavelets, so the
+relabeled projection fixes it. As the strip becomes longer, its first-coordinate
+Fourier frequencies concentrate near zero, whereas its second-coordinate
+Haar oscillation stays at unit scale. The first Riesz multiplier therefore
+tends to zero on its Fourier mass. This contradicts every estimate whose
+control vanishes with the first Riesz norm.
+
+\section{Counterexample}
+
+For a dyadic interval $I$, let
+\[
+ h_I^0=\1_I,
+ \qquad h_I^1=\1_{I_{\mathrm L}}-\1_{I_{\mathrm R}},
+\]
+where $I_{\mathrm L},I_{\mathrm R}$ are its two dyadic children. If
+$Q=I_1\times I_2$ is a dyadic square and
+$\eta=(\eta_1,\eta_2)\in\A:=\{(1,0),(0,1),(1,1)\}$, put
+\[
+ h_Q^\eta(x_1,x_2)=h_{I_1}^{\eta_1}(x_1)
+                     h_{I_2}^{\eta_2}(x_2).
+\]
+The family $\{h_Q^\eta/|Q|^{1/2}\}$ is the usual tensor Haar orthonormal
+basis of $L^2(\R^2)$.
+
+Let $\pi$ be the permutation of $\A$ which swaps $(1,0)$ and $(0,1)$ and
+fixes $(1,1)$. Define a relabeled wavelet system by
+\begin{equation}
+ \varphi_Q^\varepsilon=h_Q^{\pi(\varepsilon)}.
+ \label{eq:relabel}
+\end{equation}
+Relabeling preserves orthonormality and completeness. Moreover,
+\[
+ |\varphi_Q^\varepsilon(x)|\leq\1_Q(x)
+ \leq\left(1+\frac{\operatorname{dist}(x,Q)}{s(Q)}\right)^{-2(1+\delta)}
+\]
+for every $\delta>0$. Thus \eqref{eq:decay} holds with $C=1$, while no
+regularity or direction-specific cancellation is being assumed.
+
+Let $W^{(1,0)}$ be the directional projection associated with the relabeled
+system. By \eqref{eq:relabel}, it is exactly the ordinary Haar projection
+$P^{(0,1)}$.
+
+\begin{theorem}[Decay-only directional interpolation fails]
+For the decay-only wavelet system \eqref{eq:relabel}, there are nonzero finite
+Haar sums $u_N\in L^2(\R^2)$ such that
+\begin{equation}
+ W^{(1,0)}u_N=u_N,
+ \qquad
+ \frac{\|R_1u_N\|_2}{\|u_N\|_2}\longrightarrow0.
+ \label{eq:sequence}
+\end{equation}
+Consequently, for this system there are no $C<\infty$ and no function
+$\Psi$ with $\Psi(t)\to0$ for which \eqref{eq:generalestimate} holds for all
+$u\ne0$. In particular, all positive-power interpolatory estimates and the
+logarithmic endpoint estimate of the source fail under decay only.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+ a=\1_{[0,1)},
+ \qquad b=\1_{[0,1/2)}-\1_{[1/2,1)},
+\]
+and, for a positive integer $N$, set
+\begin{equation}
+ u_N(x_1,x_2)=\1_{[0,N)}(x_1)b(x_2)=a(x_1/N)b(x_2).
+ \label{eq:uN}
+\end{equation}
+For $0\leq k<N$, the square
+$Q_k=[k,k+1)\times[0,1)$ is dyadic and
+\[
+ h_{Q_k}^{(0,1)}(x_1,x_2)=\1_{[k,k+1)}(x_1)b(x_2).
+\]
+Therefore
+\[
+ u_N=\sum_{k=0}^{N-1}h_{Q_k}^{(0,1)}
+     =\sum_{k=0}^{N-1}\varphi_{Q_k}^{(1,0)},
+\]
+so $W^{(1,0)}u_N=u_N$ exactly.
+
+It remains to estimate the first Riesz transform. With a unitary Fourier
+transform, the dilation in \eqref{eq:uN} gives
+\[
+ \widehat{u_N}(\xi_1,\xi_2)
+ =N\widehat a(N\xi_1)\widehat b(\xi_2),
+ \qquad \|u_N\|_2^2=N\|a\|_2^2\|b\|_2^2=N.
+\]
+Plancherel and the change of variable $\zeta=N\xi_1$ now yield
+\begin{align}
+ \frac{\|R_1u_N\|_2^2}{\|u_N\|_2^2}
+ &=\int_{\R^2}
+ \frac{(\zeta/N)^2}{(\zeta/N)^2+\xi_2^2}
+ |\widehat a(\zeta)|^2|\widehat b(\xi_2)|^2
+ \,d\zeta\,d\xi_2.
+ \label{eq:plancherel}
+\end{align}
+For almost every $(\zeta,\xi_2)$ the multiplier in
+\eqref{eq:plancherel} tends to zero. It is bounded by one, while
+$|\widehat a(\zeta)|^2|\widehat b(\xi_2)|^2$ is integrable. Dominated
+convergence proves \eqref{eq:sequence}.
+
+If \eqref{eq:generalestimate} held, applying it to $u_N$ and using
+$W^{(1,0)}u_N=u_N$ would give
+\[
+ 1\leq C\Psi\!\left(\frac{\|R_1u_N\|_2}{\|u_N\|_2}\right).
+\]
+The right side tends to zero, a contradiction.
+\end{proof}
+
+\section{Interpretation and limitation}
+
+The counterexample isolates the structural issue: localization and decay do
+not make the label $\varepsilon_i=1$ signify cancellation in coordinate $i$.
+Accordingly, decay alone cannot order the projection by $R_i$. Some
+label-compatible directional hypothesis is necessary.
+
+The source's full admissibility definition also includes a sectional
+oscillation estimate (1.2c) in every coordinate with
+$\varepsilon_i=1$. The relabeled Haar system fails that condition in the
+nominal first coordinate. Hence, if the intended problem was to retain
+(1.2c) and discard only Holder regularity, that narrower problem is not
+settled here. The theorem is a full negative answer to the words ``decay
+estimates only'' and a sharp boundary obstruction to any stronger intended
+formulation.
+
+\section{Verification and novelty boundary}
+
+Every constructed function is a finite Haar sum, the projection identity is
+exact, and the only limiting step is the displayed Plancherel calculation
+with an integrable dominating function. The failure at $p=2$ is enough to
+rule out a decay-only theorem asserted for the full range $1<p<\infty$.
+
+Cheap run indexes and two bounded literature-search rounds were completed on
+22 July 2026 using the source id, exact open-problem sentence, title, authors,
+and close arXiv variants. Only the source and its published version were
+located; no later answer or matching counterexample was found. Novelty
+confidence is moderate, not exhaustive. Human review should prioritize the
+literal meaning of ``decay estimates only'' and the direction-label issue.
+
+\begin{thebibliography}{9}
+
+\bibitem{source}
+P.~F.~X. Muller and S. Muller,
+\emph{Interpolatory estimates, Riesz transforms and wavelet projections},
+Rev. Mat. Iberoam. \textbf{32} (2016), no.~4, 1137--1162;
+arXiv:1409.2143.
+
+\end{thebibliography}
+
+\end{document}

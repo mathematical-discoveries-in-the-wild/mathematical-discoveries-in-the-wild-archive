@@ -1,0 +1,273 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Bp}{\boldsymbol B_p(\mathbb R)}
+\newcommand{\Sp}{S_p(L_2(\mathbb R))}
+
+\title{The Sharp Smoothness Threshold for One-Dimensional\\
+Schatten-Class Commutators}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 9, agent \texttt{agent\_lane\_09}, model GPT5.6}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.}
+Candidate full result likely valid; human review needed.  The construction
+includes the formerly delicate critical line.}}
+\end{center}
+
+\section{Source question and answer}
+
+Wei and Zhang study Schatten membership of commutators $[T,M_b]$ for
+singular integral operators with minimally regular kernels \cite{WZ}.
+In dimension one, for $1<p<2$, they ask on page 6 whether the sufficiency
+part of their Theorem 1.3 continues to hold for every $0<\alpha<1/2$:
+does
+\[
+             b\in\boldsymbol B_p(\R)
+             \quad\Longrightarrow\quad [T,M_b]\in\Sp
+\]
+follow when the kernel has only the standard $\alpha$-H\"older regularity?
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\caption{The one-dimensional low-smoothness question in the source paper,
+page 6.}
+\end{figure}
+
+The answer has a sharp threshold.  The proof in Section 5.1 of the source
+already gives sufficiency when $\alpha>1/p-1/2$.  We construct
+counterexamples when $\alpha\leq1/p-1/2$, including equality.
+
+The standard kernel assumptions in dimension one are
+\begin{equation}\label{eq:standard}
+ |K(x,y)|\leq\frac C{|x-y|}
+\end{equation}
+and, whenever $|x-y|>2|x-x'|>0$,
+\begin{equation}\label{eq:holder}
+ |K(x,y)-K(x',y)|+|K(y,x)-K(y,x')|
+ \leq C\frac{|x-x'|^\alpha}{|x-y|^{1+\alpha}}.
+\end{equation}
+The source uses the seminorm
+\begin{equation}\label{eq:besov}
+ \|b\|_{\boldsymbol B_p(\R)}^p
+ =\int_{\R^2}\frac{|b(x)-b(y)|^p}{|x-y|^2}\,dx\,dy.
+\end{equation}
+
+\section{Why the endpoint is attainable}
+
+A single Hadamard block with $N$ inputs and $N$ outputs has $N$ equal
+singular values.  At the critical line its Schatten mass is on exactly the
+same scale as the Besov cost of the symbol, so placing different scales in
+different spatial blocks cannot settle equality.  The key is to let one
+fixed smooth symbol act on an orthogonal tower of wavelet scales.
+
+At scale $j$, couple $N_j\asymp2^j$ compactly supported output wavelets to
+$N_j$ input wavelets by a Hadamard matrix with coefficient
+$\gamma_j=2^{-j(1+\alpha)}$.  The block then has $N_j$ singular values of
+size
+\[
+                  \gamma_j\sqrt{N_j}
+                  \asymp2^{-j(\alpha+1/2)}.
+\]
+The kernel contribution has size $O(2^{-j\alpha})$ and Lipschitz constant
+$O(2^{j(1-\alpha)})$.  Splitting the scale sum at $2^j|x-x'|\simeq1$ gives a
+global $C^\alpha$ bound, with no logarithmic loss at equality.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:main}
+Fix
+\[
+             1<p<2,\qquad 0<\alpha\leq\frac1p-\frac12.
+\]
+There exist a bounded integral operator $T\in B(L_2(\R))$ with a kernel
+satisfying \eqref{eq:standard}--\eqref{eq:holder}, and a real-valued bounded
+symbol $b\in\boldsymbol B_p(\R)$, such that
+\[
+                         [T,M_b]\notin\Sp.
+\]
+The kernel is compactly supported, globally $C^\alpha$ in each variable,
+and supported a fixed positive distance from the diagonal.  In fact $T$ is
+Hilbert--Schmidt.
+\end{theorem}
+
+\begin{proof}
+Choose a real compactly supported $C^1$ orthonormal wavelet $\omega$ on
+$\R$; compactly supported orthonormal wavelets of arbitrarily high regularity
+are standard.  Write
+\[
+                  \omega_{j,k}(x)=2^{j/2}\omega(2^jx-k).
+\]
+The family $\{\omega_{j,k}:j,k\in\mathbb Z\}$ is orthonormal.  Fix disjoint
+open intervals
+\[
+                         I=(0,1),\qquad J=(4,5).
+\]
+For every sufficiently large $j$, there are $\asymp2^j$ wavelets at scale
+$j$ whose supports are contained in $I$, and likewise in $J$.  Consequently
+there are fixed integers $q,j_0\geq1$ such that, for every $j\geq j_0$, we
+may select index sets $E_j,F_j$ of cardinality
+\[
+                            N_j=2^{j-q}
+\]
+with
+\[
+ \operatorname{supp}\omega_{j,k}\subset I\quad(k\in E_j),
+ \qquad
+ \operatorname{supp}\omega_{j,l}\subset J\quad(l\in F_j).
+\]
+All selected output wavelets, across all scales, are orthonormal; the same
+is true of all selected input wavelets.
+
+Let $H_{N_j}=(h^{(j)}_{kl})$ be a Sylvester Hadamard matrix, indexed by
+$E_j\times F_j$, so
+\begin{equation}\label{eq:hadamard}
+                         H_{N_j}H_{N_j}^*=N_jI_{N_j}.
+\end{equation}
+Put $\gamma_j=2^{-j(1+\alpha)}$ and define
+\begin{equation}\label{eq:kernel}
+ K(x,y)=\sum_{j=j_0}^\infty \gamma_j
+       \sum_{k\in E_j}\sum_{l\in F_j}
+       h^{(j)}_{kl}\omega_{j,k}(x)\omega_{j,l}(y).
+\end{equation}
+
+We first verify the kernel estimates.  Compact support of $\omega$ implies
+that, at a fixed point and scale, only a bounded number of wavelets can be
+nonzero.  Since
+\[
+ \|\omega_{j,k}\|_\infty\leq C2^{j/2},\qquad
+ \|\omega'_{j,k}\|_\infty\leq C2^{3j/2},
+\]
+the scale-$j$ summand $K_j$ in \eqref{eq:kernel} satisfies
+\begin{equation}\label{eq:scale-bounds}
+ \|K_j\|_\infty\leq C2^{-j\alpha},\qquad
+ \sup_y\|\partial_xK_j(\cdot,y)\|_\infty
+ +\sup_x\|\partial_yK_j(x,\cdot)\|_\infty
+ \leq C2^{j(1-\alpha)}.
+\end{equation}
+The first bound makes the kernel series uniformly convergent.  If
+$\delta=|x-x'|>0$, then \eqref{eq:scale-bounds} gives
+\[
+ |K_j(x,y)-K_j(x',y)|
+ \leq C\min\{2^{-j\alpha},\,2^{j(1-\alpha)}\delta\}.
+\]
+Split the sum at the integer $m$ for which $2^m\delta\simeq1$.  The low
+scales form a geometric series bounded by
+\[
+       C\delta\sum_{j\leq m}2^{j(1-\alpha)}\leq C\delta^\alpha,
+\]
+and the high scales are bounded by
+\[
+       C\sum_{j>m}2^{-j\alpha}\leq C\delta^\alpha.
+\]
+The same argument applies in the second variable.  Thus $K$ is globally
+$C^\alpha$ in each variable.
+
+The kernel is supported in $I\times J$.  Hence a nonzero value has
+$3\leq|x-y|\leq5$, and the uniform bound implies \eqref{eq:standard}.
+For \eqref{eq:holder}, use the global $C^\alpha$ estimate.  If either value
+in a difference is nonzero and $|x-y|>2|x-x'|$, the triangle inequality
+gives $|x-y|\leq10$.  We may therefore insert the factor
+$10^{1+\alpha}/|x-y|^{1+\alpha}$.  The transposed difference is identical.
+
+Let $T$ be the integral operator with kernel $K$.  Relative to the selected
+input and output wavelets, its scale-$j$ block is
+\[
+                              A_j=\gamma_jH_{N_j}.
+\]
+By \eqref{eq:hadamard}, this block has precisely $N_j$ singular values equal
+to
+\begin{equation}\label{eq:singular-values}
+ s_j=\gamma_j\sqrt{N_j}
+     =2^{-q/2}2^{-j(\alpha+1/2)}.
+\end{equation}
+Different scale blocks have mutually orthogonal input and output spaces.
+Moreover,
+\[
+ \sum_{j\geq j_0}N_js_j^2
+ =2^{-2q}\sum_{j\geq j_0}2^{-2j\alpha}<\infty.
+\]
+Thus the kernel partial sums converge in Hilbert--Schmidt norm to $T$, and
+the uniformly convergent series \eqref{eq:kernel} is indeed its integral
+kernel.  In particular, $T$ is bounded.
+
+Choose a real $b\in C_c^\infty((-1,2))$ with $b=1$ on $I$.  Then $b=0$ on
+$J$.  Smooth compact support and $p>1$ imply directly from
+\eqref{eq:besov} that $b\in\boldsymbol B_p(\R)$.  Since every input wavelet
+is supported in $J$ and every output wavelet in $I$, we have
+\[
+                              TM_b=0,\qquad M_bT=T.
+\]
+Therefore $[T,M_b]=-T$.  Finally, \eqref{eq:singular-values} yields
+\begin{align*}
+ \|[T,M_b]\|_{S_p}^p
+ &=\sum_{j=j_0}^\infty N_js_j^p\\
+ &=2^{-q(1+p/2)}
+   \sum_{j=j_0}^\infty
+   2^{j[1-p(\alpha+1/2)]}=\infty,
+\end{align*}
+because $1-p(\alpha+1/2)\geq0$.  This completes the counterexample,
+including the equality case.
+\end{proof}
+
+\begin{corollary}[Sharp threshold]\label{cor:threshold}
+Under the general kernel hypotheses of the source, for $1<p<2$ and
+$0<\alpha<1/2$, the implication
+\[
+                 b\in\boldsymbol B_p(\R)
+                 \Longrightarrow [T,M_b]\in S_p
+\]
+holds for every admissible $T$ exactly when
+$\alpha>1/p-1/2$.
+\end{corollary}
+
+\begin{proof}
+Sufficiency in the strict supercritical range is the estimate proved in
+Section 5.1 of \cite{WZ}.  Failure at and below the threshold is
+Theorem~\ref{thm:main}.
+\end{proof}
+
+\section{Verification and literature check}
+
+The included exact script constructs Sylvester matrices and checks
+$H_NH_N^*=NI_N$ and the repeated block singular value formula.  The scale
+summation and kernel estimates are exact geometric-series calculations.
+
+Cheap run-index searches found no packet for arXiv:2411.05810.  Bounded
+primary searches on July 22, 2026 used the arXiv id, title, authors, and the
+threshold phrase ``$1/p-1/2$''; they found the source and the authors'
+adjacent paper, but no later resolution of this question.
+
+\section{Human-review recommendation}
+
+Review as a likely valid full threshold result.  The highest-value checks
+are: (i) selecting $\asymp2^j$ compactly supported orthonormal wavelets
+inside each fixed interval; (ii) the low/high scale proof of the uniform
+$C^\alpha$ kernel estimate; (iii) the identification of the Hadamard block
+singular values across mutually orthogonal scales; and (iv) confirmation
+that the source's positive proof indeed applies for every
+$\alpha>1/p-1/2$ under exactly the displayed kernel hypotheses.
+
+\begin{thebibliography}{9}
+\bibitem{WZ}
+Z. Wei and H. Zhang,
+\emph{Complex median method and Schatten class membership of commutators},
+arXiv:2411.05810v2, 2024.
+\end{thebibliography}
+
+\end{document}

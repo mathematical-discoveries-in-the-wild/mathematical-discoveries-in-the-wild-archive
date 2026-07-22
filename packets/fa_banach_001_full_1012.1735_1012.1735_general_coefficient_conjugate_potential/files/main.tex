@@ -1,0 +1,221 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Sphere}{S^n}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\Div}{\operatorname{div}_{S}}
+\newcommand{\grad}{\nabla_{S}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dom}{\operatorname{dom}}
+
+\title{A General-Coefficient Conjugate Potential\\
+\large Full affirmative answer to a question in arXiv:1012.1735}
+\author{Discovery run \texttt{fa\_banach\_001} -- \texttt{agent\_lane\_01}}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: candidate full solution.}
+The proof is complete and uses only the first-order identities already established in the source paper. Independent expert review is recommended, with special attention to the distributional slice argument in Step 3.}}
+\end{center}
+
+\section{Source question}
+
+The source is Pascal Auscher and Andreas Ros\'en, \emph{Weighted maximal regularity estimates and solvability of non-smooth elliptic systems II}, arXiv:1012.1735, Section 3, immediately after Proposition 3.5, PDF page 16 \cite{AR}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The open question in the source paper, PDF page 16.}
+\end{figure}
+
+The question is whether, for general bounded strictly accretive coefficients, every weak solution $u$ admits a vector-valued potential $v$ containing $u$ as its normal component and satisfying the companion first-order system. The source proves this for perturbations of radially independent coefficients and, separately, in the two-dimensional case.
+
+\section{Definitions and notation}
+
+We retain the notation of \cite[Section 3]{AR}. Put
+\[
+  \sigma=\frac{n-1}{2},\qquad r=e^{-t},
+\]
+and let
+\[
+ D=\begin{bmatrix}0&-\Div\\ \grad&0\end{bmatrix},
+ \qquad
+ N=\begin{bmatrix}-I&0\\0&I\end{bmatrix}.
+\]
+Thus $ND=-DN$ and
+\[
+ \cH=\operatorname{ran}D
+ =\begin{bmatrix}\operatorname{ran}\Div\\ \operatorname{ran}\grad\end{bmatrix}.
+\]
+Let $A$ be a coefficient field satisfying the hypotheses of Proposition 3.3 of \cite{AR}, and write $B=\widehat A$ for its transformed coefficient field. If $u$ is a weak solution of
+\[
+ \operatorname{div}_{\mathbf x}(A\nabla_{\mathbf x}u)=0
+\]
+in the unit ball, its conormal gradient $f$ belongs to $L^2_{\mathrm{loc}}(\R_+;\cH)$ and satisfies
+\begin{equation}\label{eq:f}
+ \partial_t f+(DB+\sigma N)f=0
+\end{equation}
+distributionally. Moreover,
+\begin{equation}\label{eq:components}
+ f_\parallel=r^\sigma\grad u_r,
+ \qquad
+ (Bf)_\perp=r^{\sigma+1}\partial_r u_r.
+\end{equation}
+
+A vector potential associated to $u$ is a section $v=(v_\perp,v_\parallel)$ such that
+\begin{equation}\label{eq:v}
+ \partial_t v+(BD-\sigma N)v=0,
+ \qquad Dv=f,
+ \qquad v_\perp=r^\sigma u_r.
+\end{equation}
+The source additionally requires $v\in L^2_{\mathrm{loc}}(\R_+;\dom D)$ and
+$\int_1^\infty\|Dv_t\|_2^2\,dt<\infty$.
+
+\section{Proof intuition}
+
+The normal component of $v$ is forced: set $v_\perp=r^\sigma u_r$. The tangential component has two apparent duties. Its divergence must equal $-f_\perp$, and it must solve the tangential component of the $v$-equation. These duties are compatible because the normal component of the already-known $f$-equation is exactly the evolution equation for the divergence constraint. Hence one chooses the tangential field at a single time slice and evolves it by a scalar-coefficient Bochner ODE. No perturbation theory, boundary trace, or inversion of the singular first-order operator is needed.
+
+\section{Full result}
+
+\begin{theorem}[General-coefficient converse to Proposition 3.5]\label{thm:main}
+Let $A$ and $B=\widehat A$ satisfy the hypotheses of Proposition 3.3 of \cite{AR}, and let $u$ be any weak solution of
+$\operatorname{div}_{\mathbf x}(A\nabla_{\mathbf x}u)=0$ in the unit ball. Then there exists
+\[
+ v\in L^2_{\mathrm{loc}}(\R_+;\dom D)
+\]
+such that
+\[
+ \partial_t v+(BD-\sigma N)v=0,
+ \qquad Dv=f,
+ \qquad u_r=r^{-\sigma}(v_t)_\perp,
+\]
+where $f$ is the conormal gradient of $u$. Furthermore,
+\[
+ \int_1^\infty\|Dv_t\|_2^2\,dt<\infty.
+\]
+Thus the vector-valued potential asked for in \cite[p.~16]{AR} exists for arbitrary coefficients covered by Proposition 3.3.
+\end{theorem}
+
+\begin{proof}
+Write $f=(f_\perp,f_\parallel)$ and $Bf=((Bf)_\perp,(Bf)_\parallel)$.
+
+\medskip
+\noindent\textbf{Step 1: fix the normal component.}
+Define
+\[
+ U_t(x):=r^\sigma u_r(x),\qquad r=e^{-t}.
+\]
+The component identities \eqref{eq:components} give, distributionally on $\R_+\times\Sphere$,
+\begin{equation}\label{eq:Uspace}
+ \grad U_t=f_{t,\parallel}
+\end{equation}
+and
+\begin{equation}\label{eq:Utime}
+ \partial_tU_t+(B_tf_t)_\perp+\sigma U_t=0.
+\end{equation}
+Indeed, $\partial_t=-r\partial_r$, so
+\[
+ \partial_t(r^\sigma u_r)
+ =-\sigma r^\sigma u_r-r^{\sigma+1}\partial_r u_r.
+\]
+
+\medskip
+\noindent\textbf{Step 2: choose one tangential slice.}
+Since $f_t\in\cH$ for almost every $t$, its normal component belongs to $\operatorname{ran}\Div$. Choose a time $t_*>0$ at which $f_{t_*,\perp}\in L^2(\Sphere;\C^m)$ is defined. The range of $\Div$ is closed on the sphere, so there exists
+\[
+ w_*\in\dom(\Div)
+ \quad\text{such that}\quad
+ -\Div w_*=f_{t_*,\perp}.
+\]
+
+\medskip
+\noindent\textbf{Step 3: evolve the tangential component.}
+For every $t>0$, define the Bochner integral
+\begin{equation}\label{eq:w}
+ w_t=e^{\sigma(t-t_*)}w_*
+ -\int_{t_*}^{t}e^{\sigma(t-s)}(B_sf_s)_\parallel\,ds,
+\end{equation}
+with the usual signed interpretation when $t<t_*$. Since $Bf\in L^2_{\mathrm{loc}}(\R_+;L^2)$, this defines
+$w\in W^{1,2}_{\mathrm{loc}}(\R_+;L^2)$ and
+\begin{equation}\label{eq:wt}
+ \partial_tw_t+(B_tf_t)_\parallel-\sigma w_t=0.
+\end{equation}
+
+It remains to check that the divergence constraint is preserved. The normal component of \eqref{eq:f} is
+\begin{equation}\label{eq:fnormal}
+ \partial_tf_{t,\perp}-\Div(B_tf_t)_\parallel-\sigma f_{t,\perp}=0.
+\end{equation}
+This identity is valid in $W^{-1,2}(\Sphere)$ and implies the variation-of-constants formula
+\begin{equation}\label{eq:fvariation}
+ f_{t,\perp}=e^{\sigma(t-t_*)}f_{t_*,\perp}
+ +\int_{t_*}^{t}e^{\sigma(t-s)}\Div(B_sf_s)_\parallel\,ds.
+\end{equation}
+Applying $-\Div$ to \eqref{eq:w} and using $-\Div w_*=f_{t_*,\perp}$ gives precisely the right-hand side of \eqref{eq:fvariation}. Therefore
+\begin{equation}\label{eq:divconstraint}
+ -\Div w_t=f_{t,\perp}
+\end{equation}
+in $W^{-1,2}$ for every admissible representative, and in $L^2$ for almost every $t$. In particular $w_t\in\dom\Div$ for almost every $t$.
+
+\medskip
+\noindent\textbf{Step 4: assemble the potential.}
+Set
+\[
+ v_t:=\begin{bmatrix}U_t\\w_t\end{bmatrix}.
+\]
+Equations \eqref{eq:Uspace} and \eqref{eq:divconstraint} yield
+\[
+ Dv_t=\begin{bmatrix}-\Div w_t\\ \grad U_t\end{bmatrix}
+ =\begin{bmatrix}f_{t,\perp}\\f_{t,\parallel}\end{bmatrix}=f_t.
+\]
+The normal component of $\partial_tv+(BD-\sigma N)v$ vanishes by \eqref{eq:Utime}; its tangential component vanishes by \eqref{eq:wt}. Thus \eqref{eq:v} holds distributionally. By construction,
+\[
+ u_r=r^{-\sigma}(v_t)_\perp.
+\]
+
+Finally, $U$, $w$, and $Dv=f$ are locally square integrable in the graph norm of $D$. Corollary 3.4 of \cite{AR} gives
+\[
+ \int_1^\infty\|Dv_t\|_2^2\,dt
+ =\int_1^\infty\|f_t\|_2^2\,dt<\infty.
+\]
+All requirements of Proposition 3.5 and the source question are satisfied.
+\end{proof}
+
+\section{Verification notes}
+
+\begingroup\small
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Sign check.} Since $N(U,w)=(-U,w)$, the two components of the desired equation are $U'+(Bf)_\perp+\sigma U=0$ and $w'+(Bf)_\parallel-\sigma w=0$, exactly \eqref{eq:Utime} and \eqref{eq:wt}.
+\item \textbf{Compatibility check.} Applying $-\Div$ to the tangential evolution produces the normal equation \eqref{eq:fnormal}; this is the central identity and uses no pointwise ellipticity.
+\item \textbf{Domain check.} Equality \eqref{eq:divconstraint} upgrades $w_t$ from $L^2$ to $\dom\Div$ for almost every $t$, while \eqref{eq:Uspace} gives $U_t\in\dom\grad$.
+\item \textbf{Endpoint check.} The construction is local in $t$ and therefore needs no trace at $t=0$. The only global condition is on $Dv=f$ for $t>1$, already supplied by the source paper.
+\item \textbf{Nonuniqueness.} A different choice of $w_*$ changes $w_t$ by $e^{\sigma(t-t_*)}h$ with $\Div h=0$. Existence, not uniqueness, is the question asked.
+\end{enumerate}
+
+\section{Novelty search, limitations, and review recommendation}
+
+A bounded search on July 22, 2026 used the exact sentence from the question, the arXiv identifier, and combinations of ``vector-valued potential'', ``general coefficients'', ``conormal gradient'', and the two first-order systems. It found the source paper and its published version, but no later source claiming this general converse. The proof above is elementary relative to the source framework, so the main novelty risk is that the observation may exist under different terminology.
+
+The theorem addresses only the existence question immediately following Proposition 3.5. It does not claim the boundary estimates, trace regularity, or perturbative norm bounds later obtained in the source under Carleson hypotheses. The recommended human review should focus on the $W^{-1,2}$ variation-of-constants step and on whether the authors intended any unstated global bound on $v$ beyond the explicit hypotheses of Proposition 3.5.
+
+\begin{thebibliography}{9}
+\bibitem{AR}
+P. Auscher and A. Ros\'en,
+\emph{Weighted maximal regularity estimates and solvability of non-smooth elliptic systems II},
+Analysis \& PDE \textbf{5} (2012), no.~5, 983--1061;
+arXiv:1012.1735.
+\end{thebibliography}
+\endgroup
+
+\end{document}

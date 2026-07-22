@@ -1,0 +1,232 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newcommand{\BH}{B(\mathcal H)}
+\newcommand{\Sone}{S_1(\mathcal H)}
+
+\title{Normal maps on $L^\infty$ induced by operator-valued measures\\
+\large A full answer to Problem 2 of arXiv:1411.4559}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 13}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\fcolorbox{black}{gray!10}{\parbox{0.94\textwidth}{
+\textbf{Status.} Claimed full solution to the literal Problem 2, likely valid
+subject to human review.  An inducing ultraweakly continuous linear map exists
+if and only if the operator-valued measure vanishes on all $\mu$-null sets.
+Without this condition the answer is negative, even for a probability
+operator-valued measure on a one-dimensional Hilbert space.
+}}
+
+\section{Source problem}
+
+The source is D. Han, D. R. Larson, B. Liu, and R. Liu,
+\emph{Dilations of frames, operator valued measures and bounded linear maps},
+arXiv:1411.4559v2, Problem 2 on PDF page 19 \cite{HLLL}.
+The paper defines an operator-valued measure
+$E:\Sigma\to B(\mathcal H)$ to be countably additive in the weak operator
+topology.  Its question is:
+
+\begin{quote}
+Given a probability space $(\Omega,\Sigma,\mu)$ and an operator-valued measure
+$E:(\Omega,\Sigma)\to B(\mathcal H)$, does there exist an ultraweakly
+continuous map $\phi:L^\infty(\mu)\to B(\mathcal H)$ such that
+$E(B)=\phi(\chi_B)$ for every $B\in\Sigma$?  If not, determine necessary and
+sufficient conditions.
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Problem 2 in the source paper, PDF page 19.}
+\end{figure}
+
+\section{Definitions}
+
+Write $E\ll\mu$ when
+\[
+ \mu(B)=0\quad\Longrightarrow\quad E(B)=0
+ \qquad(B\in\Sigma).
+\]
+We use the canonical preduals $L^1(\mu)$ of $L^\infty(\mu)$ and
+$\Sone$ of $\BH$.  Thus ``ultraweakly continuous'' means weak-star to
+weak-star continuous, or equivalently that the map is the adjoint of a bounded
+map $\Sone\to L^1(\mu)$.
+
+For a bounded simple function $s=\sum_j a_j\chi_{B_j}$ on a finite measurable
+partition, put
+\[
+ \int s\,dE:=\sum_j a_j E(B_j).
+\]
+The definition is independent of the chosen representation.
+
+\section{Proof intuition}
+
+The obstruction is forced by the quotient defining $L^\infty(\mu)$: the
+indicator of a null set is the zero element, so any inducing map must kill the
+operator assigned to that set.  The striking point is that there is no further
+obstruction.  Weak-operator countable additivity gives a uniform bound for all
+simple integrals.  Absolute continuity then lets scalarizations by trace-class
+operators acquire $L^1$ Radon--Nikodym densities.  Those densities form a
+bounded preadjoint, and its adjoint is the required normal map.
+
+\section{The characterization}
+
+\begin{lemma}[Uniform semivariation]\label{lem:semi}
+Let $E:\Sigma\to\BH$ be weak-operator countably additive.  Then
+\[
+ C_E:=\sup\left\{\left\|\int s\,dE\right\|:
+ s\text{ simple},\ |s|\leq 1\right\}<\infty.
+\]
+Consequently, for every $\rho\in\Sone$, the scalar set function
+\[
+ \nu_\rho(B):=\operatorname{Tr}(E(B)\rho)
+\]
+is a countably additive complex measure and
+\[
+ |\nu_\rho|(\Omega)\leq C_E\|\rho\|_1.
+\]
+\end{lemma}
+
+\begin{proof}
+For $x\in\mathcal H$, the set function $E_x(B)=E(B)x$ is weakly countably
+additive.  By the Orlicz--Pettis theorem it is a norm-countably-additive
+$\mathcal H$-valued measure.  Every countably additive Banach-space-valued
+measure has finite semivariation \cite[Chapter I]{DU}; hence, for each fixed
+$x$,
+\[
+ \sup_{s\text{ simple},\ |s|\leq1}
+ \left\|\left(\int s\,dE\right)x\right\|<\infty.
+\]
+The uniform boundedness principle applied to the family of simple-integration
+operators gives $C_E<\infty$.
+
+Weak-operator countable additivity, together with uniform boundedness of the
+range of $E$, implies countable additivity after pairing with any trace-class
+operator: approximate that trace-class operator in trace norm by finite-rank
+operators.  Thus $\nu_\rho$ is a complex measure.  The standard partition
+formula for total variation and trace duality give
+\begin{align*}
+ |\nu_\rho|(\Omega)
+ &=\sup_{\substack{(B_j)\text{ finite partition}\\ |a_j|\leq1}}
+ \left|\sum_j a_j\operatorname{Tr}(E(B_j)\rho)\right|\\
+ &=\sup_{s\text{ simple},\ |s|\leq1}
+ \left|\operatorname{Tr}\left(\left(\int s\,dE\right)\rho\right)\right|\\
+ &\leq C_E\|\rho\|_1.
+\end{align*}
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Let $(\Omega,\Sigma,\mu)$ be a probability space, let $\mathcal H$ be any
+Hilbert space, and let $E:\Sigma\to\BH$ be weak-operator countably additive.
+The following are equivalent.
+\begin{enumerate}
+\item There exists an ultraweakly continuous bounded linear map
+$\phi:L^\infty(\mu)\to\BH$ satisfying
+$\phi(\chi_B)=E(B)$ for every $B\in\Sigma$.
+\item $E\ll\mu$.
+\end{enumerate}
+When these conditions hold, $\phi$ is unique and is given by weak operator
+integration,
+\[
+ \langle\phi(f)x,y\rangle=\int_\Omega f\,d\langle E(\cdot)x,y\rangle.
+\]
+If $E(\Omega)=I_{\mathcal H}$, then $\phi$ is unital.
+\end{theorem}
+
+\begin{proof}
+Suppose first that such a $\phi$ exists.  If $\mu(B)=0$, then
+$\chi_B=0$ as an element of $L^\infty(\mu)$, and therefore
+$E(B)=\phi(\chi_B)=0$.  Hence $E\ll\mu$.
+
+Conversely assume $E\ll\mu$.  For $\rho\in\Sone$, Lemma~\ref{lem:semi}
+gives a finite complex measure $\nu_\rho$ with
+$|\nu_\rho|(\Omega)\leq C_E\|\rho\|_1$.  Absolute continuity of $E$ implies
+$\nu_\rho\ll\mu$.  By the scalar Radon--Nikodym theorem there is a unique
+$g_\rho\in L^1(\mu)$ such that
+\[
+ \nu_\rho(B)=\int_B g_\rho\,d\mu,
+ \qquad \|g_\rho\|_1=|\nu_\rho|(\Omega)leq C_E\|\rho\|_1.
+\]
+Uniqueness of Radon--Nikodym derivatives shows that
+\[
+ \Psi:\Sone\longrightarrow L^1(\mu),\qquad \Psi(\rho)=g_\rho,
+\]
+is linear, and the displayed estimate shows that it is bounded.  Define
+\[
+ \phi:=\Psi^*:L^\infty(\mu)\longrightarrow\BH
+\]
+using the canonical dualities.  This map is bounded and ultraweakly
+continuous by construction.  For $B\in\Sigma$ and $\rho\in\Sone$,
+\begin{align*}
+ \operatorname{Tr}(\phi(\chi_B)\rho)
+ &=\int_B g_\rho\,d\mu\\
+ &=\nu_\rho(B)
+ =\operatorname{Tr}(E(B)\rho).
+\end{align*}
+Since trace-class operators separate points of $\BH$, we obtain
+$\phi(\chi_B)=E(B)$.
+
+The weak integration formula follows first for simple functions and then for
+all of $L^\infty$ by uniform approximation by simple functions.  The same
+approximation proves uniqueness.  Finally,
+$\phi(1)=\phi(\chi_\Omega)=E(\Omega)$, proving the unital assertion.
+\end{proof}
+
+\section{Sharp negative example}
+
+\begin{corollary}
+The unrestricted existence question in Problem 2 has a negative answer, even
+when $\mathcal H=\mathbb C$ and $E$ is a probability operator-valued measure.
+\end{corollary}
+
+\begin{proof}
+Take $\Omega=[0,1]$ with Lebesgue measure and let
+\[
+ E(B)=\mathbf 1_{\{0\in B\}}I_{\mathcal H}.
+\]
+This is a weak-operator countably additive probability measure, but
+$E(\{0\})=I_{\mathcal H}$ while $\chi_{\{0\}}=0$ in $L^\infty(\mu)$.
+No inducing map, normal or otherwise, can exist.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof was checked against the source definition of operator-valued
+measure and uses no separability assumption.  The main verifier focus should
+be Lemma~\ref{lem:semi}: the standard finite-semivariation theorem for
+countably additive vector measures, followed by uniform boundedness, supplies
+exactly the uniform constant required for the trace-class preadjoint.
+
+A bounded exact-phrase and close-variant search was run on 22 July 2026 using
+the source title, ``Problem 2'', ``operator valued measure'',
+``ultraweakly continuous map'', and $L^\infty(\mu)$.  It found the source and
+related later work on normal \emph{dilations}, but no paper explicitly
+answering this induction problem.  This packet therefore claims a full proof
+for the literal source question, not priority or publication-level novelty.
+The characterization is a short consequence of classical vector-measure
+theory and may be folklore.
+
+\begin{thebibliography}{9}
+\bibitem{HLLL}
+D. Han, D. R. Larson, B. Liu, and R. Liu,
+\emph{Dilations of frames, operator valued measures and bounded linear maps},
+arXiv:1411.4559v2 (2014), Problem 2, p.~19.
+
+\bibitem{DU}
+J. Diestel and J. J. Uhl, Jr.,
+\emph{Vector Measures}, Mathematical Surveys, vol.~15,
+American Mathematical Society, 1977.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,356 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\emergencystretch=1.5em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{remark}{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Lp}{L_p[0,1]}
+\newcommand{\B}{\mathrm B}
+\newcommand{\Emb}{\operatorname{Emb}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\E}{\mathbb E}
+
+\title{Finite-\(p\) Extrinsic Metrics as\\Moment-Constrained Coupling Problems}
+\author{Run \texttt{fa\_banach\_001}, lane 13}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Barto\v{s}ov\'{a}, Lopez-Abad, Lupini, and Mbombo close their paper by
+saying that they do not know an explicit description of their three
+extrinsic metrics for finite~$p$, analogous to their $p=\infty$ appendix.
+We give exact descriptions for every $1\leq p<\infty$.  A finite family of
+maps from finite-dimensional spaces into $L_p[0,1]$ is encoded exactly by
+the joint law of its coefficient-vector functions.  Consequently the
+full-rank metric is a moment-constrained optimal coupling problem, the
+Kadets metric is a moment-constrained Hausdorff problem, and the square
+rank-$k$ metric is the infimum of the norm of an explicit finite-rank
+integral-kernel operator.  The formulas contain only probability laws on
+finite-dimensional vector spaces and scalar $p$-moments.  They also apply
+to the source's finite-support metrics through its Theorem~3.11.
+\end{abstract}
+
+\section{Source question and precise answer}
+
+The source is D.~Barto\v{s}ov\'{a}, J.~Lopez-Abad, M.~Lupini, and
+B.~Mbombo, \emph{The Ramsey properties for Grassmannians over
+$\mathbb R,\mathbb C$}, arXiv:1910.00311v1 \cite{source}.  It defines three
+extrinsic metrics: $\partial_{X,E}$ for norms represented by full-rank
+embeddings, $\gamma_{k,E}$ for isometry types of $k$-dimensional subspaces,
+and $d_{k,E}$ for $\GL(\F^k)$-orbits attached to rank-$k$ operators
+$E^*\to E$.  After giving concrete descriptions when $p=\infty$, the
+authors write on PDF page~24:
+\begin{quote}
+``We do not know a similar explicit description of the extrinsic metrics
+for $p$'s other than $\infty$.''
+\end{quote}
+See Figure~\ref{fig:question}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.97\textwidth]{figures/open_problem_crop.png}
+\caption{The closing question in arXiv:1910.00311v1, PDF p.~24.}
+\label{fig:question}
+\end{figure}
+
+We interpret ``description'' as an exact variational formula that eliminates
+the ambient infinite-dimensional embeddings.  Under that precise and
+natural interpretation, Theorem~\ref{thm:formulas} gives a full answer for
+all finite $p$.  It is a probabilistic finite-dimensional formula, rather
+than a claim that the metrics always reduce to elementary closed forms.
+
+\section{Proof intuition}
+
+Choose a basis of a finite-dimensional space $W$.  Every bounded map
+$A:W\to L_p[0,1]$ has the pointwise form
+\[
+       (Ax)(\omega)=a(\omega)(x),
+       \qquad a(\omega)\in W^*.
+\]
+For several maps into the same $L_p$ space, retain the joint law of their
+coefficient vectors.  The condition that $A$ is an isometric embedding is
+then exactly a list of moment identities
+\[
+       \int |a(x)|^p\,d\mu(a)=\|x\|^p \quad(x\in W).
+\]
+Conversely, every such law can be realized by a random coefficient vector
+on $[0,1]$.  Thus no information relevant to simultaneous embeddings is
+lost when the maps are replaced by a probability coupling.
+
+For $\partial$, the norm of the difference of two embeddings becomes the
+supremum of one scalar $p$-moment.  For $\gamma$, the two subspace unit
+balls become two coordinate unit balls inside the common seminorm induced
+by the coupling, so their opening is an ordinary Hausdorff formula.  For
+$d_k$, write $T=T_0T_1^*$.  If $a_0(\omega)\in V^*$ and
+$a_1(\eta)\in V$ are the two coefficient vectors, then $T$ is represented
+by the kernel $a_0(\omega)(a_1(\eta))$.  Subtracting two factorizations gives
+the kernel in Theorem~\ref{thm:formulas}(c).
+
+\section{Coefficient laws}
+
+Throughout, $\F=\mathbb R$ or $\mathbb C$, $1\leq p<\infty$, and
+$q\in(1,\infty]$ is conjugate to $p$.  All probability laws below are
+Borel laws with the displayed finite $p$-moments.
+
+\begin{lemma}[Joint coefficient-law lemma]\label{lem:law}
+Let $W_1,\ldots,W_s$ be finite-dimensional $\F$-spaces.  Simultaneous
+bounded maps $A_j:W_j\to L_p[0,1]$ determine a Borel probability law $\mu$
+on $W_1^*\times\cdots\times W_s^*$ such that, if $z_j$ is the $j$th
+coordinate,
+\begin{equation}\label{eq:moment-map}
+       \|A_jx\|_p^p=\int |z_j(x)|^p\,d\mu(z)
+       \qquad(x\in W_j).
+\end{equation}
+Conversely, every such law is realized by simultaneous maps on
+$L_p[0,1]$, with \eqref{eq:moment-map}.  Moreover, all joint pointwise
+linear combinations of the maps have exactly the corresponding moments
+under $\mu$.
+\end{lemma}
+
+\begin{proof}
+For a basis $(e_i)$ of $W_j$, choose measurable representatives of
+$A_je_i$ and put
+\[
+       a_j(\omega)=\sum_i (A_je_i)(\omega)e_i^*.
+\]
+Then $(A_jx)(\omega)=a_j(\omega)(x)$ outside one common null set.  The
+joint push-forward of Lebesgue measure by $(a_1,\ldots,a_s)$ is $\mu$.
+Finite dimensionality and the fact that every coordinate belongs to $L_p$
+give the required finite moments, and integration proves
+\eqref{eq:moment-map} and the final assertion.
+
+Conversely, a Borel probability law on a finite-dimensional real or complex
+vector space is the law of a Borel random variable on $[0,1]$ (the standard
+randomization theorem; see, for example, \cite{Kallenberg}).  Realize the
+coordinate tuple $z(\omega)$ and define
+$(A_jx)(\omega)=z_j(\omega)(x)$.  The moment assumption puts these functions
+in $L_p$, and \eqref{eq:moment-map} follows directly.
+\end{proof}
+
+Let $V$ be $k$-dimensional.  For norms $m,n$ on $V$, let
+$\mathcal C_p(m,n)$ be the laws $\mu$ of pairs $(a,b)\in V^*\times V^*$
+satisfying
+\begin{equation}\label{eq:pair-constraints}
+ \int |a(x)|^p\,d\mu=m(x)^p,
+ \qquad
+ \int |b(x)|^p\,d\mu=n(x)^p
+ \quad(x\in V).
+\end{equation}
+Set
+\[
+ \rho_\mu(x,y)=
+ \left(\int |a(x)-b(y)|^p\,d\mu(a,b)\right)^{1/p}.
+\]
+For a reference norm $r$ on $V$, define
+\[
+ D_r(\mu)=\sup_{r(x)\leq1}\rho_\mu(x,x),
+\]
+and define
+\begin{align}
+ G_{m,n}(\mu)=\max\bigg\{&
+ \sup_{m(x)\leq1}\inf_{n(y)\leq1}\rho_\mu(x,y),\nonumber\\
+ &\sup_{n(y)\leq1}\inf_{m(x)\leq1}\rho_\mu(x,y)
+ \bigg\}.\label{eq:G}
+\end{align}
+
+For the square metric, a law $\mu$ is now on
+\[
+ \mathcal Z_V=V^*\times V\times V^*\times V,
+ \qquad z=(a_0,a_1,b_0,b_1).
+\]
+It induces norms
+\begin{align*}
+ m_{0,\mu}(x)&=\left(\int|a_0(x)|^p\,d\mu\right)^{1/p},&
+ m_{1,\mu}(f)&=\left(\int|f(a_1)|^p\,d\mu\right)^{1/p},\\
+ n_{0,\mu}(x)&=\left(\int|b_0(x)|^p\,d\mu\right)^{1/p},&
+ n_{1,\mu}(f)&=\left(\int|f(b_1)|^p\,d\mu\right)^{1/p}.
+\end{align*}
+For $\mathbf m,\mathbf n\in\mathcal D_k(L_p)$, let
+$\mathcal Q_p(\mathbf m,\mathbf n)$ consist of those $\mu$ for which these
+are genuine norms and
+\[
+ [(m_{0,\mu},m_{1,\mu})]=\mathbf m,
+ \qquad [(n_{0,\mu},n_{1,\mu})]=\mathbf n
+\]
+in the source's diagonal $\GL(V)$-orbit space.  On two independent copies
+$z=(a_0,a_1,b_0,b_1)$ and $z'=(a'_0,a'_1,b'_0,b'_1)$, put
+\begin{equation}\label{eq:kernel}
+ K_\mu(z,z')=a_0(a'_1)-b_0(b'_1)
+\end{equation}
+and
+\begin{equation}\label{eq:kernelop}
+ (\mathsf K_\mu g)(z)=\int K_\mu(z,z')g(z')\,d\mu(z').
+\end{equation}
+We use the complex bilinear realization of the duality
+$L_p^*=L_q$, namely $\langle f,g\rangle=\int fg$.  With the usual
+sesquilinear convention, one conjugates $g$ in \eqref{eq:kernelop}; the
+operator norm is the same.
+
+\begin{theorem}[Exact finite-$p$ descriptions]\label{thm:formulas}
+For every $1\leq p<\infty$ the following hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $X=(V,r)$ and $m,n\in\mathcal N_V(L_p)$, then
+\begin{equation}\label{eq:partial}
+ \boxed{\displaystyle
+ \partial_{X,L_p}(m,n)=\inf_{\mu\in\mathcal C_p(m,n)}D_r(\mu).}
+\end{equation}
+\item If $[m],[n]\in\mathcal B_k(L_p)$, then
+\begin{equation}\label{eq:gamma}
+ \boxed{\displaystyle
+ \gamma_{k,L_p}([m],[n])=
+ \inf_{\mu\in\mathcal C_p(m,n)}G_{m,n}(\mu).}
+\end{equation}
+\item If $\mathbf m,\mathbf n\in\mathcal D_k(L_p)$, then
+\begin{equation}\label{eq:square}
+ \boxed{\displaystyle
+ d_{k,L_p}(\mathbf m,\mathbf n)=
+ \inf_{\mu\in\mathcal Q_p(\mathbf m,\mathbf n)}
+ \|\mathsf K_\mu\|_{L_q(\mu)\to L_p(\mu)}.}
+\end{equation}
+\end{enumerate}
+The formulas are invariant under changing representatives in the indicated
+orbit classes.
+\end{theorem}
+
+\begin{proof}
+For (a), take simultaneous isometric embeddings
+$T:(V,m)\to L_p$ and $U:(V,n)\to L_p$.  Lemma~\ref{lem:law} gives a law
+$\mu\in\mathcal C_p(m,n)$, and pointwise
+\[
+       ((T-U)x)(\omega)=a(\omega)(x)-b(\omega)(x).
+\]
+Therefore $\|T-U\|_{(V,r)\to L_p}=D_r(\mu)$.  Conversely every admissible
+$\mu$ produces exactly such simultaneous isometric embeddings.  Taking
+the infimum on the two equivalent parameter spaces proves
+\eqref{eq:partial}.
+
+For (b), the unit balls in the ranges $T(V)$ and $U(V)$ are respectively
+\[
+       \{Tx:m(x)\leq1\},\qquad \{Uy:n(y)\leq1\}.
+\]
+Their ambient $L_p$ distance satisfies $\|Tx-Uy\|_p=\rho_\mu(x,y)$.
+Thus their Hausdorff distance is exactly \eqref{eq:G}.  Lemma~\ref{lem:law}
+again identifies all simultaneous realizations with all laws in
+$\mathcal C_p(m,n)$, giving \eqref{eq:gamma}.  Replacing $m$ or $n$ by an
+isometric representative merely reparametrizes $x$ or $y$, which also
+proves the asserted invariance here.
+
+For (c), first take admissible factorizations
+\[
+ T=T_0T_1^*,\qquad U=U_0U_1^*,
+\]
+where $T_0,U_0:V\to L_p$ and $T_1,U_1:V^*\to L_p$ are injective and induce
+the prescribed orbit pairs.  Apply Lemma~\ref{lem:law} to the four maps.
+Their joint law lies in $\mathcal Q_p(\mathbf m,\mathbf n)$.  In the
+coefficient notation above, for $g\in L_q(\mu)$,
+\[
+ T_1^*g=\int a_1(z')g(z')\,d\mu(z'),
+ \qquad
+ (T_0T_1^*g)(z)=
+ \int a_0(a'_1)g(z')\,d\mu(z').
+\]
+The analogous identity for $U$ shows that $T-U=\mathsf K_\mu$, including
+equality of the $L_q\to L_p$ operator norms.
+
+Conversely, any $\mu\in\mathcal Q_p(\mathbf m,\mathbf n)$ can be realized
+on $[0,1]$.  Its four coordinates define $T_0,T_1,U_0,U_1$ by evaluation.
+The moment norms being genuine norms makes all four maps injective.  In
+finite dimension, the adjoints $T_1^*,U_1^*$ are onto $V$, so both products
+have rank $k$, and the orbit constraints make the factorizations admissible
+for the source definition.  Formula \eqref{eq:kernelop} again gives
+$T-U=\mathsf K_\mu$.  Taking infima proves \eqref{eq:square}.  Finally,
+the use of orbit constraints rather than fixed representatives makes the
+$\GL(V)$ invariance in (c) automatic.
+\end{proof}
+
+\begin{corollary}[The source metrics]\label{cor:source}
+Let $E_p=(\F^\infty,\|\cdot\|_p)$ and let $\widehat E_p=L_p[0,1]$ be its
+Fra\"iss\'{e} limit in the notation of the source.  On the domains
+$\mathcal N_V(E_p)$, $\mathcal B_k(E_p)$, and $\mathcal D_k(E_p)$, the
+three $E_p$-extrinsic metrics have the respective descriptions
+\eqref{eq:partial}, \eqref{eq:gamma}, and \eqref{eq:square}.
+The same formulas describe the metrics on the full limit-space domains.
+\end{corollary}
+
+\begin{proof}
+The source identifies the finite-$p$ limit space with $L_p[0,1]$ and proves
+in its Theorem~3.11 that
+\[
+ \partial_{X,E_p}=\partial_{X,\widehat E_p},\qquad
+ \gamma_{k,E_p}=\gamma_{k,\widehat E_p},\qquad
+ d_{k,E_p}=d_{k,\widehat E_p}
+\]
+on the corresponding finite-support domains \cite[Theorem~3.11]{source}.
+Apply Theorem~\ref{thm:formulas} with $\widehat E_p=L_p[0,1]$.
+\end{proof}
+
+\section{Verification and edge cases}
+
+The proof is exact and does not depend on numerical evidence.  The script
+\path{code/finite_atomic_checks.py} generates 100 random finite atomic
+coefficient laws.  It independently constructs the corresponding weighted
+$\ell_2$ embeddings and the square-operator matrices, then checks the moment
+identities and the equality between the factorized operator and the kernel
+operator.  The command
+\begin{quote}\small\ttfamily
+conda run --no-capture-output -n sandbox python \textbackslash\\
+\hspace*{2em}code/finite\_atomic\_checks.py --trials 100
+\end{quote}
+completed with maximum residual below $10^{-12}$.  This is a regression
+check of the formulas, not a proof.
+
+For $p=1$, $q=\infty$ and the same finite-rank kernel calculation is valid;
+no reflexivity is used.  For complex scalars, the bilinear and customary
+sesquilinear $L_p$ duality identifications differ only by conjugation.  For
+$1<p<\infty$ there are no additional restrictions.  Although the source's
+Ramsey factorization theorems exclude certain even $p\geq4$, the metric
+description itself uses only the coefficient-law lemma and therefore holds
+for every finite $p$.
+
+\section{Novelty, limitations, and review recommendation}
+
+The bounded novelty check on July~21, 2026 searched the run registry,
+solution and attempt indexes, the local parsed arXiv corpus, the exact source
+sentence, the paper title together with ``extrinsic metrics'' and $L_p$, the
+four authors' names with those terms, and ``$E$-Kadets metric'' with $L_p$.
+The arXiv/web searches returned the original arXiv:1910.00311 and unrelated
+or adjacent papers, but no later paper claiming these formulas or an answer
+to the closing question.  Novelty confidence is therefore moderate, not
+definitive.
+
+The main limitation is terminological: the source does not formally define
+what degree of simplification counts as an ``explicit description.''  The
+present formulas are exact and eliminate optimization over maps into an
+infinite-dimensional ambient space, replacing it by moment-constrained laws
+on fixed finite-dimensional coefficient spaces.  They are not generally
+closed elementary expressions in the input norms.
+
+Status: \texttt{candidate full solution -- likely valid}, subject to human
+review.  The most important review points are (i) whether this precise
+variational meaning of ``explicit'' matches the authors' intended question,
+(ii) the complex duality convention in the kernel formula, and (iii) the
+application of the source's Theorem~3.11 to the three finite-support domains.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+D. Barto\v{s}ov\'{a}, J. Lopez-Abad, M. Lupini, and B. Mbombo,
+\emph{The Ramsey properties for Grassmannians over $\mathbb R$, $\mathbb C$},
+arXiv:1910.00311v1 (2019).
+
+\bibitem{Kallenberg}
+O. Kallenberg,
+\emph{Foundations of Modern Probability}, 2nd ed., Springer, 2002.
+\end{thebibliography}
+
+\end{document}

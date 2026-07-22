@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,d}
+
+\title{A smooth one-dimensional counterexample to coordinate independence\\
+in a global implicit-function growth bound}
+\author{Candidate counterexample packet for arXiv:2004.04427}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate full counterexample, likely valid, pending human
+review.  The growth condition in Theorem 2.1(iii) of the source is not
+independent of the chosen diffeomorphisms, even for the equation $x-y=0$ on
+$\R^2$ and smooth coordinate changes of $\R$.
+}}
+\end{center}
+
+\section{Source question}
+
+The source is T.~Berger and F.~Haller, \emph{On an extension of a global
+implicit function theorem}, arXiv:2004.04427, published in
+\emph{Comptes Rendus Math\'ematique} 360 (2022), 439--450 \cite{BH}.
+Remark 2.3 on source PDF page 7 asks whether the growth bound in Theorem
+2.1(iii) is independent of the diffeomorphisms $\phi$ and $\psi$.  More
+precisely, if the bound holds for one pair of coordinates, must it hold for
+any other diffeomorphisms $\widehat\phi,\widehat\psi$, with some continuous
+weight $\widehat\omega$?  The remark explicitly leaves open whether this is
+true or whether a counterexample exists.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+  \caption{Remark 2.3 on page 7 of the source PDF.}
+\end{figure}
+
+\section{The condition to be tested}
+
+In the one-dimensional setting, a \emph{continuous weight} is a continuous
+nondecreasing function $\omega:[0,\infty)\to(0,\infty)$ satisfying the Osgood
+condition
+\begin{equation}
+              \int_0^\infty\frac{\dd t}{\omega(t)}=\infty. \label{eq:weight}
+\end{equation}
+For $F:X\times Y\to\R$, a zero set $Z$, a left inverse $S$ of $D_yF$, and
+diffeomorphisms $\phi,\psi$ of the two projections, the source growth bound
+is
+\begin{equation}
+ \bigl|D\psi(y)S(x,y)\bigr|\,
+ \bigl|D_xF(x,y)(D\phi(x))^{-1}\bigr|
+ \leq \omega(|\psi(y)|),\qquad (x,y)\in Z.            \label{eq:growth}
+\end{equation}
+
+\section{Proof intuition}
+
+A global increasing diffeomorphism $h:\R\to\R$ cannot have a derivative that
+is uniformly too large as a function of its output: writing $t=h(y)$, the
+inverse derivative must integrate to infinite length.  This does not,
+however, prevent $h'$ from having extremely high, extremely narrow spikes.
+
+We prescribe the output-coordinate speed
+$H(t)=h'(h^{-1}(t))$ to equal $1$ except on intervals of summable total
+length, while making $H(n)\geq4^n$ at every positive integer.  The large
+complement on which $H=1$ guarantees that $\int_0^\infty H^{-1}=\infty$, so
+the resulting $h$ is a global smooth diffeomorphism.  On the other hand, any
+nondecreasing function dominating $H$ must stay above $4^n$ throughout
+$[n,n+1]$.  Its reciprocal is therefore integrable, so it cannot be a weight
+in the sense of \eqref{eq:weight}.  Applied to $F(x,y)=x-y$, this changes an
+original growth bound identically equal to $1$ into one that has no admissible
+weight majorant.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:counterexample}
+There exist data satisfying all hypotheses of Theorem 2.1 of the source and
+diffeomorphisms $\phi,\psi$ for which the growth condition
+\eqref{eq:growth} holds, together with alternative smooth diffeomorphisms
+$\widehat\phi,\widehat\psi$ for which it fails for every continuous weight.
+Consequently the answer to the question in Remark 2.3 is negative.
+\end{theorem}
+
+\begin{proof}
+Define the explicit nonnegative smooth bump
+\[
+ \beta(u):=
+ \begin{cases}
+   e\exp\!\left(-\dfrac{1}{1-16u^2}\right),&|u|<\dfrac14,\\[6pt]
+   0,&|u|\geq\dfrac14.
+ \end{cases}
+\]
+Thus $\beta\in C_c^\infty(\R)$, $0\leq\beta\leq1$, and $\beta(0)=1$.
+Set
+\begin{equation}
+ H(t):=1+\sum_{n=1}^\infty 4^n\beta\bigl(4^n(t-n)\bigr). \label{eq:H}
+\end{equation}
+The sum is locally finite, hence $H$ is smooth and $H\geq1$.  The $n$th
+bump is supported in
+\[
+ I_n:=\bigl(n-4^{-(n+1)},\,n+4^{-(n+1)}\bigr).
+\]
+The union $U:=\bigcup_{n\geq1}I_n$ has finite measure, since
+\[
+ |U|\leq\sum_{n=1}^\infty2\cdot4^{-(n+1)}=\frac16.
+\]
+Outside $U$ one has $H=1$.  It follows that
+\begin{equation}
+       \int_0^\infty\frac{\dd t}{H(t)}=\infty,        \label{eq:inverse-length}
+\end{equation}
+because $[0,\infty)\setminus U$ has infinite measure.  On the negative
+half-line $H=1$ as well.
+
+Now define
+\[
+ Q(t):=\int_0^t\frac{\dd s}{H(s)}.
+\]
+The function $Q$ is smooth and strictly increasing, with $Q'(t)=H(t)^{-1}>0$.
+It tends to $-\infty$ as $t\to-\infty$ and, by
+\eqref{eq:inverse-length}, to $+\infty$ as $t\to+\infty$.  Hence it is a
+smooth diffeomorphism of $\R$ onto $\R$.  Let
+\[
+                         h:=Q^{-1}.
+\]
+The inverse-function formula gives
+\begin{equation}
+                         h'(y)=H(h(y)).                \label{eq:hprime}
+\end{equation}
+
+We next supply the implicit-function data.  Take
+\[
+ X=Y=\R,\qquad F(x,y)=x-y,\qquad
+ Z=F^{-1}(0)=\{(x,x):x\in\R\}.
+\]
+Here the ambient Banach spaces are all $\R$.  The set $Z$ is closed and
+path-connected.  Since $D_yF=-1$, the constant operator $S=-1$ is a left
+inverse: $S D_yF=1$.  Choose the original diffeomorphisms
+$\phi=\psi=\operatorname{id}_{\R}$.  Then the left side of
+\eqref{eq:growth} is identically
+\[
+       |1\cdot(-1)|\,|1\cdot1|=1.
+\]
+Thus condition (iii) holds with the constant weight $\omega\equiv1$, which
+satisfies \eqref{eq:weight}.  All hypotheses of the source theorem are
+therefore satisfied.
+
+Finally choose the alternative diffeomorphisms
+\[
+       \widehat\phi=\operatorname{id}_{\R},\qquad
+       \widehat\psi=h.
+\]
+At $(x,y)\in Z$, the new left side of the growth bound is, by
+\eqref{eq:hprime},
+\begin{equation}
+       |h'(y)(-1)|\,|1|=H(h(y)).                       \label{eq:new-bound}
+\end{equation}
+Suppose that some continuous weight $\widehat\omega$ made the new bound
+valid.  Since $h$ maps $\R$ onto $\R$, putting $t=h(y)$ in
+\eqref{eq:new-bound} would give
+\begin{equation}
+                       H(t)\leq\widehat\omega(|t|)
+                       \qquad(t\in\R).                 \label{eq:majorant}
+\end{equation}
+At every positive integer, \eqref{eq:H} and $\beta(0)=1$ give
+$H(n)\geq4^n$.  Since $\widehat\omega$ is nondecreasing,
+\eqref{eq:majorant} implies
+\[
+       \widehat\omega(t)\geq\widehat\omega(n)
+       \geq H(n)\geq4^n,
+       \qquad n\leq t<n+1.
+\]
+Consequently
+\[
+ \int_0^\infty\frac{\dd t}{\widehat\omega(t)}
+ \leq \int_0^1\frac{\dd t}{\widehat\omega(t)}
+      +\sum_{n=1}^\infty4^{-n}<\infty.
+\]
+This contradicts the defining condition \eqref{eq:weight}.  No admissible
+weight exists for the alternative coordinates, completing the
+counterexample.
+\end{proof}
+
+\section{Verification report}
+
+The construction is analytic and uses no numerical premise.  The following
+points were checked explicitly:
+\begin{itemize}
+  \item The supports $I_n$ are disjoint and locally finite; hence the series
+  in \eqref{eq:H} defines a smooth positive function.
+  \item Their total length is $1/6$, so the set on which $H=1$ has infinite
+  measure.  This proves the global surjectivity of $Q$, rather than merely a
+  local inverse statement.
+  \item The identity \eqref{eq:hprime} follows directly from differentiating
+  $Q(h(y))=y$.
+  \item The original data satisfy each item of Theorem 2.1, and the original
+  constant weight is admissible.
+  \item The contradiction uses the required monotonicity of a weight.  A
+  non-monotone function could follow the narrow spikes, but such a function
+  is not a weight in the source's definition.
+\end{itemize}
+
+The main human-review focus should be the quantifiers in Remark 2.3: the
+original pair of diffeomorphisms satisfies condition (iii), whereas the
+explicit alternative pair admits no weight at all.  Current verdict:
+\textbf{full counterexample likely valid}.
+
+\section{Scope and novelty check}
+
+This is a counterexample to coordinate-independence of the sufficient growth
+condition, not to Theorem 2.1 itself.  Indeed the underlying equation has the
+global implicit function $y=x$ in every coordinate system.  The example shows
+that the theorem's hypothesis can be destroyed by a smooth reparametrization
+even though its conclusion remains true.
+
+Local indexes were searched for arXiv:2004.04427, the title, ``global implicit
+function'', ``growth bound'', and ``diffeomorphism independence'', with no
+prior result.  A bounded web/arXiv search on 21 July 2026 used the title,
+authors, DOI, exact Remark 2.3 wording, and close ``continuous weight'',
+``coordinate independence'', and ``counterexample'' combinations.  It found
+the source and citations but no settlement; the March 2026 arXiv text still
+calls the question open.  This search was bounded, not exhaustive.
+
+\enlargethispage{2\baselineskip}
+\begin{thebibliography}{9}
+\bibitem{BH}
+T.~Berger and F.~Haller,
+\emph{On an extension of a global implicit function theorem},
+Comptes Rendus Math\'ematique 360 (2022), 439--450;
+arXiv:2004.04427.  DOI: 10.5802/crmath.309.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,228 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Cb}{\mathcal C_b}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+
+\title{A Sublinear Two-Sided Near-Additivity Counterexample}
+\author{Run \texttt{fa\_banach\_001}, lane 6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate full counterexample, likely valid, for human
+review.
+
+\section{Source question}
+
+Brice\~no and Iommi prove that if a sequence
+$(f_n)_n\subseteq\Cb(X)$ satisfies
+\begin{equation}\label{eq:source-defect}
+ \bigl\|f_{n+m}-f_n-f_m\circ T^n\bigr\|_\infty\leq C_n+C_m
+ \qquad(m,n\in\mathbb N)
+\end{equation}
+for a nondecreasing nonnegative sequence such that
+$\sum_{n\geq1}C_n/n^2<\infty$, then $(f_n)_n$ is asymptotically additive
+\cite[Proposition~5.1]{BI}. Their Question~5.2 asks whether the summability
+assumption can be replaced by only
+\[
+ 0\leq C_n\leq C_{n+1},\qquad \frac{C_n}{n}\longrightarrow0.
+\]
+The question occurs on PDF page~27.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Result}
+
+\begin{theorem}\label{thm:main}
+The proposed weakening in Question~5.2 is false. More precisely, there are a
+compact dynamical system $(X,T)$, a sequence $(f_n)_n\subseteq\Cb(X)$, and a
+sequence $(C_n)_{n\geq0}$ such that:
+\begin{enumerate}
+\item $C_0=0$, and $(C_n)_{n\geq1}$ is positive, nondecreasing, and even
+subadditive;
+\item $C_n/n\to0$;
+\item \eqref{eq:source-defect} holds for all $m,n\geq0$;
+\item $(f_n)_n$ is not asymptotically additive.
+\end{enumerate}
+In fact, the failure in the last item has normalized distance exactly one
+from the additive sequences.
+\end{theorem}
+
+\section{Proof intuition}
+
+On a one-point system, asymptotic additivity is simply convergence of
+$f_n/n$. We therefore want a bounded, nonconvergent slope $h(n)=f_n/n$ which
+changes so slowly that $f_n=nh(n)$ is additive up to a sublinear error. The
+choice
+\[
+ h(x)=\sin(\log\log(x+e^4))
+\]
+does exactly this: its phase tends to infinity, so it keeps oscillating, while
+its derivative is bounded by
+$((x+e^4)\log(x+e^4))^{-1}$. For two comparable summands this derivative
+directly gives an $O(n/\log n)$ defect. If one summand is much smaller, its
+coefficient absorbs the larger change in phase. Splitting at $m=\sqrt n$
+makes this uniform and yields the explicit error
+$C_n=15n/\log(n+e^4)$.
+
+\section{Proof}
+
+Put $B=e^4$ and define, for $x\geq0$,
+\[
+ q(x)=\log\log(x+B),\qquad h(x)=\sin q(x).
+\]
+Then
+\begin{equation}\label{eq:derivative}
+ |h'(x)|\leq q'(x)=\frac{1}{(x+B)\log(x+B)}.
+\end{equation}
+
+Take $X=\{*\}$ with $T(*)=*$. Set
+\[
+ f_0(*)=0,\qquad f_n(*)=n h(n)\quad(n\geq1),
+\]
+and
+\begin{equation}\label{eq:C}
+ C_0=0,\qquad C_n=\frac{15n}{\log(n+B)}\quad(n\geq1).
+\end{equation}
+Every $f_n$ is of course bounded and continuous.
+
+We first verify the error estimate. By symmetry it is enough to consider
+$1\leq m\leq n$. Algebra and \eqref{eq:derivative} give
+\begin{align}
+ |f_{n+m}-f_n-f_m|
+ &\leq n|h(n+m)-h(n)|+m|h(n+m)-h(m)| \notag\\
+ &\leq n\int_n^{n+m}\frac{dx}{(x+B)\log(x+B)}
+   +m\int_m^{n+m}\frac{dx}{(x+B)\log(x+B)}.\label{eq:split}
+\end{align}
+The first integral term is at most
+\begin{equation}\label{eq:first}
+ \frac{nm}{(n+B)\log(n+B)}\leq\frac{n}{\log(n+B)}.
+\end{equation}
+Denote the second term by $E_{m,n}$. We claim that
+\begin{equation}\label{eq:second}
+ E_{m,n}\leq\frac{14n}{\log(n+B)}.
+\end{equation}
+
+Suppose first that $m\leq\sqrt n$. Since $m\leq n$ and $\log B=4$,
+\begin{align*}
+ E_{m,n}
+ &=m\log\!\left(\frac{\log(n+m+B)}{\log(m+B)}\right)\\
+ &\leq \frac{m}{4}\log(2(n+B)).
+\end{align*}
+Here we used $\log y\leq y$ for $y>0$. Since
+$n+B\leq(B+1)n<e^5n$ and $2(n+B)<e^6n$, while
+$\log n\leq2n^{1/4}$ for $n\geq1$, it follows that
+\begin{align*}
+ \frac{E_{m,n}\log(n+B)}{n}
+ &\leq \frac{\log(n+B)\log(2(n+B))}{4\sqrt n}\\
+ &\leq\frac{(5+2n^{1/4})(6+2n^{1/4})}{4\sqrt n}\\
+ &=\frac{30}{4\sqrt n}+\frac{22}{4n^{1/4}}+1\leq14.
+\end{align*}
+
+Now suppose that $m>\sqrt n$. Using $\log(1+u)\leq u$ twice,
+\begin{align*}
+ E_{m,n}
+ &=m\log\!\left(
+  1+\frac{\log(1+n/(m+B))}{\log(m+B)}\right)\\
+ &\leq\frac{m}{\log(m+B)}\log\!\left(1+\frac{n}{m+B}\right)
+ \leq\frac{n}{\log(m+B)}.
+\end{align*}
+Moreover $(m+B)^2>n+B$, so
+$\log(n+B)<2\log(m+B)$. Consequently
+\[
+ E_{m,n}\leq\frac{2n}{\log(n+B)},
+\]
+which is stronger than \eqref{eq:second}. Combining
+\eqref{eq:split}--\eqref{eq:second} yields
+\[
+ |f_{n+m}-f_n-f_m|
+ \leq\frac{15n}{\log(n+B)}=C_n\leq C_n+C_m.
+\]
+The cases $m=0$ or $n=0$ are identities, so \eqref{eq:source-defect} holds
+for all nonnegative $m,n$.
+
+Next consider the hypotheses on the errors. The function
+$x\mapsto x/\log(x+B)$ is strictly increasing on $[0,\infty)$, because its
+derivative has the sign of
+\[
+ \log(x+B)-\frac{x}{x+B}>4-1>0.
+\]
+Thus $(C_n)$ is nondecreasing. Also
+\[
+ \frac{C_n}{n}=\frac{15}{\log(n+B)}\longrightarrow0.
+\]
+It is even subadditive: since $x\mapsto1/\log(x+B)$ decreases,
+\begin{align*}
+ \frac{n+m}{\log(n+m+B)}
+ &\leq\frac{n}{\log(n+B)}+\frac{m}{\log(m+B)}.
+\end{align*}
+For comparison with Proposition~5.1, the excluded summability condition does
+indeed fail, since
+\[
+ \sum_{n\geq1}\frac{C_n}{n^2}
+ =15\sum_{n\geq1}\frac{1}{n\log(n+B)}=\infty.
+\]
+
+It remains to show failure of the conclusion. Choose integers $n_k^+$ and
+$n_k^-$ nearest, respectively, to
+\[
+ \exp\!\bigl(\exp(\tfrac\pi2+2\pi k)\bigr)-B,
+ \qquad
+ \exp\!\bigl(\exp(\tfrac{3\pi}2+2\pi k)\bigr)-B.
+\]
+Since $q'(x)\to0$, rounding changes $q$ by $o(1)$. Hence
+\[
+ h(n_k^+)\longrightarrow1,\qquad h(n_k^-)\longrightarrow-1.
+\]
+Thus $f_n/n=h(n)$ does not converge.
+
+More exactly, every $g\in\Cb(X)$ is a scalar $\lambda$, and
+$S_ng=n\lambda$. Therefore
+\[
+ \limsup_{n\to\infty}\frac{\|f_n-S_ng\|_\infty}{n}
+ =\limsup_{n\to\infty}|h(n)-\lambda|
+ \geq\max\{|1-\lambda|,|-1-\lambda|\}\geq1.
+\]
+Equality is attained at $\lambda=0$. Hence the infimum in the definition of
+asymptotic additivity is exactly one, rather than zero. This proves
+Theorem~\ref{thm:main}. \qed
+
+\section{Verification, scope, and novelty}
+
+The proof uses no external theorem beyond the source definitions. The included
+finite-range verifier exhaustively checks the defect for all
+$1\leq m\leq n\leq800$, checks selected logarithmic-scale pairs up to
+$n=10^{12}$, and checks finite-range monotonicity and subadditivity of
+$(C_n)$. These computations are not used in the proof.
+
+The bounded novelty search on 22 July 2026 covered the run's four lightweight
+indexes, the exact arXiv id and question wording, and web/arXiv searches for
+the phrases \texttt{C\_n + C\_m}, \texttt{asymptotically additive}, and
+\texttt{sublinear nearly additive}, with close variants. No separate paper
+explicitly resolving Question~5.2 was found. The source notes only that an
+analogous one-sided nearly-subadditive scalar question was answered negatively
+by F\"uredi. This packet does not rely on that construction. Novelty is not
+certified beyond the bounded search.
+
+The counterexample settles the yes/no weakening in Question~5.2. It does not
+seek the sharp additional regularity on $(C_n)$ that would restore the
+conclusion. Human review should focus on the two cases in
+\eqref{eq:second}; the one-point reduction and the final oscillation are
+otherwise direct.
+
+\begin{thebibliography}{9}
+\bibitem{BI}
+R.~Brice\~no and G.~Iommi,
+\emph{Ergodic theorems for set maps under weak forms of additivity},
+arXiv:2501.14581v1 (2025).
+\end{thebibliography}
+
+\end{document}

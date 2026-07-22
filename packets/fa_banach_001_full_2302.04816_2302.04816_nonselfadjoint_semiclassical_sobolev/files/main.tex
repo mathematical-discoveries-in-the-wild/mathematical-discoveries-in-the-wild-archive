@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+
+\newcommand{\Sp}{\mathfrak S}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\T}{\mathsf T}
+\newcommand{\W}{\mathcal W}
+\newcommand{\B}{\mathcal B}
+
+\title{The Trace-Only Sobolev Obstruction for\\Non-Self-Adjoint Semiclassical Projections}
+\author{FA/Banach run \texttt{fa\_banach\_001}}
+\date{2026-07-21}
+
+\begin{document}
+\maketitle
+
+\section*{Status and source question}
+
+This packet gives a likely valid full affirmative answer to the conjecture in
+Figure~2 of Lafleche, arXiv:2302.04816v3~\cite{Lafleche}.  In the source,
+Theorem~1 proves maximal Sobolev nonregularity for self-adjoint projections.
+For non-self-adjoint idempotents it requires either
+$p\ge 2d/(d+s)$ or, in the remaining region, a uniform
+$\mathcal L^{2+\varepsilon}$ bound.  The caption on page~7 says:
+``In this case, Theorem~1 needs more assumptions than a trace condition to be
+valid in the top-right zone. We conjecture however that the result holds there
+as well.''
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Source page 7: Figure 2 and the complete conjectural caption.}
+\end{figure}
+
+Let $\T_z A=W_z A W_z^*$ denote the source's quantum phase-space
+translation.  The scaled Schatten norm is
+\[
+  \|A\|_{\mathcal L^p}=h^{d/p}\|A\|_{\Sp_p}.
+\]
+For $0<s<1$, the homogeneous quantum Sobolev seminorm is, up to the source's
+positive normalization constant,
+\[
+ \|A\|_{\dot\W^{s,p}}^p
+ =\gamma_{s,p}h^d\int_{\mathbb R^{2d}}
+   \frac{\|\T_zA-A\|_{\Sp_p}^p}{|z|^{2d+sp}}\,dz.
+\]
+
+\section*{Proof Intuition}
+
+An oblique idempotent may have an arbitrarily large norm, so interpolation
+through an $\mathcal L^{2+\varepsilon}$ estimate loses the low-$p$ region.
+That norm is unnecessary.  Replace the idempotent $P$ by the orthogonal
+projection $Q$ onto the same range.  If two ranges move under a unitary, the
+distance between their orthogonal projections is no larger, up to the sharp
+two-block factor $2^{1/p}$, than the distance between any idempotents having
+those ranges.  Thus every translation difference of $Q$ is controlled by the
+corresponding translation difference of $P$.  The source's self-adjoint
+obstruction applies to $Q$ and transfers back to $P$.
+
+At order one the same mechanism appears infinitesimally.  Relative to
+$\Ran P\oplus(\Ran P)^\perp$, the lower-left block of $[A,P]$ is precisely the
+lower-left block of $[A,Q]$.  Self-adjointness of the generator supplies the
+opposite block of $[A,Q]$, again at a factor $2^{1/p}$.
+
+\section*{The range-projection comparison}
+
+\begin{lemma}[Schatten control of moving ranges]\label{lem:range}
+Let $P_0,P_1$ be finite-rank idempotents on a Hilbert space, of the same rank,
+and let $Q_i$ be the orthogonal projection onto $E_i=\Ran P_i$.  For
+$1\le p<\infty$,
+\[
+  \|Q_1-Q_0\|_{\Sp_p}
+  \le 2^{1/p}\|P_1-P_0\|_{\Sp_p}.
+\]
+For $p=\infty$, the same statement holds with constant $1$.
+\end{lemma}
+
+\begin{proof}
+Put $D=P_1-P_0$.  If $x\in E_0$, then
+$Dx=P_1x-x$, with $P_1x\in E_1$.  Since $Q_1x$ is the best approximation to
+$x$ from $E_1$,
+\[
+ \|(I-Q_1)Q_0x\|\le \|DQ_0x\|.
+\]
+Consequently
+\[
+ Q_0(I-Q_1)Q_0\le Q_0D^*DQ_0
+\]
+in positive-operator order, and the min--max principle gives
+\[
+ \|(I-Q_1)Q_0\|_{\Sp_p}\le \|DQ_0\|_{\Sp_p}
+ \le \|D\|_{\Sp_p}.
+\]
+Interchanging the roles of the two ranges (and observing that
+$Dx=x-P_0x$ for $x\in E_1$) similarly gives
+\[
+ \|(I-Q_0)Q_1\|_{\Sp_p}\le \|D\|_{\Sp_p}.
+\]
+
+The square $(Q_1-Q_0)^2$ commutes with $Q_0$.  Its restrictions to
+$E_0$ and $E_0^\perp$ are respectively
+\[
+ Q_0(I-Q_1)Q_0,
+ \qquad
+ (I-Q_0)Q_1(I-Q_0).
+\]
+It follows that
+\[
+ \|Q_1-Q_0\|_{\Sp_p}^p
+ =\|(I-Q_1)Q_0\|_{\Sp_p}^p
+  +\|(I-Q_0)Q_1\|_{\Sp_p}^p
+ \le 2\|D\|_{\Sp_p}^p.
+\]
+For the operator norm, take the maximum of the two diagonal blocks of the
+square instead of their trace sum.
+\end{proof}
+
+\begin{corollary}[Translation and commutator comparisons]\label{cor:compare}
+Let $P$ be a finite-rank idempotent and $Q$ the orthogonal projection onto
+$\Ran P$.  Then, for every unitary $U$,
+\[
+ \|UQU^*-Q\|_{\Sp_p}
+ \le c_p\|UPU^*-P\|_{\Sp_p},
+ \qquad
+ c_p=\begin{cases}2^{1/p},&p<\infty,\\1,&p=\infty.\end{cases}
+\]
+If $A$ is self-adjoint and the commutators belong to $\Sp_p$, then
+\[
+ \|[A,Q]\|_{\Sp_p}\le c_p\|[A,P]\|_{\Sp_p}.
+\]
+\end{corollary}
+
+\begin{proof}
+The first claim is Lemma~\ref{lem:range} applied to $P$ and $UPU^*$, because
+the orthogonal projection onto $U\Ran(P)$ is $UQU^*$.
+
+For the second claim, decompose the Hilbert space as
+$\Ran P\oplus(\Ran P)^\perp$.  The idempotent and its range projection have
+block forms
+\[
+ P=\begin{pmatrix}I&B\\0&0\end{pmatrix},
+ \qquad Q=\begin{pmatrix}I&0\\0&0\end{pmatrix}.
+\]
+Writing $A_{21}=(I-Q)AQ$, compression gives
+\[
+ (I-Q)[A,P]Q=A_{21},
+ \qquad
+ [A,Q]=\begin{pmatrix}0&-A_{21}^*\\A_{21}&0\end{pmatrix}.
+\]
+Hence $\|[A,Q]\|_{\Sp_p}=2^{1/p}\|A_{21}\|_{\Sp_p}$ for finite $p$
+(and equality without the factor for $p=\infty$), while
+$\|A_{21}\|_{\Sp_p}\le\|[A,P]\|_{\Sp_p}$.
+\end{proof}
+
+\section*{Solution of the Sobolev conjecture}
+
+\begin{theorem}\label{thm:main}
+Let $h\to0$, and let $P_h$ be trace-class idempotents satisfying
+\[
+ P_h^2=P_h,
+ \qquad h^d\Tr(P_h)=1.
+\]
+Let $1<p\le\infty$ and $0<s\le1$, with $s\ge1/p$.  When $p=\infty$,
+assume $s>0$.  Then
+\[
+ \|P_h\|_{\dot\W^{s,p}}\longrightarrow\infty.
+\]
+Thus the extra uniform $\mathcal L^{2+\varepsilon}$ hypothesis in the
+non-self-adjoint part of Theorem~1 of the source is unnecessary throughout
+the Sobolev region conjectured in its Figure~2.
+\end{theorem}
+
+\begin{proof}
+A trace-class idempotent has finite rank, and its trace equals its rank.  Let
+$Q_h$ be the orthogonal projection onto $\Ran P_h$.  Then
+\[
+ Q_h^2=Q_h=Q_h^*,
+ \qquad h^d\Tr(Q_h)=h^d\operatorname{rank}(P_h)=1.
+\]
+
+First take $0<s<1$.  Apply Corollary~\ref{cor:compare} with the Weyl unitary
+implementing $\T_z$.  After multiplying by the semiclassical scaling factor,
+\[
+ \|\T_zQ_h-Q_h\|_{\mathcal L^p}
+ \le c_p\|\T_zP_h-P_h\|_{\mathcal L^p}
+ \quad\text{for every }z.
+\]
+Integrating this pointwise inequality in the definition of the fractional
+seminorm yields
+\[
+ \|Q_h\|_{\dot\W^{s,p}}
+ \le c_p\|P_h\|_{\dot\W^{s,p}}.
+\]
+The self-adjoint part of Theorem~1 in~\cite{Lafleche} says that the left side
+tends to infinity whenever $s\ge1/p$ and $p>1$.  The right side must therefore
+tend to infinity as well.
+
+It remains to take $s=1$.  The source's Corollary~2.1, applied to $Q_h$, gives
+for every $p>1$
+\[
+ \frac1\hbar\|[x,Q_h]\|_{\mathcal L^p}
+ +\|[\nabla,Q_h]\|_{\mathcal L^p}\longrightarrow\infty.
+\]
+Apply the commutator part of Corollary~\ref{cor:compare} componentwise to the
+self-adjoint generators $x_j$ and $-i\partial_j$.  The corresponding sum for
+$Q_h$ is at most a dimension-dependent constant times the quantum
+$\dot\W^{1,p}$ seminorm of $P_h$.  Hence that seminorm diverges.  If one of
+the commutators is not in $\Sp_p$, the conclusion is immediate.
+\end{proof}
+
+\section*{A Besov consequence below order one}
+
+The same idea also treats the source's second-difference Besov norm whenever
+$0<s<1$.  For completeness, write $\Delta_z=\T_z-I$.  On every Schatten
+class, the isometric group identity
+\[
+ \Delta_z=\tfrac12\Delta_{2z}-\tfrac12\Delta_z^2
+\]
+iterates to
+\[
+ \Delta_zA
+ =-\sum_{k=0}^{\infty}2^{-k-1}\Delta_{2^kz}^2A.
+\]
+The remainder vanishes for each fixed Schatten operator.  Minkowski's
+inequality and the change of variables $w=2^kz$ show that the first-difference
+Besov seminorm is at most
+\[
+ \frac{1}{2(1-2^{s-1})}
+\]
+times the source's second-difference seminorm.  Conversely,
+$\|\Delta_z^2A\|_{\Sp_p}\le2\|\Delta_zA\|_{\Sp_p}$.  Combining these facts
+with Corollary~\ref{cor:compare} gives, for $0<s<1$ and
+$1\le p,q\le\infty$,
+\[
+ \|Q_h\|_{\dot\B^s_{p,q}}
+ \le C_{s,p}\|P_h\|_{\dot\B^s_{p,q}}.
+\]
+The self-adjoint Besov conclusion of Theorem~1 in the source therefore
+transfers to arbitrary idempotents for $0<s<1$: divergence holds when
+$s>1/p$, or when $s=1/p$ and $q<\infty$.  This includes every critical case
+$s=1/p$ with $p>1$.
+
+\section*{Verification and limitations}
+
+The proof is exact and finite-dimensional at its new step.  The script
+\path{code/check_projection_inequality.py} is only a regression check: it
+tests the range-difference and commutator inequalities on random complex
+idempotents, including condition numbers up to $10^4$.  It is not used as
+evidence in place of the proof.
+
+On 2026-07-21, the run's lightweight indexes and bounded web searches were
+checked using arXiv:2302.04816, the exact title and conjecture sentence, and
+combinations of ``non-self-adjoint'', ``idempotent'', ``trace condition'', and
+``quantum Sobolev regularity''.  The source itself and adjacent quantum
+Sobolev work were found, but no later exact solution.  This does not guarantee
+novelty.
+
+The theorem settles the Sobolev conjecture in Figure~2 and the Besov statement
+for $0<s<1$.  It does not claim the separate second-difference Besov endpoint
+$s=1,p=1$, and it uses rather than reproves the source's self-adjoint
+nonregularity theorem.  A human reviewer should focus on
+Lemma~\ref{lem:range} and on the compression/domain justification for the
+unbounded generators in the $s=1$ argument.
+
+\begin{thebibliography}{9}
+\bibitem{Lafleche}
+L. Lafleche,
+\emph{Optimal Semiclassical Regularity of Projection Operators and Strong Weyl Law},
+arXiv:2302.04816v3 (2023), especially Theorem~1, Corollary~2.1, and Figure~2.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,429 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{placeins}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+\newcommand{\F}{\mathcal F}
+\newcommand{\Lip}{\operatorname{Lip}_0}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\R}{\mathbb R}
+
+\title{Finite Saturation Collapse Characterizes\\
+Frechet Differentiability of Convex Molecule Series\\
+\large A full positive answer to Question 1 of arXiv:2003.01439}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 2}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.89\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+For a given norm-one convex series of molecules, the theorem below gives an
+exact metric criterion for Frechet differentiability. The source's separate
+Question 2 was answered negatively in later literature and is recorded in
+Section~\ref{sec:q2}.
+}}
+\end{center}
+
+\section{Source questions}
+
+Let $(M,d,0)$ be a pointed metric space. The Lipschitz-free space $\F(M)$ is
+the canonical predual of $\Lip(M)$, where functions in $\Lip(M)$ vanish at
+$0$ and carry the Lipschitz norm. For distinct $x,y\in M$, write
+\[
+ m_{xy}=\frac{\delta_x-\delta_y}{d(x,y)}.
+\]
+Aliaga and Rueda Zoca \cite{source} studied norm-one series
+\begin{equation}
+ \mu=\sum_{i=1}^{\infty}\lambda_i m_{x_i y_i},
+ \qquad \lambda_i>0,\qquad \sum_{i=1}^{\infty}\lambda_i=1.
+ \label{eq:series}
+\end{equation}
+They obtained a metric characterization of Gateaux differentiability and a
+Frechet characterization in the finitely supported case. They ended with
+the following questions (p.~15 of the arXiv PDF):
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+ \caption{The complete context and text of Questions 1 and 2 in the source.}
+ \label{fig:questions}
+\end{figure}
+
+Question 1 asks for a metric characterization, in the infinite-support case,
+of those limits of convex series that are points of Frechet differentiability.
+We give such a characterization using only finite distance data and the
+McShane--Whitney extension formulas.
+
+It is known, and recalled in the source, that $\F(M)$ can possess a point of
+Frechet differentiability only if $M$ is bounded and uniformly discrete. We
+therefore work under precisely these necessary ambient hypotheses. Put
+\begin{equation}
+ \theta=\inf_{s\ne t}d(s,t)>0,
+ \qquad D=\diam(M)<\infty.
+ \label{eq:thetaD}
+\end{equation}
+
+\FloatBarrier
+\section{Proof intuition}
+
+Saturating the first $n$ molecules cuts out a finite-codimensional face
+$E_n$ of the dual Lipschitz unit ball. The extremal McShane--Whitney
+extensions compute the uniform diameter of this face exactly from metric
+data; the resulting number is $\Delta_n$. If $\mu$ is Frechet smooth, the
+coefficient tail places $E_n$ in an increasingly thin norming slice, so
+Smulyan's lemma forces $\Delta_n$ to vanish.
+
+For the converse, a function in a thin norming slice almost saturates each of
+the first finitely many molecules. Compactness of the corresponding finite
+Lipschitz polytope lets us correct those values to exact saturation.
+Clamping the original function between the corrected lower and upper metric
+extensions makes this a global correction. Uniform discreteness upgrades its
+small uniform error to small Lipschitz-norm error. Thus the entire thin slice
+lies near the collapsing face $E_n$, which is precisely Smulyan's criterion
+for Frechet differentiability.
+
+\section{The finite metric invariant}
+
+Fix a series \eqref{eq:series} with $\|\mu\|=1$. For $n\geq1$ let
+\[
+ S_n=\{0,x_1,y_1,\ldots,x_n,y_n\},
+\]
+viewed as a set, and define the finite saturated-potential polytope
+\begin{align}
+ P_n=\bigl\{a:S_n\to\R:\;&a(0)=0,
+ \quad |a(s)-a(t)|\leq d(s,t)\quad(s,t\in S_n),\notag\\
+ &a(x_i)-a(y_i)=d(x_i,y_i)\quad(1\leq i\leq n)\bigr\}.
+ \label{eq:Pn}
+\end{align}
+This set is nonempty. Indeed, take a norming $f\in S_{\Lip(M)}$ for $\mu$.
+Since $f(m_{x_i y_i})\leq1$ and all coefficients in \eqref{eq:series} are
+positive, equality
+\[
+ 1=f(\mu)=\sum_i\lambda_i f(m_{x_i y_i})
+\]
+forces $f(m_{x_i y_i})=1$ for every $i$. Thus $f|_{S_n}\in P_n$.
+
+For $a\in P_n$, define its lower and upper metric envelopes on $M$ by
+\begin{equation}
+ L_a(z)=\max_{s\in S_n}\bigl(a(s)-d(s,z)\bigr),
+ \qquad
+ U_a(z)=\min_{s\in S_n}\bigl(a(s)+d(s,z)\bigr).
+ \label{eq:envelopes}
+\end{equation}
+Both are normalized 1-Lipschitz extensions of $a$. Define
+\begin{equation}
+ \boxed{\quad
+ \Delta_n=\sup_{a,b\in P_n}\ \sup_{z\in M}
+             \bigl(U_a(z)-L_b(z)\bigr).
+ \quad}
+ \label{eq:Delta}
+\end{equation}
+The number $\Delta_n$ is nonnegative and finite. It is determined entirely by
+the finite distance matrix on $S_n$, the distances from an arbitrary point
+$z$ to $S_n$, and the first $n$ oriented pairs in the representation.
+
+\section{Why the invariant is the right one}
+
+Consider the decreasing sequence of saturated faces
+\begin{equation}
+ E_n=\{g\in B_{\Lip(M)}:
+       g(x_i)-g(y_i)=d(x_i,y_i)\text{ for }1\leq i\leq n\}.
+ \label{eq:En}
+\end{equation}
+Every member of $E_n$ has norm one. The next lemma translates the metric
+quantity \eqref{eq:Delta} exactly into the uniform diameter of this face.
+
+\begin{lemma}[Exact envelope diameter]
+For every $n\geq1$,
+\begin{equation}
+ \diam_{\|\cdot\|_\infty}(E_n)=\Delta_n.
+ \label{eq:diamDelta}
+\end{equation}
+Consequently,
+\begin{equation}
+ \Delta_n\leq D\,\diam_{\|\cdot\|_L}(E_n),
+ \qquad
+ \diam_{\|\cdot\|_L}(E_n)\leq\frac{2}{\theta}\Delta_n.
+ \label{eq:normcompareEn}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If $g\in E_n$ and $a=g|_{S_n}$, then $a\in P_n$ and the extension
+inequalities give
+\[
+ L_a(z)\leq g(z)\leq U_a(z)\qquad(z\in M).
+\]
+Thus, for $g,h\in E_n$, with restrictions $a,b\in P_n$,
+\[
+ g(z)-h(z)\leq U_a(z)-L_b(z)\leq\Delta_n.
+\]
+Swapping $g$ and $h$ deals with the absolute value, so the left side of
+\eqref{eq:diamDelta} is at most $\Delta_n$.
+
+Conversely, $U_a\in E_n$ and $L_b\in E_n$ for every $a,b\in P_n$.
+Therefore every value $U_a(z)-L_b(z)$ appearing in \eqref{eq:Delta} is a
+pointwise difference of two members of $E_n$. Taking suprema proves the
+reverse inequality.
+
+Finally, for every $u\in\Lip(M)$, normalization at $0$ and
+\eqref{eq:thetaD} give
+\begin{equation}
+ \|u\|_\infty\leq D\|u\|_L,
+ \qquad
+ \|u\|_L\leq\frac{2}{\theta}\|u\|_\infty.
+ \label{eq:normcomparison}
+\end{equation}
+Apply these inequalities to differences of members of $E_n$ and use
+\eqref{eq:diamDelta}.
+\end{proof}
+
+The reverse implication in the main theorem requires the fact that almost
+saturated data on a fixed finite set can be corrected to exactly saturated
+data. The useful point is that no quantitative polyhedral error bound is
+needed.
+
+\begin{lemma}[Finite-face correction]
+Fix $n$. Let
+\[
+ Q_n=\{v:S_n\to\R:v(0)=0,
+       \ |v(s)-v(t)|\leq d(s,t)\text{ for }s,t\in S_n\}.
+\]
+For $\eta\geq0$ set
+\begin{align}
+ \omega_n(\eta)=\sup\bigl\{\dist_\infty(v,P_n):v\in Q_n,\quad
+ 0\leq d(x_i,y_i)&-[v(x_i)-v(y_i)]\leq\eta\notag\\[-2mm]
+ &\text{ for }1\leq i\leq n\bigr\}.
+ \label{eq:omega}
+\end{align}
+Then $\omega_n(\eta)\to0$ as $\eta\downarrow0$.
+
+Moreover, if $g\in B_{\Lip(M)}$, $v=g|_{S_n}$, and
+$\dist_\infty(v,P_n)\leq\rho$, then there is $h\in E_n$ such that
+\begin{equation}
+ \|g-h\|_\infty\leq\rho,
+ \qquad
+ \|g-h\|_L\leq\frac{2\rho}{\theta}.
+ \label{eq:globalcorrection}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The polytope $Q_n$ is compact because it is a closed bounded subset of the
+finite-dimensional space of normalized real data on $S_n$. If the first
+assertion failed, there would be $\varepsilon>0$, numbers $\eta_k\downarrow0$,
+and $v_k\in Q_n$ whose displayed deficits are at most $\eta_k$, but with
+$\dist_\infty(v_k,P_n)\geq\varepsilon$. Pass to a convergent subsequence,
+$v_k\to v\in Q_n$. Every saturation deficit of $v$ is zero, so $v\in P_n$,
+contradicting the distance bound.
+
+For the second assertion, choose $a\in P_n$ with
+$\|a-v\|_\infty\leq\rho$; compactness allows the minimizing choice. Denote
+by $L_v,U_v$ the envelope formulas \eqref{eq:envelopes} formed from $v$.
+Since $g$ extends $v$,
+\[
+ L_v\leq g\leq U_v.
+\]
+The envelope formulas also show pointwise that
+\[
+ |L_a-L_v|\leq\rho,
+ \qquad |U_a-U_v|\leq\rho.
+\]
+Now clamp $g$ between the new envelopes:
+\begin{equation}
+ h(z)=\min\{U_a(z),\max\{L_a(z),g(z)\}\}.
+ \label{eq:clamp}
+\end{equation}
+The minimum or maximum of real-valued 1-Lipschitz functions is again
+1-Lipschitz. Also $L_a=U_a=a$ on $S_n$, hence $h|_{S_n}=a$ and $h\in E_n$.
+The two envelope estimates show that the clamping moves $g$ pointwise by at
+most $\rho$. The second bound in \eqref{eq:globalcorrection} follows from
+\eqref{eq:normcomparison} applied to $g-h$.
+\end{proof}
+
+\section{Main characterization}
+
+\begin{theorem}[Finite saturation collapse criterion]
+\label{thm:main}
+Let $(M,d,0)$ be bounded and uniformly discrete, and let $\mu$ have a
+norm-one convex-series representation \eqref{eq:series}. Form $P_n$,
+$L_a,U_a$, and $\Delta_n$ from \eqref{eq:Pn}--\eqref{eq:Delta}. Then
+\begin{equation}
+ \boxed{\quad
+ \mu\text{ is a point of Frechet differentiability of }\F(M)
+ \quad\Longleftrightarrow\quad
+ \lim_{n\to\infty}\Delta_n=0.
+ \quad}
+ \label{eq:main}
+\end{equation}
+Equivalently, the common saturated extensions of longer finite prefixes have
+uniformly collapsing diameter.
+\end{theorem}
+
+\begin{proof}
+We use the following form of Smulyan's lemma: $\mu\in S_{\F(M)}$ is a point
+of Frechet differentiability if and only if
+\begin{equation}
+ \diam_{\|\cdot\|_L}\{g\in S_{\Lip(M)}:g(\mu)>1-\alpha\}
+ \longrightarrow0
+ \qquad(\alpha\downarrow0).
+ \label{eq:smulyan}
+\end{equation}
+
+Suppose first that $\mu$ is a point of Frechet differentiability. Put
+$r_n=\sum_{i>n}\lambda_i$. If $g\in E_n$, then
+$g(m_{x_i y_i})=1$ for $i\leq n$ and
+$g(m_{x_i y_i})\geq-1$ for $i>n$. Hence
+\begin{equation}
+ g(\mu)\geq\sum_{i\leq n}\lambda_i-sum_{i>n}\lambda_i
+ =1-2r_n>1-3r_n.
+ \label{eq:tail}
+\end{equation}
+Because all coefficients are positive and the series is infinite,
+$r_n>0$, while $r_n\to0$. Thus $E_n$ lies in the $3r_n$-slice from
+\eqref{eq:smulyan}. Its Lipschitz-norm diameter tends to zero, and
+\eqref{eq:normcompareEn} gives $\Delta_n\to0$.
+
+Conversely, suppose $\Delta_n\to0$. Fix $\varepsilon>0$. By the exact
+diameter lemma and \eqref{eq:normcompareEn}, choose $n$ so large that
+\begin{equation}
+ \diam_{\|\cdot\|_L}(E_n)<\frac{\varepsilon}{3}.
+ \label{eq:smallface}
+\end{equation}
+Keep this $n$ fixed and set
+\[
+ \lambda_* =\min_{1\leq i\leq n}\lambda_i>0.
+\]
+Let $g\in S_{\Lip(M)}$ satisfy $g(\mu)>1-\delta$. Since
+$g(m_{x_i y_i})\leq1$ for every $i$,
+\begin{equation}
+ 0\leq\sum_i\lambda_i[1-g(m_{x_i y_i})]
+ =1-g(\mu)<\delta.
+ \label{eq:deficitsum}
+\end{equation}
+In particular, for $1\leq i\leq n$,
+\begin{align}
+ 0&\leq d(x_i,y_i)-[g(x_i)-g(y_i)]\notag\\
+ &=d(x_i,y_i)[1-g(m_{x_i y_i})]
+ <\frac{D\delta}{\lambda_i}
+ \leq\frac{D\delta}{\lambda_*}.
+ \label{eq:individualdeficit}
+\end{align}
+The finite-face correction lemma therefore provides $\widehat g\in E_n$ with
+\begin{equation}
+ \|g-\widehat g\|_L
+ \leq\frac{2}{\theta}\,
+ \omega_n\!\left(\frac{D\delta}{\lambda_*}\right).
+ \label{eq:slicecorrection}
+\end{equation}
+As $\delta\downarrow0$, the right side tends to zero. Choose $\delta>0$ so
+small that it is less than $\varepsilon/3$.
+
+If $g_1,g_2$ are any two members of this $\delta$-slice, correct them to
+$\widehat g_1,\widehat g_2\in E_n$. By \eqref{eq:smallface} and
+\eqref{eq:slicecorrection},
+\[
+ \|g_1-g_2\|_L
+ \leq\|g_1-\widehat g_1\|_L
+     +\|\widehat g_1-\widehat g_2\|_L
+     +\|\widehat g_2-g_2\|_L
+ <\varepsilon.
+\]
+The dual-sphere slice diameter therefore tends to zero. By
+\eqref{eq:smulyan}, $\mu$ is a point of Frechet differentiability.
+\end{proof}
+
+\begin{remark}[Representation and order]
+The test is stated for the given convex-series representation, as requested
+in the source question. If the same vector has another positive norm-one
+convex-series representation, the criterion has the same truth value for
+that representation, because Theorem~\ref{thm:main} identifies it with the
+representation-independent property of Frechet differentiability. The same
+argument also handles repeated points and repeated pairs: $S_n$ is a set,
+and compatibility of all constraints follows from the common norming
+function used after \eqref{eq:Pn}.
+\end{remark}
+
+\section{Sanity checks}
+
+\paragraph{The infinite star.}
+Let $M=\{0,1,2,\ldots\}$ with $d(0,k)=1$ and $d(j,k)=2$ for distinct
+positive integers, and let
+$\mu=\sum_{k\geq1}2^{-k}\delta_k$. This is the source's $\ell_1$ example.
+After saturation of the first $n$ molecules, the values at every $k>n$ may
+still range independently from $-1$ to $1$. Hence $\Delta_n=2$ for every
+$n$, correctly detecting the failure of Frechet differentiability.
+
+\paragraph{Finite support.}
+For a finite convex combination, the decreasing family $E_n$ stabilizes at
+the common norming face. Collapse says exactly that this face is a singleton.
+Together with equivalence of the uniform and Lipschitz norms, this recovers
+the source's finite-support Frechet criterion.
+
+\paragraph{The source's positive infinite example.}
+In Example 3.7 of \cite{source}, the points are arranged so that saturation
+of longer prefixes traps all remaining point values in intervals of width
+tending to zero. In the present language this is precisely
+$\Delta_n\to0$, matching the proved Frechet differentiability of that
+example.
+
+\section{The second question and later literature}
+\label{sec:q2}
+
+Question 2 asks whether a bounded uniformly discrete $M$ can admit a point of
+Frechet differentiability in $\F(M)$ which is not a limit of a convex series
+of molecules. Aliaga, Pernecka, and Smith later proved the stronger statement
+that every element of $\F(M)$ is a convex series of molecules whenever $M$
+is uniformly discrete \cite{APS}. Thus the answer to Question 2 is
+\emph{no}; boundedness and Frechet differentiability are not needed for that
+conclusion. This is a literature answer, not part of the new proof of
+Theorem~\ref{thm:main}.
+
+\section{Verification and novelty boundary}
+
+The proof has two independently checkable components. First, the
+McShane--Whitney formulas make $\Delta_n$ exactly the uniform diameter of the
+finite saturated face, not merely an upper bound. Second, compactness of the
+finite data polytope converts approximate saturation in a thin dual slice
+into proximity to that exact face. Uniform discreteness then upgrades the
+uniform correction to Lipschitz-norm correction. These yield both directions
+of Smulyan's slice criterion.
+
+Cheap run indexes were searched for the arXiv id, title, and core terms.
+Bounded exact-phrase and close-variant searches found the later answer to
+Question 2 but no answer to Question 1, including no finite-saturation or
+extension-polytope formulation. This is not an exhaustive priority search;
+novelty confidence is moderate. Human review should focus on the
+finite-face correction, the exact envelope-diameter identity, and possible
+equivalent terminology in the literature.
+
+\begin{thebibliography}{9}
+
+\bibitem{source}
+R.~J. Aliaga and A. Rueda Zoca,
+\emph{Points of differentiability of the norm in Lipschitz-free spaces},
+J. Math. Anal. Appl. \textbf{489} (2020), 124171;
+arXiv:2003.01439.
+
+\bibitem{APS}
+R.~J. Aliaga, E. Pernecka, and R. J. Smith,
+\emph{Convex integrals of molecules in Lipschitz-free spaces},
+J. Funct. Anal. \textbf{287} (2024), 110560;
+arXiv:2302.13951.
+
+\end{thebibliography}
+
+\end{document}

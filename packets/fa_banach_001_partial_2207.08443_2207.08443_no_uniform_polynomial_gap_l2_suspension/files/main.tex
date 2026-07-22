@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathcal E}
+
+\title{No Uniform Polynomial Exponent Gap for Positive\\
+Kreiss Bounded Semigroups on $L^2$}
+\author{Run \texttt{fa\_banach\_001}, lane 0}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\textbf{Status: partial result, likely valid; human review requested.}
+\end{center}
+
+\section{Source question}
+
+Arnold and Coine ask in Question 3.9(2) of \cite{ArnoldCoine} whether every
+uniformly eventually positive Kreiss bounded $C_0$-semigroup $(T_t)_{t\geq0}$
+on an $L^p$-space, $1<p<\infty$, satisfies
+\[
+  \|T_t\|=O(t^{1-\varepsilon})
+\]
+for some $\varepsilon\in(0,1)$.  The question appears on page 11 of the
+arXiv PDF and is reproduced below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We do not settle the quantifier ``for each semigroup there exists
+$\varepsilon$.''  We prove a sharpness result: $\varepsilon$ cannot be chosen
+as a function of the ambient exponent $p$ alone, even at $p=2$ and even for
+semigroups that are positive from time zero.
+
+\section{Proof intuition}
+
+Bonilla and Muller constructed, for every prescribed $\delta>0$, a positive
+Cesaro-bounded operator $T$ on a Hilbert lattice whose powers are bounded below
+by a constant times $n^{1-\delta}$ \cite[Theorem 2.3]{BonillaMuller}.  We turn
+the discrete dynamics into a continuous semigroup by moving functions around
+the unit interval and applying one copy of $T$ each time the moving point
+crosses the endpoint.
+
+At integer times this suspension acts pointwise as $T^n$, so it preserves the
+large power norms exactly.  The only nonformal step is to show that Cesaro
+boundedness also survives suspension.  Over an integer interval $[0,N]$, the
+integral of the suspension splits into an initial fragment, the discrete
+partial sum $I+T+\cdots+T^{N-1}$ applied to the integral of the function, and
+a final fragment multiplied by $T^N$.  The first two are controlled directly,
+and $T^N$ is the difference of two consecutive partial sums.  Hence the
+continuous Cesaro means are uniformly bounded.  Positivity then lets us invoke
+the Cesaro--Kreiss equivalence from \cite[Proposition 2.6]{ArnoldCoine}.
+
+\section{The suspension lemma}
+
+Let $X$ be a Banach space and $T\in\mathcal L(X)$.  On
+\[
+  \E:=L^2([0,1);X)
+\]
+define, for $t\geq0$ and $0\leq s<1$,
+\begin{equation}\label{eq:suspension}
+  (S(t)f)(s):=T^{m(t,s)}f\bigl(s+t-m(t,s)\bigr),
+  \qquad m(t,s):=\lfloor s+t\rfloor.
+\end{equation}
+
+\begin{lemma}[Basic suspension properties]\label{lem:basic}
+The family $(S(t))_{t\geq0}$ is a $C_0$-semigroup on $\E$.  If $X$ is a
+Banach lattice and $T$ is positive, then every $S(t)$ is positive.  Moreover,
+for every $n\in\N_0$,
+\begin{equation}\label{eq:integer}
+  \|S(n)\|=\|T^n\|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Writing $s+t=m+r$ with $m\in\N_0$ and $r\in[0,1)$, and then writing
+$r+u=m'+r'$, gives
+\[
+  m(t+u,s)=m+m',\qquad
+  s+t+u-m(t+u,s)=r'.
+\]
+This proves $S(t+u)=S(t)S(u)$.  For fixed $t$, the integer $m(t,s)$ takes at
+most two values, so $S(t)$ is bounded.
+
+For $0<t<1$ one has
+\[
+ (S(t)f)(s)=
+ \begin{cases}
+   f(s+t),&0\leq s<1-t,\\
+   Tf(s+t-1),&1-t\leq s<1.
+ \end{cases}
+\]
+Translation continuity in $L^2$, together with absolute continuity of the
+integral on the two boundary intervals of length $t$, implies
+$\|S(t)f-f\|_{\E}\to0$ as $t\downarrow0$.  The semigroup law yields strong
+continuity at every time.
+
+Positivity follows immediately from \eqref{eq:suspension}.  Finally, when
+$t=n$ is an integer, $m(n,s)=n$ for almost every $s\in[0,1)$ and
+\[
+  (S(n)f)(s)=T^nf(s).
+\]
+The induced pointwise operator on $L^2([0,1);X)$ has norm $\|T^n\|$: the upper
+bound is immediate, while the reverse inequality follows by testing constant
+functions with values in an approximately norming unit vector for $T^n$.
+\end{proof}
+
+\begin{lemma}[Cesaro boundedness survives suspension]\label{lem:cesaro}
+Assume
+\begin{equation}\label{eq:disc-cesaro}
+  C_T:=\sup_{N\geq1}\frac1N
+  \left\|\sum_{k=0}^{N-1}T^k\right\|<\infty.
+\end{equation}
+Then the suspension \eqref{eq:suspension} is continuously Cesaro bounded:
+\[
+  \sup_{\tau>0}\frac1\tau
+  \left\|\int_0^\tau S(t)\,dt\right\|<\infty.
+\]
+\end{lemma}
+
+\begin{proof}
+Put $B_N:=\sum_{k=0}^{N-1}T^k$.  From \eqref{eq:disc-cesaro},
+\begin{equation}\label{eq:power-linear}
+  \|B_N\|\leq C_TN,
+  \qquad
+  \|T^N\|=\|B_{N+1}-B_N\|\leq C_T(2N+1).
+\end{equation}
+
+Fix $N\geq1$ and $f\in\E$.  With Bochner integrals in $X$, set
+\[
+  g:=\int_0^1f(v)\,dv,
+  \qquad h_-(s):=\int_s^1f(v)\,dv,
+  \qquad h_+(s):=\int_0^sf(v)\,dv.
+\]
+Changing variables from $t$ to $s+t$ and splitting at the integer points gives,
+for almost every $s\in[0,1)$,
+\begin{equation}\label{eq:integer-integral}
+  \int_0^N(S(t)f)(s)\,dt
+  =h_-(s)+(B_N-I)g+T^Nh_+(s).
+\end{equation}
+Cauchy--Schwarz gives
+\[
+  \|g\|_X\leq\|f\|_{\E},
+  \qquad \|h_-\|_{\E}\leq\|f\|_{\E},
+  \qquad \|h_+\|_{\E}\leq\|f\|_{\E}.
+\]
+Consequently, \eqref{eq:power-linear} and \eqref{eq:integer-integral} imply
+\[
+  \left\|\int_0^NS(t)\,dt\right\|\leq C(1+N)
+\]
+with $C$ depending only on $C_T$.
+
+For arbitrary $\tau=N+u$ with $N\in\N$ and $0\leq u<1$, the remaining
+integral over $[N,N+u]$ has norm at most
+\[
+  \sup_{N\leq t\leq N+1}\|S(t)\|
+  \leq\max\{\|T^N\|,\|T^{N+1}\|\}=O(N)
+\]
+by \eqref{eq:power-linear}.  Division by $\tau\geq N$ gives a uniform bound.
+The range $0<\tau<1$ is controlled by local boundedness of the $C_0$-semigroup.
+\end{proof}
+
+\section{No uniform exponent gap}
+
+\begin{theorem}\label{thm:main}
+For every $\delta\in(0,1)$ there are an $L^2$-space $\E$ and a positive Kreiss
+bounded $C_0$-semigroup $(S(t))_{t\geq0}$ on $\E$ such that
+\begin{equation}\label{eq:lower}
+  \|S(n)\|\geq\frac13(n+1)^{1-\delta}
+  \qquad(n\in\N_0).
+\end{equation}
+Hence there is no number $\varepsilon_2>0$ for which every positive Kreiss
+bounded $C_0$-semigroup on every $L^2$-space satisfies
+$\|S(t)\|=O(t^{1-\varepsilon_2})$.
+\end{theorem}
+
+\begin{proof}
+Fix $\delta\in(0,1)$.  By \cite[Theorems 2.2 and 2.3]{BonillaMuller}, there
+are a Hilbert lattice $H$ and a positive Cesaro-bounded weighted shift
+$T\in\mathcal L(H)$ such that
+\[
+  \|T^n\|\geq\frac13(n+1)^{1-\delta}
+  \qquad(n\in\N_0).
+\]
+Their $H$ is a Hilbert direct sum of finite-dimensional coordinate lattices,
+so $H$ is lattice isometric to an $\ell^2$-space.  Therefore
+$\E=L^2([0,1);H)$ is an $L^2$-space.
+
+Let $(S(t))$ be the suspension of $T$.  Lemma \ref{lem:basic} makes it a
+positive $C_0$-semigroup, and Lemma \ref{lem:cesaro} makes it Cesaro bounded.
+For an individually eventually positive semigroup on a Banach lattice,
+continuous Cesaro boundedness is equivalent to Kreiss boundedness by
+\cite[Proposition 2.6]{ArnoldCoine}; hence $(S(t))$ is Kreiss bounded.
+Equation \eqref{eq:integer} now gives \eqref{eq:lower}.
+
+If a universal $\varepsilon_2>0$ existed, choose
+$0<\delta<\varepsilon_2$.  The universal upper bound at integer times would
+contradict \eqref{eq:lower}, because
+$n^{1-\delta}/n^{1-\varepsilon_2}=n^{\varepsilon_2-\delta}\to\infty$.
+\end{proof}
+
+\begin{remark}[Exact scope]
+Theorem \ref{thm:main} does not disprove the literal source question.  For the
+semigroup associated with a fixed $\delta$, it only forces every possible
+polynomial gap $\varepsilon$ to satisfy $\varepsilon\leq\delta$.  It remains
+open here whether each individual semigroup has some positive gap depending on
+that semigroup.
+\end{remark}
+
+\section{Verification, limitations, and novelty}
+
+No computation is used in the proof.  The two identities most relevant for
+verification are \eqref{eq:integer-integral}, which transfers discrete Cesaro
+boundedness to continuous time, and \eqref{eq:integer}, which transfers the
+power lower bound without loss.  The former can also be checked directly by
+partitioning the interval $[s,N+s]$ at its integer points.
+
+A bounded literature check through 22 July 2026 covered
+\cite{ArnoldCoine,BonillaMuller,CCEL,ArnoldCuny,Arora} and searches for
+``positive Cesaro bounded power growth'', ``positive Kreiss bounded semigroup
+sublinear polynomial'', and suspension variants.  No explicit statement of
+Theorem \ref{thm:main} was found.  Novelty confidence is moderate-low: the
+discrete example is known and the suspension is standard, while the exact
+sharpness consequence for Question 3.9(2) appears not to have been recorded in
+the checked sources.
+
+The recommended human-review focus is Lemma \ref{lem:cesaro} and the invocation
+of \cite[Proposition 2.6]{ArnoldCoine}.  Once those are accepted, the conclusion
+is immediate from the Bonilla--Muller lower bound.
+
+\begin{thebibliography}{9}
+
+\bibitem{ArnoldCoine}
+L. Arnold and C. Coine,
+\emph{Growth rate of eventually positive Kreiss bounded $C_0$-semigroups on
+$L^p$ and $\mathcal C(K)$},
+J. Evol. Equ. 23 (2023), article 7;
+\href{https://arxiv.org/abs/2207.08443}{arXiv:2207.08443}.
+
+\bibitem{BonillaMuller}
+A. Bonilla and V. Muller,
+\emph{Kreiss bounded and uniformly Kreiss bounded operators},
+\href{https://arxiv.org/abs/1912.07931}{arXiv:1912.07931}.
+
+\bibitem{CCEL}
+G. Cohen, C. Cuny, T. Eisner, and M. Lin,
+\emph{Resolvent conditions and growth of powers of operators},
+J. Math. Anal. Appl. 487 (2020), 124035;
+\href{https://arxiv.org/abs/1912.10507}{arXiv:1912.10507}.
+
+\bibitem{ArnoldCuny}
+L. Arnold and C. Cuny,
+\emph{On the growth rate of powers of a strongly Kreiss bounded operator on
+an $L^p$-space},
+\href{https://arxiv.org/abs/2302.14135}{arXiv:2302.14135}.
+
+\bibitem{Arora}
+S. Arora,
+\emph{Eventually positive semigroups: spectral and asymptotic analysis},
+Semigroup Forum 110 (2025), 263--295;
+\href{https://arxiv.org/abs/2405.16371}{arXiv:2405.16371}.
+
+\end{thebibliography}
+
+\end{document}

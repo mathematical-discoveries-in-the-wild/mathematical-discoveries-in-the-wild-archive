@@ -1,0 +1,324 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\emergencystretch=1em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{remark}{Remark}
+\newcommand{\G}{\Gamma}
+\newcommand{\C}{\mathbf C}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\one}{\mathbf 1}
+
+\title{The Finite-Compression Determinant Infimum\\Characterizes Amenability}
+\author{Run \texttt{fa\_banach\_001}, lane 13}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Austin asks whether a countable group must be amenable if his finite-subset
+determinant lower bound is always sharp for positive definite functions of
+the form $\phi=\tau(a^*(\,\cdot\,)a)$ with $a\in\C[\G]$.  We give an
+affirmative answer.  The main ingredient is a quantitative form of the
+operator Jensen inequality for compressions of $\log$.  Applied to
+$a=1+t\sum_{s\in S}s$, it bounds the logarithmic determinant gap below by a
+fixed multiple of the normalized $S$-boundary of the compressing set.  Thus
+sharpness for these elementary group-ring elements yields the F\o lner
+criterion.  The same estimate gives a direct quantitative answer to the
+following problem in the source for this family of elements.
+\end{abstract}
+
+\section{Source question and answer}
+
+Let $\lambda$ be the left regular representation of a countable group $\G$,
+let $\xi=\delta_e$, and let $\tau$ be the regular trace.  For a scalar
+positive definite function $\phi$ and finite nonempty $F\subset\G$, put
+\[
+ \phi[F]=[\phi(g^{-1}h)]_{g,h\in F}.
+\]
+Austin proves the general lower bound
+\begin{equation}\label{eq:source-lb}
+ \Delta\phi_{\mathrm{ac}}
+ \leq \inf_{\varnothing\ne F\Subset\G}
+          (\det\phi[F])^{1/|F|}.
+\end{equation}
+On PDF page 36 of arXiv:2412.13751v4, Problem 3.7 asks:
+\begin{quote}
+Suppose that equality holds in \eqref{eq:source-lb} whenever
+$\phi=\tau(a^*(\,\cdot\,)a)$ for some $a\in\C[\G]$.
+Must $\G$ be amenable?
+\end{quote}
+See Figure~\ref{fig:problem}.
+
+\begin{theorem}[Full answer to Problem 3.7]\label{thm:main}
+Yes.  If equality in \eqref{eq:source-lb} holds for every
+$\phi=\tau(a^*(\,\cdot\,)a)$ with $a\in\C[\G]$, then $\G$ is amenable.
+In fact, it is enough to assume equality for the positive elements
+\[
+ a=1+t\sum_{s\in S}s,
+ \qquad S=S^{-1}\Subset\G\setminus\{e\},\qquad 0<t<|S|^{-1}.
+\]
+\end{theorem}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.96\textwidth]{figures/open_problem_crop.png}
+\caption{Equation (3.8) and Problem 3.7 in Austin, arXiv:2412.13751v4,
+PDF p.~36.}
+\label{fig:problem}
+\end{figure}
+
+\section{Proof intuition}
+
+The matrix $\phi[F]$ is a coordinate compression of a positive
+right-convolution operator $B$.  Since every diagonal matrix coefficient of
+$\log B$ is the von Neumann trace, the logarithm of the ratio between the two
+sides of \eqref{eq:source-lb} is exactly the Jensen gap
+\[
+ |F|^{-1}\bigl(\Tr\log(P_FBP_F)-\Tr(P_F\log B P_F)\bigr).
+\]
+The resolvent formula for $\log$ and a Schur complement show that this gap
+controls the Hilbert--Schmidt norm of the off-diagonal block
+$(1-P_F)BP_F$.
+
+Now prescribe a finite symmetric $S$ and choose
+$a=1+t\sum_{s\in S}s$.  The associated positive right-convolution operator
+is $T=1+tH$, and $B=T^2$.  Positivity of $T$ makes the Sylvester map
+$Y\mapsto CY+YA$ uniformly invertible, so leakage of $T^2$ controls leakage
+of $H$.  But the columns of $H$ are sums of distinct coordinate vectors;
+hence its leakage is exactly
+\[
+ \|(1-P_F)HP_F\|_{\HS}^2=\sum_{s\in S}|Fs\setminus F|.
+\]
+Therefore sharpness of the determinant infimum produces arbitrarily good
+F\o lner sets for every finite $S$.
+
+\section{A quantitative compression lemma}
+
+\begin{lemma}[Compression gap for the logarithm]\label{lem:compression}
+Let $B$ be a bounded positive invertible operator on a Hilbert space, let
+$P$ be a finite-rank orthogonal projection, and regard $PBP$ as an operator
+on $P\mathcal H$.  Then
+\begin{equation}\label{eq:compression-gap}
+ \Tr_{P\mathcal H}\log(PBP)
+ -\Tr_{P\mathcal H}(P\log(B)P)
+ \geq \frac{\|(1-P)BP\|_{\HS}^2}{2\|B\|^2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Put $Q=1-P$, and write $B$ in block form relative to
+$\mathcal H=P\mathcal H\oplus Q\mathcal H$:
+\[
+ B=\begin{bmatrix}A&X^*\\X&C\end{bmatrix},
+ \qquad A=PBP,\quad X=QBP,\quad C=QBQ.
+\]
+For $r\geq0$, the Schur complement formula gives
+\[
+ P(B+r)^{-1}P=(D_r-Y_r)^{-1},
+ \quad D_r=A+rP,
+ \quad Y_r=X^*(C+rQ)^{-1}X.
+\]
+Both $D_r$ and $D_r-Y_r$ are positive invertible.  If
+$Z=D_r^{-1/2}Y_rD_r^{-1/2}$, then $0\leq Z<1$ and
+$(1-Z)^{-1}\geq1+Z$.  Conjugating this inequality yields
+\[
+ (D_r-Y_r)^{-1}-D_r^{-1}\geq D_r^{-1}Y_rD_r^{-1}.
+\]
+Set $M=\|B\|$.  Since $C+rQ\leq(M+r)Q$ and
+$D_r\leq(M+r)P$, we obtain
+\begin{align*}
+ \Tr\bigl(P(B+r)^{-1}P-(A+rP)^{-1}\bigr)
+ &\geq \Tr(D_r^{-1}Y_rD_r^{-1})\\
+ &\geq (M+r)^{-2}\Tr(Y_r)\\
+ &\geq (M+r)^{-3}\|X\|_{\HS}^2.
+\end{align*}
+The resolvent representation
+\[
+ \log x=\int_0^\infty\left(\frac1{1+r}-\frac1{x+r}\right)\,dr
+\]
+now gives
+\begin{align*}
+ \Tr\log A-\Tr(P\log(B)P)
+ &=\int_0^\infty
+   \Tr\bigl(P(B+r)^{-1}P-(A+rP)^{-1}\bigr)\,dr\\
+ &\geq \|X\|_{\HS}^2\int_0^\infty(M+r)^{-3}\,dr
+ =\frac{\|X\|_{\HS}^2}{2M^2}.
+\end{align*}
+This is \eqref{eq:compression-gap}.
+\end{proof}
+
+\section{From the determinant gap to a group boundary}
+
+For $s\in\G$, let $R_s\delta_g=\delta_{gs}$ be right translation on
+$\ell^2(\G)$.  It commutes with $\lambda$.  Fix a finite symmetric
+$S\subset\G\setminus\{e\}$, put
+\[
+ H=\sum_{s\in S}R_s,
+ \qquad T=1+tH,
+ \qquad 0<t<|S|^{-1},
+\]
+and set
+\[
+ \alpha=1-t|S|,
+ \qquad \beta=1+t|S|.
+\]
+Since $H=H^*$ and $\|H\|\leq|S|$, we have
+\begin{equation}\label{eq:T-bounds}
+ 0<\alpha\,1\leq T\leq\beta\,1.
+\end{equation}
+The group-ring element $a=1+t\sum_{s\in S}s$ is therefore positive and
+invertible, and its right-convolution operator is $T$ (up to the harmless
+inverse convention for right translation).
+
+\begin{lemma}[Boundary lower bound]\label{lem:boundary}
+Let $\phi=\tau(a^*(\,\cdot\,)a)$.  For every finite nonempty
+$F\subset\G$,
+\begin{equation}\label{eq:boundary-gap}
+ \log\frac{(\det\phi[F])^{1/|F|}}{\Delta\phi}
+ \geq
+ \frac{2t^2(1-t|S|)^2}{(1+t|S|)^4}\,
+ \frac1{|F|}\sum_{s\in S}|Fs\setminus F|.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $P=P_F$ be the coordinate projection onto $\ell^2(F)$ and $Q=1-P$.
+The vectors $\lambda(g)a\xi$, $g\in F$, are exactly $T\delta_g$, up to the
+same inverse convention.  Thus their Gram matrix is
+\begin{equation}\label{eq:gram-compression}
+ \phi[F]=P T^2P\big|_{P\ell^2(\G)}
+\end{equation}
+up to simultaneous transposition, which does not change the determinant.
+The source's definition gives
+\begin{equation}\label{eq:delta-normalization}
+ \log\Delta\phi=2\log\Delta T=\tau(\log T^2).
+\end{equation}
+Because $T^2$ commutes with $\lambda$, every diagonal coefficient of
+$\log T^2$ is $\tau(\log T^2)$.  Hence
+\[
+ \Tr(P\log(T^2)P)=|F|\log\Delta\phi.
+\]
+Applying Lemma~\ref{lem:compression} to $B=T^2$ and using
+$\|T^2\|^2\leq\beta^4$ yields
+\begin{equation}\label{eq:first-gap}
+ \log\frac{(\det\phi[F])^{1/|F|}}{\Delta\phi}
+ \geq \frac{\|QT^2P\|_{\HS}^2}{2\beta^4|F|}.
+\end{equation}
+
+It remains to control the off-diagonal block.  Write
+\[
+ A_0=PTP,\qquad C_0=QTQ,\qquad Y=QTP.
+\]
+Then $A_0,C_0\geq\alpha$ by \eqref{eq:T-bounds}, and block multiplication
+gives
+\[
+ QT^2P=C_0Y+YA_0.
+\]
+With the Hilbert--Schmidt inner product,
+\begin{align*}
+ 2\alpha\|Y\|_{\HS}^2
+ &\leq \Tr(Y^*C_0Y)+\Tr(Y^*YA_0)\\
+ &=\langle Y,C_0Y+YA_0\rangle_{\HS}
+ \leq \|Y\|_{\HS}\,\|QT^2P\|_{\HS}.
+\end{align*}
+Consequently
+\begin{equation}\label{eq:sylvester}
+ \|QT^2P\|_{\HS}\geq2\alpha\|QTP\|_{\HS}
+ =2\alpha t\|QHP\|_{\HS}.
+\end{equation}
+
+For a fixed $g\in F$, the vectors $\delta_{gs}$, $s\in S$, are distinct.
+After projecting outside $F$, they remain orthogonal.  Summing the squared
+column norms gives the exact identity
+\begin{equation}\label{eq:boundary-identity}
+ \|QHP\|_{\HS}^2
+ =\sum_{g\in F}\#\{s\in S:gs\notin F\}
+ =\sum_{s\in S}|Fs\setminus F|.
+\end{equation}
+Combining \eqref{eq:first-gap}, \eqref{eq:sylvester}, and
+\eqref{eq:boundary-identity} proves \eqref{eq:boundary-gap}.
+\end{proof}
+
+\section{Completion of the proof}
+
+Assume the hypothesis of Theorem~\ref{thm:main}.  Fix an arbitrary finite
+symmetric $S\subset\G\setminus\{e\}$ and any $0<t<|S|^{-1}$.  For the
+corresponding $a$ and $\phi$, equality in \eqref{eq:source-lb} says that
+there are finite nonempty sets $F_n$ for which
+\[
+ \log\frac{(\det\phi[F_n])^{1/|F_n|}}{\Delta\phi}\longrightarrow0.
+\]
+Lemma~\ref{lem:boundary} and positivity of its constant imply
+\[
+ \frac1{|F_n|}\sum_{s\in S}|F_ns\setminus F_n|\longrightarrow0.
+\]
+In particular $|F_ns\setminus F_n|/|F_n|\to0$ for every $s\in S$.
+Since $S=S^{-1}$, this is equivalent to
+$|F_n\triangle F_ns|/|F_n|\to0$ for every $s\in S$.
+
+Every finite subset of $\G$ is contained in a finite symmetric one after
+adjoining inverses.  We have therefore established the F\o lner criterion
+for $\G$, so $\G$ is amenable.  This proves Theorem~\ref{thm:main}.
+
+Equivalently, the contrapositive is quantitative.  If $\G$ is nonamenable,
+then some finite symmetric $S$ has
+\[
+ \inf_{\varnothing\ne F\Subset\G}
+ \frac1{|F|}\sum_{s\in S}|Fs\setminus F|>0.
+\]
+For every $0<t<|S|^{-1}$, Lemma~\ref{lem:boundary} supplies a uniform strict
+gap in \eqref{eq:source-lb} for the single element
+$a=1+t\sum_{s\in S}s$.  This also gives a concrete relation to the
+isoperimetric profile requested in Problem 3.8 of the source.
+
+\section{Verification, scope, and novelty}
+
+The proof uses only positive invertible group-ring elements, so no kernel,
+extended-logarithm, or singular-part convention is involved.  Equations
+\eqref{eq:gram-compression} and \eqref{eq:delta-normalization} match the
+source's Radon--Nikodym operator and determinant normalization: for a scalar
+coefficient represented by $T\xi$, the source defines
+$\Delta\phi=(\Delta T)^2$.
+
+The script \texttt{code/compression\_gap\_probe.py} checks
+Lemma~\ref{lem:compression} on 300 random complex positive matrices, the
+Sylvester estimate \eqref{eq:sylvester} on another 300 random positive
+matrices, and the boundary identity on a finite cyclic model without
+wraparound.  These checks passed.  They are regression evidence, not part of
+the proof.
+
+The run's four cheap indexes and local source corpus were searched for the
+arXiv id, title, and combinations of ``amenability'', ``finite compression'',
+and ``Fuglede--Kadison determinant''.  Bounded exact-phrase, title/citation,
+and arXiv web searches on July 21, 2026 found arXiv:2412.13751v4, last revised
+March 20, 2026, where the question remains Problem 3.7, but no later paper
+claiming a resolution.  This is therefore a candidate full solution with
+moderate, not definitive, novelty confidence.
+
+For human review, the decisive points are Lemma~\ref{lem:compression}, the
+right-convolution identification in \eqref{eq:gram-compression}, and the
+normalization in \eqref{eq:delta-normalization}.  The argument does not claim
+a sharp constant in \eqref{eq:boundary-gap}, nor does it classify all
+group-ring elements that witness nonamenability.
+
+\begin{thebibliography}{9}
+\bibitem{Austin}
+T. Austin,
+\emph{Entropy and determinants for unitary representations},
+arXiv:2412.13751v4, 2026.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Rbd}{\mathcal R}
+\newcommand{\M}{\mathcal M}
+\newcommand{\PhiClass}{\boldsymbol\Phi}
+\newcommand{\E}{\mathbb E}
+
+\title{A quantitative-aperture reduction from nontangential RMF to dyadic RMF}
+\author{Automated mathematics run \texttt{fa\_banach\_001}}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Status.} Conditional reduction, likely valid, for expert review.  The
+argument below proves the stated implication from an explicit quantitative aperture
+hypothesis.  It does \emph{not} prove that ordinary nontangential RMF supplies that
+hypothesis, and it does not prove the reverse implication.
+
+\section{Source question}
+
+The source is F. Di Plinio and Y. Ou, \emph{Banach-valued multilinear singular
+integrals}, arXiv:1506.05827v3, Remark 3.7 on printed page 14
+\cite{DiPlinioOu}.  The authors ask whether dyadic RMF and nontangential RMF
+are equivalent.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Fix the triple of Banach spaces and the trilinear identification used in the
+source.  For a family $S\subset X_3$, write $\Rbd(S)$ for the corresponding
+Rademacher bound.  Let $\PhiClass$ be the normalized grand class of kernels
+from (3.1) of the source, and put
+\[
+ \M_{\PhiClass,\alpha}f(x)
+ =\sup_{\phi\in\PhiClass}\Rbd\{f*\phi_t(y):|y-x|<\alpha t,\ t>0\}.
+\]
+For the canonical dyadic lattice $\mathcal D$, put
+\[
+ \M^\triangle f(x)=
+ \Rbd\{\langle f\rangle_Q:Q\in\mathcal D,\ x\in Q\}.
+\]
+Multiplying the defining seminorm of $\PhiClass$ by a fixed constant changes
+only harmless constants below.
+
+\section{Idea of the proof}
+
+A sharp cube average can be reached from a smooth cube average by letting the
+smoothing scale tend to zero.  Differentiating in that scale and integrating
+by parts moves the derivative to the boundary of the cube.  At relative scale
+$2^{-m}$, the boundary term has total mass $O(2^{-m})$, while all of its smooth
+averages lie in a cone of aperture $O(2^m)$ above every point of the cube.
+Thus
+\[
+ \M^\triangle f
+ \lesssim \M_{\PhiClass,C}
+       +\sum_{m\geq0}2^{-m}\M_{\PhiClass,C2^m}f.
+\]
+The displayed pointwise estimate is unconditional.  The conditional
+dependency enters only when taking $L^p$ norms and summing the aperture
+constants.
+
+\section{The reduction}
+
+For $1<p<\infty$ and $\alpha\geq1$, denote the aperture norm by
+\[
+ A_p(\alpha)=
+ \|\M_{\PhiClass,\alpha}\|_{L^p(\mathbb R^d;X_3)\to L^p(\mathbb R^d)}.
+\]
+
+\begin{theorem}[summable-aperture criterion]\label{thm:main}
+There are dimensional constants $c_d,C_d>0$ such that, for every Schwartz
+function $f:\mathbb R^d\to X_3$,
+\begin{equation}\label{eq:pointwise}
+ \M^\triangle f(x)
+ \leq C_d\left(
+ \M_{\PhiClass,c_d}f(x)
+ +\sum_{m=0}^{\infty}2^{-m}
+       \M_{\PhiClass,c_d2^m}f(x)\right)
+\end{equation}
+for almost every $x$.  Consequently, if
+\begin{equation}\label{eq:summability}
+ A_p(c_d)+\sum_{m=0}^{\infty}2^{-m}A_p(c_d2^m)<\infty,
+\end{equation}
+then $X_3$ has dyadic $\mathrm{RMF}_p$.  In particular, it is enough that
+\[
+ A_p(\alpha)\leq C\alpha^\theta\qquad(\alpha\geq1)
+\]
+for some $\theta<1$.
+\end{theorem}
+
+\begin{proof}
+Choose $\eta\in C_c^\infty(\mathbb R^d)$ with $\int\eta=1$.  After one
+fixed normalization, $\eta$ and
+\[
+ \phi_i(u)=u_i\eta(u),\qquad i=1,\ldots,d,
+\]
+belong to the grand kernel class.  If $Q$ is a cube of side length $\ell$
+and $r>0$, define
+\[
+ H_Q(r)=\frac1{|Q|}\int_Q(f*\eta_r)(y)\,dy.
+\]
+For Schwartz $f$, $H_Q(r)\to\langle f\rangle_Q$ in $X_3$ as $r\downarrow0$.
+Moreover,
+\[
+ \partial_r\eta_r=-\sum_{i=1}^d\partial_i(\phi_i)_r.
+\]
+The divergence theorem, valid here for the smooth $X_3$-valued convolutions,
+therefore gives
+\begin{equation}\label{eq:derivative}
+ H'_Q(r)=-\frac1{|Q|}\sum_{i=1}^d
+ \int_{\partial Q}(f*(\phi_i)_r)(y)n_i(y)\,d\sigma(y).
+\end{equation}
+It follows that
+\begin{equation}\label{eq:decomposition}
+ \langle f\rangle_Q=H_Q(\ell)+\sum_{m=0}^{\infty}B_{m,Q},
+ \qquad
+ B_{m,Q}=-\int_{2^{-m-1}\ell}^{2^{-m}\ell}H'_Q(r)\,dr.
+\end{equation}
+
+We use the standard facts that Rademacher bounds are unchanged by passing to
+the closed absolutely convex hull, are preserved by normalized Bochner
+averaging, and are subadditive under Minkowski sums; these are also used in
+the source (notably in its proof of Lemma 3.2).
+
+Fix $x$ and a finite collection $Q_1,\ldots,Q_N\in\mathcal D$ containing
+$x$.  Since $|y-x|\leq\sqrt d\,\ell(Q_j)$ for $y\in Q_j$, normalized
+averaging in the definition of $H_{Q_j}(\ell(Q_j))$ yields
+\begin{equation}\label{eq:mainterm}
+ \Rbd\{H_{Q_j}(\ell(Q_j)):1\leq j\leq N\}
+ \leq C_d\M_{\PhiClass,c_d}f(x).
+\end{equation}
+
+For $r\in(2^{-m-1}\ell(Q_j),2^{-m}\ell(Q_j)]$ and
+$y\in\partial Q_j$, one has
+\[
+ |y-x|\leq\sqrt d\,\ell(Q_j)\leq 2^{m+1}\sqrt d\,r.
+\]
+On the other hand, the total variation of the normalized boundary--scale
+measure in \eqref{eq:derivative}, restricted to this interval of $r$, is at
+most
+\[
+ \frac{|\partial Q_j|}{|Q_j|},2^{-m-1}\ell(Q_j)
+ =d,2^{-m}.
+\]
+Splitting the $d$ kernel components and using preservation under Bochner
+averaging therefore gives
+\begin{equation}\label{eq:boundary}
+ \Rbd\{B_{m,Q_j}:1\leq j\leq N\}
+ \leq C_d2^{-m}\M_{\PhiClass,c_d2^m}f(x).
+\end{equation}
+Combining \eqref{eq:decomposition}--\eqref{eq:boundary}, using subadditivity,
+and then letting the finite collection exhaust the dyadic cubes through $x$
+proves \eqref{eq:pointwise}.  Minkowski's inequality and
+\eqref{eq:summability} give
+\[
+ \|\M^\triangle f\|_p
+ \leq C_d\left(A_p(c_d)+\sum_{m\geq0}2^{-m}A_p(c_d2^m)\right)
+ \|f\|_{L^p(X_3)}.
+\]
+Density completes the $L^p$ statement.  If $A_p(\alpha)\leq C\alpha^\theta$
+with $\theta<1$, the remaining series is geometric.
+\end{proof}
+
+\section{Conditional dependencies and limitations}
+
+The boundary reconstruction and the pointwise estimate
+\eqref{eq:pointwise} are complete.  The unproved dependency is precisely
+\eqref{eq:summability}: ordinary nontangential RMF gives finiteness of each
+fixed-aperture norm but no summable quantitative growth estimate is currently
+derived here.  The condition cannot simply be replaced by aperture-uniform
+boundedness without justification.  Already in the scalar case, for a
+nonnegative compactly supported approximate identity and a test function
+supported on a unit ball, the aperture-$\alpha$ maximal function stays bounded
+below on a region of volume comparable to $\alpha^d$; hence its $L^p$ norm
+has growth at least of order $\alpha^{d/p}$.
+
+Even after proving \eqref{eq:summability}, this packet establishes only the
+nontangential-to-dyadic implication.  The dyadic-to-nontangential implication
+remains untouched.
+
+The most important reviewer task is to check the passage from the boundary
+formula \eqref{eq:derivative} to the simultaneous Rademacher-bound estimate
+\eqref{eq:boundary}, including the normalization of the finitely many kernels
+$u_i\eta(u)$ into the source's grand class.
+
+\section{Verification and novelty status}
+
+The proof was checked symbolically: differentiating
+$r^{-d}\eta(z/r)$ gives
+$-r^{-d-1}(d\eta+(z/r)\cdot\nabla\eta)$, exactly
+$-\sum_i\partial_i(\phi_i)_r$.  The boundary mass on the $m$th dyadic scale
+is $d2^{-m}$, and the required aperture is at most
+$2^{m+1}\sqrt d$.  No numerical or finite-dimensional experiment is used.
+
+A bounded search on 21 July 2026 covered the exact phrases
+``nontangential Rademacher maximal function'', ``nontangential RMF'', and
+``dyadic RMF and nontangential RMF'', together with arXiv:1506.05827 and the
+later arXiv papers 1905.02139 and 1908.07233.  No later arXiv paper explicitly
+settling the equivalence or stating this boundary/aperture reduction was
+found.  This is not a proof of novelty.
+
+\begin{thebibliography}{9}
+\bibitem{DiPlinioOu}
+F. Di Plinio and Y. Ou,
+\emph{Banach-valued multilinear singular integrals},
+Indiana Univ. Math. J. 67 (2018), no. 5, 1711--1763;
+arXiv:1506.05827.
+\end{thebibliography}
+
+\end{document}

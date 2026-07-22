@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\esssup}{\operatorname*{ess\,sup}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\vol}{\operatorname{vol}}
+
+\title{The Liminf Besov Criterion Characterizes Lipschitz Functions\\
+\large A full positive answer to Remark 2.13 of arXiv:1610.05162}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 14}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.88\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The theorem answers the source's liminf question for every dimension
+$N\geq1$ and every $1\leq q<\infty$.
+}}
+\end{center}
+
+\section{Source question}
+
+For $0<r<1$, $1\leq q<\infty$, and $f\in L^\infty(\R^N)$, Brasseur
+\cite{Brasseur} uses the first-difference Besov seminorm
+\begin{equation}
+ [f]_{B^r_{\infty,q}}^q
+ =\int_{\R^N}
+   \frac{\|f(\cdot+h)-f\|_\infty^q}{|h|^{N+rq}}\,dh.
+ \label{eq:besov}
+\end{equation}
+Theorem 2.12 in the source proves that
+\[
+ \limsup_{r\uparrow1}(1-r)^{1/q}\|f\|_{B^r_{\infty,q}}<\infty
+\]
+implies that $f$ has a bounded Lipschitz representative, and compares that
+limsup with the Lipschitz seminorm. Remark 2.13 asks whether the limsup in
+both assertions can be replaced by a liminf. The complete source statement
+appears on p.~9 of the arXiv PDF:
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+ \caption{Full-width crop of Theorem 2.12 and Remark 2.13 in the source.}
+ \label{fig:source}
+\end{figure}
+
+We give a positive answer.
+
+\section{Proof intuition}
+
+Write $\omega(h)=\|f(\cdot+h)-f\|_\infty$. A tempting obstruction is that
+the normalized Besov norms might have deep valleys as $r\uparrow1$. The
+translation modulus prevents this. Its triangle inequality
+$\omega(a)\leq\omega(h)+\omega(a-h)$ spreads a large difference quotient at
+one displacement across a whole ball of smaller displacements. Subdividing
+that displacement shows that this spreading occurs at every smaller radius.
+
+Consequently, if $\omega(a_0)/|a_0|$ is at least $M$, then the cumulative
+mass $F(t)=\int_{|h|\leq t}\omega(h)^q\,dh$ is bounded below by a constant
+times $M^q t^{N+q}$ at all sufficiently small $t$. Integrating the Besov
+kernel against this cumulative bound produces
+$M^q/(1-r)$. Hence the normalized liminf is bounded below by a fixed
+multiple of $M$. Letting $M$ increase proves that any non-Lipschitz function
+has infinite normalized liminf.
+
+\section{Translation modulus lemmas}
+
+For $f\in L^\infty(\R^N)$ set
+\[
+ \omega(h)=\|f(\cdot+h)-f\|_\infty,
+ \qquad
+ L(f)=\sup_{h\ne0}\frac{\omega(h)}{|h|}\in[0,\infty].
+\]
+
+\begin{lemma}[Finite translation seminorm]
+If $L(f)<\infty$, then the $L^\infty$ class of $f$ has a bounded
+$L(f)$-Lipschitz representative. Conversely, a bounded $L$-Lipschitz
+representative satisfies $L(f)\leq L$.
+\end{lemma}
+
+\begin{proof}
+Only the first assertion needs comment. Let $\varphi_\varepsilon$ be a
+standard smooth approximate identity and set
+$f_\varepsilon=f*\varphi_\varepsilon$. Translation commutes with convolution,
+so
+\[
+ \|f_\varepsilon(\cdot+h)-f_\varepsilon\|_\infty
+ \leq\omega(h)\leq L(f)|h|.
+\]
+Thus the $f_\varepsilon$ are uniformly bounded and equi-Lipschitz. A diagonal
+Arzela--Ascoli argument gives a locally uniformly convergent subsequence with
+a bounded $L(f)$-Lipschitz limit $g$. On the other hand,
+$f_\varepsilon\to f$ in $L^1_{\mathrm{loc}}$, hence $g=f$ almost everywhere.
+The converse follows directly from the pointwise Lipschitz inequality.
+\end{proof}
+
+Let $v_N=\vol(B(0,1))$ and
+\[
+ F(t)=\int_{|h|\leq t}\omega(h)^q\,dh.
+\]
+
+\begin{lemma}[Cumulative spreading]
+Suppose $a_0\ne0$ and
+$\omega(a_0)/|a_0|\geq M$. Then, for every $0<s\leq2|a_0|$,
+\begin{equation}
+ F(s)\geq c_* M^q s^{N+q},
+ \qquad c_*=v_N2^{-(N+3q)}.
+ \label{eq:cumulative}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The translation triangle inequality gives, for all $a,h\in\R^N$,
+\[
+ \omega(a)\leq\omega(h)+\omega(a-h).
+\]
+If $|a|\leq t$, raise this inequality to the $q$th power and integrate over
+$h\in B(0,t)$. Since $a-B(0,t)\subset B(0,2t)$,
+\begin{equation}
+ v_Nt^N\omega(a)^q\leq2^qF(2t).
+ \label{eq:average}
+\end{equation}
+
+Fix $0<t\leq|a_0|$ and put $n=\lceil|a_0|/t\rceil$ and $a=a_0/n$.
+Then $|a|\leq t$, $|a|\geq t/2$, and subadditivity along the segment from
+$0$ to $a_0$ gives
+\[
+ \omega(a)\geq\frac{\omega(a_0)}n\geq M|a|\geq\frac{Mt}{2}.
+\]
+Substitution in \eqref{eq:average}, followed by $s=2t$, yields
+\eqref{eq:cumulative}.
+\end{proof}
+
+\section{Main theorem}
+
+\begin{theorem}[Liminf replacement]
+Let $N\geq1$ and $1\leq q<\infty$. For every
+$f\in L^\infty(\R^N)$, with extended-real values allowed,
+\begin{equation}
+ c_{N,q}L(f)
+ \leq\liminf_{r\uparrow1}(1-r)^{1/q}\|f\|_{B^r_{\infty,q}}
+ \leq\limsup_{r\uparrow1}(1-r)^{1/q}\|f\|_{B^r_{\infty,q}}
+ \leq C_{N,q}L(f),
+ \label{eq:main}
+\end{equation}
+where one may take
+\[
+ c_{N,q}=\left(v_N2^{-(N+3q)}\frac{N+q}{q}\right)^{1/q},
+ \qquad
+ C_{N,q}=\left(\frac{Nv_N}{q}\right)^{1/q}.
+\]
+In particular,
+\[
+ \liminf_{r\uparrow1}(1-r)^{1/q}\|f\|_{B^r_{\infty,q}}<\infty
+ \quad\Longleftrightarrow\quad
+ f\text{ has a bounded Lipschitz representative}.
+\]
+Thus every limsup in Theorem 2.12 and Remark 2.13 of the source can be
+replaced by a liminf, up to constants depending only on $N$ and $q$.
+\end{theorem}
+
+\begin{proof}
+Write $A_r=[f]_{B^r_{\infty,q}}^q$ and fix $a_0\ne0$ with
+$\omega(a_0)/|a_0|\geq M$. Put $R=2|a_0|$ and
+$\alpha=N+rq$. If $A_r=\infty$, the desired lower estimate at this $r$ is
+automatic. Otherwise, Stieltjes integration by parts gives
+\begin{align}
+ A_r
+ &\geq\int_{0}^{R}s^{-\alpha}\,dF(s)\\
+ &=R^{-\alpha}F(R)+\alpha\int_0^R F(s)s^{-\alpha-1}\,ds.
+ \label{eq:parts}
+\end{align}
+The boundary term at zero vanishes: indeed,
+\[
+ s^{-\alpha}F(s)
+ \leq\int_{|h|\leq s}|h|^{-\alpha}\omega(h)^q\,dh\longrightarrow0
+\]
+by absolute continuity of the finite integral. Using
+Lemma 2 in \eqref{eq:parts},
+\begin{align}
+ A_r
+ &\geq \alpha c_*M^q
+   \int_0^R s^{N+q-\alpha-1}\,ds
+ =\frac{\alpha c_*}{q(1-r)}M^qR^{q(1-r)}.
+ \label{eq:lower}
+\end{align}
+It follows that
+\[
+ \liminf_{r\uparrow1}(1-r)A_r
+ \geq c_*\frac{N+q}{q}M^q.
+\]
+Taking the supremum over all admissible $M$ proves the first inequality in
+\eqref{eq:main}; if $L(f)=\infty$, the same argument shows that the liminf is
+infinite. The inhomogeneous $L^\infty$ term disappears after multiplication
+by $(1-r)^{1/q}$.
+
+For the upper bound assume $L(f)<\infty$ and put $B=\|f\|_\infty$. Then
+$\omega(h)\leq L(f)|h|$ and $\omega(h)\leq2B$. Splitting at $|h|=1$ and
+using polar coordinates,
+\begin{align*}
+ A_r
+ &\leq Nv_NL(f)^q\int_0^1\rho^{q(1-r)-1}\,d\rho
+   +Nv_N(2B)^q\int_1^\infty\rho^{-rq-1}\,d\rho\\
+ &=\frac{Nv_N}{q(1-r)}L(f)^q+\frac{Nv_N}{rq}(2B)^q.
+\end{align*}
+Multiplication by $1-r$ and passage to the limsup proves the last inequality
+in \eqref{eq:main}. Lemma 1 identifies finiteness of $L(f)$ with the source's
+Lipschitz conclusion.
+\end{proof}
+
+\section{Verification, novelty, and limitations}
+
+The proof uses only the first-difference definition \eqref{eq:besov}; no
+Littlewood--Paley equivalence with constants depending on $r$ is invoked. The
+script \texttt{code/verify\_constants.py} checks the displayed constants and
+the normalized radial integral for the model subadditive modulus
+$\omega(h)=\min\{|h|,1\}$. These computations are sanity checks and do not
+replace the cumulative or integration-by-parts arguments.
+
+The local run indexes, two bounded web-search rounds on 21 July 2026, and
+full-text inspection of five cached arXiv papers citing the source used the
+exact Remark 2.13 sentence and close variants involving \emph{liminf},
+\emph{translation modulus}, \emph{Abel mean}, \emph{Besov norm}, and
+\emph{Lipschitz regularity}. No later answer or matching proof was located.
+This is not an exhaustive citation search, so novelty confidence is moderate.
+
+The theorem addresses exactly the $p=\infty$, $r\uparrow1$ question in
+Remark 2.13. It does not alter the source's separate negative theorem for
+fractional target smoothness, nor does it claim an exact limit or optimal
+constants. Human review should focus on Lemma 2, the boundary term in
+\eqref{eq:parts}, and the representative argument in Lemma 1.
+
+\begin{thebibliography}{9}
+\bibitem{Brasseur}
+J. Brasseur,
+\emph{A Bourgain--Brezis--Mironescu characterization of higher order
+Besov--Nikol'skii spaces},
+Ann. Inst. Fourier (Grenoble) 68 (2018), 1671--1714;
+arXiv:\href{https://arxiv.org/abs/1610.05162}{1610.05162}.
+\end{thebibliography}
+
+\end{document}

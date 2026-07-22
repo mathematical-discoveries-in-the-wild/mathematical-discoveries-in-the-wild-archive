@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+
+\title{An exact quadratic-chaos reduction for Heilman's Question 1.1\\
+and the sign-paired spectral subcase}
+\author{Automated mathematical discovery note (GPT5.6)}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Likely valid partial result.  The general asymmetric-spectrum case remains
+open in this note.
+
+\section{Source question}
+
+Let $\gamma_n$ be standard Gaussian measure on $\R^n$.  In the Introduction
+of \cite{Heilman2015}, Question 1.1 asks, without a constraint on
+$\gamma_n(A)$, whether
+\[
+ F(A)\leq \frac1\pi
+\]
+for every measurable symmetric set $A=-A$.  After rotating coordinates so
+that the centered second-moment matrix is diagonal, the functional in the
+paper is
+\[
+ F(A)=\sum_{i=1}^n\left(\int_A(1-x_i^2)\,d\gamma_n(x)\right)^2.
+\]
+
+Define the coordinate-free matrix
+\[
+ C_A:=\int_A(I-xx^{\mathsf T})\,d\gamma_n(x).
+\]
+Orthogonal invariance and diagonalization give $F(A)=\|C_A\|_F^2$, where
+$\|\cdot\|_F$ denotes the Frobenius norm.
+
+\section{Idea of the proof}
+
+Frobenius duality turns $\|C_A\|_F$ into an integral of a centered Gaussian
+quadratic form.  For a fixed quadratic form, its positive and negative sets
+are themselves symmetric, and choosing one of them captures exactly half of
+the form's first absolute moment.  This gives an exact equivalence, not only
+a one-sided reduction.
+
+For a spectrum made of opposite pairs, the characteristic function of the
+quadratic form is real and positive.  The elementary inequality
+$\log(1+s)\leq s$ compares it pointwise with the characteristic function
+$e^{-t^2}$ of a Gaussian with variance two.  The standard Fourier formula
+for $\E|Z|$ then proves the desired constant.
+
+\section{Exact reduction}
+
+\begin{lemma}[Best set for a centered even function]\label{lem:set}
+Let $q\in L^1(\gamma_n)$ be even and satisfy $\int q\,d\gamma_n=0$.  Then
+\[
+ \sup_{A=-A}\left|\int_Aq\,d\gamma_n\right|
+ =\frac12\int_{\R^n}|q|\,d\gamma_n.
+\]
+The supremum is attained, up to null sets, by $\{q>0\}$ and by $\{q<0\}$.
+\end{lemma}
+
+\begin{proof}
+Write $q=q_+-q_-$.  The mean-zero assumption gives
+$\int q_+\,d\gamma_n=\int q_-\,d\gamma_n=\frac12\int|q|\,d\gamma_n$.
+For every measurable $A$,
+\[
+ -\int q_-\,d\gamma_n\leq \int_Aq\,d\gamma_n
+ \leq \int q_+\,d\gamma_n.
+\]
+Since $q$ is even, both sign sets are symmetric and attain the endpoints.
+\end{proof}
+
+\begin{theorem}[Exact quadratic-chaos formulation]\label{thm:reduction}
+If $X\sim N(0,I_n)$, then
+\[
+ \sup_{A=-A}\|C_A\|_F
+ =\frac12\sup_{\substack{U=U^{\mathsf T}\\\|U\|_F=1}}
+ \E\left|X^{\mathsf T}UX-\tr U\right|.
+\]
+Consequently, Heilman's Question 1.1 is equivalent to
+\begin{equation}\label{eq:chaos}
+ \E\left|X^{\mathsf T}UX-\tr U\right|\leq\frac{2}{\sqrt\pi}
+ \qquad(U=U^{\mathsf T},\ \|U\|_F=1).
+\end{equation}
+For a fixed $U$, a maximizing set in the inner optimization is a quadratic
+threshold set.
+\end{theorem}
+
+\begin{proof}
+For symmetric matrices use the Frobenius inner product.  Put
+$q_U(x)=x^{\mathsf T}Ux-\tr U$.  Then $q_U$ is even, Gaussian-integrable,
+and centered, while
+\[
+ \ip{C_A}{U}_F
+ =\int_A\tr\bigl(U(I-xx^{\mathsf T})\bigr)\,d\gamma_n(x)
+ =-\int_Aq_U(x)\,d\gamma_n(x).
+\]
+Therefore, by finite-dimensional norm duality and Lemma~\ref{lem:set},
+\begin{align*}
+ \sup_{A=-A}\|C_A\|_F
+ &=\sup_{A=-A}\sup_{\|U\|_F=1}|\ip{C_A}{U}_F|\\
+ &=\sup_{\|U\|_F=1}\sup_{A=-A}\left|\int_Aq_U\,d\gamma_n\right|\\
+ &=\frac12\sup_{\|U\|_F=1}\E|q_U(X)|.
+\end{align*}
+The sign sets of $q_U$ are the asserted quadratic thresholds.  Finally,
+$F(A)=\|C_A\|_F^2$, so the bound $F(A)\leq1/\pi$ for every $A$ is
+equivalent to \eqref{eq:chaos}.
+\end{proof}
+
+\section{The sign-paired spectral subcase}
+
+\begin{theorem}[Opposite-pair spectra]\label{thm:pairs}
+Let $U=U^{\mathsf T}$, $\|U\|_F=1$, and suppose that the eigenvalue multiset
+of $U$ is
+\[
+ (a_1,-a_1,\ldots,a_m,-a_m,0,\ldots,0).
+\]
+Then
+\[
+ \E\left|X^{\mathsf T}UX-\tr U\right|<\frac{2}{\sqrt\pi}.
+\]
+In particular, the non-strict inequality in \eqref{eq:chaos} holds for this
+entire spectral class.
+\end{theorem}
+
+\begin{proof}
+By rotational invariance, with independent standard Gaussians $G_j,H_j$,
+\[
+ Q:=X^{\mathsf T}UX-\tr U
+ \stackrel{d}{=}\sum_{j=1}^m a_j(G_j^2-H_j^2).
+\]
+The Frobenius normalization says $2\sum_ja_j^2=1$.  Independence gives the
+real positive characteristic function
+\[
+ \phi_Q(t)=\prod_{j=1}^m(1+4a_j^2t^2)^{-1/2}.
+\]
+Since $\log(1+s)\leq s$ for $s\geq0$,
+\[
+ \log\phi_Q(t)
+ =-\frac12\sum_j\log(1+4a_j^2t^2)
+ \geq-2t^2\sum_ja_j^2=-t^2.
+\]
+Thus $\phi_Q(t)\geq e^{-t^2}$.  For a centered integrable random variable
+with real characteristic function, the first absolute-moment identity is
+\[
+ \E|Q|=\frac2\pi\int_0^\infty\frac{1-\phi_Q(t)}{t^2}\,dt.
+\]
+It follows that
+\[
+ \E|Q|\leq\frac2\pi\int_0^\infty
+ \frac{1-e^{-t^2}}{t^2}\,dt
+ =\frac2{\sqrt\pi},
+\]
+where integration by parts gives the final integral as $\sqrt\pi$.
+If $U\neq0$, then at least one $a_j$ is nonzero and
+$\log(1+s)<s$ for $s>0$; hence the characteristic-function comparison is
+strict for every $t\neq0$, which makes the final inequality strict.
+\end{proof}
+
+\begin{corollary}[A class of symmetric sets]\label{cor:sets}
+Suppose the nonzero eigenvalues of $C_A$ occur in opposite pairs.  Then
+$F(A)\leq1/\pi$, strictly if $C_A\neq0$.  In dimension two, this applies
+whenever $\tr(C_A)=0$.
+\end{corollary}
+
+\begin{proof}
+If $C_A=0$ there is nothing to prove.  Otherwise set
+$U=C_A/\|C_A\|_F$.  Its spectrum is sign-paired, and
+\[
+ \|C_A\|_F=|\ip{C_A}{U}_F|
+ \leq\frac12\E|q_U(X)|<\frac1{\sqrt\pi}
+\]
+by Lemma~\ref{lem:set} and Theorem~\ref{thm:pairs}.  Square the inequality.
+For a two-by-two symmetric matrix, trace zero is equivalent to its
+eigenvalues being $a,-a$.
+\end{proof}
+
+\section{Verification, limitations, and literature status}
+
+The proof above is finite-dimensional and analytic; no numerical statement
+is used.  A Monte Carlo subgradient search over dimensions up to twenty found
+no violation of \eqref{eq:chaos}.  It approached $2/\sqrt\pi$ through diffuse
+positive spectra, consistent with the central limit theorem, but this is only
+supporting evidence.
+
+For a general spectrum,
+\[
+ \phi_Q(t)=\prod_i e^{-it\lambda_i}(1-2it\lambda_i)^{-1/2}
+\]
+has a phase.  Its real part need not dominate $e^{-t^2}$ pointwise, so the
+argument of Theorem~\ref{thm:pairs} does not extend directly.  This is the
+precise remaining obstruction.
+
+Bounded searches used the arXiv id, the exact wording of Question 1.1, and
+phrases including ``second Wiener chaos $L^1$'', ``mean absolute deviation
+Gaussian quadratic form'', and ``weighted centered chi-square absolute
+moment''.  No paper explicitly resolving Question 1.1 was found.  However,
+Theorem 3.1 of \cite{Klebanov2019} proves the same Gaussian first-moment upper
+bound for every symmetric infinitely divisible distribution.  Since the
+sign-paired $Q$ above is symmetric and infinitely divisible, that theorem
+independently subsumes the moment inequality in
+Theorem~\ref{thm:pairs}.  It does not state the exact set/quadratic-chaos
+reduction or identify Heilman's matrix-functional subcase.  Novelty is
+therefore limited and should be assessed by a specialist.
+
+\begin{thebibliography}{9}
+\bibitem{Heilman2015}
+S. Heilman,
+\emph{Low Correlation Noise Stability of Symmetric Sets},
+arXiv:1511.00382 (2015).
+\par\medskip
+
+\bibitem{Klebanov2019}
+L. B. Klebanov, A. V. Kakosyan, and I. V. Volchenkova,
+\emph{Inequalities for $m$-Divisible Distributions and Testing of Infinite
+Divisibility}, arXiv:1904.07604 (2019), Theorem 3.1.
+\end{thebibliography}
+
+\end{document}

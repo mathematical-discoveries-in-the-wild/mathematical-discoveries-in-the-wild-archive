@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\BCP}{\mathrm{BCP}}
+\newcommand{\WBCP}{\mathrm{WBCP}}
+\newcommand{\N}{\mathbb N}
+
+\title{A Zero-Dimensional Metric Space with No\\
+Bi-Lipschitz Besicovitch Remetrization}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Agent \texttt{agent\_lane\_04}}
+\date{July 21, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\linewidth}{\textbf{Status: claimed counterexample / full negative answer, likely valid, pending human review.}}}
+\end{center}
+
+\section{Source question}
+
+Le Donne and Rigot ask in Section 8.3 of \cite{LeDonneRigot}, on printed page 55:
+\begin{quote}
+To our knowledge, there is no known example of a metric space $(X,d)$ of finite topological dimension for which there is no distances biLipschitz equivalent to $d$ satisfying BCP.
+\end{quote}
+Equivalently: does finite Lebesgue covering dimension guarantee that the
+bi-Lipschitz class of a metric contains a distance satisfying the
+Besicovitch Covering Property?
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.96\linewidth]{figures/open_problem_crop.png}
+  \caption{The open problem in Section 8.3 of \cite{LeDonneRigot}, printed page 55.}
+\end{figure}
+
+\section{Definitions}
+
+A metric space $(Y,\delta)$ satisfies \emph{BCP with constant $Q$} if every
+centered family of balls covering a bounded set of centers admits a finite or
+countable covering subfamily of multiplicity at most $Q$.
+
+A finite family $\{B_\delta(y_i,r_i)\}_{i=1}^s$ of closed balls is a
+\emph{Besicovitch family} if its balls have a common point and no ball contains
+the center of another.  The \emph{weak Besicovitch Covering Property} (WBCP)
+with constant $Q$ says that every such family has cardinality at most $Q$.
+BCP with constant $Q$ implies WBCP with the same constant
+\cite[Section 3.1]{LeDonneRigot}.
+We use closed balls in BCP and WBCP, matching the convention of the source;
+open balls will be denoted by $B_\delta^\circ(y,r)$.
+
+Two metrics $d$ and $\rho$ on the same set are bi-Lipschitz equivalent if
+there is $L\geq 1$ such that
+\[
+ L^{-1}d(x,y)\leq \rho(x,y)\leq Ld(x,y)
+ \qquad(x,y\in X).
+\]
+
+\section{Proof intuition}
+
+Put increasingly fine finite grids of cubes of \emph{every} dimension into
+mutually separated components.  The resulting space is countable and
+discrete, hence has topological dimension zero.  Nevertheless, any single
+metric bi-Lipschitz equivalent to it must use one distortion constant on all
+the grids, and if it satisfied BCP it would use one Besicovitch constant on
+all of them as well.
+
+Fix a dimension larger than that hypothetical Besicovitch constant.  The
+restricted metrics on the finer and finer grids have a uniformly convergent
+subsequence.  Their limit is a metric on the full cube, bi-Lipschitz to the
+usual cube metric.  WBCP passes to this limit because a Besicovitch family is
+described by finitely many strict center-exclusion inequalities; slightly
+enlarging the radii preserves those inequalities on a sufficiently fine
+grid.  Finally, WBCP with constant $Q$ on a compact space yields open-cover
+refinements of multiplicity $Q$ by a direct equal-radius greedy selection.
+Thus the limiting cube would have covering dimension at most $Q-1$, in
+conflict with its actual dimension.
+
+\section{The counterexample}
+
+For $m,k\in\N$, $m,k\geq1$, let
+\[
+ D_{m,k}:=\left\{0,2^{-k},2\cdot2^{-k},\ldots,1\right\}^{m}
+ \subset [0,1]^m.
+\]
+Regard the sets $D_{m,k}$ as pairwise disjoint labelled copies and set
+\[
+ X:=\bigsqcup_{m,k\geq1}D_{m,k}.
+\]
+Define a metric $d$ on $X$ by
+\[
+ d(x,y):=
+ \begin{cases}
+   \|x-y\|_\infty,&x,y\in D_{m,k}\text{ for the same }(m,k),\\
+   3,&x,y\text{ lie in distinct components}.
+ \end{cases}
+\]
+The triangle inequality is immediate because every component has diameter at
+most $1$.  Each point is isolated: it lies in a finite component, so its
+distance from all other points has a positive minimum.  Consequently $X$ is a
+countable discrete topological space and
+\[
+ \dim_{\mathrm{top}}X=0.
+\]
+It is also complete and bounded, though neither extra fact is needed.
+
+\begin{theorem}\label{thm:main}
+No metric bi-Lipschitz equivalent to $d$ satisfies the Besicovitch Covering
+Property.  Hence $(X,d)$ is a zero-dimensional counterexample to the question
+of Le Donne and Rigot.
+\end{theorem}
+
+We isolate the compactness step.
+
+\begin{lemma}[Grid-limit lemma]\label{lem:gridlimit}
+Let $K=[0,1]^m$ with its $\ell_\infty$ metric, and let
+$D_k=\{0,2^{-k},\ldots,1\}^m$.  Suppose $\delta_k$ is a metric on $D_k$ such
+that, for fixed $L,Q$ independent of $k$,
+\[
+ L^{-1}\|u-v\|_\infty\leq\delta_k(u,v)
+ \leq L\|u-v\|_\infty,
+\]
+and $(D_k,\delta_k)$ satisfies WBCP with constant $Q$.  Then a subsequence
+converges on approximating grid points to a metric $\delta_\infty$ on $K$
+which is $L$-bi-Lipschitz equivalent to $\|\cdot\|_\infty$ and satisfies WBCP
+with constant $Q$.
+\end{lemma}
+
+\begin{proof}
+On $D_k\times D_k$, the function $(u,v)\mapsto\delta_k(u,v)$ satisfies
+\[
+ |\delta_k(u,v)-\delta_k(u',v')|
+ \leq L\bigl(\|u-u'\|_\infty+\|v-v'\|_\infty\bigr).
+\]
+Extend it to $K\times K$ without increasing this Lipschitz constant, for
+example by the McShane extension formula \cite{McShane}, and clip the result
+to $[0,L]$.  The extensions are uniformly bounded and equicontinuous, so a
+subsequence converges uniformly to a continuous function
+$\delta_\infty:K\times K\to[0,L]$.
+
+If $u_k,v_k\in D_k$ converge to $u,v\in K$ along this subsequence, uniform
+convergence and equicontinuity give
+\[
+ \delta_k(u_k,v_k)\longrightarrow\delta_\infty(u,v).
+\]
+Approximating two or three arbitrary points of $K$ by grid points now passes
+symmetry, the triangle inequality, and the two bi-Lipschitz bounds to the
+limit.  The lower bound separates distinct points, so $\delta_\infty$ is a
+metric.
+
+It remains to pass WBCP.  Let
+$\{B_{\delta_\infty}(x_i,r_i)\}_{i=1}^s$ be a Besicovitch family and choose
+$x_0$ in the intersection of all its balls.  Thus
+\[
+ \delta_\infty(x_0,x_i)\leq r_i,
+ \qquad
+ \delta_\infty(x_i,x_j)>\max\{r_i,r_j\}\quad(i\ne j).
+\]
+Choose $\varepsilon>0$ so small that
+\[
+ \delta_\infty(x_i,x_j)>
+ \max\{r_i,r_j\}+3\varepsilon\quad(i\ne j).
+\]
+Choose grid approximants $x_{i,k}\to x_i$, including $i=0$.  For all large
+$k$, convergence of the finitely many relevant distances shows that the
+balls
+\[
+ B_{\delta_k}(x_{i,k},r_i+\varepsilon),\qquad i=1,\ldots,s,
+\]
+have common point $x_{0,k}$ and contain none of each other's centers.  They
+form a Besicovitch family in $(D_k,\delta_k)$, hence $s\leq Q$.  Therefore
+$\delta_\infty$ satisfies WBCP with constant $Q$.
+\end{proof}
+
+\begin{lemma}[Compact WBCP dimension bound]\label{lem:dimension}
+If a compact metric space $(K,\delta)$ satisfies WBCP with constant $Q$, then
+its Lebesgue covering dimension is at most $Q-1$.
+\end{lemma}
+
+\begin{proof}
+Let $\mathcal U$ be an open cover of $K$ and let $\lambda>0$ be a Lebesgue
+number.  Choose $r>0$ with $4r<\lambda$.  Greedily choose centers
+$c_1,\ldots,c_t$ so that each new center is outside all previously selected
+closed $r$-balls.  Compactness makes the process finite, since the centers are
+$r$-separated.  A maximal such family of closed $r$-balls covers $K$, and
+$\delta(c_i,c_j)>r$ for $i\ne j$.
+
+Since the family is finite, choose $\eta>0$ so small that
+\[
+ r+\eta<\min_{i\ne j}\delta(c_i,c_j)
+ \quad\text{and}\quad 2(r+\eta)<\lambda,
+\]
+with the first condition omitted if $t=1$.  The open balls
+$B_\delta^\circ(c_i,r+\eta)$ still cover $K$ and refine $\mathcal U$.
+To bound their multiplicity, fix $z$ and let $I$ index the open balls that
+contain $z$.  For every $i\in I$, choose
+\[
+ \delta(z,c_i)<s_i<r+\eta.
+\]
+The closed balls $B_\delta(c_i,s_i)$, $i\in I$, have common point $z$, while
+$\delta(c_i,c_j)>r+\eta>\max\{s_i,s_j\}$ for distinct indices.  They form a
+Besicovitch family, so $|I|\leq Q$.  Thus the open refinement has
+multiplicity at most $Q$, and
+$\dim_{\mathrm{top}}K\leq Q-1$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose, toward a contradiction, that a metric $\rho$ on $X$ is
+$L$-bi-Lipschitz equivalent to $d$ and satisfies BCP with an integer constant
+$Q$.  BCP implies WBCP with constant $Q$.  A Besicovitch family whose centers
+and common point lie in one component $D_{m,k}$ is also a Besicovitch family
+in the ambient space, because the defining distance inequalities are
+unchanged.  Therefore every restriction $\rho|_{D_{m,k}}$ satisfies WBCP with
+constant $Q$.
+
+Fix $m=Q+1$ and write $\delta_k=\rho|_{D_{m,k}}$ after identifying the
+labelled component with its grid in $[0,1]^m$.  The bi-Lipschitz inequalities
+give
+\[
+ L^{-1}\|u-v\|_\infty\leq\delta_k(u,v)
+ \leq L\|u-v\|_\infty.
+\]
+Lemma~\ref{lem:gridlimit} produces on $[0,1]^m$ an $L$-bi-Lipschitz equivalent
+metric $\delta_\infty$ satisfying WBCP with constant $Q$.  The bi-Lipschitz
+bounds give the usual topology, while Lemma~\ref{lem:dimension} gives
+\[
+ m=\dim_{\mathrm{top}}[0,1]^m\leq Q-1.
+\]
+This contradicts $m=Q+1$.  No such $\rho$ exists.
+\end{proof}
+
+\section{Verification notes}
+
+\begin{itemize}
+\item The construction is topologically discrete even though the within-block
+      mesh tends to zero: every individual point belongs to one finite block.
+\item The proof uses only the two constants attached to one hypothetical
+      remetrization, namely its global bi-Lipschitz constant $L$ and global BCP
+      constant $Q$.
+\item Restricting WBCP to a component is legitimate even though an ambient
+      ball may contain points in other components; the common point and all
+      center-exclusion inequalities already occur inside the component.
+\item The grid-limit argument does not assume that BCP itself is closed under
+      limits.  It passes only WBCP, whose obstruction is a finite collection
+      of strict inequalities.  This is the same stability mechanism used in
+      \cite[Lemma 7.7]{LeDonneRigot}, here adapted to varying finite grids.
+\item The final dimension estimate is proved directly for compact spaces and
+      does not require doubling, completeness of the hypothetical metric, or
+      a measure-differentiation theorem.
+\end{itemize}
+
+\section{Limitations and novelty check}
+
+This answers the source question negatively in the class of complete bounded
+countable metric spaces, indeed with a topologically discrete example.  It
+does not produce a connected, locally connected, geodesic, or doubling
+counterexample; those stronger variants remain untouched.
+
+On July 21, 2026, the run registry, solution, attempt, and proof-gap indexes
+were searched for arXiv:1512.04936 and the core BCP/bi-Lipschitz/topological
+dimension terminology.  Bounded web and arXiv searches used the exact source
+sentence and close variants involving ``finite topological dimension'',
+``bi-Lipschitz equivalent'', and ``Besicovitch Covering Property''.  They found
+the source paper, its antecedent Heisenberg-group paper, Aldaz's 2022 survey of
+Besicovitch and doubling properties, and adjacent work, but no later paper
+claiming this counterexample or resolving the exact remetrization question.
+This is a bounded novelty check, not a guarantee of originality.
+
+\section{Human-review recommendation}
+
+The highest-value review is the grid-limit lemma: verify the uniform extension
+argument and the $+\varepsilon$ transfer of an arbitrary Besicovitch family to
+a sufficiently fine grid.  Next check that ambient WBCP restricts to each
+labelled component exactly as used.  The remaining steps are the standard
+covering-dimension characterization and the classical identity
+$\dim[0,1]^m=m$ \cite{HurewiczWallman}.
+
+\begin{thebibliography}{9}
+\bibitem{HurewiczWallman}
+W.~Hurewicz and H.~Wallman,
+\emph{Dimension Theory}, Princeton University Press, 1941.
+
+\bibitem{LeDonneRigot}
+E.~Le Donne and S.~Rigot,
+\emph{Besicovitch Covering Property on graded groups and applications to
+measure differentiation}, arXiv:1512.04936v1 (2015).
+
+\bibitem{McShane}
+E.~J. McShane,
+\emph{Extension of range of functions},
+Bulletin of the American Mathematical Society \textbf{40} (1934), 837--842.
+\end{thebibliography}
+
+\end{document}

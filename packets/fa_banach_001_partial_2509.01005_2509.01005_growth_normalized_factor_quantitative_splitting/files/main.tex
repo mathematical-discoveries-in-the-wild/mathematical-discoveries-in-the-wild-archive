@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Csim}{\mathcal C}
+\newcommand{\SC}{\mathcal{SC}}
+\newcommand{\T}{\mathcal T}
+\newcommand{\Sg}{\mathcal S}
+
+\title{A sharp quantitative tensor-splitting criterion without the zero-growth hypothesis}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}, lane 12}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Strengthened partial result, likely valid, for human review.  It removes the
+source theorem's zero-growth hypothesis when all but at most one factors have
+growth-normalized similarity constant no larger than the tensor product's
+similarity constant.  These factors may be nonnormal.  The general question
+remains open.
+
+\section{Source question}
+
+Let $\T=(T(t))_{t\geq0}$ be a semigroup on a Hilbert space.  Write
+$e_d\T=(e^{dt}T(t))_{t\geq0}$, let $\omega_0(\T)$ denote its exponential
+growth bound, and let $\Csim(\T)$ be the optimal condition number of a
+similarity taking $\T$ to a contraction semigroup.  Oliva-Maza and Tomilov
+prove that if $\bigotimes_{k=1}^m\T_k\in\SC$ and its growth bound is zero,
+then there are $d_k\in\mathbb R$ with $\sum_k d_k=0$ and
+\[
+  \max_k \Csim(e_{d_k}\T_k)
+  \leq \Csim\!\left(\bigotimes_{k=1}^m\T_k\right).
+\]
+Immediately afterwards they ask whether the zero-growth assumption is
+redundant \cite[Thm.~5.3 and p.~18]{OMT}.
+
+\begin{center}
+\includegraphics[width=.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\section{Proof intuition}
+
+The source paper's complete-boundedness proof contains more quantitative
+information than its nonzero-growth splitting argument uses.  If one groups a
+factor $\T_1$ against the tensor product of all remaining factors, then
+normalizing the complementary tensor product to spectral radius one extracts
+$\T_1$ with no loss in the similarity constant.  In general this produces an
+endpoint shift incompatible with the endpoint shifts extracted for the other
+factors.  The incompatibility disappears whenever the complementary factors
+already have similarity constants at most the available product constant at
+their growth-normalized endpoints: their endpoint shifts can simply be used,
+and their sum supplies exactly the opposite shift for $\T_1$.  Contractivity
+and normality are useful sufficient conditions, but they are not necessary.
+
+\section{Strengthened partial theorem}
+
+\begin{theorem}\label{thm:main}
+Let $m\geq2$, and for $1\leq k\leq m$ let $\T_k$ be a nonzero semigroup on a
+Hilbert space, strongly continuous on $(0,\infty)$.  Assume
+\[
+  \T:=\bigotimes_{k=1}^m\T_k\in\SC
+\]
+and put $C=\Csim(\T)$.  Suppose that the numbers
+$\beta_k:=\omega_0(\T_k)$ are finite for $2\leq k\leq m$ and that
+\begin{equation}\label{eq:endpoint-hyp}
+  \Csim(e_{-\beta_k}\T_k)\leq C
+  \qquad(2\leq k\leq m).
+\end{equation}
+Define
+\[
+ d_1:=\sum_{k=2}^m\beta_k,
+ \qquad d_k:=-\beta_k\quad(2\leq k\leq m).
+\]
+Then $\sum_{k=1}^m d_k=0$ and
+\[
+  \max_{1\leq k\leq m}\Csim(e_{d_k}\T_k)\leq C.
+\]
+No assumption on $\omega_0(\T)$ is required.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+  \Sg:=\bigotimes_{k=2}^m\T_k,
+  \qquad \beta:=\omega_0(\Sg)=\sum_{k=2}^m\beta_k.
+\]
+The equality of growth bounds follows from the tensor-norm identity, as in
+the source paper.  Since $\beta$ is finite, $\Sg$ is not quasinilpotent.
+
+The endpoint estimate established in the alternative complete-boundedness
+proof of the finite splitting theorem in \cite[Sec.~8]{OMT}, applied to the
+two factors $\T_1$ and $\Sg$, gives
+\begin{equation}\label{eq:endpoint}
+  \Csim(e_{\beta}\T_1)
+  \leq \Csim(\T_1\otimes\Sg)=C.
+\end{equation}
+Indeed, for every $t>0$ the operator
+$e^{-\beta t}S(t)$ has spectral radius one.  The
+Paulsen--Pearcy--Petrovi\'c endpoint estimate bounds the similarity constant
+of $e^{\beta t}T_1(t)$ by $C$; Proposition 8.3 of the source then passes the
+uniform pointwise estimate to the whole semigroup, yielding
+\eqref{eq:endpoint}.
+
+For $k\geq2$, hypothesis \eqref{eq:endpoint-hyp} says directly that
+\[
+  \Csim(e_{d_k}\T_k)=\Csim(e_{-\beta_k}\T_k)\leq C.
+\]
+Moreover $d_1=\beta$, so \eqref{eq:endpoint} supplies the remaining factor.
+Finally,
+\[
+  \sum_{k=1}^m d_k
+  =\sum_{k=2}^m\beta_k-\sum_{k=2}^m\beta_k=0.
+\]
+This proves the claim.
+\end{proof}
+
+\begin{corollary}\label{cor:normal}
+The conclusion of Theorem~\ref{thm:main} holds if $\T_k$ is a normal
+semigroup for every $2\leq k\leq m$ and each $\omega_0(\T_k)$ is finite.
+In particular, for two factors the zero-growth hypothesis is unnecessary
+whenever either factor is normal with finite growth bound.
+\end{corollary}
+
+\begin{proof}
+For a normal operator, norm and spectral radius agree.  Therefore, for
+$k\geq2$ and every $t>0$,
+\[
+ \left\|e^{-\beta_k t}T_k(t)\right\|
+ =e^{-\beta_k t}r(T_k(t))=1.
+\]
+Thus each $e_{-\beta_k}\T_k$ is contractive and has similarity constant one,
+so \eqref{eq:endpoint-hyp} holds.  Therefore
+Theorem~\ref{thm:main} applies.
+\end{proof}
+
+For two factors, Theorem~\ref{thm:main} has the following useful form.  If
+$\beta=\omega_0(\T_2)$ is finite and
+\[
+  \Csim(e_{-\beta}\T_2)\leq \Csim(\T_1\otimes\T_2),
+\]
+then the sharp conclusion holds with shifts $d_1=\beta$ and
+$d_2=-\beta$.  This includes nonnormal factors whenever their endpoint
+similarity can be implemented within the product's distortion budget.
+
+\section{Finite-dimensional endpoint equality}
+
+For a complex matrix $A$ and $C\geq1$, define
+\[
+ q_C(A):=\inf_{\substack{P>0\\\kappa(P)\leq C^2}}
+ \frac12\lambda_{\max}\!\left(
+ P^{-1/2}(A^*P+PA)P^{-1/2}\right),
+\]
+and write $s(A)=\max\{\operatorname{Re}\lambda:\lambda\in\sigma(A)\}$.
+
+\begin{theorem}\label{thm:matrix}
+Let $A\in M_n(\mathbb C)$, $B\in M_r(\mathbb C)$, $C\geq1$, and
+$K=A\otimes I+I\otimes B$.  If $q_C(B)=s(B)$, then
+\[
+  q_C(K)\geq q_C(A)+q_C(B).
+\]
+The same conclusion holds with $A$ and $B$ interchanged.
+\end{theorem}
+
+\begin{proof}
+Fix $\gamma>q_C(K)$.  After multiplying a feasible metric by a positive
+scalar, there is $P>0$ such that
+\[
+ I\leq P\leq C^2I,
+ \qquad K^*P+PK\leq2\gamma P.
+\]
+Choose a unit eigenvector $v$ of $B$ with eigenvalue $\lambda$ satisfying
+$\operatorname{Re}\lambda=s(B)$, and compress $P$ to
+\[
+ P_v=(I\otimes v)^*P(I\otimes v)>0.
+\]
+Compression preserves the order bounds, so
+$I\leq P_v\leq C^2I$.  Because $Bv=\lambda v$, compression of the Lyapunov
+inequality gives
+\[
+ A^*P_v+P_vA+2\operatorname{Re}\lambda\,P_v
+ \leq2\gamma P_v.
+\]
+Consequently $q_C(A)\leq\gamma-s(B)$.  Letting
+$\gamma\downarrow q_C(K)$ and using $q_C(B)=s(B)$ proves the assertion.
+\end{proof}
+
+The equality hypothesis $q_C(B)=s(B)$ says precisely that the
+growth-normalized matrix semigroup can be made contractive within distortion
+$C$.  Theorem~\ref{thm:matrix} is therefore the infinitesimal matrix analogue
+of Theorem~\ref{thm:main}.
+
+\section{Verification, limitations, and the remaining obstruction}
+
+The signs in the proof are forced: normalizing the complement uses
+$e_{-\beta}\Sg$, while the endpoint extraction gives $e_{\beta}\T_1$.
+The individual complementary shifts sum to $-\beta$, so the complete list
+has zero sum.
+
+The argument does not settle the general negative-growth case.  If neither
+factor attains its spectral abscissa within the product's distortion budget,
+the endpoint estimates supplied by the source may correspond to incompatible
+zero-sum shifts.  The missing finite-dimensional implication is the
+constrained-Lyapunov superadditivity inequality
+\[
+ q_C(A_1\otimes I+I\otimes A_2)
+ \geq q_C(A_1)+q_C(A_2).
+\]
+This inequality is not proved here.  Convex SDP bisection described in the
+accompanying attempt note tested more than 2,300 random real pairs in factor
+dimensions two through four, in addition to structured Jordan families.  No
+strictly active violation was found.  Numerical boundary artifacts were
+discarded using the rigorous endpoint equality in
+Theorem~\ref{thm:matrix}.  These computations are evidence only and play no
+role in either theorem.
+
+A bounded search on 21 July 2026 checked the original arXiv record, the June
+2026 sequel on infinite tensor products, and keyword searches for the exact
+redundancy question.  No later resolution of the general finite quantitative
+question was located.  This packet claims only the stated partial theorem and
+does not claim novelty beyond isolating the corollary and the remaining
+metric obstruction.
+
+\paragraph{Human-review recommendation.}
+Verify the endpoint passage from Theorem 8.2 and Proposition 8.3 of the source
+paper and the compression argument in Theorem~\ref{thm:matrix}; retain the
+packet as a strengthened partial result.  Further work should focus on the
+strictly active constrained-Lyapunov regime, where both factor endpoint
+similarity constants exceed the available distortion budget.
+
+\begin{thebibliography}{9}
+\bibitem{OMT}
+J. Oliva-Maza and Y. Tomilov,
+\emph{On similarity to contraction semigroups and tensor products, I},
+J. Funct. Anal. \textbf{291} (2026), no.~3, Paper 111492;
+arXiv:2509.01005.
+\end{thebibliography}
+
+\end{document}

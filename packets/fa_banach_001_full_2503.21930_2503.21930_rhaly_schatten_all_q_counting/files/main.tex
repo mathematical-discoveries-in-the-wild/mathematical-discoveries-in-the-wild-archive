@@ -1,0 +1,284 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\Ncount}{N_\alpha}
+\newcommand{\Schatten}{\mathcal S}
+
+\title{A Complete Counting Characterization of\
+Schatten Rhaly Matrices for Every Positive Exponent}
+\author{Full solution packet for arXiv:2503.21930}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status: full solution likely valid.}
+For every $q>0$, membership of a Rhaly matrix $R_\alpha$ in
+$\Schatten^q(\ell^2)$ is characterized by the $q$-moment of the length of
+the source paper's greedy $(\varepsilon,L)$-sequence.  Explicit two-sided
+quasinorm estimates are proved.  In particular, this answers the source
+paper's missing-characterization question for the entire range
+$0<q\leq1$.}}
+\end{center}
+
+\section{Source question}
+
+Bellavita, Dellepiane, and Stylogiannis study the Rhaly matrix
+\begin{equation}\label{eq:rhaly}
+ (R_\alpha x)(k)=\alpha_k\sum_{j=0}^k x(j),
+ \qquad k\in\mathbb N,
+\end{equation}
+for $\alpha=(\alpha_k)\in\ell^2$ \cite{source}.  Their Theorem 1.3 gives a
+dyadic coefficient characterization of $R_\alpha\in\Schatten^q$ when
+$1<q<\infty$.  Theorem 5.5 gives the corresponding dyadic condition only as
+a necessary condition for arbitrary $q>0$.  In the conclusion, on source
+PDF page 36, they state:
+\begin{quote}
+``Theorem 5.5 only provides a necessary condition for the $q$-Schatten
+class membership, for $0<q\leq1$. A complete characterization is missing.''
+\end{quote}
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=0.98\textwidth]{figures/open_problem_crop.png}
+ \caption{The endpoint open question in arXiv:2503.21930v3, source PDF
+ page 36.}
+\end{figure}
+
+\section{The coefficient-side counting invariant}
+
+For a natural interval $I$ and $x$ supported in $I$, put
+\[
+ S_x(k)=\sum_{j=0}^k x(j),\qquad
+ \mu_\alpha(I)=\sum_{k\in I}\abs{\alpha_k}^2.
+\]
+When $\mu_\alpha(I)>0$, let
+\[
+ (S_x)_I=\frac{1}{\mu_\alpha(I)}
+ \sum_{k\in I}S_x(k)\abs{\alpha_k}^2
+\]
+and define
+\begin{equation}\label{eq:L}
+ L_\alpha(I)=\sqrt2\sup_{\substack{\operatorname{supp}x\subseteq I\\
+                                  \norm{x}_2\leq1}}
+ \left(\sum_{k\in I}\abs{S_x(k)-(S_x)_I}^2
+                         \abs{\alpha_k}^2\right)^{1/2}.
+\end{equation}
+Set $L_\alpha(I)=0$ if $\mu_\alpha(I)=0$, and define
+$L_\alpha([a,\infty))$ by increasing finite truncations.  Formula
+\eqref{eq:L} is the equivalent form of the source paper's interval invariant
+given by its Lemma 3.6.
+
+For $\varepsilon>0$, start with $c_0=0$ and recursively set
+\begin{equation}\label{eq:greedy}
+ c_{r+1}=\inf\{t\in\mathbb N:t>c_r,
+          \ L_\alpha([c_r,t-1])>\varepsilon\}.
+\end{equation}
+If $c_N<\infty$ and $c_{N+1}=\infty$, the sequence has length $N$;
+if it never terminates, its length is $\infty$.  Denote this length by
+$\Ncount(\varepsilon)$.  This is entirely determined by the coefficients
+$\alpha$.  It is an extended integer-valued Borel function of
+$\varepsilon$: for fixed $m$, the event $\Ncount(\varepsilon)\geq m$ is a
+countable union of conditions involving finitely many comparisons
+$L_\alpha([a,b])>\varepsilon$.
+
+For $q>0$, define the endpoint counting functional
+\begin{equation}\label{eq:Phi}
+ \Phi_q(\alpha)=q\int_0^\infty
+   \varepsilon^{q-1}\Ncount(\varepsilon)\,d\varepsilon
+ \in[0,\infty].
+\end{equation}
+Also set
+\begin{equation}\label{eq:sigma}
+ \sigma_{-1}=\abs{\alpha_0},\qquad
+ \sigma_k=\left(\sum_{j=2^k}^{2^{k+1}-1}
+                    (j+1)\abs{\alpha_j}^2\right)^{1/2},\qquad
+ M_\alpha=\sup_{k\geq-1}\sigma_k.
+\end{equation}
+The source paper's Theorem 2.4 says that $M_\alpha<\infty$ exactly when
+$R_\alpha$ is bounded.
+
+\section{Proof intuition}
+
+The greedy length already measures the whole singular-value distribution,
+not merely compactness.  The source paper proves two estimates.  If the
+$\varepsilon$-greedy sequence has length $N$, then the rank of a natural
+piecewise-constant approximation is at most $2N+1$, so
+$a_{2N+2}(R_\alpha)\leq\varepsilon/\sqrt2$.  Conversely, $N$ disjoint greedy
+intervals force $a_N(R_\alpha)\geq\varepsilon/\sqrt2$.
+
+Thus the number of approximation values above a threshold is trapped between
+the same greedy length, with only a factor two in the count and fixed
+rescalings of the threshold.  Integrating this distributional sandwich via
+the layer-cake identity gives the complete $\Schatten^q$ criterion for every
+$q>0$.  The endpoint obstruction in the source proof disappears because we
+do not dominate the greedy count by an additional harmonic sum over dyadic
+levels; that domination is precisely where the restriction $q>1$ entered.
+
+\section{Distributional sandwich}
+
+Let $a_m=a_m(R_\alpha)$ be the approximation numbers, indexed so that
+$a_1=\norm{R_\alpha}$, and put
+\[
+ n_\alpha(t)=\#\{m\geq1:a_m>t\}.
+\]
+Both sides are allowed to be infinite.
+
+\begin{lemma}[source estimates in counting form]\label{lem:sandwich}
+For every $\varepsilon>0$,
+\begin{equation}\label{eq:sandwich}
+ \Ncount(\varepsilon)
+ \leq n_\alpha\!\left(\frac{\varepsilon}{2\sqrt2}\right),
+ \qquad
+ n_\alpha\!\left(\frac{\varepsilon}{\sqrt2}\right)
+ \leq2\Ncount(\varepsilon)+1.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Suppose first that $\Ncount(\varepsilon)=N<\infty$.  If $N\geq1$, source
+Lemma 4.3 gives
+\[
+ a_N\geq\frac{\varepsilon}{\sqrt2}
+       >\frac{\varepsilon}{2\sqrt2}.
+\]
+Hence at least $N$ approximation numbers exceed
+$\varepsilon/(2\sqrt2)$.  The first assertion is trivial when $N=0$.
+If the greedy sequence is infinite, source Lemma 4.3 applies with every
+finite $N$, so the first counting function is infinite as well.
+
+For the other direction, source Lemma 4.2 gives
+\[
+ a_{2N+2}\leq\frac{\varepsilon}{\sqrt2}
+\]
+when the length is $N<\infty$.  Therefore at most $2N+1$ approximation
+numbers are strictly larger than $\varepsilon/\sqrt2$.  If the length is
+infinite, the claimed inequality is automatic.
+\end{proof}
+
+\section{Full characterization}
+
+\begin{theorem}[all positive Schatten exponents]\label{thm:main}
+Let $q>0$ and suppose $R_\alpha$ is bounded on $\ell^2$.  With the convention
+that all quantities may equal $+\infty$,
+\begin{align}
+ \sum_{m=1}^\infty a_m(R_\alpha)^q
+ &\leq \norm{R_\alpha}^q+2^{1-q/2}\Phi_q(\alpha),
+ \label{eq:upper}\tag{A}\\
+ \norm{R_\alpha}^q+\Phi_q(\alpha)
+ &\leq\bigl(1+(2\sqrt2)^q\bigr)
+       \sum_{m=1}^\infty a_m(R_\alpha)^q.
+ \label{eq:lower}\tag{B}
+\end{align}
+Consequently,
+\begin{equation}\label{eq:criterion}
+ R_\alpha\in\Schatten^q(\ell^2)
+ \quad\Longleftrightarrow\quad
+ \Phi_q(\alpha)<\infty.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For every nonincreasing nonnegative sequence $(a_m)$ and every $q>0$,
+Tonelli's theorem gives the extended layer-cake identity
+\begin{equation}\label{eq:layercake}
+ \sum_{m=1}^\infty a_m^q
+ =q\int_0^\infty t^{q-1}\#\{m:a_m>t\}\,dt.
+\end{equation}
+
+Integrating the first inequality in \eqref{eq:sandwich}, substituting
+$t=\varepsilon/(2\sqrt2)$, and using \eqref{eq:layercake}, we obtain
+\[
+ \Phi_q(\alpha)
+ \leq(2\sqrt2)^q\sum_{m=1}^\infty a_m^q.
+\]
+Since $\norm{R_\alpha}=a_1$, this proves \eqref{eq:lower}.
+
+For the reverse estimate, put $\varepsilon=\sqrt2t$ in the second inequality
+of \eqref{eq:sandwich}.  Since $n_\alpha(t)=0$ for
+$t\geq\norm{R_\alpha}$, another application of \eqref{eq:layercake} gives
+\begin{align*}
+ \sum_{m=1}^\infty a_m^q
+ &\leq 2q\int_0^{\norm{R_\alpha}}
+       t^{q-1}\Ncount(\sqrt2t)\,dt
+       +q\int_0^{\norm{R_\alpha}}t^{q-1}\,dt\\
+ &\leq2^{1-q/2}\Phi_q(\alpha)+\norm{R_\alpha}^q.
+\end{align*}
+This is \eqref{eq:upper}, and the equivalence follows.
+\end{proof}
+
+Combining the theorem with the source boundedness criterion yields a statement
+containing only coefficient-side quantities.
+
+\begin{corollary}[complete coefficient characterization]\label{cor:complete}
+Let $\alpha\in\ell^2$ and $q>0$.  Then
+\[
+ R_\alpha\in\Schatten^q(\ell^2)
+ \quad\Longleftrightarrow\quad
+ M_\alpha<\infty\ \text{ and }\ \Phi_q(\alpha)<\infty,
+\]
+where $M_\alpha$ and $\Phi_q(\alpha)$ are given explicitly by
+\eqref{eq:L}--\eqref{eq:Phi} and \eqref{eq:sigma}.  In particular, this is a
+complete characterization for every $0<q\leq1$.
+\end{corollary}
+
+\begin{proof}
+Theorem 2.4 of the source gives $M_\alpha<\infty$ if and only if
+$R_\alpha$ is bounded.  On that boundedness domain, Theorem
+\ref{thm:main} applies.  Every $\Schatten^q$ operator is bounded, so the two
+conditions are also necessary.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The proof has no computational dependency.  The important endpoint details
+are the strict threshold in $n_\alpha(t)$, the harmless factor two in the
+first half of \eqref{eq:sandwich}, and the separate operator-norm term in
+\eqref{eq:upper}.  That last term cannot simply be discarded: if only
+$\alpha_0$ is nonzero, all greedy lengths vanish while $R_\alpha$ is a
+nonzero rank-one operator.
+
+The result gives an exact greedy-counting characterization, not a reduction
+to the simpler dyadic Besov expression used by the source for $q>1$.  Thus it
+answers the stated request for a complete characterization, while leaving
+open whether a comparably simple dyadic coefficient formula exists at the
+quasi-Banach endpoints.
+
+A bounded novelty search on 22 July 2026 covered the run's four lightweight
+indexes; the exact arXiv id and title; searches for Rhaly/terraced matrices
+with Schatten endpoints, approximation numbers, and $(\varepsilon,L)$
+sequences; the current source version; and the June 2026 follow-up
+\href{https://arxiv.org/abs/2606.15875}{arXiv:2606.15875}.  That follow-up
+extends the method to factorable matrices but still states its Schatten
+characterizations only for $1<p<\infty$.  No later source stating the
+counting criterion above or resolving the $0<q\leq1$ question was found.
+Novelty confidence is moderate.
+
+\textbf{Human-review recommendation.}  Audit the interpretation of the
+source's length convention at $N=0$ and $N=\infty$, then verify that Lemmas
+4.2 and 4.3 apply with precisely the approximation-number indexing used in
+\eqref{eq:sandwich}.  Once that interface is confirmed, the remaining proof
+is Tonelli integration.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+C. Bellavita, E. Dellepiane, and G. Stylogiannis,
+\emph{Boundedness, compactness and Schatten class for Rhaly matrices},
+arXiv:2503.21930v3 (2025), especially Definition 4.1, Lemmas 4.2--4.3,
+Theorem 2.4, Theorem 5.5, and Section 7.
+\end{thebibliography}
+
+\end{document}

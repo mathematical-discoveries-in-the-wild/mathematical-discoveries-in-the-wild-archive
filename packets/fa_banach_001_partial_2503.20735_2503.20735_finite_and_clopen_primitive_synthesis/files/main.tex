@@ -1,0 +1,383 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\A}{\mathcal A}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Prim}{\operatorname{Prim}}
+\newcommand{\hull}{\operatorname{hull}}
+\newcommand{\Ad}{\operatorname{Ad}}
+
+\title{Finite and Clopen Primitive Sets Are Sets of Synthesis\\
+for Locally Elliptic Weighted Orlicz Algebras}
+\author{Automated Mathematics Run \texttt{fa\_banach\_001}, lane 2}
+\date{21 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Question 8.12 of Carter's paper asks for geometric conditions on subsets of
+the primitive and coadjoint-orbit spectra which imply spectral synthesis for
+Hermitian weighted Orlicz algebras on unipotent $p$-adic groups.  We prove two
+such conditions.  Every clopen primitive subset is synthetic for every
+locally elliptic group covered by Carter's hypotheses.  Every finite closed
+set of admissible primitive points is also synthetic; for a $p$-adic
+unipotent group, CCR makes every primitive point admissible.  Consequently,
+every finite or clopen subset of the $p$-adic coadjoint-orbit space is a set
+of synthesis.  The clopen proof uses central idempotents in compact-open
+corners and approximates them by exact finite-Hecke Riesz projections in
+Carter's minimal ideal $j(C)$.  This cannot extend to all compact closed
+sets: Malliavin's theorem already supplies compact nonsynthesis sets for the
+unweighted algebra on the abelian group $U_2(k)\cong(k,+)$.
+\end{abstract}
+
+\paragraph{Status.}
+Candidate substantial partial result, likely valid, subject to human review.
+It supplies the broad geometric criteria ``finite'' and ``clopen'' for the
+full nonabelian class in Question 8.12.  Infinite closed sets with nonempty
+boundary remain unclassified, and compactness alone is provably insufficient.
+
+\section{Source question}
+
+The source is Max Carter, \emph{Weighted Orlicz $*$-algebras on locally
+elliptic groups}, arXiv:2503.20735v2, Question 8.12 on page 29
+\cite{Carter}.  For a $p$-adic unipotent matrix group $N$, Carter identifies
+\[
+ \Prim_*(L^\Phi(N,\omega))\cong
+ \mathfrak n^*/\Ad^*(N)
+\]
+and asks which geometric properties of $C$ imply $\ker(C)=j(C)$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{Question 8.12, rendered from page 29 of
+  arXiv:2503.20735v2.}
+\end{figure}
+
+\section{Definitions and setup}
+
+Let $G$ be locally elliptic, let $(\Phi,\Psi)$ be a complementary pair of
+Young functions with $\Phi\in\Delta_2$, and let $\omega$ be an
+$L^\Phi$-weight with $1/\omega\in L^\Psi(G)$.  Put
+\[
+  \A=L^\Phi(G,\omega)
+\]
+and assume that $\A$ is Hermitian.  Carter identifies irreducible
+$*$-representations of $\A$ with irreducible unitary representations of $G$.
+For closed $C\subseteq\Prim_*(\A)$ he defines
+\[
+ \ker(C)=\bigcap_{P\in C}P
+\]
+and, using a smooth functional calculus, constructs a closed two-sided ideal
+$j(C)$ with $j(C)\subseteq\ker(C)$ and $\hull_*(j(C))=C$
+\cite[Theorem 7.1]{Carter}.  The set $C$ is a \emph{set of synthesis} if
+$j(C)=\ker(C)$.
+
+Write $\D(G)$ for the compactly supported locally constant functions.  For a
+compact-open subgroup $H\leq G$, put
+\[
+ e_H=\mu(H)^{-1}1_H.
+\]
+Then $e_H=e_H^*=e_H*e_H$, and $\pi(e_H)$ is projection onto the $H$-fixed
+vectors of a unitary representation $\pi$.
+
+\section{Proof intuition}
+
+Every algebraic test function belongs to a finite-dimensional Hecke algebra.
+If it vanishes under the representations in $C$, then so does its central
+support projection.  Carter's smooth functional calculus recovers that
+projection exactly, placing the test function in $j(C)$.
+
+For a clopen $C$, fix $H$ and pass to the unital corner $e_H\A e_H$.  The
+clopen split of its primitive spectrum produces a central self-adjoint
+idempotent $p_H$ which is zero on $C$ and one on the complementary primitive
+points.  The idempotent need not itself be a test function.  Approximate it
+in the Orlicz norm by self-adjoint Hecke functions and take their Riesz
+projections for the spectral cluster near one.  Those projections remain in
+finite Hecke algebras, vanish exactly on $C$, and converge to $p_H$; hence
+$p_H\in j(C)$.  Every $H$-smoothed element of $\ker(C)$ is multiplied
+identically by $p_H$, so compact-open smoothing completes the proof.
+
+For a finite family of admissible representations, the same smoothing makes
+the evaluation range finite dimensional.  A bounded linear lift corrects
+dense Hecke approximants to vanish exactly at every chosen point.
+
+\section{The algebraic test-function lemma}
+
+\begin{lemma}[Dense locally finite test algebra]\label{lem:test}
+$\D(G)$ is dense in $\A$, and every $d\in\D(G)$ belongs to a
+finite-dimensional convolution $*$-subalgebra of $\D(G)$.
+\end{lemma}
+
+\begin{proof}
+The $\Delta_2$ hypothesis gives density of compactly supported functions in
+the weighted Orlicz space.  A locally elliptic group has a compact-open basis,
+so uniform approximation on compact sets by locally constant step functions,
+together with local boundedness of $\omega$, gives density of $\D(G)$.
+
+The compact support of $d$ lies in a compact-open subgroup $K$.  Uniform local
+constancy on $K$ gives an open subgroup under whose left and right
+translations $d$ is invariant.  Replacing it by its normal core gives an open
+normal $L\triangleleft K$.  The $L$-bi-invariant functions supported in $K$
+form a finite-dimensional convolution $*$-algebra, isomorphic after Haar
+normalization to $\mathbb C[K/L]$, and contain $d$.
+\end{proof}
+
+\begin{lemma}[Algebraic kernel elements lie in $j(C)$]\label{lem:algebraic}
+For every closed $C\subseteq\Prim_*(\A)$,
+\[
+ \D(G)\cap\ker(C)\subseteq j(C).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $d\in\D(G)\cap\ker(C)$ in a finite-dimensional convolution
+$*$-algebra $B$ using Lemma~\ref{lem:test}.  In its faithful regular
+representation, $B$ is a finite-dimensional $C^*$-algebra.  Let $p_d$ be the
+central support projection of $d$, so $p_d*d=d$.
+
+For every $\pi$ whose kernel lies in $C$, the ideal
+$\ker(\pi|_B)$ contains $d$, hence contains $p_d$.  Choose
+$0<a<2\pi$ with $a\lVert p_d\rVert_1\leq1$.  Carter's Proposition 5.5 gives
+$\varphi\in A_\gamma$ which is zero near $0$ and satisfies $\varphi(a)=1$.
+Then $\varphi\{ap_d\}\in m(C)$, while the defining power series and
+$p_d*p_d=p_d$ give
+\[
+ \varphi\{ap_d\}=\varphi(a)p_d=p_d.
+\]
+Thus $p_d\in j(C)$ and $d=p_d*d\in j(C)$.
+\end{proof}
+
+\section{Clopen synthesis}
+
+\begin{lemma}[The clopen corner idempotent]\label{lem:corner}
+Let $C\subseteq\Prim_*(\A)$ be clopen and $H\leq G$ compact-open.  In the
+corner
+\[
+ \A_H=e_H*\A*e_H
+\]
+there is a central self-adjoint idempotent $p_H$ such that, for every
+irreducible $\pi$ with $\pi(e_H)\ne0$,
+\[
+ \pi(p_H)=
+ \begin{cases}
+ 0,&\ker\pi\in C,\\
+ \pi(e_H),&\ker\pi\notin C.
+ \end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+The corner is unital with identity $e_H$.  It is Hermitian: if
+$x=x^*\in\A_H$, then $x+(1-e_H)$ is self-adjoint in the unitization of $\A$;
+compressing its nonreal resolvents shows that $x$ has real spectrum in the
+corner.  It is semisimple because $\A\subseteq L^1(G)$ embeds faithfully in
+the group $C^*$-algebra, and so does the corner.
+
+The standard idempotent-corner correspondence, obtained by compressing
+irreducible representations to $\pi(e_H)\mathcal H_\pi$, identifies
+$\Prim_*(\A_H)$ with
+\[
+ U_H=\{\ker\pi\in\Prim_*(\A):\pi(e_H)\ne0\}.
+\]
+Hence $Y=C\cap U_H$ and $U_H\setminus C$ are complementary closed subsets of
+$\Prim_*(\A_H)$.  Put
+\[
+ I=\ker_{\A_H}(Y),\qquad
+ J=\ker_{\A_H}(U_H\setminus C).
+\]
+Semisimplicity gives $I\cap J=0$.  If $I+J$ were proper, a maximal left ideal
+containing it would produce a simple $\A_H$-module.  Hermitianness makes that
+module unitarizable, so its primitive kernel would belong to both $Y$ and its
+complement, a contradiction.  Thus $I+J=\A_H$.
+
+Write $e_H=p_H+q_H$ with $p_H\in I$ and $q_H\in J$.  Since products between
+$I$ and $J$ lie in their zero intersection, $p_H$ and $q_H$ are complementary
+central idempotents.  The ideals are $*$-closed, and uniqueness of the
+decomposition gives $p_H=p_H^*$.  Its represented values are as stated.
+\end{proof}
+
+\begin{lemma}[The corner idempotent belongs to $j(C)$]\label{lem:riesz}
+For $C$ and $p_H$ as above, $p_H\in j(C)$.
+\end{lemma}
+
+\begin{proof}
+Let $\D_H=e_H*\D(G)*e_H$.  It is dense in $\A_H$.  Choose self-adjoint
+$d_n\in\D_H$ with $d_n\to p_H$ in the $\A$-norm.  Every $d_n$ belongs to a
+finite-dimensional Hecke $C^*$-algebra $B_n\subseteq\D_H$ with identity
+$e_H$.
+
+Because $p_H$ is central, $d_n$ commutes with $p_H$, and the spectra of
+$p_Hd_n$ and $(e_H-p_H)d_n$ lie respectively near $1$ and $0$.  For large
+$n$ these clusters are separated by the circle $\Gamma$ centered at $1$ with
+radius $1/3$.  The spectrum of $d_n$ in $B_n$ equals its spectrum in
+$\A_H$: if an eigenvalue in the finite-dimensional algebra were absent from
+the corner spectrum, the corner inverse would annihilate its nonzero spectral
+projection.  Consequently the Riesz projection
+\[
+ r_n=\frac{1}{2\pi i}\int_\Gamma(ze_H-d_n)^{-1}\,dz
+\]
+belongs to $B_n\subseteq\D(G)$.  Continuity of Riesz projections gives
+$r_n\to p_H$ in the $\A$-norm.
+
+If $\ker\pi\in C$ and $\pi(e_H)\ne0$, then
+$\pi(d_n)\to\pi(p_H)=0$, so the Riesz projection of $\pi(d_n)$ around
+$1$ is zero for large $n$.  If $\pi(e_H)=0$, every corner element is already
+annihilated.  Hence $r_n\in\D(G)\cap\ker(C)$.  Lemma~\ref{lem:algebraic}
+gives $r_n\in j(C)$, and closedness gives $p_H\in j(C)$.
+\end{proof}
+
+\begin{theorem}[Clopen synthesis]\label{thm:clopen}
+Every clopen subset of $\Prim_*(\A)$ is a set of synthesis.
+\end{theorem}
+
+\begin{proof}
+Let $f\in\ker(C)$ and fix compact-open $H$.  Put
+$f_H=e_H*f*e_H$.  Lemma~\ref{lem:corner} and separation by irreducible
+representations give
+\[
+ f_H=p_H*f_H.
+\]
+Indeed both sides vanish on $C$; off $C$, $p_H$ is the identity in every
+nonzero corner representation.  Lemma~\ref{lem:riesz} now gives
+$f_H\in j(C)$.
+
+As $H$ shrinks to the identity, Carter's compact-neighbourhood approximate
+identity \cite[Proposition 2.16(ii)]{Carter} yields $f_H\to f$ in $\A$.
+Therefore $f\in j(C)$.  Since Carter already gives
+$j(C)\subseteq\ker(C)$, equality follows.
+\end{proof}
+
+\section{Finite admissible synthesis}
+
+Call an irreducible $\pi$ \emph{admissible} if
+$\dim\mathcal H_\pi^H<\infty$ for every compact-open $H$.
+
+\begin{theorem}[Finite admissible synthesis]\label{thm:finite}
+Every finite closed subset of $\Prim_*(\A)$ consisting of admissible points
+is a set of synthesis.
+\end{theorem}
+
+\begin{proof}
+Let $C=\{\ker\pi_1,\ldots,\ker\pi_r\}$ and $I=\ker(C)$.  For fixed $H$,
+evaluation maps $\A_H=e_H\A e_H$ into the finite-dimensional algebra
+\[
+ \bigoplus_{i=1}^r\mathcal B(\mathcal H_{\pi_i}^H).
+\]
+The dense subspace $\D_H$ has the same image because a linear subspace of a
+finite-dimensional space is closed.  Choose a bounded linear right inverse
+$R_H$ from that image into $\D_H$.
+
+For $f\in I$, approximate $f_H=e_H*f*e_H$ by $d_n\in\D_H$ and set
+\[
+ h_n=d_n-R_H\bigl((\pi_1(d_n),\ldots,\pi_r(d_n))\bigr).
+\]
+Then $h_n\in\D(G)\cap I$ and $h_n\to f_H$.  Lemma~\ref{lem:algebraic}
+gives $f_H\in j(C)$, and the compact-open approximate identity gives
+$f\in j(C)$.
+\end{proof}
+
+\begin{corollary}[$p$-adic unipotent orbit spaces]\label{cor:padic}
+Let $N$ be a group of unipotent matrices over a $p$-adic field and let
+$\A=L^\Phi(N,\omega)$ satisfy the hypotheses above.  Every finite or clopen
+subset of
+\[
+ \mathfrak n^*/\Ad^*(N)\cong\Prim_*(\A)
+\]
+is a set of synthesis.
+\end{corollary}
+
+\begin{proof}
+Carter's Theorem 8.10 states that $N$ is CCR and identifies its unitary dual
+with the coadjoint-orbit space.  For compact-open $H$, the projection
+$\pi(e_H)$ lies in $\pi(C^*(N))=\mathcal K(\mathcal H_\pi)$, hence has finite
+rank.  Thus every irreducible is admissible.  CCR also makes primitive ideals
+maximal, so finite subsets are closed.  Apply Theorems~\ref{thm:clopen} and
+\ref{thm:finite}, together with Carter's Corollary 8.11.
+\end{proof}
+
+\section{Sharpness: compact closed sets can fail synthesis}
+
+\begin{theorem}[Malliavin obstruction]\label{thm:malliavin}
+Let $k$ be a non-archimedean local field and identify
+$U_2(k)\cong(k,+)$.  For the unweighted Hermitian algebra
+$\A=L^1(k)$, there is a compact closed set
+\[
+ C\subseteq \Prim_*(\A)\cong\widehat{k}\cong k
+\]
+which is not a set of synthesis.  Consequently, neither closedness nor
+compactness alone can replace finiteness or clopenness in
+Corollary~\ref{cor:padic}.
+\end{theorem}
+
+\begin{proof}
+The case $\Phi(t)=|t|$ and $\omega=1$ gives $\A=L^1(k)$ and lies in the
+source framework.  Malliavin proved that spectral synthesis fails for
+$L^1(G)$ whenever the locally compact abelian group $G$ is noncompact
+\cite{Malliavin}.  In its compact-set formulation, every nondiscrete locally
+compact abelian dual contains a compact subset on which synthesis fails
+\cite[p.~358]{deLeeuwMirkil}.  The additive group of $k$ is noncompact and
+Pontryagin self-dual, so this gives a compact closed
+$C\subseteq\widehat{k}$ and a closed ideal $I$ satisfying
+\[
+ \hull(I)=C,\qquad I\subsetneq\ker(C).
+\]
+Carter's Theorem 7.1 makes $j(C)$ the minimal closed ideal for this hull, so
+$j(C)\subseteq I\subsetneq\ker(C)$.  Hence $j(C)\ne\ker(C)$.
+\end{proof}
+
+\section{Verification, limitations, and novelty}
+
+No numerical computation is used.  The proof audit checks the Hermitian
+corner, the complementary-kernel central idempotent, equality of spectra in
+the finite Hecke algebra and the corner, Riesz-projection convergence, and
+the fact that no uniform finite-corner lift is needed as $H$ shrinks.
+
+The theorem does not classify infinite closed subsets with nonempty boundary.
+Theorem~\ref{thm:malliavin} shows that this is a genuine obstruction rather
+than merely a limitation of the proof: even compact closed subsets can fail
+synthesis in the abelian $p$-adic case.
+In a non-Hausdorff primitive spectrum, ``compact-open'' alone need not imply
+closed; Carter's $j(C)$ is defined for closed $C$, while the clopen theorem
+has exactly the required closedness.  Local indexes and bounded arXiv searches
+on 21 July 2026 combined the exact source id with ``spectral synthesis'',
+``$p$-adic unipotent'', ``clopen'', ``compact-open'', ``finite sets'',
+``central idempotent'', and ``weighted Orlicz''.  No exact theorem was found;
+novelty confidence is moderate pending expert review.
+
+\paragraph{Human-review recommendation.}
+Verify Lemma~\ref{lem:corner}'s primitive corner correspondence and
+Lemma~\ref{lem:riesz}'s equality of the finite-Hecke and corner spectra.
+Those are the decisive new structural steps.
+
+\begin{thebibliography}{9}
+\bibitem{Carter}
+M.~Carter,
+\emph{Weighted Orlicz $*$-algebras on locally elliptic groups},
+Studia Math. \textbf{287} (2026), no.~2, 145--180;
+arXiv:2503.20735v2.
+
+\bibitem{Malliavin}
+P.~Malliavin,
+\emph{Impossibilit\'e de la synth\`ese spectrale sur les groupes ab\'eliens
+non compacts},
+Publ. Math. IH\'ES \textbf{2} (1959), 61--68.
+
+\bibitem{deLeeuwMirkil}
+K.~de Leeuw and H.~Mirkil,
+\emph{Translation-invariant function algebras on abelian groups},
+Bull. Soc. Math. France \textbf{88} (1960), 345--370.
+\end{thebibliography}
+
+\end{document}

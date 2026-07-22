@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\K}{\mathbb K}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Lip}{\mathrm{Lip}}
+\newcommand{\rank}{\operatorname{rank}}
+
+\title{Coordinatewise products on $\ell_1$ are Lipschitz $p$-summing}
+\author{Candidate full solution packet for arXiv:1805.02115}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.} Candidate full solution,
+likely valid, pending human review.  The theorem below answers the source
+question positively for every $1\le p<\infty$ and proves an arity-independent
+strengthening.}}
+\end{center}
+
+\section{Source question}
+
+Angulo-L\'opez and Fern\'andez-Unzueta introduce Lipschitz $p$-summing
+multilinear operators in \cite{AnguloFernandez2020}.  On page 6, immediately
+after Proposition 3.5, they ask whether the coordinatewise product
+\[
+ T:\ell_1\times\ell_1\longrightarrow\ell_1,
+ \qquad T(x,y)=(x_jy_j)_{j\ge1},
+\]
+is Lipschitz $p$-summing.  Here is the exact source passage.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Source page 6: the sentence posing the coordinatewise-product
+question, with the preceding difference-tensor context.}
+\end{figure}
+
+For completeness, an $m$-linear map $S:X_1\times\cdots\times X_m\to Y$ is
+Lipschitz $p$-summing if a constant $C$ exists such that, for every finite
+family $u_i,v_i\in X_1\times\cdots\times X_m$,
+\begin{equation}\label{eq:def}
+ \left(\sum_i\|S(u_i)-S(v_i)\|^p\right)^{1/p}
+ \le C\sup_{\varphi\in B_{\mathcal L(X_1,\ldots,X_m)}}
+ \left(\sum_i|\varphi(u_i)-\varphi(v_i)|^p\right)^{1/p}.
+\end{equation}
+The least such $C$ is denoted $\pi_p^{\Lip}(S)$.
+
+\section{Proof intuition}
+
+The definition only tests differences of two decomposable tensors.  After
+flattening one tensor coordinate against all the others, such a difference is
+a matrix of rank at most two.  Its coordinate diagonal has $\ell_1$ norm at
+most the matrix trace norm, and rank two bounds that trace norm by $\sqrt2$
+times the Hilbert--Schmidt norm.
+
+The missing bridge to the right-hand side of \eqref{eq:def} is supplied by
+random signs.  A bounded sign array is a norm-one multilinear form on a product
+of $\ell_1$ spaces.  The lower Khintchine inequality recovers the
+Hilbert--Schmidt norm of each difference array from the $L_p$ norm of its
+random-sign evaluation.  Crucially, one first sums over the finite family and
+only then averages; the expectation is bounded by one common sign-array
+supremum, precisely the supremum allowed in \eqref{eq:def}.
+
+\section{The result}
+
+Let $\kappa_{p,\K}>0$ be any lower scalar Khintchine constant over
+$\K\in\{\mathbb R,\mathbb C\}$, so that for every square-summable scalar
+family $(a_\alpha)$ and independent Rademacher signs $(\varepsilon_\alpha)$,
+\begin{equation}\label{eq:khin}
+ \left(\mathbb E\left|\sum_\alpha
+ \varepsilon_\alpha a_\alpha\right|^p\right)^{1/p}
+ \ge \kappa_{p,\K}\left(\sum_\alpha|a_\alpha|^2\right)^{1/2}.
+\end{equation}
+Only positivity of this standard constant is used; see
+\cite{Khintchine1923,Kahane1985}, including the complex-scalar formulation.
+
+\begin{theorem}\label{thm:main}
+Let $m\ge2$ and $1\le p<\infty$.  Over either scalar field, the coordinatewise
+product
+\[
+ M_m:\underbrace{\ell_1\times\cdots\times\ell_1}_{m\ \mathrm{times}}
+ \longrightarrow\ell_1,
+ \qquad
+ M_m(x^1,\ldots,x^m)=\bigl(x^1_j\cdots x^m_j\bigr)_{j\ge1},
+\]
+is Lipschitz $p$-summing, and
+\[
+ 1\le \pi_p^{\Lip}(M_m)\le \frac{\sqrt2}{\kappa_{p,\K}}.
+\]
+In particular, the question on page 6 of \cite{AnguloFernandez2020} has an
+affirmative answer for every $1\le p<\infty$.
+\end{theorem}
+
+We isolate the rank-two observation.
+
+\begin{lemma}\label{lem:diag}
+Suppose
+\[
+ z=x^1\otimes\cdots\otimes x^m-y^1\otimes\cdots\otimes y^m
+ \in \ell_1(\N^m),
+\]
+and set $\Delta z=(z_{j,\ldots,j})_{j\ge1}$.  Then
+\begin{equation}\label{eq:diag}
+ \|\Delta z\|_1\le \sqrt2\left(\sum_{\mathbf j\in\N^m}
+ |z_{\mathbf j}|^2\right)^{1/2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Regard $z$ as the matrix of an operator
+\[
+ Z:\ell_2(\N^{m-1})\longrightarrow\ell_2(\N)
+\]
+by placing the first index in the row and the remaining indices in the column.
+Each decomposable tensor gives a rank-one operator under this flattening, so
+$\rank Z\le2$.  Moreover, $Z$ is Hilbert--Schmidt and
+\[
+ \|Z\|_{S_2}=\left(\sum_{\mathbf j}|z_{\mathbf j}|^2\right)^{1/2}.
+\]
+Choose scalars $\theta_j$ of modulus at most one so that
+$\theta_jz_{j,\ldots,j}=|z_{j,\ldots,j}|$, and let
+$Q:\ell_2(\N)\to\ell_2(\N^{m-1})$ be the diagonal partial isometry
+$Qe_j=\theta_j e_{(j,\ldots,j)}$.  Then $\|Q\|\le1$, and trace duality gives
+\[
+ \|\Delta z\|_1
+ =|\operatorname{tr}(ZQ)|
+ \le \|Z\|_{S_1}\|Q\|
+ \le \|Z\|_{S_1}.
+\]
+If $s_1,s_2$ are the only possibly nonzero singular values of $Z$, then
+\[
+ \|Z\|_{S_1}=s_1+s_2
+ \le\sqrt2(s_1^2+s_2^2)^{1/2}
+ =\sqrt2\|Z\|_{S_2},
+\]
+which proves \eqref{eq:diag}.  The argument applies directly to the infinite
+array because $z\in\ell_1(\N^m)\subset\ell_2(\N^m)$ and $Z$ has finite rank.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+For a sign array $\varepsilon=(\varepsilon_{\mathbf j})_{\mathbf j\in\N^m}$,
+define
+\[
+ \varphi_\varepsilon(x^1,\ldots,x^m)
+ :=\sum_{\mathbf j=(j_1,\ldots,j_m)\in\N^m}
+ \varepsilon_{\mathbf j}x^1_{j_1}\cdots x^m_{j_m}.
+\]
+The series is absolutely convergent, and
+\[
+ |\varphi_\varepsilon(x^1,\ldots,x^m)|
+ \le \prod_{r=1}^m\|x^r\|_1.
+\]
+Because every coefficient has modulus one, $\|\varphi_\varepsilon\|=1$.
+
+Now fix finitely many pairs
+$u_i=(x_i^1,\ldots,x_i^m)$ and
+$v_i=(y_i^1,\ldots,y_i^m)$, and put
+\[
+ z_i=x_i^1\otimes\cdots\otimes x_i^m
+     -y_i^1\otimes\cdots\otimes y_i^m.
+\]
+The output difference is $M_m(u_i)-M_m(v_i)=\Delta z_i$.  Lemma
+\ref{lem:diag} and \eqref{eq:khin} yield
+\[
+ \|M_m(u_i)-M_m(v_i)\|_1^p
+ \le \left(\frac{\sqrt2}{\kappa_{p,\K}}\right)^p
+ \mathbb E\,|\langle\varepsilon,z_i\rangle|^p.
+\]
+Summing over $i$ before taking the supremum gives
+\begin{align*}
+ \sum_i\|M_m(u_i)-M_m(v_i)\|_1^p
+ &\le \left(\frac{\sqrt2}{\kappa_{p,\K}}\right)^p
+ \mathbb E\sum_i
+ |\varphi_\varepsilon(u_i)-\varphi_\varepsilon(v_i)|^p\\
+ &\le \left(\frac{\sqrt2}{\kappa_{p,\K}}\right)^p
+ \sup_{\varphi\in B_{\mathcal L(\ell_1,\ldots,\ell_1)}}
+ \sum_i|\varphi(u_i)-\varphi(v_i)|^p.
+\end{align*}
+After taking $p$th roots, this is \eqref{eq:def} with
+$C=\sqrt2/\kappa_{p,\K}$.  Finally,
+$\pi_p^{\Lip}(M_m)\ge\|M_m\|=1$, giving the stated two-sided bound.
+\end{proof}
+
+\section{Verification and limitations}
+
+The included script checks 960 real/complex decomposable differences of
+arities two and three, verifies rank at most two and
+$\|\Delta z\|_1\le\sqrt2\|z\|_2$, and performs exact finite sign enumeration
+for small families.  The code is only a sanity check; the proof above is
+dimension-free and analytic.
+
+This packet does not claim the exact value of $\pi_p^{\Lip}(M_m)$.  It also
+does not claim the separate Section 7 question of \cite{AnguloFernandez2020}:
+Fern\'andez-Unzueta explicitly answered that question in
+\cite{Fernandez2022}.  A bounded novelty search used the run indexes, exact
+arXiv phrase/title queries, and the local full text of later arXiv papers
+citing the source.  No prior answer to the coordinatewise-product question or
+the rank-two/random-sign argument was found.  Novelty confidence is moderate
+pending specialist review.
+
+\section{Human-review recommendation}
+
+The candidate should receive expert proof review.  The highest-value checks
+are: (i) the trace pairing with the diagonal partial isometry in Lemma
+\ref{lem:diag}; (ii) the scalar Khintchine inequality over the complex field;
+and (iii) the order ``sum, then average, then supremum'' in the final display.
+
+\begin{thebibliography}{9}
+
+\bibitem{AnguloFernandez2020}
+J.~C. Angulo-L\'opez and M. Fern\'andez-Unzueta,
+\emph{Lipschitz $p$-summing multilinear operators},
+J. Funct. Anal. 279 (2020), no.~4, 108572;
+\href{https://arxiv.org/abs/1805.02115}{arXiv:1805.02115}.
+
+\bibitem{Fernandez2022}
+M. Fern\'andez-Unzueta,
+\emph{Lipschitz $p$-summing multilinear operators correspond to Lipschitz
+$p$-summing operators},
+\href{https://arxiv.org/abs/2204.01775}{arXiv:2204.01775} (2022).
+
+\bibitem{Khintchine1923}
+A. Khintchine,
+\emph{\"Uber dyadische Br\"uche},
+Math. Z. 18 (1923), 109--116.
+
+\bibitem{Kahane1985}
+J.-P. Kahane,
+\emph{Some Random Series of Functions}, second ed.,
+Cambridge Studies in Advanced Mathematics 5, Cambridge University Press, 1985.
+
+\end{thebibliography}
+
+\end{document}

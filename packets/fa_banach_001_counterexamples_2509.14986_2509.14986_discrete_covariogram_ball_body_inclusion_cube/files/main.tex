@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\Gn}{G_n}
+\newcommand{\gtilde}{\widetilde g}
+\newcommand{\Kp}{K_p}
+
+\title{A unit-cube counterexample to the\\discrete covariogram Ball-body inclusion}
+\author{Automated Math Discovery Run \texttt{fa\_banach\_001}\\Model: GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.89\linewidth}{\textbf{Claimed status:
+counterexample, subject to human review.}  The normalized inclusion marked
+unknown in the source fails for $K=[0,1]^n$, $p=1$, and $q=2$ in every
+dimension $n\geq1$.}}
+\end{center}
+
+\section{Source question}
+
+Alonso-Guti\'errez, Lucas, and Mart\'in Go\~ni ask whether the normalized
+inclusion between continuous covariogram Ball bodies, their equation (2.16),
+also holds for the Ball bodies of the discrete covariogram
+\cite[Section 6, p.~34]{source}.  The source passage is reproduced below.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.95\linewidth]{figures/open_problem_crop.png}
+  \caption{The unknown discrete inclusion in the source paper.}
+\end{figure}
+
+More explicitly, for every convex body $K\subseteq\mathbb R^n$ with
+$0\in K$ and every $0<p<q$, the candidate inclusion is
+\begin{equation}\label{eq:candidate}
+ \binom{n+q}{n}^{1/q}K_q(\widetilde g_K)
+ \stackrel{?}{\subseteq}
+ \binom{n+p}{n}^{1/p}K_p(\widetilde g_K).
+\end{equation}
+
+\section{Definitions}
+
+Let $G_n(A)=|A\cap\mathbb Z^n|$.  The discrete covariogram of $K$ is
+\[
+ \widetilde g_K(x)=G_n\bigl(K\cap(x+K)\bigr).
+\]
+For $p>0$, its $p$-th Ball body is the star set
+\[
+ K_p(\widetilde g_K)
+ =\left\{x\in\mathbb R^n:
+ p\int_0^\infty r^{p-1}\widetilde g_K(rx)\,dr
+ \geq \widetilde g_K(0)\right\}.
+\]
+Its radial function satisfies
+\begin{equation}\label{eq:radial}
+ \rho_{K_p(\widetilde g_K)}(\theta)^p
+ =\frac{p}{G_n(K)}\int_0^\infty
+ r^{p-1}G_n\bigl(K\cap(r\theta+K)\bigr)\,dr.
+\end{equation}
+
+\section{Proof intuition}
+
+The lattice points of the unit cube lie in just two layers perpendicular to
+$e_1$.  At zero translation both layers contribute.  As soon as the cube is
+translated a positive distance in direction $e_1$, the layer with first
+coordinate zero disappears, while the layer with first coordinate one
+survives until translation distance one.  Thus the discrete covariogram drops
+immediately from $2^n$ to $2^{n-1}$ and then remains constant.  Every radial
+$p$-moment therefore has the same $p$-th power, namely $1/2$.  The binomial
+normalizations at $p=1$ and $q=2$ then point in the wrong order.
+
+\section{Counterexample}
+
+\begin{theorem}
+For every integer $n\geq1$, the convex body $K=[0,1]^n$, with $p=1$ and
+$q=2$, violates \eqref{eq:candidate}.  In particular, the proposed discrete
+analogue is false even in dimension one.
+\end{theorem}
+
+\begin{proof}
+The cube contains exactly $2^n$ lattice points, so
+$G_n(K)=\widetilde g_K(0)=2^n$.  For $r>0$,
+\[
+ K\cap(re_1+K)=[r,1]\times[0,1]^{n-1}
+ \quad\text{when }0<r\leq1,
+\]
+and the intersection is empty when $r>1$.  For $0<r\leq1$, its lattice
+points are precisely
+\[
+ \{1\}\times\{0,1\}^{n-1},
+\]
+so there are $2^{n-1}$ of them.  Hence, for every $p>0$, \eqref{eq:radial}
+gives
+\begin{equation}\label{eq:half}
+ \rho_{K_p(\widetilde g_K)}(e_1)^p
+ =\frac{p}{2^n}\int_0^1r^{p-1}2^{n-1}\,dr
+ =\frac12.
+\end{equation}
+The value of the integrand at $r=0$ does not affect the integral.
+
+Now take $p=1$ and $q=2$.  The radial function in direction $e_1$ of the
+right-hand side of \eqref{eq:candidate} equals
+\[
+ \binom{n+1}{n}\rho_{K_1(\widetilde g_K)}(e_1)
+ =\frac{n+1}{2}.
+\]
+The corresponding radial function of the left-hand side is
+\[
+ \binom{n+2}{n}^{1/2}\rho_{K_2(\widetilde g_K)}(e_1)
+ =\frac{\sqrt{(n+1)(n+2)}}{2}.
+\]
+The latter is strictly larger because $n+2>n+1$.  Inclusion of star sets
+would force the opposite inequality between radial functions in every
+direction.  Therefore \eqref{eq:candidate} fails.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+The script \texttt{code/verify\_unit\_cube.py} uses exact rational arithmetic
+to enumerate the two lattice layers and check dimensions $1$ through $20$.
+It verifies that the squared excess of the proposed left radius over the
+right radius is exactly
+\[
+ \frac{(n+1)(n+2)}4-\frac{(n+1)^2}4=\frac{n+1}{4}>0.
+\]
+This computation is only a check; the proof above covers all dimensions.
+
+The counterexample addresses exactly the undilated relation marked unknown.
+It does not contradict the source's Theorem 6.2, which replaces
+$K_p(\widetilde g_K)$ by a dilation of
+$K_p(\widetilde g_{K+C_n})$ and includes an additional lattice-count factor.
+
+The run's lightweight indexes had no prior hit.  A bounded search over arXiv,
+the published Cambridge version, and exact combinations of the title/id with
+``discrete covariogram'', ``Ball bodies'', and ``inclusion'' found no later
+resolution or counterexample.  This is not an exhaustive novelty claim.
+Human review should check the half-layer count in \eqref{eq:half} and the two
+normalization constants.
+
+\begin{thebibliography}{9}
+\bibitem{source}
+D. Alonso-Guti\'errez, E. Lucas, and J. Mart\'in Go\~ni,
+\emph{A discrete approach to Zhang's projection inequality},
+Canadian Journal of Mathematics (2025), 1--47;
+arXiv:2509.14986.
+\url{https://doi.org/10.4153/S0008414X25101624}
+\end{thebibliography}
+
+\end{document}
+

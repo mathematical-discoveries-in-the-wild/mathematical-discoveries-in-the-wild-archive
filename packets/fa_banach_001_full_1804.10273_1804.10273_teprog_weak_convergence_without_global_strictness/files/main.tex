@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\title{Weak Convergence of TEPROG Without Global Strict Convexity}
+\author{Candidate full solution for the FA/Banach discovery run}
+\date{22 July 2026}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{proposition}{Proposition}
+\newtheorem*{remark}{Remark}
+\newcommand{\MIN}{\operatorname{MIN}}
+\newcommand{\domm}{\operatorname{dom}}
+\newcommand{\R}{\mathbb R}
+
+\begin{document}
+\maketitle
+
+\section*{Source and target}
+
+The source is Reem, Reich, and De Pierro,
+\emph{A Telescoping Bregmanian Proximal Gradient Method Without the Global
+Lipschitz Continuity Assumption}, arXiv:1804.10273v4 \cite{RRD}.
+Remark 6.4, spanning pages 11--12, asks whether the weak convergence result
+continues to hold when the Bregman generator (b) is no longer strictly
+convex. The source PDF is included as \texttt{source\_paper.pdf}. The two
+following full-width crops show the complete remark across the page break.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page11.png}
+
+\vspace{0.4em}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page12.png}
+\end{center}
+
+The core question is whether ``the weak convergence result holds when \(b\)
+is no longer strictly convex.'' The natural literal reading retains the other
+hypotheses of Section 5 and Theorem 6.1, in particular Assumption 5.2: the
+nested telescopic sets \(S_k\) cover \(C\), and \(b\) is strongly convex on
+each \(S_k\), with parameter \(\mu_k>0\).
+
+\section*{Status and novelty check}
+
+This packet gives a candidate full affirmative answer under the literal
+retained hypotheses. It also gives a finite-dimensional counterexample to the
+broader interpretation in which local strong convexity on the telescopic sets
+is removed together with global strict convexity.
+
+A bounded search on 22 July 2026 used the exact paper title, arXiv id, the
+open-question phrase, \texttt{TEPROG weak convergence strict convexity}, and
+close variants. The 13 works in the OpenAlex citation list for DOI
+\texttt{10.1007/s10957-019-01509-8} were screened by title and available
+abstract or metadata. No later paper claiming this exact answer was found.
+This is negative search evidence, not a comprehensive novelty guarantee, so
+novelty confidence is moderate.
+
+\section*{Framework}
+
+Let \(X\) be a reflexive Banach space. Let
+\(b:X\to(-\infty,\infty]\) be proper, lower semicontinuous, and convex, and
+Gateaux differentiable on \(U=\operatorname{int}(\domm b)\neq\varnothing\).
+We do \emph{not} assume that \(b\) is strictly convex on all of \(\domm b\).
+For \(x\in\domm b\) and \(y\in U\), set
+\[
+ B(x,y)=b(x)-b(y)-\langle b'(y),x-y\rangle.
+\]
+Convexity implies \(B(x,y)\geq0\).
+
+The remaining notation and assumptions are those of Section 5 of the source.
+In particular, \(C\) is closed and convex, \(\MIN(F)\neq\varnothing\) is
+contained in \(U\), and
+\[
+ S_1\subseteq S_2\subseteq\cdots\subseteq C,
+ \qquad \bigcup_{k\geq1}S_k=C,
+\]
+where \(b\) is strongly convex on \(S_k\) with parameter \(\mu_k>0\).
+The step-size condition (20), the limiting difference property, and bounded
+first-type Bregman level sets are assumed exactly as in the weak-convergence
+part of Theorem 6.1.
+
+\section*{Proof intuition}
+
+The global strict-convexity axiom is used in the source proof only to show
+that two weak cluster points cannot differ. But cluster points are not
+arbitrary points of \(\domm b\): the preceding part of the proof puts them in
+\(\MIN(F)\subset C\). Since the nested \(S_k\)'s cover \(C\), any two cluster
+points lie together in one \(S_N\). Strong convexity on that single set gives
+all the separation needed.
+
+More explicitly, the source proof already gives a finite limit
+\(\ell_q=\lim_k B(q,x_k)\) for every weak cluster point \(q\). For two cluster
+points \(q_1,q_2\), the limiting difference property computes the two directed
+divergences as opposite real numbers. Both are nonnegative, so both are zero.
+Local strong convexity on a common \(S_N\) then turns zero divergence into
+\(q_1=q_2\). This is the whole missing step.
+
+\section*{A localized cluster-point lemma}
+
+\begin{proposition}
+Let \((x_k)\) be a bounded sequence in \(U\). Suppose every weak cluster point
+belongs to a set \(M\subset U\), the limit
+\(
+\ell_q=\lim_{k\to\infty}B(q,x_k)
+\)
+exists and is finite for every weak cluster point \(q\), and \(B\) has the
+limiting difference property. If for every two points \(q_1,q_2\in M\) there
+is a convex set \(S\subset\domm b\) containing them on which \(b\) is strictly
+convex, then \((x_k)\) converges weakly.
+\end{proposition}
+
+\begin{proof}
+Let \(q_1\) and \(q_2\) be weak cluster points, obtained along subsequences
+\(N_1\) and \(N_2\), respectively. The limiting difference property gives
+\begin{align*}
+B(q_2,q_1)
+ &=\lim_{\substack{k\to\infty\\k\in N_1}}
+   \bigl(B(q_2,x_k)-B(q_1,x_k)\bigr)
+ =\ell_{q_2}-\ell_{q_1},\\
+B(q_1,q_2)
+ &=\lim_{\substack{k\to\infty\\k\in N_2}}
+   \bigl(B(q_1,x_k)-B(q_2,x_k)\bigr)
+ =\ell_{q_1}-\ell_{q_2}.
+\end{align*}
+Thus \(B(q_2,q_1)=-B(q_1,q_2)\). Both terms are nonnegative by convexity,
+so both vanish. Strict convexity on a convex set containing \(q_1,q_2\),
+together with differentiability at the second argument, implies that zero
+Bregman divergence is possible only when \(q_1=q_2\). Hence all weak cluster
+points coincide.
+
+It remains to upgrade this uniqueness to convergence. If the sequence did not
+converge weakly to its unique cluster point \(q\), some weak neighborhood of
+\(q\) would omit an entire subsequence. That bounded subsequence has a weakly
+convergent further subsequence by reflexivity, whose limit must again be \(q\),
+a contradiction. Therefore \(x_k\rightharpoonup q\).
+\end{proof}
+
+\section*{Main theorem: affirmative answer under the stated hypotheses}
+
+\begin{theorem}
+Retain the framework and assumptions of the weak-convergence part of Theorem
+6.1 of \cite{RRD}, including Assumptions 5.1--5.4 and, in particular, strong
+convexity of \(b\) on every telescopic set \(S_k\). Replace only the global
+strict-convexity requirement on \(\domm b\) by convexity. Then every TEPROG
+sequence generated by Algorithm 5.5 or 5.6 converges weakly to a point of
+\(\MIN(F)\). The same conclusion holds under the ``in particular'' sufficient
+conditions in Theorem 6.1.
+\end{theorem}
+
+\begin{proof}
+First note that the proximal subproblem on \(S_k\) is still uniquely solvable:
+strong convexity of \(b\) on \(S_k\) implies strict convexity there, so the
+objective defining \(p_{L_k,\mu_k,S_k}\) is strictly convex. Thus deleting
+global strict convexity creates no selection ambiguity under Assumption 5.2.
+
+All estimates in the proof of Theorem 6.1 through the construction of weak
+cluster points remain unchanged. They use convexity of \(b\), strong convexity
+on the active sets \(S_k\), and the other retained assumptions, but not strict
+convexity outside \(C\). Concretely, those estimates establish:
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item \((x_k)\) is bounded;
+\item every weak cluster point \(q\) belongs to \(\MIN(F)\subset C\cap U\);
+\item for every such \(q\), the finite limit
+      \(\ell_q=\lim_k B(q,x_k)\) exists.
+\end{enumerate}
+
+Apply the preceding proposition with \(M=\MIN(F)\). It remains only to verify
+its local strictness condition. Given \(q_1,q_2\in M\subset C\), choose
+indices \(i,j\) with \(q_1\in S_i\) and \(q_2\in S_j\). For
+\(N=\max\{i,j\}\), nestedness gives \(q_1,q_2\in S_N\), and \(b\) is strongly
+convex on \(S_N\).
+
+For completeness, strong convexity yields the quantitative separation
+directly. For \(0<t<1\),
+\[
+b(q_1+t(q_2-q_1))
+\leq (1-t)b(q_1)+t b(q_2)
+-\frac{\mu_N}{2}t(1-t)\lVert q_2-q_1\rVert^2.
+\]
+Subtract \(b(q_1)\), divide by \(t\), and let \(t\downarrow0\). Since
+\(q_1\in U\), Gateaux differentiability gives
+\[
+B(q_2,q_1)
+\geq \frac{\mu_N}{2}\lVert q_2-q_1\rVert^2.
+\]
+The cluster-point calculation in the proposition gives
+\(B(q_2,q_1)=0\), hence \(q_1=q_2\). Therefore the whole sequence converges
+weakly, and its limit belongs to \(\MIN(F)\).
+\end{proof}
+
+\begin{remark}
+The proof shows a sharper replacement for global strict convexity: it is
+enough that the Bregman divergence separate pairs of weak cluster points.
+Strong convexity on a nested cover of \(C\) is more than sufficient.
+\end{remark}
+
+\section*{Broader interpretation: failure without local separation}
+
+The wording of Remark 6.4 mentions choosing an arbitrary point from a possibly
+set-valued proximal map. Under Assumption 5.2 the map is actually singleton,
+as observed above. If the intended question also removes Assumption 5.2, the
+answer changes.
+
+\begin{theorem}
+If local strong convexity (or another separation condition on cluster points)
+is deleted together with global strict convexity, arbitrary proximal selections
+need not converge weakly, even in dimension two with bounded \(U\) and a zero
+objective.
+\end{theorem}
+
+\begin{proof}
+Let \(X=\R^2\) with its Euclidean norm and define
+\[
+b(s,t)=
+\begin{cases}
+\tfrac12s^2,&(s,t)\in[-2,2]^2,\\
++\infty,&\text{otherwise}.
+\end{cases}
+\]
+Then \(b\) is proper, lower semicontinuous, and convex, with bounded zone
+\(U=(-2,2)^2\), and \(b'(s,t)=(s,0)\) on \(U\). Its derivative is
+weak-to-weak-star sequentially continuous, and
+\[
+B((a,c),(s,t))=\tfrac12(a-s)^2.
+\]
+
+Take \(C=S_k=[-1,1]^2\) for every \(k\), and \(f=g=0\). Then
+\(\MIN(F)=C\subset U\), the gradient of \(f\) is Lipschitz, every proximal
+subproblem has a nonempty solution set contained in \(U\), and the boundedness
+alternative for the weak-convergence hypotheses is automatic because \(U\)
+is bounded. For arbitrary positive \(L,\mu\), the proximal subproblem at
+\((s,t)\in C\) minimizes
+\[
+\frac{L}{2\mu}(a-s)^2
+\quad\text{over }(a,c)\in C.
+\]
+Consequently its solution set is
+\[
+\{(s,c):-1\leq c\leq1\}.
+\]
+Starting with \(x_1=(0,1)\), choose successively
+\(x_k=(0,(-1)^{k+1})\). Every \(x_k\) is an exact allowed proximal choice from
+the preceding point, but the sequence alternates between two points. In finite
+dimension weak and norm convergence coincide, so it has no weak limit.
+
+This example intentionally violates Assumption 5.2: \(b\) is flat in the
+second coordinate and is not strongly convex on \(C\). It therefore does not
+contradict the affirmative theorem; it identifies precisely why the retained
+local hypothesis matters.
+\end{proof}
+
+\section*{Verification notes and limitations}
+
+\begin{itemize}[leftmargin=*]
+\item The proof is analytic; no numerical experiment is used as evidence.
+\item The source proof of Lemma 8.1 was checked line by line. Its global
+strict-convexity invocation occurs only after the limiting-difference
+calculation; the local estimate in the main theorem replaces exactly that
+step.
+\item The evidence crops are reproducible from the packet directory with
+\begin{center}
+\small\texttt{conda run -n sandbox python}\\
+\texttt{code/make\_open\_problem\_crops.py}
+\end{center}
+\item Human review should focus on the interpretation of Remark 6.4 and on
+the fact that Assumption 5.2 is formally retained. Both interpretations are
+mathematically covered here.
+\item The novelty search was bounded and cannot exclude an unindexed answer.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{RRD}
+D. Reem, S. Reich, and A. De Pierro,
+\emph{A Telescoping Bregmanian Proximal Gradient Method Without the Global
+Lipschitz Continuity Assumption}, Journal of Optimization Theory and
+Applications 182 (2019), 851--884; arXiv:1804.10273v4.
+\end{thebibliography}
+
+\end{document}

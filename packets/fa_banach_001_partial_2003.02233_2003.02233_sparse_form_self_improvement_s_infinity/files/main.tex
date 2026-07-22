@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.86in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\avg}[3]{\langle #1\rangle_{#2,#3}}
+\newcommand{\Aq}[2]{A_{#1}(#2)}
+\newcommand{\Mvec}{M_{\vec r}}
+
+\title{Sparse-Form Self-Improvement\\at the Endpoint $s=\infty$}
+\author{Automated mathematical discovery packet for arXiv:2003.02233\\
+\small model: GPT5.6; lane: agent\_lane\_03}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Lorist and Nieraeth conjectured that sparse form domination with outer
+exponent $q_0$ self-improves to every $0<q\le q_0$. They stated that even the
+case $m=1$, $r=1$, $q_0=1$, $s=\infty$ was unknown. We prove the full
+$s=\infty$ slice, for arbitrary arity, arbitrary positive input averaging
+exponents, and arbitrary $q_0>0$. The proof splits $|T(\vec f)|$ at a multiple
+of the multilinear maximal function. The near part is pointwise maximal. On
+the far part, a nonlinear test function converts the assumed $q_0$-form into
+the desired $q$-form; the negative exponent $q-q_0$ supplies the decisive
+inequality. The finite-$s$ part of the conjecture remains open.
+\end{abstract}
+
+\section{Source conjecture and the solved slice}
+
+For a cube $Q\subset\R^d$, write
+\[
+ \Aq{Q}{\vec f}:=\prod_{j=1}^m\avg{|f_j|}{r_j}{Q}.
+\]
+A collection $\mathcal S$ is sparse if there are pairwise disjoint measurable
+$E_Q\subset Q$ with $|E_Q|\ge |Q|/2$. Conjecture 6.2 of
+Lorist--Nieraeth \cite{LN} asks whether sparse form domination at $q_0$ and
+$s\in(q_0,\infty]$ implies the analogous domination at every smaller $q$.
+Using any other fixed sparseness parameter only changes constants: an
+$\eta$-sparse family can be split into finitely many half-sparse families,
+with the number depending only on $\eta$.
+The source conjecture and its explicitly simplest unknown case appear on page
+25 of the arXiv PDF:
+
+\begin{center}
+\includegraphics[width=0.97\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+We prove the conjecture for $s=\infty$. In this case the local exponent on the
+test function is $q_0$ in the hypothesis and $q$ in the conclusion.
+
+For $p>0$, define the supremal sparse form
+\[
+ \Phi_p(\vec f,g)
+ :=\sup_{\mathcal S}
+ \left(\sum_{Q\in\mathcal S}\Aq{Q}{\vec f}^{p}
+              \int_Q |g|^{p}\right)^{1/p},                 \tag{1}
+\]
+where the supremum is over sparse collections. Passing between an existential
+sparse estimate and (1) loses at most an inessential factor two: if the
+supremum is finite and nonzero, choose a family attaining at least half of it.
+For the bounded, compactly supported data used below, $\Phi_p$ is finite. This
+follows by separating cubes according to side length: sparseness bounds the
+total volume at bounded scales, while at large scales
+$\Aq{Q}{\vec f}^p\lesssim |Q|^{-p\sum_j1/r_j}$ gives a convergent geometric
+tail. The zero case is immediate.
+
+\section{Proof intuition}
+
+Put $F=|T(\vec f)|$ and $H=\Mvec(\vec f)$. On
+$\{F\le C_T H\}$, a standard stopping argument sparsely dominates $H$ with
+the desired $q$-sum. On the complementary set, use the assumed $q_0$ estimate
+with
+\[
+ h=F^{q/q_0-1}|g|^{q/q_0}.
+\]
+The left side becomes the $q$-integral of $Fg$. On every selected cube,
+$H\ge \Aq{Q}{\vec f}$; hence the far-set inequality
+$F>C_T H$ and $q-q_0\le0$ imply
+\[
+ \Aq{Q}{\vec f}^{q_0}F^{q-q_0}
+ \le C_T^{q-q_0}\Aq{Q}{\vec f}^{q}.
+\]
+This is exactly the target sparse coefficient. Truncating $h$ makes the use
+of the hypothesis rigorous.
+
+\section{A scalar maximal stopping lemma}
+
+\begin{lemma}\label{lem:maximal}
+For every $q>0$ and bounded compactly supported $\vec f,g$, one has
+\[
+ \|\Mvec(\vec f)g\|_{L^q(\R^d)}
+ \le C_{d,m,\vec r,q}\,\Phi_q(\vec f,g).
+\]
+\end{lemma}
+
+\begin{proof}
+First restrict the supremum defining $\Mvec$ to a finite set of cubes in one
+dyadic grid. Start with its maximal cubes. For every selected cube $Q$, take
+as stopping children the maximal strict subcubes $Q'$ for which, for some
+$j$,
+\[
+ \avg{|f_j|}{r_j}{Q'}>(2m)^{1/r_j}\avg{|f_j|}{r_j}{Q}.
+\]
+Assign each child to one such $j$. For a fixed $j$, disjointness and the
+definition of the average show that the assigned children have total measure
+at most $|Q|/(2m)$. Summing over $j$ gives total child measure at most
+$|Q|/2$, so the stopping family is sparse.
+
+Every cube whose stopping parent is $Q$ has all its input averages controlled
+by the corresponding averages on $Q$. Therefore, pointwise,
+\[
+ M^{\mathcal D}_{\vec r}(\vec f)
+ \le C_{m,\vec r}
+ \left(\sum_{Q\in\mathcal S}\Aq{Q}{\vec f}^{q}\1_Q\right)^{1/q}.
+\]
+After multiplication by $|g|$, raising to the $q$-th power and integrating,
+the right side becomes a sparse form bounded by $\Phi_q(\vec f,g)^q$.
+Increasing finite subcollections and monotone convergence handle the whole
+dyadic grid. Finally, the three-grid lemma dominates arbitrary cubes by one
+of finitely many dyadic grids; summing those finitely many estimates proves
+the claim.
+\end{proof}
+
+\section{Endpoint self-improvement theorem}
+
+\begin{theorem}\label{thm:main}
+Let $\vec r\in(0,\infty)^m$ and $q_0\in(0,\infty)$. Suppose an operator $T$
+on $m$-tuples satisfies the following: for all bounded compactly supported
+$\vec f,u$, there is a sparse collection $\mathcal S$ such that
+\begin{equation}\label{eq:hyp}
+ \|T(\vec f)u\|_{L^{q_0}}
+ \le C_T
+ \left(\sum_{Q\in\mathcal S}\Aq{Q}{\vec f}^{q_0}
+                    \int_Q|u|^{q_0}\right)^{1/q_0}.
+\end{equation}
+Then, for every $0<q\le q_0$ and all such $\vec f,g$, there is a sparse
+collection $\mathcal S_q$ for which
+\[
+ \|T(\vec f)g\|_{L^q}
+ \le C_{d,m,\vec r,q,q_0}C_T
+ \left(\sum_{Q\in\mathcal S_q}\Aq{Q}{\vec f}^{q}
+                    \int_Q|g|^{q}\right)^{1/q}.
+\]
+Thus Conjecture 6.2 holds in the full slice $s=\infty$.
+\end{theorem}
+
+\begin{proof}
+Enlarge $C_T$ if necessary so that $C_T\ge1$. Fix $\vec f,g$, and set
+$F=|T(\vec f)|$ and $H=\Mvec(\vec f)$. Split
+\[
+ E_0=\{F\le C_T H\},\qquad E_1=\{F>C_T H\}.
+\]
+By Lemma~\ref{lem:maximal},
+\begin{equation}\label{eq:near}
+ \int_{E_0}F^q|g|^q
+ \le C_T^q\|Hg\|_q^q
+ \le C_{d,m,\vec r,q}^q C_T^q\Phi_q(\vec f,g)^q.
+\end{equation}
+
+On $E_1$, define
+\[
+ h=F^{q/q_0-1}|g|^{q/q_0}\1_{E_1},
+ \qquad h_N=\min\{N,h\}.
+\]
+The negative power causes no problem: $F>0$ on $E_1$, and each $h_N$ is
+bounded and supported inside the compact support of $g$. Apply
+\eqref{eq:hyp} to $h_N$ and then take the supremum over sparse families:
+\begin{align*}
+ \int F^{q_0}h_N^{q_0}
+ &\le C_T^{q_0}
+ \sup_{\mathcal S}\sum_{Q\in\mathcal S}
+       \Aq{Q}{\vec f}^{q_0}\int_Q h_N^{q_0} \\
+ &\le C_T^{q_0}
+ \sup_{\mathcal S}\sum_{Q\in\mathcal S}
+       \Aq{Q}{\vec f}^{q_0}
+       \int_{Q\cap E_1}F^{q-q_0}|g|^q.
+\end{align*}
+For $x\in Q\cap E_1$, one has
+$F(x)>C_T H(x)\ge C_T\Aq{Q}{\vec f}$. If the latter coefficient is positive,
+then $q-q_0\le0$ gives
+\[
+ \Aq{Q}{\vec f}^{q_0}F(x)^{q-q_0}
+ \le C_T^{q-q_0}\Aq{Q}{\vec f}^{q};
+\]
+if the coefficient is zero, its contribution is already zero. Consequently,
+\[
+ \int F^{q_0}h_N^{q_0}
+ \le C_T^q\Phi_q(\vec f,g)^q.
+\]
+By monotone convergence,
+\begin{equation}\label{eq:far}
+ \int_{E_1}F^q|g|^q\le C_T^q\Phi_q(\vec f,g)^q.
+\end{equation}
+Combining \eqref{eq:near} and \eqref{eq:far}, and then selecting a sparse
+family whose $q$-form is within a factor two of the supremum in (1), proves
+the asserted existential sparse estimate. The dependence on $C_T$ remains
+linear after taking the $q$-th root.
+\end{proof}
+
+\section{Limitations, verification, and novelty}
+
+The finite-$s$ case is not claimed. Indeed, put
+\[
+ t_0=(1/q_0-1/s)^{-1},\qquad t=(1/q-1/s)^{-1}.
+\]
+The same nonlinear test produces the local exponent $u=qt_0/q_0$ on $g$.
+When $s<\infty$ and $q<q_0$, one has $u>t$, so the source's desired local
+$L^t$ average does not follow. This identifies the exact obstruction left by
+the proof.
+
+The proof was audited for the cases $q=q_0$, zero sparse coefficients,
+negative powers, truncation, infinite suprema, and preservation of the
+existential sparse family. There is no computational dependency.
+
+A bounded 22 July 2026 search covered the run's cheap indexes and deterministic
+source corpus, exact conjecture-title and number queries, the quoted simplest
+case, author/title variants, and arXiv searches involving smaller exponents and
+$s=\infty$. It found the source and a later thesis restating the conjecture as
+open, but no endpoint answer. Novelty confidence is moderate, subject to a
+full bibliographic review.
+
+\paragraph{Human-review recommendation.}
+Check Lemma~\ref{lem:maximal}, the admissibility and monotone limit of $h_N$,
+and the reversed inequality caused by $q-q_0\le0$. These are the only
+nonformal steps.
+
+\begin{thebibliography}{9}
+\bibitem{LN}
+E.~Lorist and Z.~Nieraeth,
+\emph{Sparse domination implies vector-valued sparse domination},
+Mathematische Zeitschrift \textbf{301} (2022), 1--35;
+\href{https://arxiv.org/abs/2003.02233}{arXiv:2003.02233}.
+\end{thebibliography}
+
+\end{document}

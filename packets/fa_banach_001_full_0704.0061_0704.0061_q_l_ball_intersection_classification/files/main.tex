@@ -1,0 +1,410 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Sclass}{\mathcal S}
+\newcommand{\Iclass}{\mathcal I}
+\newcommand{\F}{\mathcal F}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Candidate full solution: Rubin's $(q,\ell)$-ball problem}
+\rhead{arXiv:0704.0061}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+
+\title{A candidate full classification of two-block $q$-balls as
+$\lambda$-intersection bodies}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 8, agent \texttt{agent\_lane\_08}, model GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{yellow!15}{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, needs expert review.
+The main review target is the regular Weber--Schafheitlin transform in
+Lemma~\ref{lem:product}.  Novelty was checked only by a bounded search.}}
+\end{center}
+
+\begin{abstract}
+Boris Rubin asked whether the two-block $q$-ball $B^n_{q,\ell}$, for $q>2$,
+is a $\lambda$-intersection body in the interval
+$\max(n-\ell,\ell)-2<\lambda<n-3$.  We give an affirmative answer and,
+combined with Rubin's negative result, obtain the classification
+\[
+B^n_{q,\ell}\in\Iclass^n_\lambda
+\quad\Longleftrightarrow\quad
+\lambda\geq\max(n-\ell,\ell)-2,
+\qquad 0<\lambda<n.
+\]
+The proof writes the inverse norm power as a positive mixture of anisotropic
+copies of a product-ball inverse norm.  A Weber--Schafheitlin formula and
+Euler's hypergeometric transformation prove positivity of the Fourier
+transform of the product kernel.  The threshold case follows by closure of
+positive tempered distributions.
+\end{abstract}
+
+\section{Source question and exact scope}
+
+The source is Boris Rubin, \emph{Intersection Bodies and Generalized Cosine
+Transforms}.  It is arXiv:0704.0061v2, Section~7, printed page~34
+\cite{Rubin}.  For $1\leq\ell<n$ and $q>0$, Rubin writes
+\[
+B^n_{q,\ell}=\left\{x=(x',x'')\in\R^{n-\ell}\oplus\R^\ell:
+|x'|^q+|x''|^q\leq1\right\}.
+\]
+His open problem is:
+\begin{quote}
+Let $q>2$, $\ell>1$.  Is $B^n_{q,\ell}$ a $\lambda$-intersection
+body if
+\[
+\max(n-\ell,\ell)-2<\lambda<n-3\,?
+\]
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Rubin's Proposition~7.5 and open problem, rendered from printed
+page~34 of the source PDF.}
+\label{fig:source}
+\end{figure}
+
+Rubin's Theorem~5.1 says, for $0<\lambda<n$, that a star body $K$ lies
+in $\Iclass^n_\lambda$ if and only if $\norm{\cdot}_K^{-\lambda}$ is a
+positive-definite tempered distribution.  Rubin's Proposition~7.5 proves
+non-membership when
+$0<\lambda<\max(n-\ell,\ell)-2$ \cite{Rubin}.  Thus only the positive
+direction and the endpoint need to be established.
+
+\section{Proof intuition}
+
+Put $a=n-\ell$ and $b=\ell$.  The first observation is an exact identity:
+the function $(|x'|^q+|x''|^q)^{-\lambda/q}$ is a probability mixture of
+\[
+\max(|x'|/c,|x''|)^{-\lambda},\qquad c>0.
+\]
+These are inverse norm powers of linear images of the Cartesian product
+$B_2^a\times B_2^b$.  It is therefore enough to understand one product body.
+
+The Fourier transform of $\max(|x|,|y|)^{-\lambda}$ is obtained by a
+layer-cake formula.  Fourier transforms of Euclidean balls introduce two
+Bessel functions, and their remaining radial integral is a
+Weber--Schafheitlin integral.  In the chamber $|\xi|>|\eta|$ the answer is a
+positive constant times
+\[
+\frac{|\xi|^{\lambda-n}}{\Gamma((\lambda+2-b)/2)}
+{}_2F_1\left(\frac{n-\lambda}{2},\frac{b-\lambda}{2};
+\frac b2+1;\frac{|\eta|^2}{|\xi|^2}\right).
+\]
+Although the second upper parameter need not be positive, Euler's
+transformation replaces the two upper parameters by
+$(\lambda+2-a)/2$ and $(\lambda+2)/2$.  They, and the Gamma denominator,
+are positive exactly when $\lambda>\max(a,b)-2$.  The other chamber is
+symmetric.  The possible singularity on $|\xi|=|\eta|$ is locally
+integrable in this range, so the Fourier transform is a nonnegative
+function.  Positive definiteness follows, positive mixtures preserve it,
+and the endpoint follows by distributional closure.
+
+\section{Two lemmas}
+
+\begin{lemma}[Exact product mixture]\label{lem:mixture}
+For $q>0$, $\lambda>0$, and $r,s>0$,
+\begin{equation}\label{eq:mixture}
+(r^q+s^q)^{-\lambda/q}
+=\int_0^\infty \max(r/c,s)^{-\lambda}
+p_{q,\lambda}(c)\,dc,
+\end{equation}
+where
+\begin{equation}\label{eq:density}
+p_{q,\lambda}(c)=(q+\lambda)c^{q-1}
+(1+c^q)^{-\lambda/q-2}.
+\end{equation}
+Moreover, $p_{q,\lambda}$ is a probability density on $(0,\infty)$.
+\end{lemma}
+
+\begin{proof}
+The substitution $u=c^q$ gives
+\[
+\int_0^\infty p_{q,\lambda}(c)\,dc
+=\frac{q+\lambda}{q}\int_0^\infty
+(1+u)^{-\lambda/q-2}\,du=1.
+\]
+Set $t=r/s$ and
+\[
+M(t)=\int_0^t c^\lambda p_{q,\lambda}(c)\,dc.
+\]
+Direct differentiation gives
+\[
+M(t)=t^{\lambda+q}(1+t^q)^{-\lambda/q-1}.
+\]
+Splitting the right side of \eqref{eq:mixture} at $c=t$ and dividing by
+$s^{-\lambda}$ gives
+\[
+t^{-\lambda}M(t)+\int_t^\infty p_{q,\lambda}(c)\,dc.
+\]
+Its derivative is $-\lambda t^{-\lambda-1}M(t)$, the same as the
+derivative of $(1+t^q)^{-\lambda/q}$, and both expressions tend to $1$ as
+$t\downarrow0$.  This proves \eqref{eq:mixture}.
+\end{proof}
+
+\begin{lemma}[The Euclidean product kernel]\label{lem:product}
+Let $a,b\geq1$, $n=a+b$, and $0<\lambda<n$.  If
+\begin{equation}\label{eq:strict-range}
+\lambda>\max(a,b)-2,
+\end{equation}
+then the tempered distribution
+\[
+F_{a,b,\lambda}(x,y)=\max(|x|,|y|)^{-\lambda},
+\qquad (x,y)\in\R^a\oplus\R^b,
+\]
+is positive definite.
+\end{lemma}
+
+\begin{proof}
+Use the Fourier convention
+$\widehat f(\zeta)=\int_{\R^n}f(u)e^{-iu\cdot\zeta}\,du$.
+The layer-cake formula is an identity in $\Sclass'(\R^n)$:
+\begin{equation}\label{eq:layercake}
+F_{a,b,\lambda}(x,y)=\lambda\int_0^\infty
+t^{-\lambda-1}{\bf1}_{tB_2^a}(x){\bf1}_{tB_2^b}(y)\,dt.
+\end{equation}
+Indeed, it is pointwise true away from the origin; the small-$t$ end is
+controlled by $t^n$, and the large-$t$ end by the rapid decay of the test
+function.
+
+Write $A=|\xi|$, $B=|\eta|$.  The standard ball transform
+\[
+\widehat{{\bf1}_{tB_2^d}}(\xi)
+=(2\pi)^{d/2}t^{d/2}|\xi|^{-d/2}J_{d/2}(t|\xi|)
+\]
+turns \eqref{eq:layercake}, away from the coordinate axes, into a positive
+constant times
+\begin{equation}\label{eq:bessel}
+A^{-a/2}B^{-b/2}\int_0^\infty
+t^{n/2-\lambda-1}J_{a/2}(At)J_{b/2}(Bt)\,dt.
+\end{equation}
+Let $\rho=n/2-\lambda-1$.  For $A>B>0$, the
+Weber--Schafheitlin formula, interpreted by Abel regularization and analytic
+continuation in the parameters, gives
+\begin{align}
+\widehat F_{a,b,\lambda}(\xi,\eta)
+={}&C_{a,b,\lambda}
+\frac{A^{\lambda-n}}{\Gamma((\lambda+2-b)/2)} \label{eq:chamber}\\
+&\quad\times{}_2F_1\left(
+\frac{n-\lambda}{2},\frac{b-\lambda}{2};
+\frac b2+1;\frac{B^2}{A^2}\right),\nonumber
+\end{align}
+where $C_{a,b,\lambda}>0$.  This is the classical chamber formula when
+the integral is ordinary and its regular-distribution continuation in the
+remaining cases.  Wrochna gives the corresponding arbitrary-exponent
+distributional formula \cite{Wrochna}.  Here \eqref{eq:strict-range} implies
+\[
+\rho=\frac n2-\lambda-1<1.
+\]
+Thus the continuation in the radial ratio is a regular, locally integrable
+distribution; in particular, there is no additional delta-type term on
+$A=B$.  Concretely, the large-argument Bessel asymptotics reduce the only
+non-smooth transverse term to an Abel limit of
+\[
+\int_1^\infty t^{\rho-1}\cos((A-B)t+\theta)\,dt.
+\]
+For $0<\rho<1$ this is a locally integrable multiple of
+$|A-B|^{-\rho}$ (with side-dependent phases), for $\rho=0$ it is
+logarithmic, and for $\rho<0$ it is continuous.  Delta derivatives arise
+only after the exponent reaches the nonregular regime $\rho\geq1$.
+Formula \eqref{eq:chamber} also follows by inserting
+$\mu=a/2$, $\nu=b/2$, $\rho=n/2-\lambda-1$ in the usual
+Weber--Schafheitlin parameters.  The Gamma denominator then becomes exactly
+$\Gamma((\lambda+2-b)/2)$.
+
+Set $z=B^2/A^2\in(0,1)$.  Euler's transformation gives
+\begin{align}
+&{}_2F_1\left(\frac{n-\lambda}{2},\frac{b-\lambda}{2};
+\frac b2+1;z\right) \label{eq:euler}\\
+&\quad=(1-z)^{\lambda+1-n/2}
+{}_2F_1\left(\frac{\lambda+2-a}{2},\frac{\lambda+2}{2};
+\frac b2+1;z\right).\nonumber
+\end{align}
+All coefficients of the hypergeometric series on the right are positive,
+because \eqref{eq:strict-range} implies
+$(\lambda+2-a)/2>0$.  The Gamma denominator in
+\eqref{eq:chamber} is positive because
+$(\lambda+2-b)/2>0$.  Hence \eqref{eq:chamber} is positive.
+
+When $B>A$, the symmetric calculation interchanges $a$ and $b$ and is again
+positive.  The axes are obtained as nonnegative limits of the chamber
+formula away from the origin.  At the frequency origin the transform is
+homogeneous of degree $\lambda-n$, which is locally integrable because
+$\lambda>0$.  Near $A=B>0$, the worst possible singularity in
+\eqref{eq:euler} is a logarithm or a power
+\[
+|1-z|^{\lambda+1-n/2}.
+\]
+It is locally integrable since
+\[
+\lambda>\max(a,b)-2\geq n/2-2
+\quad\Longrightarrow\quad
+\lambda+1-n/2>-1.
+\]
+Consequently $\widehat F_{a,b,\lambda}$ is represented on all of
+$\R^n$ by a nonnegative locally integrable function.  Therefore
+$F_{a,b,\lambda}$ is positive definite.
+\end{proof}
+
+\begin{remark}[Why the exponent restriction matters]
+The Weber--Schafheitlin exponent is $\rho=n/2-\lambda-1$.  At
+$\lambda>\max(a,b)-2$ it is strictly below $1$, which is precisely the
+regular-distribution side of the cone singularity.  At a symmetric endpoint
+$a=b$ one can have $\rho=1$; the proof below deliberately obtains that
+endpoint by closure instead of asserting the function formula there.
+\end{remark}
+
+\section{Full classification}
+
+\begin{theorem}\label{thm:classification}
+Let $1\leq\ell<n$, $q>2$, and $0<\lambda<n$.  Then
+\begin{equation}\label{eq:classification}
+B^n_{q,\ell}\in\Iclass^n_\lambda
+\quad\Longleftrightarrow\quad
+\lambda\geq\max(n-\ell,\ell)-2.
+\end{equation}
+When the right-hand threshold is nonpositive, it imposes no restriction
+beyond $\lambda>0$.
+\end{theorem}
+
+\begin{proof}
+Put $a=n-\ell$, $b=\ell$, and first assume
+$\lambda>\max(a,b)-2$.  Lemma~\ref{lem:mixture}, with
+$r=|x'|$ and $s=|x''|$, yields
+\begin{equation}\label{eq:body-mixture}
+\norm{(x',x'')}_{q,\ell}^{-\lambda}
+=\int_0^\infty
+\max(|x'|/c,|x''|)^{-\lambda}p_{q,\lambda}(c)\,dc.
+\end{equation}
+The integrand is the inverse $\lambda$-power of the Minkowski functional
+of the anisotropic product $cB_2^a\times B_2^b$.  It is a nonsingular
+linear image of the product in Lemma~\ref{lem:product}, so it is positive
+definite.  Linear changes of variables preserve positive definiteness.
+Equation \eqref{eq:body-mixture} is also valid in $\Sclass'$: both sides are
+locally integrable for $\lambda<n$, and the positive integral can be paired
+with Schwartz test functions by the same small/large scale bounds used in
+\eqref{eq:layercake}.  Thus the right side is a positive mixture of
+positive-definite distributions.  It is positive definite, and Rubin's
+Theorem~5.1 gives $B^n_{q,\ell}\in\Iclass^n_\lambda$.
+
+Let $\lambda_0=\max(a,b)-2$.  If $\lambda_0>0$, choose
+$\lambda_j\downarrow\lambda_0$ with $\lambda_j>\lambda_0$.  Equivalence of
+the product norm and the Euclidean norm, followed by dominated convergence
+near zero and rapid decay at infinity, gives
+\[
+\norm{\cdot}_{q,\ell}^{-\lambda_j}
+\longrightarrow
+\norm{\cdot}_{q,\ell}^{-\lambda_0}
+\quad\text{in }\Sclass'(\R^n).
+\]
+The cone of positive-definite tempered distributions is closed, so the
+limit is positive definite.  This proves membership at the threshold.  If
+$\lambda_0\leq0$, every allowed $\lambda>0$ already lies in the strict
+range.
+
+Conversely, Rubin's Proposition~7.5 states that for $q>2$ and
+$0<\lambda<\max(a,b)-2$, the distribution
+$\norm{\cdot}_{q,\ell}^{-\lambda}$ is not positive definite and
+$B^n_{q,\ell}\notin\Iclass^n_\lambda$ \cite{Rubin}.  This completes the
+classification.
+\end{proof}
+
+\begin{corollary}[Answer to the source problem]
+For every parameter choice in Rubin's interval
+\[
+q>2,\qquad \ell>1,\qquad
+\max(n-\ell,\ell)-2<\lambda<n-3,
+\]
+the body $B^n_{q,\ell}$ is a $\lambda$-intersection body.
+\end{corollary}
+
+\section{Verification and limitations}
+
+\subsection*{Analytic checks}
+The following points were checked independently while preparing the packet.
+\begin{itemize}
+\item The density in \eqref{eq:density} has total mass one, and its truncated
+$\lambda$-moment differentiates to the claimed closed form.
+\item Substitution into the Weber--Schafheitlin formula gives upper parameters
+$(n-\lambda)/2$ and $(b-\lambda)/2$, and Gamma denominator
+$\Gamma((\lambda+2-b)/2)$ in the chamber $A>B$.
+\item Euler's transformation gives exactly \eqref{eq:euler}.
+\item The cone exponent is greater than $-1$, and the origin homogeneity is
+locally integrable.
+\item The endpoint is not inferred from the chamber formula; it is handled by
+closedness in $\Sclass'$.
+\end{itemize}
+
+\subsection*{Computational sanity check}
+The reusable script \texttt{code/verifier.py} checks normalization and
+\eqref{eq:mixture} on 36 parameter tuples, and checks Euler's transformation
+and positivity on 30 dimension/ratio tuples, including ratios approaching
+the cone.  From the repository root, run
+\begin{quote}\small
+\texttt{conda run --no-capture-output -n sandbox python}\\
+\nolinkurl{runs/fa_banach_001/solutions/full/}\\
+\nolinkurl{0704.0061_q_l_ball_intersection_classification/code/verifier.py}
+\end{quote}
+These finite evaluations are not part of the proof.
+
+\subsection*{Main human-review focus}
+An expert should first verify the transition from \eqref{eq:bessel} to
+\eqref{eq:chamber}, including the Fourier normalization (irrelevant to sign),
+the parameter continuation, and the assertion that $\rho<1$ leaves a regular
+locally integrable distribution rather than an additional term supported on
+$A=B$.  The included Wrochna PDF is the supporting arbitrary-exponent
+reference.  The positive mixture and endpoint closure are elementary but
+should also be audited.
+
+\subsection*{Novelty search}
+A bounded search on 22 July 2026 used the run's registry, solution, attempt,
+and proof-gap indexes; exact searches for arXiv:0704.0061, $B^n_{q,\ell}$,
+``$(q,\ell)$-ball'', ``lambda-intersection body'', and
+``max$(n-\ell,\ell)-2$''; citation-title inspection for the source DOI; and
+Rubin's related arXiv:math/0701317.  Searches combining Cartesian products of
+Euclidean balls with intersection bodies and Weber--Schafheitlin transforms
+also found no explicit later solution.  This search was not exhaustive and
+does not establish originality.
+
+\section{References}
+
+\begin{thebibliography}{9}
+\bibitem{Rubin}
+B. Rubin,
+\emph{Intersection Bodies and Generalized Cosine Transforms},
+arXiv:0704.0061v2 (2007); see Theorem~5.1, Proposition~7.5, and the open
+problem on printed p.~34.
+\url{https://arxiv.org/abs/0704.0061}.
+
+\bibitem{Wrochna}
+M. Wrochna,
+\emph{Weber--Schafheitlin Integrals with Arbitrary Exponent},
+arXiv:1004.5518 (2010).
+\url{https://arxiv.org/abs/1004.5518}.
+\end{thebibliography}
+
+\end{document}

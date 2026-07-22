@@ -1,0 +1,319 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,array}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\SAP}{\mathrm{SAP}}
+\newcommand{\Sol}{\operatorname{Sol}}
+\newcommand{\im}{\operatorname{im}}
+
+\title{SAP Is Equivalent to Lunarity for Coordinatewise-Injective
+$4\times4$ Maps}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Candidate full result for expert review}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid.  The converse is a
+computer-assisted finite proof with exact integer and rational arithmetic.
+All 14,828 non-lunar symmetry classes have exact norm certificates.  Human
+review and an author-level novelty check are still required.}}
+\end{center}
+
+\section{Source problem}
+
+Han, Qiu, and Wang ask in Problem~7 of \cite{HanQiuWang2024}, on PDF
+page~21, whether a map
+$\Phi:\{1,2,3,4\}\times\{1,2,3,4\}\to\mathcal L$ whose associated Hankel
+system has SAP must be lunar.  In the standing setup of that section, the
+associated system is defined for coordinatewise-injective maps.  The decisive
+sentence is:
+\begin{quote}
+Assume that the Hankel system associated to $\Phi$ has SAP.  Does it follow
+that $\Phi$ is a lunar map?
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Definition, preceding theorem, and Problem~7 in the source paper,
+PDF page~21.}
+\end{figure}
+
+Write $[4]=\{0,1,2,3\}$.  Coordinatewise injectivity says that every color
+appears at most once in each row and each column.  Put
+\[
+ \Gamma_\ell(a,x)=\mathbf 1_{\{\Phi(a,x)=\ell\}}.
+\]
+For $a,b\in[4]$, define
+\[
+ \Sol(a,b)=\{(x,y)\in[4]^2:\Phi(a,x)=\Phi(b,y)\}.
+\]
+The source paper's equivalent formulation says that $\Phi$ is lunar exactly
+when any two sets $\Sol(a,b)$ and $\Sol(c,d)$ are equal or disjoint.
+
+At matrix level $r$, for coefficients $C_\ell\in M_r$, set
+\begin{align*}
+ A_C&=\sum_\ell \Gamma_\ell\otimes C_\ell,\\
+ B_C&=\sum_\ell (\Gamma_\ell\otimes\Gamma_\ell)\otimes C_\ell.
+\end{align*}
+Tensor flips change neither norm nor the SAP question, so this factor order is
+equivalent to the usual coefficient-first convention.  SAP requires
+$\|A_C\|=\|B_C\|$ for every $r$ and every coefficient family.
+
+\section{Main result}
+
+\begin{theorem}\label{thm:main}
+Let $\Phi:[4]\times[4]\to\mathcal L$ be coordinatewise injective.  The
+associated Hankel system has SAP if and only if $\Phi$ is lunar.
+\end{theorem}
+
+The implication ``lunar implies SAP'' is Theorem~B of
+\cite{HanQiuWang2024}.  The new content is the converse.
+
+\section{Proof intuition}
+
+Regard the $4\times4$ table as a proper edge-coloring of $K_{4,4}$.  A lunar
+failure is witnessed by two unequal solution sets that overlap.  The two row
+pairs, and independently the two column pairs, have only four possible
+directed incidence patterns.  Keeping all sixteen combined patterns gives a
+complete normal form without assuming that eight indices are distinct.
+
+An exact restricted-growth recursion then lists every proper coloring and
+quotients the non-lunar ones by row permutations, column permutations, color
+relabeling, and transposition.  This leaves 14,828 classes.  For every class,
+integer scalar or $2\times2$ matrix coefficients make an absorbed support
+block strictly larger than the original operator.  Exact Sturm counts put the
+two squared norms on opposite sides of a rational number.
+
+\section{Complete directed normal forms}
+
+\begin{lemma}\label{lem:normal}
+Every non-lunar coordinatewise-injective $4\times4$ table is equivalent under
+row and column permutations to a table satisfying one of sixteen fixed
+directed failure patterns.
+\end{lemma}
+
+\begin{proof}
+Choose unequal overlapping solution sets $\Sol(a,b)$ and $\Sol(c,d)$.  After
+interchanging them if necessary, choose
+\[
+ (x,y)\in\Sol(a,b)\cap\Sol(c,d),\qquad
+ (z,w)\in\Sol(a,b)\setminus\Sol(c,d).
+\]
+Thus
+\begin{align}\label{eq:failure}
+ \Phi(a,x)&=\Phi(b,y), & \Phi(c,x)&=\Phi(d,y),\notag\\
+ \Phi(a,z)&=\Phi(b,w), & \Phi(c,z)&\ne\Phi(d,w).
+\end{align}
+
+The ordered row edges $(a,b)$ and $(c,d)$ are distinct non-loops.  If they had
+the same initial vertex, the first two equalities and injectivity in column
+$y$ would force the same terminal vertex; the solution sets would then be the
+same.  The same argument with column $x$ rules out a common terminal vertex.
+Consequently, after relabeling rows, the two directed edges have one of the
+following forms:
+\[
+ \begin{array}{c|c}
+ \text{type}&(a,b,c,d)\\ \hline
+ R&(0,1,1,0)\\
+ C_+&(0,1,2,0)\\
+ C_-&(0,1,1,2)\\
+ D&(0,1,2,3).
+ \end{array}
+\]
+They are respectively reverse, crossed in either orientation, or disjoint.
+
+The points $(x,y)$ and $(z,w)$ are distinct non-loop directed column edges.
+Because both lie in $\Sol(a,b)$, equality of their initial vertices forces
+equality of their terminal vertices by row injectivity, and conversely.
+Hence the same four directed types apply independently to $(x,y,z,w)$.
+Substitution of the resulting row and column quadruples into
+\eqref{eq:failure} gives the claimed $4\times4=16$ fixed patterns.
+\end{proof}
+
+Retaining both crossed orientations is essential: simultaneous reversal flips
+both, but does not remove their relative orientation.  The verifier therefore
+uses the redundant sixteen-pattern list directly.
+
+\section{Exact classification}
+
+The classifier processes the sixteen cells in row-major order.  A color is
+represented by its first-occurrence label.  At each cell the recursion either
+uses an earlier color absent from the current row and column, or introduces
+the next new label.  Every partition of the cells into matchings has exactly
+one such restricted-growth representation.  This proves completeness before
+any symmetry quotient.
+
+For each table, the code constructs all sixteen sets $\Sol(a,b)$ as bit masks
+and tests lunarity exactly.  For tables satisfying a fixed pattern from
+Lemma~\ref{lem:normal}, it minimizes the restricted-growth word over all
+$24^2$ row and column permutations, both transpose choices, and canonical
+color relabeling.  The exact census is:
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+colors & canonical proper & canonical non-lunar & non-lunar orbits\\
+\midrule
+4  & 24        & 0         & 0\\
+5  & 4,896     & 4,752     & 16\\
+6  & 185,532   & 183,168   & 233\\
+7  & 1,569,864 & 1,563,168 & 1,564\\
+8  & 4,552,617 & 4,495,344 & 4,238\\
+9  & 5,787,840 & 5,504,064 & 5,087\\
+10 & 3,717,416 & 3,071,652 & 2,862\\
+11 & 1,310,592 & 764,760   & 736\\
+12 & 265,110   & 78,072    & 87\\
+13 & 31,152    & 2,736     & 5\\
+14 & 2,076     & 0         & 0\\
+15 & 72        & 0         & 0\\
+16 & 1         & 0         & 0\\
+\midrule
+total & 17,427,192 & 15,667,716 & 14,828\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For additional auditability, the sixteen fixed-pattern counts are shown
+below.  They overlap; their union contains 336,208 restricted-growth tables.
+
+\begin{center}
+\begin{tabular}{@{}c rrrr@{}}
+\toprule
+row type $\backslash$ column type & $R$ & $C_+$ & $C_-$ & $D$\\
+\midrule
+$R$   & 0      & 0      & 0      & 37,180\\
+$C_+$ & 0      & 35,439 & 39,043 & 34,477\\
+$C_-$ & 0      & 39,043 & 35,439 & 34,477\\
+$D$   & 37,180 & 34,477 & 34,477 & 42,329\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Transposition is a valid orbit symmetry even for matrix witnesses.  If
+$C_\ell$ witnesses a representative, use $C_\ell^{\mathsf T}$ for its
+transpose.  Then both $A_C$ and $B_C$ are fully transposed, so their norms are
+unchanged.
+
+\section{Exact norm certificates}
+
+The support graph of $B_C$ has row vertices $(a,b)$ and column vertices
+$(x,y)$, with a block $C_\ell$ precisely when
+$\Phi(a,x)=\Phi(b,y)=\ell$.  Its connected components are orthogonal
+row-column blocks.  The diagonal component is a copy of $A_C$.  If any other
+component $D_C$ satisfies
+\begin{equation}\label{eq:gap}
+ \|D_C\|>\|A_C\|,
+\end{equation}
+then $\|B_C\|>\|A_C\|$ and SAP fails.
+
+For 7,331 orbit representatives, scalar coefficients suffice.  The remaining
+7,497 use coefficients $C_\ell\in M_2(\mathbb Z)$.  Candidate coefficients
+were found numerically, but a record was stored only after the following exact
+gate passed.  For integer matrices $A=A_C$ and $D=D_C$, form
+\[
+ p_A(t)=\det(tI-A^{\mathsf T}A),\qquad
+ p_D(t)=\det(tI-D^{\mathsf T}D).
+\]
+The record contains a rational $q$ that is not a root of either polynomial.
+Exact Sturm counts prove
+\[
+ \#\{\lambda\in\operatorname{roots}(p_A):\lambda>q\}=0,
+ \qquad
+ \#\{\lambda\in\operatorname{roots}(p_D):\lambda>q\}\ge1.
+\]
+Therefore $\|A\|^2<q<\|D\|^2$, proving \eqref{eq:gap} without a
+floating-point acceptance step.
+
+For example, orbit~0 has representative
+\[
+ \begin{pmatrix}
+ 0&1&2&3\\1&0&3&2\\2&3&0&1\\3&2&1&4
+ \end{pmatrix}
+\]
+and scalar coefficients $(1,1,1,-1,1)$.  The exact separating threshold is
+$528077641/100000000$; the source polynomial has no root above it and the
+absorbed polynomial has one.  Matrix record~86 illustrates the level-two
+case; its complete integer coefficients, component index, threshold, and root
+counts are retained in the JSON certificate file rather than rounded for
+display.
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+\begin{proof}
+If $\Phi$ is lunar, its Hankel system has SAP by Theorem~B of
+\cite{HanQiuWang2024}.
+
+Conversely, suppose $\Phi$ is non-lunar.  Lemma~\ref{lem:normal} puts a row
+and column permutation of its table into one of the sixteen directed failure
+normal forms.  The exact enumeration assigns that table, after color
+relabeling and possibly transposition, to one of the 14,828 orbit
+representatives.  The certificate attached to that representative supplies
+scalar or $2\times2$ integer coefficients satisfying \eqref{eq:gap} exactly.
+Row and column permutations, color relabeling, and the coefficient-transpose
+rule transfer the strict norm gap back to $\Phi$.  Hence the associated system
+does not have SAP.  This proves the contrapositive SAP implies lunar.
+\end{proof}
+
+\section{Reproducibility and adversarial review}
+
+Run from the packet's \texttt{code/} directory:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  verify_full_problem7.py
+\end{verbatim}
+The verifier recompiles the classifier, checks all census constants, checks
+properness and non-lunarity independently in Python, verifies exact and
+disjoint certificate coverage, rebuilds the integer block matrices, and
+repeats every Sturm computation.  Its final line is:
+\begin{verbatim}
+PASS: every non-lunar coordinatewise-injective 4x4 map fails SAP
+\end{verbatim}
+
+Three discarded routes are important to the audit trail.  First, certificates
+for merge-minimal non-lunar coarsenings do not lift automatically, because
+tensoring a merged color creates cross terms.  Second, a lunar failure need
+not use four distinct rows and four distinct columns; the earlier
+disjoint/disjoint census of 6,301 classes was incomplete.  Third, quotienting
+the crossed incidence too aggressively missed a relative-orientation case.
+The final sixteen-pattern classifier was built after these corrections and
+all final certificates were remapped or regenerated against its output.
+
+\section{Limitations, novelty, and review}
+
+This is a computer-assisted exact proof, not a conceptual classification of
+why each non-lunar pattern violates SAP.  It relies on the source theorem for
+the forward implication.
+
+A bounded novelty search on 22 July 2026 checked arXiv and general web results
+using the exact title, exact Problem~7 wording, ``lunar map'', ``Hankel SAP
+converse'', ``prob-hsap'', and the author names.  It found the original
+arXiv:2407.01048v1 and a 2024 talk announcement mentioning unspecified
+progress, but no later public theorem resolving Problem~7.  Novelty confidence
+is medium pending contact with the authors.
+
+The result should be reviewed by an operator-space expert and independently
+audited by someone comfortable with finite classification code.  The priority
+checks are Lemma~\ref{lem:normal}, transposition with matrix coefficients, and
+random replay of certificate records.
+
+\begin{thebibliography}{9}
+\bibitem{HanQiuWang2024}
+Y.~Han, Y.~Qiu, and Z.~Wang,
+\emph{Self-absorption of Hankel systems on monoids -- a seemingly universal
+property}, arXiv:2407.01048v1, 2024.
+\end{thebibliography}
+
+\end{document}

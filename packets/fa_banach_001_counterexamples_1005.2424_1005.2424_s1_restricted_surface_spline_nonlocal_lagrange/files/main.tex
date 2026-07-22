@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\T}{\mathbb T}
+\newcommand{\PiOne}{\Pi_1}
+
+\title{A Circle Counterexample to Exponential Localization of Restricted Surface-Spline Lagrange Functions}
+\author{Run \texttt{fa\_banach\_001}, lane 1}
+\date{July 22, 2026}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\section*{Status}
+
+This packet gives a candidate counterexample to Conjecture 1 of
+Hangelbroek--Narcowich--Sun--Ward \cite{HNSW} as literally stated. The
+counterexample uses the allowed endpoint \(d=m=1\), hence the restricted
+surface spline on \(S^1\). It disproves exponential localization; it does not
+disprove the separate Holder estimate or the approximation consequences of
+the conjecture.
+
+\section*{Source Problem}
+
+The source is arXiv:1005.2424, Section 6, PDF page 20. It defines restricted
+surface-spline spaces on \(S^d\) and conjectures that their Lagrange functions
+form a local basis in the sense of Assumption 3.4 and satisfy Assumption 3.5.
+The source page is reproduced below.
+
+\clearpage
+\begin{center}
+\includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{figures/open_problem_crop.png}
+\end{center}
+\clearpage
+
+For a quasiuniform family, Assumption 3.4 requires constants \(C_1,\nu>0\),
+independent of the number of centers, such that
+\begin{equation}\label{eq:source-locality}
+ |\chi_\xi(x)|\le C_1\exp\!\left(-\nu
+ \frac{\min(d(x,\xi),r_M)}{q}\right),
+\end{equation}
+where \(q\) is the separation radius and \(r_M\) is the injectivity radius.
+
+\section*{Counterexample Theorem}
+
+\begin{theorem}\label{thm:main}
+Conjecture 1 of \cite{HNSW} is false as stated. More precisely, take
+\(d=m=1\), identify \(S^1\) with \(\T=\mathbb R/(2\pi\mathbb Z)\), and use
+the restricted surface spline
+\[
+ \kappa(\theta)=\sqrt{1-\cos\theta}=\sqrt2\,|\sin(\theta/2)|.
+\]
+For every odd \(N\ge5\), let
+\[
+ \Xi_N=\{\theta_j=2\pi j/N:0\le j<N\}
+\]
+and let \(\chi_N\) be the Lagrange function centered at \(0\) in the source
+space \(S(\kappa,\Xi_N)\), whose auxiliary space is
+\(\PiOne=\operatorname{span}\{1,\cos\theta,\sin\theta\}\). Then
+\begin{equation}\label{eq:exact}
+ \chi_N(\pi)=\frac1N\left(
+ \frac{2\cos(\pi/N)-1}{\cos(\pi/(2N))}-1\right),
+\end{equation}
+and consequently
+\begin{equation}\label{eq:asymptotic}
+ \lim_{\substack{N\to\infty\\N\ \mathrm{odd}}}N^3\chi_N(\pi)
+ =-\frac{7\pi^2}{8}.
+\end{equation}
+In particular, the exponential localization estimate
+\eqref{eq:source-locality} fails for the quasiuniform family
+\((\Xi_N)_{N\text{ odd}}\).
+\end{theorem}
+
+\section*{Proof Intuition}
+
+Uniform nodes force the low-frequency polynomial part of the cardinal
+function: the constant, cosine, and sine moments of the interpolation data
+give \(p_N=(1+2\cos\theta)/N\). The remaining part is a sum of translates of
+\(\sqrt2|\sin(\theta/2)|\). Between nodes every translate solves the same
+homogeneous ODE \(u''+u/4=0\). On the grid cell centered at the antipode, the
+cardinal function vanishes at both endpoints, so this ODE can be solved
+exactly. The low-frequency term is almost, but not exponentially, cancelled:
+the residual is of order \(N^{-3}\). Since the grid scale is \(q=\pi/N\),
+the conjecture would require an \(e^{-cN}\) residual instead.
+
+\section*{Proof}
+
+\begin{proof}
+For \(d=m=1\), the kernel and auxiliary space in the displayed definition of
+Conjecture 1 are exactly
+\[
+ \kappa(\theta)=\sqrt{1-\cos\theta},\qquad
+ \PiOne=\operatorname{span}\{1,\cos\theta,\sin\theta\}.
+\]
+The usual augmented interpolation system is nonsingular on the uniform grids
+used below. One quick verification is the Fourier series
+\[
+ \kappa(\theta)=\frac{2\sqrt2}{\pi}
+ -\frac{4\sqrt2}{\pi}\sum_{n\ge1}\frac{\cos(n\theta)}{4n^2-1}.
+\]
+Thus \(-\kappa\) has strictly positive Fourier coefficients in every mode
+\(|n|\ge2\). On coefficient vectors satisfying the three side conditions,
+the modes \(0,\pm1\) vanish, so the quadratic form is strict. Multiplying a
+kernel by \(-1\) does not change its interpolation space or its Lagrange
+functions.
+
+Write the Lagrange function centered at \(0\) as
+\begin{equation}\label{eq:representation}
+ \chi_N(\theta)=\sum_{j=0}^{N-1}A_j\kappa(\theta-\theta_j)
+ +p_N(\theta),
+ \qquad p_N(\theta)=a+b\cos\theta+c\sin\theta,
+\end{equation}
+with
+\begin{equation}\label{eq:side}
+ \sum_jA_j=\sum_jA_j\cos\theta_j=\sum_jA_j\sin\theta_j=0
+\end{equation}
+and \(\chi_N(\theta_\ell)=\delta_{0\ell}\).
+
+We first determine \(p_N\) without determining any \(A_j\). Sum the cardinal
+equalities over \(\ell\). The row sum
+\(\sum_\ell\kappa(\theta_\ell-\theta_j)\) is independent of \(j\), so the
+kernel contribution vanishes by the first side condition. Discrete
+orthogonality on the uniform grid gives
+\[
+ 1=\sum_\ell\chi_N(\theta_\ell)=Na,
+\]
+hence \(a=1/N\). Next multiply the cardinal equalities by
+\(\cos\theta_\ell\) and sum. After the change of index
+\(r=\ell-j\), the kernel contribution is a fixed linear combination of
+\(\sum_jA_j\cos\theta_j\) and \(\sum_jA_j\sin\theta_j\), hence vanishes by
+\eqref{eq:side}. Therefore
+\[
+ 1=\sum_\ell\delta_{0\ell}\cos\theta_\ell
+   =b\sum_\ell\cos^2\theta_\ell=\frac N2b.
+\]
+The analogous sine-weighted identity gives \(c=0\). Thus
+\begin{equation}\label{eq:p}
+ p_N(\theta)=\frac{1+2\cos\theta}{N}.
+\end{equation}
+
+Now let \(N\) be odd. The point \(\pi\) is the midpoint of the grid cell with
+endpoints
+\[
+ \pi-\frac\pi N,\qquad \pi+\frac\pi N.
+\]
+Neither endpoint is the center \(0\), so \(\chi_N\) vanishes at both. On the
+open cell there is no kernel center, and every translate of \(\kappa\) obeys
+\[
+ v''+\frac14v=0.
+\]
+Consequently \(u_N=\chi_N-p_N\) obeys the same ODE there. Put
+\(t=\theta-\pi\). By \eqref{eq:p}, the two endpoint values of \(p_N\) are
+equal, so the two endpoint values of \(u_N\) are equal. The sine term in the
+general solution of the ODE therefore vanishes, and
+\[
+ u_N(\pi+t)=B_N\cos(t/2).
+\]
+At \(t=\pi/N\), the cardinal condition and \eqref{eq:p} give
+\[
+ B_N\cos\left(\frac\pi{2N}\right)
+ =-p_N\left(\pi+\frac\pi N\right)
+ =\frac{2\cos(\pi/N)-1}{N}.
+\]
+Since \(p_N(\pi)=-1/N\), evaluating at \(t=0\) proves \eqref{eq:exact}.
+
+Let \(x=\pi/N\). Taylor expansion at \(0\) yields
+\[
+ \frac{2\cos x-1}{\cos(x/2)}
+ =1-\frac78x^2+O(x^4).
+\]
+Substitution into \eqref{eq:exact} proves \eqref{eq:asymptotic}.
+
+Finally, the uniform grid has fill distance and separation radius
+\[
+ h_N=q_N=\frac\pi N,
+\]
+so its mesh ratio is \(1\). On \(S^1\), \(d(0,\pi)=r_M=\pi\). If
+Assumption 3.4 held uniformly for this quasiuniform family, it would give
+\[
+ |\chi_N(\pi)|\le C_1\exp\left(-\nu\frac\pi{q_N}\right)
+ =C_1e^{-\nu N}.
+\]
+But \eqref{eq:asymptotic} gives
+\(|\chi_N(\pi)|\sim 7\pi^2/(8N^3)\), a contradiction.
+\end{proof}
+
+\section*{Verification Notes}
+
+The script \texttt{code/verify\_antipodal\_formula.py} independently solves
+the full augmented interpolation system for several odd values of \(N\),
+compares the computed antipodal value with \eqref{eq:exact}, and displays
+\(-N^3\chi_N(\pi)\) approaching \(7\pi^2/8\). This is only a check of the
+algebra; the ODE calculation above is the proof.
+
+The source statement contains no restriction \(d\ge2\). If such a restriction
+was intended but omitted, Theorem \ref{thm:main} should be read as an endpoint
+obstruction to the literal conjecture, not as a result about
+\(S^3,S^5,\ldots\).
+
+\section*{Relation to Later Literature}
+
+Hangelbroek--Narcowich--Ward \cite{HNWlater}, posted after the source paper,
+cites \cite{HNSW} and treats the same kernels. Its Theorem 5.3 proves the exact
+exponential estimate for the even-dimensional spherical case. Its Theorem 5.5
+proves, in the general case, a bound with a polynomial floor,
+\[
+ |\chi_\xi(x)|\le C\rho^{m-d/2}
+ \max\left\{e^{-\nu\min(d(x,\xi),r_M)/h},h^{2m}\right\},
+\]
+as well as the Holder estimate. The discussion preceding Theorem 5.3 says
+that exponential decay on odd-dimensional spheres was believed to hold and
+that the slower bound might be an artifact of the proof. The exact \(S^1\)
+formula above shows that pure exponential decay cannot hold in the full
+odd-dimensional formulation.
+
+The later paper also proves bounded Lebesgue constants, \(L_p\)-stability of
+the Lagrange basis, boundedness of the \(L_2\)-projector on every \(L_p\), and
+the advertised approximation rates. Hence the counterexample targets only the
+strong exponential clause, not consequences [A]--[E].
+
+\section*{Novelty Search and Limitations}
+
+The run registry and the solution, attempt, and proof-gap indexes were searched
+for arXiv:1005.2424, the paper title, restricted surface splines, Lagrange
+localization, and the circle case. No duplicate was present. Bounded web
+searches on July 22, 2026 used the exact conjecture phrase and combinations of
+restricted surface splines, S1, odd-dimensional spheres, Lagrange functions,
+and exponential decay. They found the source, \cite{HNWlater}, and adjacent
+localization papers, but no prior counterexample or the antipodal formula
+\eqref{eq:exact}.
+
+This packet does not address Conjecture 2, the \(SO(3)\) Conjecture 3, or a
+version of Conjecture 1 restricted to odd dimensions at least \(3\). It also
+does not contradict the Holder half of Conjecture 1 or any of the known
+stability and approximation theorems.
+
+\begin{thebibliography}{9}
+
+\bibitem{HNSW}
+T. Hangelbroek, F. J. Narcowich, X. Sun, and J. D. Ward,
+\emph{Kernel Approximation on Manifolds II: The \(L_\infty\)-norm of the
+\(L_2\)-projector}, arXiv:1005.2424; SIAM J. Math. Anal. 43 (2011),
+662--684.
+
+\bibitem{HNWlater}
+T. Hangelbroek, F. J. Narcowich, and J. D. Ward,
+\emph{Polyharmonic and Related Kernels on Manifolds: Interpolation and
+Approximation}, arXiv:1012.4852; Found. Comput. Math. 12 (2012), 625--670.
+
+\end{thebibliography}
+
+\end{document}
