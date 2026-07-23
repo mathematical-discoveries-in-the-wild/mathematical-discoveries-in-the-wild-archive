@@ -1,0 +1,339 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\muinf}{\mu_\infty}
+
+\title{\textbf{Sharp Fourier restriction exponent for Mandelbrot cascades}\\
+\large The squared-critical and squared-supercritical phases}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Lane 7, model GPT5.6}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.91\textwidth}
+\textbf{Status.} Candidate partial result, likely valid, pending expert review.
+The result determines the supremal restriction exponent in the
+squared-critical and squared-supercritical regimes.  It does not decide
+endpoint attainment or the remaining squared-subcritical regime.
+\end{minipage}}
+\end{center}
+
+\section{Source question}
+
+The source is Xinxin Chen, Yong Han, Yanqi Qiu, and Zipeng Wang,
+\emph{Harmonic analysis of Mandelbrot cascades -- in the context of
+vector-valued martingales}, arXiv:2409.13164v3 \cite{CHQW}.
+After Corollary 1.6, on page 9, the authors ask:
+\begin{quote}
+What is the optimal exponent \(r\in(1,2)\) in
+\[
+ \|\widehat f\|_{L^2(\muinf)}
+ \leq C(r,\muinf)\|f\|_{L^r(\R)}?
+\]
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Corollary 1.6 and the open question in arXiv:2409.13164v3, page 9.}
+\end{figure}
+
+\section{Definitions and assumptions}
+
+Fix an integer \(b\geq2\).  Let \(W\geq0\) be nonconstant with
+\(\E W=1\), and let \(\muinf\) be the associated canonical \(b\)-adic
+Mandelbrot cascade on \([0,1]\).  We use the source assumptions
+\[
+ \E[W\log W]<\log b,
+ \qquad
+ \E[W^t]<\infty\quad(t>0),
+\]
+and, in the squared-supercritical case, the source's nonlattice assumption
+on \(\log W\).  All almost-sure statements below are on
+\(\{\muinf\neq0\}\).
+
+Set
+\[
+ W^{(2)}=\frac{W^2}{\E W^2}.
+\]
+The squared-critical and squared-supercritical regimes are characterized by
+\[
+ \E[W^{(2)}\log W^{(2)}]\geq\log b.
+\]
+
+For a finite Borel measure \(\mu\) on \(\R\), define its Frostman dimension by
+\[
+ \dim_{\mathrm{Fr}}\mu
+ =\sup\left\{\alpha\geq0:
+ \mu(I)\leq C_\alpha |I|^\alpha
+ \text{ for every interval }I\right\}.
+\]
+For \(1\leq r<2\), let \(\mathcal R_r(\mu)\) denote the restriction estimate
+\[
+ \|\widehat f\|_{L^2(\mu)}\leq C_r\|f\|_{L^r(\R)}
+ \qquad(f\in\mathcal S(\R)).
+\]
+Define the supremal restriction exponent
+\[
+ r_*(\mu)=\sup\{r\in[1,2):\mathcal R_r(\mu)\text{ holds}\}.
+\]
+
+\section{Idea of the proof}
+
+The source already proves the lower half of the answer:
+\(\mathcal R_r(\muinf)\) holds for
+\(r<4/(4-D_F)\).  The missing sharpness follows from local mass.
+A restriction estimate at exponent \(r\) forces every interval of length
+\(\delta\) to have mass \(O(\delta^{2/r'})\).  Thus restriction cannot pass
+the exact Frostman dimension.
+
+For Mandelbrot cascades, the Frostman exponent is the maximum of a simple
+moment profile.  The squared-critical condition says that this profile has
+already stopped increasing by \(q=2\).  Rewriting the source's
+squared-supercritical formula then shows that the Fourier dimension is
+exactly twice the Frostman dimension.  The localization obstruction and the
+source's positive estimate consequently meet at the same exponent.
+
+\section{The partial result}
+
+\begin{theorem}[Sharp supremal exponent]\label{thm:main}
+Under the assumptions above, suppose
+\[
+ \E[W^{(2)}\log W^{(2)}]\geq\log b.
+\]
+Let \(D_F=\dim_F(\muinf)\), whose deterministic value is given by
+Theorem 1.1 of \cite{CHQW}.  Then almost surely on nonextinction,
+\[
+ r_*(\muinf)=\frac{4}{4-D_F}.
+\]
+More precisely, \(\mathcal R_r(\muinf)\) holds for every
+\(1\leq r<4/(4-D_F)\), and it fails for every
+\(r>4/(4-D_F)\).
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ L(q)=\log \E W^q,\qquad
+ a(q)=\frac{q-1-\log_b\E W^q}{q}
+ \quad(q>1).
+\]
+The classical multifractal formula for a nondegenerate Mandelbrot cascade
+gives, almost surely on nonextinction,
+\begin{equation}\label{eq:frost}
+ \dim_{\mathrm{Fr}}\muinf=\sup_{q>1}a(q).
+\end{equation}
+This is the extremal local-dimension, or uniform Holder, part of the standard
+cascade spectrum; see Molchan \cite{Molchan} and the sharp modulus results of
+Barral--Kupiainen--Nikula--Saksman--Webb \cite{BKNSW}.
+
+We first locate the maximum in \eqref{eq:frost}.  Direct differentiation gives
+\[
+ a'(q)=
+ \frac{\log b+L(q)-qL'(q)}{q^2\log b}.
+\]
+The numerator
+\[
+ H(q)=\log b+L(q)-qL'(q)
+\]
+is nonincreasing, since \(H'(q)=-qL''(q)\leq0\).  Nondegeneracy gives
+\[
+ H(1)=\log b-\E[W\log W]>0.
+\]
+On the other hand,
+\[
+ \E[W^{(2)}\log W^{(2)}]
+ =2L'(2)-L(2)\geq\log b
+\]
+is exactly \(H(2)\leq0\).  Hence \(a\) attains its global maximum at some
+\(q_*\in(1,2]\), and therefore
+\begin{equation}\label{eq:max12}
+ \sup_{q>1}a(q)=\sup_{1<q\leq2}a(q).
+\end{equation}
+
+We next compare this maximum with the source formula for \(D_F\).  In the
+squared-supercritical case, formula (1.4) of \cite{CHQW} is
+\[
+ D_F
+ =1-\inf_{1/2\leq t\leq1}
+ \frac{\log\E[b^{1-t}W^{2t}]}{t\log b}.
+\]
+Putting \(q=2t\) shows that the expression being maximized is
+\[
+ 1-\frac{\log\E[b^{1-t}W^{2t}]}{t\log b}
+ =2a(q).
+\]
+Thus \eqref{eq:frost} and \eqref{eq:max12} give
+\begin{equation}\label{eq:key}
+ D_F=2\dim_{\mathrm{Fr}}\muinf.
+\end{equation}
+In the squared-critical case, \(H(2)=0\), so the maximum is at \(q=2\), and
+the first branch of formula (1.4) yields the same identity:
+\[
+ D_F=1-\log_b\E W^2=2a(2)
+ =2\dim_{\mathrm{Fr}}\muinf.
+\]
+
+It remains to convert \eqref{eq:key} into restriction sharpness.  Lemma
+\ref{lem:localization} below shows that \(\mathcal R_r(\muinf)\) implies
+\[
+ \dim_{\mathrm{Fr}}\muinf\geq\frac{2}{r'}.
+\]
+Using \eqref{eq:key},
+\[
+ \frac{2}{r'}\leq\frac{D_F}{2},
+\]
+which is equivalent to
+\[
+ r\leq\frac{4}{4-D_F}.
+\]
+Therefore the restriction estimate fails for every larger \(r\).
+Conversely, Corollary 1.6 of \cite{CHQW} proves it for every strictly smaller
+\(r\).  This proves the asserted value of the supremum.
+\end{proof}
+
+\begin{lemma}[Frequency localization]\label{lem:localization}
+Let \(\mu\) be a finite Borel measure on \(\R\).  If
+\(\mathcal R_r(\mu)\) holds for some \(1\leq r<2\), then
+\[
+ \mu(I)\lesssim |I|^{2/r'}
+\]
+for every interval \(I\) of length at most \(1\).  In particular,
+\(\dim_{\mathrm{Fr}}\mu\geq2/r'\).
+\end{lemma}
+
+\begin{proof}
+Choose a Schwartz function \(\phi\) such that
+\(\widehat\phi\geq1\) on \([-1,1]\).  If \(I\) has center \(\xi_0\) and
+length \(\delta\leq1\), put
+\[
+ f_{\delta,\xi_0}(x)
+ =\delta e^{2\pi i\xi_0x}\phi(\delta x).
+\]
+Then
+\[
+ \widehat f_{\delta,\xi_0}(\xi)
+ =\widehat\phi\left(\frac{\xi-\xi_0}{\delta}\right),
+ \qquad
+ \|f_{\delta,\xi_0}\|_r
+ =\delta^{1-1/r}\|\phi\|_r
+ =\delta^{1/r'}\|\phi\|_r.
+\]
+Since \(\widehat f_{\delta,\xi_0}\geq1\) on \(I\), the assumed restriction
+estimate gives
+\[
+ \mu(I)^{1/2}
+ \leq\|\widehat f_{\delta,\xi_0}\|_{L^2(\mu)}
+ \lesssim\delta^{1/r'}.
+\]
+Squaring proves the claim.
+\end{proof}
+
+\section{Explicit lognormal consequence}
+
+For
+\[
+ W=e^{\sigma N-\sigma^2/2},\qquad N\sim\mathcal N(0,1),
+\]
+the nondegenerate range is \(0<\sigma^2<2\log b\), and the
+squared-critical/supercritical range is
+\(\sigma^2\geq\tfrac12\log b\).  In this range \cite{CHQW} gives
+\[
+ D_F
+ =2\left(1-\frac{\sigma}{\sqrt{2\log b}}\right)^2.
+\]
+Consequently
+\[
+ r_*
+ =\frac{4}{
+ 4-2\left(1-\frac{\sigma}{\sqrt{2\log b}}\right)^2}.
+\]
+
+\section{Verification notes and limitations}
+
+\begin{enumerate}[leftmargin=*]
+\item The localization lemma is deterministic and uses only Fourier scaling.
+It also checks the direction of the necessary inequality: a larger \(r\)
+forces a larger Frostman exponent.
+\item The calculus step uses only convexity of
+\(q\mapsto\log\E W^q\).  The squared phase condition is exactly the sign
+condition \(H(2)\leq0\).
+\item The identity \(D_F=2\dim_{\mathrm{Fr}}\muinf\) is special to the
+squared-critical/supercritical phase.  In the squared-subcritical phase the
+Frostman exponent can be strictly larger than \(D_F/2\), so the same argument
+does not determine the optimal restriction exponent.
+\item The proof identifies the supremum of valid exponents.  It does not
+prove or disprove \(\mathcal R_{r_*}(\muinf)\) at the endpoint.
+\item The exact Frostman spectrum formula \eqref{eq:frost} is an external
+standard cascade theorem.  A reviewer should check its hypotheses against
+the stated all-moments and nonlattice assumptions; these are stronger than
+the usual hypotheses in the present regime.
+\end{enumerate}
+
+\section{Novelty check}
+
+The bounded search covered the run's local 2000--2026 full-source index,
+exact-phrase searches for the source question, searches combining
+``Mandelbrot cascade'', ``optimal exponent'', ``restriction'', and
+``supercritical'', and citations of arXiv:2409.13164 through 23 July 2026.
+No paper stating Theorem \ref{thm:main} was found.
+
+Carnovale--Fraser--de Orellana \cite{CFdO} give later \(L^q\)-dimension based
+sufficient estimates and explicitly improve the original Stein--Tomas range
+for some cascade parameters.  They do not state the matching localization
+obstruction or determine the true critical exponent in the present phase.
+Thus the result here is a direct combination of known exact dimensions with
+a new sharpness identification, not a claimed new estimate in the
+squared-subcritical regime.
+
+\section{Human-review recommendation}
+
+Promote as a substantial partial solution if the reviewer confirms the
+standard exact Frostman formula \eqref{eq:frost} under the source hypotheses.
+The most important review points are the convention for the cascade
+\(L^q\)-spectrum, the equality case at squared criticality, and the
+interpretation of ``optimal exponent'' as the supremum when endpoint
+attainment is unknown.
+
+\begin{thebibliography}{9}
+
+\bibitem{CHQW}
+X. Chen, Y. Han, Y. Qiu, and Z. Wang,
+\emph{Harmonic analysis of Mandelbrot cascades -- in the context of
+vector-valued martingales},
+arXiv:2409.13164v3 (2025).
+
+\bibitem{Molchan}
+G. M. Molchan,
+\emph{Scaling exponents and multifractal dimensions for independent random
+cascades},
+Commun. Math. Phys. \textbf{179} (1996), 681--702.
+
+\bibitem{BKNSW}
+J. Barral, A. Kupiainen, M. Nikula, E. Saksman, and C. Webb,
+\emph{Critical Mandelbrot cascades},
+Commun. Math. Phys. \textbf{325} (2014), 685--711;
+arXiv:1206.5444.
+
+\bibitem{CFdO}
+M. Carnovale, J. M. Fraser, and A. E. de Orellana,
+\emph{Fourier restriction estimates based on \(L^q\)-dimensions: beyond
+Stein--Tomas},
+arXiv:2606.07143 (2026).
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,269 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\A}{\mathcal A}
+\newcommand{\M}{M}
+\newcommand{\C}{\mathbb C}
+\newcommand{\od}{\mathbin{\odot}}
+\newcommand{\tmax}{\otimes_{\max}}
+\newcommand{\tmin}{\otimes_{\min}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+
+\title{Maximal-Tensor Multiplication Does Not Extend\\
+on the CAR Algebra}
+\author{Run \texttt{fa\_banach\_001}, lane 8}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+The proof is complete; novelty is supported only by the bounded search in
+Section~\ref{sec:novelty}.
+
+\section{Source question}
+
+Let $A$ be a unital $C^*$-algebra.  Lesch writes
+\[
+ \mu_n:A^{\od(n+1)}\longrightarrow A,
+ \qquad
+ \mu_n(a_0\otimes\cdots\otimes a_n)=a_0a_1\cdots a_n,
+\]
+and asks whether it extends continuously to the maximal $C^*$-tensor product
+$A^{\tmax(n+1)}$ \cite[Section~3.1]{Lesch}.  He says that he suspects
+interesting examples where it does not extend, but that an expert poll was
+inconclusive.  Liu later describes the extension question as ``still
+inconclusive'' and cites Lesch \cite[Section~2, PDF p.~5]{Liu}.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+Liu's displayed multiplication map uses a shifted number of tensor factors.
+To avoid this notational issue, below $m_k$ always means multiplication on
+exactly $k$ algebraic factors.  Thus Lesch's $\mu_n$ is $m_{n+1}$.
+
+The same sources consider the contraction map
+\[
+ \iota:A^{\od(n+1)}\longrightarrow
+ L\bigl(A^{\od n},A\bigr),
+\]
+where
+\[
+ \iota(a_0\otimes\cdots\otimes a_n)
+ (b_1\otimes\cdots\otimes b_n)
+ =a_0b_1a_1\cdots b_na_n.
+\]
+They ask whether a suitable joint maximal-tensor extension exists.
+
+\section{Definitions}
+
+For $C^*$-algebras $B$ and $D$, $B\od D$ denotes their algebraic tensor
+product, while $B\tmin D$ and $B\tmax D$ denote the minimal and maximal
+$C^*$-completions.  The minimal tensor product is injective: inclusions of
+$C^*$-algebras induce isometric inclusions of minimal tensor products.  A
+$C^*$-algebra $A$ is nuclear if the canonical maximal-to-minimal quotient is
+an isomorphism for $A\od B$ and every $C^*$-algebra $B$; see, for example,
+\cite[Chapters 2--3]{BrownOzawa}.
+
+The CAR algebra is
+\[
+ \A=\M_{2^\infty}
+   =\varinjlim_r \M_2^{\otimes r}.
+\]
+It is unital, separable, simple, and nuclear.  Its $r$th finite stage is a
+unital copy of $\M_d$, where $d=2^r$.
+
+\section{Proof intuition}
+
+Matrix multiplication hides a dimension factor that the spatial tensor norm
+does not see.  In $\M_d\od\M_d$, the tensor
+$z_d=\sum_j e_{1j}\otimes e_{j1}$ merely moves one $d$-dimensional coordinate
+subspace isometrically to another, so its tensor norm is one.  Multiplication,
+however, collapses all $d$ summands onto the same matrix unit and produces
+$d e_{11}$.  The CAR algebra contains such matrix blocks for unbounded $d$.
+Nuclearity is the bridge from this spatial calculation to the maximal tensor
+norm asked about in the source.
+
+\section{Counterexample}
+
+We first record the reusable obstruction.
+
+\begin{proposition}[Unbounded matrix-block criterion]\label{prop:criterion}
+Let $A$ be a unital nuclear $C^*$-algebra.  Suppose that $A$ contains
+$C^*$-subalgebras isomorphic to $\M_d$ for an unbounded set of integers $d$.
+Then, for every $k\geq2$, the algebraic multiplication map
+\[
+ m_k:A^{\od k}\longrightarrow A,
+ \qquad
+ m_k(a_1\otimes\cdots\otimes a_k)=a_1\cdots a_k,
+\]
+is unbounded for the maximal $C^*$-tensor norm.  Hence it has no continuous
+extension to $A^{\tmax k}$.
+\end{proposition}
+
+\begin{proof}
+Fix one of the subalgebras $\M_d\subseteq A$ and choose standard matrix units
+$(e_{ij})_{i,j=1}^d$.  In $\M_d\od\M_d$ define
+\[
+ z_d=\sum_{j=1}^d e_{1j}\otimes e_{j1}.
+\]
+Let $(\xi_j)_{j=1}^d$ be the standard basis of $\C^d$.  In the spatial
+representation on $\C^d\otimes\C^d$,
+\[
+ z_d(\xi_p\otimes\xi_q)
+ =\begin{cases}
+    \xi_1\otimes\xi_p,&q=1,\\
+    0,&q\ne1.
+  \end{cases}
+\]
+Thus $z_d$ is a partial isometry from
+$\C^d\otimes\C\xi_1$ onto $\C\xi_1\otimes\C^d$, and
+\begin{equation}\label{eq:zdnorm}
+ \|z_d\|_{\M_d\tmin\M_d}=1.
+\end{equation}
+
+By injectivity of the minimal tensor product, the inclusion
+$\M_d\subseteq A$ preserves the norm in \eqref{eq:zdnorm}.  Since $A$ is
+nuclear, maximal and minimal tensor powers of $A$ coincide.  Consequently,
+\[
+ \|z_d\|_{A\tmax A}=1.
+\]
+But binary multiplication gives
+\begin{equation}\label{eq:blowup}
+ m_2(z_d)=\sum_{j=1}^d e_{1j}e_{j1}=d e_{11},
+ \qquad \|m_2(z_d)\|=d.
+\end{equation}
+As the available dimensions are unbounded, $m_2$ is unbounded.
+
+For $k>2$, put
+\[
+ z_d^{(k)}=z_d\otimes 1_A^{\otimes(k-2)}\in A^{\od k}.
+\]
+Tensoring by identities preserves the $C^*$-norm, so
+$\|z_d^{(k)}\|_{A^{\tmax k}}=1$, whereas
+$m_k(z_d^{(k)})=d e_{11}$.  Hence every $m_k$, $k\ge2$, is unbounded.
+\end{proof}
+
+\begin{theorem}[CAR counterexample]\label{thm:main}
+For the CAR algebra $\A=\M_{2^\infty}$ and every $n\ge1$, Lesch's map
+\[
+ \mu_n:\A^{\od(n+1)}\longrightarrow\A
+\]
+does not extend continuously to $\A^{\tmax(n+1)}$.  Consequently, the
+contraction map in Liu and Lesch has no continuous extension
+\[
+ \iota:\A^{\tmax(n+1)}\longrightarrow
+ L_{\mathrm{cont}}(\A^{\tmax n},\A)
+\]
+that agrees with the algebraic contraction.
+\end{theorem}
+
+\begin{proof}
+The CAR algebra is nuclear and contains the unital finite stages
+$\M_{2^r}$ for all $r$.  Proposition~\ref{prop:criterion}, with
+$k=n+1$, proves the first assertion.
+
+For the second, suppose such an extension of $\iota$ existed.  Evaluation at
+$1_A^{\otimes n}$ is a bounded map from
+$L_{\mathrm{cont}}(\A^{\tmax n},\A)$ to $\A$.  On algebraic tensors its
+composition with $\iota$ is exactly
+\[
+ a_0\otimes\cdots\otimes a_n\longmapsto a_0a_1\cdots a_n=\mu_n(a).
+\]
+The composition would therefore give the forbidden bounded extension of
+$\mu_n$.
+\end{proof}
+
+This supplies a separable, unital, simple, nuclear example.  It also shows
+that the failure is simultaneous in every nontrivial multilinear degree.
+
+\section{Verification and limitations}
+
+The script \texttt{code/verifier.py} constructs $z_d$ as an operator on
+$\C^d\otimes\C^d$ and checks, for $d=2,4,8,16$, that
+\[
+ \|z_d\|=1,\qquad z_dz_d^*z_d=z_d,
+ \qquad m_2(z_d)=d e_{11}.
+\]
+It runs with:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python code/verifier.py
+\end{verbatim}
+All residuals are zero and the computed multiplication norms are
+$2,4,8,16$.  This check guards against an index or tensor-order error; the
+proof for all $d=2^r$ is the displayed matrix-unit calculation.
+
+The theorem answers the extension question negatively in general.  It does
+not classify all $C^*$-algebras for which multiplication is bounded, and it
+does not settle the case of the irrational rotation algebra occurring in
+Liu's geometric applications.
+
+\section{Bounded novelty check}\label{sec:novelty}
+
+The search on 22 July 2026 covered the run's registry, solution, attempt, and
+proof-gap indexes; the exact source ids and titles; and web/arXiv searches
+combining ``multiplication map'' and ``maximal $C^*$-tensor product'' with
+CAR, UHF, nuclear, minimal tensor product, and subhomogeneous.
+
+Vaes and Van Daele state that multiplication generally need not extend to the
+minimal $C^*$-tensor product \cite[Introduction]{VaesVanDaele}.  Van Daele's
+later survey points to growth of the multiplication norms of $\M_d$ as
+$d\to\infty$ \cite[Remark~3.3]{VanDaele}.  These are close precursors, but the
+inspected passages do not state the fixed CAR/UHF example or transfer it to
+the maximal norm through nuclearity.  A 2021 MathOverflow discussion gives a
+spatial-tensor obstruction for $B(H)$, which is not by itself a maximal-norm
+answer.  No explicit CAR/UHF maximal-tensor counterexample was found.
+
+This supports, but does not certify, novelty.  Because the construction is an
+elementary synthesis of standard facts, the priority claim requires a deeper
+operator-algebra literature review.  The mathematical validity of the
+counterexample does not depend on that novelty assessment.
+
+\section{Human-review recommendation}
+
+Send the packet to an operator-algebra or $C^*$-tensor-product specialist.
+The proof audit should focus on the injective minimal-tensor inclusion and the
+nuclear maximal-to-minimal identification.  The larger review burden is a
+specialist novelty search, particularly in the Hopf-$C^*$-algebra and
+operator-space literature.
+
+\begin{thebibliography}{9}
+\bibitem{Liu}
+Y. Liu,
+\emph{Hypergeometric function and Modular Curvature I. Hypergeometric
+functions in Heat Coefficients}, arXiv:1810.09939 (2018),
+\url{https://arxiv.org/abs/1810.09939}.
+
+\bibitem{Lesch}
+M. Lesch,
+\emph{Divided differences in noncommutative geometry: rearrangement lemma,
+functional calculus and expansional formula},
+J. Noncommut. Geom. 11 (2017), 193--223; arXiv:1405.0863,
+\url{https://arxiv.org/abs/1405.0863}.
+
+\bibitem{BrownOzawa}
+N. P. Brown and N. Ozawa,
+\emph{$C^*$-Algebras and Finite-Dimensional Approximations},
+Graduate Studies in Mathematics 88, American Mathematical Society, 2008.
+
+\bibitem{VaesVanDaele}
+S. Vaes and A. Van Daele,
+\emph{Hopf $C^*$-algebras},
+Proc. London Math. Soc. 82 (2001), 337--384; arXiv:math/9907030,
+\url{https://arxiv.org/abs/math/9907030}.
+
+\bibitem{VanDaele}
+A. Van Daele,
+\emph{From Hopf algebras to topological quantum groups: a short history,
+various aspects and some problems},
+Banach Center Publ. 120 (2020), 179--223,
+doi:10.4064/bc120-14.
+\end{thebibliography}
+
+\end{document}

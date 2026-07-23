@@ -1,0 +1,274 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\title{The General Variance Conjecture from the Isotropic Thin-Shell Theorem}
+\author{Literature-implied answer note for arXiv:1209.4270\\
+\small Agent: \texttt{agent\_lane\_07} \quad Model: GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Literature-implied answer (full; agent-identified implication).
+Conjectures 1.4 and 1.5 of Alonso-Gutierrez--Bastero are true in all
+dimensions. The later supporting paper proves the isotropic theorem but does
+not state this anisotropic consequence.
+}}
+\end{center}
+
+\begin{abstract}
+Alonso-Gutierrez and Bastero conjectured that every centered log-concave
+random vector $X$ satisfies
+\[
+  \Var(|X|^2)\leq C\|\Cov(X)\|_{\mathrm{op}}\,\E|X|^2.
+\]
+Klartag and Lehec recently proved the isotropic variance conjecture in every
+dimension. We show by Abel summation over the eigenvalues of $\Cov(X)$ that
+the isotropic theorem implies the displayed general inequality with exactly
+the same best dimension-free constant. Hence the source's general variance
+and general thin-shell conjectures are completely settled. The implication is
+elementary but is not stated in the supporting paper found in the bounded
+literature search.
+\end{abstract}
+
+\section{Source questions}
+
+The source is D. Alonso-Gutierrez and J. Bastero, \emph{The variance
+conjecture on some polytopes}, arXiv:1209.4270 \cite{AB}. On PDF page 2,
+Conjecture 1.4 asks whether there is a universal $C$ such that every centered
+log-concave random vector $X$ satisfies
+\begin{equation}\label{eq:general}
+  \Var(|X|^2)\leq C\lambda_X^2\E|X|^2,
+  \qquad \lambda_X^2=\|\Cov(X)\|_{\mathrm{op}}.
+\end{equation}
+Conjecture 1.5 asks equivalently whether
+\begin{equation}\label{eq:general-shell}
+ \sigma_X:=\left[\E\left(|X|-\sqrt{\E|X|^2}\right)^2\right]^{1/2}
+ \leq C\lambda_X.
+\end{equation}
+The authors stress that these statements are not invariant under arbitrary
+linear maps and were not known to follow from the isotropic conjecture.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\caption{Conjectures 1.4 and 1.5 in arXiv:1209.4270, PDF page 2.}
+\end{figure}
+
+\section{Later theorem used}
+
+Klartag and Lehec, \emph{Thin-shell bounds via parallel coupling},
+arXiv:2507.15495v2 \cite{KL}, prove the following as Theorem 1.1 on PDF
+page 2: for every isotropic log-concave random vector $Z$ in $\R^k$,
+\begin{equation}\label{eq:isotropic}
+  \Var(|Z|^2)=\E(|Z|^2-k)^2\leq C_0 k,
+\end{equation}
+where $C_0$ is universal. Their statement ranges over every dimension $k$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/supporting_answer_crop.png}
+\caption{Klartag--Lehec, Theorem 1.1, arXiv:2507.15495v2, PDF page 2.}
+\end{figure}
+
+\section{Proof intuition}
+
+Whitening writes the squared norm of an arbitrary centered vector as a
+positive quadratic form $\langle MY,Y\rangle$ of an isotropic vector. Order
+the eigenvalues of $M$. Abel summation decomposes that quadratic form into a
+positive linear combination of the centered energies of nested orthogonal
+projections of $Y$. Each projected vector is again isotropic and log-concave,
+so the solved isotropic theorem controls each energy in its own dimension.
+Minkowski combines these controls without needing any sign information about
+mixed fourth moments. A one-line Cauchy--Schwarz estimate for the spectral
+counting function then produces exactly $\|M\|_{\mathrm{op}}\tr M$.
+
+The positivity of the spectral increments is essential: it is what permits a
+constant-preserving passage from unweighted projection energies to every
+positive quadratic form.
+
+\section{Constant-preserving transfer theorem}
+
+For clarity, define the optimal all-dimensional constants
+\begin{align*}
+C_{\mathrm{iso}}
+ &=\sup_{k\geq1}\sup_Z \frac{\Var(|Z|^2)}{k},\\
+C_{\mathrm{gen}}
+ &=\sup_{n\geq1}\sup_X
+ \frac{\Var(|X|^2)}{\|\Cov(X)\|_{\mathrm{op}}\E|X|^2},
+\end{align*}
+where $Z$ ranges over isotropic log-concave vectors and $X$ ranges over
+nonzero centered log-concave vectors. If a law is supported on a proper
+linear subspace, all quantities are computed in its linear span.
+
+\begin{theorem}[Exact equivalence]\label{thm:exact}
+One has
+\[
+  C_{\mathrm{gen}}=C_{\mathrm{iso}}.
+\]
+Consequently, the Klartag--Lehec theorem proves \eqref{eq:general} in every
+dimension, with no loss in the universal constant.
+\end{theorem}
+
+\begin{proof}
+The inequality $C_{\mathrm{iso}}\leq C_{\mathrm{gen}}$ is immediate: for an
+isotropic vector in $\R^k$, the denominator in the definition of
+$C_{\mathrm{gen}}$ equals $1\cdot k$.
+
+We prove the reverse inequality. Fix a centered log-concave $X$ and reduce to
+the linear span of its support. Put $M=\Cov(X)$, which is then positive
+definite, and set $Y=M^{-1/2}X$. Thus $Y$ is isotropic and log-concave, and
+\[
+ |X|^2=\langle MY,Y\rangle,\qquad
+ \E|X|^2=\tr M.
+\]
+Choose an orthonormal eigenbasis of $M$ and write
+\[
+ \mu_1\geq\mu_2\geq\cdots\geq\mu_n>0,
+ \qquad \mu_{n+1}=0.
+\]
+Let $P_k$ be the orthogonal projection onto the span of the first $k$
+eigenvectors. The linear image $P_kY$ is log-concave, and its covariance on
+that $k$-dimensional subspace is the identity. Therefore $P_kY$ is isotropic
+and, by the definition of $C_{\mathrm{iso}}$,
+\begin{equation}\label{eq:partial}
+ \left\| |P_kY|^2-k\right\|_{L^2}
+ \leq \sqrt{C_{\mathrm{iso}}k}.
+\end{equation}
+
+If $Y_i$ are the coordinates of $Y$ in the eigenbasis, Abel summation gives
+the exact identity
+\begin{align}\label{eq:abel}
+ \langle MY,Y\rangle-\tr M
+ &=\sum_{i=1}^n\mu_i(Y_i^2-1)\\
+ &=\sum_{k=1}^n(\mu_k-\mu_{k+1})
+   \sum_{i=1}^k(Y_i^2-1)\notag\\
+ &=\sum_{k=1}^n(\mu_k-\mu_{k+1})(|P_kY|^2-k).\notag
+\end{align}
+All coefficients in the final sum are nonnegative. Minkowski's inequality and
+\eqref{eq:partial} yield
+\begin{equation}\label{eq:minkowski}
+ \sqrt{\Var(\langle MY,Y\rangle)}
+ \leq \sqrt{C_{\mathrm{iso}}}
+ \sum_{k=1}^n(\mu_k-\mu_{k+1})\sqrt{k}.
+\end{equation}
+
+It remains to estimate a deterministic spectral sum. Let
+\[
+ N(t)=\#\{i:\mu_i\geq t\},\qquad 0\leq t\leq\mu_1.
+\]
+The layer-cake formula and Cauchy--Schwarz give
+\begin{align}\label{eq:spectral}
+ \sum_{k=1}^n(\mu_k-\mu_{k+1})\sqrt{k}
+ &=\int_0^{\mu_1}\sqrt{N(t)}\,dt\\
+ &\leq \left(\mu_1\int_0^{\mu_1}N(t)\,dt\right)^{1/2}
+ =\left(\mu_1\sum_{i=1}^n\mu_i\right)^{1/2}.
+\end{align}
+Combining \eqref{eq:minkowski} with (7)--(8) and squaring proves
+\[
+ \Var(|X|^2)
+ \leq C_{\mathrm{iso}}\,\mu_1\sum_{i=1}^n\mu_i
+ =C_{\mathrm{iso}}\|M\|_{\mathrm{op}}\tr M
+ =C_{\mathrm{iso}}\lambda_X^2\E|X|^2.
+\]
+Hence $C_{\mathrm{gen}}\leq C_{\mathrm{iso}}$, completing the proof.
+\end{proof}
+
+\begin{corollary}[Source Conjectures 1.4 and 1.5]\label{cor:source}
+There is a universal constant $C$ such that every centered log-concave random
+vector satisfies both \eqref{eq:general} and \eqref{eq:general-shell}.
+\end{corollary}
+
+\begin{proof}
+The variance inequality follows from Theorem \ref{thm:exact} and
+Klartag--Lehec's bound \eqref{eq:isotropic}. For the thin-shell form, put
+$m=\E|X|^2$. Pointwise,
+\[
+ (|X|-\sqrt m)^2
+ \leq \frac{(|X|^2-m)^2}{m},
+\]
+because $|X|+\sqrt m\geq\sqrt m$. Consequently,
+\[
+ \sigma_X^2\leq\frac{\Var(|X|^2)}{\E|X|^2}
+ \leq C\lambda_X^2.
+\]
+Taking square roots proves Conjecture 1.5 after renaming the universal
+constant.
+\end{proof}
+
+\section{Verification and scope}
+
+The proof uses only four points: whitening; closure of log-concavity under
+linear images; the Klartag--Lehec theorem in each projected dimension; and the
+deterministic Abel identity and spectral estimate displayed above. The accompanying
+seeded script checks the Abel identity and spectral inequality on 20,000 random
+nonnegative spectra. This computation is an algebra smoke test, not evidence
+for the Klartag--Lehec theorem.
+
+The conclusion settles the source's Conjectures 1.4 and 1.5. It does
+\emph{not} prove the stronger Kannan--Lovasz--Simonovits conjecture (source
+Conjecture 1.3), which concerns every locally Lipschitz test function rather
+than only $g(x)=|x|^2$.
+
+\section{Literature and novelty status}
+
+This is classified as a literature-implied answer because the only deep input
+is the later theorem \cite{KL}. The supporting authors do not state that they
+answer arXiv:1209.4270, and the constant-preserving spectral transfer is the
+agent-identified implication.
+
+A bounded search on 22 July 2026 covered the run indexes; the full TeX of
+\cite{KL}; exact arXiv/web searches for ``general variance conjecture'', the
+displayed anisotropic inequality, and quadratic-form versions; and the later
+Alonso-Gutierrez--Bastero paper arXiv:1610.04023 \cite{ABlater}. The latter
+still says that equivalence between the isotropic and general conjectures was
+unclear and proves special families. No later paper explicitly stating
+Theorem \ref{thm:exact} or the full anisotropic conclusion was found. Because
+the transfer lemma is short, it may nevertheless be folklore; novelty
+confidence is moderate.
+
+\section{Human review recommendation}
+
+Treat this as a full literature-implied answer. Reviewers should verify the
+constant-preserving Abel decomposition, the use of the isotropic theorem on
+all orthogonal marginals, and the provenance/novelty classification. The
+mathematical scope is all centered log-concave laws and includes degenerate
+laws after restriction to their linear span.
+
+\begin{thebibliography}{9}
+\bibitem{AB}
+D. Alonso-Gutierrez and J. Bastero,
+\emph{The variance conjecture on some polytopes},
+arXiv:1209.4270 (2012; PDF revision dated 2018).
+
+\bibitem{KL}
+B. Klartag and J. Lehec,
+\emph{Thin-shell bounds via parallel coupling},
+arXiv:2507.15495v2 (2026), Theorem 1.1.
+
+\bibitem{ABlater}
+D. Alonso-Gutierrez and J. Bastero,
+\emph{The variance conjecture on hyperplane projections of the
+$\ell_p^n$ balls},
+arXiv:1610.04023; Rev. Mat. Iberoam. 34 (2018), 879--904.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,589 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\X}{\mathcal X}
+\newcommand{\Cb}{C_b}
+\newcommand{\ch}{\operatorname{ch}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\spec}{\sigma}
+
+\setlist{itemsep=3pt,topsep=5pt}
+
+\title{All Six Open Questions on the Differentiation Operator\\
+\large A norm counterexample and universal power, range, and compactness obstructions}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Agent \texttt{agent\_lane\_14} \quad Model GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{MidnightBlue}{MidnightBlue!5}{%
+\parbox{0.91\textwidth}{\textbf{Status: full solution of all six questions,
+likely valid, pending human review.} The packet answers every question in
+Section 6 of Allen--Jackson \cite{AllenJackson}, including exact spectra on
+the weighted Banach and discrete Hardy spaces.}}
+\end{center}
+
+\section{Result at a glance}
+
+Let $T$ be the locally finite rooted tree of the source paper, with every
+vertex having a child, let $b(o)=o$ and $b(v)=v^-$ for $v\ne o$, and put
+\[
+  \Cb f=f\circ b,\qquad Df=f-f\circ b.
+\]
+On a discrete function space, point evaluations are continuous and the
+functions separate every pair of vertices.
+
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}c>{\bfseries}lX@{}}
+\toprule
+Question & Answer & Mechanism \\
+\midrule
+1 & Yes & A weighted Hilbert space has $\|\Cb\|=\sqrt2$ but $\|D\|=2$. \\
+2 & No & Pointwise bounded $D$-orbits contain only constant functions; hence $D$ is never power-bounded. \\
+3 & No & Every function in $\ran(\Cb)$ agrees at the root and each root child. \\
+4 & No & A nonzero spectral point of $D$ is not an eigenvalue, ruling out compactness. \\
+5 & Exact formulas & A growth-radius disk plus the root point for weighted spaces; the unit disk for Hardy spaces. \\
+6 & No & The compactness obstruction is universal, hence applies to the intended path-tree spaces. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Thus the norm conjecture in the source is false, while its isometry conjecture
+is true in the stronger power-bounded form.
+
+\section{Source questions}
+
+The questions occur in Section 6, page 17 of arXiv:2207.10211
+\cite{AllenJackson}. The following is a full-width crop of the source page.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The six open questions in the source paper. This packet answers
+  all six.}
+\end{figure}
+
+The relevant questions ask: whether $\|D\|$ can differ from
+$1+\|\Cb\|$; whether $D$ can act isometrically; whether $\Cb$ can be
+surjective; whether $D$ can be compact; and whether $D$ is compact on the
+Lipschitz or weighted Banach space of a path tree.
+
+\section{Definitions and conventions}
+
+A \emph{discrete function space} $\X$ on $T$ is a complex Banach space of
+complex-valued functions on $T$ such that:
+\begin{enumerate}
+  \item every evaluation $\delta_v(f)=f(v)$ is continuous;
+  \item if $f(v)=f(w)$ for every $f\in\X$, then $v=w$.
+\end{enumerate}
+The second condition is the point-separation axiom. The source assumes that
+every vertex has a child. This child condition, rather than homogeneity or a
+specific branching number, is exactly what the proofs below use.
+
+Whenever $D$ maps $\X$ into itself, the source's closed graph argument makes
+$D$ bounded, and $\Cb=I-D$ is bounded as well \cite[Theorems 2.6--2.7]{AllenJackson}.
+
+\section{Proof intuition}
+
+Four elementary geometric features drive all six answers.
+
+First, distribute one unit of Hilbert mass from every parent among its
+children. After conjugating the resulting weighted $\ell_2$ space to ordinary
+$\ell_2(T)$, the operator $\Cb$ becomes $P_o+U$, where $P_o$ is the root
+projection and $U$ shifts mass one level outward isometrically. The extra root
+copy raises $\|\Cb\|$ to $\sqrt2$, while alternating long $U$-orbits show that
+$\|I-P_o-U\|=2$. This breaks the conjectured norm identity.
+
+Second, repeated differences reveal any nonzero edge increment one generation
+later as a term growing linearly with the iteration number. Thus a function
+with a pointwise bounded $D$-orbit must be constant. Norm power-boundedness
+would make every orbit pointwise bounded, which is incompatible with point
+separation.
+
+Third, the root and each root child lie in the same fibre of $b$. Hence every
+function in the range of $\Cb$ identifies those two vertices, so $\Cb$ cannot
+be onto a point-separating space. This range obstruction puts $1$ in the
+spectrum of $D$ but not in its point spectrum, which compact operator theory
+forbids.
+
+Fourth, both named spaces split as $\ell_\infty$-sums of their finite
+dimensional level spaces. On the nonroot tail, $\Cb$ is an operator-weighted
+unilateral shift. A one-level resolvent test shows that the spectrum of this
+shift is exactly the disk determined by its uniform asymptotic block-growth
+rate. For $L_\mu^\infty$ this rate is a descendant/ancestor weight ratio; for
+$\mathbb T_p$ every level map is isometric, so the rate is one.
+
+\section{A Hilbert-space counterexample to the norm identity}
+
+\begin{theorem}[Answer to Question 1]\label{thm:norm}
+On every rooted locally finite tree in which each vertex has a child, there is
+a discrete Hilbert function space $H_w$ such that
+\[
+  \|\Cb\|=\sqrt2,\qquad \|D\|=2.
+\]
+Consequently $\|D\|\ne 1+\|\Cb\|$.
+\end{theorem}
+
+\begin{proof}
+For every nonroot vertex $v$, choose $p_v>0$ so that
+\[
+  \sum_{v\in\ch(u)}p_v=1
+  \qquad (u\in T).
+\]
+This is possible because every child set is finite and nonempty. Define
+$w(o)=1$ and recursively
+\[
+  w(v)=p_vw(v^-),\qquad v\ne o.
+\]
+All weights are positive. Let
+\[
+  H_w=\left\{f:T\longrightarrow\mathbb C:
+  \|f\|_w^2:=\sum_{v\in T}w(v)|f(v)|^2<\infty\right\}.
+\]
+This is a Hilbert space. Evaluation at $v$ has norm $w(v)^{-1/2}$, and the
+finitely supported point masses belong to $H_w$ and separate the vertices.
+Thus $H_w$ is a discrete function space.
+
+The map $J:H_w\to\ell_2(T)$ given by
+\[
+  (Jf)(v)=w(v)^{1/2}f(v)
+\]
+is unitary. Define $U$ on $\ell_2(T)$ by
+\[
+  (Uy)(o)=0,\qquad (Uy)(v)=p_v^{1/2}y(v^-)\quad(v\ne o).
+\]
+Then
+\[
+\begin{aligned}
+  \|Uy\|_2^2
+  &=\sum_{u\in T}\sum_{v\in\ch(u)}p_v|y(u)|^2\\
+  &=\sum_{u\in T}|y(u)|^2,
+\end{aligned}
+\]
+so $U$ is an isometry. Let $P_o$ be the orthogonal projection onto the root
+coordinate. Directly from the definitions,
+\[
+  J\Cb J^{-1}=P_o+U,
+  \qquad JDJ^{-1}=I-P_o-U=(I-P_o)(I-U).
+\]
+The vectors $P_oy$ and $Uy$ have disjoint supports. Therefore
+\[
+  \|(P_o+U)y\|_2^2=\|P_oy\|_2^2+\|y\|_2^2
+  \le 2\|y\|_2^2.
+\]
+Equality holds for the root unit vector $e_o$, so $\|\Cb\|=\sqrt2$.
+
+The displayed factorization gives $\|D\|\le2$. To obtain the reverse
+inequality, observe that $U^ke_o$ is a unit vector supported on level $k$;
+hence these vectors are orthonormal. For $N\ge1$, put
+\[
+  y_N=\frac1{\sqrt N}\sum_{k=0}^{N-1}(-1)^kU^ke_o.
+\]
+Then $\|y_N\|_2=1$. After applying $(I-P_o)(I-U)$, the coefficients on
+levels $1,\ldots,N-1$ have modulus $2/\sqrt N$, and the final coefficient on
+level $N$ has modulus $1/\sqrt N$. Hence
+\[
+  \|Dy_N\|_2^2=\frac{4(N-1)+1}{N}=4-\frac3N.
+\]
+Letting $N\to\infty$ yields $\|D\|\ge2$. Thus $\|D\|=2$, whereas
+$1+\|\Cb\|=1+\sqrt2$.
+\end{proof}
+
+\section{Iterated differences cannot be pointwise bounded}
+
+\begin{lemma}[Pointwise growth lemma]\label{lem:growth}
+Let $f:T\to\mathbb C$ be any function. If, for every $v\in T$, the scalar
+sequence $\{(D^nf)(v):n\ge0\}$ is bounded, then $f$ is constant.
+\end{lemma}
+
+\begin{proof}
+We prove by induction on $m\ge1$ that $f(v)=f(v^-)$ for every vertex $v$ of
+depth $m$. Fix such a $v$ and choose a child $z$ of $v$. Along the path from
+the root through $v$ to $z$, write
+\[
+  a_j=f(v_j)-f(v_{j-1}),
+  \qquad o=v_0,v_1,\ldots,v_m=v,v_{m+1}=z.
+\]
+For $m=1$, $D^nf(o)=0$ for every $n\ge1$. For the induction step, the earlier
+edge increments vanish by hypothesis, which again gives
+$D^nf(v_{m-1})=0$ for all $n\ge1$. In either case the recurrence
+\[
+  (D^{n+1}f)(x)=(D^nf)(x)-(D^nf)(x^-)
+\]
+shows that
+\[
+  (D^nf)(v)=a_m\qquad(n\ge1).
+\]
+Applying the same recurrence at $z$ gives
+\[
+  (D^nf)(z)=a_{m+1}-(n-1)a_m\qquad(n\ge1).
+\]
+The left side is bounded in $n$, so $a_m=0$. Since $v$ was arbitrary, the
+induction closes at every depth. All edge increments vanish, and connectedness
+makes $f$ constant.
+\end{proof}
+
+\begin{theorem}[Answer to Question 2]\label{thm:power}
+The differentiation operator is not power-bounded on any discrete function
+space. In particular, it is never an isometry.
+\end{theorem}
+
+\begin{proof}
+Suppose $D$ were power-bounded on $\X$, say
+$\sup_n\|D^n\|\le M$. For $f\in\X$ and $v\in T$, continuity of evaluation
+gives
+\[
+  |(D^nf)(v)|\le \|\delta_v\|M\|f\|.
+\]
+Lemma~\ref{lem:growth} makes every $f\in\X$ constant. Such a space cannot
+separate the root from a child, contradicting the definition of a discrete
+function space. An isometry has $\|D^n\|=1$ for every $n$, so it is excluded.
+\end{proof}
+
+\section{The backward composition operator is never onto}
+
+\begin{theorem}[Answer to Question 3]\label{thm:onto}
+The operator $\Cb$ is not surjective on any discrete function space.
+\end{theorem}
+
+\begin{proof}
+Let $v$ be any child of the root. Every $g=\Cb f$ satisfies
+\[
+  g(o)=f(b(o))=f(o)=f(b(v))=g(v).
+\]
+If $\Cb$ were onto $\X$, every member of $\X$ would take equal values at the
+distinct vertices $o$ and $v$. This contradicts point separation.
+\end{proof}
+
+This sharpens the source paper's observation that surjectivity would force
+range functions to be constant on sibling sets: the fibre
+$b^{-1}(o)$ already contains both the root and every root child.
+
+\section{Differentiation is never compact}
+
+We first close a finite-dimensional loophole needed for the compactness
+argument.
+
+\begin{lemma}\label{lem:infinite}
+There is no finite-dimensional discrete function space $\X$ for which
+$D\X\subseteq\X$.
+\end{lemma}
+
+\begin{proof}
+The source proves that the only possible eigenvalue of $D$ is $0$, and that
+the corresponding eigenvectors are constant functions
+\cite[Theorem 2.14]{AllenJackson}. For completeness, a nonzero eigenvalue is
+also ruled out directly by evaluating $Df=\lambda f$ first at the root and
+then inductively along the tree.
+
+If $\X$ were finite-dimensional and nonzero, complex finite-dimensional
+spectral theory would therefore make $D$ nilpotent. Let $m$ be its
+nilpotency index. If $m\ge2$, choose $f$ with
+$g=D^{m-1}f\ne0$. Then $Dg=0$, so $g$ is constant. But $g$ lies in the range
+of $D$, and every function in that range vanishes at the root. Thus $g=0$, a
+contradiction. Hence $m=1$ and $D=0$. Then every member of $\X$ is constant,
+again contradicting point separation.
+\end{proof}
+
+\begin{theorem}[Answers to Questions 4 and 6]\label{thm:compact}
+The differentiation operator is not compact on any discrete function space.
+Consequently it is not compact on either the Lipschitz space or any weighted
+Banach space of the intended path tree for which it acts boundedly.
+\end{theorem}
+
+\begin{proof}
+Suppose $D$ were compact on $\X$. Then $D$ is bounded, so $\Cb=I-D$ is
+bounded. Lemma~\ref{lem:infinite} makes $\X$ infinite-dimensional.
+
+By Theorem~\ref{thm:onto}, $\Cb$ is not invertible. Therefore
+\[
+  0\in\spec(\Cb),\qquad
+  1\in\spec(D),
+\]
+the latter because $D-I=-\Cb$. On the other hand, $\Cb$ is injective: for
+each $u\in T$, choose a child $v$ with $b(v)=u$; if $\Cb f=0$, then
+$f(u)=f(b(v))=0$. Hence $1$ is not an eigenvalue of $D$.
+
+Every nonzero spectral value of a compact operator on an infinite-dimensional
+complex Banach space is an eigenvalue \cite[Chapter VII, Section 4]{Conway}.
+The spectral point $1$ contradicts this theorem. Thus $D$ cannot be compact.
+
+For a named path-tree space, an unbounded $D$ is automatically not compact;
+when $D$ is bounded, the universal conclusion just proved applies.
+\end{proof}
+
+\section{Exact spectra on the weighted and Hardy spaces}
+
+We begin with a self-contained shift lemma. It isolates the only spectral
+calculation needed for both families.
+
+\begin{lemma}[Operator-weighted unilateral shift]\label{lem:shift-spectrum}
+Let $(E_n)_{n\ge1}$ be nonzero complex Banach spaces and let
+$B_n:E_{n-1}\to E_n$ $(n\ge2)$ be uniformly bounded. On
+\[
+  Z=\left(\bigoplus_{n\ge1}E_n\right)_{\ell_\infty}
+\]
+define
+\[
+  (Sx)_1=0,\qquad (Sx)_n=B_nx_{n-1}\quad(n\ge2).
+\]
+For $k\ge1$, put
+\[
+  R_k=\sup_{n\ge1}\|B_{n+k}B_{n+k-1}\cdots B_{n+1}\|,
+  \qquad
+  \rho=\lim_{k\to\infty}R_k^{1/k}.
+\]
+Then the limit exists and
+\[
+  \spec(S)=\{\lambda\in\mathbb C:|\lambda|\le\rho\}.
+\]
+\end{lemma}
+
+\begin{proof}
+The sequence $(R_k)$ is submultiplicative, and direct calculation gives
+$\|S^k\|=R_k$. Thus the limit defining $\rho$ exists and equals the spectral
+radius of $S$. In particular, the spectrum is contained in the stated disk.
+
+The operator $S$ is not onto because the first coordinate of every range
+vector vanishes, so $0\in\spec(S)$. Now fix $0<|\lambda|<\rho$ and suppose,
+for a contradiction, that $\lambda I-S$ has a bounded inverse of norm $C$.
+Fix $n\ge1$ and a unit vector $y_n\in E_n$, and let $y\in Z$ have this as its
+only nonzero coordinate. For $x=(\lambda I-S)^{-1}y$, the triangular
+recurrence first gives $x_j=0$ for $j<n$, and then
+\[
+  x_{n+k}=\lambda^{-k-1}
+  B_{n+k}B_{n+k-1}\cdots B_{n+1}y_n
+  \qquad(k\ge0),
+\]
+where the empty product for $k=0$ is the identity. Since $\|x\|\le C$,
+\[
+  \|B_{n+k}\cdots B_{n+1}y_n\|
+  \le C|\lambda|^{k+1}.
+\]
+Taking the supremum over unit $y_n$ and over $n$ yields
+$R_k\le C|\lambda|^{k+1}$, hence $\rho\le|\lambda|$, a contradiction.
+Therefore the open disk of radius $\rho$ lies in the spectrum. Closedness of
+the spectrum supplies its boundary. (When $\rho=0$, the spectral-radius
+inclusion and $0\in\spec(S)$ give the same conclusion.)
+\end{proof}
+
+\subsection{Weighted Banach spaces}
+
+Let $\mu:T\to(0,\infty)$ be a weight and suppose
+\[
+  M_\mu:=\sup_{v\in T^*}\frac{\mu(v)}{\mu(v^-)}<\infty,
+\]
+which is exactly the boundedness condition for $D$ (equivalently $\Cb$) on
+$L_\mu^\infty(T)$ in the source. For $k\ge1$, define
+\[
+  R_k(\mu)=\sup\left\{
+  \frac{\mu(v)}{\mu(u)}:
+  u\in T^*,\ v\text{ is a descendant of }u,\ |v|-|u|=k
+  \right\},
+\]
+and
+\[
+  \rho_\mu=\lim_{k\to\infty}R_k(\mu)^{1/k}.
+\]
+The limit exists because $R_{k+\ell}(\mu)\le R_k(\mu)R_\ell(\mu)$, and
+$0\le\rho_\mu\le M_\mu$.
+
+\begin{theorem}[Weighted-space part of Question 5]\label{thm:weighted-spectrum}
+If $D$ is bounded on $L_\mu^\infty(T)$, then
+\[
+\boxed{\quad
+  \spec(\Cb)=\{1\}\cup\{\lambda:|\lambda|\le\rho_\mu\},
+  \qquad
+  \spec(D)=\{0\}\cup\{\lambda:|\lambda-1|\le\rho_\mu\}.
+\quad}
+\]
+\end{theorem}
+
+\begin{proof}
+Conjugate $L_\mu^\infty(T)$ isometrically to $\ell_\infty(T)$ by
+$(Jf)(v)=\mu(v)f(v)$, and group the coordinates by levels. Put
+$E_n=\ell_\infty(\{v:|v|=n\})$. The map from level $n-1$ to level $n$ is
+\[
+  (B_nx)(v)=\frac{\mu(v)}{\mu(v^-)}x(v^-).
+\]
+On the nonroot tail $Z=(\bigoplus_{n\ge1}E_n)_{\ell_\infty}$, the restriction
+of $J\Cb J^{-1}$ has the form in Lemma~\ref{lem:shift-spectrum}. Moreover,
+\[
+ \|B_{n+k}\cdots B_{n+1}\|
+ =\max_{\substack{|u|=n,\ v\succeq u\\|v|-|u|=k}}
+ \frac{\mu(v)}{\mu(u)},
+\]
+so its spectral radius is exactly $\rho_\mu$.
+
+Splitting off the root coordinate gives the lower triangular block form
+\[
+  J\Cb J^{-1}=
+  \begin{pmatrix}
+    1&0\\ B_1&S
+  \end{pmatrix}
+  \quad\text{on }\mathbb C\oplus Z.
+\]
+For $\lambda\ne1$, elementary block elimination shows that
+$J\Cb J^{-1}-\lambda I$ is invertible if and only if $S-\lambda I$ is
+invertible: the scalar block $1-\lambda$ can be eliminated, leaving the
+diagonal blocks $1-\lambda$ and $S-\lambda I$. For $\lambda=1$, the first
+coordinate of every range vector of $J\Cb J^{-1}-I$ is zero, so the operator
+is not onto. Consequently $\spec(\Cb)=\{1\}\cup\spec(S)$, and
+Lemma~\ref{lem:shift-spectrum} gives the first formula. Finally, $D=I-\Cb$
+and elementary spectral mapping give $\spec(D)=1-\spec(\Cb)$, which is the
+second formula.
+\end{proof}
+
+The singleton in each formula matters when $\rho_\mu<1$: it records the root
+block and need not be absorbed by the disk.
+
+\subsection{Discrete Hardy spaces}
+
+Let $T$ be $(q+1)$-homogeneous and $1\le p<\infty$. Write
+\[
+  c_0=1,\qquad c_n=(q+1)q^{n-1}\quad(n\ge1),
+\]
+and let $E_n$ be the normalized finite-dimensional level space with norm
+\[
+  \|x\|_{E_n}=\left(\frac1{c_n}\sum_{|v|=n}|x(v)|^p\right)^{1/p}.
+\]
+Then $\mathbb T_p(T)$ is isometrically
+$(\bigoplus_{n\ge0}E_n)_{\ell_\infty}$.
+
+\begin{theorem}[Hardy-space part of Question 5]\label{thm:hardy-spectrum}
+For every $1\le p<\infty$,
+\[
+\boxed{\quad
+  \spec(\Cb:\mathbb T_p\to\mathbb T_p)=\{\lambda:|\lambda|\le1\},
+  \qquad
+  \spec(D:\mathbb T_p\to\mathbb T_p)=\{\lambda:|\lambda-1|\le1\}.
+\quad}
+\]
+\end{theorem}
+
+\begin{proof}
+The level map $B_n:E_{n-1}\to E_n$ replicates each parent value across its
+children. For $n\ge2$, every level-$(n-1)$ vertex has $q$ children and
+$c_n=qc_{n-1}$, so
+\[
+  \|B_nx\|_{E_n}^p
+  =\frac q{c_n}\sum_{|u|=n-1}|x(u)|^p
+  =\|x\|_{E_{n-1}}^p.
+\]
+Thus every tail map and every consecutive tail product is an isometry. In
+Lemma~\ref{lem:shift-spectrum}, $R_k=1$ and $\rho=1$. Splitting off the root
+and applying the same scalar-block elimination used in
+Theorem~\ref{thm:weighted-spectrum} adds only the spectral point $1$, which is
+already contained in the closed unit disk. Hence
+$\spec(\Cb)=\{\lambda:|\lambda|\le1\}$. Translating the spectrum by
+$D=I-\Cb$ yields the disk centered at $1$ of radius $1$.
+\end{proof}
+
+Theorems~\ref{thm:weighted-spectrum} and \ref{thm:hardy-spectrum} completely
+answer Question 5. Together with Theorems~\ref{thm:norm}, \ref{thm:power},
+\ref{thm:onto}, and \ref{thm:compact}, every question in the source list is
+settled.
+
+\section{Verification notes}
+
+The proof was subjected to the following checks.
+\begin{enumerate}
+  \item The weighted space contains every point mass and all weights are
+  positive, so the functional-space axiom is genuinely satisfied.
+  \item The exact $U$-isometry calculation includes the root column; the root
+  copy is precisely why $\|\Cb\|=\sqrt2$ rather than $1$.
+  \item The lower bound for $\|D\|$ uses orthogonal level supports, not an
+  unsupported approximate-eigenvector assertion.
+  \item In Lemma~\ref{lem:growth}, the child one generation below the tested
+  edge is essential and is supplied by the source's leafless/tree-child
+  convention.
+  \item The compactness proof separately excludes finite-dimensional spaces
+  before invoking the compact spectral theorem.
+  \item In Lemma~\ref{lem:shift-spectrum}, a one-level input forces all
+  earlier solution coordinates to vanish, so the resolvent product estimate
+  has no hidden homogeneous term.
+  \item The weighted radius starts at nonroot vertices because the root is
+  represented separately by the scalar block $1$.
+  \item The Hardy replication maps are exactly isometric after normalized
+  level counting, including all consecutive products used by the shift lemma.
+\end{enumerate}
+
+A reusable finite binary-tree check is included as
+\texttt{code/verify\_weighted\_hilbert.py}. At depth 10 it returns
+\[
+ \|\Cb\|=1.414213562373,
+ \quad \|D\|_{\mathrm{trunc}}=1.979642883762,
+ \quad \|Dy_{10}\|^2=3.7=4-3/10.
+\]
+This finite computation is a consistency check only; the proofs above are
+exact and infinite-dimensional.
+
+\section{Scope, limitations, and novelty check}
+
+The packet fully answers all six questions under the definitions and tree
+conventions of the source. For the weighted-space spectrum, the formula is
+stated precisely in the bounded case, since an unbounded operator has no
+Banach-operator spectrum. The packet does not claim that a particular later
+paper has missed these observations; it records a candidate new solution
+pending expert priority review.
+
+The bounded novelty search on 22 July 2026 covered:
+\begin{itemize}
+  \item the run's registry, solution, attempt, and proof-gap indexes;
+  \item exact searches for arXiv:2207.10211, its title, and the source's open
+  question wording;
+  \item close searches combining discrete differentiation on trees with
+  power-boundedness, isometry, surjectivity, and compactness;
+  \item exact and close searches for the weighted Banach and Hardy spectra,
+  including operator-weighted unilateral shift and $\ell_\infty$ shift
+  formulations;
+  \item the later citing paper arXiv:2308.11016 on forward and backward shifts
+  on Hardy spaces of a tree.
+\end{itemize}
+No later source explicitly stating any of these six resolutions was found.
+Classical operator-weighted shift literature is relevant background, but the
+shift lemma used here is proved directly and the exact application to Question
+5 was not located. This supports moderate novelty confidence, not an
+exhaustive claim of priority.
+
+\section*{Human review recommendation}
+
+\textbf{Verify and circulate after a short priority search.} The decisive
+checks are the exact norm calculation in Theorem~\ref{thm:norm}, the
+pointwise-growth induction in Lemma~\ref{lem:growth}, and the finite-dimensional
+step in Lemma~\ref{lem:infinite}. For the new spectral completion, check the
+resolvent estimate in Lemma~\ref{lem:shift-spectrum} and the indexing of
+$\rho_\mu$ in Theorem~\ref{thm:weighted-spectrum}.
+
+\begin{thebibliography}{9}
+
+\bibitem{AllenJackson}
+R. F. Allen and C. M. Jackson,
+\emph{The differentiation operator on discrete function spaces of a tree},
+Involve \textbf{15} (2022), no. 1, 163--184;
+arXiv:\href{https://arxiv.org/abs/2207.10211}{2207.10211}.
+
+\bibitem{Conway}
+J. B. Conway,
+\emph{A Course in Functional Analysis}, second edition,
+Graduate Texts in Mathematics 96, Springer-Verlag, New York, 1990.
+
+\end{thebibliography}
+
+\end{document}

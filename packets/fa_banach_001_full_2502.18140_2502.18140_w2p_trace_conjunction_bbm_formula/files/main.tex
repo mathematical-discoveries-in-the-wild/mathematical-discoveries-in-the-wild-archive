@@ -1,0 +1,400 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Hh}{\mathbb H}
+\newcommand{\Sp}{\mathbb S^{N-1}_+}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+
+\title{A Sobolev Trace-Conjunction\\Bourgain--Brezis--Mironescu Formula}
+\author{Automated Math Discovery Candidate Proof}
+\date{July 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid pending expert review.
+For every \(1\leq p<\infty\), the source formula extends from compactly
+supported \(C^1\) functions to the nonhomogeneous Sobolev space
+\(W^{2,p}(\R^N_+)\).  No optimality of this class is claimed.}}
+\end{center}
+
+\section*{Source and Open Problem}
+
+Let
+\[
+ \Hh=\R^N_+=\{(x',t):x'\in\R^{N-1},\ t>0\},
+ \qquad
+ \partial\Hh=\R^{N-1}\times\{0\}.
+\]
+Van Schaftingen~\cite{VanSchaftingen} proves that if
+\(u\in C_c^1(\overline{\Hh})\), then
+\begin{equation}\label{eq:source}
+\begin{split}
+ \lim_{s\to1^-}(1-s)
+ \int_{\R^{N-1}}\int_{\Hh}
+ \frac{|u(x',0)-u(y)|^p}
+ {|(x',0)-y|^{N+sp}}\,dy\,dx'
+ &=
+ c_{N,p}\int_{\R^{N-1}}|\nabla u(x',0)|^p\,dx',
+\\
+ c_{N,p}
+ &:=
+ \frac{\pi^{(N-1)/2}\Gamma((p+1)/2)}
+ {p\,\Gamma((N+p)/2)}.
+\end{split}
+\end{equation}
+Open Problem 1 on page 3 asks:
+\begin{quote}
+\emph{Does (1.8) still hold when \(u\) belongs to some suitable Sobolev
+space?}
+\end{quote}
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For \(v\in W^{1,p}(\Hh)\), \(1\leq p<\infty\), we use the standard
+half-space trace \(\Tr v\in L^p(\R^{N-1})\), characterized by
+\[
+                  v(\,\cdot\,,t)\longrightarrow\Tr v
+                  \quad\text{in }L^p(\R^{N-1})
+                  \quad(t\downarrow0).
+\]
+This characterization, including the endpoint \(p=1\), follows directly
+from absolute continuity on normal lines; see also
+\cite[Chapter 18]{Leoni}.  If \(u\in W^{2,p}(\Hh)\), both \(\Tr u\) and
+\(\Tr\nabla u\) are therefore well defined in \(L^p\).
+
+\section*{Proof Intuition}
+
+Write an interior point relative to a boundary point as
+\(y=(x',0)+r\omega\), where \(r>0\) and
+\(\omega\in\Sp:=\{\omega\in\mathbb S^{N-1}:\omega_N>0\}\).
+The factor \(r^p\) in the first difference converts the energy into
+\[
+ (1-s)\int_{\Sp}\int_0^\infty
+ r^{p(1-s)-1}\norm{Q_r^\omega}_{L^p}^p\,dr\,d\omega,
+ \qquad
+ Q_r^\omega=
+ \frac{u(\,\cdot+r\omega',r\omega_N)-\Tr u}{r}.
+\]
+The measure \(p(1-s)r^{p(1-s)-1}\,dr\) on \((0,1)\) is a probability
+measure concentrating at \(r=0\).
+
+The extra derivative in \(W^{2,p}\) gives exactly the boundary regularity
+needed to identify what this Mellin average sees.  Indeed,
+\(\nabla u\in W^{1,p}\), so its horizontal slices converge strongly to
+\(G=\Tr\nabla u\).  Integrating \(\nabla u\) along the short ray and using
+translation continuity gives, uniformly in \(\omega\),
+\[
+                       Q_r^\omega\longrightarrow G\cdot\omega
+                       \quad\text{in }L^p.
+\]
+The Mellin concentration now yields one factor \(1/p\), while the
+hemisphere beta integral supplies the remaining gamma-function factor.
+Finally, the nonhomogeneous \(L^p\) norms of \(u\) and \(\Tr u\) control
+all radii \(r\geq1\), making that contribution \(O(1-s)\).
+
+\section*{Main Result}
+
+\begin{theorem}\label{thm:main}
+Let \(N\geq2\), \(1\leq p<\infty\), and let
+\(u\in W^{2,p}(\Hh)\) be real valued.  Then
+\begin{equation}\label{eq:main}
+\begin{split}
+ &\lim_{s\to1^-}(1-s)
+ \int_{\R^{N-1}}\int_{\Hh}
+ \frac{|\Tr u(x')-u(y)|^p}
+ {|(x',0)-y|^{N+sp}}\,dy\,dx'
+\\
+ &\hspace{25mm}=
+ \frac{\pi^{(N-1)/2}\Gamma((p+1)/2)}
+ {p\,\Gamma((N+p)/2)}
+ \int_{\R^{N-1}}|\Tr\nabla u(x')|^p\,dx'.
+\end{split}
+\end{equation}
+Thus formula \emph{(1.8)} of the source paper holds on the suitable
+Sobolev space \(W^{2,p}(\Hh)\), affirmatively answering Open Problem~1.
+\end{theorem}
+
+\section*{Uniform Boundary Expansion}
+
+\begin{lemma}\label{lem:ray}
+Put \(G=\Tr\nabla u\).  For \(r>0\) and \(\omega\in\Sp\), define
+\[
+ Q_r^\omega(x')
+ =\frac{u(x'+r\omega',r\omega_N)-\Tr u(x')}{r}.
+\]
+Then
+\[
+ \lim_{r\downarrow0}\ 
+ \sup_{\omega\in\Sp}
+ \norm{Q_r^\omega-G\cdot\omega}_{L^p(\R^{N-1})}=0.
+\]
+In particular,
+\(\sup_{0<r<r_0,\,\omega\in\Sp}\norm{Q_r^\omega}_p<\infty\)
+for some \(r_0>0\).
+\end{lemma}
+
+\begin{proof}
+Set \(F=\nabla u\in W^{1,p}(\Hh;\R^N)\).  Strong convergence of horizontal
+slices to the trace gives
+\[
+ \eta(r):=\sup_{0<t\leq r}\norm{F(\,\cdot\,,t)-G}_p
+ \longrightarrow0.
+\]
+Continuity of translations in \(L^p(\R^{N-1})\) gives
+\[
+ \tau(r):=\sup_{|z|\leq r}\norm{G(\,\cdot+z)-G}_p
+ \longrightarrow0.
+\]
+
+The \(L^p\)-valued fundamental theorem of calculus along an oblique ray
+gives, for almost every \(\omega\in\Sp\),
+\begin{equation}\label{eq:rayftc}
+ Q_r^\omega
+ =\int_0^1
+ F(\,\cdot+tr\omega',tr\omega_N)\cdot\omega\,dt
+ \quad\text{in }L^p(\R^{N-1}).
+\end{equation}
+For completeness, one may first integrate from \(\varepsilon\) to \(r\)
+for a smooth approximation to \(u\), pass to \(W^{1,p}\), and then let
+\(\varepsilon\downarrow0\).  The initial slice converges to \(\Tr u\);
+absolute continuity of the \(L^p\)-integral of \(\nabla u\) justifies the
+last limit.  This argument is valid for \(p=1\) as well.
+
+For \(0<t\leq1\), invariance of the \(L^p\)-norm under horizontal
+translations yields
+\[
+\begin{split}
+ &\norm{
+ F(\,\cdot+tr\omega',tr\omega_N)-G}_p
+\\
+ &\qquad\leq
+ \norm{F(\,\cdot,tr\omega_N)-G}_p
+ +\norm{G(\,\cdot+tr\omega')-G}_p
+ \leq\eta(r)+\tau(r).
+\end{split}
+\]
+Minkowski's integral inequality in \eqref{eq:rayftc} therefore gives
+\[
+ \norm{Q_r^\omega-G\cdot\omega}_p
+ \leq\eta(r)+\tau(r),
+\]
+independently of \(\omega\).  This proves both assertions.
+\end{proof}
+
+\begin{lemma}[Mellin concentration]\label{lem:mellin}
+If \(A:(0,1)\to[0,\infty)\) is bounded and
+\(A(r)\to A_0\) as \(r\downarrow0\), then
+\[
+ \lim_{s\to1^-}(1-s)\int_0^1
+ r^{p(1-s)-1}A(r)\,dr=\frac{A_0}{p}.
+\]
+\end{lemma}
+
+\begin{proof}
+The measures
+\[
+        p(1-s)r^{p(1-s)-1}\mathbf1_{(0,1)}(r)\,dr
+\]
+have total mass \(1\).  For each fixed \(\delta\in(0,1)\), their mass on
+\([\delta,1]\) is \(1-\delta^{p(1-s)}\), which tends to zero.  Splitting
+the integral at \(\delta\), and then using \(A(r)\to A_0\), proves the
+claim.
+\end{proof}
+
+\section*{Proof of Theorem \ref{thm:main}}
+
+\begin{proof}
+Make the change of variables
+\[
+                y=(x',0)+r\omega,
+                \qquad r>0,\quad\omega\in\Sp.
+\]
+Polar coordinates and Tonelli's theorem give, for \(0<s<1\),
+\begin{equation}\label{eq:polar}
+\begin{split}
+ E_s(u)
+ &:=(1-s)
+ \int_{\R^{N-1}}\int_{\Hh}
+ \frac{|\Tr u(x')-u(y)|^p}
+ {|(x',0)-y|^{N+sp}}\,dy\,dx'
+\\
+ &=(1-s)\int_{\Sp}\int_0^\infty
+ r^{p(1-s)-1}\norm{Q_r^\omega}_p^p\,dr\,d\omega.
+\end{split}
+\end{equation}
+
+Define
+\[
+                     A(r)=\int_{\Sp}\norm{Q_r^\omega}_p^p\,d\omega.
+\]
+Lemma~\ref{lem:ray}, the reverse triangle inequality, and continuity of
+\(z\mapsto z^p\) show that \(A\) is bounded near zero and
+\begin{equation}\label{eq:A0}
+ A(r)\longrightarrow
+ A_0:=\int_{\Sp}\norm{G\cdot\omega}_p^p\,d\omega.
+\end{equation}
+In fact \(A\) is bounded on all of \((0,1)\).  Lemma~\ref{lem:ray}
+handles small \(r\); away from zero, use
+\[
+ \norm{Q_r^\omega}_p
+ \leq r^{-1}\bigl(\norm{\Tr u}_p+
+ \norm{u(\,\cdot,r\omega_N)}_p\bigr)
+\]
+and the standard uniform slice bound
+\(\sup_{0<t\leq1}\norm{u(\,\cdot,t)}_p<\infty\).
+Lemma~\ref{lem:mellin} therefore applies directly, and the part of
+\eqref{eq:polar} with \(0<r<1\) converges to \(A_0/p\).
+
+We next compute \(A_0\).  Since
+\(\omega\mapsto|e\cdot\omega|^p\) is even, its integral over the upper
+hemisphere is one half of its integral over the whole sphere, regardless
+of the unit vector \(e\).  The beta integral gives
+\begin{equation}\label{eq:angular}
+ \int_{\Sp}|a\cdot\omega|^p\,d\omega
+ =
+ \frac{\pi^{(N-1)/2}\Gamma((p+1)/2)}
+ {\Gamma((N+p)/2)}\,|a|^p
+ \qquad(a\in\R^N).
+\end{equation}
+Indeed the left side for \(|a|=1\) is
+\[
+ \frac12|\mathbb S^{N-2}|
+ B\!\left(\frac{p+1}{2},\frac{N-1}{2}\right).
+\]
+By Fubini's theorem, \eqref{eq:A0} and \eqref{eq:angular} yield
+\[
+ \frac{A_0}{p}
+ =
+ \frac{\pi^{(N-1)/2}\Gamma((p+1)/2)}
+ {p\,\Gamma((N+p)/2)}
+ \int_{\R^{N-1}}|G(x')|^p\,dx'.
+\]
+
+It remains to discard the part with \(r\geq1\).  Returning to
+\(h=r\omega\), the elementary inequality
+\(|a-b|^p\leq2^{p-1}(|a|^p+|b|^p)\) gives
+\begin{equation}\label{eq:tail}
+\begin{split}
+ &\int_{\substack{h_N>0\\|h|\geq1}}
+ |h|^{-N-sp}
+ \int_{\R^{N-1}}
+ |\Tr u(x')-u(x'+h',h_N)|^p\,dx'\,dh
+\\
+ &\quad\leq 2^{p-1}\norm{\Tr u}_p^p
+ \int_{\substack{h_N>0\\|h|\geq1}}|h|^{-N-sp}\,dh
+\\
+ &\qquad\quad+
+ 2^{p-1}
+ \int_0^\infty \norm{u(\,\cdot,t)}_p^p
+ \left[
+ \int_{\substack{z\in\R^{N-1}\\|(z,t)|\geq1}}
+ |(z,t)|^{-N-sp}\,dz
+ \right]dt.
+\end{split}
+\end{equation}
+For \(s\in[1/2,1)\), the first kernel integral is uniformly bounded.
+The bracketed integral is also bounded uniformly in \(t>0\) and such
+\(s\).  To see this, use
+\(|(z,t)|^{-N-sp}\leq|(z,t)|^{-N-p/2}\) on \(|(z,t)|\geq1\).
+If \(t\leq1/2\), the restriction forces
+\(|z|\geq\sqrt3/2\); if \(t>1/2\), integrate the latter kernel over all
+\(z\) and scale by \(t\).  Both bounds are uniform.
+Thus the right side of \eqref{eq:tail} is at most
+\[
+                    C_{N,p}\bigl(
+                    \norm{\Tr u}_p^p+\norm{u}_{L^p(\Hh)}^p\bigr).
+\]
+After multiplication by \(1-s\), the \(r\geq1\) contribution tends to
+zero.  Combining this with the small-radius limit proves
+\eqref{eq:main}.
+\end{proof}
+
+\section*{Verification Notes}
+
+The accompanying script \texttt{code/verify\_constants.py} performs two
+independent checks:
+\begin{enumerate}
+\item it compares the gamma-function expression in
+\eqref{eq:angular} with direct one-dimensional beta quadrature for
+several noninteger values of \(p\) and several dimensions;
+\item it verifies the Mellin normalization on the test family
+\(A(r)=A_0+r^q\), for which the integral is exactly
+\[
+ \frac{A_0}{p}+\frac{1-s}{p(1-s)+q}.
+\]
+\end{enumerate}
+These checks guard against a missing hemisphere factor or a missing
+factor \(p\); they are not used as proof.
+
+The principal points for expert review are the \(L^p\)-valued ray identity
+\eqref{eq:rayftc}, its uniformity as \(\omega_N\downarrow0\), and the
+uniform fixed-height kernel estimate in \eqref{eq:tail}.  Each is written
+so that the endpoint \(p=1\) remains visible.
+
+\section*{Novelty Check, Scope, and Limitations}
+
+On July 23, 2026, bounded searches were run in arXiv and general web
+indexes for the exact source title, arXiv id \(2502.18140\), the quoted
+phrase ``suitable Sobolev space,'' and close combinations of ``trace
+conjunction,'' ``Bourgain--Brezis--Mironescu,'' and \(W^{2,p}\).
+The searches found the source preprint and its published institutional
+repository record, but no later paper answering Open Problem~1 or proving
+the extension above.  The run's cheap indexes also had no prior result or
+attempt for this arXiv id before reservation.  Novelty confidence is
+moderate pending a specialist citation search.
+
+The theorem is a full answer to Open Problem~1 in its literal existence
+form: it supplies a suitable Sobolev space for every exponent covered by
+the smooth theorem.  It does not claim that \(W^{2,p}\) is sharp.  A larger
+space characterized directly by an \(L^p\) boundary trace of the full
+gradient would also support the same proof.  The result does not address
+the source paper's separate converse problem concerning recovery of a
+weak normal derivative from finite limiting conjunction energy.
+
+\section*{Human-Review Recommendation}
+
+Recommend expert verification as a candidate full solution.  In
+particular, check:
+\begin{enumerate}
+\item the trace and oblique-ray fundamental theorem at \(p=1\);
+\item the uniform estimate in Lemma~\ref{lem:ray};
+\item the far-field estimate \eqref{eq:tail};
+\item that the intended reading of ``some suitable Sobolev space'' accepts
+the concrete, non-sharp class \(W^{2,p}\).
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{VanSchaftingen}
+J.~Van Schaftingen,
+\emph{Trace conjunction inequalities},
+Academy of Romanian Scientists. Annals. Series on Mathematics and its
+Applications \textbf{17} (2025), no.~1, 321--342,
+\href{https://arxiv.org/abs/2502.18140}{arXiv:2502.18140},
+\href{https://doi.org/10.56082/annalsarscimath.2025.1.321}
+{doi:10.56082/annalsarscimath.2025.1.321}.
+
+\bibitem{Leoni}
+G.~Leoni,
+\emph{A First Course in Sobolev Spaces}, second edition,
+Graduate Studies in Mathematics 181, American Mathematical Society,
+Providence, RI, 2017.
+
+\end{thebibliography}
+
+\end{document}

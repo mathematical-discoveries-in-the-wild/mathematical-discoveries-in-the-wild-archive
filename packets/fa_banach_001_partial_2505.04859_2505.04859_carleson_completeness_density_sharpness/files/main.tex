@@ -1,0 +1,552 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{accent}{RGB}{37,86,123}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\D}{\mathbb D}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Zcal}{\mathcal Z}
+\newcommand{\Lam}{\Lambda}
+\newcommand{\rhoh}{\rho}
+
+\title{\textcolor{accent}{An exact arithmetic phase diagram\\for two-ray Carleson systems}}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 4}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{
+\textbf{Status.} Candidate exact classification theorem for a natural
+two-ray model; current verdict: likely valid.  It includes sharpness of the
+source density theorem, but not the source paper's unrestricted
+spanning-properties program.
+}}
+\end{center}
+
+\section{Source program and target}
+
+Krishtal and Miller \cite{KM} study the spanning properties of canonical
+Carleson systems.  Their introduction says that a full understanding remains
+far from achieved and proposes a future sampling/interpolation program.  The
+exact source passage appears below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+For a countable set \(\Lam\subset[0,\infty)\), the paper defines its
+\emph{logarithmic block density} by
+\[
+ L(\Lam)=\inf_{\mu>1}\frac1{\log\mu}
+ \limsup_{t\to\infty}
+ \sum_{\lambda\in\Lam\cap[t,\mu t]}\frac1\lambda.
+\]
+Its Theorem~3.5 states that if a Carleson spectrum lies in
+\[
+ \D_c=\{re^{i\phi}\in\D\setminus\{0\}:|\phi|\le c\},
+ \qquad 0\le c<\pi,
+\]
+then \(L(\Lam)>c/\pi\) guarantees completeness of the canonical system
+\(\{D^\lambda g\}_{\lambda\in\Lam}\) in \(\ell^2(\N_0)\).
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/source_theorem_crop.png}
+\end{center}
+
+The result below completely classifies every arithmetic fractional-power
+orbit for an explicit two-ray family, and then answers the natural sharpness
+question as a corollary.
+
+\section{Definitions}
+
+The pseudohyperbolic distance in \(\D\) is
+\[
+ \rhoh(z,w)=\left|\frac{z-w}{1-w\overline z}\right|.
+\]
+A sequence \(\Zcal=\{z_j\}\subset\D\) is a \emph{Carleson sequence} when
+\[
+ \inf_k\prod_{j\ne k}\rhoh(z_k,z_j)>0.
+\]
+For such a spectrum, let \(D\) be diagonal on the coordinate basis,
+\(D\delta_j=z_j\delta_j\), and let
+\[
+ g_j=\sqrt{1-|z_j|^2}.
+\]
+Following \cite{KM}, if \(z_j=r_je^{i\phi_j}\), with
+\(\phi_j\in[-\pi,\pi)\), fractional powers use the principal phase:
+\[
+ D^\lambda\delta_j
+ =z_j^\lambda\delta_j
+ =e^{\lambda(\log r_j+i\phi_j)}\delta_j.
+\]
+
+\section{Proof intuition}
+
+Put spectral points at hyperbolically geometric radii on the two rays
+\(\pm\theta\).  Sampling the orbit at times \(\alpha k\) replaces the
+spectrum by its principal \(\alpha\)-th powers.  There are exactly two
+possibilities.  If \(\alpha\theta\in\pi\mathbb Z\), the two members of
+every radial pair collide after powering, so their coordinate differences
+give infinitely many annihilators.  Otherwise the powered points lie on two
+distinct rays and still form a Carleson sequence.  The sampled orbit is then
+a bounded invertible diagonal image of the canonical frame for that powered
+spectrum.
+
+The key geometric fact is stable under every radial power.  In hyperbolic
+coordinates \(u=2\operatorname{artanh}r\), the map
+\(r\mapsto r^\alpha\) has derivative bounded below along the chosen radial
+sequence.  Thus same-ray products retain a uniform lower bound.  Across the
+rays, distinct boundary limit points again give a summable, uniformly
+controlled loss.  This yields an exact frame-versus-infinite-defect
+dichotomy, not only a counterexample at the critical density.
+
+\section{Exact arithmetic phase diagram}
+
+\begin{theorem}\label{thm:phase}
+Fix \(A>0\) and \(0<\theta<\pi\), and interlace the two-ray spectrum
+\[
+ r_n=\tanh(A(n+1)),\qquad
+ z_n^\pm=r_ne^{\pm i\theta}
+ \qquad(n\in\N_0).
+\]
+This is a Carleson sequence.  Let \(D\) be the corresponding diagonal
+operator and \(g_n^\pm=\sqrt{1-r_n^2}\).  Then, for every \(\alpha>0\),
+\[
+ \{D^{\alpha k}g\}_{k\in\N_0}
+ \begin{cases}
+ \text{is a frame for \(\ell^2(\N_0)\),}
+     &\alpha\theta\notin\pi\mathbb Z,\\[2mm]
+ \text{has infinite-dimensional orthogonal complement,}
+     &\alpha\theta\in\pi\mathbb Z.
+ \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+We first establish a powered-spectrum claim.  Let \(\beta>0\) satisfy
+\(\beta\theta\notin\pi\mathbb Z\), and set
+\[
+ w_n^\pm=(z_n^\pm)^\beta
+ =r_n^\beta e^{\pm i\beta\theta}.
+\]
+Choose \(\phi_\beta\in(-\pi,\pi)\) with
+\(e^{i\phi_\beta}=e^{i\beta\theta}\).  The nonresonance assumption gives
+\(0<|\phi_\beta|<\pi\), and the powered spectrum is the union of the
+distinct rays
+\[
+ w_n^\pm=s_ne^{\pm i\phi_\beta},
+ \qquad s_n=r_n^\beta.
+\]
+
+To control a single ray, introduce its hyperbolic radial coordinate
+\[
+ U_\beta(x)
+ =2\operatorname{artanh}\bigl(\tanh(x)^\beta\bigr),
+ \qquad x\ge A.
+\]
+Its derivative is
+\[
+ U_\beta'(x)
+ =\frac{2\beta\tanh(x)^{\beta-1}\operatorname{sech}^2x}
+ {1-\tanh(x)^{2\beta}}>0.
+\]
+Moreover \(U_\beta'(x)\to2\) as \(x\to\infty\).  After adjoining the
+point at infinity, this is a positive continuous function on the compact
+interval \([A,\infty]\).  Hence
+\[
+ a_\beta:=\inf_{x\ge A}U_\beta'(x)>0.
+\]
+Writing \(x_n=A(n+1)\), the mean-value theorem yields
+\[
+ |U_\beta(x_m)-U_\beta(x_n)|
+ \ge a_\beta A|m-n|.
+\]
+For positive radii \(s,t\),
+\[
+ \left|\frac{s-t}{1-st}\right|
+ =\tanh\left(
+ \frac{|2\operatorname{artanh}s-2\operatorname{artanh}t|}{2}
+ \right).
+\]
+Consequently, with \(B_\beta=a_\beta A/2\),
+\begin{equation}\label{eq:powered-same}
+ \rhoh(w_m^\pm,w_n^\pm)
+ \ge\tanh(B_\beta|m-n|).
+\end{equation}
+Since
+\[
+ P_\beta:=\prod_{j=1}^{\infty}\tanh(B_\beta j)>0,
+\]
+the product over all other points on the same powered ray is at least
+\(P_\beta^2\), uniformly in the chosen point.
+
+For the opposite ray, let
+\[
+ s_0=r_0^\beta,\qquad
+ q_\beta=s_0|\sin\phi_\beta|>0.
+\]
+Exactly as for the unpowered rays,
+\begin{equation}\label{eq:powered-q}
+ \rhoh(w_m^+,w_n^-)\ge q_\beta
+\end{equation}
+and
+\begin{equation}\label{eq:powered-loss}
+ 1-\rhoh(w_m^+,w_n^-)^2
+ \le
+ \frac{(1-s_m^2)(1-s_n^2)}
+ {4s_0^2\sin^2\phi_\beta}.
+\end{equation}
+The function
+\[
+ r\longmapsto\frac{1-r^{2\beta}}{1-r^2}
+\]
+extends continuously and positively to \([r_0,1]\), with value \(\beta\)
+at \(1\).  Therefore
+\[
+ \sum_{n=0}^{\infty}(1-s_n^2)
+ \lesssim_{\beta,A}
+ \sum_{n=0}^{\infty}(1-r_n^2)<\infty.
+\]
+Equations \eqref{eq:powered-q}--\eqref{eq:powered-loss}, together with
+\(-\log x\le(1-x)/q_\beta\) for \(x\in[q_\beta,1]\), give a positive
+uniform lower bound for the full opposite-ray product.  Combining this
+with \eqref{eq:powered-same} proves that
+\(\{w_n^+,w_n^-\}_{n\ge0}\) is a Carleson sequence.  Taking
+\(\beta=1\) proves in particular that the original spectrum is Carleson.
+
+Now fix \(\alpha>0\).  Suppose first that
+\(\alpha\theta\in\pi\mathbb Z\).  Then
+\[
+ (z_n^+)^\alpha=(z_n^-)^\alpha
+ \qquad(n\in\N_0).
+\]
+It follows that the two corresponding coordinates of \(D^{\alpha k}g\)
+agree for every \(k\).  Hence
+\[
+ b_n:=\delta_n^+-\delta_n^-
+ \quad\text{satisfies}\quad
+ \langle b_n,D^{\alpha k}g\rangle=0
+ \qquad(k\in\N_0).
+\]
+The vectors \(b_n\) are mutually orthogonal, so the orthogonal complement
+is infinite-dimensional.
+
+Finally suppose that \(\alpha\theta\notin\pi\mathbb Z\).  By the powered
+claim, the sequence
+\[
+ \mathcal W_\alpha
+ =\{w_n^\pm=(z_n^\pm)^\alpha:n\in\N_0\}
+\]
+is Carleson.  Let \(E\) be diagonal with spectrum \(\mathcal W_\alpha\)
+and let \(h_n^\pm=\sqrt{1-r_n^{2\alpha}}\).  The canonical Carleson-frame
+theorem \cite[Theorem~1.1]{CHPS} says that
+\(\{E^kh\}_{k\ge0}\) is a frame.  The ratios
+\[
+ m_n
+ =\sqrt{\frac{1-r_n^2}{1-r_n^{2\alpha}}}
+\]
+are bounded above and below away from zero: their squares are positive
+and continuous on \([r_0,1]\), with limiting value \(1/\alpha\) at \(1\).
+Thus \(M\delta_n^\pm=m_n\delta_n^\pm\) defines a bounded invertible
+diagonal operator.  Coordinatewise,
+\[
+ D^{\alpha k}g=M E^kh.
+\]
+A bounded invertible image of a frame is a frame, proving the other
+direction.
+\end{proof}
+
+\begin{corollary}[Density phase diagram]\label{cor:phase-density}
+For the fixed spectrum in Theorem~\ref{thm:phase} and every \(d>0\), put
+\[
+ \Lambda_d=\{k/d:k\in\N_0\}.
+\]
+Then \(L(\Lambda_d)=d\), and
+\[
+ \{D^\lambda g\}_{\lambda\in\Lambda_d}
+ \begin{cases}
+ \text{is a frame,}
+   &d\notin\{\theta/(m\pi):m\in\N\},\\[1mm]
+ \text{has infinite-dimensional orthogonal complement,}
+   &d=\theta/(m\pi)\text{ for some }m\in\N.
+ \end{cases}
+\]
+\end{corollary}
+
+\begin{proof}
+The harmonic-sum calculation gives
+\[
+ L(\Lambda_d)=d.
+\]
+Apply Theorem~\ref{thm:phase} with \(\alpha=1/d\).  Resonance means
+\(\theta/d=m\pi\), equivalently \(d=\theta/(m\pi)\).
+\end{proof}
+
+\section{Density-threshold sharpness}
+
+\begin{theorem}\label{thm:sharpness}
+Let \(0<c<\pi\) and \(0<d\le c/\pi\).  There exist a Carleson sequence
+\(\Zcal\subset\D_c\) and a countable set
+\(\Lam\subset[0,\infty)\) such that
+\[
+ L(\Lam)=d
+\]
+and
+\[
+ \dim\left(
+ \overline{\operatorname{span}}\{D^\lambda g:\lambda\in\Lam\}^{\perp}
+ \right)=\infty.
+\]
+Consequently the strict condition \(L(\Lam)>c/\pi\) in
+\cite[Theorem~3.5]{KM} is optimal: at equality, the canonical system may
+fail even to be complete, and may have infinite defect.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ \theta=\pi d,\qquad
+ \Lam=\{k/d:k\in\N_0\}.
+\]
+Fix any \(A>0\), put \(r_n=\tanh(A(n+1))\), and define
+\[
+ z_n^+=r_ne^{i\theta},
+ \qquad
+ z_n^-=r_ne^{-i\theta}
+ \qquad(n\in\N_0).
+\]
+Interlace these two rays to obtain a sequence \(\Zcal\).  Since
+\(0<\theta\le c<\pi\), the points are distinct and
+\(\Zcal\subset\D_c\).
+
+\medskip
+\noindent\emph{Step 1: \(\Zcal\) is a Carleson sequence.}
+For two points on the same ray, the subtraction formula for the hyperbolic
+tangent gives
+\begin{equation}\label{eq:same-ray}
+ \rhoh(z_m^\pm,z_n^\pm)
+ =\frac{|r_m-r_n|}{1-r_mr_n}
+ =\tanh(A|m-n|).
+\end{equation}
+Let
+\[
+ P_A=\prod_{k=1}^{\infty}\tanh(Ak).
+\]
+This product is positive because
+\[
+ \sum_{k=1}^{\infty}\bigl(1-\tanh(Ak)\bigr)<\infty.
+\]
+For a fixed \(m\), the product over the other points on the same ray is
+\begin{equation}\label{eq:withinproduct}
+ \left(\prod_{k=1}^{m}\tanh(Ak)\right)
+ \left(\prod_{k=1}^{\infty}\tanh(Ak)\right)
+ \ge P_A^2.
+\end{equation}
+
+It remains to control the opposite ray.  Write
+\[
+ \rho_{mn}=\rhoh(z_m^+,z_n^-),\qquad
+ r_0=\tanh A,\qquad s=\sin\theta>0.
+\]
+From
+\[
+ z_m^+-z_n^-=(r_m-r_n)\cos\theta
+             +i(r_m+r_n)\sin\theta
+\]
+and \(|1-z_n^-\overline{z_m^+}|\le2\), we obtain
+\begin{equation}\label{eq:q}
+ \rho_{mn}\ge r_0s=:q>0.
+\end{equation}
+The standard identity for pseudohyperbolic distance gives
+\begin{align}
+ 1-\rho_{mn}^2
+ &=\frac{(1-r_m^2)(1-r_n^2)}
+ {|1-r_mr_ne^{-2i\theta}|^2} \notag\\
+ &\le
+ \frac{(1-r_m^2)(1-r_n^2)}{4r_0^2s^2},
+                                                        \label{eq:crossloss}
+\end{align}
+because
+\[
+ |1-r_mr_ne^{-2i\theta}|^2
+ =(1-r_mr_n)^2+4r_mr_n\sin^2\theta
+ \ge4r_0^2s^2.
+\]
+Furthermore,
+\[
+ S_A:=\sum_{n=0}^{\infty}(1-r_n^2)
+ =\sum_{n=0}^{\infty}\operatorname{sech}^2(A(n+1))<\infty.
+\]
+Since \(1-\rho_{mn}\le1-\rho_{mn}^2\), \eqref{eq:crossloss} yields,
+uniformly in \(m\),
+\[
+ \sum_{n=0}^{\infty}(1-\rho_{mn})
+ \le\frac{S_A}{4r_0^2s^2}.
+\]
+For \(x\in[q,1]\), one has
+\(-\log x\le(1-x)/q\).  Therefore
+\begin{equation}\label{eq:crossproduct}
+ \prod_{n=0}^{\infty}\rho_{mn}
+ \ge
+ \exp\left(-\frac{S_A}{4qr_0^2s^2}\right)>0
+\end{equation}
+uniformly in \(m\).  The same estimate applies with the signs reversed.
+Combining \eqref{eq:withinproduct} and \eqref{eq:crossproduct} proves
+\[
+ \inf_{z\in\Zcal}\prod_{\substack{w\in\Zcal\\w\ne z}}
+ \rhoh(z,w)>0.
+\]
+Thus \(\Zcal\) is a Carleson sequence.
+
+\medskip
+\noindent\emph{Step 2: \(L(\Lam)=d\).}
+For every fixed \(\mu>1\), the harmonic-sum asymptotic gives
+\begin{align*}
+ \lim_{t\to\infty}
+ \sum_{\lambda\in\Lam\cap[t,\mu t]}\frac1\lambda
+ &=
+ \lim_{t\to\infty}
+ d\sum_{\substack{k\in\N\\dt\le k\le d\mu t}}\frac1k\\
+ &=d\log\mu.
+\end{align*}
+After division by \(\log\mu\), the expression inside the infimum defining
+\(L(\Lam)\) equals \(d\) for every \(\mu>1\).  Hence \(L(\Lam)=d\).
+
+\medskip
+\noindent\emph{Step 3: infinite defect.}
+Index the coordinate vectors corresponding to \(z_n^\pm\) by
+\(\delta_n^\pm\).  The two coordinates have the same canonical weight
+\(\sqrt{1-r_n^2}\).  If \(\lambda=k/d\in\Lam\), then the principal-phase
+definition gives
+\[
+ (z_n^\pm)^\lambda
+ =r_n^{k/d}e^{\pm i\theta k/d}
+ =r_n^{k/d}e^{\pm i\pi k}
+ =(-1)^k r_n^{k/d}.
+\]
+Thus the \(+\) and \(-\) coordinates of \(D^\lambda g\) agree for every
+\(n\) and every \(\lambda\in\Lam\).  Consequently
+\[
+ b_n:=\delta_n^+-\delta_n^-
+ \quad\text{satisfies}\quad
+ \langle b_n,D^\lambda g\rangle=0
+ \qquad(\lambda\in\Lam).
+\]
+The nonzero vectors \(b_n\) are mutually orthogonal.  They span an
+infinite-dimensional subspace of the orthogonal complement, completing the
+proof.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+\subsection*{Adversarial proof checks}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}
+>{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+\toprule
+Potential failure & Check \\
+\midrule
+Powering could destroy same-ray separation &
+The derivative of \(U_\alpha\) has a positive infimum, so
+\eqref{eq:powered-same} gives a geometric lower bound for every same-ray
+factor and hence for the full product. \\
+Powered cross-ray product could collapse &
+Off resonance the powered rays have distinct boundary points.
+Equations \eqref{eq:powered-q}--\eqref{eq:powered-loss} give a common
+factor lower bound and uniformly summable deficits. \\
+Phase wrap could create an unlisted case &
+The principal phase \(\phi_\alpha\) satisfies
+\(0<|\phi_\alpha|<\pi\) exactly when
+\(\alpha\theta\notin\pi\mathbb Z\); equality is exactly the collision
+case. \\
+Frame transfer could change the generator &
+The ratio
+\(\sqrt{(1-r_n^2)/(1-r_n^{2\alpha})}\) extends positively to \(r=1\),
+so one bounded invertible diagonal operator maps the powered canonical
+frame to the sampled orbit. \\
+The density calculation ignores \(\lambda=0\) &
+For \(t\to\infty\), the block \([t,\mu t]\) never contains \(0\). \\
+Only one annihilator is produced &
+Every radial pair produces a mutually orthogonal vector \(b_n\), giving
+infinite defect. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Scope}
+
+Theorem~\ref{thm:phase} is a necessary-and-sufficient classification for
+every arithmetic fractional-power orbit of the stated two-ray spectra.
+It does not characterize arbitrary spectra or arbitrary nonarithmetic
+sets \(\Lam\), so the broad program stated in the source remains open.
+Corollary~\ref{cor:phase-density} shows that within this model density
+alone does not determine spanning: at every nonresonant density the
+system is a frame, while a discrete sequence of resonant densities has
+infinite defect.
+
+\subsection*{Bounded novelty check}
+
+On 23 July 2026, the run indexes were searched for arXiv:2505.04859 and the
+core phrases.  External searches covered the current arXiv v2 page, the
+published article page, the 2023/2026 source on the mystery of Carleson
+frames, the July 2026 preprint on block-diagonal Carleson frames, and exact
+or close combinations of \emph{Carleson systems}, \emph{powered spectrum},
+\emph{two rays}, \emph{fractional powers}, \emph{phase collision},
+\emph{logarithmic block density}, and \(c/\pi\).  No explicit statement of
+Theorem~\ref{thm:phase} was found.  The block-diagonal preprint's redundancy
+classification is for nonnegative spectra and does not contain this complex
+two-ray phase diagram.
+
+Novelty confidence is moderate, not high.  Remark~2.6 of \cite{KM} already
+observes that if two spectral points have the same \(N\)-th power, the
+analysis matrix for \(\{D^{Nk}g\}\) has proportional columns and the system
+cannot be a frame.  The result here parameterizes that mechanism for every
+real arithmetic step, proves the complementary nonresonant cases are
+frames, and obtains the exact density phase diagram.  The positive direction
+requires the new powered-spectrum Carleson estimate and bounded diagonal
+transfer.  A human should still judge whether the classification is best
+presented as a new proposition or as a developed but unstated consequence
+of the source mechanisms.
+
+\subsection*{Human-review recommendation}
+
+Send to a human reviewer.  The main checks are the positive lower bound for
+\(U_\alpha'\), the powered cross-ray product estimate, and the diagonal
+frame transfer.  If accepted, the frame-versus-infinite-defect dichotomy is
+a complete theorem for the two-ray model and is suitable for a short note;
+the unrestricted spanning problem must remain labelled open.
+
+\begin{thebibliography}{9}
+
+\bibitem{KM}
+I. Krishtal and B. Miller,
+\emph{Demystifying Carleson Frames},
+Applied and Computational Harmonic Analysis (2025),
+article 101811;
+\href{https://arxiv.org/abs/2505.04859}{arXiv:2505.04859v2}.
+
+\bibitem{CHPS}
+O. Christensen, M. Hasannasab, F. M. Philipp, and D. Stoeva,
+\emph{The mystery of Carleson frames},
+Applied and Computational Harmonic Analysis \textbf{72} (2024),
+article 101659;
+\href{https://arxiv.org/abs/2312.11978}{arXiv:2312.11978}.
+
+\end{thebibliography}
+
+\end{document}

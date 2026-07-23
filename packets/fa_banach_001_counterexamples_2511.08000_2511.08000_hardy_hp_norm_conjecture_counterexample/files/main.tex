@@ -1,0 +1,248 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\D}{\mathbb D}
+\newcommand{\T}{\mathbb T}
+\newcommand{\C}{\mathbb C}
+
+\title{\textbf{A Counterexample to the Hardy-Space Norm Conjecture}\\
+\large Conjecture 4.3 of arXiv:2511.08000}
+\author{Automated mathematical discovery run \texttt{fa\_banach\_001}\\
+Agent \texttt{agent\_lane\_08}}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status: candidate counterexample, likely valid.}
+The argument is exact: it uses finite rational coefficient sums and no
+numerical integration.
+}}
+\end{center}
+
+\section{Source and target}
+
+The source is C.~B\'en\'eteau, R.~Cheng, C.~Felder, D.~Khavinson,
+M.~Manolaki, and K.~Maronikolakis, \emph{Metric projections, zeros of
+optimal polynomial approximants, and some extremal problems in Hardy
+spaces}, arXiv:2511.08000v2, Conjecture~4.3 on page~12
+\cite{source}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Conjecture 4.3 in the source paper, page 12.}
+\end{figure}
+
+With normalized Lebesgue measure \(m\) on \(\T\), the conjecture reads:
+
+\begin{quote}
+Let \(1<p<\infty\) and \(f\in H^p\) with \(f(0)\ne0\).  If \(J\) is any
+nonconstant inner function, then there exists \(c=c_f\in\T\) such that
+\[
+        \lVert 1-Jf\rVert_p>\lVert 1-cf\rVert_p.
+\]
+\end{quote}
+
+\section{Idea of the proof}
+
+The exponent \(p=4\) makes the proposed inequality completely algebraic:
+for every analytic \(h\in H^4\), Parseval gives
+\(\lVert h\rVert_4^4=\lVert h^2\rVert_2^2\).  We choose a short real
+polynomial \(f\).  The quantity \(\lVert1-cf\rVert_4^4\), for
+\(|c|=1\), then becomes a quadratic polynomial in \(x=\operatorname{Re}c\);
+its global minimum is read off on \([-1,1]\).  For the left side we choose a
+single Blaschke factor \(J\).  Multiplication by \(J\) is isometric in
+\(H^2\), so only one finite coefficient pairing remains.  The two exact
+rational values occur in the strict reverse order.
+
+\section{Counterexample}
+
+\begin{theorem}
+Set
+\[
+ p=4,\qquad
+ f(z)=\frac12-3z+2z^3-z^5,\qquad
+ J(z)=\frac{z-\frac14}{1-\frac14z}.
+\]
+Then \(f(0)=\frac12\), and \(J\) is a nonconstant inner function with
+\(J(0)=-\frac14\).  Moreover,
+\[
+ \lVert1-Jf\rVert_4^4=\frac{1344927}{4096}
+ <\frac{5697}{16}
+ =\min_{|c|=1}\lVert1-cf\rVert_4^4.
+\]
+Consequently, every \(c\in\T\) satisfies
+\[
+       \lVert1-Jf\rVert_4<\lVert1-cf\rVert_4,
+\]
+so Conjecture~4.3 is false.
+\end{theorem}
+
+\begin{proof}
+All inner products and norms below are taken on \(\T\) with normalized
+Lebesgue measure.  If \(h(z)=\sum_{n\ge0}h_nz^n\in H^4\), then
+\begin{equation}\label{eq:parseval}
+ \lVert h\rVert_4^4
+ =\int_{\T}|h|^4\,dm
+ =\lVert h^2\rVert_2^2
+ =\sum_{n\ge0}\bigl|\widehat{h^2}(n)\bigr|^2.
+\end{equation}
+
+\paragraph{The constant-phase side.}
+For \(|c|=1\), direct expansion gives the nonzero coefficients of
+\((1-cf)^2\):
+\[
+\begin{array}{c|rrrrrrrrr}
+n&0&1&2&3&4&5&6&8&10\\ \hline
+[z^n](1-cf)^2&
+\frac{(c-2)^2}{4}&-3c(c-2)&9c^2&2c(c-2)&-12c^2&
+-c(c-2)&10c^2&-4c^2&c^2 .
+\end{array}
+\]
+Applying \eqref{eq:parseval} and writing \(c=e^{i\theta}\) and
+\(x=\cos\theta\), we obtain
+\begin{align}
+\lVert1-cf\rVert_4^4
+ &=\frac{6625}{16}
+   +\frac12\cos(2\theta)-\frac{117}{2}\cos\theta \notag\\
+ &=\frac{6617}{16}+x^2-\frac{117}{2}x. \label{eq:right}
+\end{align}
+The derivative \(2x-\frac{117}{2}\) is negative throughout
+\([-1,1]\).  Thus \eqref{eq:right} is minimized at \(x=1\), and
+\begin{equation}\label{eq:rightmin}
+ \min_{|c|=1}\lVert1-cf\rVert_4^4
+ =\frac{6617}{16}+1-\frac{117}{2}
+ =\frac{5697}{16}.
+\end{equation}
+
+\paragraph{The inner-function side.}
+Put \(u=Jf\).  Expanding \((1-u)^2=1-2u+u^2\) in \(H^2\) gives
+\begin{equation}\label{eq:leftidentity}
+\lVert1-Jf\rVert_4^4
+=1+4\lVert f\rVert_2^2+\lVert f^2\rVert_2^2
+-4\operatorname{Re}\bigl((Jf)(0)\bigr)
++2\operatorname{Re}\bigl((Jf)(0)^2\bigr)
+-4\operatorname{Re}\langle f,Jf^2\rangle .
+\end{equation}
+Here we used that multiplication by the inner function \(J\) is an
+isometry on \(H^2\), and hence
+\[
+\langle Jf,J^2f^2\rangle=\langle f,Jf^2\rangle.
+\]
+Finite coefficient sums yield
+\[
+ \lVert f\rVert_2^2=\frac{57}{4},
+ \qquad
+ \lVert f^2\rVert_2^2=\frac{5697}{16}.
+\]
+For completeness, the Taylor polynomial through degree five of \(Jf^2\) is
+\[
+ Jf^2=-\frac1{16}+\frac{63}{64}z-\frac{1281}{256}z^2
+ +\frac{7423}{1024}z^3+\frac{27903}{4096}z^4
+ -\frac{164609}{16384}z^5+O(z^6).
+\]
+Since \(f\) has degree five, this is enough to compute the mixed term:
+\[
+ \langle f,Jf^2\rangle
+ =\frac{353249}{16384}.
+\]
+Finally, \((Jf)(0)=-\frac18\).  Substitution into
+\eqref{eq:leftidentity} gives
+\begin{align*}
+\lVert1-Jf\rVert_4^4
+&=\frac{6625}{16}+\frac12+\frac1{32}
+  -4\left(\frac{353249}{16384}\right)\\
+&=\frac{1344927}{4096}.
+\end{align*}
+Comparison with \eqref{eq:rightmin} is strict:
+\[
+ \frac{5697}{16}-\frac{1344927}{4096}
+ =\frac{113505}{4096}>0.
+\]
+Taking fourth roots preserves the inequality and proves the claim.
+\end{proof}
+
+\section{Verification}
+
+The script \texttt{code/verify\_counterexample.py} recomputes every displayed
+quantity using Python's exact \texttt{Fraction} arithmetic.  It uses the
+Taylor formula
+\[
+[z^0]J=-a,\qquad [z^n]J=(1-a^2)a^{n-1}\quad(n\ge1),
+\qquad a=\frac14,
+\]
+and polynomial convolution; it performs no quadrature or floating-point
+comparison.  The command
+\[
+\texttt{python code/verify\_counterexample.py}
+\]
+returns the two exact fourth powers, their positive gap, and a passing status.
+
+\section{Scope and novelty check}
+
+This example disproves Conjecture~4.3 exactly, and it also satisfies the
+stronger side condition \(J(0)\ne0\) appearing in the preceding
+Proposition~4.2 of the source.  It does \emph{not} by itself construct an
+optimal polynomial approximant with a zero in \(\D\): Proposition~4.2 is a
+one-way sufficient mechanism, so the broader zero-free OPA question is not
+settled here.
+
+Before promotion, the run's lightweight indexes were searched for
+arXiv:2511.08000, the exact title, the Hardy-space norm inequality, inner
+functions, and OPA zeros.  Bounded web searches on 23 July 2026 checked the
+current arXiv v2 record, the Canadian Journal of Mathematics publication
+record, the exact conjecture phrase and label, and close
+Hardy-space/optimal-polynomial-approximant terms.  These searches found the
+source and background OPA papers but no later proof, counterexample,
+correction, or explicit resolution of Conjecture~4.3.  Novelty is therefore
+plausible but remains subject to expert literature review.
+
+\section{Human-review recommendation}
+
+The counterexample is recommended for mathematical review as \emph{likely
+valid}.  The most useful manual check is the mixed coefficient pairing
+\(\langle f,Jf^2\rangle=353249/16384\); the exact verifier independently
+reconstructs it from polynomial and Blaschke coefficients.
+
+\subsection*{Exact verifier report}
+
+Running the bundled verifier in the packet directory returns:
+\begin{verbatim}
+||1-Jf||_4^4 = 1344927/4096
+inf_|c|=1 ||1-cf||_4^4 = 5697/16
+strict reversed gap = 113505/4096
+PASS: Conjecture 4.3 is violated for every unimodular c.
+\end{verbatim}
+
+\subsection*{Suggested review checks}
+
+\begin{enumerate}
+\item Confirm that \(J(z)=(z-\frac14)/(1-\frac14z)\) is inner and
+      \(J(0)\ne0\).
+\item Re-sum the nine coefficients of \((1-cf)^2\) and the quadratic
+      in \(x=\operatorname{Re}c\).
+\item Recompute the six Taylor coefficients of \(Jf^2\) used in the
+      finite inner product.
+\item Note that the conclusion is the strict reverse for every \(c\in\T\),
+      so no issue of phase selection remains.
+\end{enumerate}
+
+\begin{thebibliography}{1}
+\bibitem{source}
+C.~B\'en\'eteau, R.~Cheng, C.~Felder, D.~Khavinson, M.~Manolaki, and
+K.~Maronikolakis,
+\emph{Metric projections, zeros of optimal polynomial approximants, and
+some extremal problems in Hardy spaces},
+arXiv:2511.08000v2, 2026.
+\end{thebibliography}
+
+\end{document}

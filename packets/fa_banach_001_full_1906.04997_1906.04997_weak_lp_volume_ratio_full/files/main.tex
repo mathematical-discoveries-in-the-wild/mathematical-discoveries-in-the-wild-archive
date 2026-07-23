@@ -1,0 +1,412 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\1}{\mathbf 1}
+
+\title{An exponential volume gap between \(B_p^n\) and
+\(B_{p,\infty}^n\) for every finite \(p\)}
+\author{Candidate solution packet for arXiv:1906.04997}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{black}{gray!8}{\parbox{0.91\linewidth}{
+\textbf{Status.} Candidate full solution; likely valid, pending human review.
+The proof is deterministic and asymptotic.  Numerical checks are included
+only as sanity checks and are not used in the proof.}}
+\end{center}
+
+\section{Source problem}
+
+The source is A.~Dole\v{z}alov\'a and J.~Vyb\'iral,
+\emph{On the volume of unit balls of finite-dimensional Lorentz spaces},
+arXiv:1906.04997, later published in the Journal of Approximation Theory
+\cite{DV}.
+
+For \(x\in\R^n\), write
+\[
+ |x|_1^*\geq |x|_2^*\geq\cdots\geq |x|_n^*
+\]
+for the nonincreasing rearrangement of the absolute coordinates.  For
+\(0<p<\infty\), put
+\[
+ B_{p,\infty}^n
+ =\left\{x:\max_{1\leq k\leq n} k^{1/p}|x|_k^*\leq1\right\},
+ \qquad
+ B_p^n=\left\{x:\sum_{i=1}^n|x_i|^p\leq1\right\},
+\]
+and
+\[
+ R_{p,n}:=\frac{\vol(B_{p,\infty}^n)}{\vol(B_p^n)}.
+\]
+The source proves exponential growth of \(R_{p,n}\) for \(0<p\leq2\)
+and asks whether it holds for all \(0<p<\infty\)
+\cite[p.~14, Theorem 9 and the paragraph preceding it]{DV}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The open problem in the source paper, page 14.}
+\end{figure}
+
+\paragraph{Transcription.}
+``Naturally, we also conjecture that the same is true for all
+\(0<p<\infty\), but we leave this as an open problem.''  Here ``the same''
+means that \(R_{p,n}\gtrsim C_p^n\) for some \(C_p>1\), with the
+multiplicative constant independent of \(n\).
+
+\section{Main result}
+
+\begin{theorem}\label{thm:main}
+For every \(0<p<\infty\), with \(q=1/p\),
+\[
+ \liminf_{n\to\infty}R_{p,n}^{1/n}
+ \geq
+ \Lambda_p:=
+ \frac{(1+q)^{1+q}}{\Gamma(1+q)}
+ >1.
+\]
+Consequently, for every \(1<C_p<\Lambda_p\) there is \(A_p>0\) such
+that
+\[
+ R_{p,n}\geq A_p C_p^n\qquad(n\geq1).
+\]
+In particular, the open problem in \cite{DV} has an affirmative answer.
+\end{theorem}
+
+\section{Proof intuition}
+
+Scale the positive part of \(B_{p,\infty}^n\) by \(n^{1/p}\).  Membership
+then says that the empirical upper tail of the coordinates is bounded by
+the Pareto tail \(t^{-p}\): no more than \(nt^{-p}\) coordinates may
+exceed \(t\geq1\).
+
+We seek a one-dimensional probability density with large differential
+entropy and a tail below this Pareto obstacle.  The useful density is
+constant from \(0\) to
+\[
+ a=(p+1)^{1/p}
+\]
+and equals \(p t^{-p-1}\) after \(a\).  Its survival function is the
+tangent line to \(t^{-p}\) before the contact point and equals \(t^{-p}\)
+after it.  A slight contraction makes the tail constraint strict.
+
+A finite partition of the positive line converts this distribution into
+coordinate ``type classes.''  Stirling's formula says that the logarithmic
+volume of a type class is its discrete entropy plus the logarithms of the
+bin widths; fine partitions recover differential entropy.  Strict tail
+slack ensures that every point in the type class obeys all weak-\(\ell_p\)
+rank inequalities.  The resulting entropy exceeds the normalized
+\(\ell_p\)-ball entropy by
+\[
+ (1+q)\log(1+q)-\log\Gamma(1+q)>0,
+\]
+which is the required exponential gap.
+
+\section{A type-volume lemma}
+
+For \(q=1/p\), define the rescaled positive weak ball
+\[
+ W_n:=\left\{y\in[0,\infty)^n:
+ y_k^*\leq (n/k)^q,\quad 1\leq k\leq n\right\}.
+\]
+Thus, up to coordinate hyperplanes of measure zero,
+\begin{equation}\label{eq:scale}
+ \vol(B_{p,\infty}^n)=2^n n^{-qn}\vol(W_n).
+\end{equation}
+
+For a density \(g\) on \([0,\infty)\), write
+\[
+ \overline G(t)=\int_t^\infty g(s)\,ds,\qquad
+ h(g)=-\int_0^\infty g(s)\log g(s)\,ds.
+\]
+
+\begin{lemma}[Tail constraint to volume]\label{lem:type}
+Suppose \(g\) is a probability density on \([0,\infty)\),
+\(\int |g\log g|<\infty\), and for some \(\beta<1\),
+\[
+ \overline G(t)\leq \beta t^{-p}\qquad(t\geq1).
+\]
+Then
+\[
+ \liminf_{n\to\infty}\frac1n\log\vol(W_n)\geq h(g).
+\]
+\end{lemma}
+
+\begin{proof}
+We give the finite-bin argument in detail.
+
+First truncate and renormalize.  Given \(\varepsilon>0\), choose \(M>1\)
+so large that, for
+\[
+ g_M(t)=
+ \frac{g(t)\1_{[0,M]}(t)}
+ {\int_0^M g(s)\,ds},
+\]
+we have
+\[
+ h(g_M)\geq h(g)-\varepsilon
+\]
+and
+\[
+ \overline G_M(t)\leq\beta_Mt^{-p}\quad(t\geq1)
+\]
+for some \(\beta_M<1\).  This is possible because
+\(\int|g\log g|<\infty\) and the omitted mass tends to zero; explicitly,
+one may take
+\(\beta_M=\beta/\int_0^M g\), which is less than one for all sufficiently
+large \(M\).
+
+Choose a finite partition
+\[
+ 0=b_0<b_1<\cdots<b_m=M
+\]
+which includes \(1\) as an endpoint and is so fine above \(1\) that
+\begin{equation}\label{eq:mesh}
+ \beta_M b_{j-1}^{-p}<b_j^{-p}
+ \quad\text{whenever }b_{j-1}\geq1.
+\end{equation}
+It may also be chosen fine enough that, for
+\[
+ I_j=(b_{j-1},b_j],\qquad
+ \pi_j=\int_{I_j}g_M(t)\,dt,
+\]
+the histogram entropy satisfies
+\begin{equation}\label{eq:hist}
+ H(\pi)+\sum_{j=1}^m\pi_j\log|I_j|
+ \geq h(g_M)-\varepsilon,
+\end{equation}
+where \(H(\pi)=-\sum_j\pi_j\log\pi_j\).
+Indeed, the left side is the differential entropy of the density which
+is constant on each \(I_j\) and has mass \(\pi_j\); refinement makes it
+converge to \(h(g_M)\).
+
+For all sufficiently large \(n\), choose nonnegative integers \(n_j\)
+with
+\[
+ \sum_jn_j=n,\qquad \frac{n_j}{n}\longrightarrow\pi_j.
+\]
+Because all the inequalities in \eqref{eq:mesh} are strict, the rounding
+may be chosen so that, with \(N_j=\sum_{\ell=j}^mn_\ell\),
+\begin{equation}\label{eq:cumulative}
+ \frac{N_j}{n}\leq b_j^{-p}
+ \quad\text{for every }j\text{ with }b_j>1.
+\end{equation}
+To see this, the limiting cumulative proportion is
+\[
+ \sum_{\ell=j}^m\pi_\ell
+ =\overline G_M(b_{j-1})
+ \leq\beta_Mb_{j-1}^{-p}<b_j^{-p}.
+\]
+
+Let \(E_n\) be the set of vectors having exactly \(n_j\) coordinates in
+\(I_j\) for every \(j\).  Then \(E_n\subset W_n\).  Indeed, a coordinate
+in \(I_j\) has decreasing rank at most \(N_j\).  If \(b_j\leq1\), then
+\[
+ y_i\leq b_j\leq1\leq(n/N_j)^q.
+\]
+If \(b_j>1\), \eqref{eq:cumulative} gives
+\[
+ y_i\leq b_j\leq(n/N_j)^{1/p}=(n/N_j)^q.
+\]
+Thus all rank inequalities defining \(W_n\) hold.
+
+The volume of this type class is
+\[
+ \vol(E_n)=
+ \frac{n!}{\prod_{j=1}^m n_j!}
+ \prod_{j=1}^m |I_j|^{n_j}.
+\]
+Stirling's formula therefore gives
+\[
+ \lim_{n\to\infty}\frac1n\log\vol(E_n)
+ =H(\pi)+\sum_j\pi_j\log|I_j|
+ \geq h(g)-2\varepsilon.
+\]
+Since \(E_n\subset W_n\) and \(\varepsilon>0\) was arbitrary, the lemma
+follows.
+\end{proof}
+
+\section{The tangent Pareto density}
+
+Set
+\[
+ a=(p+1)^{1/p},\qquad
+ c=\frac{p}{(p+1)^{1+1/p}},
+\]
+and define
+\begin{equation}\label{eq:density}
+ f(t)=
+ \begin{cases}
+ c,&0\leq t\leq a,\\
+ pt^{-p-1},&t>a.
+ \end{cases}
+\end{equation}
+This is a probability density, since
+\[
+ ca=\frac{p}{p+1},\qquad
+ \int_a^\infty pt^{-p-1}\,dt=a^{-p}=\frac1{p+1}.
+\]
+It is also continuous at \(a\), because
+\[
+ pa^{-p-1}=c.
+\]
+
+Let \(\overline F\) be its survival function.  For \(t\geq a\),
+\(\overline F(t)=t^{-p}\).  For \(0\leq t\leq a\),
+\[
+ \overline F(t)=1-ct.
+\]
+The function \(t\mapsto t^{-p}\) is convex, and \(1-ct\) is its tangent
+line at \(t=a\).  Hence
+\begin{equation}\label{eq:tail}
+ \overline F(t)\leq t^{-p}\qquad(t\geq1).
+\end{equation}
+
+For \(0<r<1\), let
+\[
+ g_r(t)=r^{-1}f(t/r).
+\]
+Then, for \(t\geq1\), \eqref{eq:tail} gives the strict tail estimate
+\begin{equation}\label{eq:strict}
+ \overline G_r(t)=\overline F(t/r)
+ \leq r^pt^{-p}.
+\end{equation}
+Thus Lemma~\ref{lem:type} applies with \(\beta=r^p<1\).  Scaling a
+density changes differential entropy by the logarithm of the scale, so
+\begin{equation}\label{eq:scaledentropy}
+ h(g_r)=h(f)+\log r.
+\end{equation}
+
+It remains to calculate \(h(f)\).  Since
+\[
+ \int_a^\infty pt^{-p-1}\log t\,dt
+ =a^{-p}\left(\log a+\frac1p\right),
+\]
+and \(\log c=\log p-(p+1)\log a\), direct substitution in
+\eqref{eq:density} yields
+\begin{align}
+ h(f)
+ &=-\log p+(p+1)\log a+\frac1p \notag\\
+ &=(1+q)\log(1+q)-q\log q+q,
+ \qquad q=\frac1p.
+\label{eq:entropy}
+\end{align}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+The classical volume formula is
+\begin{equation}\label{eq:lpvolume}
+ \vol(B_p^n)
+ =\frac{2^n\Gamma(1+q)^n}{\Gamma(1+qn)}.
+\end{equation}
+Combining Lemma~\ref{lem:type}, \eqref{eq:scale},
+\eqref{eq:scaledentropy}, and \eqref{eq:lpvolume}, and using Stirling's
+formula, gives
+\begin{align*}
+ \liminf_{n\to\infty}\frac1n\log R_{p,n}
+ &\geq h(g_r)+q\log q-q-\log\Gamma(1+q)\\
+ &= (1+q)\log(1+q)-\log\Gamma(1+q)+\log r.
+\end{align*}
+This is true for every \(0<r<1\).  Letting \(r\uparrow1\) gives
+\[
+ \liminf_{n\to\infty}\frac1n\log R_{p,n}
+ \geq
+ \Delta_q:=(1+q)\log(1+q)-\log\Gamma(1+q).
+\]
+
+We check that \(\Delta_q>0\).  If \(0<q\leq1\), log-convexity of
+\(\Gamma\) and \(\Gamma(1)=\Gamma(2)=1\) give
+\(\Gamma(1+q)\leq1<(1+q)^{1+q}\).  If \(q\geq1\), the standard
+inequality
+\[
+ \Gamma(1+q)\leq q^q
+\]
+gives the same conclusion.  For completeness, the latter follows by
+differentiating
+\(q\log q-\log\Gamma(q+1)\): the bound
+\(\psi(x)<\log x\) implies that its derivative is at least
+\[
+ 1+\log q-\log(q+1)
+ =1-\log(1+1/q)>0
+\]
+for \(q\geq1\), and the function vanishes at \(q=1\).
+The digamma bound follows, for example, from its standard positive-integral
+representation \cite[Chapter 6]{AS}.
+
+Therefore
+\[
+ \liminf_{n\to\infty}R_{p,n}^{1/n}
+ \geq e^{\Delta_q}
+ =\frac{(1+q)^{1+q}}{\Gamma(1+q)}
+ >1.
+\]
+Every \(C_p<e^{\Delta_q}\) is consequently a lower exponential base for
+all sufficiently large \(n\).  Decreasing the multiplicative constant
+to cover the finitely many remaining dimensions proves the second
+assertion.
+\qed
+
+\section{Verification notes}
+
+\begin{itemize}
+\item The proof uses no numerical premise.  The script
+\texttt{code/verify\_rates.py} evaluates the source paper's exact
+inclusion--exclusion recurrence at high precision, checks the tangent-tail
+inequality on a grid, and compares finite-dimensional logarithmic ratios
+with the claimed asymptotic lower base.
+\item The decisive deterministic point is Lemma~\ref{lem:type}.  Its type
+classes use finitely many bins, and the strict contraction \(r<1\) absorbs
+integer rounding.  No probabilistic law-of-large-numbers assertion is needed.
+\item The proof gives a lower bound for the exponential rate.  It does not
+claim that the displayed lower bound is the exact limit.
+\end{itemize}
+
+\section{Novelty check and limitations}
+
+Before promotion, the run's registry, solution, attempt, and proof-gap
+indexes were searched for arXiv:1906.04997, the paper title, and the phrases
+``volume ratio,'' ``weak \(\ell_p\),'' and ``Lorentz unit ball.''  No prior
+run result was found.
+
+A bounded external search used the arXiv id, the authors, the exact title,
+\(R_{p,n}\), and combinations of ``weak-\(\ell_p\) volume exponential'' and
+``Lorentz volume conjecture.''  It found the source article and later work
+on probabilistic geometry of other Lorentz balls, but no paper resolving
+this exact all-\(p\) volume-ratio question.  This is not an exhaustive
+bibliographic proof of novelty.
+
+The human reviewer should focus on: (i) the passage from tail slack to the
+cumulative integer constraints in Lemma~\ref{lem:type}; (ii) the scaling
+\eqref{eq:scale}; and (iii) the entropy identity \eqref{eq:entropy}.
+
+\begin{thebibliography}{9}
+
+\bibitem{DV}
+A.~Dole\v{z}alov\'a and J.~Vyb\'iral,
+\emph{On the volume of unit balls of finite-dimensional Lorentz spaces},
+J. Approx. Theory \textbf{255} (2020), 105407;
+arXiv:1906.04997.
+
+\bibitem{AS}
+M.~Abramowitz and I.~A. Stegun (eds.),
+\emph{Handbook of Mathematical Functions},
+National Bureau of Standards, 1964.
+
+\end{thebibliography}
+
+\end{document}
+

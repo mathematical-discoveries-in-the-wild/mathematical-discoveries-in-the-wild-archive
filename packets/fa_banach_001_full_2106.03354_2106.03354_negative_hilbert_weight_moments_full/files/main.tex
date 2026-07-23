@@ -1,0 +1,355 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,d}
+\newcommand{\ind}{\mathbf 1}
+
+\title{Negative Moments of Hilbert-Kernel Weights\\
+\large A full candidate solution to the moment conjecture in arXiv:2106.03354}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 2}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Full solution candidate, likely valid, awaiting human review.  The theorem
+proves the asymptotic formula and the necessary-and-sufficient integrability
+condition explicitly conjectured for every moment order
+$-1<\beta<0$.  It does not claim existence of the separate heuristic scaling
+density $p$.}}
+\end{center}
+
+\section{Source problem}
+
+The source is P.~P.~Mitra and C.~Sire, \emph{AI without networks},
+arXiv:2106.03354 \cite{MitraSire}.  Let $X_0,\ldots,X_n$ be independent
+random vectors in $\R^d$ with probability density $\rho$.  At a fixed point
+$x$ with $\rho(x)>0$, the Hilbert-kernel weights are
+\begin{equation}\label{eq:weight}
+ w_i(x)=
+ \frac{\|x-X_i\|^{-d}}{\sum_{j=0}^{n}\|x-X_j\|^{-d}}.
+\end{equation}
+For a real parameter $\gamma$, put
+\begin{equation}\label{eq:kappa}
+ \kappa_\gamma(x)
+ =\int_{\R^d}\frac{\rho(x+y)}{\|y\|^{\gamma d}}\,\dd y,
+\end{equation}
+whenever this extended integral is finite.  If $\gamma<0$, this means
+\[
+ \kappa_\gamma(x)=
+ \int_{\R^d}\rho(x+y)\|y\|^{|\gamma|d}\,\dd y.
+\]
+Write $V_d$ for the volume of the Euclidean unit ball in $\R^d$.
+
+Theorem 1 of the source gives, for $0<\beta<1$,
+\[
+ \E[w_0(x)^\beta]\sim
+ \frac{\kappa_\beta(x)}
+ {(V_d\rho(x)n\log n)^\beta},
+\]
+and gives only an upper bound when $-1<\beta<0$.  Page 31 conjectures that
+the same equivalent remains valid for the negative moments whenever they
+exist, and that $\kappa_\beta(x)<\infty$ is also necessary.
+
+The source context defining the target formula and sufficient condition is
+reproduced below.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]
+{figures/theorem1_negative_moment_context_page29.png}
+\caption{Theorem 1 and equations (29)--(30) in the source, PDF page 29.}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.92\textwidth]
+{figures/open_problem_crop.png}
+\caption{The explicit negative-moment conjecture in the source, PDF page 31.}
+\end{figure}
+
+\clearpage
+\section{Proof intuition}
+
+Set $\beta=-a$ with $0<a<1$ and
+\[
+ Y_i=\|x-X_i\|^{-d},\qquad S_n=Y_1+\cdots+Y_n.
+\]
+Continuity and positivity of $\rho$ at $x$ imply the borderline heavy-tail
+law
+\[
+ \Pp(Y_i>t)\sim \frac{V_d\rho(x)}{t}.
+\]
+Thus $S_n$ has the deterministic first-order scale
+$V_d\rho(x)n\log n$.  Although the summands have infinite mean, truncation
+at this scale gives a weak law.  A tail-integral estimate supplies uniform
+integrability for every power below one, upgrading the weak law to
+\[
+ \E[S_n^a]\sim(V_d\rho(x)n\log n)^a.
+\]
+
+The weight ratio then separates the only two random pieces:
+\[
+ w_0(x)^{-a}
+ =\bigl(1+\|x-X_0\|^dS_n\bigr)^a.
+\]
+Because $0<a<1$,
+\[
+ z^a\leq(1+z)^a\leq1+z^a.
+\]
+Independence sandwiches the desired expectation between
+$\kappa_{-a}(x)\E[S_n^a]$ and one plus that quantity.  The same identity
+also makes existence exact: $\kappa_{-a}<\infty$ is sufficient by
+subadditivity, while one term of $S_n$ proves necessity.
+
+\section{Main theorem}
+
+\begin{theorem}[Negative-moment conjecture]\label{thm:main}
+Let $X_0,\ldots,X_n$ be i.i.d.\ random vectors in $\R^d$ with probability
+density $\rho$, and let $x\in\R^d$ satisfy $\rho(x)>0$ and be a point of
+continuity of $\rho$.  Define the Hilbert weights by \eqref{eq:weight}.
+For every $-1<\beta<0$ and every $n\geq1$,
+\begin{equation}\label{eq:iff}
+ \E[w_0(x)^\beta]<\infty
+ \quad\Longleftrightarrow\quad
+ \kappa_\beta(x)<\infty.
+\end{equation}
+When these equivalent conditions hold,
+\begin{equation}\label{eq:main-asymptotic}
+ \E[w_0(x)^\beta]
+ \underset{n\to\infty}{\sim}
+ \frac{\kappa_\beta(x)}
+ {(V_d\rho(x)n\log n)^\beta}.
+\end{equation}
+\end{theorem}
+
+The proof uses the following elementary borderline heavy-tail lemma.
+
+\begin{lemma}[Fractional moments at tail index one]\label{lem:heavy}
+Let $Y,Y_1,Y_2,\ldots$ be i.i.d.\ nonnegative random variables and suppose
+\begin{equation}\label{eq:tail}
+ \Pp(Y>t)\sim\frac{c}{t}
+ \qquad(t\to\infty)
+\end{equation}
+for some $c>0$.  If $S_n=Y_1+\cdots+Y_n$ and
+$b_n=cn\log n$, then
+\[
+ \frac{S_n}{b_n}\longrightarrow1
+ \quad\text{in probability}.
+\]
+Moreover, for every $0<a<1$,
+\begin{equation}\label{eq:fractional-sum}
+ \E[S_n^a]\sim b_n^a.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $\overline F(t)=\Pp(Y>t)$.  For $b>0$, the layer-cake identity gives
+\begin{equation}\label{eq:truncated-mean}
+ m(b):=\E[Y\ind_{\{Y\leq b\}}]
+ =\int_0^b\overline F(t)\,\dd t-b\overline F(b)
+ \sim c\log b.
+\end{equation}
+Also, using $\overline F(t)\leq C/t$ for all sufficiently large $t$,
+\begin{equation}\label{eq:truncated-second}
+ \E[Y^2\ind_{\{Y\leq b\}}]
+ \leq 2\int_0^b t\overline F(t)\,\dd t
+ =O(b).
+\end{equation}
+
+Put $T_n=\sum_{i=1}^nY_i\ind_{\{Y_i\leq b_n\}}$.  Since
+$\log b_n/\log n\to1$, \eqref{eq:truncated-mean} yields
+\[
+ \frac{\E T_n}{b_n}
+ =\frac{nm(b_n)}{cn\log n}\longrightarrow1.
+\]
+Equation \eqref{eq:truncated-second} gives
+\[
+ \frac{\operatorname{Var}(T_n)}{b_n^2}
+ \leq\frac{n\,O(b_n)}{b_n^2}
+ =O\!\left(\frac1{\log n}\right)\longrightarrow0.
+\]
+Finally,
+\[
+ \Pp(S_n\neq T_n)
+ \leq n\overline F(b_n)
+ \sim\frac1{\log n}\longrightarrow0.
+\]
+Chebyshev's inequality therefore proves $S_n/b_n\to1$ in probability.
+
+It remains to justify convergence of fractional moments.  Fix any
+$0<q<1$.  For $t$ large,
+\[
+ \E[Y\ind_{\{Y\leq t\}}]\leq C(1+\log t).
+\]
+If $S_n>t$, either some $Y_i>t$, or the sum of the variables truncated at
+$t$ exceeds $t$.  A union bound and Markov's inequality give
+\begin{equation}\label{eq:sum-tail-bound}
+ \Pp(S_n>t)
+ \leq n\overline F(t)
+ +\frac{n}{t}\E[Y\ind_{\{Y\leq t\}}]
+ \leq \frac{Cn(1+\log t)}{t}.
+\end{equation}
+For all sufficiently large $n$, integrate this estimate only above $b_n$:
+\begin{align*}
+ \E[S_n^q]
+ &=q\int_0^\infty t^{q-1}\Pp(S_n>t)\,\dd t\\
+ &\leq b_n^q+
+ Cqn\int_{b_n}^{\infty}t^{q-2}(1+\log t)\,\dd t\\
+ &\leq b_n^q+
+ C_qn b_n^{q-1}(1+\log b_n)
+ \leq C'_q b_n^q.
+\end{align*}
+Here the last inequality follows because
+$n(1+\log b_n)/b_n$ remains bounded.
+
+Now fix $0<a<1$ and choose $q$ with $a<q<1$.  The preceding bound says
+that $\{(S_n/b_n)^a\}$ is bounded in
+$L^{q/a}$, hence is uniformly integrable.  Since it converges in
+probability to $1$, its expectations converge to $1$.  This is precisely
+\eqref{eq:fractional-sum}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Write $\beta=-a$, where $0<a<1$, and set
+\[
+ R_i=\|x-X_i\|,\qquad Y_i=R_i^{-d},\qquad
+ S_n=\sum_{i=1}^nY_i.
+\]
+The variables $R_0$ and $S_n$ are independent.  Moreover,
+\begin{align*}
+ t\Pp(Y_1>t)
+ &=t\int_{\|y\|<t^{-1/d}}\rho(x+y)\,\dd y\\
+ &\longrightarrow V_d\rho(x)
+\end{align*}
+by continuity of $\rho$ at $x$.  Thus Lemma~\ref{lem:heavy}, with
+$c=V_d\rho(x)$, gives
+\begin{equation}\label{eq:sum-moment-final}
+ \E[S_n^a]\sim(V_d\rho(x)n\log n)^a.
+\end{equation}
+
+We first settle existence.  Local boundedness of $\rho$ at $x$ and
+$a<1$ show that
+\[
+ \kappa_a(x)=\E[R_1^{-ad}]<\infty:
+\]
+the singularity $\|y\|^{-ad}$ is locally integrable in $\R^d$, and away
+from the origin it is bounded.  If $\kappa_{-a}(x)<\infty$, then
+\[
+ S_n^a\leq\sum_{i=1}^nY_i^a
+\quad\text{and}\quad
+ (1+z)^a\leq1+z^a
+\]
+for $z\geq0$.  Consequently,
+\begin{align*}
+ \E[w_0(x)^{-a}]
+ &=\E[(1+R_0^dS_n)^a]\\
+ &\leq1+\E[R_0^{ad}]\E[S_n^a]\\
+ &\leq1+n\kappa_{-a}(x)\kappa_a(x)<\infty.
+\end{align*}
+Conversely, for $n\geq1$,
+\[
+ w_0(x)^{-a}
+ =(1+R_0^dS_n)^a
+ \geq(R_0^dY_1)^a.
+\]
+Tonelli's theorem and independence imply
+\[
+ \E[(R_0^dY_1)^a]
+ =\E[R_0^{ad}]\E[R_1^{-ad}]
+ =\kappa_{-a}(x)\kappa_a(x).
+\]
+Because $0<\kappa_a(x)<\infty$, the expectation is infinite whenever
+$\kappa_{-a}(x)=\infty$.  This proves \eqref{eq:iff}.
+
+Assume now that $\kappa_{-a}(x)<\infty$.  The elementary two-sided bound
+\[
+ z^a\leq(1+z)^a\leq1+z^a
+\]
+and independence give
+\[
+ \kappa_{-a}(x)\E[S_n^a]
+ \leq\E[w_0(x)^{-a}]
+ \leq1+\kappa_{-a}(x)\E[S_n^a].
+\]
+Divide by $(V_d\rho(x)n\log n)^a$ and use
+\eqref{eq:sum-moment-final}.  We obtain
+\[
+ \E[w_0(x)^{-a}]
+ \sim\kappa_{-a}(x)(V_d\rho(x)n\log n)^a.
+\]
+Replacing $-a$ by $\beta$ is exactly
+\eqref{eq:main-asymptotic}.
+\end{proof}
+
+\section{Verification notes}
+
+\begin{itemize}
+\item The tail constant is checked directly:
+$\{Y>t\}$ is the ball of radius $t^{-1/d}$ about $x$, whose probability is
+asymptotic to $\rho(x)V_dt^{-1}$.
+\item The only delicate passage from a weak law to an expectation is made
+explicit in Lemma~\ref{lem:heavy}: an $L^q$ bound for some $q>a$ gives the
+required uniform integrability.
+\item Both directions of the integrability criterion hold for each fixed
+$n\geq1$; they are not merely asymptotic.
+\item The source's upper bound (30) is recovered verbatim from
+$(1+z)^a\leq1+z^a$.  Necessity comes from the matching lower bound using
+just the first summand of $S_n$.
+\item The script \texttt{code/check\_uniform\_example.py} performs a finite
+Monte Carlo check for the one-dimensional uniform density.  It is only a
+sanity check and is not used in the proof.
+\end{itemize}
+
+\section{Novelty search and limitations}
+
+The bounded novelty check was performed on 23 July 2026.  The run indexes
+were searched for arXiv:2106.03354, ``Hilbert kernel'', ``negative
+moments'', and the $n\log n$ fractional-moment mechanism.  Web/arXiv
+searches used the exact conjecture phrase, the notation
+$\kappa_\beta(x)$, the authors' names, and close variants involving
+tail-index-one sums.  These searches found the source and its repository
+copies, plus general heavy-tail papers, but no paper claiming this
+negative-moment asymptotic or the necessary-and-sufficient condition.
+The latest local arXiv source/PDF, dated 7 June 2024, still contains the
+conjecture.  This is a bounded search, not an exhaustive specialist
+bibliography, so novelty remains subject to expert review.
+
+The theorem does not prove the source's separate heuristic claim that the
+rescaled weights possess a limiting density $p$, nor any assertion about
+$p(0)$.  It also does not treat discontinuity or vanishing of $\rho$ at
+$x$.  The range $\beta\leq-1$ is outside the target because the source
+already proves those moments infinite.
+
+\section{Human-review recommendation}
+
+Recommended disposition: \textbf{review as a likely full solution} to the
+explicit negative-moment conjecture.  The primary verifier focus should be
+Lemma~\ref{lem:heavy}, especially the tail-integral bound
+\eqref{eq:sum-tail-bound} and the uniform-integrability step.  A secondary
+check should confirm that the source's notation uses $n$ other samples in
+the denominator of $w_0$, as in \eqref{eq:weight}; an $n+1$ convention would
+only make an asymptotically negligible change.
+
+\begin{thebibliography}{9}
+\bibitem{MitraSire}
+P.~P.~Mitra and C.~Sire,
+\emph{AI without networks},
+arXiv:2106.03354, latest source consulted dated 7 June 2024.
+\end{thebibliography}
+
+\end{document}

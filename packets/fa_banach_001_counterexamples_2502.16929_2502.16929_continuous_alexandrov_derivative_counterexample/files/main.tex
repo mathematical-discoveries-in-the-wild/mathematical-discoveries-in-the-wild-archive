@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A Continuous Perturbation Without a Two-Sided\\Functional Alexandrov Derivative}
+\author{Candidate counterexample for arXiv:2502.16929}
+\date{July 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.} Candidate full counterexample,
+likely valid pending expert review.  The target is the unrestricted
+continuous-perturbation extension discussed in Section 2 of the source, not
+the paper's solved functional Minkowski theorem.}}
+\end{center}
+
+\section{Source question}
+
+Falah and Rotem study, for a convex function $\phi$ and a perturbation $\xi$,
+the derivative
+\begin{equation}\label{eq:source}
+ \left.\frac{d}{dt}\right|_{t=0}
+ \int_{\mathbb R^n}e^{-(\phi^*+t\xi)^*}.
+\end{equation}
+They prove it for bounded continuous $\xi$ and for support functions.  Between
+those results they state that computing \eqref{eq:source} ``for all continuous
+functions $\xi:\mathbb R^n\to\mathbb R$'' is a nontrivial task which they do
+not carry out \cite{FalahRotem}.  The full passage appears on PDF page 9.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The example below shows that continuity alone cannot guarantee existence of
+the two-sided derivative.
+
+\section{Definitions}
+
+For $q:\mathbb R\to(-\infty,+\infty]$, its Legendre transform is
+\[
+ q^*(x)=\sup_{y\in\mathbb R}\{xy-q(y)\}.
+\]
+Write $\mathbf 1_A^\infty$ for the convex-analysis indicator which is zero on
+$A$ and $+\infty$ outside $A$.
+
+\section{Proof intuition}
+
+Start with the indicator of an interval.  Its dual potential is $|y|$, whose
+slope at infinity determines the domain of its conjugate.  Add a continuous
+linear-growth perturbation whose ratio to $|y|$ oscillates forever between
+$-1$ and $1$.  For either sign of $t$, the smallest asymptotic slope becomes
+$1-|t|$ and is attained along an unbounded sequence.  The conjugate is
+therefore the indicator of an interval whose radius is $1-|t|$.  Its integral
+shrinks linearly in $|t|$, producing a cusp at zero.
+
+\section{Counterexample}
+
+\begin{theorem}
+There exist $\phi\in\mathrm{Cvx}_1$ and a continuous function
+$\xi:\mathbb R\to\mathbb R$ with $|\xi(y)|\leq |y|$ such that
+$\phi^*+t\xi$ is coercive for every $|t|<1$, the integral
+\[
+ I(t)=\int_{\mathbb R}e^{-(\phi^*+t\xi)^*(x)}\,dx
+\]
+is finite for every $|t|<1$, but $I$ is not differentiable at zero.
+More precisely, $I(t)=2(1-|t|)$.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ \phi=\mathbf 1_{[-1,1]}^\infty,
+ \qquad
+ \xi(y)=|y|\sin\!\bigl(\log(1+|y|)\bigr).
+\]
+The function $\phi$ is convex and lower semicontinuous, and
+$\int e^{-\phi}=2$, so $\phi\in\mathrm{Cvx}_1$.  Directly from the definition,
+\[
+ \phi^*(y)=\sup_{x\in[-1,1]}xy=|y|.
+\]
+The function $\xi$ is continuous and satisfies $|\xi(y)|\leq|y|$.
+
+Fix $|t|<1$ and write
+\[
+ q_t(y)=\phi^*(y)+t\xi(y)
+ =|y|\left[1+t\sin\!\bigl(\log(1+|y|)\bigr)\right],
+ \qquad a_t=1-|t|>0.
+\]
+For every $y$,
+\[
+ q_t(y)\geq a_t|y|,
+\]
+so $q_t$ is coercive.  If $|x|\leq a_t$, then
+\[
+ xy-q_t(y)\leq |x|\,|y|-a_t|y|\leq0.
+\]
+Equality holds at $y=0$, hence $q_t^*(x)=0$.
+
+It remains to consider $|x|>a_t$.  If $t>0$, set
+\[
+ r_k=\exp(3\pi/2+2\pi k)-1;
+\]
+then $\sin(\log(1+r_k))=-1$ and $q_t(r_k)=a_t r_k$.  If
+$t<0$, instead set
+\[
+ r_k=\exp(\pi/2+2\pi k)-1;
+\]
+then $\sin(\log(1+r_k))=1$ and again $q_t(r_k)=a_t r_k$.
+For $x>a_t$, in either case
+\[
+ xr_k-q_t(r_k)=r_k(x-a_t)\longrightarrow+\infty.
+\]
+For $x<-a_t$, use $y=-r_k$ and the evenness of $q_t$ to obtain the same
+conclusion.  Therefore
+\[
+ q_t^*(x)=
+ \begin{cases}
+ 0,& |x|\leq a_t,\\
+ +\infty,& |x|>a_t.
+ \end{cases}
+\]
+Consequently,
+\[
+ I(t)=\int_{\mathbb R}e^{-q_t^*(x)}\,dx
+ =\left|[-a_t,a_t]\right|=2(1-|t|).
+\]
+Thus $I'_+(0)=-2$ whereas $I'_-(0)=2$, and the two-sided derivative does not
+exist.
+\end{proof}
+
+\section{Verification, scope, and novelty}
+
+Every object in the example meets the literal hypotheses: $\phi$ lies in the
+source class, $\xi$ is continuous and real-valued, and the perturbed dual
+potential is coercive for both signs of every sufficiently small $t$.  The
+failure is caused only by the absence of a limiting recession slope for
+$\xi$.
+
+This does not affect Proposition 2.1 of the source, where $\xi$ is bounded, or
+Theorem 2.3, where $\xi$ is a support function.  It also leaves open general
+results under cosmic continuity or other recession regularity.
+
+The run's lightweight indexes and bounded web searches on July 23, 2026 were
+checked using arXiv:2502.16929, the exact title and authors, ``functional
+Alexandrov lemma,'' ``all continuous functions,'' ``two-sided derivative,''
+and close Legendre-perturbation variants.  No later answer or matching
+counterexample was found.  Novelty confidence is moderate pending specialist
+review.
+
+\section{Human review recommendation}
+
+The main check is the exact conjugate-domain argument, especially the two
+unbounded sequences on which the oscillating coefficient attains $1-|t|$.
+The reviewer should also confirm that the source phrase ``all continuous
+functions'' is intended literally, rather than as shorthand for an unstated
+class with a recession limit.
+
+\begin{thebibliography}{9}
+\bibitem{FalahRotem}
+T.~Falah and L.~Rotem,
+\emph{On the functional Minkowski problem},
+arXiv:2502.16929 (2025).
+\end{thebibliography}
+
+\end{document}

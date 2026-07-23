@@ -1,0 +1,190 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newcommand{\ph}{\varphi}
+\newcommand{\dotminus}{\mathbin{\dot{-}}}
+
+\title{No Uniform Finite Family of Modularity Testers\\
+for Finite Partition Lattices}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 1}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Counterexample / full negative answer to Question 6.47 of
+Contreras Mantilla--Sinclair \cite{CMS}.  Verdict: likely valid, pending human
+review.}}
+\end{center}
+
+\section{Source question}
+
+Let $P_n$ be the lattice of partitions of an $n$-element set, ordered from the
+discrete partition $0$ to the indiscrete partition $1$.  Write $\#x$ for the
+number of blocks and
+\[
+ |x|=\frac{n-\#x}{n-1},\qquad
+ d(x,y)=2|x\vee y|-|x|-|y|.
+\]
+A partition is \emph{singular} when it has at most one non-singleton block;
+the singular set is denoted $\Sigma_n$.  The source uses
+\[
+ \ph(x,y)=\inf_z\max\!\left\{
+ (|x|+|y|)\dotminus(|x\vee y|+|z|),
+ d(x\vee z,x),d(y\vee z,y)\right\},
+\]
+where $a\dotminus b=\max\{a-b,0\}$.  In a complete metric lattice,
+$\ph(x,y)=0$ exactly when $(x,y)$ is a metrically modular pair
+\cite[Remark following (15)]{CMS}.
+
+Question 6.47 on page 51 asks:
+\begin{quote}
+Do there exist constants $C,K$ so that for all $P_n$, a finite partition
+lattice, there exists $x_1,\ldots,x_K\in P_n$ so that
+\[
+ d(y,\Sigma_n)\le C\sum_{i=1}^K\ph(x_i,y)?
+\]
+\end{quote}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\caption{Question 6.47 in the source paper, PDF page 51.}
+\end{figure}
+
+\section{Proof intuition}
+
+A fixed tester partition only records, for any pair of points, whether they
+belong to the same block.  Thus $K$ testers assign one of only $2^K$ colors to
+each unordered pair.  Ramsey's theorem supplies four points whose six pairs
+all have the same color.  Coordinate by coordinate, the four points are then
+either all in one tester block or all in distinct tester blocks.  Pairing the
+four points in a new partition creates two non-singleton blocks, yet in the
+first case this new partition refines the tester and in the second case the
+two pair-merges are rank-independent.  Both cases give exact modularity.
+
+\section{Negative answer}
+
+Let $R_r(4)$ denote a finite Ramsey number: every $r$-coloring of the pairs of
+a set of size at least $R_r(4)$ has a monochromatic four-element subset
+\cite{GRS}.
+
+\begin{theorem}\label{thm:main}
+For every integer $K\ge1$, every
+\[
+ n\ge R_{2^K}(4),
+\]
+and every choice $x_1,\ldots,x_K\in P_n$, there is a partition $y\in P_n$
+with exactly two non-singleton blocks such that
+\[
+ \ph(x_i,y)=0\quad(1\le i\le K),
+ \qquad d(y,\Sigma_n)=\frac1{n-1}.
+\]
+Consequently the answer to Question 6.47 is negative.
+\end{theorem}
+
+\begin{proof}
+Let $V$ be the $n$-element ground set.  Color every pair $\{u,v\}\in
+\binom V2$ by
+\[
+ c(\{u,v\})=
+ \bigl(\mathbf 1_{u\sim_{x_1}v},\ldots,
+       \mathbf 1_{u\sim_{x_K}v}\bigr)\in\{0,1\}^K,
+\]
+where $u\sim_xv$ means that $u,v$ lie in the same block of $x$.  This uses at
+most $2^K$ colors.  Ramsey's theorem gives
+$H=\{a,b,c,d\}\subseteq V$ whose six pairs have one common color.
+
+Fix $i$.  If the $i$th coordinate of the common color is $1$, transitivity of
+$\sim_{x_i}$ says that all four points of $H$ lie in one block of $x_i$.  If it
+is $0$, the six pair relations all fail, so the four points lie in four
+distinct blocks of $x_i$.
+
+Define $y$ to have the two blocks $\{a,b\}$ and $\{c,d\}$, with every other
+point a singleton.  We show that $(x_i,y)$ is metrically modular.  In the first
+case above, $y\le x_i$, hence
+\[
+ x_i\vee y=x_i,\qquad x_i\wedge y=y,
+\]
+and the modular rank identity is immediate.  In the second case,
+$x_i\wedge y=0$, while joining with $y$ merges two disjoint pairs of four
+distinct $x_i$-blocks.  Therefore
+\[
+ \#(x_i\vee y)=\#x_i-2,
+ \qquad |x_i\vee y|=|x_i|+\frac2{n-1}=|x_i|+|y|.
+\]
+Again
+$|x_i\vee y|+|x_i\wedge y|=|x_i|+|y|$.  Thus $(x_i,y)$ is metrically
+modular in either case, and hence $\ph(x_i,y)=0$.
+
+The partition $y$ has two non-singleton blocks.  Lemma 6.3 of the source gives
+\[
+ d(y,\Sigma_n)=\frac{[y]-1}{n-1}=\frac1{n-1}>0,
+\]
+where $[y]$ is the number of non-singleton blocks.
+
+If constants $C,K$ as in Question 6.47 existed, choose
+$n\ge R_{2^K}(4)$ and apply the preceding construction to the proposed
+testers.  Its right-hand side is zero and its left-hand side is positive, a
+contradiction.
+\end{proof}
+
+\section{Verification notes}
+
+The proof uses only three checkable inputs.
+\begin{enumerate}
+  \item The pair-color has at most $2^K$ values, so finite Ramsey applies.
+  \item On a monochromatic four-set, each tester restricts either to one block
+  or to four singleton blocks; there is no intermediate pattern.
+  \item In the four-singleton case, the two blocks of $y$ merge four distinct
+  tester blocks in two disconnected pairs, so the tester's block count drops
+  by exactly two.
+\end{enumerate}
+The script \texttt{code/verify\_ramsey\_witness.py} checks the two rank cases
+for concrete inputs.  A separate exact enumeration of $\ph$ for $n\le6$ is
+included as \texttt{code/compute\_small\_gamma.py}; this computation motivated
+the argument but is not a dependency of the proof.
+
+\section{Scope and novelty check}
+
+This theorem completely answers Question 6.47, but it does not answer Questions
+6.44 or 6.45 about property $\Gamma$.  Indeed, the constructed witness is only
+$1/(n-1)$ away from $\Sigma_n$; the fixed positive-distance condition in
+Proposition 6.46 is therefore untouched.
+
+A bounded novelty check was performed on 22 July 2026: the run registry,
+solution, attempt, and proof-gap indexes were searched for arXiv:2507.10932 and
+the core terms; the locally parsed arXiv corpus was searched for the exact
+spectral-gap question and close phrases; and arXiv web searches were run for
+the exact question, the paper title with property $\Gamma$, and metric-lattice
+spectral-gap terms.  No later answer or close Ramsey formulation was found.
+The arXiv record still lists only the 15 July 2025 version, in which Question
+6.47 remains present.  This is a bounded search, not a claim of exhaustive
+novelty.
+
+\section{Human-review recommendation}
+
+High priority.  A reviewer should verify the order convention in the
+comparable case and the two-block-count drop in the four-distinct-block case.
+Both are explicit above; no asymptotic estimate or computational lemma is used.
+
+\enlargethispage{3\baselineskip}
+\small
+\begin{thebibliography}{9}
+\bibitem{CMS}
+J. Contreras Mantilla and T. Sinclair,
+\emph{The model theory of metric lattices: pseudofinite partition lattices},
+arXiv:2507.10932, 2025.
+
+\bibitem{GRS}
+R. L. Graham, B. L. Rothschild, and J. H. Spencer,
+\emph{Ramsey Theory}, 2nd ed., Wiley, 1990.
+\end{thebibliography}
+
+\end{document}

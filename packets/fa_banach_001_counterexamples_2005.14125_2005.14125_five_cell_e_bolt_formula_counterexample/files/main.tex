@@ -1,0 +1,286 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,graphicx,microtype,tikz}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newcommand{\pos}[1]{(#1)_{+}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.58em}
+
+\title{A Five-Cell Counterexample to the E-Bolt Error Formula}
+\author{Run \texttt{fa\_banach\_001}, lane 3}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, to Theorem 3.8
+of Ismailov's notes \cite{Notes} and to the subsequent e-bolt conjecture
+under the source's explicit identification of the e-bolts of that polygon.
+The counterexample uses the literal printed definition of $M(Q)$: the mixed
+increment condition is required for each rectangle contained as a set in
+$Q$.
+
+\section{Source statement}
+
+The notes define, for a closed bolt
+$p=(p_1,\ldots,p_{2n})$,
+\[
+ l(f,p)=\frac{1}{2n}\sum_{k=1}^{2n}(-1)^{k-1}f(p_k).
+\]
+For a polygon $Q$, $M(Q)$ consists of the continuous functions satisfying
+\[
+ f(x_1,y_1)+f(x_2,y_2)-f(x_1,y_2)-f(x_2,y_1)\geq 0
+ \tag{1}
+\]
+for every axis-parallel rectangle
+$[x_1,x_2]\times[y_1,y_2]\subset Q$.
+
+Theorem 3.8, on article page 140 of the notes, takes
+\[
+\begin{split}
+ R_1&=[a_1,a_4]\times[b_1,b_2],\\
+ R_2&=[a_1,a_2]\times[b_2,b_3],\\
+ R_3&=[a_3,a_4]\times[b_2,b_3],\qquad
+ Q=R_1\cup R_2\cup R_3,
+\end{split}
+\]
+and asserts that every $f\in M(Q)$ satisfies
+\[
+ E(f,Q)=\max\{|l(f,r)|,\ |l(f,r_{12})|,\ |l(f,r_{13})|\},
+\tag{2}
+\]
+where the three bolts are formed by the vertices of the outer rectangle,
+$R_1\cup R_2$, and $R_1\cup R_3$, respectively.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/theorem_3_8_crop.png}
+\end{center}
+
+Definition 3.2 introduces e-bolts. The paragraph immediately following it
+states explicitly that the polygon in Theorem 3.8 has exactly the three
+e-bolts $r,r_{12},r_{13}$. The notes then conjecture, for every
+axis-parallel polygon $S$ and $f\in M(S)$,
+\[
+ E(f,S)=\max_{h\in S^E}|l(f,h)|.
+\tag{3}
+\]
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/e_bolt_conjecture_crop.png}
+\end{center}
+
+\section{Proof Intuition}
+
+The missing top-middle cell of the five-cell U-shaped polygon is invisible
+to the definition of $M(Q)$: no rectangle contained in $Q$ enters that
+cell. We therefore place mixed density $+1$ in an occupied lower-left cell
+and mixed density $-1$ in the missing cell. The restriction to $Q$ remains
+in $M(Q)$, because every admissible rectangle sees only the nonnegative
+density. The negative density nevertheless cancels values on the long
+e-bolts used in (2). A short four-point bolt around the positive cell has
+value $1/4$, while each of the three displayed e-bolts has absolute value
+at most $1/6$. Since every closed-bolt functional annihilates
+$\varphi(x)+\psi(y)$, the short bolt forces $E(f,Q)\geq1/4$ and contradicts
+the claimed formula.
+
+\section{Counterexample}
+
+\begin{theorem}\label{thm:main}
+Theorem 3.8 of \cite{Notes}, with the printed definition of $M(Q)$, is
+false. More precisely, there is an explicit continuous $f\in M(Q)$ for
+which the right-hand side of \emph{(2)} equals $1/6$, whereas
+\[
+ E(f,Q)\geq\frac14.
+\]
+\end{theorem}
+
+\begin{proof}
+Choose
+\[
+ a_1=0,\quad a_2=1,\quad a_3=2,\quad a_4=3,
+ \qquad b_1=0,\quad b_2=1,\quad b_3=2.
+\]
+Thus
+\[
+ Q=([0,3]\times[0,1])
+ \cup([0,1]\times[1,2])
+ \cup([2,3]\times[1,2]).
+\tag{4}
+\]
+This is the five-cell U-shaped polygon shown below; its missing cell is
+$U=(1,2)\times(1,2)$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.15]
+  \fill[blue!12] (0,0) rectangle (3,1);
+  \fill[blue!12] (0,1) rectangle (1,2);
+  \fill[blue!12] (2,1) rectangle (3,2);
+  \draw[very thick] (0,0)--(3,0)--(3,2)--(2,2)--(2,1)--(1,1)--(1,2)--(0,2)--cycle;
+  \draw[gray!55] (1,0)--(1,1);
+  \draw[gray!55] (2,0)--(2,1);
+  \node at (1.5,1.5) {$U$};
+  \node at (0.5,0.5) {$+1$};
+  \node at (1.5,-0.27) {$Q$};
+\end{tikzpicture}
+\end{center}
+
+On the bounding rectangle $[0,3]\times[0,2]$, define
+\[
+ f(x,y)=\min\{x,1\}\min\{y,1\}
+       -\min\{\pos{x-1},1\}\pos{y-1},
+\tag{5}
+\]
+and restrict $f$ to $Q$. This function is continuous and piecewise
+bilinear. Its mixed derivative, in the almost-everywhere and distributional
+sense, is
+\[
+ \partial_x\partial_y f
+ =\mathbf 1_{(0,1)\times(0,1)}
+  -\mathbf 1_{(1,2)\times(1,2)}.
+\tag{6}
+\]
+Let $T=[x_1,x_2]\times[y_1,y_2]\subset Q$ be any axis-parallel
+rectangle. Its interior is disjoint from the missing cell $U$. Applying
+the two-variable fundamental theorem of calculus to the Lipschitz,
+piecewise-bilinear function (5) gives
+\[
+\begin{split}
+ &f(x_1,y_1)+f(x_2,y_2)-f(x_1,y_2)-f(x_2,y_1)\\
+ &\qquad=\iint_T\partial_x\partial_y f
+ =\bigl|T\cap((0,1)\times(0,1))\bigr|\geq0.
+\end{split}
+\tag{7}
+\]
+Hence $f\in M(Q)$.
+
+We now evaluate the three bolts in Theorem 3.8. Orienting them as
+\[
+\begin{split}
+ r&=((0,0),(3,0),(3,2),(0,2)),\\
+ r_{12}&=((0,0),(3,0),(3,1),(1,1),(1,2),(0,2)),\\
+ r_{13}&=((0,0),(3,0),(3,2),(2,2),(2,1),(0,1)),
+\end{split}
+\]
+formula (5) gives the corresponding value lists
+\[
+ (0,0,0,0),\qquad
+ (0,0,1,1,1,0),\qquad
+ (0,0,0,0,1,0).
+\]
+Therefore
+\[
+ l(f,r)=0,\qquad
+ l(f,r_{12})=\frac16,\qquad
+ l(f,r_{13})=\frac16,
+\tag{8}
+\]
+so the right-hand side of (2) is $1/6$.
+
+Finally consider the closed bolt
+\[
+ q=((0,0),(1,0),(1,1),(0,1))\subset Q.
+\]
+Its values are $(0,0,1,0)$, whence
+\[
+ l(f,q)=\frac14.
+\tag{9}
+\]
+For every pair of continuous univariate functions $\varphi,\psi$, the
+alternating sum on a closed bolt cancels coordinate by coordinate, so
+$l(\varphi+\psi,q)=0$. Consequently,
+\[
+\frac14
+=|l(f,q)|
+=|l(f-\varphi-\psi,q)|
+\leq\|f-\varphi-\psi\|_{C(Q)}.
+\]
+Taking the infimum over $\varphi+\psi$ yields
+$E(f,Q)\geq1/4$. This contradicts (2).
+\end{proof}
+
+\begin{corollary}\label{cor:conjecture}
+Under the source's explicit statement that the polygon \emph{(4)} has
+exactly the three e-bolts $r,r_{12},r_{13}$, the e-bolt conjecture
+\emph{(3)} is false.
+\end{corollary}
+
+\begin{proof}
+For this $Q$ and $f$, equations (8)--(9) give
+\[
+ \max_{h\in Q^E}|l(f,h)|=\frac16
+ <\frac14\leq E(f,Q).
+\]
+\end{proof}
+
+\section{Verification, conventions, and scope}
+
+The proof uses no numerical approximation. The accompanying checker performs
+all displayed calculations over exact rational numbers and also tests (1)
+on every rational-grid rectangle with mesh $1/8$ that is contained in $Q$.
+The command
+\[
+\texttt{python code/check\_five\_cell\_counterexample.py}
+\]
+returns the three e-bolt values $0,1/6,1/6$, the short-bolt value $1/4$,
+and no negative mixed increment among the tested rectangles. The finite grid
+test is only a sanity check; the proof for all rectangles is (6)--(7).
+
+There is an important convention issue for human review. The source's printed
+condition is set containment of the whole rectangle in $Q$, and that is the
+condition proved in (7). If an unstated stronger convention were intended
+in which (1) is required whenever all four rectangle vertices lie in $Q$,
+then the missing cell itself would be tested and (5) would not qualify.
+That stronger convention is not what the displayed definition says.
+
+Theorem~\ref{thm:main} does not depend on resolving any ambiguity in the
+general definition of e-bolts: it directly contradicts the three-term
+formula printed in Theorem 3.8. Corollary~\ref{cor:conjecture} additionally
+uses the notes' own sentence that these three bolts are exactly the e-bolts
+of this polygon.
+
+\section{Novelty check}
+
+The run indexes were searched for arXiv:2005.14125, the paper title,
+Theorem 3.8, e-bolts, extended bolts, and the 2006 article title; no prior
+packet or attempt addressing this formula was found. Bounded web searches on
+22 July 2026 used the exact phrases \emph{e-bolts},
+\emph{extended bolt}, \emph{On error formulas for approximation by sums of
+univariate functions}, and \emph{Conjecture 3.4}, together with Ismailov's
+name and terms such as counterexample and polygon. They found the 2006
+source article \cite{Original}, the 2020 notes \cite{Notes}, and
+bibliographic mirrors, but no later proof, counterexample, or discussion of
+this obstruction. Novelty confidence is moderate pending specialist and
+author review, especially because the result exposes a possible mismatch
+between the printed rectangle condition and an intended stronger one.
+
+\section{Human-review recommendation}
+
+Review first as a literal counterexample to Theorem 3.8. The decisive checks
+are: (i) the source definition of $M(Q)$ requires the whole rectangle to be
+contained in $Q$; (ii) the three source bolts are ordered as in (8); and
+(iii) every closed-bolt functional gives the standard lower bound for
+$E(f,Q)$. If these pass, the theorem is false as printed. Then verify the
+source's explicit assertion that $Q^E=\{r,r_{12},r_{13}\}$ to accept the
+corollary for the conjecture.
+
+\begin{thebibliography}{2}
+\bibitem{Notes}
+V.~E. Ismailov,
+\emph{Notes on ridge functions and neural networks},
+arXiv:\href{https://arxiv.org/abs/2005.14125}{2005.14125},
+2020; Theorem 3.8 and Definition 3.2 on article pages 140--141.
+
+\bibitem{Original}
+V.~E. Ismailov,
+\emph{On error formulas for approximation by sums of univariate functions},
+International Journal of Mathematics and Mathematical Sciences
+\textbf{2006} (2006), Article ID 65620, 11 pp.,
+doi:\href{https://doi.org/10.1155/IJMMS/2006/65620}
+{10.1155/IJMMS/2006/65620}.
+\end{thebibliography}
+
+\end{document}
+

@@ -1,0 +1,263 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\fat}{\operatorname{fat}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\A}{\mathcal A}
+
+\title{The arithmetic mean disproves the universal\\
+bounded-affine lower bound in Conjecture 11}
+\author{Candidate counterexample packet for arXiv:2110.04763}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate counterexample, likely valid, pending human
+review.  The result concerns Conjecture 11 exactly as printed.  It does not
+address a possible intended restriction to the maximum aggregation.
+}}
+\end{center}
+
+\section{Source and target}
+
+Attias and Kontorovich study fat-shattering dimension under pointwise
+aggregation of real-valued function classes \cite{AK}.  Their Theorem 3 gives
+a dimension-free upper bound for Lipschitz aggregations of bounded affine
+classes.  In Section 5, page 15 of the arXiv PDF, they state Conjecture 11:
+for \(R_i\)-bounded affine classes \(F_i\) and an aggregation rule \(G\) that
+is \(1\)-Lipschitz in supremum norm,
+\begin{equation}
+ \fat_\gamma(G(F_1,\ldots,F_k))
+ \geq
+ \frac{C\Log(k)}{\gamma^2}\sum_{i=1}^k R_i^2,
+ \qquad
+ 0<\gamma<\min_i R_i,
+ \label{eq:conjecture}
+\end{equation}
+where \(C>0\) is universal.  The same wording appears in the final JMLR
+version as Conjecture 11, equation (29).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\caption{Section 5, page 15 of the source PDF.  The target is Conjecture 11
+and its displayed universal lower bound (22).}
+\label{fig:source}
+\end{figure}
+
+\section{Definitions}
+
+Let \(H\) be a real Hilbert space and let \(B_H=\{x\in H:\|x\|\leq1\}\).
+For \(R>0\), write
+\[
+ \A_R(H)
+ =
+ \bigl\{x\mapsto\langle w,x\rangle+b:
+       w\in H,\ \|w\|\leq R,\ |b|\leq R\bigr\}.
+\]
+This is precisely the equal-radius instance of the bounded affine classes
+used in the source paper (and includes its finite-dimensional setting).
+
+A finite set \(\{x_1,\ldots,x_m\}\) is \(\gamma\)-shattered by a function
+class \(F\) if there are thresholds \(r_1,\ldots,r_m\) such that for every
+sign vector \(\varepsilon\in\{-1,1\}^m\) there is \(f_\varepsilon\in F\)
+with
+\[
+ \varepsilon_i\bigl(f_\varepsilon(x_i)-r_i\bigr)\geq\gamma
+ \quad (i=1,\ldots,m).
+\]
+The largest possible \(m\) is \(\fat_\gamma(F)\).
+
+For \(k\geq1\), let
+\[
+ M_k(z_1,\ldots,z_k)=\frac1k\sum_{j=1}^k z_j
+\]
+be the arithmetic-mean aggregation.
+
+\section{Proof intuition}
+
+The proposed lower bound charges a term of order \(R_i^2\Log(k)\) for every
+input class, regardless of how the aggregation uses those inputs.  Averaging
+identical convex affine classes does not create any new functions: averaging
+their parameters stays in the same parameter ball, and every original
+function is recovered by putting it in all \(k\) coordinates.  Thus the
+aggregate class is independent of \(k\).
+
+For completeness, its fat dimension is bounded without invoking any external
+entropy theorem.  Average the shattering inequalities over random signs.
+The arbitrary threshold vector cancels in expectation, while the Hilbert
+norm and intercept contributions are each at most \(R\sqrt m\).  This forces
+\(m\leq4R^2/\gamma^2\), so the conjectured \(k\Log(k)\) growth is impossible.
+
+\section{Counterexample}
+
+\begin{lemma}[Fat dimension of a bounded affine class]
+\label{lem:fat}
+For every real Hilbert space \(H\), \(R>0\), and \(\gamma>0\),
+\[
+ \fat_\gamma(\A_R(H))\leq \frac{4R^2}{\gamma^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose \(x_1,\ldots,x_m\in B_H\) are \(\gamma\)-shattered with thresholds
+\(r_1,\ldots,r_m\).  For each sign vector
+\(\varepsilon\in\{-1,1\}^m\), choose
+\(f_\varepsilon(x)=\langle w_\varepsilon,x\rangle+b_\varepsilon\in\A_R(H)\)
+witnessing its labeling.  Summing the \(m\) shattering inequalities gives
+\[
+ m\gamma
+ \leq
+ \sum_{i=1}^m\varepsilon_i
+ \bigl(f_\varepsilon(x_i)-r_i\bigr)
+ \leq
+ \sup_{\substack{\|w\|\leq R\\|b|\leq R}}
+ \sum_{i=1}^m\varepsilon_i
+ \bigl(\langle w,x_i\rangle+b-r_i\bigr).
+\]
+The supremum on the right is exactly
+\[
+ R\left\|\sum_{i=1}^m\varepsilon_i x_i\right\|
+ +R\left|\sum_{i=1}^m\varepsilon_i\right|
+ -\sum_{i=1}^m\varepsilon_i r_i.
+\]
+Now take expectation over independent uniform signs.  The last term has
+expectation zero.  Therefore
+\begin{align*}
+ m\gamma
+ &\leq
+ R\,\mathbb E\left\|\sum_{i=1}^m\varepsilon_i x_i\right\|
+ +R\,\mathbb E\left|\sum_{i=1}^m\varepsilon_i\right|\\
+ &\leq
+ R\left(\mathbb E\left\|\sum_{i=1}^m\varepsilon_i x_i\right\|^2\right)^{1/2}
+ +R\left(\mathbb E\left|\sum_{i=1}^m\varepsilon_i\right|^2\right)^{1/2}\\
+ &=
+ R\left(\sum_{i=1}^m\|x_i\|^2\right)^{1/2}+R\sqrt m
+ \leq 2R\sqrt m.
+\end{align*}
+For \(m>0\), division by \(\sqrt m\,\gamma\) and squaring yield the claim.
+\end{proof}
+
+\begin{theorem}[Arithmetic-mean counterexample]
+\label{thm:counterexample}
+For every \(k\geq1\),
+\[
+ M_k(\A_R(H),\ldots,\A_R(H))=\A_R(H),
+\]
+and \(M_k:\mathbb R^k\to\mathbb R\) has optimal Lipschitz constant \(1\)
+with respect to the supremum norm.  Consequently, no universal
+\(C>0\) can make \eqref{eq:conjecture} hold for all \(k\), all bounded
+affine classes, and all \(1\)-Lipschitz aggregation rules.
+\end{theorem}
+
+\begin{proof}
+For \(z,z'\in\mathbb R^k\),
+\[
+ |M_k(z)-M_k(z')|
+ \leq \frac1k\sum_{j=1}^k|z_j-z_j'|
+ \leq \|z-z'\|_\infty.
+\]
+Equality occurs when every coordinate difference is the same nonzero number,
+so the optimal Lipschitz constant is exactly \(1\).
+
+If \(f_j(x)=\langle w_j,x\rangle+b_j\in\A_R(H)\), then
+\[
+ M_k(f_1,\ldots,f_k)(x)
+ =
+ \left\langle\frac1k\sum_{j=1}^k w_j,x\right\rangle
+ +\frac1k\sum_{j=1}^k b_j.
+\]
+The averaged parameters still satisfy
+\[
+ \left\|\frac1k\sum_j w_j\right\|\leq R,
+ \qquad
+ \left|\frac1k\sum_j b_j\right|\leq R.
+\]
+This proves
+\(M_k(\A_R(H),\ldots,\A_R(H))\subseteq\A_R(H)\).
+Conversely, every \(f\in\A_R(H)\) is the mean of the diagonal tuple
+\((f,\ldots,f)\), proving equality.
+
+Now set \(F_i=\A_R(H)\) and \(R_i=R\) for every \(i\).  Lemma
+\ref{lem:fat} gives
+\[
+ \fat_\gamma(M_k(F_1,\ldots,F_k))
+ =
+ \fat_\gamma(\A_R(H))
+ \leq \frac{4R^2}{\gamma^2}.
+\]
+But \eqref{eq:conjecture} would give
+\[
+ \fat_\gamma(M_k(F_1,\ldots,F_k))
+ \geq
+ \frac{Ck\Log(k)R^2}{\gamma^2}.
+\]
+Taking, for example, \(\gamma=R/2\), the first bound is at most \(16\),
+whereas the second is \(4Ck\Log(k)\), which exceeds \(16\) for all
+sufficiently large \(k\).  This contradicts every proposed universal
+\(C>0\).
+\end{proof}
+
+\section{Interpretation and limitations}
+
+The counterexample uses one of the paper's own canonical aggregation rules:
+the mean.  It is symmetric, depends on every coordinate, is
+shift-commuting, and has exact Lipschitz constant one.  Thus the obstruction
+is not an artifact of a constant map or of an aggregation that ignores most
+inputs.
+
+The conclusion is deliberately narrow.  The phrase ``Theorem 3 is tight up
+to constants'' may have been intended existentially (some aggregation
+attains the upper bound) or specifically for \(G_{\max}\).  The displayed
+Conjecture 11, however, states the lower bound for an aggregation rule \(G\)
+under only the \(1\)-Lipschitz hypothesis.  The arithmetic mean disproves
+that universal formulation.  It says nothing against the max-specific lower
+bound, which remains outside this packet.
+
+\section{Verification and novelty check}
+
+The proof has no computational or conditional dependency.  The two
+substantive checks are the exact class identity under averaging and the
+random-sign estimate in Lemma \ref{lem:fat}; both are written out above.
+
+Before promotion, the run's registry and lightweight indexes were searched
+for arXiv:2110.04763, the exact title, and the core bounded-affine aggregation
+terms.  No duplicate result appeared.  The current arXiv source and the
+official 2024 JMLR version were inspected; both retain Conjecture 11 in the
+form shown in Figure \ref{fig:source}.  Bounded exact-phrase web searches for
+the title, ``Conjecture 11,'' ``1-Lipschitz'' aggregation, and the displayed
+lower bound found no correction, erratum, or later paper recording this
+counterexample.  This is not an exhaustive novelty guarantee.  Because the
+argument is elementary and may identify an unintended quantifier, novelty
+confidence is moderate; confidence in the literal mathematical
+counterexample is high.
+
+\section{Human-review recommendation}
+
+The recommended review is to confirm the intended quantifier in Conjecture
+11.  If the printed universal reading is intended, Theorem
+\ref{thm:counterexample} is a complete counterexample.  If the intended
+claim is max-specific or merely existential sharpness of Theorem 3, the
+source statement should be narrowed and this packet should be classified as
+a statement-level counterexample rather than a refutation of that intended
+variant.
+
+\begin{thebibliography}{9}
+\bibitem{AK}
+I. Attias and A. Kontorovich,
+\emph{Fat-Shattering Dimension of \(k\)-fold Aggregations},
+Journal of Machine Learning Research \textbf{25} (2024), paper 144, 1--29;
+arXiv:2110.04763.
+\end{thebibliography}
+
+\end{document}

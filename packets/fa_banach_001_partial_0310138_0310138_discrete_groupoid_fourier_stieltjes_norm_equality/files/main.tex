@@ -1,0 +1,351 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{accent}{RGB}{37,86,123}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cb}{\mathrm{cb}}
+\newcommand{\ran}{\operatorname{ran}}
+
+\title{\textcolor{accent}{Equality of the two continuous
+Fourier--Stieltjes norms for discrete groupoids}}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 13}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{
+\textbf{Status.} Complete theorem for the discrete subclass of the source
+question; current verdict: likely valid.  The nondiscrete problem remains open.
+}}
+\end{center}
+
+\section{Source question and result}
+
+Let \(G\) be a locally compact groupoid with a Haar system.  Paterson
+\cite[\S5]{Paterson2003} defines the continuous Fourier--Stieltjes algebra
+\(B(G)\) from coefficients of continuous \(G\)-Hilbert bundles.  With the
+convention that Hilbert-space inner products are conjugate-linear in the first
+variable, a coefficient has the form
+\[
+ \phi(g)=\bigl(L_g\xi(s(g)),\eta(r(g))\bigr),
+\]
+where \(\xi,\eta\) are bounded continuous sections, and
+\[
+ \|\phi\|_B
+ =\inf\{\|\xi\|_\infty\|\eta\|_\infty:
+             \phi=(\xi,\eta)\}.
+\]
+Pointwise multiplication by \(\phi\) extends to a completely bounded map
+\[
+ T_\phi:C^*(G)\longrightarrow C^*(G),\qquad
+ T_\phi(f)=\phi f,
+\]
+and one sets \(\|\phi\|_{\cb}=\|T_\phi\|_{\cb}\).  Paterson records the
+always-valid inequality
+\begin{equation}\label{eq:known}
+ \|\phi\|_{\cb}\leq\|\phi\|_B
+\end{equation}
+and asks whether equality holds in general.  The source gives equality for the
+trivial pair groupoid \(R_n\), as well as a separate proof for locally compact
+abelian groups.
+
+The exact source sentence (Section~5, page~10 of the paper) is:
+\begin{quote}
+\emph{``It is an open question if the two norms actually coincide in
+general.''}
+\end{quote}
+The surrounding source passage is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below supplies the reverse inequality throughout the discrete
+case.  As usual in the source setting, ``discrete'' plus second countability
+means countable; equivalently, one can take countability as an explicit
+hypothesis.
+
+\section{Proof intuition}
+
+The cb multiplier itself contains the desired coefficient factorization once
+it is observed through the trivial one-dimensional groupoid representation.
+Indeed, that representation sends an arrow \(g:v\to u\) to the matrix unit
+\(E_{u,v}\).  A Haagerup--Paulsen factorization of the resulting
+operator-valued map can then be cut by the mutually orthogonal unit
+projections of \(C^*(G)\).  Those cuts are the Hilbert fibers, the images of
+the arrow point masses are the fiberwise unitaries, and the columns of the two
+factorizing operators are bounded coefficient sections.  This reconstructs
+\(\phi\) at cost at most \(\|T_\phi\|_{\cb}\), precisely reversing
+\eqref{eq:known}.  Discreteness is what makes the point masses and the
+pointwise fiber columns available; the nondiscrete source question remains
+open.
+
+\begin{theorem}\label{thm:main}
+Let \(G\) be a countable discrete groupoid, equipped with its counting Haar
+system.  Then
+\[
+ \|\phi\|_B=\|T_\phi\|_{\cb}
+ \qquad\text{for every }\phi\in B(G).
+\]
+\end{theorem}
+
+\section{The trivial line-bundle representation}
+
+Write \(G^0\) for the unit space and put
+\[
+ A=C^*(G),\qquad H_0=\ell^2(G^0).
+\]
+For \(u\in G^0\), let \(e_u\) be the corresponding unit vector.  For
+\(g\in G\), write \(\delta_g\in C_c(G)\) for the point mass and
+\(p_u=\delta_u\).
+
+\begin{lemma}\label{lem:sigma}
+There is a \(^{*}\)-representation
+\(\sigma:A\to B(H_0)\) satisfying
+\[
+ \sigma(\delta_g)e_{s(g)}=e_{r(g)},\qquad
+ \sigma(\delta_g)e_v=0\quad(v\ne s(g)).
+\]
+Equivalently, \(\sigma(\delta_g)=E_{r(g),s(g)}\).
+\end{lemma}
+
+\begin{proof}
+Give every unit the one-dimensional Hilbert fiber \(\C\), and let every arrow
+act by the identity map between its source and range fibers.  This is the
+trivial \(G\)-Hilbert bundle.  Its integrated representation on
+\(\ell^2(G^0)\) has the displayed formula.
+
+One can also check the formula directly.  If \(g,h\) are composable, then
+\[
+ E_{r(g),s(g)}E_{r(h),s(h)}
+ =E_{r(gh),s(gh)};
+\]
+if they are not composable, the product is zero, and adjoints correspond to
+inverses.  Thus the assignment is a \(^{*}\)-representation of \(C_c(G)\).
+For \(f\in C_c(G)\), its matrix row and column sums are bounded by the two
+terms in the groupoid \(I\)-norm, so the assignment is \(I\)-norm bounded.
+It therefore extends to the full groupoid \(C^*\)-algebra.
+\end{proof}
+
+The fact that distinct arrows with the same source and range are sent to the
+same matrix unit causes no loss: the domain elements \(\delta_g\) remain
+distinct, and we will evaluate the resulting operator-valued map separately
+on every one of them.
+
+\section{Reconstructing a coefficient from a cb factorization}
+
+We use the standard Haagerup--Paulsen factorization theorem
+\cite[Ch.~8]{Paulsen}: if \(S:A\to B(H_0)\) is completely bounded, then for
+each \(\varepsilon>0\) there are a Hilbert space \(K\), a
+\(^{*}\)-representation \(\pi:A\to B(K)\), and operators
+\(V,W:H_0\to K\) such that
+\begin{equation}\label{eq:HP}
+ S(a)=V^*\pi(a)W,\qquad
+ \|V\|\,\|W\|\leq\|S\|_{\cb}+\varepsilon.
+\end{equation}
+
+\begin{lemma}\label{lem:reverse}
+For a countable discrete groupoid \(G\) and every \(\phi\in B(G)\),
+\[
+ \|\phi\|_B\leq\|T_\phi\|_{\cb}.
+\]
+\end{lemma}
+
+\begin{proof}
+Fix \(\varepsilon>0\) and compose the multiplier with the representation from
+Lemma~\ref{lem:sigma}:
+\[
+ S=\sigma\circ T_\phi:A\longrightarrow B(H_0).
+\]
+Then \(\|S\|_{\cb}\leq\|T_\phi\|_{\cb}\).  Choose a factorization
+\eqref{eq:HP}.
+
+The mutually orthogonal projections \(\pi(p_u)\) define Hilbert fibers
+\[
+ K_u=\pi(p_u)K\qquad(u\in G^0).
+\]
+For every arrow \(g\), the restriction
+\[
+ U_g=\pi(\delta_g)|_{K_{s(g)}}:K_{s(g)}\longrightarrow K_{r(g)}
+\]
+is unitary, because
+\[
+ \delta_g^*\delta_g=p_{s(g)},\qquad
+ \delta_g\delta_g^*=p_{r(g)}.
+\]
+The convolution relations give \(U_gU_h=U_{gh}\) for composable arrows.
+Thus \((K_u,U_g)\) is a \(G\)-Hilbert bundle.  Since \(G^0\) is discrete,
+there is no continuity obstruction.
+
+Define bounded sections
+\[
+ \xi(u)=\pi(p_u)We_u,\qquad
+ \eta(u)=\pi(p_u)Ve_u.
+\]
+They satisfy
+\begin{equation}\label{eq:sectionbound}
+ \|\xi\|_\infty\leq\|W\|,\qquad
+ \|\eta\|_\infty\leq\|V\|.
+\end{equation}
+For \(g\in G\), using Paterson's convention that the inner product is
+conjugate-linear in the first variable, we obtain
+\begin{align*}
+ \bigl(U_g\xi(s(g)),\eta(r(g))\bigr)
+ &=\bigl(\pi(\delta_g)We_{s(g)},Ve_{r(g)}\bigr)\\
+ &=\bigl(V^*\pi(\delta_g)We_{s(g)},e_{r(g)}\bigr)\\
+ &=\bigl(S(\delta_g)e_{s(g)},e_{r(g)}\bigr)\\
+ &=\bigl(\phi(g)e_{r(g)},e_{r(g)}\bigr)
+ =\overline{\phi(g)}.
+\end{align*}
+Hence \(\overline\phi\) is a coefficient with the bounds
+\eqref{eq:sectionbound}.  Passing to the conjugate Hilbert bundle turns this
+coefficient into \(\phi\): if
+\((\overline{x},\overline{y})_{\overline K}=(y,x)_K\), then
+\[
+ \bigl(\overline{U_g}\,\overline{\xi(s(g))},
+       \overline{\eta(r(g))}\bigr)_{\overline K}
+ =
+ \overline{
+ \bigl(U_g\xi(s(g)),\eta(r(g))\bigr)_K}
+ =\phi(g).
+\]
+Conjugation preserves all fiber norms.  Consequently,
+\[
+ \|\phi\|_B
+ \leq\|\xi\|_\infty\|\eta\|_\infty
+ \leq\|V\|\,\|W\|
+ \leq\|S\|_{\cb}+\varepsilon
+ \leq\|T_\phi\|_{\cb}+\varepsilon.
+\]
+Letting \(\varepsilon\downarrow0\) proves the lemma.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Combine Lemma~\ref{lem:reverse} with the established inequality
+\eqref{eq:known}.
+\end{proof}
+
+\begin{corollary}\label{cor:finite}
+The two norms coincide for every finite groupoid.
+\end{corollary}
+
+\begin{remark}[What this adds to the recorded finite case]
+A transitive finite groupoid is isomorphic, after choices of connecting
+arrows, to
+\[
+ I\times H\times I,
+\]
+where \(H\) is an isotropy group; its full \(C^*\)-algebra is
+\(M_{|I|}(C^*(H))\).  Paterson's \(R_n\) is the case \(H=\{e\}\).
+Corollary~\ref{cor:finite} allows arbitrary finite \(H\), including
+nonabelian isotropy, and arbitrary finite disjoint unions of such components.
+\end{remark}
+
+\section{Scope audit and novelty check}
+
+\subsection*{Why discreteness enters}
+
+The proof uses both the atomic vectors \(e_u\in\ell^2(G^0)\) and the isolated
+arrow functions \(\delta_g\in C_c(G)\).  They let a single completely bounded
+map recover the value \(\phi(g)\) arrow by arrow.  For a nondiscrete unit
+space, counting measure need not be Radon and the constructed fiber vectors
+need not form continuous sections.  Thus the proof does not establish the
+general locally compact statement.
+
+\subsection*{Adversarial checks}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}
+>{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+\toprule
+Potential failure & Check \\
+\midrule
+Parallel arrows collapse under \(\sigma\) &
+Only the output matrix unit repeats; \(S\) is evaluated on each distinct
+domain basis element \(\delta_g\), so its scalar is still \(\phi(g)\).\\
+The factorizing \(\pi\) is not a bundle representation &
+The exact relations for \(p_u,\delta_g\) cut \(K\) into fibers and make every
+\(\pi(\delta_g)\) a unitary between the correct fibers.\\
+Sections are not bounded or continuous &
+Projection gives the uniform estimates \eqref{eq:sectionbound}; every section
+over a discrete base is continuous.\\
+Inner-product convention conjugates the answer &
+The first coefficient is \(\overline\phi\); the conjugate Hilbert bundle gives
+\(\phi\) with identical norms.\\
+Factorization estimates the wrong norm &
+\(\sigma\) is a \(^{*}\)-representation, so
+\(\|\sigma T_\phi\|_{\cb}\leq\|T_\phi\|_{\cb}\).\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Bounded literature search}
+
+On 23 July 2026, searches were run for the exact source question and for
+combinations of \emph{discrete groupoid}, \emph{r-discrete groupoid},
+\emph{Fourier--Stieltjes}, \emph{coefficient norm}, and
+\emph{completely bounded multiplier}.  Oty's earlier work \cite{Oty} studies
+the Borel/r-discrete Fourier--Stieltjes algebra with a norm defined through
+multipliers on the Borel completion \(M^*(G)\); this is not a statement of
+the equality proved here for Paterson's continuous Hilbert-bundle coefficient
+norm on \(B(G)\).  Later operator-space duality \cite{Paterson2011} is in the
+measured setting, while recent restriction-map work \cite{DG2025} addresses a
+different problem.  No exact prior statement was located.  This is a bounded
+negative search, so novelty confidence is moderate rather than definitive.
+
+\subsection*{Human-review recommendation}
+
+Send to a specialist reviewer.  The two points deserving the closest check
+are the application of Haagerup--Paulsen factorization to
+\(\sigma T_\phi\) and the conjugate-bundle calculation.  If accepted, the
+theorem is suitable for a concise proposition or short note.
+
+\begin{thebibliography}{9}
+
+\bibitem{Paterson2003}
+A. L. T. Paterson,
+\emph{The Fourier--Stieltjes and Fourier algebras for locally compact
+groupoids},
+\href{https://arxiv.org/abs/math/0310138}{arXiv:math/0310138} (2003).
+
+\bibitem{Paulsen}
+V. I. Paulsen,
+\emph{Completely Bounded Maps and Operator Algebras},
+Cambridge Studies in Advanced Mathematics 78,
+Cambridge University Press, 2002.
+
+\bibitem{Oty}
+K. J. Oty,
+\emph{Fourier--Stieltjes algebras of \(r\)-discrete groupoids},
+J. Operator Theory \textbf{41} (1999), 175--197.
+
+\bibitem{Paterson2011}
+A. L. T. Paterson,
+\emph{An operator space duality theorem for the Fourier--Stieltjes algebra of
+a locally compact groupoid},
+\href{https://arxiv.org/abs/1102.0304}{arXiv:1102.0304} (2011).
+
+\bibitem{DG2025}
+J. DeGaetani and M. Ghandehari,
+\emph{On the restriction maps of the Fourier and Fourier--Stieltjes algebras
+over locally compact groupoids},
+Int. Math. Res. Not. IMRN (2025), rnaf057.
+
+\end{thebibliography}
+
+\end{document}

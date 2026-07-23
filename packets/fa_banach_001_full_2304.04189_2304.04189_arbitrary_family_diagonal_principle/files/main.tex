@@ -1,0 +1,250 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\cU}{\mathcal U}
+\newcommand{\cP}{\mathcal P}
+
+\title{An Arbitrary-Family Diagonal Principle for Nets}
+\author{Candidate full solution for arXiv:2304.04189}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.} Candidate full solution,
+likely valid pending expert review.  The proof is in ZFC and explicitly uses
+choice; it is not claimed to be constructive.}}
+\end{center}
+
+\section{Source question}
+
+Azouzi proves a diagonal principle for a countable sequence of properties of
+nets \cite{Azouzi}.  At the start of Section 4, PDF page 7, he asks whether
+there is ``a more general diagonal process where the set of properties is not
+assumed countable,'' observes that a constructive proof should not be
+expected, and suggests Zorn's lemma.  The complete source passage is shown
+below.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The natural precise formulation is obtained from Theorem 7 of the source by
+replacing $(\cP_k)_{k\in\mathbb N}$ with a family indexed by an arbitrary set.
+
+\section{Definitions}
+
+We use the subnet convention of the source: $y\colon B\to E$ is a subnet of
+$x\colon A\to E$ if $y=x\circ\phi$ for a \emph{final} map
+$\phi\colon B\to A$, meaning that for every $\alpha_0\in A$ there is
+$\beta_0\in B$ such that $\phi(\beta)\geq\alpha_0$ whenever
+$\beta\geq\beta_0$.  It is an \emph{eventual subnet} if some tail is a
+subnet.
+
+For a net $x$ in $E$, its eventuality filter is
+\[
+ \mathfrak F_x=\{S\subseteq E:x\text{ is eventually in }S\}.
+\]
+The net is \emph{universal} if, for every $S\subseteq E$, it is eventually in
+$S$ or eventually in $E\setminus S$.  Equivalently, $\mathfrak F_x$ is an
+ultrafilter.
+
+\section{Proof intuition}
+
+Countable diagonalization repeatedly refines a net and then follows one
+diagonal through the resulting chain.  For an arbitrary family there is no
+last stage and no elementary transfinite limit subnet.  The replacement is to
+make the tail behavior maximal first.
+
+Pass to a universal subnet $u$.  Every further subnet of $u$ has exactly the
+same eventuality ultrafilter.  For each desired property choose a satisfying
+subnet $v^i$ of $u$.  Because all their tail ranges belong to one ultrafilter,
+every finite collection of tail requirements has a common value.  Indexing
+over all finite collections of requirements produces one net which is a
+subnet of $u$ and, on a tail, a subnet of every $v^i$.  Heredity under
+eventual subnets then transfers all properties at once.
+
+\section{Two lemmas}
+
+\begin{lemma}[Universal subnet]
+Every net has a universal subnet, assuming the ultrafilter lemma.
+\end{lemma}
+
+\begin{proof}
+Let $x\colon A\to E$ and put
+$T_\alpha=\{x_\gamma:\gamma\geq\alpha\}$.  The sets $T_\alpha$ form a
+filter base.  Extend the generated filter to an ultrafilter $\cU$ on $E$.
+
+Let
+\[
+ D=A\times\cU,
+ \qquad
+ (\alpha,V)\preceq(\alpha',V')
+ \quad\Longleftrightarrow\quad
+ \alpha\leq\alpha'\ \text{ and }\ V'\subseteq V.
+\]
+This is directed: use an upper bound in $A$ and the intersection of the two
+ultrafilter sets.  Since $T_\alpha\cap V\neq\varnothing$, choose
+$\psi(\alpha,V)\geq\alpha$ with $x_{\psi(\alpha,V)}\in V$, and define
+$u_{(\alpha,V)}=x_{\psi(\alpha,V)}$.  The map $\psi\colon D\to A$ is final,
+so $u$ is a subnet of $x$.
+
+For $S\subseteq E$, either $S\in\cU$ or $E\setminus S\in\cU$.  In the first
+case, after any index of the form $(\alpha,S)$, every later value of $u$ lies
+in $S$; the second case is identical with the complement.  Hence $u$ is
+universal.
+\end{proof}
+
+\begin{lemma}[Arbitrary common eventual refinement]
+Let $(v^j\colon B_j\to E)_{j\in J}$ be a nonempty family of nets with the same
+eventuality ultrafilter $\cU$.  Fix $j_*\in J$.  There is a net $w$ which is a
+subnet of $v^{j_*}$ and an eventual subnet of $v^j$ for every $j\in J$.
+\end{lemma}
+
+\begin{proof}
+For $b\in B_j$, write
+\[
+ R_j(b)=\{v^j_c:c\geq b\}.
+\]
+Because $v^j$ is eventually in its own tail range, $R_j(b)\in\cU$.
+
+Let $D$ consist of pairs
+\[
+ d=(F,(b_j)_{j\in F}),
+\]
+where $F\subseteq J$ is finite, $j_*\in F$, and $b_j\in B_j$.  Order $D$ by
+\[
+ (F,(b_j))\preceq(G,(c_j))
+ \quad\Longleftrightarrow\quad
+ F\subseteq G\ \text{ and }\ b_j\leq c_j\quad(j\in F).
+\]
+The set $D$ is directed: for two constraints take the union of their finite
+sets and, on every overlapping coordinate, an upper bound in $B_j$.
+
+For every $d\in D$, the finite intersection
+\[
+ Q_d=\bigcap_{j\in F}R_j(b_j)
+\]
+belongs to $\cU$ and is nonempty.  Choose $w_d\in Q_d$.  Fix $j\in J$ and
+let $D_j=\{d\in D:j\in F_d\}$.  This is a tail of $D$.  For $d\in D_j$,
+choose $\theta_j(d)\in B_j$ such that
+\[
+ \theta_j(d)\geq b_j(d)
+ \quad\text{and}\quad
+ v^j_{\theta_j(d)}=w_d.
+\]
+The map $\theta_j\colon D_j\to B_j$ is final.  Indeed, for $b_0\in B_j$,
+choose a constraint $d_0$ containing $j$ with $b_j(d_0)=b_0$.  Whenever
+$d\succeq d_0$, one has
+$\theta_j(d)\geq b_j(d)\geq b_0$.  Thus $w|_{D_j}$ is a subnet of $v^j$.
+
+Since $j_*$ belongs to every $F_d$, $D_{j_*}=D$; hence $w$ itself is a subnet
+of $v^{j_*}$.  For every other $j$, the same conclusion holds on the tail
+$D_j$, so $w$ is an eventual subnet of $v^j$.
+\end{proof}
+
+\section{Arbitrary-family diagonal principle}
+
+\begin{theorem}
+Let $E$ be a nonempty set, let $x\colon A\to E$ be a net, and let
+$(\cP_i)_{i\in I}$ be a family of properties of nets indexed by an arbitrary
+set $I$.  Assume:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item each $\cP_i$ is preserved under passing to eventual subnets;
+\item for every $i\in I$ and every subnet $y$ of $x$, there is a further
+subnet of $y$ satisfying $\cP_i$.
+\end{enumerate}
+Then $x$ has a subnet satisfying $\cP_i$ for every $i\in I$.
+\end{theorem}
+
+\begin{proof}
+The conclusion is immediate if $I=\varnothing$, so assume $I\neq\varnothing$.
+By the universal-subnet lemma, choose a universal subnet $u$ of $x$, and let
+$\cU=\mathfrak F_u$.
+
+For each $i\in I$, hypothesis (ii), applied to $u$, gives a subnet $v^i$ of
+$u$ satisfying $\cP_i$.  Every subnet of a universal net is universal: it is
+eventually in whichever of $S$ and $E\setminus S$ eventually contains $u$.
+Moreover, $\mathfrak F_{v^i}\supseteq\mathfrak F_u=\cU$.  Both sides are
+ultrafilters, so
+\[
+ \mathfrak F_{v^i}=\cU\qquad(i\in I).
+\]
+
+Apply the common-refinement lemma to the family consisting of $u$ and all
+$v^i$, taking $u$ as the distinguished member.  We obtain a net $z$ which is
+a subnet of $u$ and an eventual subnet of every $v^i$.  Since $v^i$ satisfies
+$\cP_i$ and $\cP_i$ is preserved under eventual subnets, $z$ satisfies
+$\cP_i$ for every $i\in I$.  Finally, the composition of final maps is final,
+so the subnet $z$ of $u$ is a subnet of $x$.
+\end{proof}
+
+\section{Consequences}
+
+\begin{corollary}[Tychonoff]
+Assuming Choice, an arbitrary product of compact spaces is compact.
+\end{corollary}
+
+\begin{proof}
+Let $x$ be a net in $\prod_{i\in I}X_i$.  For each $i$, let $\cP_i$ mean
+that the $i$th coordinate net converges.  Compactness of $X_i$ says that every
+subnet has a further subnet satisfying $\cP_i$, and coordinate convergence is
+preserved under subnets.  The theorem produces one subnet converging in every
+coordinate, hence in the product topology.
+\end{proof}
+
+\begin{corollary}[Banach--Alaoglu]
+For every Banach space $X$, the dual unit ball is weak-star compact.
+\end{corollary}
+
+\begin{proof}
+Given a net in $B_{X^*}$ and $x\in X$, let $\cP_x$ mean that the scalar
+evaluation net at $x$ converges.  Every subnet has a further subnet satisfying
+$\cP_x$, because its values lie in a compact scalar disk.  The theorem gives
+a subnet converging pointwise on all of $X$.  Its pointwise limit is linear
+and bounded by one, hence belongs to $B_{X^*}$, and the subnet converges to it
+in the weak-star topology.
+\end{proof}
+
+\section{Verification and limitations}
+
+The proof matches the final-map definition of subnet used in the source.  In
+the common-refinement lemma, the distinguished component is refined on the
+entire index set; each other component is refined on a tail, exactly matching
+the heredity hypothesis.  No countability assumption enters.
+
+The result is nonconstructive.  It uses the ultrafilter lemma and additional
+set-indexed selections, all available in ZFC.  No assertion is made about the
+corresponding statement in ZF alone.
+
+The run's lightweight indexes and a bounded web search on July 22, 2026 were
+checked using arXiv:2304.04189, the exact title and author, phrases from the
+source question, and close variants involving universal nets and common
+ultrafilters.  No later explicit resolution was found.  Since universal nets
+are classical, the exact theorem may nevertheless be folklore; novelty
+confidence is moderate pending specialist review.
+
+\begin{thebibliography}{9}
+\bibitem{Azouzi}
+Y.~Azouzi,
+\emph{A diagonal principle for nets},
+arXiv:2304.04189 (2023).
+
+\bibitem{Kelley}
+J.~L.~Kelley,
+\emph{General Topology},
+Van Nostrand, 1955.
+\end{thebibliography}
+
+\end{document}

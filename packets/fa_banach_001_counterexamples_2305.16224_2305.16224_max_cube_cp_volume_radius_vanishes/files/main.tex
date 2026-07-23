@@ -1,0 +1,225 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+
+\newcommand{\Sym}{\mathbb S}
+\newcommand{\CP}{\mathcal{CP}}
+\newcommand{\PSD}{\mathcal{PSD}}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\diag}{\operatorname{diag}}
+
+\title{The Max-Cube Completely Positive Volume Radius Vanishes}
+\author{Automated Math Discovery Candidate Counterexample}
+\date{July 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\textbf{Status.}
+Candidate full negative answer to Remark 1.5(1) of Klep--\v{S}trekelj--Zalar,
+likely valid pending expert review.  Under the nontrivial normalized
+volume-radius interpretation of ``does not get arbitrarily small,'' the
+proposed max-cube largeness fails even for the larger positive-semidefinite
+cone.}}
+\end{center}
+
+\section*{Source Question}
+
+Klep, \v{S}trekelj, and Zalar compare compact affine sections of the
+copositive and completely positive cones and obtain a dimension-free lower
+bound for the ratio of their volume radii \cite{KSZ}.  In Remark 1.5(1), on
+pages 4--5, they ask whether the analogous largeness persists inside the
+max-norm unit ball $B_{n,\max}$:
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page4.png}
+
+\vspace{0.35em}
+\includegraphics[width=\textwidth]{figures/open_problem_crop_page5.png}
+\end{center}
+
+The displayed source passage writes the relevant volume as
+$c^{\dim\Sym_n}\Vol(B_{n,\max})$ and is embedded in a discussion of volume
+radii.  We therefore formalize the substantive question by asking whether
+the base $c$, rather than the raw probability $c^{\dim\Sym_n}$, stays bounded
+away from zero.  (For raw probability, $\CP_n\subseteq\mathcal{NN}_n$ already
+gives an immediate negative answer.)
+
+\section*{Definitions and Answer}
+
+Let $\Sym_n$ be the real vector space of symmetric $n\times n$ matrices,
+$d_n=n(n+1)/2$, and
+\[
+ B_{n,\max}=\{A=[a_{ij}]\in\Sym_n:\max_{i,j}|a_{ij}|\leq1\}.
+\]
+For a measurable cone $K\subseteq\Sym_n$, define its normalized max-cube
+volume radius by
+\[
+ \rho_n(K)=
+ \left(\frac{\Vol(K\cap B_{n,\max})}{\Vol(B_{n,\max})}\right)^{1/d_n}.
+\]
+This ratio is independent of whether Lebesgue measure is expressed in the
+independent upper-triangular coordinates or in orthonormal Frobenius
+coordinates.
+
+Write $\CP_n$ for the completely positive cone and $\PSD_n$ for the
+positive-semidefinite cone.  Let
+\[
+ v_k=\Vol\{x\in\mathbb R^k:\lVert x\rVert_2\leq1\}
+     =\frac{\pi^{k/2}}{\Gamma(k/2+1)}.
+\]
+
+\begin{theorem}[Negative answer in the max cube]\label{thm:main}
+For every $n\geq2$,
+\begin{equation}\label{eq:explicit}
+ \rho_n(\CP_n)\leq\rho_n(\PSD_n)
+ \leq\frac12
+ \left[
+   \left(\frac{2}{n+1}\right)^n
+   \prod_{k=1}^{n-1}v_k
+ \right]^{1/d_n}.
+\end{equation}
+Consequently,
+\[
+                  \rho_n(\CP_n)=O(n^{-1/2})\longrightarrow0.
+\]
+Thus the max-norm ball makes the difference visible: completely positive
+matrices do not occupy a dimension-free normalized volume radius there.
+\end{theorem}
+
+\section*{Proof Intuition}
+
+The key point is that the max cube interacts very rigidly with positive
+semidefiniteness.  Once the diagonal $(t_1,\ldots,t_n)$ is fixed, every PSD
+matrix in the cube is uniquely a diagonally scaled correlation matrix
+$D^{1/2}CD^{1/2}$.  The Jacobian contributes only
+$\prod_i t_i^{(n-1)/2}$.  It remains to estimate the volume of the correlation
+elliptope.
+
+Build a correlation matrix one row and column at a time.  Above a leading
+block $C$, the new correlation vector lies in the Schur-complement ellipsoid
+$x^TC^{-1}x\leq1$, whose volume is $v_k\sqrt{\det C}\leq v_k$.
+Iteration gives a product of Euclidean ball volumes.  That product has log
+volume $-(n^2/4)\log n+O(n^2)$, which becomes a factor of order
+$n^{-1/2}$ after taking the $d_n$-th root.
+
+\section*{Proof}
+
+Let
+\[
+ \E_n=\{C\in\PSD_n:\diag(C)=(1,\ldots,1)\}
+\]
+be the correlation elliptope, viewed in its $n(n-1)/2$ off-diagonal
+coordinates, and put $V_n=\Vol(\E_n)$.
+
+\begin{lemma}[Elliptope recursion]\label{lem:elliptope}
+For $n\geq2$,
+\[
+                       V_n\leq\prod_{k=1}^{n-1}v_k.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $V_1=1$.  Apart from a null boundary, a matrix in $\E_n$ has a
+positive-definite leading block and can be written
+\[
+                 \begin{pmatrix}C&x\\x^T&1\end{pmatrix},
+                 \qquad C\in\operatorname{int}(\E_{n-1}).
+\]
+By the Schur complement, the allowed fiber is
+$\{x:x^TC^{-1}x\leq1\}$.  Its volume is
+$v_{n-1}\sqrt{\det C}$.  Hadamard's determinant inequality gives
+$0\leq\det C\leq1$, because $C$ is PSD with unit diagonal.  Fubini's theorem
+therefore yields
+\[
+ V_n=v_{n-1}\int_{\E_{n-1}}\sqrt{\det C}\,dC
+     \leq v_{n-1}V_{n-1}.
+\]
+Iteration proves the claim.
+\end{proof}
+
+We next compute the PSD volume in the max cube.  Use the independent entries
+$a_{ii}$ and $a_{ij}$, $i<j$, as coordinates.  The resulting volume ratios
+are the same as for the paper's Frobenius Lebesgue measure, since the latter
+merely multiplies every off-diagonal coordinate by $\sqrt2$ in both numerator
+and denominator.
+
+If $A\in\PSD_n\cap B_{n,\max}$, then $t_i=a_{ii}\in[0,1]$.
+Outside the null set on which some $t_i=0$, put $D=\diag(t_1,\ldots,t_n)$
+and
+\[
+                         C=D^{-1/2}AD^{-1/2}.
+\]
+Then $C\in\E_n$.  Conversely, every $t\in(0,1]^n$ and $C\in\E_n$ gives
+$A=D^{1/2}CD^{1/2}\in\PSD_n\cap B_{n,\max}$: indeed
+$|c_{ij}|\leq1$ for a correlation matrix, so
+$|a_{ij}|\leq\sqrt{t_it_j}\leq1$.
+
+For fixed $t$, the map on off-diagonal coordinates is
+$c_{ij}\mapsto a_{ij}=\sqrt{t_it_j}\,c_{ij}$.  Its Jacobian is
+\[
+ \prod_{i<j}\sqrt{t_it_j}
+       =\prod_{i=1}^n t_i^{(n-1)/2}.
+\]
+Consequently,
+\begin{align}
+ \Vol(\PSD_n\cap B_{n,\max})
+ &=V_n\prod_{i=1}^n\int_0^1t_i^{(n-1)/2}\,dt_i\notag\\
+ &=V_n\left(\frac{2}{n+1}\right)^n.\label{eq:psdvolume}
+\end{align}
+In these coordinates $\Vol(B_{n,\max})=2^{d_n}$.  Since
+$\CP_n\subseteq\PSD_n$, equation \eqref{eq:psdvolume} and Lemma
+\ref{lem:elliptope} give \eqref{eq:explicit}.
+
+It remains only to read its asymptotics.  The elementary ball-volume bound
+\[
+                         v_k\leq\left(\frac{2\pi e}{k}\right)^{k/2}
+\]
+implies
+\begin{align*}
+ \log\prod_{k=1}^{n-1}v_k
+ &\leq\frac12\sum_{k=1}^{n-1}k\bigl(\log(2\pi e)-\log k\bigr)\\
+ &=-\frac14n^2\log n+O(n^2),
+\end{align*}
+where one uses
+$\sum_{k<n}k\log k=\frac12n^2\log n-\frac14n^2+O(n\log n)$.
+Because $d_n=\frac12n^2+O(n)$ and
+$n\log(2/(n+1))=O(n\log n)$, taking logarithms in
+\eqref{eq:explicit} gives
+\[
+                \log\rho_n(\CP_n)\leq-\frac12\log n+O(1).
+\]
+This proves Theorem \ref{thm:main}. \qed
+
+\section*{Scope and Novelty Check}
+
+The theorem settles the max-cube question negatively in the normalized
+volume-radius sense.  It does not compute the sharp constant or the exact
+asymptotic of $\rho_n(\CP_n)$; it only supplies the decisive vanishing upper
+bound.  The separate source question about precise constants in the authors'
+special affine sections is unaffected.
+
+Bounded searches through July 22, 2026 used arXiv:2305.16224, the exact source
+title, and combinations of ``max norm,'' ``completely positive matrix,''
+``volume,'' and ``correlation elliptope.''  No later paper stating this answer
+or this reduction was found.  The argument is short once the PSD/correlation
+change of variables is made, so novelty confidence is moderate and specialist
+review is recommended.
+
+\begin{thebibliography}{9}
+\bibitem{KSZ}
+I.~Klep, T.~\v{S}trekelj, and A.~Zalar,
+\emph{A random copositive matrix is completely positive with positive
+probability}, arXiv:2305.16224 (2023; revised 2024).
+\end{thebibliography}
+
+\end{document}

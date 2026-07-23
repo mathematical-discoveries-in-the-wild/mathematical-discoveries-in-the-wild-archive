@@ -1,0 +1,349 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{accent}{RGB}{37,86,123}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\T}{\mathbb T}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\osc}{\operatorname{osc}}
+
+\title{\textcolor{accent}{A sharp complex Dvoretzky theorem under
+phase-increment regularity}}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 13}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{
+\textbf{Status.} Substantial partial result; current verdict: likely valid.
+The unrestricted removal of circledness remains open.
+}}
+\end{center}
+
+\section{Source question}
+
+Write \(S_{\C^n}\) for the Euclidean unit sphere in \(\C^n\).  Aubrun,
+Szarek, and Werner \cite[Theorem~4]{ASW} prove that if
+\(f:S_{\C^n}\to\R\) is 1-Lipschitz and \emph{circled},
+\[
+ f(\omega z)=f(z)\qquad(\omega\in\T),
+\]
+then a random complex subspace \(E\) of dimension \(c n\varepsilon^2\)
+satisfies
+\[
+ \sup_{z\in S_E}|f(z)-\mu|\leq\varepsilon
+\]
+with high probability, where \(\mu\) is a central value.  They ask whether
+the circledness assumption can be removed completely.  The exact source
+passage, on page~6, is reproduced below.
+
+\begin{center}
+\includegraphics[width=0.94\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The later monograph of Aubrun and Szarek \cite[Exercise~7.8]{ABMB} removes
+circledness above a logarithmic small-\(\varepsilon\) threshold and still
+records the removal of that threshold as unknown.  The theorem below instead
+identifies a quantitative phase-regularity condition under which the sharp
+\(n\varepsilon^2\) dimension holds at every scale allowed by the dimension.
+
+\section{Proof intuition}
+
+Schechtman's increment argument works whenever the two input vectors have
+nonnegative real inner product.  Circledness is used only to rotate one vector
+into that position without changing the function value.  For a non-circled
+function, retain the rotation but keep the resulting error as a second
+increment.  The first increment is controlled by the source's conditional
+L\'evy argument; the second is a phase increment on one Hopf circle.
+
+If phase increments have Lipschitz constant proportional to the phase chord,
+L\'evy concentration controls the second term at exactly the missing scale.
+The whole process is then subgaussian for the ordinary Euclidean metric, so
+the original Dudley chaining proof goes through.  A \(C^{1,1}\) bound supplies
+the required phase regularity by a direct gradient calculation.
+
+\section{Phase-increment regularity}
+
+All Lipschitz constants below use the Euclidean chord metric.  For an
+\(L\)-Lipschitz function \(f:S_{\C^n}\to\R\), define
+\begin{equation}\label{eq:phase-modulus}
+ D_{\T}(f)=
+ \sup_{\omega\in\T\setminus\{1\}}
+ \frac{\Lip\bigl(z\mapsto f(\omega z)-f(z)\bigr)}
+      {|\omega-1|}\in[0,\infty].
+\end{equation}
+Circled functions have \(D_{\T}(f)=0\), but finite phase modulus is much less
+restrictive than circledness.
+
+\begin{theorem}\label{thm:main}
+There are absolute constants \(c,C>0\) with the following property.  Let
+\(n\geq2\), let \(f:S_{\C^n}\to\R\) be \(L\)-Lipschitz, suppose
+\(D=D_{\T}(f)<\infty\), and set \(K=L+D\).  Let
+\[
+ \mu=\int_{S_{\C^n}}f\,d\sigma.
+\]
+If \(E\subset\C^n\) is a Haar-distributed \(k\)-dimensional complex subspace
+and
+\begin{equation}\label{eq:dimension}
+ 1\leq k\leq c\,n\frac{\varepsilon^2}{K^2},
+\end{equation}
+then
+\[
+ \mathbb P\left\{
+   \sup_{z\in S_E}|f(z)-\mu|>\varepsilon
+ \right\}
+ \leq
+ C\exp\left(-c\,n\frac{\varepsilon^2}{K^2}\right).
+\]
+\end{theorem}
+
+If \(K=0\), then \(f\) is constant and the assertion is immediate; below we
+implicitly consider \(K>0\).
+
+\begin{remark}
+Changing the mean to a median or any central value only changes absolute
+constants.  Indeed, L\'evy concentration implies that any two such values
+differ by \(O(L/\sqrt n)\), while \eqref{eq:dimension} with \(k\geq1\)
+forces \(\varepsilon\geq c^{-1/2}K/\sqrt n\).
+\end{remark}
+
+\section{Subgaussian increments}
+
+We use the standard consequence of L\'evy's lemma that if
+\(h:S_{\C^q}\to\R\) has mean zero and Lipschitz constant \(A\), then
+\begin{equation}\label{eq:levy}
+ \mathbb P\{|h|>t\}
+ \leq C\exp\left(-c q\,t^2/A^2\right).
+\end{equation}
+
+\begin{lemma}[Aligned increment]\label{lem:aligned}
+Let \(x,y\in S_{\C^n}\) satisfy
+\(\langle x,y\rangle\in[0,1]\), and let \(U\) be Haar-distributed on
+\(\mathrm U(n)\).  Then
+\[
+ \mathbb P\{|f(Ux)-f(Uy)|>t\}
+ \leq C\exp\left(
+ -c n\frac{t^2}{L^2|x-y|^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+If \(x=y\), the assertion is immediate.  Thus \(\beta>0\) below.
+Put \(z=(x+y)/2\), \(w=(x-y)/2\), and
+\(\beta=|w|=|x-y|/2\).  The hypothesis makes \(z\perp w\).
+Conditionally on \(u=Uz\), the vector \(U(w/\beta)\) is uniform on the unit
+sphere of the complex orthogonal complement of \(u\).  On that sphere
+consider
+\[
+ h_u(v)=f(u+\beta v)-f(u-\beta v).
+\]
+The substitution \(v\mapsto-v\) shows that \(h_u\) has conditional mean zero,
+and its Lipschitz constant is at most \(2L\beta=L|x-y|\).  Apply
+\eqref{eq:levy} conditionally and then integrate in \(u\).  This is the
+increment argument used in the source proof.
+\end{proof}
+
+\begin{lemma}[Phase alignment]\label{lem:phase}
+For every \(x,y\in S_{\C^n}\), one can choose \(\omega\in\T\) such that
+\[
+ \langle x,\omega y\rangle=|\langle x,y\rangle|,
+ \qquad
+ |x-\omega y|\leq|x-y|,
+ \qquad
+ |\omega-1|\leq\sqrt2\,|x-y|.
+\]
+\end{lemma}
+
+\begin{proof}
+If \(\langle x,y\rangle=0\), take \(\omega=1\).  Otherwise choose the phase
+which makes the inner product positive.  Writing
+\(\langle x,y\rangle=r e^{i\theta}\), the first two assertions follow from
+\[
+ |x-y|^2=2-2r\cos\theta,\qquad
+ |x-\omega y|^2=2-2r.
+\]
+Also \(|\omega-1|^2=2-2\cos\theta\).  If \(\cos\theta\geq0\), this is at most
+\(|x-y|^2\); if \(\cos\theta<0\), it is at most \(4\), while
+\(|x-y|^2\geq2\).
+\end{proof}
+
+\begin{lemma}[General increment]\label{lem:general}
+For \(x,y\in S_{\C^n}\),
+\[
+ \mathbb P\{|f(Ux)-f(Uy)|>t\}
+ \leq C\exp\left(
+ -c n\frac{t^2}{K^2|x-y|^2}\right).
+\]
+\end{lemma}
+
+\begin{proof}
+Choose \(\omega\) from Lemma~\ref{lem:phase} and split
+\begin{align*}
+ f(Ux)-f(Uy)
+ &=[f(Ux)-f(U\omega y)]\\
+ &\quad+[f(\omega Uy)-f(Uy)].
+\end{align*}
+Lemma~\ref{lem:aligned} controls the first term at subgaussian scale
+\(L|x-\omega y|/\sqrt n\).  For the second, the function
+\[
+ g_\omega(z)=f(\omega z)-f(z)
+\]
+has mean zero by rotational invariance of \(\sigma\), and by definition its
+Lipschitz constant is at most \(D|\omega-1|\).  Equation
+\eqref{eq:levy} controls it at scale \(D|\omega-1|/\sqrt n\).
+The two chord estimates in Lemma~\ref{lem:phase}, followed by a union bound,
+give the result after changing absolute constants.
+\end{proof}
+
+\section{Chaining and proof of the theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Write \(E=U(\C^k)\) and consider the centered process
+\[
+ X_z=f(Uz)-\mu,\qquad z\in S_{\C^k}.
+\]
+It satisfies \(\E X_z=0\), and Lemma~\ref{lem:general} gives subgaussian
+increments for the metric
+\[
+ d(x,y)=C\frac{K}{\sqrt n}|x-y|.
+\]
+The standard covering estimate
+\[
+ N(S_{\C^k},|\cdot|,\eta)\leq(3/\eta)^{2k}
+\]
+and Dudley's entropy inequality \cite{Talagrand} therefore give
+\begin{equation}\label{eq:expected}
+ \E\sup_{z\in S_{\C^k}}|X_z|
+ \leq C K\sqrt{\frac{k}{n}}.
+\end{equation}
+The one-point term is absorbed here because, for fixed \(z_0\), L\'evy
+concentration gives
+\(\E|X_{z_0}|\leq C L/\sqrt n\leq C K\sqrt{k/n}\).
+Choose the absolute constant in \eqref{eq:dimension} small enough that the
+right-hand side of \eqref{eq:expected} is at most \(\varepsilon/2\).
+
+Finally,
+\[
+ \Phi(U)=\sup_{z\in S_{\C^k}}|f(Uz)-\mu|
+\]
+is \(L\)-Lipschitz on the unitary group for its Hilbert--Schmidt geodesic
+metric.  Although the increment calculation used Haar measure on
+\(\mathrm U(n)\), the random subspace has the same law when generated by
+Haar measure on \(\mathrm{SU}(n)\).  Concentration on \(\mathrm{SU}(n)\), in
+the standard form used in the sharp proof, yields
+\[
+ \mathbb P\{\Phi>\E\Phi+t\}
+ \leq C\exp(-c n t^2/L^2).
+\]
+Take \(t=\varepsilon/2\) and weaken \(L\) to \(K\).
+\end{proof}
+
+\section{\texorpdfstring{\(C^{1,1}\)}{C1,1} non-circled functions}
+
+\begin{corollary}\label{cor:c11}
+Let \(F\) be real-valued and \(C^{1,1}\) on a neighborhood of the closed
+Euclidean unit ball in \(\C^n\), considered as a subset of \(\R^{2n}\).
+Suppose
+\[
+ \sup|\nabla F|\leq L,\qquad \Lip(\nabla F)\leq H,
+\]
+and put \(f=F|_{S_{\C^n}}\).  The conclusion of
+Theorem~\ref{thm:main} holds whenever
+\[
+ k\leq c\,n\frac{\varepsilon^2}{(2L+H)^2}.
+\]
+\end{corollary}
+
+\begin{proof}
+Let \(R_\omega z=\omega z\), viewed as an orthogonal map on \(\R^{2n}\).
+For
+\[
+ G_\omega(z)=F(R_\omega z)-F(z)
+\]
+the real-gradient chain rule gives
+\[
+ \nabla G_\omega(z)
+ =R_\omega^*\nabla F(R_\omega z)-\nabla F(z).
+\]
+Consequently,
+\begin{align*}
+ |\nabla G_\omega(z)|
+ &\leq|\nabla F(R_\omega z)-\nabla F(z)|
+      +|(R_\omega^*-I)\nabla F(z)|\\
+ &\leq (H+L)|\omega-1|.
+\end{align*}
+Thus \(D_{\T}(f)\leq H+L\), while \(f\) is \(L\)-Lipschitz.  Apply the
+theorem.
+\end{proof}
+
+\begin{remark}
+The corollary includes genuinely non-circled examples.  For instance,
+\(F(z)=\operatorname{Re}\langle a,z\rangle\) has \(H=0\) and
+\(D_{\T}(f)=L=|a|\).
+\end{remark}
+
+\section{Limitations and novelty audit}
+
+For an arbitrary Lipschitz function, \(D_{\T}(f)\) may be infinite: a tiny
+phase rotation can move a sharp local feature and change the increment's
+Lipschitz slope at order one.  The theorem therefore does not answer the
+unrestricted source question.  It isolates exactly where circledness enters
+the sharp chaining proof and replaces invariance by a quantitative,
+checkable regularity condition.
+
+On 23 July 2026, bounded searches covered the exact source question and
+combinations of \emph{circledness}, \emph{complex Dvoretzky},
+\emph{phase increment}, \(C^{1,1}\), and \emph{Lipschitz gradient}.  The
+later monograph \cite{ABMB} retains a logarithmic small-\(\varepsilon\)
+threshold for arbitrary Lipschitz functions and states that dropping it is
+unknown.  No statement of Theorem~\ref{thm:main} or
+Corollary~\ref{cor:c11} was located.  This is a bounded negative search, so
+novelty confidence is moderate rather than definitive.
+
+\subsection*{Human-review recommendation}
+
+Send to a reviewer familiar with concentration and asymptotic geometric
+analysis.  The key checks are Lemma~\ref{lem:phase}, the conditional
+mean-zero step in Lemma~\ref{lem:aligned}, and the phase-gradient calculation
+in Corollary~\ref{cor:c11}.  If accepted, the result is suitable as a concise
+proposition complementing the standard circled theorem.
+
+\begin{thebibliography}{9}
+
+\bibitem{ASW}
+G. Aubrun, S. Szarek, and E. Werner,
+\emph{Hastings's additivity counterexample via Dvoretzky's theorem},
+Comm. Math. Phys. \textbf{305} (2011), 85--97;
+\href{https://arxiv.org/abs/1003.4925}{arXiv:1003.4925}.
+
+\bibitem{ABMB}
+G. Aubrun and S. Szarek,
+\emph{Alice and Bob Meet Banach: The Interface of Asymptotic Geometric
+Analysis and Quantum Information Theory},
+Mathematical Surveys and Monographs 223,
+American Mathematical Society, 2017.
+
+\bibitem{Talagrand}
+M. Talagrand,
+\emph{The Generic Chaining},
+Springer Monographs in Mathematics, Springer, 2005.
+
+\end{thebibliography}
+
+\end{document}

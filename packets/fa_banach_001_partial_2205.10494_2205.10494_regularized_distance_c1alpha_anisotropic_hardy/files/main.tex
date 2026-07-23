@@ -1,0 +1,462 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Om}{\Omega}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\diver}{\operatorname{div}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Grad}{\nabla}
+\newcommand{\eps}{\varepsilon}
+
+\title{\textbf{A sharp \(C^{1,\varepsilon}\) extension of the weak
+anisotropic Hardy inequality}}
+\author{Candidate partial result generated in run \texttt{fa\_banach\_001}\\
+\small Model GPT5.6 \(\cdot\) agent\_lane\_11}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fcolorbox{blue!60!black}{blue!4}{%
+\begin{minipage}{0.90\linewidth}
+\textbf{Status.} Candidate substantial partial, likely valid; human review
+required.  Under the natural normalized-regularized-distance formulation of
+the coefficient hypotheses, the general anisotropic conclusion holds with
+the exact Euclidean-distance barrier from the source theorem.  No claim is
+made that the source paper's literal \(\delta\)-based anisotropic block
+assumptions are well posed on every \(C^{1,\eps}\) domain.
+\end{minipage}}
+\end{center}
+
+\section{Source and exact open question}
+
+The source is G.~Nenciu and I.~Nenciu, \emph{Weak anisotropic Hardy
+inequality: essential self-adjointness of drift-diffusion operators on
+domains in \(\R^d\), revisited}, arXiv:2205.10494 [math.AP] (2022)
+\cite{NenciuNenciu}.  Its Theorem~3.1 proves a weak anisotropic Hardy
+inequality on a bounded domain with \(C^2\) boundary.  In Section~5, PDF
+page~17, the authors ask:
+\begin{quote}
+``However the optimality problem for the case of rough boundaries is far
+from being solved. In particular an interesting open problem is whether
+Theorem 3.1 remains true if \(\partial\Omega\) is \(C^{1+\epsilon}\),
+\(0<\epsilon<1\).''
+\end{quote}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\caption{The open question in the original source, PDF page 17.  The crop is
+rendered from the locally stored source PDF and retains the full page width.}
+\end{figure}
+
+For reference, the source theorem states, under its coefficient assumptions,
+\[
+\begin{split}
+h_0[\varphi,\varphi]\geq&
+-c_1(\nu)\|\chi_{\Om\setminus\Gamma_\nu}\varphi\|^2\\
+&+\frac14\int_{\Gamma_\nu}(1-q)a\delta^{\beta-2}
+\left[(\beta+\gamma-1)^2+
+\frac1{2\log^2(1/\delta)}\right]|\varphi|^2\rho\,\dd x .
+\end{split}
+\]
+The decisive source statement is reproduced in
+Figure~\ref{fig:source-theorem}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{figures/theorem_3_1_crop.png}
+\caption{Theorem 3.1 in the original source, PDF page 5.}
+\label{fig:source-theorem}
+\end{figure}
+
+\section{Why a reformulation is necessary}
+
+Write \(\delta(x)=\dist(x,\partial\Om)\).  On a \(C^2\) domain, \(\delta\)
+is \(C^2\) in a full boundary collar and \(|\Grad\delta|=1\).  The source
+uses \(\Grad\delta\) both in its vector field and to split the diffusion
+matrix into normal and tangential blocks.  A \(C^{1,\eps}\) boundary need
+not have positive reach, and its cut locus can approach the boundary.
+Consequently \(\delta\) need not be differentiable throughout any full
+collar.  In that generality, the literal anisotropic block assumptions are
+not pointwise defined everywhere.
+
+The standard remedy is a regularized distance.  Ros-Oton and Serra record,
+for \(C^{1,\alpha}\) domains, a positive function comparable to \(\delta\),
+of class \(C^{1,\alpha}\) up to the boundary and satisfying
+\(|D^2\psi|\leq C\delta^{\alpha-1}\) \cite[Definition 2.1 and
+Remark 2.2]{RosOtonSerra}.  We need the following normalized version.
+
+\section{Normalized regularized distance}
+
+\begin{lemma}[normalized regularized distance]\label{lem:distance}
+Let \(\Om\subset\R^d\) be a bounded \(C^{1,\eps}\) domain,
+\(0<\eps<1\).  There is a function
+\[
+t\in C^\infty(\Om)\cap C^{1,\eps}(\overline\Om),\qquad
+t>0\ \hbox{in }\Om,\quad t=0\ \hbox{on }\partial\Om,
+\]
+and constants \(c,C,\nu_0>0\) such that, whenever
+\(\delta(x)<\nu_0\),
+\begin{align}
+c\delta\leq t\leq C\delta,\qquad
+t&=\delta\bigl(1+O(\delta^\eps)\bigr), \label{eq:t-delta}\\
+|\Grad t|^2&=1+O(t^\eps), \label{eq:g}\\
+|D^2t|&\leq Ct^{\eps-1}. \label{eq:hessian}
+\end{align}
+In particular, after decreasing \(\nu_0\),
+\(g:=|\Grad t|\) is bounded above and away from zero.
+\end{lemma}
+
+\begin{proof}
+Let \(\psi\) solve
+\[
+-\Delta\psi=1\quad\hbox{in }\Om,\qquad \psi=0
+\quad\hbox{on }\partial\Om .
+\]
+The regularized-distance estimates cited above give
+\(\psi\asymp\delta\), \(\psi\in C^{1,\eps}(\overline\Om)\), interior
+smoothness, and
+\(|D^2\psi|\leq C\delta^{\eps-1}\).  The Hopf lemma gives
+\(b:=|\Grad\psi|>0\) on \(\partial\Om\), and
+\(b\in C^\eps(\partial\Om)\).
+
+Use the standard Whitney smoothing of the positive boundary function \(b\)
+to obtain a positive \(B\in C^\infty(\Om)\cap
+C^\eps(\overline\Om)\), with trace \(b\), such that near the boundary
+\[
+|\Grad B|\leq C\delta^{\eps-1},\qquad
+|D^2B|\leq C\delta^{\eps-2}.
+\]
+This is the usual regularized-distance/Whitney construction; see also
+Fraenkel \cite{Fraenkel}.  Set \(t=\psi/B\), modifying \(B\) harmlessly on
+a compact subset of \(\Om\) so that it remains bounded away from zero.
+The quotient rule, \(\psi=O(\delta)\), and the displayed estimates yield
+\eqref{eq:hessian}; they also give \(t\in
+C^{1,\eps}(\overline\Om)\).  On the boundary,
+\[
+\Grad t=\frac{\Grad\psi}{b}=n_{\mathrm{in}},
+\]
+the inward unit normal.  Hence the Hölder continuity of \(\Grad t\) gives
+\eqref{eq:g}.
+
+Finally, choose a nearest boundary point \(y\) for \(x\).  Since the boundary
+is \(C^1\), \(x-y=\delta(x)n_{\mathrm{in}}(y)\).  The
+\(C^{1,\eps}\) Taylor estimate at \(y\) gives
+\[
+t(x)=\Grad t(y)\cdot(x-y)+O(|x-y|^{1+\eps})
+=\delta(x)+O(\delta(x)^{1+\eps}),
+\]
+which is \eqref{eq:t-delta}.
+\end{proof}
+
+\section{Regularized anisotropic hypotheses}
+
+Fix the \(t\) from Lemma~\ref{lem:distance}, put
+\(\Gamma_\nu^t=\{x:t(x)<\nu\}\), and set
+\[
+e=\frac{\Grad t}{|\Grad t|}.
+\]
+Let \(\rho\in C^1(\Om;(0,\infty))\) and let
+\(D\in C^1(\Om;\R^{d\times d})\) be symmetric and strictly positive
+definite.  Relative to
+\(\R^d=\operatorname{span}\{e\}\oplus e^\perp\), write
+\[
+D=\begin{pmatrix}d&d_{12}\\d_{21}&d_{22}\end{pmatrix},
+\qquad
+d=a\,t^\beta,\qquad
+q=d^{-1}d_{12}d_{22}^{-1}d_{21}.
+\]
+Thus \(0\leq q<1\), and the Schur complement formula gives
+\begin{equation}\label{eq:schur}
+e\cdot D^{-1}e=\frac1{(1-q)a\,t^\beta}.
+\end{equation}
+Assume also
+\[
+\rho=r\,t^\gamma
+\]
+in \(\Gamma_{\nu_0}^t\), where \(a,r>0\) and
+\(\beta,\gamma\) are \(C^1\).  These are the direct analogues of
+Assumptions A and Q in the source, with \(t\) replacing \(\delta\):
+for some \(s_\beta\leq s<1\),
+\begin{equation}\label{eq:coefficient-bounds}
+\begin{split}
+|\Grad\log r|+|\Grad\gamma|+|\Grad\log a|
++|\Grad\log(1-q)|&\leq Ct^{-s},\\
+|\Grad\beta|&\leq Ct^{-s_\beta}.
+\end{split}
+\end{equation}
+We include explicitly the boundedness consequences used below:
+\[
+\beta,\gamma,\log a,\log r,\log(1-q)^{-1}
+\quad\hbox{are bounded in }\Gamma_{\nu_0}^t.
+\]
+
+\section{Proof intuition}
+
+The source proof uses a vector field parallel to \(\Grad\delta\).  Replacing
+\(\delta\) naively by \(t\) would insert a factor \(|\Grad t|^2\) into the
+radial derivative.  Instead define
+\[
+N=\frac{\Grad t}{|\Grad t|^2}.
+\]
+Then \(N\cdot\Grad t=1\) exactly, so differentiating powers of \(t\) gives
+the same one-dimensional terms as in the smooth-distance proof.  The Schur
+complement still supplies the factor \(1-q\).  The only geometric errors
+come from \(\diver N\) and \(|\Grad t|^{-2}-1\).  Lemma
+\ref{lem:distance} bounds them by \(O(t^{\eps-1})\) and \(O(t^\eps)\).
+After the extra factor \(t\) in the divergence calculation, these errors
+are polynomially small and are absorbed by the logarithmic correction in
+the source barrier.  A second use of the same logarithmic reserve absorbs
+the \(O(\delta^\eps)\) error in replacing \(t\) by the exact Euclidean
+distance \(\delta\), even in the leading \(k^2\) term because \(k\) is
+bounded.
+
+\section{The anisotropic regularized-distance theorem}
+
+\begin{theorem}\label{thm:anisotropic}
+Assume the hypotheses above.  For every \(0<\lambda<1\) there is
+\(\nu_\lambda>0\) such that, for every \(0<\nu<\nu_\lambda\), there is
+\(c_\lambda(\nu)<\infty\) for which
+\begin{align}
+h_0[\varphi,\varphi]
+:={}&\int_\Om \overline{\Grad\varphi}\cdot
+D\Grad\varphi\,\rho\,\dd x \nonumber\\
+\geq{}&
+-c_\lambda(\nu)
+\|\chi_{\Om\setminus\Gamma_\nu^t}\varphi\|_{L^2(\rho\dd x)}^2
+\nonumber\\
+&+\frac14\int_{\Gamma_\nu^t}(1-q)a\,t^{\beta-2}
+\left[(\beta+\gamma-1)^2+
+\frac{\lambda}{\log^2(1/t)}\right]
+|\varphi|^2\rho\,\dd x                                      \label{eq:main}
+\end{align}
+for all \(\varphi\in C_c^\infty(\Om)\).
+In particular, \(\lambda=1/2\) gives exactly the logarithmic coefficient in
+the barrier of the source Theorem~3.1, with \(t\) in place of \(\delta\).
+
+More strongly, there are \(\mu>0\) and \(C_\mu<\infty\) such that the
+\emph{exact Euclidean-distance conclusion}
+\begin{align}
+h_0[\varphi,\varphi]\geq{}&
+-C_\mu\|\chi_{\{\delta\geq\mu\}}\varphi\|_{L^2(\rho\dd x)}^2
+\nonumber\\
+&+\frac14\int_{\{\delta<\mu\}}(1-q)a\,\delta^{\beta-2}
+\left[(\beta+\gamma-1)^2+
+\frac1{2\log^2(1/\delta)}\right]
+|\varphi|^2\rho\,\dd x.                                  \label{eq:sharp-delta}
+\end{align}
+This is the exact barrier in the source theorem for general anisotropic
+data, with only the coefficient hypotheses formulated relative to \(t\).
+\end{theorem}
+
+\begin{proof}
+We first recall the vector-field inequality.  For every real \(C^1\) vector
+field \(X\) and \(\varphi\in C_c^\infty(\Om)\), completing the square and
+integrating the cross term by parts gives
+\begin{equation}\label{eq:vf}
+h_0[\varphi,\varphi]\geq
+\int_\Om\left(\diver X-X\cdot(\rho D)^{-1}X\right)
+|\varphi|^2\,\dd x.
+\end{equation}
+
+Put
+\[
+k=\beta+\gamma-1,\qquad
+f(t)=\frac1{\log(1/t)},\qquad
+g=|\Grad t|,\qquad
+N=\frac{\Grad t}{g^2}.
+\]
+Then \(N\cdot\Grad t=1\), and Lemma~\ref{lem:distance} implies
+\begin{equation}\label{eq:N-bounds}
+\diver N=O(t^{\eps-1}),\qquad
+1-g^{-2}=O(t^\eps).
+\end{equation}
+On a sufficiently thin collar define
+\[
+\widetilde X
+=\frac12(1-q)a\rho\,t^{\beta-1}(k+f)N.
+\]
+Choose a \(C^1\) cutoff \(\Psi\), equal to one on a smaller collar and zero
+outside the original collar, and use \(X=\Psi\widetilde X\) in
+\eqref{eq:vf}.
+
+On the collar where \(\Psi=1\), let
+\[
+P=(1-q)a\rho\,t^{\beta-2}.
+\]
+The Schur identity \eqref{eq:schur}, together with \(N=e/g\), gives
+\begin{equation}\label{eq:quadratic}
+\widetilde X\cdot(\rho D)^{-1}\widetilde X
+=\frac14P(k+f)^2g^{-2}.
+\end{equation}
+Since \(tf'(t)=f(t)^2\), direct differentiation gives
+\begin{equation}\label{eq:divergence}
+\diver\widetilde X-\widetilde X\cdot(\rho D)^{-1}\widetilde X
+=P\left[\frac14k^2+\frac14f^2+E\right],
+\end{equation}
+where
+\begin{align}
+E={}&
+\frac12t(N\cdot\Grad k)
+\bigl[1+(k+f)\log t\bigr] \nonumber\\
+&+\frac12t(k+f)N\cdot\Grad\log\bigl((1-q)ar\bigr)
++\frac12t(k+f)\diver N \nonumber\\
+&+\frac14(k+f)^2(1-g^{-2}).                         \label{eq:error}
+\end{align}
+For completeness, the cancellation in \eqref{eq:divergence} is
+\[
+\frac12\{k(k+f)+f^2\}-\frac14(k+f)^2
+=\frac14(k^2+f^2).
+\]
+
+The coefficient bounds \eqref{eq:coefficient-bounds}, the boundedness of
+\(k\), and \eqref{eq:N-bounds} imply
+\begin{equation}\label{eq:error-bound}
+|E|\leq C\left[t^{1-s}(1+|\log t|)+t^\eps\right].
+\end{equation}
+Every positive power of \(t\), even multiplied by a fixed power of
+\(|\log t|\), tends to zero faster than \(f(t)^2\).  Hence
+\[
+E=o(f^2)\qquad(t\downarrow0)
+\]
+uniformly along the boundary.  After shrinking the collar,
+\[
+E\geq-\frac{1-\lambda}{4}f^2.
+\]
+Equations \eqref{eq:divergence} and \eqref{eq:vf} therefore give the desired
+barrier on \(\Gamma_\nu^t\).  On the compact transition region of the cutoff,
+\(\rho^{-1}(\diver X-X\cdot(\rho D)^{-1}X)\) is bounded below.  Absorbing
+that bound into \(c_\lambda(\nu)\) proves \eqref{eq:main}.
+
+It remains to recover the exact source barrier.  Apply \eqref{eq:main} with
+a fixed \(\lambda_0\in(1/2,1)\), say \(\lambda_0=3/4\), and write
+\[
+\theta=\frac{t}{\delta}=1+O(\delta^\eps),\qquad
+k=\beta+\gamma-1,\qquad f_\delta=\frac1{\log(1/\delta)}.
+\]
+Since \(\beta\) and \(k\) are bounded, uniformly as \(\delta\downarrow0\),
+\[
+\theta^{\beta-2}=1+O(\delta^\eps),\qquad
+f(t)^2=f_\delta^2(1+o(1)).
+\]
+Consequently
+\begin{align*}
+&\theta^{\beta-2}\bigl[k^2+\lambda_0f(t)^2\bigr]
+-\left[k^2+\frac12f_\delta^2\right]\\
+&\hspace{25mm}\geq
+-C\delta^\eps+\bigl(\lambda_0-\tfrac12+o(1)\bigr)f_\delta^2
+\geq0
+\end{align*}
+on a sufficiently thin collar, because
+\(\delta^\eps=o(f_\delta^2)\).  Multiplying by the positive factor
+\((1-q)a\delta^{\beta-2}\), restricting to a smaller
+\(\delta\)-collar contained in the \(t\)-collar, and enlarging the finite
+interior constant proves \eqref{eq:sharp-delta}.
+\end{proof}
+
+\section{Classical Laplacian corollary}
+
+\begin{corollary}\label{cor:laplacian}
+Let \(\Om\subset\R^d\) be a bounded \(C^{1,\eps}\) domain,
+\(0<\eps<1\), and let \(\delta=\dist(\,\cdot\,,\partial\Om)\).  There are
+\(\nu>0\) and \(C_\nu<\infty\) such that, for every
+\(\varphi\in C_c^\infty(\Om)\),
+\begin{align}
+\int_\Om|\Grad\varphi|^2\,\dd x
+\geq{}&-C_\nu\|\chi_{\{\delta\geq\nu\}}\varphi\|_2^2 \nonumber\\
+&+\frac14\int_{\{\delta<\nu\}}\frac1{\delta^2}
+\left[1+\frac1{2\log^2(1/\delta)}\right]
+|\varphi|^2\,\dd x .                                 \label{eq:delta-lap}
+\end{align}
+Thus the source question has a positive answer, with its exact barrier, in
+the classical case \(D=I\), \(\rho=1\).
+\end{corollary}
+
+\begin{proof}
+Take
+\[
+D=I,\quad \rho=1,\quad a=1,\quad \beta=\gamma=q=0.
+\]
+Then \(k=-1\), and \eqref{eq:delta-lap} is exactly
+\eqref{eq:sharp-delta}.
+\end{proof}
+
+\section{Verification and novelty check}
+
+The accompanying script \texttt{code/verify\_algebra.py} checks symbolically
+the identity \(tf'=f^2\), the cancellation of the mixed \(kf\) term, and the
+placement of the metric error \(1-g^{-2}\).  It also evaluates finite
+asymptotic samples for the error-to-reserve ratio.  These checks passed.
+It also checks samples of the reserve
+\(\delta^\eps\log^2(1/\delta)\to0\) used in the full anisotropic
+\(t\)-to-\(\delta\) transfer.  These are sanity checks, not a proof of the
+analytic estimates.
+
+A bounded novelty search was performed on 23 July 2026 before promotion.
+The searched material comprised the run's registry and solution indexes,
+arXiv/web searches for the exact quoted question, the phrases
+``weak anisotropic Hardy \(C^1\) boundary'' and
+``weak anisotropic Hardy \(C^{1,\alpha}\)'', and citation/title searches for
+arXiv:2205.10494.  No later paper explicitly answering this question was
+found.  The search did find the standard regularized-distance estimates of
+Ros-Oton and Serra \cite{RosOtonSerra}; that paper does not state the
+anisotropic theorem proved here.  This was a bounded search, not a claim of
+exhaustive literature novelty.
+
+\section{Limitations and review recommendation}
+
+Theorem~\ref{thm:anisotropic} is a complete theorem under the displayed
+\(t\)-based hypotheses, and its conclusion
+\eqref{eq:sharp-delta} uses the exact source barrier with \(\delta\) for
+general anisotropic data.  The remaining limitation lies only in the
+hypotheses: it does not identify normal/tangential blocks relative to
+\(\Grad\delta\) at points where \(\delta\) is not differentiable, nor claim
+an equivalence between arbitrary a.e. source \(\delta\)-factorizations and
+the \(t\)-factorizations used here.
+
+Human review should focus first on Lemma~\ref{lem:distance}, especially the
+normalization by the smoothed boundary function \(B\).  The next priority is
+the four-term error formula \eqref{eq:error}; finally, check the uniform
+anisotropic \(t\)-to-\(\delta\) comparison leading to
+\eqref{eq:sharp-delta}.
+
+\begin{thebibliography}{9}
+
+\bibitem{NenciuNenciu}
+G.~Nenciu and I.~Nenciu,
+\emph{Weak anisotropic Hardy inequality: essential self-adjointness of
+drift-diffusion operators on domains in \(\R^d\), revisited},
+arXiv:2205.10494 [math.AP], 2022.
+\url{https://arxiv.org/abs/2205.10494}.
+
+\bibitem{RosOtonSerra}
+X.~Ros-Oton and J.~Serra,
+\emph{Boundary regularity estimates for nonlocal elliptic equations in
+\(C^1\) and \(C^{1,\alpha}\) domains},
+Annali di Matematica Pura ed Applicata \textbf{196} (2017), 1637--1668;
+arXiv:1512.07171.
+\url{https://arxiv.org/abs/1512.07171}.
+
+\bibitem{Fraenkel}
+L.~E.~Fraenkel,
+\emph{On regularized distance and related functions},
+Proceedings of the Royal Society of Edinburgh Section A
+\textbf{83} (1979), 115--122.
+\url{https://doi.org/10.1017/S0308210500011434}.
+
+\end{thebibliography}
+
+\end{document}

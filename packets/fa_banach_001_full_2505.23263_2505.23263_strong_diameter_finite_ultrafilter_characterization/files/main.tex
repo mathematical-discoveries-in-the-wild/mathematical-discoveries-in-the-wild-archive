@@ -1,0 +1,279 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\I}{\mathcal I}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\Ult}{\mathrm{Ult}}
+\newcommand{\N}{\omega}
+\newcommand{\bN}{\beta\omega}
+\newcommand{\one}{\mathbf 1}
+
+\title{A Complete Characterization of the Strong-Diameter Property\\
+for Generalized Limits}
+\author{Candidate full solution to the concluding question of arXiv:2505.23263}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{\textbf{Status.}
+Candidate full solution, likely valid, subject to human review.  The result
+characterizes exactly when every generalized limit has another generalized
+limit at norm distance two.}}
+\end{center}
+
+\section{Source and open question}
+
+Leonetti and Orhan study, for an ideal $\I$ on $\N$ containing the finite
+sets, the family $\SL(\I)$ of positive normalized functionals on
+$\ell_\infty$ which vanish on $\one_A$ for every $A\in\I$.
+Their Theorem~2.4 proves that if $\I$ is meager, then
+\begin{equation}\label{eq:SD}
+  \forall f\in\SL(\I)\ \exists g\in\SL(\I)
+  \quad \|f-g\|=2.
+\end{equation}
+In Section~6 they ask for a characterization of all ideals satisfying this
+conclusion~\cite{LeonettiOrhan}.  The open question appears on PDF page~14:
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+  \caption{The concluding open question in \cite[Section~6, p.~14]{LeonettiOrhan}.}
+\end{figure}
+
+\noindent\textbf{Transcription.}
+``We leave as an open question for the interested reader to characterize the
+class of ideals $\mathcal I$ on $\omega$ which satisfy the claim of
+Theorem~2.4.''
+
+\section{Answer}
+
+For an ultrafilter $u$ on $\N$, let
+\[
+  \mathcal J_u=\{A\subseteq\N:\N\setminus A\in u\}
+\]
+be its maximal ideal.  Following the source, put
+\[
+ K=\Ult(\I)=\{u\in\bN:\I\subseteq\mathcal J_u\}.
+\]
+Because $\I$ contains the finite sets, $K\subseteq\N^*=\bN\setminus\N$.
+
+\begin{theorem}[Complete characterization]\label{thm:main}
+For an ideal $\I$ on $\N$ containing $\mathrm{Fin}$, the following are
+equivalent.
+\begin{enumerate}
+  \item Every $f\in\SL(\I)$ has some $g\in\SL(\I)$ with $\|f-g\|=2$.
+  \item $\Ult(\I)$ is infinite.
+  \item $\I$ has infinitely many maximal-ideal extensions.
+  \item $\I$ is not the intersection of finitely many maximal ideals.
+\end{enumerate}
+Consequently, these conditions give the requested characterization.  In
+particular every meager ideal has the property, as in the source theorem, but
+meagerness is not necessary.
+\end{theorem}
+
+\section{Proof intuition}
+
+The compact space $K=\Ult(\I)$ is the actual state space behind the problem:
+Riesz representation identifies $\SL(\I)$ with the Radon probability measures
+on $K$, and ultrafilter-limit functionals are its Dirac measures.
+
+If $K$ is infinite, it cannot be countable.  Indeed, a countably infinite
+compact Hausdorff space contains a nontrivial convergent sequence, while
+$\bN$ contains none.  A probability measure has only countably many atoms, so
+an uncountable $K$ contains a point $u$ of measure zero.  The Dirac measure at
+$u$ is then mutually singular to the original measure, hence is at norm
+distance two.
+
+If $K$ has $m<\infty$ points, take the uniform measure.  It assigns positive
+mass to every point of $K$, so no probability measure on $K$ is mutually
+singular to it; quantitatively, its distance from any such measure is at most
+$2(1-1/m)<2$.  This is the exact obstruction.
+
+\section{Preparatory lemmas}
+
+We include the topological details so that no sequential property of
+$\bN$ is being used as a black box.
+
+\begin{lemma}\label{lem:ed}
+$\bN$ is extremally disconnected: the closure of every open set is open.
+\end{lemma}
+\begin{proof}
+Let $U\subseteq\bN$ be open and set $A=U\cap\N$.  Since $\N$ is dense in
+$\bN$, $A$ is dense in $U$, and therefore $\overline U=\overline A$.
+For every $A\subseteq\N$, its closure $\overline A$ in $\bN$ is clopen: under
+the ultrafilter model it is exactly $\{u:A\in u\}$.  Hence $\overline U$ is
+open.
+\end{proof}
+
+\begin{lemma}\label{lem:noseq}
+$\bN$ contains no nontrivial convergent sequence.
+\end{lemma}
+\begin{proof}
+Suppose that distinct points $x_n$ converge to $x$.  Passing to a subsequence
+and using compact Hausdorff regularity, construct decreasing neighborhoods
+$V_n$ of $x$ and pairwise disjoint open sets $U_n$ such that
+\[
+  x_n\in U_n\subseteq V_{n-1}\setminus\overline{V_n}.
+\]
+For completeness, after $V_{n-1}$ has been chosen, take a sufficiently late
+term $x_n\in V_{n-1}$, choose a neighborhood $V_n$ of $x$ whose closure lies
+in $V_{n-1}$ and misses $x_n$, and then choose $U_n$ around $x_n$ inside
+$V_{n-1}\setminus\overline{V_n}$.
+
+Let $U=\bigcup_n U_{2n}$ and $W=\bigcup_n U_{2n+1}$.  They are disjoint open
+sets.  By Lemma~\ref{lem:ed}, $\overline U$ is open as well as closed.  Since
+$W\cap\overline U=\varnothing$, it follows that
+$\overline W\cap\overline U=\varnothing$.  But both the even and odd
+subsequences converge to $x$, so $x$ belongs to both closures, a contradiction.
+\end{proof}
+
+\begin{lemma}\label{lem:countcompact}
+Every countably infinite compact Hausdorff space contains a nontrivial
+convergent sequence.
+\end{lemma}
+\begin{proof}
+Let $X$ be such a space.  It has a nonisolated point $x$, since otherwise its
+singleton open cover would have no finite subcover.  Enumerate
+$X\setminus\{x\}=\{y_1,y_2,\ldots\}$.  By regularity choose, for each $n$, a
+neighborhood $O_n$ of $x$ with $y_n\notin\overline{O_n}$, and set
+$V_n=\bigcap_{j\le n}O_j$.  Then $(V_n)$ is a decreasing local base at $x$:
+if $O$ is a neighborhood of $x$, the compact set $X\setminus O$ is covered by
+the increasing open sets $X\setminus\overline{V_n}$, hence is covered by one
+of them.
+
+Every $V_n$ is infinite, for a finite neighborhood of $x$ would make $x$
+isolated in a Hausdorff space.  Choose distinct $z_n\in V_n\setminus\{x\}$.
+The local-base property gives $z_n\to x$.
+\end{proof}
+
+\begin{corollary}\label{cor:uncountable}
+Every infinite closed subspace of $\bN$ is uncountable.
+\end{corollary}
+\begin{proof}
+A closed subspace is compact.  If it were countably infinite,
+Lemma~\ref{lem:countcompact} would give a nontrivial convergent sequence in
+$\bN$, contradicting Lemma~\ref{lem:noseq}.
+\end{proof}
+
+\section{Proof of the characterization}
+
+\begin{lemma}[Measure model]\label{lem:measure}
+Restriction of the Riesz representation identifies $\SL(\I)$ affinely and
+isometrically with the Radon probability measures $\mathcal P(K)$ on
+$K=\Ult(\I)$.  Under this identification the ultrafilter-limit functional
+$f_u$ is the Dirac measure $\delta_u$.
+\end{lemma}
+\begin{proof}
+Use the canonical isometry $\ell_\infty=C(\bN)$.  A positive normalized
+functional $f$ has a unique representing Radon probability measure $\mu$ on
+$\bN$.  If $p\notin K$, some $A\in\I$ belongs to $p$.  The clopen neighborhood
+$\overline A=\{u:A\in u\}$ of $p$ has
+\[
+  \mu(\overline A)=f(\one_A)=0.
+\]
+Thus every point outside $K$ has a $\mu$-null neighborhood.  Inner regularity
+then gives $\mu(\bN\setminus K)=0$: every compact subset of this open set has
+a finite cover by such null neighborhoods.  Hence $\mu$ is concentrated on
+$K$.
+
+Conversely, if $\mu\in\mathcal P(K)$ and $A\in\I$, then
+$\overline A\cap K=\varnothing$, so integration against $\mu$ annihilates
+$\one_A$.  This yields an element of $\SL(\I)$.  Riesz representation preserves
+the dual/total-variation norm, and evaluation at $u$ is represented by
+$\delta_u$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+First suppose that $K$ is infinite.  It is closed in $\bN$, hence uncountable
+by Corollary~\ref{cor:uncountable}.  Fix $f\in\SL(\I)$ and let
+$\mu\in\mathcal P(K)$ represent it.  The set
+\[
+  \{u\in K:\mu(\{u\})>0\}
+\]
+is countable: for each positive integer $n$, only finitely many points can
+have mass at least $1/n$.  Choose $u\in K$ outside this set.  Then
+$\mu(\{u\})=0$, so $\mu$ and $\delta_u$ are mutually singular.  Therefore
+\[
+  \|f-f_u\|=\|\mu-\delta_u\|_{\mathrm{TV}}=2.
+\]
+Since $u\in K$, $f_u\in\SL(\I)$.  This proves~\eqref{eq:SD}.
+
+Now suppose $K=\{u_1,\ldots,u_m\}$ is finite.  Let
+\[
+  f=\frac1m\sum_{j=1}^m f_{u_j}\in\SL(\I).
+\]
+For any $g\in\SL(\I)$, Lemma~\ref{lem:measure} represents $g$ by weights
+$a_j\ge0$ with $\sum_j a_j=1$.  Hence
+\[
+  \|f-g\|=\sum_{j=1}^m\left|\frac1m-a_j\right|
+  =2\left(1-\sum_{j=1}^m\min\left\{\frac1m,a_j\right\}\right)
+  \le 2\left(1-\frac1m\right)<2.
+\]
+The inequality holds because some $a_j\ge1/m$.  Thus~\eqref{eq:SD} fails.
+This proves the equivalence of (1) and (2), while (2) and (3) are equivalent
+by the definition of $K$.
+
+Finally, every ideal is the intersection of all maximal ideals containing it.
+If $K$ is finite, this is a finite intersection.  Conversely, suppose
+$\I=\bigcap_{j=1}^m\mathcal J_j$ for distinct maximal ideals.  If a maximal
+ideal $\mathcal J\supseteq\I$ differed from every $\mathcal J_j$, choose
+$A_j\in\mathcal J_j\setminus\mathcal J$.  The complement of a maximal ideal
+is an ultrafilter, so $\bigcap_j A_j\notin\mathcal J$; but
+$\bigcap_j A_j\in\mathcal J_j$ for every $j$, hence belongs to $\I\subseteq
+\mathcal J$, a contradiction.  Therefore the only maximal extensions are the
+$\mathcal J_j$, and $K$ is finite.  This proves (2)$\Leftrightarrow$(4).
+\end{proof}
+
+\section{Verification and edge cases}
+
+\begin{itemize}
+  \item If $\I$ is maximal, then $|K|=1$ and $\SL(\I)$ is a singleton; the
+  theorem correctly says the strong-diameter property fails.
+  \item If $\I$ is an intersection of $m\ge2$ maximal ideals, the ordinary
+  diameter of $\SL(\I)$ is still $2$ (take two distinct Dirac measures), in
+  agreement with Theorem~2.3 of the source.  What fails is the stronger
+  assertion for the uniform interior point.
+  \item If $K$ is infinite, the proof chooses $g$ to be an extreme point of
+  $\SL(\I)$, a statement stronger than the question asks.
+  \item The script \texttt{code/verify\_finite\_distance.py} exhausts rational
+  grids of probability simplices for $1\le m\le8$ and confirms the sharp
+  finite bound $2(1-1/m)$.  This is only a sanity check; the displayed formula
+  above is the proof.
+\end{itemize}
+
+\section{Novelty check, limitations, and review recommendation}
+
+A bounded search on 22 July 2026 used the exact Section~6 wording, the title
+and authors, and combinations of ``$\Ult(\I)$'', ``$\SL(\I)$'', strong
+diameter, and finite maximal-ideal extensions.  It located the arXiv version
+and the 2026 JMAA publication, both retaining the question, but no later
+resolution.  This is not an exhaustive novelty claim.
+
+There are no remaining mathematical cases in the stated question.  Human
+review should focus on Lemma~\ref{lem:measure}, the short topological chain
+Lemmas~\ref{lem:ed}--\ref{lem:countcompact}, and the final equivalence with
+finite intersections.  All dependencies are proved in the packet.
+
+\begin{thebibliography}{9}
+\bibitem{LeonettiOrhan}
+P.~Leonetti and C.~Orhan,
+\emph{On generalized limits and ultrafilters},
+arXiv:2505.23263 (2025); J. Math. Anal. Appl. \textbf{556} (2026), 130090.
+\end{thebibliography}
+
+\end{document}

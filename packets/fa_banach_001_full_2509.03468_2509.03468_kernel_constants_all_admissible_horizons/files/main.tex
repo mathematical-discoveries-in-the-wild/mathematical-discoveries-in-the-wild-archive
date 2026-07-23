@@ -1,0 +1,385 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Dhet}{\mathcal D_{\rho(\cdot)}}
+\newcommand{\Qhet}{\mathcal Q_{\rho(\cdot)}}
+\newcommand{\sphere}{\mathbb S^{n-1}}
+
+\title{Kernel Triviality for Every Admissible\\
+Heterogeneous Horizon}
+\author{Run \texttt{fa\_banach\_001}, agent \texttt{agent\_lane\_01}}
+\date{July 23, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Source question}
+
+Kreisbeck and Schönberger introduce heterogeneous nonlocal gradients whose
+interaction horizon \(\delta(x)\) stays inside the domain and vanishes
+smoothly at its boundary \cite{KS}. Their Theorem~4.17 proves, with no
+amplitude restriction, that the nullspace is finite-dimensional and consists
+of smooth functions. When the maximal horizon is sufficiently small
+(``mild variation''), they prove that the nullspace consists exactly of
+constants. Remark~4.18 asks whether the same conclusion holds without that
+smallness assumption.
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/open_problem_crop.png}
+\end{center}
+
+The theorem below gives an affirmative answer in every space dimension.
+
+\section*{Setting}
+
+Let \(\Omega\subset\mathbb R^n\) be a bounded connected Lipschitz domain and
+let \(p\in(1,\infty)\). The horizon \(\delta\in C^\infty(\mathbb R^n)\)
+satisfies the source paper's assumptions; in particular,
+\[
+ \delta>0\ \hbox{in }\Omega,\qquad
+ \delta=0\ \hbox{on }\Omega^c,\qquad
+ \delta(x)\leq\operatorname{dist}(x,\Omega^c).
+\]
+Let \(\bar\rho_1\) be the radial representative of the source kernel and put
+\[
+ Q(r)=Q_{\rho_1}(r)=\int_r^1\frac{\bar\rho_1(s)}s\,ds,
+ \qquad
+ g(r)=r^{n-2}\bar\rho_1(r).
+\]
+Hypothesis H1 says that \(g\) is decreasing. The averaging operator on
+\(\mathbb R^n\) is
+\[
+ (\Qhet f)(x)=
+ \begin{cases}
+ \displaystyle
+ \int_{\mathbb R^n}\delta(x)^{-n}
+ Q\!\left(\frac{|x-y|}{\delta(x)}\right)f(y)\,dy,
+ &x\in\Omega,\\[1.2ex]
+ f(x),&x\in\Omega^c.
+ \end{cases}
+\]
+The source normalization gives \(\int_{\mathbb R^n}Q(|z|)\,dz=1\), and
+\[
+ \Dhet u=\Qhet^\Omega\nabla u.
+\]
+
+\section*{Idea of the proof}
+
+The source proof already turns a kernel element \(u\) into a smooth,
+compactly supported vector field \(\widetilde w\) with
+\(\Qhet\widetilde w=0\) and
+\(\widetilde w|_\Omega=\nabla u\). The remaining task is therefore a scalar
+injectivity statement for the components of \(\widetilde w\).
+
+For \(n\geq2\), solve \(\Delta F=\widetilde w_j\) by a Newtonian potential.
+Two radial integrations by parts show that \(\Qhet\Delta F\) is a
+nonnegative mixture of
+\[
+ \text{spherical mean of \(F\) about \(x\)}-F(x).
+\]
+This gives a maximum principle. The Newtonian potential decays at infinity,
+so it must vanish. In dimension two, decay requires zero total mass; that
+mass vanishes because \(\widetilde w=\nabla u\) in \(\Omega\), while \(u\)
+is constant on every boundary curve. Dimension one is handled by the
+corresponding centered-second-difference maximum principle.
+
+\section*{The spherical-mean identity}
+
+\begin{lemma}\label{lem:spherical}
+Let \(F\in C^2(\mathbb R^n)\), \(x\in\Omega\), and \(d=\delta(x)>0\). Define
+\[
+ M_x(r)=\frac1{|\sphere|}
+ \int_{\sphere}F(x+dr\theta)\,d\theta,\qquad 0\leq r\leq1.
+\]
+Then
+\begin{equation}\label{eq:spherical}
+ (\Qhet\Delta F)(x)
+ =\frac{|\sphere|}{d^2}
+ \int_0^1(-g'(r))\bigl(M_x(r)-M_x(0)\bigr)\,dr.
+\end{equation}
+The integral is understood improperly at zero.
+\end{lemma}
+
+\begin{proof}
+The standard spherical-mean identity gives
+\[
+ M_x''(r)+\frac{n-1}{r}M_x'(r)
+ =\frac{d^2}{|\sphere|}
+ \int_{\sphere}\Delta F(x+dr\theta)\,d\theta.
+\]
+Using polar coordinates and then integrating by parts,
+\begin{align*}
+ (\Qhet\Delta F)(x)
+ &=\frac{|\sphere|}{d^2}
+   \int_0^1Q(r)\bigl(r^{n-1}M_x'(r)\bigr)'\,dr\\
+ &=\frac{|\sphere|}{d^2}
+   \int_0^1r^{n-2}\bar\rho_1(r)M_x'(r)\,dr\\
+ &=\frac{|\sphere|}{d^2}
+   \int_0^1(-g'(r))\bigl(M_x(r)-M_x(0)\bigr)\,dr.
+\end{align*}
+Here \(Q'=-\bar\rho_1/r\).
+
+We verify the singular boundary terms. At \(r=1\), both \(Q\) and \(g\)
+vanish because \(\rho_1\) has compact support in the open unit ball. At zero,
+\(M_x'(r)=O(r)\) and \(M_x(r)-M_x(0)=O(r^2)\). Moreover,
+\[
+ r^nQ(r)
+ =\int_r^1\left(\frac rs\right)^n
+     s^{n-1}\bar\rho_1(s)\,ds\longrightarrow0
+\]
+by dominated convergence and radial integrability. Finally, monotonicity of
+\(g\) gives
+\[
+ \int_{r/2}^{r}s^{n-1}\bar\rho_1(s)\,ds
+ =\int_{r/2}^{r}s\,g(s)\,ds
+ \geq\frac38r^2g(r)
+ =\frac38r^n\bar\rho_1(r).
+\]
+The left side tends to zero. Thus
+\(Q(r)r^{n-1}M_x'(r)\to0\) and
+\(g(r)(M_x(r)-M_x(0))\to0\), completing both integrations by parts.
+\end{proof}
+
+\section*{A maximum principle}
+
+Define
+\[
+ \mathcal L F:=\Qhet\Delta F.
+\]
+
+\begin{lemma}\label{lem:max}
+Let \(F\in C^2(\mathbb R^n)\) satisfy \(\mathcal LF=0\). If
+\(\overline\Omega\subset B_R\), then
+\[
+ \inf_{\partial B_R}F\leq F(x)\leq\sup_{\partial B_R}F
+ \qquad(x\in B_R).
+\]
+\end{lemma}
+
+\begin{proof}
+Since \(g\) is decreasing, \(-g'\geq0\). Lemma~\ref{lem:spherical} therefore
+implies that \(\mathcal LG(x_0)\leq0\) whenever \(x_0\in\Omega\) is a maximum
+of \(G\) over \(B_R\): the interaction ball is contained in
+\(\Omega\subset B_R\), and every spherical mean is at most \(G(x_0)\).
+If \(x_0\in\Omega^c\), then \(\mathcal LG(x_0)=\Delta G(x_0)\leq0\) at an
+interior maximum.
+
+For \(\varepsilon>0\), put \(G_\varepsilon=F+\varepsilon|x|^2\). The
+normalization of \(Q\) gives
+\[
+ \mathcal L G_\varepsilon=2n\varepsilon>0.
+\]
+Consequently \(G_\varepsilon\) cannot attain its maximum in the interior of
+\(B_R\). Hence, for \(x\in B_R\),
+\[
+ F(x)+\varepsilon|x|^2
+ \leq\sup_{\partial B_R}F+\varepsilon R^2.
+\]
+Letting \(\varepsilon\downarrow0\) proves the upper bound. Applying the same
+argument to \(F-\varepsilon|x|^2\) and interior minima proves the lower bound.
+\end{proof}
+
+\begin{lemma}\label{lem:scalar}
+Let \(f\in C_c^\infty(\mathbb R^n)\) and suppose \(\Qhet f=0\).
+\begin{enumerate}
+\item If \(n\geq3\), then \(f=0\).
+\item If \(n=2\) and \(\int_{\mathbb R^2}f=0\), then \(f=0\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let \(F=\Gamma_n*f\), where \(\Gamma_n\) is the Newtonian kernel normalized
+so that \(\Delta\Gamma_n=\delta_0\); see, for example, \cite[Section~2.2]{Evans}.
+Then \(F\in C^\infty(\mathbb R^n)\), \(\Delta F=f\), and
+\(\mathcal LF=\Qhet f=0\).
+
+For \(n\geq3\), compact support of \(f\) gives
+\(F(x)=O(|x|^{2-n})\), so \(F(x)\to0\) at infinity. For \(n=2\),
+\[
+ F(x)=\frac1{2\pi}\int_{\mathbb R^2}\log|x-y|\,f(y)\,dy.
+\]
+The coefficient of \(\log|x|\) is \((2\pi)^{-1}\int f\), hence the stated
+zero-mass assumption gives \(F(x)=O(|x|^{-1})\). In either case,
+\(F\to0\) uniformly on large spheres.
+
+Apply Lemma~\ref{lem:max} on \(B_R\) and let \(R\to\infty\). It follows that
+\(F=0\), and therefore \(f=\Delta F=0\).
+\end{proof}
+
+\section*{The two-dimensional moment}
+
+\begin{lemma}\label{lem:moment}
+Suppose \(n=2\), \(u\in C^\infty(\overline\Omega)\), and
+\(w\in C_0^\infty(\overline\Omega;\mathbb R^2)\) satisfies
+\(w=\nabla u\) in \(\Omega\). Then
+\[
+ \int_{\mathbb R^2}w_j\,dx=0,\qquad j=1,2.
+\]
+\end{lemma}
+
+\begin{proof}
+Because the zero extension of \(w\) is smooth, \(w=0\) on
+\(\partial\Omega\). Hence \(\nabla u=0\) there. The boundary of a bounded
+planar Lipschitz domain is a finite union of closed Lipschitz curves
+\(\Gamma_\ell\), and \(u\) is constant, say \(c_\ell\), on each curve.
+The divergence theorem gives
+\[
+ \int_{\mathbb R^2}w_j\,dx
+ =\int_\Omega\partial_j u\,dx
+ =\sum_\ell c_\ell
+   \int_{\Gamma_\ell}\nu_j\,d\mathcal H^1.
+\]
+The integral of the normal vector around every closed Lipschitz curve is
+zero (equivalently, apply the divergence theorem to a constant vector field
+on the region bounded by that curve). Every summand vanishes.
+\end{proof}
+
+\section*{Dimension one}
+
+\begin{lemma}\label{lem:one}
+In the source setting with \(n=1\), \(\Dhet u=0\) implies that \(u\) is
+constant, for every admissible horizon.
+\end{lemma}
+
+\begin{proof}
+The no-smallness part of the source theorem gives
+\(u\in C^\infty([a,b])\), where \(\Omega=(a,b)\). Choose \(F\) with
+\(F''=u'\), put
+\[
+ h(r)=\frac{\bar\rho_1(r)}r,
+\]
+and note that H1 makes \(h\) decreasing and \(-h'>0\) near zero. The identity
+\(\Dhet u=\Qhet^\Omega u'\), followed by two one-dimensional integrations by
+parts, gives
+\[
+0=\frac1{\delta(x)^2}\int_0^1(-h'(t))
+\bigl(F(x+\delta(x)t)+F(x-\delta(x)t)-2F(x)\bigr)\,dt.
+\]
+Indeed, H1 gives an \(\iota>0\) such that \(t^\iota h(t)\) is decreasing
+near zero, while H0 gives \(h(t)>0\) there; hence
+\[
+ -h'(t)\geq\frac{\iota}{t}h(t)>0.
+\]
+The endpoint terms vanish by the same estimates used in
+Lemma~\ref{lem:spherical}.
+
+Subtract from \(F\) its secant line on \([a,b]\), obtaining \(G\) with
+\(G(a)=G(b)=0\). At a positive interior maximum every centered second
+difference is nonpositive. Since \(-h'>0\) near zero, equality forces \(G\)
+to equal its maximum in a neighborhood. Thus the maximum set is nonempty,
+open, and closed in \((a,b)\), contradicting the boundary values. The same
+argument excludes a negative minimum. Hence \(G=0\), \(F\) is affine, and
+\(u'=F''=0\).
+\end{proof}
+
+\section*{Full solution}
+
+\begin{theorem}\label{thm:main}
+Under all the hypotheses of Kreisbeck and Schönberger
+\cite[Theorem~4.17]{KS}, but with no mild-variation or small-amplitude
+assumption on the admissible horizon, one has
+\[
+ \ker\Dhet
+ =\{u:\Omega\to\mathbb R:\ u\text{ is constant}\}.
+\]
+This holds for every \(n\geq1\) and every \(p\in(1,\infty)\).
+\end{theorem}
+
+\begin{proof}
+Constants plainly lie in the kernel. Let \(u\in\ker\Dhet\). The
+no-smallness part of the source proof constructs
+\[
+ \widetilde w
+ =\nabla\widetilde u-\mathcal D_{\rho(\cdot)}^{\mathbb R^n}\widetilde u
+ \in C_0^\infty(\overline\Omega;\mathbb R^n)
+\]
+such that
+\[
+ \Qhet\widetilde w=0,\qquad
+ \widetilde w|_\Omega=\nabla u.
+\]
+These are equations (4.15)--(4.16) and the surrounding argument in
+\cite[Theorem~4.17]{KS}; neither uses mild variation.
+
+If \(n=1\), Lemma~\ref{lem:one} gives the conclusion directly. Suppose
+\(n\geq2\). Apply Lemma~\ref{lem:scalar} to each component
+\(\widetilde w_j\). For \(n\geq3\), no additional condition is needed. For
+\(n=2\), Lemma~\ref{lem:moment} supplies
+\(\int\widetilde w_j=0\). Thus \(\widetilde w=0\) in every case. Consequently
+\(\nabla u=\widetilde w|_\Omega=0\), and connectedness of \(\Omega\) makes
+\(u\) constant.
+\end{proof}
+
+\section*{Verification notes}
+
+The script \texttt{code/verify\_spherical\_mean\_identity.py} checks
+Lemma~\ref{lem:spherical} exactly in dimension three for
+\(F(y)=|y|^4\), an arbitrary center, arbitrary scale, and a nontrivial radial
+profile. It returns \texttt{symbolic\_difference=0} and \texttt{PASS}.
+The script \texttt{code/verify\_second\_difference\_identity.py} performs the
+corresponding exact one-dimensional check and also passes.
+They were run with
+\[
+ \texttt{conda run --no-capture-output -n sandbox python code/<script>.py}.
+\]
+
+The two spectral scripts are exploratory only. They found no nonpositive
+eigenvalue over the admissible amplitude range and thousands of irregular
+horizons, but no computational observation is used in the proof.
+
+\section*{Novelty check and limitations}
+
+The run registry, solution, attempt, and proof-gap indexes were searched for
+arXiv:2509.03468, the exact title, heterogeneous horizons, kernel triviality,
+variable-bandwidth injectivity, Newtonian potentials, and spherical means.
+The only indexed result was the dimension-one precursor now superseded by
+this packet.
+
+A bounded external search on July 23, 2026 used arXiv and exact combinations
+of ``heterogeneous horizon'', ``nonlocal gradient kernel'', ``mildly
+varying'', ``Newtonian potential'', and ``spherical mean maximum principle''.
+It found the source preprint and unrelated nonlocal/variable-bandwidth work,
+but no answer to Remark~4.18. The official arXiv record still lists only
+version 1, submitted September 3, 2025. Novelty is plausible, not certified
+by an exhaustive review.
+
+The proof resolves precisely the source expectation under the source
+hypotheses. It does not claim injectivity of \(\Qhet\) on every scalar
+\(L^p\) function in dimension two: Lemma~\ref{lem:scalar} uses zero mass
+there. The source auxiliary gradient has exactly that cancellation, which is
+all Theorem~\ref{thm:main} requires.
+
+\section*{Human review recommendation}
+
+Review as a claimed full solution. The main checks are the singular endpoint
+limits in Lemma~\ref{lem:spherical}, the strict quadratic perturbation in
+Lemma~\ref{lem:max}, and the dimension-two boundary-component calculation in
+Lemma~\ref{lem:moment}. A reviewer should also confirm the cited source proof
+indeed supplies \(\widetilde w\in C_0^\infty(\overline\Omega)\) before mild
+variation is invoked.
+
+\begin{thebibliography}{9}
+
+\bibitem{KS}
+C. Kreisbeck and H. Schönberger,
+\emph{Local boundary conditions in nonlocal hyperelasticity via heterogeneous
+horizons},
+arXiv:2509.03468v1, 2025.
+\url{https://arxiv.org/abs/2509.03468}.
+
+\bibitem{Evans}
+L.C. Evans,
+\emph{Partial Differential Equations},
+2nd ed., Graduate Studies in Mathematics 19,
+American Mathematical Society, 2010.
+
+\end{thebibliography}
+
+\end{document}

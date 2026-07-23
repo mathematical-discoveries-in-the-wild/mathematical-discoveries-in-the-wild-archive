@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,graphicx,microtype,needspace}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\Sph}{\mathbb S^d}
+\newcommand{\dist}{\operatorname{dist}_{\Sph}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+
+\title{One Zone Disproves the Printed Zone--Inradius Conjecture}
+\author{Run \texttt{fa\_banach\_001}, lane 2}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Status.} Candidate counterexample, likely valid, for human review.
+
+\textbf{Outcome.} Conjecture~8 in Polyanskii's \emph{A cap covering
+theorem} is false as literally printed.  In every dimension, any single
+nondegenerate zone is already a counterexample: the conjectured left-hand
+side equals $\pi$, whereas the claimed lower bound is $2\pi$.
+
+\section{Source question}
+
+Let $\Sph\subset\mathbb R^{d+1}$ be the unit sphere.  The source defines a
+zone of width $2\alpha$ as the set of points at spherical distance at most
+$\alpha$ from a great sphere \cite[p.~2]{Polyanskii}.  Its final open problem
+is the following.
+
+\begin{center}
+\includegraphics[width=\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+\begin{quote}
+\textbf{Conjecture 8.}
+Let \(Z_1,\ldots,Z_n\subset S\) be zones of width
+\(\beta_1,\ldots,\beta_n\), respectively. If
+\(S\setminus\bigcup_{i=1}^n Z_i\) consists of convex connected components
+\(L_1,\ldots,L_{2m}\) with inradius
+\(\gamma_1,\ldots,\gamma_{2m}\), respectively, then
+\[
+ \beta_1+\cdots+\beta_n+\gamma_1+\cdots+\gamma_{2m}\ge 2\pi.
+\]
+\end{quote}
+
+The paper attributes the conjecture to ``Maxim Didid''; its source label is
+\texttt{conjecture:didin}.  We refer to it simply as the printed
+zone--inradius conjecture.
+
+\Needspace{13\baselineskip}
+\section{Claimed contribution}
+
+\begin{theorem}\label{thm:counterexample}
+Fix $d\ge 1$ and $0<\beta<\pi$.  Let $Z\subset\Sph$ be any zone of width
+$\beta$.  Then $\Sph\setminus Z$ has exactly two convex connected components,
+each of spherical inradius
+\[
+ \gamma=\frac{\pi-\beta}{2}.
+\]
+Consequently, with $n=1$ and $m=1$, the left-hand side of Conjecture~8 is
+\[
+ \beta+\gamma+\gamma=\pi<2\pi.
+\]
+Thus Conjecture~8 is false as stated.
+\end{theorem}
+
+\section{Proof intuition}
+
+A zone is a symmetric belt around an equator.  If its half-width is
+$\beta/2$, then each of the two polar caps left over has angular radius
+$\pi/2-\beta/2$.  The belt width plus the radii of both caps therefore
+telescopes:
+\[
+ \beta+2\left(\frac{\pi}{2}-\frac{\beta}{2}\right)=\pi.
+\]
+This is independent of both the width and the dimension, and is only half
+of the conjectured lower bound.
+
+\section{Proof}
+
+Choose a unit vector $u\in\mathbb R^{d+1}$ normal to the great sphere around
+which $Z$ is centered.  Put $a=\beta/2$.  For $x\in\Sph$, the spherical
+distance from $x$ to the great sphere $u^\perp\cap\Sph$ is
+\[
+ \arcsin |\langle x,u\rangle|.
+\]
+Since the source's zones are closed, it follows that
+\[
+ Z=\{x\in\Sph:|\langle x,u\rangle|\le \sin a\}.
+\]
+Hence
+\[
+ \Sph\setminus Z=L_+\mathbin{\dot\cup}L_-,
+ \qquad
+ L_\pm=\{x\in\Sph:\pm\langle x,u\rangle>\sin a\}.
+\]
+Because
+\[
+ \sin a=\cos\left(\frac{\pi}{2}-a\right),
+\]
+and $\dist(x,u)=\arccos\langle x,u\rangle$, we have
+\[
+ L_+=\left\{x\in\Sph:\dist(x,u)<\frac{\pi}{2}-a\right\},
+\]
+with the analogous formula for $L_-$ centered at $-u$.  Thus $L_+$ and
+$L_-$ are antipodal open spherical caps of radius
+\[
+ r=\frac{\pi}{2}-a=\frac{\pi-\beta}{2}.
+\]
+Since $0<r<\pi/2$, each cap is geodesically convex and connected, and there
+are no other components.
+
+For completeness, the inradius of either open cap is exactly $r$.  Every
+concentric cap of radius $r'<r$ is contained in it, so its inradius is at
+least $r$.  Conversely, if a spherical cap of radius $\rho$ is contained in
+$L_+$ and has center $y$, the triangle inequality along a minimizing
+geodesic from $u$ through $y$ gives
+\[
+ \rho\le r-\dist(u,y)\le r.
+\]
+Equivalently, if inradius is defined as a supremum for open domains, the
+supremum is $r$.  Therefore $\gamma_1=\gamma_2=r$, and the quantity in the
+conjecture is
+\[
+ \beta+\gamma_1+\gamma_2
+ =\beta+2\left(\frac{\pi-\beta}{2}\right)
+ =\pi<2\pi.
+\]
+All of the hypotheses of Conjecture~8 hold with $n=1$ and $2m=2$, completing
+the proof.
+
+\section{Hypothesis audit}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Printed requirement & One-zone construction & Check \\
+\midrule
+Zones $Z_1,\ldots,Z_n$ & one zone $Z$, $n=1$ & yes \\
+Widths $\beta_i$ & $\beta_1=\beta\in(0,\pi)$ & yes \\
+Even number of components & $L_+,L_-$, so $2m=2$ & yes \\
+Components connected & open caps & yes \\
+Components convex & radii $<\pi/2$ & yes \\
+Component inradii & $\gamma_1=\gamma_2=(\pi-\beta)/2$ & yes \\
+Claimed inequality & $\pi\ge 2\pi$ & false \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Robustness, interpretation, and limitations}
+
+The counterexample does not depend on a limiting or degenerate zone: every
+$\beta\in(0,\pi)$ works.  For example, $\beta=\pi/2$ leaves two caps of
+inradius $\pi/4$, and the conjectured sum is again $\pi$.
+
+The open/closed convention does not change the calculation.  The source
+defines the zone as the closure of the intersection with an open plank, so
+its complementary components are open.  Their inradius, in the standard
+supremal sense for domains, is $(\pi-\beta)/2$.  Passing to closures yields
+closed caps with the same numerical inradius.
+
+The factor-of-two discrepancy strongly suggests that the displayed
+constant, one of the summands, or a normalization was misstated.  This
+packet disproves only the literal printed statement; it does not assert
+which correction was intended, and it does not address Conjecture~7 in the
+same paper.
+
+\clearpage
+\section{Verification and novelty search}
+
+The script \texttt{code/verify\_one\_zone.py} checks the exact symbolic
+identity and several sample widths.  It runs with:
+\begin{verbatim}
+conda run --no-capture-output -n sandbox python \
+  code/verify_one_zone.py
+\end{verbatim}
+
+Before promotion, the run's cheap title, arXiv-id, and keyword indexes were
+searched.  Targeted web searches for the exact displayed inequality, the
+paper title together with ``correction'' and ``erratum,'' and the
+zone/inradius keywords found no later correction or resolution as of
+23 July 2026.  The local arXiv source and PDF both contain the $2\pi$
+constant.  This is a bounded novelty check, not a comprehensive literature
+review.
+
+\section{Human review recommendation}
+
+A reviewer in discrete or spherical geometry should first confirm the
+source's intended convention for ``inradius'' of an open component and ask
+the author whether $2\pi$ is a typographical or normalization error.  Under
+the definitions printed in the paper, the proof above is complete.
+
+\begin{thebibliography}{1}
+\bibitem{Polyanskii}
+A. Polyanskii,
+\emph{A cap covering theorem},
+Combinatorica \textbf{41} (2021), 695--702;
+\href{https://arxiv.org/abs/2006.02192}{arXiv:2006.02192}.
+\end{thebibliography}
+
+\end{document}

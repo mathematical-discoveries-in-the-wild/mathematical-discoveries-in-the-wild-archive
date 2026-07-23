@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array,booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{accent}{RGB}{37,86,123}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\newcommand{\Vol}{\operatorname{Vol}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{\textcolor{accent}{Segment-sum concavity for projectively unimodular zonotopes}}
+\author{Automated mathematics run \texttt{fa\_banach\_001}, lane 13}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.88\textwidth}{
+\textbf{Status.} Substantial partial result; current verdict: likely valid.
+The source conjecture remains open for general zonoids.
+}}
+\end{center}
+
+\section{Source problem}
+
+Fradelizi, Madiman, Meyer, and Zvavitch ask the following in Section~5 of
+\cite{FMMZ}.  If \(Z\) is a zonoid in \(\R^n\),
+\[
+ L=\sum_{j=1}^{m}[0,u_j],\qquad m\leq n,
+ \qquad
+ P(t)=\Vol_n(Z+tL),
+\]
+is \(P(t)^{1/m}\) concave for \(t\geq0\)?  Their exact passage appears below.
+
+\begin{center}
+\includegraphics[width=0.96\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The source proves nearby low-dimensional and two-segment results.  The theorem
+below gives the conjectured conclusion in every dimension for a natural
+regular-matroid class of finite zonotopes.
+
+\section{Definitions}
+
+\begin{definition}
+A list of nonzero vectors \(w_1,\ldots,w_N\in\R^n\) is
+\emph{projectively unimodular} if there are an invertible
+\(T\in\operatorname{GL}_n(\R)\), positive scalars \(c_1,\ldots,c_N\), and the
+columns \(a_1,\ldots,a_N\) of a full-row-rank totally unimodular
+\(n\times N\) matrix \(A\) such that
+\[
+ w_e=c_eTa_e\qquad(1\leq e\leq N).
+\]
+\end{definition}
+
+Replacing a generator by its negative only translates the corresponding
+segment, so it leaves all relevant volumes unchanged; signs may therefore be
+absorbed into the columns of \(A\).  Reduced oriented incidence matrices of
+graphs are totally unimodular, hence graphical zonotopes supply a large
+family of examples.
+
+\section{Proof intuition}
+
+For a general zonotope, its volume is a sum of absolute maximal determinants.
+Absolute values normally prevent that sum from being a single determinant.
+Projective unimodularity removes precisely this obstruction: every maximal
+minor of \(A\) is \(0\) or \(\pm1\), so absolute minors equal squared minors.
+Cauchy--Binet then packages the entire volume polynomial into a
+positive-semidefinite determinant.
+
+After the base generators receive weight \(1\) and the \(m\) distinguished
+generators receive weight \(t\), the polynomial is \(\det(B+tC)\) with
+\(B>0\) and \(C\geq0\).  Such a polynomial has only negative real roots.
+The \(m\)-th root of a product of at most \(m\) positive affine factors is
+concave by Cauchy--Schwarz.  This last observation also handles the case in
+which the degree is smaller than \(m\).
+
+\section{Main theorem}
+
+\begin{theorem}\label{thm:main}
+Let
+\[
+ Z=\sum_{i=1}^{r}[0,v_i]\subset\R^n
+\]
+be full-dimensional, let
+\[
+ L=\sum_{j=1}^{m}[0,u_j],\qquad 1\leq m\leq n,
+\]
+and suppose that the combined list
+\((v_1,\ldots,v_r,u_1,\ldots,u_m)\) is projectively unimodular.
+Then
+\[
+ P(t)=\Vol_n(Z+tL)
+\]
+has only negative real zeros.  Consequently \(P(t)^{1/m}\) is concave on
+\([0,\infty)\).
+\end{theorem}
+
+\begin{proof}
+Write \(N=r+m\), let \(w_1,\ldots,w_N\) denote the combined list, and choose
+\(T,c_e,A=(a_1\ \cdots\ a_N)\) as in the definition.  The standard zonotope
+volume formula gives, for nonnegative weights \(x_e\),
+\begin{align}
+\Vol_n\left(\sum_{e=1}^{N}x_e[0,w_e]\right)
+ &=\sum_{\substack{S\subseteq[N]\\|S|=n}}
+   |\det(w_e:e\in S)|\prod_{e\in S}x_e \notag\\
+ &=|\det T|
+   \sum_{\substack{S\subseteq[N]\\|S|=n}}
+   |\det A_S|\prod_{e\in S}c_ex_e. \label{eq:zonotope}
+\end{align}
+Total unimodularity says \(\det A_S\in\{0,\pm1\}\), and hence
+\(|\det A_S|=(\det A_S)^2\).  Cauchy--Binet turns \eqref{eq:zonotope} into
+\begin{equation}\label{eq:determinant}
+\Vol_n\left(\sum_{e=1}^{N}x_e[0,w_e]\right)
+=|\det T|\det\!\left(
+A\operatorname{diag}(c_ex_e)A^{\mathsf T}\right).
+\end{equation}
+
+Partition \(A=(A_Z\ A_L)\) and the \(c_e\)'s according to the generators of
+\(Z\) and \(L\).  Setting the \(Z\)-weights to \(1\) and the \(L\)-weights to
+\(t\) in \eqref{eq:determinant} yields
+\[
+P(t)=|\det T|\det(B+tC),
+\]
+where
+\[
+B=A_Z\operatorname{diag}(c_1,\ldots,c_r)A_Z^{\mathsf T},
+\qquad
+C=A_L\operatorname{diag}(c_{r+1},\ldots,c_{r+m})A_L^{\mathsf T}.
+\]
+Both matrices are positive semidefinite.  Since \(Z\) is full-dimensional,
+the vectors \(v_1,\ldots,v_r\), and therefore the columns of \(A_Z\), span
+\(\R^n\).  Thus \(B\) is positive definite.
+
+If \(\operatorname{Im}t>0\) and \((B+tC)q=0\) for a complex vector \(q\), then
+taking the imaginary part of \(q^*(B+tC)q=0\) gives
+\[
+(\operatorname{Im}t)\,q^*Cq=0.
+\]
+Hence \(Cq=0\), and then \(q^*Bq=0\), which forces \(q=0\).  Therefore
+\(\det(B+tC)\neq0\) in the open upper half-plane.  Because \(P\) has real
+coefficients, any nonreal zero would bring its conjugate into that half-plane.
+Thus all zeros of \(P\) are real.  Its coefficients are nonnegative and
+\(P(0)=\Vol_n(Z)>0\), so all its zeros are strictly negative.
+
+Let \(d=\deg P\leq m\).  There are \(\rho_1,\ldots,\rho_d>0\) and \(K>0\)
+such that
+\[
+P(t)=K\prod_{\ell=1}^{d}(t+\rho_\ell).
+\]
+For \(F=P^{1/m}\) and \(t\geq0\),
+\[
+\frac{F''(t)}{F(t)}
+=-\frac1m\sum_{\ell=1}^{d}\frac1{(t+\rho_\ell)^2}
++ \frac1{m^2}\left(\sum_{\ell=1}^{d}\frac1{t+\rho_\ell}\right)^2.
+\]
+Cauchy--Schwarz gives
+\[
+\left(\sum_{\ell=1}^{d}\frac1{t+\rho_\ell}\right)^2
+\leq d\sum_{\ell=1}^{d}\frac1{(t+\rho_\ell)^2}
+\leq m\sum_{\ell=1}^{d}\frac1{(t+\rho_\ell)^2}.
+\]
+It follows that \(F''(t)\leq0\), as claimed.
+\end{proof}
+
+\begin{corollary}[Graphical zonotopes]\label{cor:graphical}
+Let \(G\) be a connected graph on \(n+1\) vertices and represent each edge by
+its column in a reduced oriented incidence matrix.  Partition the edges as
+\(E=E_Z\sqcup E_L\), where the subgraph \((V,E_Z)\) is connected and
+\(|E_L|=m\leq n\).  Positive rescalings of the edge vectors are allowed.
+If \(Z\) is generated by \(E_Z\) and \(L\) by \(E_L\), then
+\(\Vol_n(Z+tL)^{1/m}\) is concave for \(t\geq0\).
+\end{corollary}
+
+\begin{proof}
+A reduced oriented incidence matrix is totally unimodular.  Connectivity of
+\((V,E_Z)\) gives full rank to the \(Z\)-columns.  Apply
+Theorem~\ref{thm:main}.
+\end{proof}
+
+\section{Exact four-dimensional example}
+
+\begin{example}
+Take the reduced incidence matrix of \(K_5\), so the ambient dimension is
+\(4\).  Let the three distinguished edges be
+\[
+E_L=\{\{0,1\},\{0,2\},\{0,3\}\}
+\]
+and let the other seven edges generate \(Z\).  The latter subgraph is
+connected, and exact Cauchy--Binet evaluation gives
+\[
+P(t)=4t^3+33t^2+72t+16=(t+4)^2(4t+1).
+\]
+This is a non-parallelotope example in the first dimension not covered by the
+source paper's \(\R^3\) result.  Directly,
+\[
+3P(t)P''(t)-2P'(t)^2=-450(t+4)^2\leq0,
+\]
+which is the differential inequality for concavity of \(P^{1/3}\).
+The exact verifier included with this packet checks all of these identities
+over the integers.
+\end{example}
+
+\section{Verification and limitations}
+
+\subsection*{Adversarial checks}
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}
+>{\raggedright\arraybackslash}p{0.63\textwidth}@{}}
+\toprule
+Potential failure & Check \\
+\midrule
+Missing determinant normalization &
+For segments \([0,w_e]\), the zonotope formula is exactly the sum of absolute
+maximal determinants; there is no factorial. \\
+Absolute versus squared minors &
+The equality uses total unimodularity explicitly.  It is false for a general
+vector configuration. \\
+Singular base pencil &
+Full-dimensionality of \(Z\) is used to prove \(B>0\). \\
+Degree smaller than \(m\) &
+The final Cauchy--Schwarz bound uses \(d\leq m\), not \(d=m\). \\
+Complex-kernel argument &
+\(B,C\) are real symmetric positive semidefinite, so \(q^*Cq=0\) implies
+\(Cq=0\), and \(q^*Bq=0\) implies \(q=0\). \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Scope}
+
+The theorem does not settle the source conjecture for arbitrary zonoids, or
+even arbitrary finite zonotopes.  Its hypothesis concerns the combined
+directions of \(Z\) and \(L\).  A tempting attempt to divide a forced monomial
+from the general degree-\(n\) Lorentzian volume polynomial fails because it
+does not preserve the stronger degree-\(m\) Newton normalization.
+
+\subsection*{Bounded novelty check}
+
+On 23 July 2026, searches were run for the exact source conjecture and arXiv
+id, and for combinations of \emph{zonoid}, \emph{totally unimodular},
+\emph{projectively unimodular}, \emph{graphical zonotope},
+\emph{volume polynomial}, \emph{real stable}, and \emph{concavity}.
+The search recovered the source paper and general literature on Lorentzian
+and volume polynomials, including \cite{BH}, but no statement of the precise
+subcase above.  This is a bounded negative search, so novelty confidence is
+moderate rather than definitive.
+
+\subsection*{Human-review recommendation}
+
+Send to a human reviewer.  The key steps to inspect are
+\eqref{eq:determinant}, the use of full-dimensionality to obtain \(B>0\), and
+the exact scope of the projectively-unimodular hypothesis.  If accepted, the
+result is suitable as a short proposition or note; the general conjecture
+should continue to be presented as open.
+
+\begin{thebibliography}{9}
+
+\bibitem{FMMZ}
+M. Fradelizi, M. Madiman, M. Meyer, and A. Zvavitch,
+\emph{On the volume of the Minkowski sum of zonoids},
+J. Funct. Anal. \textbf{286} (2024), 110247;
+\href{https://arxiv.org/abs/2206.02123}{arXiv:2206.02123}.
+
+\bibitem{BH}
+P. Br\"and\'en and J. Huh,
+\emph{Lorentzian polynomials},
+Ann. of Math. \textbf{192} (2020), 821--891;
+\href{https://arxiv.org/abs/1902.03719}{arXiv:1902.03719}.
+
+\end{thebibliography}
+
+\end{document}

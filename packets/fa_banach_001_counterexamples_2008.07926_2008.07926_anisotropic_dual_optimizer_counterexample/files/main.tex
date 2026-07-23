@@ -1,0 +1,163 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{An Anisotropic Polynomial Dual Optimizer\\Beyond the Displayed Family}
+\author{Candidate counterexample for arXiv:2008.07926v1}
+\date{July 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.9\textwidth}{\textbf{Status.} Candidate counterexample,
+likely valid pending expert review. The target is the informal uniqueness
+belief following Example 2.20 in the arXiv v1 paper. The sentence is absent
+from the published JMAA version, and no published theorem is challenged.}}
+\end{center}
+
+\section{Source statement}
+
+Gladkov, Kolesnikov, and Zimin study a $(3,2)$ multistochastic problem on
+$[0,1]^3$. Its cost is $c(x,y,z)=xyz$. In Example 2.11, the primal measure is
+supported on the plane
+\[
+ \Gamma=\{(x,y,z)\in[0,1]^3:x+y+z=1\},
+\]
+and its three pair projections are prescribed. Example 2.20 displays a
+one-parameter family of symmetric dual optimizers
+\[
+ \bigl(f_A(x,y),f_A(x,z),f_A(y,z)\bigr),\qquad A\geq0,
+\]
+and then states: ``We believe that there are no other dual solution, but can
+not prove this'' \cite{GKZ}. The relevant passage is on PDF page 8.
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{figures/open_problem_crop.png}
+\end{center}
+
+The journal version retains Example 2.20 but removes the quoted sentence.
+Accordingly, the result below is scoped to the literal arXiv-version belief.
+
+\section{Setup}
+
+For reference, the source polynomial is
+\begin{align*}
+ f_A(u,v)={}&-\frac{u^3+v^3}{12}-\frac12uv(u+v)
+ -(A-2)\left(\frac{u^2}{12}+\frac{uv}{3}+\frac{v^2}{12}\right)\\
+ &-\frac{1-2A}{12}(u+v)-\frac{A}{18}.
+\end{align*}
+Writing $s=x+y+z$, direct expansion gives
+\begin{equation}\label{eq:source-gap}
+ xyz-f_A(x,y)-f_A(x,z)-f_A(y,z)
+ =\frac{(s-1)^2(s+A)}6.
+\end{equation}
+This is nonnegative on the cube and vanishes on $\Gamma$, proving feasibility
+and complementary optimality of the source family.
+
+\section{Proof intuition}
+
+The square $(s-1)^2$ is exactly what forces equality on the support plane.
+The source multiplies it by the symmetric affine function $s+A$. To leave the
+class of pairwise potentials, a perturbation would need a genuine
+three-variable interaction. But
+\[
+ (s-1)^2(x-y)
+\]
+has no $xyz$ monomial: its mixed third derivative is zero. It therefore splits
+as a sum of three pair polynomials. A small multiple can be subtracted from
+the positive source gap without changing its sign. This produces an
+anisotropic optimal triple whose total sum cannot be obtained from the
+symmetric family by either changing $A$ or applying the usual gauge freedom.
+
+\section{Counterexample}
+
+\begin{theorem}
+For the planar multistochastic problem of Examples 2.11 and 2.20, define
+\begin{align*}
+ h_{12}(x,y)&=(x-y)(x+y-1)^2,\\
+ h_{13}(x,z)&=xz(2x+z-2),\\
+ h_{23}(y,z)&=-yz(2y+z-2),
+\end{align*}
+and set
+\begin{align*}
+ g_{12}(x,y)&=f_1(x,y)+\frac1{12}h_{12}(x,y),\\
+ g_{13}(x,z)&=f_1(x,z)+\frac1{12}h_{13}(x,z),\\
+ g_{23}(y,z)&=f_1(y,z)+\frac1{12}h_{23}(y,z).
+\end{align*}
+Then $(g_{12},g_{13},g_{23})$ is a polynomial dual optimizer. It is not
+gauge-equivalent to the source triple for any parameter $A\geq0$.
+\end{theorem}
+
+\begin{proof}
+First, exact expansion gives
+\begin{equation}\label{eq:decomp}
+ h_{12}(x,y)+h_{13}(x,z)+h_{23}(y,z)
+ =(s-1)^2(x-y).
+\end{equation}
+Combining \eqref{eq:source-gap} at $A=1$ with \eqref{eq:decomp} yields
+\begin{align}
+ xyz-g_{12}(x,y)-g_{13}(x,z)-g_{23}(y,z)
+ &=\frac{(s-1)^2(1+s)}6-\frac{(s-1)^2(x-y)}{12}\notag\\
+ &=\frac{(s-1)^2(2+x+3y+2z)}{12}.\label{eq:new-gap}
+\end{align}
+Every factor on the last line is nonnegative on $[0,1]^3$. Thus the new
+triple is dual feasible. On $\Gamma$ the right side vanishes, so the dual sum
+equals $xyz$ on the support of the primal measure. Integrating against that
+measure shows that the dual value equals the primal value. Hence the new
+triple is optimal.
+
+It remains to prove that this is not a disguised member of the displayed
+family. Gauge transformations of pair potentials have identically zero total
+sum, so gauge-equivalent triples must have the same total sum at every
+$(x,y,z)$. If the new total were the total associated with $f_B$ for some
+$B$, comparison of \eqref{eq:new-gap} and \eqref{eq:source-gap} would require
+\[
+ 2+x+3y+2z=2(s+B)
+\]
+identically. This is impossible: the coefficients of $x$ and $y$ on the left
+are $1$ and $3$, whereas both coefficients on the right are $2$.
+\end{proof}
+
+\section{Verification and scope}
+
+The identities were checked over the exact rational polynomial ring by the
+included SymPy script. No numerical approximation enters the proof. The sign
+in \eqref{eq:new-gap} is coefficientwise transparent, and complementary
+optimality uses only the source's planar support statement.
+
+The construction disproves exhaustiveness of the displayed symmetric
+one-parameter family; it does not classify all optimizers. It also does not
+answer the paper's broader Open Problem 2 about sufficient conditions for an
+optimal-map representation.
+
+\section{Novelty check}
+
+The run indexes and bounded web searches on July 23, 2026 used
+arXiv:2008.07926, the exact quoted sentence, the authors, Example 2.20,
+the notation $f_A$, ``dual uniqueness,'' and the perturbation
+$(x+y+z-1)^2(x-y)$. No explicit later answer or matching construction was
+found. Novelty confidence is moderate-to-low because the published 2022
+version silently removes the uniqueness sentence.
+
+\section{Human review recommendation}
+
+The decisive checks are the decomposition \eqref{eq:decomp}, the exact gap
+\eqref{eq:new-gap}, and the scope of the informal arXiv-only statement. The
+first two are elementary polynomial identities; the last determines how the
+result should be described historically.
+
+\begin{thebibliography}{9}
+\bibitem{GKZ}
+N.~A. Gladkov, A.~V. Kolesnikov, and A.~P. Zimin,
+\emph{The multistochastic Monge--Kantorovich problem},
+arXiv:2008.07926v1 (2020); J. Math. Anal. Appl. \textbf{506} (2022),
+125666.
+\end{thebibliography}
+
+\end{document}

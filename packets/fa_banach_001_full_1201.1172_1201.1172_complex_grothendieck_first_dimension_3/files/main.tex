@@ -1,0 +1,281 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sball}{\mathbb S}
+\newcommand{\Dball}{\mathbb D}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\Rea}{\operatorname{Re}}
+
+\title{The first nontrivial complex finite Grothendieck dimension is three}
+\author{Automated mathematics run \texttt{fa\_banach\_001}\\
+Lane 4, \texttt{agent\_lane\_04}, model GPT5.6}
+\date{22 July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\parbox{0.91\textwidth}{
+\textbf{Status.} Candidate full solution, likely valid, pending human review.
+The proof is exact; numerical optimization is used only as a sanity check.
+}}
+\end{center}
+
+\section{Source question}
+
+Yu, Duan, and Xu define the complex finite Grothendieck constant $K_d$ as
+the least $K$ for which the unit ball $\Sball_d$ of $d\times d$ Schur
+multipliers is contained in $K\conv(\Dball_d)$, where $\Dball_d$ consists
+of rank-one Schur multipliers.  They recall that $K_2=1$ and ask for the
+first integer $d$ such that $K_d>1$ \cite[p.~12]{YDX}:
+
+\begin{quote}
+``It seems, however, that the first integer $d$ for which $K_d>1$ is still
+unknown.''
+\end{quote}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.93\textwidth]{figures/open_problem_crop.png}
+\caption{The source question on PDF page 12 of arXiv:1201.1172.}
+\end{figure}
+
+The AQBC conjecture flagged by the deterministic scan is not the target of
+this packet: it is disproved in the same source paper.  The first-dimension
+question above is a separate, genuinely open statement in the source.
+
+\section{Definitions and separation criterion}
+
+We use inner products linear in the second variable.  The factorization
+description of Schur multiplier norm gives
+\[
+ \Sball_d=\left\{S=(s_{ij}):s_{ij}=\langle \xi_i,\eta_j\rangle,
+ \ \|\xi_i\|,\|\eta_j\|\leq1\right\},
+\]
+where the vectors may lie in any finite-dimensional Hilbert space.  The
+rank-one set is
+\[
+ \Dball_d=\left\{(\overline{\alpha_i}\beta_j):
+ |\alpha_i|,|\beta_j|\leq1\right\}.
+\]
+For a coefficient matrix $A=(a_{ij})$, define its vector and scalar support
+values by
+\begin{align*}
+ V(A)&=\sup_{\|\xi_i\|,\|\eta_j\|\leq1}
+ \left|\sum_{i,j}a_{ij}\langle\xi_i,\eta_j\rangle\right|,\\
+ C(A)&=\sup_{|\alpha_i|,|\beta_j|\leq1}
+ \left|\sum_{i,j}a_{ij}\overline{\alpha_i}\beta_j\right|.
+\end{align*}
+Thus $V(A)$ and $C(A)$ are the support functions of $\Sball_d$ and
+$\conv(\Dball_d)$, respectively.  Consequently,
+\begin{equation}\label{eq:separation}
+ V(A)>C(A)\quad\Longrightarrow\quad K_d>1.
+\end{equation}
+This is simply strict separation of the two compact convex sets.
+
+\section{Proof intuition}
+
+The witness is a small Hermitian matrix with entries among
+$\{1,-1,i,-i\}$.  A carefully chosen rank-two Gram matrix makes its three
+vector row sums have squared norms $8/3,6,6$, producing the exact vector
+value $8\sqrt6/3$.
+
+For scalar phases, optimizing the three row phases leaves only two column
+phases.  Cauchy--Schwarz and one weighted square reduce their total value to
+a Hermitian three-cycle quadratic form.  Fixing one phase collapses the
+quadratic maximization to the elementary function
+$a+\sqrt{30-10a}$.  Its upper bound $11/2$ is sharp for the quadratic
+relaxation, but the corresponding phases cannot satisfy equality in the
+weighted square.  This incompatibility makes the scalar bound strict.
+
+\section{Full solution}
+
+\begin{theorem}\label{thm:main}
+For the complex finite-dimensional constants in \cite{YDX}, one has
+$K_3>1$.  Hence the first integer $d$ for which $K_d>1$ is $d=3$.
+\end{theorem}
+
+\begin{proof}
+The equality $K_1=1$ is immediate from the definitions, and the known
+assertion $K_2=1$ is recalled in the source passage above.  It is therefore
+enough to prove $K_3>1$.
+
+Consider
+\begin{equation}\label{eq:A}
+A=\begin{pmatrix}
+1&1&1\\
+1&-1&-i\\
+1&i&-1
+\end{pmatrix}.
+\end{equation}
+We first lower-bound $V(A)$.  Let $\eta_1,\eta_2,\eta_3$ be unit vectors
+with Gram matrix
+\begin{equation}\label{eq:G}
+G=\begin{pmatrix}
+1&(-5-7i)/18&(-5+7i)/18\\
+(-5+7i)/18&1&(7-15i)/18\\
+(-5-7i)/18&(7+15i)/18&1
+\end{pmatrix}.
+\end{equation}
+This matrix is positive semidefinite: its eigenvalues are
+\[
+0,\qquad \frac32-\frac{\sqrt{179}}{18},\qquad
+\frac32+\frac{\sqrt{179}}{18}.
+\]
+It therefore is the Gram matrix of three unit vectors in $\C^2$.  For the
+$i$th row of $A$, put $w_i=\sum_j a_{ij}\eta_j$.  Direct multiplication
+using \eqref{eq:G} gives
+\begin{equation}\label{eq:wnorms}
+\|w_1\|^2=\frac83,\qquad \|w_2\|^2=6,\qquad \|w_3\|^2=6.
+\end{equation}
+Taking $\xi_i=w_i/\|w_i\|$ yields
+\begin{equation}\label{eq:vectorvalue}
+V(A)\geq\sum_i\|w_i\|
+=\sqrt{\frac83}+2\sqrt6=\frac{8\sqrt6}{3}.
+\end{equation}
+
+We now prove that the scalar support value is strictly smaller.  Since a
+linear functional on each unit disk is maximized on its boundary, and a
+common phase may be normalized, write the three column phases as $1,u,v$
+with $|u|=|v|=1$.  Optimizing the row phases gives
+\[
+C(A)=\max_{|u|=|v|=1}\bigl(r_1+r_2+r_3\bigr),
+\]
+where
+\begin{align*}
+r_1&=|1+u+v|,\\
+r_2&=|1-u-iv|,\\
+r_3&=|1+iu-v|.
+\end{align*}
+Set $r=r_1$ and $Q=r_2^2+r_3^2$.  First,
+\[
+r_1+r_2+r_3\leq r+\sqrt{2Q}.
+\]
+The nonnegative square
+$\bigl(\sqrt3\,r-\sqrt{2Q/3}\bigr)^2$ gives
+\begin{equation}\label{eq:weighted}
+\bigl(r+\sqrt{2Q}\bigr)^2\leq4r^2+\frac83Q,
+\end{equation}
+with equality only when $\sqrt{2Q}=3r$.
+
+A direct expansion shows that the right-hand side of
+\eqref{eq:weighted} equals
+\begin{equation}\label{eq:H}
+28+\frac83\Rea\left((1+2i)u+(1-2i)v
+ +(3+4i)\overline u v\right).
+\end{equation}
+Put $a=\Rea((1+2i)u)$.  For fixed $u$, the real part inside
+\eqref{eq:H} is at most
+\[
+a+\left|(1-2i)+(3+4i)\overline u\right|
+=a+\sqrt{30-10a}.
+\]
+Since $a\leq\sqrt5<11/2$, squaring the desired inequality is legitimate,
+and
+\[
+\left(\frac{11}{2}-a\right)^2-(30-10a)
+=\left(a-\frac12\right)^2\geq0.
+\]
+Therefore
+\begin{equation}\label{eq:quadratic-bound}
+4r^2+\frac83Q\leq28+\frac83\cdot\frac{11}{2}
+=\frac{128}{3}=\left(\frac{8\sqrt6}{3}\right)^2.
+\end{equation}
+
+It remains essential to verify strictness, since the quadratic bound itself
+is sharp.  Equality in \eqref{eq:quadratic-bound} forces
+\begin{equation}\label{eq:eqcase}
+a=\frac12,\qquad
+v=\frac{\overline{(1-2i)+(3+4i)\overline u}}{5}.
+\end{equation}
+The two unit-modulus solutions of $\Rea((1+2i)u)=1/2$ are
+\[
+u=\frac{(1-2i)(1\pm i\sqrt{19})}{10}.
+\]
+Substitution into \eqref{eq:eqcase} gives, respectively,
+\begin{equation}\label{eq:r-equality-values}
+r^2=\frac{112-24\sqrt{19}}{25}
+\quad\hbox{or}\quad
+r^2=\frac{112+24\sqrt{19}}{25}.
+\end{equation}
+On the other hand, if equality also held in \eqref{eq:weighted}, then
+$2Q=9r^2$; combining this with equality in
+\eqref{eq:quadratic-bound} would give
+\[
+\frac{128}{3}=4r^2+\frac83Q=16r^2,
+\qquad\text{hence}\qquad r^2=\frac83.
+\]
+Neither value in \eqref{eq:r-equality-values} equals $8/3$.  Thus the
+chain of scalar inequalities can never attain $128/3$.  The phase torus is
+compact, so
+\[
+C(A)<\frac{8\sqrt6}{3}\leq V(A).
+\]
+The separation criterion \eqref{eq:separation} proves $K_3>1$, completing
+the proof.
+\end{proof}
+
+\section{Verification notes}
+
+The script \texttt{code/verify\_witness.py} checks symbolically that:
+\begin{itemize}
+\item $G$ is Hermitian with the displayed eigenvalues and rank two;
+\item the three squared norms in \eqref{eq:wnorms} are exactly $8/3,6,6$;
+\item the two equality cases give exactly the values in
+  \eqref{eq:r-equality-values}, neither equal to $8/3$.
+\end{itemize}
+It also numerically maximizes the two-phase scalar expression as a sanity
+check.  The numerical step is not used in the proof.
+
+Potential reviewer failure modes are limited and explicit: the support
+functional must use the same conjugation convention as the Schur
+factorization, and strictness requires the final equality-case exclusion.
+
+\section{Limitations and novelty check}
+
+The theorem determines only the first dimension at which $K_d>1$.  It does
+not compute the exact value of $K_3$, nor does it characterize all extreme
+points of $\Sball_3$.
+
+The bounded novelty search covered the run registry and solution indexes,
+the local parsed arXiv corpus, and arXiv/web searches for the exact
+first-integer phrase, complex $K_3$, and $3\times3$ extremal Schur
+multipliers.  We also inspected Christensen's recent work
+\cite{Christensen}, which proves necessary rank bounds for general extremal
+Schur multipliers but does not supply this $K_3$ separation or answer the
+source question.  No prior answer was located.  Novelty confidence is
+moderate rather than definitive.
+
+\section{Human-review recommendation}
+
+\textbf{Recommend focused expert review.}  Check equations
+\eqref{eq:wnorms}, \eqref{eq:H}, and the equality-case substitution
+\eqref{eq:r-equality-values}.  If those three computations and the standard
+support-function equivalence are confirmed, the source question is fully
+answered.
+
+\begin{thebibliography}{9}
+\bibitem{YDX}
+N. Yu, R. Duan, and Q. Xu,
+\emph{Bounds on the distance between a unital quantum channel and the convex
+hull of unitary channels, with applications to the asymptotic quantum
+Birkhoff conjecture}, arXiv:1201.1172 (2012).
+
+\bibitem{Pisier}
+G. Pisier, \emph{Grothendieck's theorem, past and present},
+Bull. Amer. Math. Soc. 49 (2012), 237--323.
+
+\bibitem{Christensen}
+E. Christensen, \emph{Extremal Schur Multipliers},
+arXiv:2410.20112 (2024; latest inspected version dated March 2026).
+\end{thebibliography}
+
+\end{document}
